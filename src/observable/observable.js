@@ -1,7 +1,8 @@
 import MapObserver from '../observer/map-observer';
 import FlatMapObserver from '../observer/flat-map-observer';
 import SubscriptionReference from '../subscription-reference';
-import CompositeSubscriptionReference from '../subscription-reference';
+import CompositeSubscriptionReference from '../composite-subscription-reference';
+import CompositeSubscription from '../composite-subscription';
 
 export default class Observable {
   constructor(observer) {
@@ -17,7 +18,9 @@ export default class Observable {
   lift(generatorTransform, subscriptionReference) {
     var self = this;
     return new Observable(function(generator) {
-      subscriptionReference.value = self.observer(generatorTransform.call(this, {
+      var subscriptionReference = new SubscriptionReference();
+
+      subscriptionReference.setSubscription(self.observer(generatorTransform.call(this, {
         next(value) {
           var iterationResult = generator.next(value);
           if(typeof iterationResult !== 'undefined' && iterationResult.done) {
@@ -41,7 +44,7 @@ export default class Observable {
             return ret.call(this, value);
           }
         }
-      }, subscriptionReference));
+      })));
       
       return subscriptionReference.value;
     });
@@ -60,7 +63,7 @@ export default class Observable {
       return(value) {
         return generator.return(value);
       }
-    }), new SubscriptionReference());
+    }));
   }
 
   filter(predicate) {
@@ -78,7 +81,7 @@ export default class Observable {
       return(value) {
         return generator.return(value);
       }
-    }), new SubscriptionReference());
+    }));
   }
 
   // Observable/Observer pair methods
@@ -87,7 +90,8 @@ export default class Observable {
   }
 
   flatMap(projection) {
-    return this.lift((generator, subscriptionRef) => ({
+    var subscriptionRef = new CompositeSubscriptionReference();
+    return this.lift((generator) => ({
       next(value) {
         var innerObservable = projection(value);
         subscriptionRef.add(innerObservable.observer({
@@ -103,8 +107,16 @@ export default class Observable {
             return generator.next(value);
           }
         }));
+      },
+
+      error(err) {
+        generator.error(err);
+      },
+
+      return(value) {
+        generator.return(value);
       }
-    }), new CompositeSubscriptionReference());
+    }));
   }
 
   flatMap2(projection) {
@@ -122,7 +134,7 @@ export class MapObservable extends Observable {
   
   _observer(generator) {
     var subscriptionReference = new SubscriptionReference();
-    subscriptionReference.value = this._source.observer(new MapObserver(this._projection, generator, subscriptionReference));
+    subscriptionReference.setSubscription(this._source.observer(new MapObserver(this._projection, generator, subscriptionReference)));
     return subscriptionReference.value;
   }
 }
@@ -136,8 +148,8 @@ export class FlatMapObservable extends Observable {
   }
   
   _observer(generator) {
-    var subscriptionReference = new CompositeSubscriptionReference();
-    subscriptionReference.value = this._source.observer(new FlatMapObserver(this._projection, generator, subscriptionReference));
+    var subscriptionReference = new CompositeSubscriptionReference(new CompositeSubscription());
+    subscriptionReference.setSubscription(this._source.observer(new FlatMapObserver(this._projection, generator, subscriptionReference)));
     return subscriptionReference.value;
   }
 }
