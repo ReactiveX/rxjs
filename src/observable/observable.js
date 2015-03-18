@@ -1,3 +1,5 @@
+import MapObserver from '../observer/map-observer';
+
 export default class Observable {
   constructor(observer) {
     if(typeof observer !== 'undefined') {
@@ -75,5 +77,25 @@ export default class Observable {
         return generator.return(err);
       }
     }));
+  }
+
+  // Observable/Observer pair methods
+  map2(projection) {
+    return new MapObservable(this, projection);
+  }
+}
+
+
+export class MapObservable extends Observable {
+  constructor(source, projection) {
+    this._projection = projection;
+    this._source = source;
+    super(this._observer)
+  }
+  
+  _observer(generator) {
+    var subscriptionReference = {};
+    subscriptionReference.value = this._source.observer(new MapObserver(this._projection, generator, subscriptionReference));
+    return subscriptionReference.value;
   }
 }
