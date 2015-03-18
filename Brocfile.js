@@ -3,6 +3,18 @@ var mergeTrees = require('broccoli-merge-trees');
 var pickFiles = require('broccoli-static-compiler');
 // var stew = require('broccoli-stew');
 
+var benchmark = pickFiles('node_modules/benchmark', {
+	srcDir: '/',
+	files: ['benchmark.js'],
+	destDir: '/assets/benchmark'
+});
+
+var perfFiles = pickFiles('perf', {
+	srcDir: '/',
+	files: ['**/*.html', '**/*.js'],
+	destDir: '/perf'
+});
+
 var requirejs = pickFiles('node_modules/requirejs', {
 	srcDir: '/',
 	files: ['require.js'],
@@ -19,8 +31,9 @@ var specRunner = pickFiles('lib', {
 	srcDir: '/',
 	files: ['specRunner.js'],
 	destDir: '/assets'
-})
-var testHtml = pickFiles('tests', {
+});
+
+var testHTML = pickFiles('tests', {
 	srcDir: '/',
 	files: ['index.html'],
 	destDir: '/'
@@ -45,4 +58,13 @@ var scripts = esTranspiler(mergeTrees([srcES6, testsES6]), {
 });
 
 
-module.exports = mergeTrees([scripts, testHtml, jasmine, requirejs, specRunner]);
+module.exports = mergeTrees([
+	scripts, 
+	testHTML, 
+	jasmine, 
+	requirejs, 
+	specRunner, 
+	perfFiles, 
+	benchmark]);
+
+
