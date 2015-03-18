@@ -9,7 +9,11 @@ export default class SubscriptionReference {
 		return this._subscription;
 	}
 
-	set value(subscription) {
+	set value(subcription) {
+		this.setSubscription(subcription);
+	}
+
+	setSubscription(subscription) {
 		this._subscription = subscription;
 		if(this.isDisposeScheduled) {
 			this._dispose();

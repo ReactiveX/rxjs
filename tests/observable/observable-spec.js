@@ -56,4 +56,23 @@ describe('Observable', () => {
 			});
 		});
 	});
+
+	describe('observer-observable pair flatMap2()', () => {
+		it('should flatten return observables', done => {
+			var observable = new Observable(generator => {
+				generator.next(new Observable(gen2 => {
+					gen2.next(42);
+					gen2.return();
+				}));
+				generator.return();
+			});
+
+			observable.flatMap2(x => x).observer({
+				next: x => {
+					expect(x).toBe(42);
+					done();
+				}
+			});
+		});
+	});
 });

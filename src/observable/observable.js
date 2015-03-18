@@ -1,5 +1,7 @@
 import MapObserver from '../observer/map-observer';
+import FlatMapObserver from '../observer/flat-map-observer';
 import SubscriptionReference from '../subscription-reference';
+import CompositeSubscriptionReference from '../subscription-reference';
 
 export default class Observable {
   constructor(observer) {
@@ -12,10 +14,9 @@ export default class Observable {
     return this._observer(generator);
   }
   
-  lift(generatorTransform) {
+  lift(generatorTransform, subscriptionReference) {
     var self = this;
     return new Observable(function(generator) {
-      var subscriptionReference = new SubscriptionReference();
       subscriptionReference.value = self.observer(generatorTransform.call(this, {
         next(value) {
           var iterationResult = generator.next(value);
@@ -40,7 +41,7 @@ export default class Observable {
             return ret.call(this, value);
           }
         }
-      }));
+      }, subscriptionReference));
       
       return subscriptionReference.value;
     });
@@ -59,7 +60,7 @@ export default class Observable {
       return(value) {
         return generator.return(value);
       }
-    }));
+    }), new SubscriptionReference());
   }
 
   filter(predicate) {
@@ -77,14 +78,19 @@ export default class Observable {
       return(value) {
         return generator.return(value);
       }
-    }));
+    }), new SubscriptionReference());
+  }
+
+  // Observable/Observer pair methods
+  map2(projection) {
+    return new MapObservable(this, projection);
   }
 
   flatMap(projection) {
-    return this.lift((generator) => ({
+    return this.lift((generator, subscriptionRef) => ({
       next(value) {
         var innerObservable = projection(value);
-        var innerSubscription = innerObservable.observer({
+        subscriptionRef.add(innerObservable.observer({
           next(value) {
             return generator.next(value);
           },
@@ -96,14 +102,13 @@ export default class Observable {
           return(value) {
             return generator.next(value);
           }
-        });
+        }));
       }
-    }));
+    }), new CompositeSubscriptionReference());
   }
 
-  // Observable/Observer pair methods
-  map2(projection) {
-    return new MapObservable(this, projection);
+  flatMap2(projection) {
+    return new FlatMapObservable(this, projection);
   }
 }
 
@@ -118,6 +123,21 @@ export class MapObservable extends Observable {
   _observer(generator) {
     var subscriptionReference = new SubscriptionReference();
     subscriptionReference.value = this._source.observer(new MapObserver(this._projection, generator, subscriptionReference));
+    return subscriptionReference.value;
+  }
+}
+
+
+export class FlatMapObservable extends Observable {
+  constructor(source, projection) {
+    this._projection = projection;
+    this._source = source;
+    Observable.call(this, this._observer);
+  }
+  
+  _observer(generator) {
+    var subscriptionReference = new CompositeSubscriptionReference();
+    subscriptionReference.value = this._source.observer(new FlatMapObserver(this._projection, generator, subscriptionReference));
     return subscriptionReference.value;
   }
 }

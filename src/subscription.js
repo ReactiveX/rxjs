@@ -1,10 +1,14 @@
 export default class Subscription {
 	constructor(action) {
+		this.isDisposed = false;
 		this._action = action;
 	}
 
 	dispose() {
-		this._action();
+		if(!this.isDisposed && this._action) {
+			this._action();
+		}
+		this.isDisposed = true;
 	}
 
 	child(action) {
