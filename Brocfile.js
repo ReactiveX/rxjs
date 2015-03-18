@@ -1,7 +1,12 @@
 var esTranspiler = require('broccoli-babel-transpiler');
 var mergeTrees = require('broccoli-merge-trees');
 var pickFiles = require('broccoli-static-compiler');
-// var stew = require('broccoli-stew');
+
+var rxjs2 = pickFiles('node_modules/rx/dist', {
+	srcDir: '/',
+	files: ['rx.js'],
+	destDir: '/assets/rxjs2'
+});
 
 var benchmark = pickFiles('node_modules/benchmark', {
 	srcDir: '/',
@@ -65,6 +70,8 @@ module.exports = mergeTrees([
 	requirejs, 
 	specRunner, 
 	perfFiles, 
-	benchmark]);
+	benchmark,
+	rxjs2
+]);
 
 

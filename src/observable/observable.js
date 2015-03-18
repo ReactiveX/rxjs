@@ -1,4 +1,5 @@
 import MapObserver from '../observer/map-observer';
+import SubscriptionReference from '../subscription-reference';
 
 export default class Observable {
   constructor(observer) {
@@ -14,18 +15,18 @@ export default class Observable {
   lift(generatorTransform) {
     var self = this;
     return new Observable(function(generator) {
-      var subscription;
-      subscription = self.observer(generatorTransform.call(this, {
+      var subscriptionReference = new SubscriptionReference();
+      subscriptionReference.value = self.observer(generatorTransform.call(this, {
         next(value) {
           var iterationResult = generator.next(value);
           if(typeof iterationResult !== 'undefined' && iterationResult.done) {
-            subscription.dispose();
+            subscriptionReference.dispose();
           }
           return iterationResult;
         },
         
         throw(err) {
-          subscription.dispose();
+          subscriptionReference.dispose();
           var _throw = generator.throw;
           if(_throw) {
             return _throw.call(this, err);
@@ -33,7 +34,7 @@ export default class Observable {
         },
         
         return(value) {
-          subscription.dispose();
+          subscriptionReference.dispose();
           var ret = generator.return;
           if(ret) {
             return ret.call(this, value);
@@ -41,7 +42,7 @@ export default class Observable {
         }
       }));
       
-      return subscription;
+      return subscriptionReference.value;
     });
   }
     
@@ -94,7 +95,7 @@ export class MapObservable extends Observable {
   }
   
   _observer(generator) {
-    var subscriptionReference = {};
+    var subscriptionReference = new SubscriptionReference();
     subscriptionReference.value = this._source.observer(new MapObserver(this._projection, generator, subscriptionReference));
     return subscriptionReference.value;
   }

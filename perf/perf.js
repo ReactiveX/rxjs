@@ -2,38 +2,41 @@
 require({
 	baseUrl: '..',
 	paths: {
-	  'benchmark': '../assets/benchmark/benchmark'
+	  'benchmark': '../assets/benchmark/benchmark',
+	  'rx2': '../assets/rxjs2/rx'
 	}
 },
-['benchmark', 'src/observable/observable'], 
-function(Benchmark, observable) {
+['benchmark', 'src/observable/observable', 'src/subscription', 'rx2'], 
+function(Benchmark, observable, Subscription, Rx) {
 	var Observable = observable.default;
-	console.log('start');
+	console.log('starting tests');
 	var suite = new Benchmark.Suite;
 
+
+	var noop = function(){};
+
+
 	var testObservable = new Observable(function(generator) {
-		[1,2,3,4,5,6,7,8,9,10].map(generator.next.bind(generator));
+		generator.next(42);
 		generator.return();
 
 		//HACK: junk subscription
-		return {
-			dispose: function(){}
-		};
+		return new Subscription(noop);
 	});
 
 	var projection = function(x) {
 		return x + '!!!';
 	};
 
-	var noop = function(){};
+	var rx2TestObservable = Rx.Observable.just(42);
 
-	// add tests
 	suite.
 		add('Observable.map (lift)', {
 			defer: true,
 			fn: function(deferred) {
 				testObservable.map(projection).observer({
 					next: noop,
+					error: noop,
 					return: function(){
 						deferred.resolve();
 					}
@@ -45,10 +48,20 @@ function(Benchmark, observable) {
 			fn: function(deferred) {
 				testObservable.map2(projection).observer({
 					next: noop,
+					error: noop,
 					return: function() {
 						deferred.resolve();
 					}
 				});
+			}
+		}).
+		add('RxJS 2 Observable.map', {
+			defer: true,
+			fn: function(deferred) {
+				rx2TestObservable.map(projection).
+					forEach(noop, noop, function(){
+						deferred.resolve();
+					});
 			}
 		});
 
@@ -61,5 +74,3 @@ function(Benchmark, observable) {
 		})
 		.run();
 });
-
-console.log('wat');

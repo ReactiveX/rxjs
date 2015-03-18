@@ -1,9 +1,9 @@
 import Observer from './observer';
 
 export default class MapObserver extends Observer {
-  constructor(projectionFn, generator, subscription) {
+  constructor(projectionFn, generator, subscriptionRef) {
     this._projectionFn = projectionFn;
-    super(generator, subscription);
+    super(generator, subscriptionRef);
   }
 
 	next(value){
