@@ -56,8 +56,8 @@ export default class Observable {
         return generator.throw(err);
       },
       
-      return(err) {
-        return generator.return(err);
+      return(value) {
+        return generator.return(value);
       }
     }));
   }
@@ -74,8 +74,29 @@ export default class Observable {
         return generator.throw(err);
       },
       
-      return(err) {
-        return generator.return(err);
+      return(value) {
+        return generator.return(value);
+      }
+    }));
+  }
+
+  flatMap(projection) {
+    return this.lift((generator) => ({
+      next(value) {
+        var innerObservable = projection(value);
+        var innerSubscription = innerObservable.observer({
+          next(value) {
+            return generator.next(value);
+          },
+
+          error(err) {
+            return generator.error(err);
+          },
+
+          return(value) {
+            return generator.next(value);
+          }
+        });
       }
     }));
   }
