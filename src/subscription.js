@@ -8,12 +8,11 @@ export default class Subscription {
 	}
 
 	child(action) {
-		class ChildSubscription extends Subscription {
-			dispose() {
-				this._action();
-				super.dispose();
-			}
+		var ChildSubscription = function(action) {
+			this._action = action;
 		}
+
+		ChildSubscription.prototype = this;
 
 		return new ChildSubscription(action)
 	}

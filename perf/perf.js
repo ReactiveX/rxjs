@@ -32,36 +32,27 @@ function(Benchmark, observable, Subscription, Rx) {
 
 	suite.
 		add('Observable.map (lift)', {
-			defer: true,
-			fn: function(deferred) {
+			fn: function() {
 				testObservable.map(projection).observer({
 					next: noop,
 					error: noop,
-					return: function(){
-						deferred.resolve();
-					}
+					return: noop,
 				});
 			}
 		}).
 		add('Observable.map2 (observable/observer pair)', {
-			defer: true,
-			fn: function(deferred) {
+			fn: function() {
 				testObservable.map2(projection).observer({
 					next: noop,
 					error: noop,
-					return: function() {
-						deferred.resolve();
-					}
+					return: noop
 				});
 			}
 		}).
 		add('RxJS 2 Observable.map', {
-			defer: true,
-			fn: function(deferred) {
+			fn: function() {
 				rx2TestObservable.map(projection).
-					forEach(noop, noop, function(){
-						deferred.resolve();
-					});
+					forEach(noop, noop, noop);
 			}
 		});
 

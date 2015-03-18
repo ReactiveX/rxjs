@@ -91,7 +91,7 @@ export class MapObservable extends Observable {
   constructor(source, projection) {
     this._projection = projection;
     this._source = source;
-    super(this._observer)
+    Observable.call(this, this._observer);
   }
   
   _observer(generator) {
