@@ -1,15 +1,18 @@
 
 require({
-	baseUrl: '..',
+	baseUrl: '../../',
 	paths: {
-	  'benchmark': '../assets/benchmark/benchmark',
-	  'rx2': '../assets/rxjs2/rx'
+	  'benchmark': '../../assets/benchmark/benchmark',
+	  'rx2': '../../assets/rxjs2/rx',
+	  'perf-helpers': '../perf/perf-helpers'
 	}
 },
-['benchmark', 'src/observable/observable', 'src/subscription', 'rx2'], 
-function(Benchmark, observable, Subscription, Rx) {
+['benchmark', 'src/observable/observable', 'src/subscription', 'rx2', 'perf-helpers'], 
+function(Benchmark, observable, Subscription, Rx, helpers) {
 	var Observable = observable.default;
-	console.log('starting tests');
+	var printLn = helpers.printLn;
+
+	printLn('starting tests');
 	var suite = new Benchmark.Suite;
 
 
@@ -58,10 +61,10 @@ function(Benchmark, observable, Subscription, Rx) {
 
 	suite.
 		on('cycle', function(event) {
-		  console.log(String(event.target));
+		  printLn(String(event.target));
 		}).
 		on('complete', function() {
-		  console.log('Fastest is ' + this.filter('fastest').pluck('name'));
+		  printLn('Fastest is ' + this.filter('fastest').pluck('name'));
 		})
 		.run();
 });
