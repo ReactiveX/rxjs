@@ -4,7 +4,9 @@ import SubscriptionReference from '../subscription-reference';
 import CompositeSubscriptionReference from '../composite-subscription-reference';
 import CompositeSubscription from '../composite-subscription';
 
-export default class Observable {
+function noop() {}
+
+export class Observable {
   constructor(observer) {
     if(typeof observer !== 'undefined') {
       this._observer = observer;
@@ -12,7 +14,15 @@ export default class Observable {
   }
   
   observer(generator) {
-    return this._observer(generator);
+    var result = this._observer(generator);
+    switch(typeof result) {
+      case 'undefined':
+        return new Subscription(noop);
+      case 'function':
+        return new Subscription(result);
+      default:
+        return result;
+    }
   }
   
   lift(generatorTransform, subscriptionReference) {
@@ -123,6 +133,13 @@ export default class Observable {
     return new FlatMapObservable(this, projection);
   }
 }
+
+Observable.return = function(value) {
+  return new Observable((generator) => {
+    generator.next(value);
+    generator.return(value);
+  });
+};
 
 
 export class MapObservable extends Observable {

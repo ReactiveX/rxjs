@@ -1,4 +1,4 @@
-import Observable from 'src/observable/observable';
+import { Observable } from 'src/observable/observable';
 
 describe('Observable', () => {
 	it('should exist', () => {
@@ -75,4 +75,22 @@ describe('Observable', () => {
 			});
 		});
 	});
+
+	describe('Observable.return(value)', () => {
+		it('should return an observable of just that value', done => {
+			var observable = Observable.return(42);
+			var calls = 0;
+
+			observable.observer({
+				next(x) {
+					expect(x).toBe(42);
+					expect(++calls).toBe(1);
+				},
+
+				return() {
+					done();
+				}
+			});
+		});
+	})
 });

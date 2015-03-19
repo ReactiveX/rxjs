@@ -11,7 +11,7 @@ require({
 },
 ['benchmark', 'src/observable/observable', 'src/subscription', 'rx2', 'perf-helpers'], 
 function(Benchmark, observable, Subscription, Rx, helpers) {
-	var Observable = observable.default;
+	var Observable = observable.Observable;
 	var printLn = helpers.printLn;
 
 	printLn('starting tests');
