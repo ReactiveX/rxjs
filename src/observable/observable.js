@@ -99,8 +99,8 @@ export default class Observable {
             return generator.next(value);
           },
 
-          error(err) {
-            return generator.error(err);
+          throw(err) {
+            return generator.throw(err);
           },
 
           return(value) {
@@ -109,8 +109,8 @@ export default class Observable {
         }));
       },
 
-      error(err) {
-        generator.error(err);
+      throw(err) {
+        generator.throw(err);
       },
 
       return(value) {
