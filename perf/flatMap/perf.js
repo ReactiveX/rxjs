@@ -29,41 +29,47 @@ function(Benchmark, observable, Subscription, Rx, helpers) {
 
 	var projection = function(x) {
 		return new Observable(function(generator) {
-			generator.next(x + '!!!');
-			generator.return();
-
-			return new Subscription(noop);
+			var tid = setTimeout(function(){
+				generator.next(x + '!!!');
+				generator.return();
+			});
+			return new Subscription(function(){
+				clearTimeout(tid);
+			});
 		});
 	};
 
 	var rx2TestObservable = Rx.Observable.just(42);
 
 	suite.
-		add('Observable.flatMap (lift)', {
-			fn: function() {
-				testObservable.flatMap(projection).observer({
-					next: noop,
-					error: noop,
-					return: noop
-				});
-			}
+		add('Observable.flatMap (lift)', function(d) {
+			testObservable.flatMap(projection).observer({
+				next: noop,
+				error: noop,
+				return: noop
+			});
 		}).
-		add('Observable.flatMap2 (observable/observer pair)', {
-			fn: function() {
-				testObservable.flatMap2(projection).observer({
-					next: noop,
-					error: noop,
-					return: noop
-				});
-			}
+		add('Observable.flatMap2 (observable/observer pair)', function(d) {
+			testObservable.flatMap2(projection).observer({
+				next: noop,
+				error: noop,
+				return: noop
+			});
 		}).
-		add('RxJS 2 Observable.flatMap', {
-			fn: function() {
-				rx2TestObservable.flatMap(function(x) {
-					return Observable.just(x);
-				}).forEach(noop, noop, noop);
-			}
-		});
+		add('RxJS 2 Observable.flatMap', function(d) {
+			rx2TestObservable.flatMap(function(x) {
+				return Observable.create(function(observer) {
+					var tid = setTimeout(function(){
+						observer.onNext(x + '!!!');
+						observer.onCompleted();
+					}, 0);
+
+					return function(){
+						clearTimeout(tid);
+					}
+				});
+			}).forEach(noop, noop, noop);
+		})
 
 	suite.
 		on('cycle', function(event) {
@@ -72,5 +78,5 @@ function(Benchmark, observable, Subscription, Rx, helpers) {
 		on('complete', function() {
 		  printLn('Fastest is ' + this.filter('fastest').pluck('name'));
 		})
-		.run();
+		.run({ async: true });
 });

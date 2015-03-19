@@ -148,8 +148,8 @@ export class FlatMapObservable extends Observable {
   }
   
   _observer(generator) {
-    var subscriptionReference = new CompositeSubscriptionReference(new CompositeSubscription());
-    subscriptionReference.setSubscription(this._source.observer(new FlatMapObserver(this._projection, generator, subscriptionReference)));
-    return subscriptionReference.value;
+    var subscription = new CompositeSubscription();
+    subscription.add(this._source.observer(new FlatMapObserver(this._projection, generator, subscription)));
+    return subscription;
   }
 }
