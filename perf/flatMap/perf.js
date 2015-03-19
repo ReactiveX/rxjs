@@ -3,6 +3,8 @@ require({
 	baseUrl: '../../',
 	paths: {
 	  'benchmark': '../../assets/benchmark/benchmark',
+	  'platform': '../../assets/platform/platform',
+	  'lodash': '../../assets/lodash',
 	  'rx2': '../../assets/rxjs2/rx',
 	  'perf-helpers': '../perf/perf-helpers'
 	}

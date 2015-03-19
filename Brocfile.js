@@ -14,6 +14,18 @@ var benchmark = pickFiles('node_modules/benchmark', {
 	destDir: '/assets/benchmark'
 });
 
+var lodash = pickFiles('node_modules/lodash', {
+	srcDir: '/',
+	files: ['index.js'],
+	destDir: '/assets/lodash'
+});
+
+var platform = pickFiles('node_modules/platform', {
+	srcDir: '/',
+	files: ['platform.js'],
+	destDir: '/assets/platform'
+});
+
 var perfFiles = pickFiles('perf', {
 	srcDir: '/',
 	files: ['**/*.html', '**/*.js'],
@@ -71,7 +83,9 @@ module.exports = mergeTrees([
 	specRunner, 
 	perfFiles, 
 	benchmark,
-	rxjs2
+	rxjs2,
+	lodash,
+	platform
 ]);
 
 

@@ -66,5 +66,5 @@ function(Benchmark, observable, Subscription, Rx, helpers) {
 		on('complete', function() {
 		  printLn('Fastest is ' + this.filter('fastest').pluck('name'));
 		})
-		.run();
+		.run({ async: true });
 });
