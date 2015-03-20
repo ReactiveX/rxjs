@@ -1,8 +1,9 @@
 import MapObserver from '../observer/map-observer';
-import FlatMapObserver from '../observer/flat-map-observer';
 import SubscriptionReference from '../subscription-reference';
 import CompositeSubscriptionReference from '../composite-subscription-reference';
 import CompositeSubscription from '../composite-subscription';
+import MergeAllObserver from '../observer/merge-all-observer';
+import Subscription from '../subscription';
 
 function noop() {}
 
@@ -130,7 +131,11 @@ export class Observable {
   }
 
   flatMap2(projection) {
-    return new FlatMapObservable(this, projection);
+    return this.map2(projection).mergeAll();
+  }
+
+  mergeAll() {
+    return new MergeAllObservable(this);
   }
 }
 
@@ -141,6 +146,19 @@ Observable.return = function(value) {
   });
 };
 
+
+export class MergeAllObservable extends Observable {
+  constructor(source) {
+    this._source = source;
+    Observable.call(this, this._observer);
+  }
+
+  _observer(generator) {
+    var subscriptionReference = new SubscriptionReference();
+    subscriptionReference.setSubscription(this._source.observer(new MergeAllObserver(generator, subscriptionReference)));
+    return subscriptionReference.value;
+  }
+}
 
 export class MapObservable extends Observable {
   constructor(source, projection) {
@@ -153,20 +171,5 @@ export class MapObservable extends Observable {
     var subscriptionReference = new SubscriptionReference();
     subscriptionReference.setSubscription(this._source.observer(new MapObserver(this._projection, generator, subscriptionReference)));
     return subscriptionReference.value;
-  }
-}
-
-
-export class FlatMapObservable extends Observable {
-  constructor(source, projection) {
-    this._projection = projection;
-    this._source = source;
-    Observable.call(this, this._observer);
-  }
-  
-  _observer(generator) {
-    var subscription = new CompositeSubscription();
-    subscription.add(this._source.observer(new FlatMapObserver(this._projection, generator, subscription)));
-    return subscription;
   }
 }

@@ -14,17 +14,15 @@ export default class Observer {
 
   throw(err) {
     this._subscriptionDisposable.dispose();
-    var _throw = this._generator.throw;
-    if(_throw) {
-      return _throw.call(this, err);
+    if(this._generator.throw) {
+      return this._generator.throw(err);
     }
   }
 
   return(value) {
     this._subscriptionDisposable.dispose();
-    var ret = this._generator.return;
-    if(ret) {
-      return ret.call(this, value);
+    if(this._generator.return) {
+      return this._generator.return(value);
     }
   }
 }

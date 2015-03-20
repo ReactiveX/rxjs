@@ -16,6 +16,10 @@ export default class CompositeSubscription extends Subscription {
 		return this;
 	}
 
+	get length() {
+		return this._subscriptions.length;
+	}
+
 	dispose() {
 		while(this._subscriptions.length > 1) {
 			var subcription = this._subscriptions.pop();
