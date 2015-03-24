@@ -1,9 +1,9 @@
 import MapObserver from '../observer/map-observer';
-import SubscriptionReference from '../subscription-reference';
-import CompositeSubscriptionReference from '../composite-subscription-reference';
-import CompositeSubscription from '../composite-subscription';
+import SubscriptionReference from '../subscription/subscription-reference';
+import CompositeSubscriptionReference from '../subscription/composite-subscription-reference';
+import CompositeSubscription from '../subscription/composite-subscription';
 import MergeAllObserver from '../observer/merge-all-observer';
-import Subscription from '../subscription';
+import Subscription from '../subscription/subscription';
 
 function noop() {}
 
