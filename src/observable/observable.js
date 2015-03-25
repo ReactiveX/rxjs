@@ -4,7 +4,7 @@ import CompositeSubscriptionReference from '../subscription/composite-subscripti
 import CompositeSubscription from '../subscription/composite-subscription';
 import MergeAllObserver from '../observer/merge-all-observer';
 import Subscription from '../subscription/subscription';
-import currentFrameScheduler from '../scheduler/current-frame';
+import currentFrameScheduler from '../scheduler/global/current-frame';
 
 function noop() {}
 
