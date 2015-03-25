@@ -1,6 +1,6 @@
 import Observer from './observer';
-import CompositeSubscription from '../composite-subscription';
-import SubscriptionReference from '../subscription-reference';
+import CompositeSubscription from '../subscription/composite-subscription';
+import SubscriptionReference from '../subscription/subscription-reference';
 
 export default class MergeAllObserver extends Observer {
   constructor(generator, subscriptionRef) {

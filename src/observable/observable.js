@@ -4,18 +4,30 @@ import CompositeSubscriptionReference from '../subscription/composite-subscripti
 import CompositeSubscription from '../subscription/composite-subscription';
 import MergeAllObserver from '../observer/merge-all-observer';
 import Subscription from '../subscription/subscription';
+import currentFrameScheduler from '../scheduler/current-frame';
 
 function noop() {}
 
 export class Observable {
-  constructor(observer) {
-    if(typeof observer !== 'undefined') {
-      this._observer = observer;
-    }
+  constructor(observer, scheduler) {
+    this._observer = observer;
+    this._scheduler = scheduler || currentFrameScheduler;
   }
   
   observer(generator) {
-    var result = this._observer(generator);
+    var state = {
+      source: this,
+      generator: generator,
+      subscriptionReference: new SubscriptionReference()
+    }
+
+    this._scheduler.schedule(state, this.scheduledObservation);
+
+    return state.subscriptionReference;
+  }
+
+  scheduledObservation(scheduler, state) {
+    var result = state.source._observer(state.generator);
     switch(typeof result) {
       case 'undefined':
         return new Subscription(noop);

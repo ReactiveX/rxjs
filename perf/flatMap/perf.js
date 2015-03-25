@@ -9,7 +9,7 @@ require({
 	  'perf-helpers': '../perf/perf-helpers'
 	}
 },
-['benchmark', 'src/observable/observable', 'src/subscription', 'rx2', 'perf-helpers'], 
+['benchmark', 'src/observable/observable', 'src/subscription/subscription', 'rx2', 'perf-helpers'], 
 function(Benchmark, observable, Subscription, Rx, helpers) {
 	var Observable = observable.Observable;
 	var printLn = helpers.printLn;

@@ -7,7 +7,7 @@ require({
 	  'perf-helpers': '../perf/perf-helpers'
 	}
 },
-['benchmark', 'src/observable/observable', 'src/subscription', 'rx2', 'perf-helpers'], 
+['benchmark', 'src/observable/observable', 'src/subscription/subscription', 'rx2', 'perf-helpers'], 
 function(Benchmark, observable, Subscription, Rx, helpers) {
 	var Observable = observable.Observable;
 	var printLn = helpers.printLn;
@@ -38,7 +38,7 @@ function(Benchmark, observable, Subscription, Rx, helpers) {
 			fn: function() {
 				testObservable.map(projection).observer({
 					next: noop,
-					error: noop,
+					throw: noop,
 					return: noop,
 				});
 			}
@@ -47,7 +47,7 @@ function(Benchmark, observable, Subscription, Rx, helpers) {
 			fn: function() {
 				testObservable.map2(projection).observer({
 					next: noop,
-					error: noop,
+					throw: noop,
 					return: noop
 				});
 			}
