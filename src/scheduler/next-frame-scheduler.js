@@ -1,5 +1,7 @@
 import MicroTaskQueue from './micro-task-queue';
 
+//TODO: sniff for nextTick or setImmediate
+
 export default class NextFrameScheduler {
 	constructor(taskQueueGap) {
 		this._timeouts = [],
