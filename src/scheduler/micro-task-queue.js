@@ -1,3 +1,5 @@
+import getBoundNext from '../utils/get-bound-next';
+
 /** 
   A micro task queue specialized for scheduler use.
 	@class MicroTaskQueue
@@ -13,6 +15,7 @@ export default class MicroTaskQueue {
 		this._gap = gap || 0;
 		this.isProcessing = false;
 		this.isDisposed = false;
+		this._flushNext = getBoundNext(this.flush.bind(this));
 	}
 
 	/**
@@ -36,14 +39,7 @@ export default class MicroTaskQueue {
 		@param task {MicroTask} the task to dequeue
 	*/
 	dequeue(task) {
-		var i, t;
-		for(i = this._queue.length; i--;) {
-			t = this._queue[i];
-			if(t === task) {
-				this._queue.splice(i, 1);
-				break;
-			}
-		}
+		this._queue.splice(this._queue.indexOf(task), 1);
 	}
 
 	/**
@@ -51,29 +47,42 @@ export default class MicroTaskQueue {
 		@method dispose
 	*/
 	dispose() {
-		if(this.isProcessing) {
-			clearImmediate(this._immediate);
-		}
 		this._queue.length = 0;
+		this.isProcessing = false;
+		this.isDisposed = true;
 	}
 
 	/**
-		Starts processing the queue of tasks. (Called automatically by `enqueue`)
-		@method run
+		Schedules a flush to be called as a micro task if possible. Otherwise as a setTimeout.
+		See `utils/get-bound-next'
+		@method scheduleFlush
 	*/
-	run() {
+	scheduleFlush() {
 		if(!this.isProcessing) {
-			if(this._gap === 0) {
-				var i;
-				for(i = this._queue.length - 1; i <= 0; i--) {
-					var task = this._queue[i];
-					runTask(task);
-				}
-				this._queue.length = 0;
+			this.isProcessing = true;
+			this._flushNext();
+		}
+	}
+
+	/**
+		Processes the queue of tasks.
+		@method flush
+	*/
+	flush() {
+		var start = Date.now();
+		while(this._queue.length > 0) {
+			var task = this._queue.shift();
+			task.work(task.scheduler, task.state);
+			if(this._gap > 0 && Date.now() - start > this._gap) {
+				break;
 			}
-			else if(this._gap > 0) {
-				processQueue(this._queue, this._gap, this);
-			}
+		}
+
+		if(this._queue.length > 0) {
+			this._flushNext();
+		}
+		else {
+			this.isProcessing = false;
 		}
 	}
 }
@@ -99,27 +108,3 @@ class MicroTask {
 	}
 }
 
-function processQueue(queue, gap, state) {
-	state.isProcessing = true;
-	var start = Date.now();
-	var task;
-	while(queue.length > 0) {
-		task = queue.shift();
-		runTask(task);
-		if(Date.now() - start > gap) {
-			break;
-		}
-	}
-	if(queue.length > 0) {
-		state._immediate = setImmediate(() => {
-			processQueue(queue, gap, state);
-		});
-	} else {
-		state.isProcessing = false;
-		state._immediate = null;
-	}
-}
-
-function runTask(task) {
-	return task.work(task.scheduler, task.state);
-}
