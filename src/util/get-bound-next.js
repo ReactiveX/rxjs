@@ -1,9 +1,9 @@
-// portions of the following implementation are derived from the RSVP code base
+// portions of the following implementation are derived from the RSVP.js code base
 // Those portions are Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
 // and licensed here: https://github.com/tildeio/rsvp.js/blob/32a94f91e8f408b1359f96f2cac9c8aed8d2f33a/LICENSE
 
-var _queue = new Array(1000);
-var _i = 0;
+/* globals process, setImmediate */
+
 var isNode = typeof process !== 'undefined' && 
 	Object.prototype.toString.call(process) === '[object process]';
 var browserWindow = (typeof window !== 'undefined') ? window : undefined;
@@ -46,7 +46,7 @@ function nextTickMethod(callback) {
   };
 }
 
-function mutationObserverFlush(callback) {
+function mutationObserverMethod(callback) {
   var iterations = 0;
   var observer = new BrowserMutationObserver(callback);
   var node = document.createTextNode('');
@@ -57,7 +57,7 @@ function mutationObserverFlush(callback) {
   };
 }
 
-function messageChannelFlush(callback) {
+function messageChannelMethod(callback) {
   var channel = new MessageChannel();
   channel.port1.onmessage = callback;
   return function () {
