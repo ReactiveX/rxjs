@@ -24,7 +24,6 @@ export default class NextFrameScheduler {
 
 		if(delay === 0) {
 			this._queue.enqueue(state, work, this);
-			this._now(state, work);
 		}
 		else if(delay > 0) {
 			var self = this;
