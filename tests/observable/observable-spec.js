@@ -1,4 +1,5 @@
-import { Observable } from 'src/observable/observable';
+// import { Observable } from 'src/observable/observable';
+import { Observable } from 'src-2/rx';
 
 describe('Observable', () => {
 	it('should exist', () => {

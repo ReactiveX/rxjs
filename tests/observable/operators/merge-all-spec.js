@@ -1,4 +1,5 @@
-import { Observable } from 'src/observable/observable';
+// import { Observable } from 'src/observable/observable';
+import { Observable } from 'src-2/rx';
 
 describe('Observable.mergeAll', () => {
 	it('should merge many observables into one', done => {
@@ -8,7 +9,6 @@ describe('Observable.mergeAll', () => {
 			generator.next(Observable.return(3));
 			generator.return();
 		});
-
 
 		var results = [1,2,3];
 		var i = 0;
