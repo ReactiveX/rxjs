@@ -71,9 +71,9 @@ class Scheduler extends Disposable {
             }
         } else {
             this.add(disposable = () => {
-                var id = setTimeout(delay, () => {
+                var id = setTimeout(() => {
                     work(self, state);
-                });
+                }, delay);
                 return new Disposable(() => {
                     if(id != null) {
                         clearTimeout(id);
