@@ -1,3 +1,4 @@
+import Observer from '../observer/observer';
 import MapObserver from '../observer/map-observer';
 import SubscriptionReference from '../subscription/subscription-reference';
 import CompositeSubscriptionReference from '../subscription/composite-subscription-reference';
@@ -15,11 +16,12 @@ export class Observable {
   }
   
   observer(generator) {
+    var subref = new SubscriptionReference();
     var state = {
       source: this,
-      generator: generator,
-      subscriptionReference: new SubscriptionReference()
-    }
+      generator: new Observer(generator, subref),
+      subscriptionReference: subref
+    };
 
     this._scheduler.schedule(state, this.scheduledObservation);
 
@@ -28,14 +30,23 @@ export class Observable {
 
   scheduledObservation(scheduler, state) {
     var result = state.source._observer(state.generator);
+
+    var subscription;
     switch(typeof result) {
       case 'undefined':
-        return new Subscription(noop);
+        subscription = new Subscription(noop);
+        break;
+
       case 'function':
-        return new Subscription(result);
+        subscription = new Subscription(result);
+        break;
+
       default:
-        return result;
+        subscription = result;
+        break;
     }
+
+    state.subscriptionReference.setSubscription(subscription);
   }
   
   lift(generatorTransform, subscriptionReference) {

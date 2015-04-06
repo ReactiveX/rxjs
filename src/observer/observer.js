@@ -5,6 +5,7 @@ export default class Observer {
   }
 
   next(value) {
+    if (this._subscriptionDisposable.isDisposed) return;
     var iterationResult = this._generator.next(value);
     if(typeof iterationResult !== 'undefined' && iterationResult.done) {
       this._subscriptionDisposable.dispose();
@@ -13,6 +14,7 @@ export default class Observer {
   }
 
   throw(err) {
+    if (this._subscriptionDisposable.isDisposed) return;
     this._subscriptionDisposable.dispose();
     if(this._generator.throw) {
       return this._generator.throw(err);
@@ -20,6 +22,7 @@ export default class Observer {
   }
 
   return(value) {
+    if (this._subscriptionDisposable.isDisposed) return;
     this._subscriptionDisposable.dispose();
     if(this._generator.return) {
       return this._generator.return(value);

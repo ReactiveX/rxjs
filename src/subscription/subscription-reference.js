@@ -1,8 +1,8 @@
 export default class SubscriptionReference {
 	constructor(subscription) {
 		this._subscription = subscription;
-		this.isDisposeScheduled = false;
-		this.isDisposed = false;
+		this._isDisposeScheduled = false;
+		this._isDisposed = false;
 	}
 
 	get value() {
@@ -12,23 +12,27 @@ export default class SubscriptionReference {
 	set value(subcription) {
 		this.setSubscription(subcription);
 	}
+	
+	get isDisposed() {
+		return this._isDisposeScheduled || this._isDisposed;
+	}
 
 	setSubscription(subscription) {
 		this._subscription = subscription;
-		if(this.isDisposeScheduled) {
+		if(this._isDisposeScheduled) {
 			this._dispose();
 		}
 	}
 
 	_dispose() {
 		this._subscription.dispose();
-		this.isDisposeScheduled = false;
-		this.isDisposed = true;		
+		this._isDisposeScheduled = false;
+		this._isDisposed = true;
 	}
 
 	dispose() {
 		if(!this._subscription) {
-			this.isDisposeScheduled = true;
+			this._isDisposeScheduled = true;
 		}
 		else {
 			this._dispose();

@@ -1,8 +1,45 @@
 import { Observable } from 'src/observable/observable';
+import SubscriptionReference from 'src/subscription/subscription-reference';
 
 describe('Observable', () => {
 	it('should exist', () => {
 		expect(typeof Observable).toBe('function');
+	});
+
+	describe('observer(generator)', () => {
+		it('should return a subscription reference', () => {
+			var observable = new Observable(_ => {});
+			var subref = observable.observer({});
+			expect(subref instanceof SubscriptionReference).toBe(true);
+		});
+
+		it('should invoke the dispose action '+
+		    'when the subscription has been disposed', () => {
+			var disposeAction = jasmine.createSpy();
+			var observable = new Observable(_ => disposeAction);
+			var subscription = observable.observer({});
+
+			subscription.dispose();
+
+			expect(disposeAction).toHaveBeenCalled();
+		});
+
+		it('should not call methods on the observer '+
+		   'after the subscription has been disposed', () => {
+			var generator;
+			var observable = new Observable(g => {generator = g;});
+			var subscription = observable.observer({
+				next: 		_ => {throw 'Should not be called'},
+				'throw': 	_ => {throw 'Should not be called'},
+				'return':	_ => {throw 'Should not be called'}
+			});
+
+			subscription.dispose();
+
+			expect(() => generator.next(42)).not.toThrow();
+			expect(() => generator.throw(new Error())).not.toThrow();
+			expect(() => generator.return(42)).not.toThrow();
+		});
 	});
 
 	describe('lift map()', () => {
