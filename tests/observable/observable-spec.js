@@ -42,7 +42,7 @@ describe('Observable', () => {
 		});
 	});
 
-	describe('lift map()', () => {
+	describe('map()', () => {
 		it('should change the output value', done => {
 			var observable = new Observable(generator => {
 				generator.next(42);
@@ -58,24 +58,7 @@ describe('Observable', () => {
 		});
 	});
 
-
-	describe('observer-observable pair map2()', () => {
-		it('should change the output value', done => {
-			var observable = new Observable(generator => {
-				generator.next(42);
-				generator.return();
-			});
-
-			observable.map2(x => x + 1).observer({
-				next: x => {
-					expect(x).toBe(43);
-					done();
-				}
-			});
-		});
-	});
-
-	describe('lift flatMap()', () => {
+	describe('flatMap()', () => {
 		it('should flatten return observables', done => {
 			var observable = new Observable(generator => {
 				generator.next(new Observable(gen2 => {
@@ -86,25 +69,6 @@ describe('Observable', () => {
 			});
 
 			observable.flatMap(x => x).observer({
-				next: x => {
-					expect(x).toBe(42);
-					done();
-				}
-			});
-		});
-	});
-
-	describe('observer-observable pair flatMap2()', () => {
-		it('should flatten return observables', done => {
-			var observable = new Observable(generator => {
-				generator.next(new Observable(gen2 => {
-					gen2.next(42);
-					gen2.return();
-				}));
-				generator.return();
-			});
-
-			observable.flatMap2(x => x).observer({
 				next: x => {
 					expect(x).toBe(42);
 					done();

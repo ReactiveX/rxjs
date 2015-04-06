@@ -44,21 +44,12 @@ function(Benchmark, observable, Subscription, Rx, helpers) {
 	var rx2TestObservable = Rx.Observable.just(42);
 
 	suite.
-		add('Observable.flatMap (lift)', function(d) {
+		add('Observable.flatMap', function(d) {
 			testObservable.flatMap(projection).observer({
 				next: noop,
 				error: noop,
 				return: noop
 			});
-		}).
-		add('Observable.flatMap2 (observable/observer pair)', {
-			fn: function(d) {
-				testObservable.flatMap2(projection).observer({
-					next: noop,
-					error: noop,
-					return: noop
-				});
-			}
 		}).
 		add('RxJS 2 Observable.flatMap', function(d) {
 			rx2TestObservable.flatMap(function(x) {

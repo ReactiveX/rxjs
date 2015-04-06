@@ -34,21 +34,12 @@ function(Benchmark, observable, Subscription, Rx, helpers) {
 	var rx2TestObservable = Rx.Observable.just(42);
 
 	suite.
-		add('Observable.map (lift)', {
+		add('Observable.map', {
 			fn: function() {
 				testObservable.map(projection).observer({
 					next: noop,
 					throw: noop,
 					return: noop,
-				});
-			}
-		}).
-		add('Observable.map2 (observable/observer pair)', {
-			fn: function() {
-				testObservable.map2(projection).observer({
-					next: noop,
-					throw: noop,
-					return: noop
 				});
 			}
 		}).

@@ -31,15 +31,27 @@ export default class VirtualScheduler {
 	}
 
 	/**
-		executes all tasks queued in the virtual scheduler
+		executes all tasks queued in the virtual scheduler to the specified delay.
+		specified delay. If the
 		@method flush
+		@param toDelay {Number} [optional] delay in millisecods, if not passed or falsy,
+			will flush all tasks in queue.
 	*/
-	flush() {
-		var self = this;
-		this._queue.sort(taskSort).
-			forEach((task) => task.work(self, state));
-		this._queue.length = 0;
-		this._index = 0;
+	flush(toDelay) {
+		var queue = this._queue;
+		queue.sort(taskSort);
+		var i, task, len;
+		for(i = 0, len = queue.length; i < len; i++) {
+			task = queue[i];
+			if(toDelay && task.delay > toDelay) {
+				break;
+			}
+			task.work(this, task.state);
+		}
+
+		if(queue.length === 0) {
+			this._index = 0;
+		}
 	}
 
 	dispose() {
