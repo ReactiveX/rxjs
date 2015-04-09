@@ -57,17 +57,25 @@ var testHTML = pickFiles('tests', {
   destDir: '/'
 });
 
-var srcES6 = jshint(pickFiles('src', {
+var srcES6 = pickFiles('src', {
   srcDir: '/',
   files: ['**/*.js'],
   destDir: '/src'
-}));
+});
 
-var testsES6 = jshint(pickFiles('tests', {
+var testsES6 = pickFiles('tests', {
   srcDir: '/',
   files: ['**/*.js'],
   destDir: '/tests'
-}));
+});
+
+var toHint = pickFiles(mergeTrees([srcES6, testsES6]), {
+  srcDir: '/',
+  files: ['**/*.js'],
+  destDir: '/jshint'
+});
+
+var hinted = jshint(toHint);
 
 var scripts = esTranspiler(mergeTrees([srcES6, testsES6]), {
   sourceMap: 'inline',
@@ -77,6 +85,7 @@ var scripts = esTranspiler(mergeTrees([srcES6, testsES6]), {
 
 
 module.exports = mergeTrees([
+  hinted,
   scripts, 
   testHTML, 
   jasmine, 
