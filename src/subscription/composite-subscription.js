@@ -2,8 +2,8 @@ import Subscription from './subscription';
 
 export default class CompositeSubscription extends Subscription {
   constructor(...subscriptions) {
+    super();
     this._subscriptions = subscriptions;
-    Subscription.call(this);
   }
 
   add(subscription) {

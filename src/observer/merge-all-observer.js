@@ -4,8 +4,8 @@ import SubscriptionReference from '../subscription/subscription-reference';
 
 export default class MergeAllObserver extends Observer {
   constructor(generator, subscriptionRef) {
+    super(this, generator, subscriptionRef);
     this._compositeSubscription = new CompositeSubscription();
-    Observer.call(this, generator, subscriptionRef);
   }
 
   completed(subscriptionRef) {
