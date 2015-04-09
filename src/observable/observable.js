@@ -73,8 +73,8 @@ Observable.return = function(value) {
 
 export class MergeAllObservable extends Observable {
   constructor(source) {
+    super(this._observer);
     this._source = source;
-    Observable.call(this, this._observer);
   }
 
   _observer(generator) {
@@ -86,9 +86,9 @@ export class MergeAllObservable extends Observable {
 
 export class MapObservable extends Observable {
   constructor(source, projection) {
+    super(this._observer);
     this._projection = projection;
     this._source = source;
-    Observable.call(this, this._observer);
   }
   
   _observer(generator) {
