@@ -1,77 +1,77 @@
 
 require({
-	baseUrl: '../../',
-	paths: {
-	  'benchmark': '../../assets/benchmark/benchmark',
-	  'platform': '../../assets/platform/platform',
-	  'lodash': '../../assets/lodash',
-	  'rx2': '../../assets/rxjs2/rx',
-	  'perf-helpers': '../perf/perf-helpers'
-	}
+  baseUrl: '../../',
+  paths: {
+    'benchmark': '../../assets/benchmark/benchmark',
+    'platform': '../../assets/platform/platform',
+    'lodash': '../../assets/lodash',
+    'rx2': '../../assets/rxjs2/rx',
+    'perf-helpers': '../perf/perf-helpers'
+  }
 },
 ['benchmark', 'src/observable/observable', 'src/subscription/subscription', 'rx2', 'perf-helpers'], 
 function(Benchmark, observable, Subscription, Rx, helpers) {
-	var Observable = observable.Observable;
-	var printLn = helpers.printLn;
+  var Observable = observable.Observable;
+  var printLn = helpers.printLn;
 
-	printLn('starting tests');
-	var suite = new Benchmark.Suite;
-
-
-	var noop = function(){};
+  printLn('starting tests');
+  var suite = new Benchmark.Suite;
 
 
-	var testObservable = new Observable(function(generator) {
-		generator.next(42);
-		generator.return();
+  var noop = function(){};
 
-		//HACK: junk subscription
-		return new Subscription(noop);
-	});
 
-	var projection = function(x) {
-		return new Observable(function(generator) {
-			var tid = setTimeout(function(){
-				generator.next(x + '!!!');
-				generator.return();
-			});
-			return new Subscription(function(){
-				clearTimeout(tid);
-			});
-		});
-	};
+  var testObservable = new Observable(function(generator) {
+    generator.next(42);
+    generator.return();
 
-	var rx2TestObservable = Rx.Observable.just(42);
+    //HACK: junk subscription
+    return new Subscription(noop);
+  });
 
-	suite.
-		add('Observable.flatMap', function(d) {
-			testObservable.flatMap(projection).observer({
-				next: noop,
-				error: noop,
-				return: noop
-			});
-		}).
-		add('RxJS 2 Observable.flatMap', function(d) {
-			rx2TestObservable.flatMap(function(x) {
-				return Observable.create(function(observer) {
-					var tid = setTimeout(function(){
-						observer.onNext(x + '!!!');
-						observer.onCompleted();
-					}, 0);
+  var projection = function(x) {
+    return new Observable(function(generator) {
+      var tid = setTimeout(function(){
+        generator.next(x + '!!!');
+        generator.return();
+      });
+      return new Subscription(function(){
+        clearTimeout(tid);
+      });
+    });
+  };
 
-					return function(){
-						clearTimeout(tid);
-					}
-				});
-			}).forEach(noop, noop, noop);
-		})
+  var rx2TestObservable = Rx.Observable.just(42);
 
-	suite.
-		on('cycle', function(event) {
-		  printLn(String(event.target));
-		}).
-		on('complete', function() {
-		  printLn('Fastest is ' + this.filter('fastest').pluck('name'));
-		})
-		.run({ async: true });
+  suite.
+    add('Observable.flatMap', function(d) {
+      testObservable.flatMap(projection).observer({
+        next: noop,
+        error: noop,
+        return: noop
+      });
+    }).
+    add('RxJS 2 Observable.flatMap', function(d) {
+      rx2TestObservable.flatMap(function(x) {
+        return Observable.create(function(observer) {
+          var tid = setTimeout(function(){
+            observer.onNext(x + '!!!');
+            observer.onCompleted();
+          }, 0);
+
+          return function(){
+            clearTimeout(tid);
+          }
+        });
+      }).forEach(noop, noop, noop);
+    })
+
+  suite.
+    on('cycle', function(event) {
+      printLn(String(event.target));
+    }).
+    on('complete', function() {
+      printLn('Fastest is ' + this.filter('fastest').pluck('name'));
+    })
+    .run({ async: true });
 });

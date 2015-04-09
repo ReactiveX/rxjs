@@ -5,7 +5,7 @@
 /* globals process, setImmediate */
 
 var isNode = typeof process !== 'undefined' && 
-	Object.prototype.toString.call(process) === '[object process]';
+  Object.prototype.toString.call(process) === '[object process]';
 var browserWindow = (typeof window !== 'undefined') ? window : undefined;
 var browserGlobal = browserWindow || {};
 var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
@@ -15,22 +15,22 @@ var useMessageChannel = typeof Uint8ClampedArray !== 'undefined' &&
   typeof MessageChannel !== 'undefined';
 
 export default function getBoundNext(callback) {
-	var next;
+  var next;
 
-	if(isNode) {
-		next = nextTickMethod(callback);
-	}
-	else if(BrowserMutationObserver) {
-		next = mutationObserverMethod(callback);
-	}
-	else if(useMessageChannel) {
-		next = messageChannelMethod(callback);
-	}
-	else {
-		next = setTimeoutMethod(callback);
-	}
+  if(isNode) {
+    next = nextTickMethod(callback);
+  }
+  else if(BrowserMutationObserver) {
+    next = mutationObserverMethod(callback);
+  }
+  else if(useMessageChannel) {
+    next = messageChannelMethod(callback);
+  }
+  else {
+    next = setTimeoutMethod(callback);
+  }
 
-	return next(callback);
+  return next(callback);
 }
 
 function nextTickMethod(callback) {
@@ -66,7 +66,7 @@ function messageChannelMethod(callback) {
 }
 
 function setTimeoutMethod(callback) {
-	return function() {
-		setTimeout(callback, 1);
-	};
+  return function() {
+    setTimeout(callback, 1);
+  };
 }

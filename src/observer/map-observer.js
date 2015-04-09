@@ -6,7 +6,7 @@ export default class MapObserver extends Observer {
     Observer.call(this, generator, subscriptionRef);
   }
 
-	next(value){
+  next(value){
     return Observer.prototype.next.call(this, this._projection(value));
   }
 }
