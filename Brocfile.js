@@ -80,7 +80,8 @@ var hinted = jshint(toHint);
 var scripts = esTranspiler(mergeTrees([srcES6, testsES6]), {
   sourceMap: 'inline',
   modules: 'amd',
-  moduleIds: true
+  moduleIds: true,
+  loose: ['all']
 });
 
 
