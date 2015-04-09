@@ -1,6 +1,7 @@
 var esTranspiler = require('broccoli-babel-transpiler');
 var mergeTrees = require('broccoli-merge-trees');
 var pickFiles = require('broccoli-static-compiler');
+var jshint = require('broccoli-jshint');
 
 var rxjs2 = pickFiles('node_modules/rx/dist', {
   srcDir: '/',
@@ -56,17 +57,17 @@ var testHTML = pickFiles('tests', {
   destDir: '/'
 });
 
-var srcES6 = pickFiles('src', {
+var srcES6 = jshint(pickFiles('src', {
   srcDir: '/',
   files: ['**/*.js'],
   destDir: '/src'
-});
+}));
 
-var testsES6 = pickFiles('tests', {
+var testsES6 = jshint(pickFiles('tests', {
   srcDir: '/',
   files: ['**/*.js'],
   destDir: '/tests'
-});
+}));
 
 var scripts = esTranspiler(mergeTrees([srcES6, testsES6]), {
   sourceMap: 'inline',

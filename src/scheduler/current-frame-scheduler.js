@@ -3,7 +3,7 @@
  */
 export default class CurrentFrameScheduler {
   constructor() {
-    _timeouts: []
+    this._timeouts = [];
   }
 
   schedule(delay, state, work) {
@@ -28,7 +28,7 @@ export default class CurrentFrameScheduler {
     else if(delay > 0) {
       var self = this;
       var id = setTimeout(() => {
-        work(self, state)
+        work(self, state);
       }, delay);
       this._timeouts.push(id);
     }

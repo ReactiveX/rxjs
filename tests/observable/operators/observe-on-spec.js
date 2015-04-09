@@ -8,10 +8,6 @@ describe('observeOn', () => {
       generator.return();
     });
 
-
-    var results = [1,2,3];
-    var i = 0;
-
     var myScheduler = {
       schedule: jasmine.createSpy('scheduler.schedule')
     };

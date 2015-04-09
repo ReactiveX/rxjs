@@ -21,6 +21,6 @@ describe('Observable.mergeAll', () => {
       return() {
         done();
       }
-    })
+    });
   });
 });

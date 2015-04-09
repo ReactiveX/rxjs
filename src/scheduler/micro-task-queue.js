@@ -96,7 +96,7 @@ class MicroTask {
     this.queue = queue;
     this.state = state;
     this.work = work;
-    this.scheduler = scheduler
+    this.scheduler = scheduler;
   }
 
   /**

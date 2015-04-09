@@ -1,6 +1,6 @@
 export default class RequestAnimationFrameScheduler {
   constructor() {
-    _timeouts: []
+    this._timeouts = [];
   }
 
   schedule(delay, state, work) {

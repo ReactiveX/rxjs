@@ -14,10 +14,10 @@ export default class Subscription {
   child(action) {
     var ChildSubscription = function(action) {
       this._action = action;
-    }
+    };
 
     ChildSubscription.prototype = this;
 
-    return new ChildSubscription(action)
+    return new ChildSubscription(action);
   }
 }

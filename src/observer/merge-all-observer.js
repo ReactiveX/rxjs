@@ -49,7 +49,7 @@ export class MergedObservableObserver extends Observer {
     Observer.prototype.throw.call(this._source, err);
   }
 
-  return(value) {
+  return() {
     this._source.completed(this._subscriptionDisposable);
   }
 }

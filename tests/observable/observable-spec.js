@@ -8,7 +8,7 @@ describe('Observable', () => {
 
   describe('observer(generator)', () => {
     it('should return a subscription reference', () => {
-      var observable = new Observable(_ => {});
+      var observable = new Observable(() => {});
       var subref = observable.observer({});
       expect(subref instanceof SubscriptionReference).toBe(true);
     });
@@ -16,7 +16,7 @@ describe('Observable', () => {
     it('should invoke the dispose action '+
         'when the subscription has been disposed', () => {
       var disposeAction = jasmine.createSpy();
-      var observable = new Observable(_ => disposeAction);
+      var observable = new Observable(() => disposeAction);
       var subscription = observable.observer({});
 
       subscription.dispose();
@@ -29,9 +29,9 @@ describe('Observable', () => {
       var generator;
       var observable = new Observable(g => {generator = g;});
       var subscription = observable.observer({
-        next:     _ => {throw 'Should not be called'},
-        'throw':  _ => {throw 'Should not be called'},
-        'return': _ => {throw 'Should not be called'}
+        next:     () => {throw 'Should not be called';},
+        'throw':  () => {throw 'Should not be called';},
+        'return': () => {throw 'Should not be called';}
       });
 
       subscription.dispose();
@@ -93,5 +93,5 @@ describe('Observable', () => {
         }
       });
     });
-  })
+  });
 });

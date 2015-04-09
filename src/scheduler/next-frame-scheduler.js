@@ -4,7 +4,7 @@ import MicroTaskQueue from './micro-task-queue';
 
 export default class NextFrameScheduler {
   constructor(taskQueueGap) {
-    this._timeouts = [],
+    this._timeouts = [];
     this._queue = new MicroTaskQueue(taskQueueGap || 0);
   }
 
@@ -29,7 +29,7 @@ export default class NextFrameScheduler {
       var self = this;
       // TODO: will this be more performant if it's using a MicroTaskQueue for each delay (cleared after frame end)?
       var id = window.setTimeout(() => {
-        work(self, state)
+        work(self, state);
       }, delay);
       this._timeouts.push(id);
     }
