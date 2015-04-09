@@ -8,8 +8,8 @@ import currentFrameScheduler from '../scheduler/global/current-frame';
 */
 export default class ScheduledObserver extends Observer {
 	constructor(scheduler, generator, subscriptionDisposable) {
+		super(generator, subscriptionDisposable);
 		this._scheduler = scheduler || currentFrameScheduler;
-		Observer.call(this, generator, subscriptionDisposable);
 	}
 
 	next(value) {
