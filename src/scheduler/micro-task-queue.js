@@ -1,4 +1,4 @@
-import getBoundNext from '../utils/get-bound-next';
+import getBoundNext from '../util/get-bound-next';
 
 /** 
   A micro task queue specialized for scheduler use.
@@ -29,7 +29,7 @@ export default class MicroTaskQueue {
   enqueue(state, work, scheduler) {
     var task = new MicroTask(this, state, work, scheduler);
     this._queue.push(task);
-    this.run();
+    this.scheduleFlush();
     return task;
   }
 

@@ -15,22 +15,18 @@ var useMessageChannel = typeof Uint8ClampedArray !== 'undefined' &&
   typeof MessageChannel !== 'undefined';
 
 export default function getBoundNext(callback) {
-  var next;
-
   if(isNode) {
-    next = nextTickMethod(callback);
+    return nextTickMethod(callback);
   }
   else if(BrowserMutationObserver) {
-    next = mutationObserverMethod(callback);
+    return mutationObserverMethod(callback);
   }
   else if(useMessageChannel) {
-    next = messageChannelMethod(callback);
+    return messageChannelMethod(callback);
   }
   else {
-    next = setTimeoutMethod(callback);
+    return setTimeoutMethod(callback);
   }
-
-  return next(callback);
 }
 
 function nextTickMethod(callback) {
