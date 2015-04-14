@@ -2,7 +2,7 @@ var Observable = require("src/Observable");
 var Subscriber = require("src/Subscriber");
 
 var CountSubscriber = Subscriber.template(
-    function init() {
+    function _init() {
         this.total = 0;
     },
     function _next(x) {
@@ -11,10 +11,7 @@ var CountSubscriber = Subscriber.template(
     null,
     function _return() {
         var result = this.destination.next(this.total);
-        if(result.done) {
-            return result;
-        }
-        return this.destination.return();
+        return result.done && result || this.destination.return();
     }
 );
 

@@ -2,7 +2,7 @@ var Observable = require("src/Observable");
 var Subscriber = require("src/Subscriber");
 
 var TakeSubscriber = Subscriber.template(
-    function init(total) {
+    function _init(total) {
         if(total <= 0) {
             return this.dispose() && this.destination.return();
         }

@@ -2,7 +2,7 @@ var Observable = require("src/Observable");
 var Subscriber = require("src/Subscriber");
 
 var FilterSubscriber = Subscriber.template(
-    function init(select) {
+    function _init(select) {
         this.select = select;
     },
     function _next(x) {

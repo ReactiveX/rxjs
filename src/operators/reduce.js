@@ -2,7 +2,7 @@ var Observable = require("src/Observable");
 var Subscriber = require("src/Subscriber");
 
 var ReduceSubscriber = Subscriber.template(
-    function init(project, acc) {
+    function _init(project, acc) {
         this.hasSeed = acc !== void 0;
         this.project = project;
         this.hasValue = false;
@@ -15,7 +15,10 @@ var ReduceSubscriber = Subscriber.template(
     null,
     function _return() {
         if(!this.hasValue && this.hasSeed) {
-            this.destination.next(this.acc);
+            var result = this.destination.next(this.acc);
+            if(result.done) {
+                return result;
+            }
         }
         return this.destination.return();
     }

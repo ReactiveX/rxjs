@@ -2,7 +2,7 @@ var Observable = require("src/Observable");
 var Subscriber = require("src/Subscriber");
 
 var TimeIntervalSubscriber = Subscriber.template(
-    function init() {
+    function _init() {
         this.time = Date.now();
     },
     function _next(x) {

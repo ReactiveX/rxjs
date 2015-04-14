@@ -2,7 +2,7 @@ var Observable = require("src/Observable");
 var Subscriber = require("src/Subscriber");
 
 var MapSubscriber = Subscriber.template(
-    function init(project) {
+    function _init(project) {
         this.project = project;
     },
     function _next(x) {

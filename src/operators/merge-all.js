@@ -2,7 +2,7 @@ var Observable = require("src/Observable");
 var Subscriber = require("src/Subscriber");
 
 var MergeAllSubscriber = Subscriber.template(
-    function init(concurrent) {
+    function _init(concurrent) {
         if(typeof concurrent != 'number' || concurrent < 1) {
             this.concurrent = Number.POSITIVE_INFINITY;
         } else {
