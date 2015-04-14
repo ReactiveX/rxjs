@@ -10,7 +10,6 @@ var ReduceSubscriber = Subscriber.template(
     function _next(x) {
         this.acc = x;
         this.hasValue || (this.hasValue = true);
-        return this._result;
     },
     null,
     function _return() {

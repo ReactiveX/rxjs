@@ -31,8 +31,8 @@ var MergeAllSubscriber = Subscriber.template(
                             return destination.return();
                         }
                     }
-                    upstream._result.done = false;
-                    return upstream._result;
+                    upstream.result.done = false;
+                    return upstream.result;
                 }
             ));
         }
@@ -43,8 +43,8 @@ var MergeAllSubscriber = Subscriber.template(
         if(this.length === 0 && (!this.buffer || this.buffer.length === 0)) {
             return this.destination.return();
         }
-        this._result.done = false;
-        return this._result;
+        this.result.done = false;
+        return this.result;
     }
 );
 

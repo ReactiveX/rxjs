@@ -13,12 +13,12 @@ module.exports = function() {
         
         if(onNextOrDest && typeof onNextOrDest === 'object') {
             this.destination = onNextOrDest;
-            this._result = onNextOrDest._result;
+            this.result = onNextOrDest.result || { value: undefined, done: false };
             this._next   || (this._next = destNext);
             this._throw  || (this._throw = destThrow);
             this._return || (this._return = destReturn);
         } else {
-            this._result = { value: undefined, done: false };
+            this.result = { value: undefined, done: false };
             this._next   = onNextOrDest || noop;
             this._throw  = onError      || noop;
             this._return = onCompleted  || noop;
@@ -29,7 +29,8 @@ module.exports = function() {
     
     Subscriber.prototype = new Disposable(function() {
         this.stopped = true;
-        delete this._result;
+        this.result.done = true;
+        delete this.result;
         delete this._next;
         delete this._throw;
         delete this._return;
@@ -51,7 +52,7 @@ module.exports = function() {
     Subscriber.prototype["next"] = function(x) {
         
         var next = this._next;
-        var result = this._result;
+        var result = this.result;
         
         if(next == null) {
             result.done = true;
@@ -73,7 +74,7 @@ module.exports = function() {
     Subscriber.prototype["throw"] = function(e) {
         
         var error = this._throw;
-        var result = this._result;
+        var result = this.result;
         
         if(this.stopped) {
             result.done = true;
@@ -101,7 +102,7 @@ module.exports = function() {
     Subscriber.prototype["return"] = function() {
         
         var completed = this._return;
-        var result = this._result;
+        var result = this.result;
         
         if(this.stopped) {
             result.done = true;
@@ -133,67 +134,4 @@ module.exports = function() {
     Subscriber.empty = new Subscriber();
     
     return Subscriber;
-    
-    /**
-     * Return false to signal unsubscribe, true to keep listening.
-     */
-     /*
-    var f;
-    onNext(x) {
-        this._next = 
-        return (
-            // If we don't have an _next, return `false`.
-            (f = this._next || false) &&
-            // Capture onNext's return value.
-            // 
-            // 1. If the return value is not `false`, return whether the
-            //    onNext function called dispose or not.
-            // 2. If the return value is `false`, dispose of the Subscriber
-            //    and return false.
-            ((f = f.call(this, x) !== false) ? 
-                !this.disposed :
-                !this.disposed && this.dispose() && false)
-        );
-    }
-    */
-    
-    /**
-     * Return false to signal a successful unsubscribe.
-     */
-    /*
-    onError(e) {
-        return (
-            // If we're already stopped, return `false`.
-            (this.stopped === false) &&
-            // If we don't have an onError function, return `false`.
-            (f = this._throw || false) && (
-                // Otherwise, set our stopped flag.
-                (this.stopped = true) &&
-                // Capture onError's return value.
-                // 1. If the return value is not `false`, call dispose and return true.
-                // 2. If the return value is `false`, return false.
-                (f = f.call(this, e) !== false) && (!!this.dispose() || true))
-        );
-    }
-    */
-    
-    /**
-     * Return false to signal a successful unsubscribe.
-     */
-    /*
-    onCompleted() {
-        return (
-            // If we're already stopped, return `false`.
-            (this.stopped === false) &&
-            // If we don't have an onCompleted function, return `false`.
-            (f = this._return || false) && (
-                // Otherwise, set our stopped flag.
-                (this.stopped = true) &&
-                // Capture onCompleted's return value.
-                // 1. If the return value is not `false`, call dispose and return true.
-                // 2. If the return value is `false`, return false.
-                (f = f.call(this) !== false) && (!!this.dispose() || true))
-        );
-    }
-    */
 }();

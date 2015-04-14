@@ -6,7 +6,7 @@ var FilterSubscriber = Subscriber.template(
         this.select = select;
     },
     function _next(x) {
-        return !this.select(x) && this._result || this.destination.next(x);
+        return !this.select(x) && this.result || this.destination.next(x);
     }
 );
 
