@@ -1,5 +1,4 @@
 import Observer from './observer';
-import currentFrameScheduler from '../scheduler/global/current-frame';
 
 /**
   An observer that takes a scheduler to emit values and errors on.
@@ -7,32 +6,32 @@ import currentFrameScheduler from '../scheduler/global/current-frame';
   @extends {Observer}
 */
 export default class ScheduledObserver extends Observer {
-  constructor(scheduler, generator, subscriptionDisposable) {
+  constructor(observationScheduler, generator, subscriptionDisposable) {
     super(generator, subscriptionDisposable);
-    this._scheduler = scheduler || currentFrameScheduler;
+    this._observationScheduler = observationScheduler;
   }
 
   next(value) {
-    this._scheduler.schedule([this, value], this._next);
+    this._observationScheduler.schedule(0, value, this._next.bind(this));
   }
 
-  _next(scheduler, [self, value]) {
-    Observer.prototype.next.call(self, value);
+  _next(scheduler, value) {
+    super.next(value);
+  }  
+
+  throw(value) {
+    this._observationScheduler.schedule(0, value, this._throw.bind(this));
   }
 
-  throw(err) {
-    this._scheduler.schedule([this, err], this._throw);
-  }
-
-  _throw(scheduler, [self, err]) {
-    Observer.prototype.throw.call(self, err);
+  _throw(scheduler, value) {
+    super.throw(value);
   }
 
   return(value) {
-    this._scheduler.schedule([this, value], this._return);
+    this._observationScheduler.schedule(0, value, this._return.bind(this));
   }
 
-  _return(scheduler, [self, value]) {
-    Observer.prototype.return.call(self, value);
+  _return(scheduler, value) {
+    super.return(value);
   }
 }

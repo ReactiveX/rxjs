@@ -4,6 +4,7 @@ import SubscriptionReference from '../subscription/subscription-reference';
 import MergeAllObserver from '../observer/merge-all-observer';
 import Subscription from '../subscription/subscription';
 import currentFrameScheduler from '../scheduler/global/current-frame';
+import ScheduledObserver from '../observer/scheduled-observer';
 
 function noop() {}
 
@@ -59,6 +60,10 @@ export class Observable {
   mergeAll() {
     return new MergeAllObservable(this);
   }
+
+  observeOn(observationScheduler) {
+    return new ScheduledObservable(this, observationScheduler);
+  }
 }
 
 Observable.return = function(value) {
@@ -68,6 +73,19 @@ Observable.return = function(value) {
   });
 };
 
+export class ScheduledObservable extends Observable {
+  constructor(source, observationScheduler) {
+    super(this._observer);
+    this._observationScheduler = observationScheduler;
+    this._source = source;
+  }
+  
+  _observer(generator) {
+    var subscriptionReference = new SubscriptionReference();
+    subscriptionReference.setSubscription(this._source.observer(new ScheduledObserver(this._observationScheduler, generator, subscriptionReference)));
+    return subscriptionReference.value;
+  }
+}
 
 export class MergeAllObservable extends Observable {
   constructor(source) {

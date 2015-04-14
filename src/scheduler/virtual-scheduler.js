@@ -34,7 +34,7 @@ export default class VirtualScheduler {
     executes all tasks queued in the virtual scheduler to the specified delay.
     specified delay. If the
     @method flush
-    @param toDelay {Number} [optional] delay in millisecods, if not passed or falsy,
+    @param toDelay {Number} [optional] delay in milliseconds, if not passed or falsy,
       will flush all tasks in queue.
   */
   flush(toDelay) {
