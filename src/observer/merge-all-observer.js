@@ -25,31 +25,12 @@ export default class MergeAllObserver extends Observer {
   next(observable) {
     var subscriptionRef = new SubscriptionReference();
     this._compositeSubscription.add(subscriptionRef);
-    subscriptionRef.setSubscription(observable.observer(new MergedObservableObserver(this, this._generator, subscriptionRef)));
+    subscriptionRef.setSubscription(observable.observer(new Observer(this._generator, subscriptionRef)));
   }
 
   return(value) {
     this.canReturn = true;
     this.returnValue = value;
     return this.checkReturn();
-  }
-}
-
-export class MergedObservableObserver extends Observer {
-  constructor(source, generator, subscriptionRef) {
-    this._source = source;
-    Observer.call(this, generator, subscriptionRef);
-  }
-
-  next(value) {
-    this._source._generator.next(value);
-  }
-
-  throw(err) {
-    Observer.prototype.throw.call(this._source, err);
-  }
-
-  return() {
-    this._source.completed(this._subscriptionDisposable);
   }
 }
