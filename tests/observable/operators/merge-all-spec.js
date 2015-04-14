@@ -1,5 +1,5 @@
 // import { Observable } from 'src/observable/observable';
-import { Observable } from 'src-2/rx';
+import { Observable } from 'src/index';
 
 describe('Observable.mergeAll', () => {
 	it('should merge many observables into one', done => {

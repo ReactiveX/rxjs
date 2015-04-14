@@ -62,19 +62,13 @@ var srcES6 = pickFiles('src', {
   destDir: '/src'
 });
 
-var srcES6_2 = pickFiles('src-2', {
-  srcDir: '/',
-  files: ['**/*.js'],
-  destDir: '/src-2'
-});
-
 var testsES6 = pickFiles('tests', {
   srcDir: '/',
   files: ['**/*.js'],
   destDir: '/tests'
 });
 
-var scripts = esTranspiler(mergeTrees([srcES6_2, testsES6]), {
+var scripts = esTranspiler(mergeTrees([srcES6, testsES6]), {
 	sourceMap: 'inline',
 	modules: 'amd',
 	moduleIds: true

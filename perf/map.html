@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>map tests</title>
+</head>
+<body>
+  <script src="../vendor/benchmark.js"></script>
+  <script src="../old/rx.lite.js"></script>
+  <!--<script src="../../../dist/rx.lite.js"></script>-->
+  <script>
+  var suite = new Benchmark.Suite;
+
+  // add tests
+  suite.add('run', function() {
+    Rx.Observable.range(0, 2500)
+    .map(square)
+    .map(double).subscribe();
+  })
+  // add listeners
+  .on('cycle', function(event) {
+    console.log(String(event.target));
+  })
+  .on('complete', function() {
+    console.log('Fastest is ' + this.filter('fastest').pluck('name'));
+  })
+  // run async
+  .run({ 'async': true });
+
+
+  function square(x) { return x * x; }
+  function double(x) { return x + x; }
+  </script>
+</body>
+</html>
