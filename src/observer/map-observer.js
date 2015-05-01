@@ -7,6 +7,12 @@ export default class MapObserver extends Observer {
   }
 
   next(value){
-    return Observer.prototype.next.call(this, this._projection(value));
+    var newValue;
+    try {
+      newValue = this._projection(value);
+    } catch(err) {
+      super.throw(this);
+    }
+    return super.next(newValue);
   }
 }

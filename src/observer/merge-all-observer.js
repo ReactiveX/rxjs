@@ -25,7 +25,13 @@ export default class MergeAllObserver extends Observer {
   next(observable) {
     var subscriptionRef = new SubscriptionReference();
     this._compositeSubscription.add(subscriptionRef);
-    subscriptionRef.setSubscription(observable.observer(new MergedObservableObserver(this, subscriptionRef)));
+    var sub;
+    try {
+      sub = observable.observer(new MergedObservableObserver(this, subscriptionRef));
+    } catch(err) {
+      super.throw(err);
+    }
+    subscriptionRef.setSubscription(sub);
   }
 
   return(value) {
