@@ -75,7 +75,7 @@ Observable.return = function(value) {
 
 export class ScheduledObservable extends Observable {
   constructor(source, observationScheduler) {
-    super(this._observer);
+    super(ScheduledObservable.prototype._observer);
     this._observationScheduler = observationScheduler;
     this._source = source;
   }
@@ -89,7 +89,7 @@ export class ScheduledObservable extends Observable {
 
 export class MergeAllObservable extends Observable {
   constructor(source) {
-    super(this._observer);
+    super(MergeAllObservable.prototype._observer);
     this._source = source;
   }
 
@@ -102,7 +102,7 @@ export class MergeAllObservable extends Observable {
 
 export class MapObservable extends Observable {
   constructor(source, projection) {
-    super(this._observer);
+    super(MapObservable.prototype._observer);
     this._projection = projection;
     this._source = source;
   }
