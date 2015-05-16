@@ -1,9 +1,9 @@
-export default class Observer {
-    constructor(generator, subscriptionDisposable) {
+var Observer = (function () {
+    function Observer(generator, subscriptionDisposable) {
         this._generator = generator;
         this._subscriptionDisposable = subscriptionDisposable;
     }
-    next(value) {
+    Observer.prototype.next = function (value) {
         if (this._subscriptionDisposable.isDisposed) {
             return;
         }
@@ -12,8 +12,8 @@ export default class Observer {
             this._subscriptionDisposable.dispose();
         }
         return iterationResult;
-    }
-    throw(err) {
+    };
+    Observer.prototype.throw = function (err) {
         if (this._subscriptionDisposable.isDisposed) {
             return;
         }
@@ -21,8 +21,8 @@ export default class Observer {
         if (this._generator.throw) {
             return this._generator.throw(err);
         }
-    }
-    return(value) {
+    };
+    Observer.prototype.return = function (value) {
         if (this._subscriptionDisposable.isDisposed) {
             return;
         }
@@ -30,6 +30,7 @@ export default class Observer {
         if (this._generator.return) {
             return this._generator.return(value);
         }
-    }
-}
-//# sourceMappingURL=observer.js.map
+    };
+    return Observer;
+})();
+exports.default = Observer;

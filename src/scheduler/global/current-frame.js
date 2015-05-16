@@ -1,3 +1,2 @@
-import CurrentFrameScheduler from '../current-frame-scheduler';
-export default new CurrentFrameScheduler();
-//# sourceMappingURL=current-frame.js.map
+var current_frame_scheduler_1 = require('../current-frame-scheduler');
+exports.default = new current_frame_scheduler_1.default();

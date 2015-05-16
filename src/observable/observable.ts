@@ -5,11 +5,26 @@ import MergeAllObserver from '../observer/merge-all-observer';
 import Subscription from '../subscription/subscription';
 import currentFrameScheduler from '../scheduler/global/current-frame';
 import ScheduledObserver from '../observer/scheduled-observer';
+import Scheduler from '../scheduler/scheduler';
 
 function noop() {}
 
 export class Observable {
-  constructor(observer, scheduler) {
+  protected _observer:Function
+  protected _scheduler:Scheduler
+
+  static return(value:any) {
+    return Observable.create(generator => {
+      generator.next(value);
+      generator.return();
+    });
+  }
+  
+  static create(observer:Function) {
+    return new Observable(observer);
+  }
+
+  constructor(observer:Function, scheduler:Scheduler=currentFrameScheduler) {
     this._observer = observer;
     this._scheduler = scheduler || currentFrameScheduler;
   }
@@ -22,7 +37,7 @@ export class Observable {
       subscriptionReference: subref
     };
 
-    this._scheduler.schedule(state, this.scheduledObservation);
+    this._scheduler.schedule(0, state, this.scheduledObservation);
 
     return state.subscriptionReference;
   }
@@ -74,8 +89,11 @@ Observable.return = function(value) {
 };
 
 export class ScheduledObservable extends Observable {
+  private _observationScheduler:Scheduler
+  private _source:Observable
+
   constructor(source, observationScheduler) {
-    super(this._observer);
+    super();
     this._observationScheduler = observationScheduler;
     this._source = source;
   }
@@ -88,8 +106,10 @@ export class ScheduledObservable extends Observable {
 }
 
 export class MergeAllObservable extends Observable {
+  private _source:Observable
+
   constructor(source) {
-    super(this._observer);
+    super();
     this._source = source;
   }
 
@@ -101,8 +121,11 @@ export class MergeAllObservable extends Observable {
 }
 
 export class MapObservable extends Observable {
+  private _projection:Function
+  private _source:Observable
+
   constructor(source, projection) {
-    super(this._observer);
+    super();
     this._projection = projection;
     this._source = source;
   }

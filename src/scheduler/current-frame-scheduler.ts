@@ -1,25 +1,16 @@
+import Scheduler from './scheduler';
+
 /**
   Current frame scheduler. (aka Zalgo scheduler)
  */
-export default class CurrentFrameScheduler {
+export default class CurrentFrameScheduler implements Scheduler {
+  private _timeouts:Array<any>
+
   constructor() {
     this._timeouts = [];
   }
 
-  schedule(delay, state, work) {
-    var argsLen = arguments.length;
-
-    if(argsLen === 2) {
-      work = state;
-      state = delay;
-      delay = 0;
-    }
-    else if(argsLen === 1) {
-      work = delay;
-      state = undefined;
-      delay = 0;
-    }
-
+  schedule(delay:Number, state:any, work:Function) {
     if(delay === 0) {
       // if no delay, do it now.
       // TODO: what to do with the return?

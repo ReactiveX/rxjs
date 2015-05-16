@@ -1,10 +1,15 @@
+import Disposable from '../subscription/disposable';
+
 export default class Observer {
+  protected _generator:Generator<any>
+  protected _subscriptionDisposable:Disposable
+
   constructor(generator, subscriptionDisposable) {
     this._generator = generator;
     this._subscriptionDisposable = subscriptionDisposable;
   }
 
-  next(value) {
+  next(value:any) {
     if (this._subscriptionDisposable.isDisposed) {
       return;
     }
@@ -15,7 +20,7 @@ export default class Observer {
     return iterationResult;
   }
 
-  throw(err) {
+  throw(err:Error|String) {
     if (this._subscriptionDisposable.isDisposed) {
       return;
     }
@@ -25,7 +30,7 @@ export default class Observer {
     }
   }
 
-  return(value) {
+  return(value:any) {
     if (this._subscriptionDisposable.isDisposed) {
       return;
     }

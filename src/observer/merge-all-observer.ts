@@ -3,6 +3,7 @@ import CompositeSubscription from '../subscription/composite-subscription';
 import SubscriptionReference from '../subscription/subscription-reference';
 
 export default class MergeAllObserver extends Observer {
+  _compositeSubscription:CompositeSubscription
   constructor(generator, subscriptionRef) {
     super(generator, subscriptionRef);
     this._compositeSubscription = new CompositeSubscription();

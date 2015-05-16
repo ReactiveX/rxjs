@@ -1,95 +1,121 @@
-import Observer from '../observer/observer';
-import MapObserver from '../observer/map-observer';
-import SubscriptionReference from '../subscription/subscription-reference';
-import MergeAllObserver from '../observer/merge-all-observer';
-import Subscription from '../subscription/subscription';
-import currentFrameScheduler from '../scheduler/global/current-frame';
-import ScheduledObserver from '../observer/scheduled-observer';
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var observer_1 = require('../observer/observer');
+var map_observer_1 = require('../observer/map-observer');
+var subscription_reference_1 = require('../subscription/subscription-reference');
+var merge_all_observer_1 = require('../observer/merge-all-observer');
+var subscription_1 = require('../subscription/subscription');
+var current_frame_1 = require('../scheduler/global/current-frame');
+var scheduled_observer_1 = require('../observer/scheduled-observer');
 function noop() { }
-export class Observable {
-    constructor(observer, scheduler) {
+var Observable = (function () {
+    function Observable(observer, scheduler) {
+        if (scheduler === void 0) { scheduler = current_frame_1.default; }
         this._observer = observer;
-        this._scheduler = scheduler || currentFrameScheduler;
+        this._scheduler = scheduler || current_frame_1.default;
     }
-    observer(generator) {
-        var subref = new SubscriptionReference();
+    Observable.return = function (value) {
+        return Observable.create(function (generator) {
+            generator.next(value);
+            generator.return();
+        });
+    };
+    Observable.create = function (observer) {
+        return new Observable(observer);
+    };
+    Observable.prototype.observer = function (generator) {
+        var subref = new subscription_reference_1.default();
         var state = {
             source: this,
-            generator: new Observer(generator, subref),
+            generator: new observer_1.default(generator, subref),
             subscriptionReference: subref
         };
-        this._scheduler.schedule(state, this.scheduledObservation);
+        this._scheduler.schedule(0, state, this.scheduledObservation);
         return state.subscriptionReference;
-    }
-    scheduledObservation(scheduler, state) {
+    };
+    Observable.prototype.scheduledObservation = function (scheduler, state) {
         var result = state.source._observer(state.generator);
         var subscription;
         switch (typeof result) {
             case 'undefined':
-                subscription = new Subscription(noop);
+                subscription = new subscription_1.default(noop);
                 break;
             case 'function':
-                subscription = new Subscription(result);
+                subscription = new subscription_1.default(result);
                 break;
             default:
                 subscription = result;
                 break;
         }
         state.subscriptionReference.setSubscription(subscription);
-    }
+    };
     // Observable/Observer pair methods
-    map(projection) {
+    Observable.prototype.map = function (projection) {
         return new MapObservable(this, projection);
-    }
-    flatMap(projection) {
+    };
+    Observable.prototype.flatMap = function (projection) {
         return this.map(projection).mergeAll();
-    }
-    mergeAll() {
+    };
+    Observable.prototype.mergeAll = function () {
         return new MergeAllObservable(this);
-    }
-    observeOn(observationScheduler) {
+    };
+    Observable.prototype.observeOn = function (observationScheduler) {
         return new ScheduledObservable(this, observationScheduler);
-    }
-}
+    };
+    return Observable;
+})();
+exports.Observable = Observable;
 Observable.return = function (value) {
-    return new Observable((generator) => {
+    return new Observable(function (generator) {
         generator.next(value);
         generator.return(value);
     });
 };
-export class ScheduledObservable extends Observable {
-    constructor(source, observationScheduler) {
-        super(this._observer);
+var ScheduledObservable = (function (_super) {
+    __extends(ScheduledObservable, _super);
+    function ScheduledObservable(source, observationScheduler) {
+        _super.call(this);
         this._observationScheduler = observationScheduler;
         this._source = source;
     }
-    _observer(generator) {
-        var subscriptionReference = new SubscriptionReference();
-        subscriptionReference.setSubscription(this._source.observer(new ScheduledObserver(this._observationScheduler, generator, subscriptionReference)));
+    ScheduledObservable.prototype._observer = function (generator) {
+        var subscriptionReference = new subscription_reference_1.default();
+        subscriptionReference.setSubscription(this._source.observer(new scheduled_observer_1.default(this._observationScheduler, generator, subscriptionReference)));
         return subscriptionReference.value;
-    }
-}
-export class MergeAllObservable extends Observable {
-    constructor(source) {
-        super(this._observer);
+    };
+    return ScheduledObservable;
+})(Observable);
+exports.ScheduledObservable = ScheduledObservable;
+var MergeAllObservable = (function (_super) {
+    __extends(MergeAllObservable, _super);
+    function MergeAllObservable(source) {
+        _super.call(this);
         this._source = source;
     }
-    _observer(generator) {
-        var subscriptionReference = new SubscriptionReference();
-        subscriptionReference.setSubscription(this._source.observer(new MergeAllObserver(generator, subscriptionReference)));
+    MergeAllObservable.prototype._observer = function (generator) {
+        var subscriptionReference = new subscription_reference_1.default();
+        subscriptionReference.setSubscription(this._source.observer(new merge_all_observer_1.default(generator, subscriptionReference)));
         return subscriptionReference.value;
-    }
-}
-export class MapObservable extends Observable {
-    constructor(source, projection) {
-        super(this._observer);
+    };
+    return MergeAllObservable;
+})(Observable);
+exports.MergeAllObservable = MergeAllObservable;
+var MapObservable = (function (_super) {
+    __extends(MapObservable, _super);
+    function MapObservable(source, projection) {
+        _super.call(this);
         this._projection = projection;
         this._source = source;
     }
-    _observer(generator) {
-        var subscriptionReference = new SubscriptionReference();
-        subscriptionReference.setSubscription(this._source.observer(new MapObserver(this._projection, generator, subscriptionReference)));
+    MapObservable.prototype._observer = function (generator) {
+        var subscriptionReference = new subscription_reference_1.default();
+        subscriptionReference.setSubscription(this._source.observer(new map_observer_1.default(this._projection, generator, subscriptionReference)));
         return subscriptionReference.value;
-    }
-}
-//# sourceMappingURL=observable.js.map
+    };
+    return MapObservable;
+})(Observable);
+exports.MapObservable = MapObservable;

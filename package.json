@@ -4,6 +4,7 @@
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "scripts": {
+    "build": "rm -rf cjs amd; tsc; babel src --out-dir cjs; babel src --out-dir amd --modules \"amd\"; tsc src/rx.umd.ts --out dist/rx.js --target ES5",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,17 +30,5 @@
   },
   "homepage": "https://github.com/ReactiveX/RxJS",
   "devDependencies": {
-    "benchmark": "^1.0.0",
-    "broccoli": "^0.15.0",
-    "broccoli-babel-transpiler": "^4.0.1",
-    "broccoli-jshint": "^0.5.5",
-    "broccoli-merge-trees": "^0.2.1",
-    "broccoli-static-compiler": "^0.2.1",
-    "broccoli-stew": "^0.2.1",
-    "jasmine-core": "^2.2.0",
-    "lodash": "^3.5.0",
-    "platform": "^1.3.0",
-    "requirejs": "^2.1.16",
-    "rx": "^2.4.3"
   }
 }

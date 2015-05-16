@@ -1,5 +1,12 @@
-export default class SubscriptionReference {
-  constructor(subscription) {
+import Subscription from './subscription';
+import Disposable from './disposable';
+
+export default class SubscriptionReference implements Disposable {
+  protected _subscription:Subscription
+  private _isDisposed:Boolean
+  private _isDisposeScheduled:Boolean
+
+  constructor(subscription:Subscription=null) {
     this._subscription = subscription;
     this._isDisposeScheduled = false;
     this._isDisposed = false;
@@ -12,7 +19,7 @@ export default class SubscriptionReference {
   set value(subcription) {
     this.setSubscription(subcription);
   }
-  
+
   get isDisposed() {
     return this._isDisposeScheduled || this._isDisposed;
   }

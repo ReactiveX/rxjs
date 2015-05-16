@@ -1,20 +1,21 @@
-export default class Subscription {
-    constructor(action) {
+var Subscription = (function () {
+    function Subscription(action) {
         this.isDisposed = false;
         this._action = action;
     }
-    dispose() {
+    Subscription.prototype.dispose = function () {
         if (!this.isDisposed && this._action) {
             this._action();
         }
         this.isDisposed = true;
-    }
-    child(action) {
+    };
+    Subscription.prototype.child = function (action) {
         var ChildSubscription = function (action) {
             this._action = action;
         };
         ChildSubscription.prototype = this;
         return new ChildSubscription(action);
-    }
-}
-//# sourceMappingURL=subscription.js.map
+    };
+    return Subscription;
+})();
+exports.default = Subscription;

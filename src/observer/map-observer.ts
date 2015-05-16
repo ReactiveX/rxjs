@@ -1,6 +1,8 @@
 import Observer from './observer';
 
 export default class MapObserver extends Observer {
+  private _projection:Function
+  
   constructor(projection, generator, subscriptionRef) {
     super(generator, subscriptionRef);
     this._projection = projection;

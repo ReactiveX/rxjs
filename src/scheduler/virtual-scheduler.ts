@@ -11,16 +11,15 @@ export default class VirtualScheduler implements Scheduler {
   }
 
   now(state:any, work:Function) {
-    return this.schedule(0, state, work);
+    this.schedule(0, state, work);
   }
 
   /**
     Schedules a task, but tasks are not run until `flush` is called.
   */
-  schedule(delay:Number, state:any, work:Function) : Task {
+  schedule(delay:Number, state:any, work:Function) {
     var task = new Task(delay, state, work, this);
     this._queue.push(task);
-    return task;
   }
 
   /**

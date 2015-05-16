@@ -1,22 +1,11 @@
 /**
   Current frame scheduler. (aka Zalgo scheduler)
  */
-export default class CurrentFrameScheduler {
-    constructor() {
+var CurrentFrameScheduler = (function () {
+    function CurrentFrameScheduler() {
         this._timeouts = [];
     }
-    schedule(delay, state, work) {
-        var argsLen = arguments.length;
-        if (argsLen === 2) {
-            work = state;
-            state = delay;
-            delay = 0;
-        }
-        else if (argsLen === 1) {
-            work = delay;
-            state = undefined;
-            delay = 0;
-        }
+    CurrentFrameScheduler.prototype.schedule = function (delay, state, work) {
         if (delay === 0) {
             // if no delay, do it now.
             // TODO: what to do with the return?
@@ -24,16 +13,17 @@ export default class CurrentFrameScheduler {
         }
         else if (delay > 0) {
             var self = this;
-            var id = setTimeout(() => {
+            var id = setTimeout(function () {
                 work(self, state);
             }, delay);
             this._timeouts.push(id);
         }
-    }
-    dispose() {
+    };
+    CurrentFrameScheduler.prototype.dispose = function () {
         while (this._timeouts.length) {
             clearTimeout(this._timeouts.shift());
         }
-    }
-}
-//# sourceMappingURL=current-frame-scheduler.js.map
+    };
+    return CurrentFrameScheduler;
+})();
+exports.default = CurrentFrameScheduler;
