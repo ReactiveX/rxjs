@@ -1,18 +1,18 @@
 import getBoundNext from '../util/get-bound-next';
+import Scheduler from './scheduler';
 
 /** 
   A micro task queue specialized for scheduler use.
   @class MicroTaskQueue
 */
 export default class MicroTaskQueue {
-  /**
-    @contructor
-    @param gap {Number} the number of ms before a new frame is queued for task processing.
-      if the gap is 0, it will run all tasks in a single frame. (Defaults to 0)
-  */
-  constructor(gap) {
+  private _queue: Array<MicroTask>
+  public isProcessing:Boolean
+  public isDisposed:Boolean
+  private _flushNext:Function;
+
+  constructor() {
     this._queue = [];
-    this._gap = gap || 0;
     this.isProcessing = false;
     this.isDisposed = false;
     this._flushNext = getBoundNext(this.flush.bind(this));
@@ -26,7 +26,7 @@ export default class MicroTaskQueue {
     @param scheduler {Scheduler} the scheduler the work is being done for.
     @return {MicroTask} a micro task which is disposable.
   */
-  enqueue(state, work, scheduler) {
+  enqueue(state:any, work:(Scheduler, any) => any, scheduler:Scheduler) {
     var task = new MicroTask(this, state, work, scheduler);
     this._queue.push(task);
     this.scheduleFlush();
@@ -73,15 +73,11 @@ export default class MicroTaskQueue {
     while(this._queue.length > 0) {
       var task = this._queue.shift();
       task.work(task.scheduler, task.state);
-      if(this._gap > 0 && Date.now() - start > this._gap) {
-        break;
-      }
     }
 
     if(this._queue.length > 0) {
       this._flushNext();
-    }
-    else {
+    } else {
       this.isProcessing = false;
     }
   }
@@ -92,11 +88,8 @@ export default class MicroTaskQueue {
   @class MicroTask
 */
 class MicroTask {
-  constructor(queue, state, work, scheduler) {
-    this.queue = queue;
-    this.state = state;
-    this.work = work;
-    this.scheduler = scheduler;
+  constructor(public queue:MicroTaskQueue, public state:any, 
+    public work:(Scheduler, any) => any, public scheduler:Scheduler) {
   }
 
   /**

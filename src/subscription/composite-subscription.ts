@@ -1,8 +1,10 @@
 import Subscription from './subscription';
 
 export default class CompositeSubscription extends Subscription {
+  _subscriptions:Array<Subscription>
+
   constructor(...subscriptions) {
-    super();
+    super(null);
     this._subscriptions = subscriptions;
   }
 

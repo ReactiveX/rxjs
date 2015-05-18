@@ -1,27 +1,27 @@
-/* globals define */
-import { Observable } from 'src/observable/observable';
+'use strict';
+
+var _srcObservableObservable = require('src/observable/observable');
+
 var platform;
 var Rx = {
-    Observable
+    Observable: _srcObservableObservable.Observable
 };
 /* global self */
 if (typeof self === 'object') {
     platform = self;
-}
-else if (typeof global === 'object') {
+} else if (typeof global === 'object') {
     platform = global;
-}
-else {
+} else {
     throw new Error('no global: `self` or `global` found');
 }
 /* global define:true module:true window: true */
 if (typeof define === 'function' && define['amd']) {
-    define(function () { return Rx; });
-}
-else if (typeof module !== 'undefined' && module['exports']) {
+    define(function () {
+        return Rx;
+    });
+} else if (typeof module !== 'undefined' && module['exports']) {
     module['exports'] = Rx;
-}
-else if (typeof platform !== 'undefined') {
+} else if (typeof platform !== 'undefined') {
     platform['Rx'] = Rx;
 }
 //# sourceMappingURL=rx.umd.js.map

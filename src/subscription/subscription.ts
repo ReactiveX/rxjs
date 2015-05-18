@@ -1,6 +1,8 @@
 export default class Subscription {
-  constructor(action) {
-    this.isDisposed = false;
+  _action:Function
+  isDisposed:Boolean = false
+
+  constructor(action:Function) {
     this._action = action;
   }
 

@@ -2,6 +2,14 @@
 // Those portions are Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
 // and licensed here: https://github.com/tildeio/rsvp.js/blob/32a94f91e8f408b1359f96f2cac9c8aed8d2f33a/LICENSE
 
+/* HACK: because TypeScript can be dumb? */
+interface MutationObserverWindow extends Window {
+  MutationObserver: MutationObserver,
+  WebKitMutationObserver: MutationObserver
+}
+
+var window = <MutationObserverWindow>window;
+
 /* globals process, setImmediate */
 
 var isNode = typeof process !== 'undefined' && 
@@ -9,12 +17,13 @@ var isNode = typeof process !== 'undefined' &&
 var browserWindow = (typeof window !== 'undefined') ? window : undefined;
 var browserGlobal = browserWindow || {};
 var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
+
 // test for web worker but not in IE10
 var useMessageChannel = typeof Uint8ClampedArray !== 'undefined' &&
   typeof importScripts !== 'undefined' &&
   typeof MessageChannel !== 'undefined';
 
-export default function getBoundNext(callback) {
+export default function getBoundNext(callback:Function):Function {
   if(isNode) {
     return nextTickMethod(callback);
   }
@@ -29,7 +38,7 @@ export default function getBoundNext(callback) {
   }
 }
 
-function nextTickMethod(callback) {
+function nextTickMethod(callback:Function) {
   var nextTick = process.nextTick;
   // node version 0.10.x displays a deprecation warning when nextTick is used recursively
   // setImmediate should be used instead instead
@@ -42,26 +51,26 @@ function nextTickMethod(callback) {
   };
 }
 
-function mutationObserverMethod(callback) {
+function mutationObserverMethod(callback:Function) {
   var iterations = 0;
   var observer = new BrowserMutationObserver(callback);
   var node = document.createTextNode('');
   observer.observe(node, { characterData: true });
 
   return function() {
-    node.data = (iterations = ++iterations % 2);
+    node.data = String(iterations = ++iterations % 2);
   };
 }
 
-function messageChannelMethod(callback) {
+function messageChannelMethod(callback:Function) {
   var channel = new MessageChannel();
-  channel.port1.onmessage = callback;
+  channel.port1.onmessage = <(ev: MessageEvent) => any>callback;
   return function () {
     channel.port2.postMessage(0);
   };
 }
 
-function setTimeoutMethod(callback) {
+function setTimeoutMethod(callback:Function) {
   return function() {
     setTimeout(callback, 1);
   };

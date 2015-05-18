@@ -1,13 +1,15 @@
+import Scheduler from './scheduler';
 /**
   A scheduler that might be used for deterministic tests.
   @class VirtualScheduler
 */
-export default class VirtualScheduler {
+export default class VirtualScheduler extends Scheduler {
     constructor() {
+        super();
         this._queue = [];
     }
     now(state, work) {
-        return this.schedule(0, state, work);
+        this.schedule(0, state, work);
     }
     /**
       Schedules a task, but tasks are not run until `flush` is called.
@@ -15,7 +17,6 @@ export default class VirtualScheduler {
     schedule(delay, state, work) {
         var task = new Task(delay, state, work, this);
         this._queue.push(task);
-        return task;
     }
     /**
       executes all tasks queued in the virtual scheduler to the specified delay.

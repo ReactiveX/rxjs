@@ -1,20 +1,20 @@
 import SubscriptionReference from './subscription-reference';
 export default class CompositeSubscriptionReference extends SubscriptionReference {
     add(subscription) {
-        if (!this._subscription) {
+        if (!this.subscription) {
             this.pendingAdds = this.pendingAdds || [];
             this.pendingAdds.push(subscription);
         }
         else {
-            this._subscription.add(subscription);
+            this.subscription.add(subscription);
         }
     }
     remove(subscription) {
-        if (!this._subscription && this.pendingAdds) {
+        if (!this.subscription && this.pendingAdds) {
             this.pendingAdds.splice(this.pendingAdds.indexOf(subscription), 1);
         }
         else {
-            this._subscription.remove(subscription);
+            this.subscription.remove(subscription);
         }
     }
     setSubscription(subscription) {

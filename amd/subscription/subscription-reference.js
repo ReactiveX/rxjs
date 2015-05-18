@@ -6,7 +6,9 @@ define(["exports", "module"], function (exports, module) {
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
     var SubscriptionReference = (function () {
-        function SubscriptionReference(subscription) {
+        function SubscriptionReference() {
+            var subscription = arguments[0] === undefined ? null : arguments[0];
+
             _classCallCheck(this, SubscriptionReference);
 
             this._subscription = subscription;

@@ -24,7 +24,7 @@ define(["exports"], function (exports) {
         _createClass(VirtualScheduler, [{
             key: "now",
             value: function now(state, work) {
-                return this.schedule(0, state, work);
+                this.schedule(0, state, work);
             }
         }, {
             key: "schedule",
@@ -35,7 +35,6 @@ define(["exports"], function (exports) {
             value: function schedule(delay, state, work) {
                 var task = new Task(delay, state, work, this);
                 this._queue.push(task);
-                return task;
             }
         }, {
             key: "flush",

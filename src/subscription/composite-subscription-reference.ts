@@ -1,24 +1,30 @@
 import SubscriptionReference from './subscription-reference';
+import Subscription from './subscription';
+import CompositeSubscription from './composite-subscription';
 
 export default class CompositeSubscriptionReference extends SubscriptionReference {
-  add(subscription) {
-    if(!this._subscription) {
+  protected subscription: CompositeSubscription;
+  
+  protected pendingAdds:Array<Subscription>
+
+  add(subscription:Subscription) {
+    if(!this.subscription) {
       this.pendingAdds = this.pendingAdds || [];
       this.pendingAdds.push(subscription);
     } else {
-      this._subscription.add(subscription);
+      this.subscription.add(subscription);
     }
   }
 
-  remove(subscription) {
-    if(!this._subscription && this.pendingAdds) {
+  remove(subscription:Subscription) {
+    if(!this.subscription && this.pendingAdds) {
       this.pendingAdds.splice(this.pendingAdds.indexOf(subscription), 1);
     } else {
-      this._subscription.remove(subscription);
+      this.subscription.remove(subscription);
     }
   }
 
-  setSubscription(subscription) {
+  setSubscription(subscription:CompositeSubscription) {
     if(this.pendingAdds) {
       var i, len;
       for(i = 0, len = this.pendingAdds.length; i < len; i++) {

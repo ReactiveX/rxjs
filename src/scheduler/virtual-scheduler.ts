@@ -4,9 +4,11 @@ import Scheduler from './scheduler';
   A scheduler that might be used for deterministic tests.
   @class VirtualScheduler
 */
-export default class VirtualScheduler implements Scheduler {
+export default class VirtualScheduler extends Scheduler {
   private _queue : Array<Task>
+
   constructor() {
+    super();
     this._queue = [];
   }
 

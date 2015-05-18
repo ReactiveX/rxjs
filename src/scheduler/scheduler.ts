@@ -1,9 +1,33 @@
+/**
+  Current frame scheduler. (aka Zalgo scheduler)
+ */
+export default class Scheduler {
+  protected _timeouts:Array<any>
 
-import Task from './task';
+  constructor() {
+    this._timeouts = [];
+  }
 
-interface Scheduler {
-	schedule(delay:Number, state:any, work:Function)
-	now(state:any, work:Function)
+  now(state:any, work:(Scheduler, any) => any) {
+      this.schedule(0, state, work);
+  }
+
+  schedule(delay:Number, state:any, work:(Scheduler, any) => any) {
+    if(delay === 0) {
+      work(this, state);
+    }
+    else if(delay > 0) {
+      var self = this;
+      var id = setTimeout(() => {
+        work(self, state);
+      }, delay);
+      this._timeouts.push(id);
+    }
+  }
+
+  dispose() {
+    while(this._timeouts.length) {
+      clearTimeout(this._timeouts.shift());
+    }
+  }
 }
-
-export default Scheduler;

@@ -1,19 +1,25 @@
 import Subscription from './subscription';
-import Disposable from './disposable';
 
-export default class SubscriptionReference implements Disposable {
-  protected _subscription:Subscription
+export default class SubscriptionReference extends Subscription {
+  
+  protected subscription:Subscription
+  
   private _isDisposed:Boolean
+  
   private _isDisposeScheduled:Boolean
+  
+  public isReference:Boolean = true
+
 
   constructor(subscription:Subscription=null) {
-    this._subscription = subscription;
+    super(null);
+    this.subscription = subscription;
     this._isDisposeScheduled = false;
     this._isDisposed = false;
   }
 
   get value() {
-    return this._subscription;
+    return this.subscription;
   }
 
   set value(subcription) {
@@ -25,20 +31,20 @@ export default class SubscriptionReference implements Disposable {
   }
 
   setSubscription(subscription) {
-    this._subscription = subscription;
+    this.subscription = subscription;
     if(this._isDisposeScheduled) {
       this._dispose();
     }
   }
 
   _dispose() {
-    this._subscription.dispose();
+    this.subscription.dispose();
     this._isDisposeScheduled = false;
     this._isDisposed = true;
   }
 
   dispose() {
-    if(!this._subscription) {
+    if(!this.subscription) {
       this._isDisposeScheduled = true;
     }
     else {

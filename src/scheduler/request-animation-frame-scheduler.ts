@@ -1,23 +1,12 @@
-export default class RequestAnimationFrameScheduler {
-  private _timeouts : Array<Number>;
-  
+import Scheduler from './scheduler';
+
+export default class RequestAnimationFrameScheduler extends Scheduler{
   constructor() {
-    this._timeouts = [];
+    super();
   }
 
-  schedule(delay, state, work) {
+  schedule(delay:Number, state:any, work:(Scheduler, any) => any) {
     var argsLen = arguments.length;
-
-    if(argsLen === 2) {
-      work = state;
-      state = delay;
-      delay = 0;
-    }
-    else if(argsLen === 1) {
-      work = delay;
-      state = undefined;
-      delay = 0;
-    }
 
     if(delay === 0) {
       requestAnimationFrame(() => {

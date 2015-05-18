@@ -1,9 +1,9 @@
-var Observer = (function () {
-    function Observer(generator, subscriptionDisposable) {
+export default class Observer {
+    constructor(generator, subscriptionDisposable) {
         this._generator = generator;
         this._subscriptionDisposable = subscriptionDisposable;
     }
-    Observer.prototype.next = function (value) {
+    next(value) {
         if (this._subscriptionDisposable.isDisposed) {
             return;
         }
@@ -12,8 +12,8 @@ var Observer = (function () {
             this._subscriptionDisposable.dispose();
         }
         return iterationResult;
-    };
-    Observer.prototype.throw = function (err) {
+    }
+    throw(err) {
         if (this._subscriptionDisposable.isDisposed) {
             return;
         }
@@ -21,8 +21,8 @@ var Observer = (function () {
         if (this._generator.throw) {
             return this._generator.throw(err);
         }
-    };
-    Observer.prototype.return = function (value) {
+    }
+    return(value) {
         if (this._subscriptionDisposable.isDisposed) {
             return;
         }
@@ -30,7 +30,6 @@ var Observer = (function () {
         if (this._generator.return) {
             return this._generator.return(value);
         }
-    };
-    return Observer;
-})();
-exports.default = Observer;
+    }
+}
+//# sourceMappingURL=observer.js.map

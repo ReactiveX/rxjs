@@ -1,3 +1,5 @@
+/* globals define */
+
 import { Observable } from 'src/observable/observable';
 
 var platform;

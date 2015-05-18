@@ -1,3 +1,3 @@
-import CurrentFrameScheduler from '../current-frame-scheduler';
+import Scheduler from '../scheduler';
 
-export default new CurrentFrameScheduler();
+export default new Scheduler();
