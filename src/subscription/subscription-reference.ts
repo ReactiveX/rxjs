@@ -4,11 +4,11 @@ export default class SubscriptionReference extends Subscription {
   
   protected subscription:Subscription
   
-  private _isDisposed:Boolean
+  private _isDisposed:boolean
   
-  private _isDisposeScheduled:Boolean
+  private _isDisposeScheduled:boolean
   
-  public isReference:Boolean = true
+  public isReference:boolean = true
 
 
   constructor(subscription:Subscription=null) {
@@ -18,32 +18,32 @@ export default class SubscriptionReference extends Subscription {
     this._isDisposed = false;
   }
 
-  get value() {
+  get value():Subscription {
     return this.subscription;
   }
 
-  set value(subcription) {
+  set value(subcription:Subscription) {
     this.setSubscription(subcription);
   }
 
-  get isDisposed() {
+  get isDisposed():boolean {
     return this._isDisposeScheduled || this._isDisposed;
   }
 
-  setSubscription(subscription) {
+  setSubscription(subscription:Subscription) : void {
     this.subscription = subscription;
     if(this._isDisposeScheduled) {
       this._dispose();
     }
   }
 
-  _dispose() {
+  _dispose():void {
     this.subscription.dispose();
     this._isDisposeScheduled = false;
     this._isDisposed = true;
   }
 
-  dispose() {
+  dispose():void {
     if(!this.subscription) {
       this._isDisposeScheduled = true;
     }

@@ -5,9 +5,9 @@ import CompositeSubscription from './composite-subscription';
 export default class CompositeSubscriptionReference extends SubscriptionReference {
   protected subscription: CompositeSubscription;
   
-  protected pendingAdds:Array<Subscription>
+  protected pendingAdds:Array<Subscription>;
 
-  add(subscription:Subscription) {
+  add(subscription:Subscription):void {
     if(!this.subscription) {
       this.pendingAdds = this.pendingAdds || [];
       this.pendingAdds.push(subscription);
@@ -16,7 +16,7 @@ export default class CompositeSubscriptionReference extends SubscriptionReferenc
     }
   }
 
-  remove(subscription:Subscription) {
+  remove(subscription:Subscription):void {
     if(!this.subscription && this.pendingAdds) {
       this.pendingAdds.splice(this.pendingAdds.indexOf(subscription), 1);
     } else {
@@ -24,7 +24,7 @@ export default class CompositeSubscriptionReference extends SubscriptionReferenc
     }
   }
 
-  setSubscription(subscription:CompositeSubscription) {
+  setSubscription(subscription:CompositeSubscription):void {
     if(this.pendingAdds) {
       var i, len;
       for(i = 0, len = this.pendingAdds.length; i < len; i++) {
@@ -32,7 +32,6 @@ export default class CompositeSubscriptionReference extends SubscriptionReferenc
       }
       this.pendingAdds = null;
     }
-
-    return SubscriptionReference.prototype.setSubscription.call(this, subscription);
+    super.setSubscription(subscription);
   }
 }

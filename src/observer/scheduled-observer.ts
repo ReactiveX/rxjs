@@ -1,3 +1,5 @@
+import Subscription from '../subscription/subscription';
+import Scheduler from '../scheduler/scheduler';
 import Observer from './observer';
 
 /**
@@ -5,33 +7,37 @@ import Observer from './observer';
   @class ScheduledObserver
   @extends {Observer}
 */
-export default class ScheduledObserver extends Observer {
-  constructor(observationScheduler, generator, subscriptionDisposable) {
+export default class ScheduledObserver<T> extends Observer<T> {
+  protected observationScheduler: Scheduler;
+
+  constructor(observationScheduler:Scheduler, generator:Generator<T>, subscriptionDisposable:Subscription) {
     super(generator, subscriptionDisposable);
-    this._observationScheduler = observationScheduler;
+    this.observationScheduler = observationScheduler;
   }
 
-  next(value) {
-    this._observationScheduler.schedule(0, value, this._next.bind(this));
+  next(value:T):IteratorResult<T> {
+    var _next = super.next;
+    this.observationScheduler.schedule(0, value, (scheduler:Scheduler, value:T) => {
+      _next(value);
+    });
+    return { done: false, value: undefined };
   }
 
-  _next(scheduler, value) {
-    super.next(value);
-  }  
-
-  throw(value) {
-    this._observationScheduler.schedule(0, value, this._throw.bind(this));
+  throw(value:any):IteratorResult<any> {
+    this.observationScheduler.schedule(0, value, this._throw.bind(this));
+    return { done: true, value: undefined };
   }
 
-  _throw(scheduler, value) {
-    super.throw(value);
+  _throw(scheduler:Scheduler, value:any) {
+    return super.throw(value);
   }
 
-  return(value) {
-    this._observationScheduler.schedule(0, value, this._return.bind(this));
+  return(value:any):IteratorResult<any> {
+    this.observationScheduler.schedule(0, value, this._return.bind(this));
+    return { done: true, value: undefined };
   }
 
-  _return(scheduler, value) {
-    super.return(value);
+  _return(scheduler:Scheduler, value:any) {
+    return super.return(value);
   }
 }

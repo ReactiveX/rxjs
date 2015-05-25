@@ -25,10 +25,10 @@ export class Observable {
         var state = {
             source: this,
             generator: new Observer(generator, subref),
-            subscriptionReference: subref
+            subscription: subref
         };
         this._scheduler.schedule(0, state, this.scheduledObservation);
-        return state.subscriptionReference;
+        return state.subscription;
     }
     scheduledObservation(scheduler, state) {
         var result = state.source._observer(state.generator);
@@ -44,7 +44,7 @@ export class Observable {
                 subscription = result;
                 break;
         }
-        state.subscriptionReference.setSubscription(subscription);
+        state.subscription.setSubscription(subscription);
     }
     // Observable/Observer pair methods
     map(projection) {
@@ -73,9 +73,9 @@ export class ScheduledObservable extends Observable {
         this._source = source;
     }
     _observer(generator) {
-        var subscriptionReference = new SubscriptionReference();
-        subscriptionReference.setSubscription(this._source.observer(new ScheduledObserver(this._observationScheduler, generator, subscriptionReference)));
-        return subscriptionReference.value;
+        var subscription = new SubscriptionReference();
+        subscription.setSubscription(this._source.observer(new ScheduledObserver(this._observationScheduler, generator, subscription)));
+        return subscription.value;
     }
 }
 export class MergeAllObservable extends Observable {
@@ -84,9 +84,9 @@ export class MergeAllObservable extends Observable {
         this._source = source;
     }
     _observer(generator) {
-        var subscriptionReference = new SubscriptionReference();
-        subscriptionReference.setSubscription(this._source.observer(new MergeAllObserver(generator, subscriptionReference)));
-        return subscriptionReference.value;
+        var subscription = new SubscriptionReference();
+        subscription.setSubscription(this._source.observer(new MergeAllObserver(generator, subscription)));
+        return subscription.value;
     }
 }
 export class MapObservable extends Observable {
@@ -96,9 +96,9 @@ export class MapObservable extends Observable {
         this._source = source;
     }
     _observer(generator) {
-        var subscriptionReference = new SubscriptionReference();
-        subscriptionReference.setSubscription(this._source.observer(new MapObserver(this._projection, generator, subscriptionReference)));
-        return subscriptionReference.value;
+        var subscription = new SubscriptionReference();
+        subscription.setSubscription(this._source.observer(new MapObserver(this._projection, generator, subscription)));
+        return subscription.value;
     }
 }
 //# sourceMappingURL=observable.js.map

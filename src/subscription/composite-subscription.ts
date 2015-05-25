@@ -3,26 +3,24 @@ import Subscription from './subscription';
 export default class CompositeSubscription extends Subscription {
   _subscriptions:Array<Subscription>
 
-  constructor(...subscriptions) {
-    super(null);
+  constructor(...subscriptions:Array<Subscription>) {
+    super();
     this._subscriptions = subscriptions;
   }
 
-  add(subscription) {
+  add(subscription:Subscription):void {
     this._subscriptions.push(subscription);
-    return this;
   }
 
-  remove(subscription) {
+  remove(subscription:Subscription):void {
     this._subscriptions.splice(this._subscriptions.indexOf(subscription), 1);
-    return this;
   }
 
-  get length() {
+  get length():Number {
     return this._subscriptions.length;
   }
 
-  dispose() {
+  dispose():void {
     while(this._subscriptions.length > 1) {
       var subcription = this._subscriptions.pop();
       subcription.dispose();

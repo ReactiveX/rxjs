@@ -7,25 +7,28 @@ import Observer from './observer';
 export default class ScheduledObserver extends Observer {
     constructor(observationScheduler, generator, subscriptionDisposable) {
         super(generator, subscriptionDisposable);
-        this._observationScheduler = observationScheduler;
+        this.observationScheduler = observationScheduler;
     }
     next(value) {
-        this._observationScheduler.schedule(0, value, this._next.bind(this));
-    }
-    _next(scheduler, value) {
-        super.next(value);
+        var _next = super.next;
+        this.observationScheduler.schedule(0, value, (scheduler, value) => {
+            _next(value);
+        });
+        return { done: false, value: undefined };
     }
     throw(value) {
-        this._observationScheduler.schedule(0, value, this._throw.bind(this));
+        this.observationScheduler.schedule(0, value, this._throw.bind(this));
+        return { done: true, value: undefined };
     }
     _throw(scheduler, value) {
-        super.throw(value);
+        return super.throw(value);
     }
     return(value) {
-        this._observationScheduler.schedule(0, value, this._return.bind(this));
+        this.observationScheduler.schedule(0, value, this._return.bind(this));
+        return { done: true, value: undefined };
     }
     _return(scheduler, value) {
-        super.return(value);
+        return super.return(value);
     }
 }
 //# sourceMappingURL=scheduled-observer.js.map

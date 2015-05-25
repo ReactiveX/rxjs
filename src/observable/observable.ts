@@ -6,40 +6,41 @@ import Subscription from '../subscription/subscription';
 import currentFrameScheduler from '../scheduler/global/current-frame';
 import ScheduledObserver from '../observer/scheduled-observer';
 import Scheduler from '../scheduler/scheduler';
+import noop from '../util/noop';
 
-function noop() {}
+export class Observable<T> {
 
-export class Observable {
-  protected _observer:Function
-  protected _scheduler:Scheduler
+  protected _observer: (generator:Generator<any>) => void|Subscription|Function;
 
-  static return(value:any) {
+  protected _scheduler: Scheduler;
+
+  static return<T>(value:T) : Observable<T> {
     return Observable.create(generator => {
       generator.next(value);
-      generator.return();
+      generator.return(value);
     });
   }
   
-  static create(observer:Function) {
-    return new Observable(observer);
+  static create<T>(observer: (generator:Generator<any>) => void|Subscription|Function) {
+    return new Observable<T>(observer);
   }
 
-  constructor(observer:Function, scheduler:Scheduler=currentFrameScheduler) {
+  constructor(observer: (generator:Generator<any>) => void|Subscription|Function = noop, scheduler:Scheduler=currentFrameScheduler) {
     this._observer = observer;
     this._scheduler = scheduler || currentFrameScheduler;
   }
   
-  observer(generator) {
+  observer(generator:Generator<T>) {
     var subref = new SubscriptionReference();
     var state = {
       source: this,
       generator: new Observer(generator, subref),
-      subscriptionReference: subref
+      subscription: subref
     };
 
     this._scheduler.schedule(0, state, this.scheduledObservation);
 
-    return state.subscriptionReference;
+    return state.subscription;
   }
 
   scheduledObservation(scheduler, state) {
@@ -60,79 +61,73 @@ export class Observable {
         break;
     }
 
-    state.subscriptionReference.setSubscription(subscription);
+    state.subscription.setSubscription(subscription);
   }
 
   // Observable/Observer pair methods
-  map(projection) {
-    return new MapObservable(this, projection);
+  map<R>(projection:(any) => R) : MapObservable<R> {
+    return new MapObservable<R>(this, projection);
   }
 
-  flatMap(projection) {
+  flatMap<R>(projection:(any) => Observable<R>) : MergeAllObservable<R>{
     return this.map(projection).mergeAll();
   }
 
-  mergeAll() {
-    return new MergeAllObservable(this);
+  mergeAll<R>() : MergeAllObservable<R> {
+    return new MergeAllObservable<R>(this);
   }
 
-  observeOn(observationScheduler) {
-    return new ScheduledObservable(this, observationScheduler);
+  observeOn<R>(observationScheduler:Scheduler) : ScheduledObservable<R> {
+    return new ScheduledObservable<R>(this, observationScheduler);
   }
 }
 
-Observable.return = function(value) {
-  return new Observable((generator) => {
-    generator.next(value);
-    generator.return(value);
-  });
-};
-
-export class ScheduledObservable extends Observable {
+export class ScheduledObservable<T> extends Observable<T> {
   private _observationScheduler:Scheduler
-  private _source:Observable
+  private _source:Observable<any>
 
-  constructor(source, observationScheduler) {
+  constructor(source:Observable<any>, observationScheduler:Scheduler) {
     super();
     this._observationScheduler = observationScheduler;
     this._source = source;
   }
   
-  _observer(generator) {
-    var subscriptionReference = new SubscriptionReference();
-    subscriptionReference.setSubscription(this._source.observer(new ScheduledObserver(this._observationScheduler, generator, subscriptionReference)));
-    return subscriptionReference.value;
+  _observer = function(generator:Generator<any>) : Subscription {
+    var subscription = new SubscriptionReference();
+    subscription.setSubscription(this._source.observer(new ScheduledObserver<T>(this._observationScheduler, generator, subscription)));
+    return subscription.value;
   }
 }
 
-export class MergeAllObservable extends Observable {
-  private _source:Observable
+export class MergeAllObservable<T> extends Observable<T> {
+  private _source:Observable<T>
 
   constructor(source) {
     super();
     this._source = source;
   }
 
-  _observer(generator) {
-    var subscriptionReference = new SubscriptionReference();
-    subscriptionReference.setSubscription(this._source.observer(new MergeAllObserver(generator, subscriptionReference)));
-    return subscriptionReference.value;
+  _observer = function(generator:Generator<any>) : Subscription {
+    var subscription = new SubscriptionReference();
+    subscription.setSubscription(this._source.observer(new MergeAllObserver<T>(generator, subscription)));
+    return subscription.value;
   }
 }
 
-export class MapObservable extends Observable {
-  private _projection:Function
-  private _source:Observable
+export class MapObservable<T> extends Observable<T> {
+  private _projection:(any) => T;
+  
+  private _source:Observable<any>;
 
-  constructor(source, projection) {
+  constructor(source:Observable<any>, projection:(any) => T) {
     super();
     this._projection = projection;
     this._source = source;
   }
   
-  _observer(generator) {
-    var subscriptionReference = new SubscriptionReference();
-    subscriptionReference.setSubscription(this._source.observer(new MapObserver(this._projection, generator, subscriptionReference)));
-    return subscriptionReference.value;
+  _observer = function(generator:Generator<any>) : Subscription {
+    var subscription = new SubscriptionReference();
+    subscription.setSubscription(this._source.observer(new MapObserver<T>(this._projection, generator, subscription)));
+    return subscription.value;
   }
 }

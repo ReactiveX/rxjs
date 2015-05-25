@@ -1,4 +1,3 @@
-import Observer from './observer';
 export default class MapObserver extends Observer {
     constructor(projection, generator, subscriptionRef) {
         super(generator, subscriptionRef);

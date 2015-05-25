@@ -1,25 +1,17 @@
+import noop from '../util/noop';
+
 export default class Subscription {
   _action:Function
-  isDisposed:Boolean = false
+  isDisposed:boolean = false
 
-  constructor(action:Function) {
+  constructor(action:Function = noop) {
     this._action = action;
   }
 
-  dispose() {
+  dispose():void {
     if(!this.isDisposed && this._action) {
       this._action();
     }
     this.isDisposed = true;
-  }
-
-  child(action) {
-    var ChildSubscription = function(action) {
-      this._action = action;
-    };
-
-    ChildSubscription.prototype = this;
-
-    return new ChildSubscription(action);
   }
 }

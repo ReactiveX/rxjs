@@ -1,4 +1,5 @@
 import Scheduler from './scheduler';
+import Task from './task';
 
 /**
   A scheduler that might be used for deterministic tests.
@@ -49,13 +50,17 @@ export default class VirtualScheduler extends Scheduler {
   }
 }
 
-function taskSort(a, b) {
+function taskSort(a:Task, b:Task):Number {
   return a.delay === b.delay ?
     (a.index > b.index ? 1 : -1) : 
     (a.delay > b.delay ? 1 : -1);
 }
 
-export class Task {
-  constructor(public delay:Number, public state:any, public work:Function, scheduler:Scheduler) {
+export class VirtualTask extends Task {
+  index:Number;
+  
+  constructor(delay:Number, state:any, work:Function, scheduler:Scheduler, index:Number) {
+    super(delay, state, work, scheduler);
+    this.index = index;
   }
 }

@@ -1,34 +1,39 @@
 export default class Observer {
     constructor(generator, subscriptionDisposable) {
-        this._generator = generator;
-        this._subscriptionDisposable = subscriptionDisposable;
+        this[Symbol.toStringTag] = "[object RxJS.Observer]";
+        this.generator = generator;
+        this.subscription = subscriptionDisposable;
+    }
+    [Symbol.iterator]() {
+        throw 'not implemented';
+        return undefined;
     }
     next(value) {
-        if (this._subscriptionDisposable.isDisposed) {
+        if (this.subscription.isDisposed) {
             return;
         }
-        var iterationResult = this._generator.next(value);
+        var iterationResult = this.generator.next(value);
         if (typeof iterationResult !== 'undefined' && iterationResult.done) {
-            this._subscriptionDisposable.dispose();
+            this.subscription.dispose();
         }
         return iterationResult;
     }
     throw(err) {
-        if (this._subscriptionDisposable.isDisposed) {
+        if (this.subscription.isDisposed) {
             return;
         }
-        this._subscriptionDisposable.dispose();
-        if (this._generator.throw) {
-            return this._generator.throw(err);
+        this.subscription.dispose();
+        if (this.generator.throw) {
+            return this.generator.throw(err);
         }
     }
     return(value) {
-        if (this._subscriptionDisposable.isDisposed) {
+        if (this.subscription.isDisposed) {
             return;
         }
-        this._subscriptionDisposable.dispose();
-        if (this._generator.return) {
-            return this._generator.return(value);
+        this.subscription.dispose();
+        if (this.generator.return) {
+            return this.generator.return(value);
         }
     }
 }
