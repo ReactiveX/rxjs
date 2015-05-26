@@ -4,7 +4,7 @@
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "scripts": {
-    "build_global": "mkdir -p dist/global && browserify -t babelify dist/es6/rx.js -o dist/global/rx.js",
+    "build_global": "mkdir -p dist/global && browserify -t [babelify --loose] dist/es6/rx.js -o dist/global/rx.js",
     "build_es6": "rm -rf dist/cjs && tsc src/rx.ts --outDir dist/es6 --target ES6 -d",
     "build_cjs": "rm -rf dist/cjs && tsc src/rx.ts --module commonjs --outDir dist/cjs --target ES5 -d",
     "build_amd": "rm -rf dist/amd && tsc src/rx.ts --module amd --outDir dist/amd --target ES5 -d",
