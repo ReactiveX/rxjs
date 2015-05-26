@@ -1,8 +1,14 @@
 var noop = function(){};
 
-var Rx3TestObservable = new Observable(function(generator) {
-  debugger
-  var i = 1000;
+var iterationInput = document.querySelector('input[name=iteration]');
+var match = /iterations=(\w+)/.exec(decodeURIComponent(location.search));
+if (match) {
+  iterationInput.value = match[1];
+}
+var numIterations = iterationInput.valueAsNumber;
+
+var Rx3TestObservable = new Rx3.Observable(function(generator) {
+  var i = numIterations;
   while (i--) {
     generator.next(i);
   }
@@ -10,11 +16,11 @@ var Rx3TestObservable = new Observable(function(generator) {
   generator.return();
 
   //HACK: junk subscription
-  return new Subscription(noop);
+  return new Rx3.Subscription(noop);
 });
 
 var Rx2TestObservable = Rx.Observable.create(function(observer) {
-  var i = 1000;
+  var i = numIterations;
   while (i--) {
     observer.onNext(i);
   }
@@ -26,28 +32,26 @@ var Rx2TestObservable = Rx.Observable.create(function(observer) {
 });
 
 var projectionRx3 = function(x) {
-  debugger
-  return new Observable(function(generator) {
-    var tid = setTimeout(function(){
-      console.log('timeout');
+  return new Rx3.Observable(function(generator) {
+    // var tid = setTimeout(function(){
       generator.next(x + '!!!');
       generator.return();
-    });
-    return new Subscription(function(){
-      clearTimeout(tid);
+    // });
+    return new Rx3.Subscription(function(){
+      // clearTimeout(tid);
     });
   });
 };
 
 var projectionRx2 = function(x) {
   return Rx.Observable.create(function(observer) {
-    var tid = setTimeout(function(){
+    // var tid = setTimeout(function(){
       observer.onNext(x + '!!!');
       observer.onCompleted();
-    }, 0);
+    // }, 0);
 
     return function(){
-      clearTimeout(tid);
+      // clearTimeout(tid);
     }
   });
 };
@@ -55,8 +59,6 @@ var projectionRx2 = function(x) {
 var rx3FlatMap = document.querySelector('#rx-3-flatmap');
 var rx2FlatMap = document.querySelector('#rx-2-flatmap');
 rx3FlatMap.addEventListener('click', function() {
-  debugger
-  console.log('rx3 clicked');
   Rx3TestObservable.flatMap(projectionRx3).observer({
     next: noop,
     error: noop,
@@ -65,7 +67,6 @@ rx3FlatMap.addEventListener('click', function() {
 });
 
 rx2FlatMap.addEventListener('click', function() {
-  console.log('rx2 clicked');
   Rx2TestObservable.flatMap(projectionRx2).
     forEach(noop, noop, noop);
 });
