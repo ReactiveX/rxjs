@@ -1,13 +1,13 @@
 import Subscription from './subscription';
 
 export default class SubscriptionReference extends Subscription {
-  
+
   protected subscription:Subscription
-  
-  private _isDisposed:boolean
-  
-  private _isDisposeScheduled:boolean
-  
+
+  _isDisposed:boolean
+
+  _isDisposeScheduled:boolean
+
   public isReference:boolean = true
 
 
@@ -28,6 +28,10 @@ export default class SubscriptionReference extends Subscription {
 
   get isDisposed():boolean {
     return this._isDisposeScheduled || this._isDisposed;
+  }
+
+  set isDisposed(v:boolean) {
+    this._isDisposed = v;
   }
 
   setSubscription(subscription:Subscription) : void {
