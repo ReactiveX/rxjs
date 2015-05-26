@@ -1,8 +1,9 @@
+///<reference path="../../typings/cheater/lib.es6.d.ts"/>
 import Subscription from '../subscription/subscription';
 
 export default class Observer<T> implements Generator<T> {
-  protected generator:Generator<T>
-  protected subscription:Subscription
+  protected generator:Generator<T>;
+  protected subscription:Subscription;
 
   [Symbol.iterator]() {
     throw 'not implemented';

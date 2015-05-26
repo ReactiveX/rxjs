@@ -4,7 +4,10 @@
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf cjs amd; tsc; babel src --out-dir cjs; babel src --out-dir amd --modules \"amd\"; tsc src/rx.umd.ts --out dist/rx.js --target ES5",
+    "build_global": "mkdir -p dist/global && browserify -t babelify dist/es6/rx.js -o dist/global/rx.js",
+    "build_es6": "rm -rf dist/cjs && tsc src/rx.ts --outDir dist/es6 --target ES6 -d",
+    "build_cjs": "rm -rf dist/cjs && tsc src/rx.ts --module commonjs --outDir dist/cjs --target ES5 -d",
+    "build_amd": "rm -rf dist/amd && tsc src/rx.ts --module amd --outDir dist/amd --target ES5 -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,5 +32,9 @@
     "url": "https://github.com/ReactiveX/RxJS/issues"
   },
   "homepage": "https://github.com/ReactiveX/RxJS",
-  "devDependencies": {}
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "gulp": "^3.8.11",
+    "gulp-run": "^1.6.8"
+  }
 }
