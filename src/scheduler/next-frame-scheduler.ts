@@ -9,7 +9,7 @@ export default class NextFrameScheduler extends Scheduler {
     this._queue = new MicroTaskQueue();
   }
 
-  schedule(delay: Number, state: any, work: (Scheduler, any) => any) {
+  schedule(delay: number, state: any, work: (Scheduler, any) => any) {
     if (delay === 0) {
       this._queue.enqueue(state, work, this);
     }

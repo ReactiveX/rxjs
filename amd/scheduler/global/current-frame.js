@@ -1,11 +1,11 @@
-define(['exports', 'module', '../current-frame-scheduler'], function (exports, module, _currentFrameScheduler) {
+define(['exports', 'module', '../scheduler'], function (exports, module, _scheduler) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
-  var _CurrentFrameScheduler = _interopRequire(_currentFrameScheduler);
+  var _Scheduler = _interopRequire(_scheduler);
 
-  module.exports = new _CurrentFrameScheduler();
+  module.exports = new _Scheduler();
 
   //# sourceMappingURL=current-frame.js.map
 });

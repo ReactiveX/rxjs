@@ -9,42 +9,49 @@ define(['exports', 'module'], function (exports, module) {
         function Observer(generator, subscriptionDisposable) {
             _classCallCheck(this, Observer);
 
-            this._generator = generator;
-            this._subscriptionDisposable = subscriptionDisposable;
+            this[Symbol.toStringTag] = '[object RxJS.Observer]';
+            this.generator = generator;
+            this.subscription = subscriptionDisposable;
         }
 
         _createClass(Observer, [{
+            key: Symbol.iterator,
+            value: function () {
+                throw 'not implemented';
+                return undefined;
+            }
+        }, {
             key: 'next',
             value: function next(value) {
-                if (this._subscriptionDisposable.isDisposed) {
+                if (this.subscription.isDisposed) {
                     return;
                 }
-                var iterationResult = this._generator.next(value);
+                var iterationResult = this.generator.next(value);
                 if (typeof iterationResult !== 'undefined' && iterationResult.done) {
-                    this._subscriptionDisposable.dispose();
+                    this.subscription.dispose();
                 }
                 return iterationResult;
             }
         }, {
             key: 'throw',
             value: function _throw(err) {
-                if (this._subscriptionDisposable.isDisposed) {
+                if (this.subscription.isDisposed) {
                     return;
                 }
-                this._subscriptionDisposable.dispose();
-                if (this._generator['throw']) {
-                    return this._generator['throw'](err);
+                this.subscription.dispose();
+                if (this.generator['throw']) {
+                    return this.generator['throw'](err);
                 }
             }
         }, {
             key: 'return',
             value: function _return(value) {
-                if (this._subscriptionDisposable.isDisposed) {
+                if (this.subscription.isDisposed) {
                     return;
                 }
-                this._subscriptionDisposable.dispose();
-                if (this._generator['return']) {
-                    return this._generator['return'](value);
+                this.subscription.dispose();
+                if (this.generator['return']) {
+                    return this.generator['return'](value);
                 }
             }
         }]);

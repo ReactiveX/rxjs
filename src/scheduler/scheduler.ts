@@ -12,7 +12,7 @@ export default class Scheduler {
       this.schedule(0, state, work);
   }
 
-  schedule(delay:Number, state:any, work:(Scheduler, any) => any) {
+  schedule(delay:number, state:any, work:(Scheduler, any) => any) {
     if(delay === 0) {
       work(this, state);
     }

@@ -1,4 +1,5 @@
 define(['exports', 'src/observable/observable'], function (exports, _srcObservableObservable) {
+    /* globals define */
     'use strict';
 
     var platform;

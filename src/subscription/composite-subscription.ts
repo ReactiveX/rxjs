@@ -16,7 +16,7 @@ export default class CompositeSubscription extends Subscription {
     this._subscriptions.splice(this._subscriptions.indexOf(subscription), 1);
   }
 
-  get length():Number {
+  get length():number {
     return this._subscriptions.length;
   }
 

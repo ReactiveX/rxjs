@@ -24,7 +24,7 @@ define(['exports', 'module', './observer'], function (exports, module, _observer
             _classCallCheck(this, ScheduledObserver);
 
             _get(Object.getPrototypeOf(ScheduledObserver.prototype), 'constructor', this).call(this, generator, subscriptionDisposable);
-            this._observationScheduler = observationScheduler;
+            this.observationScheduler = observationScheduler;
         }
 
         _inherits(ScheduledObserver, _Observer);
@@ -32,32 +32,33 @@ define(['exports', 'module', './observer'], function (exports, module, _observer
         _createClass(ScheduledObserver, [{
             key: 'next',
             value: function next(value) {
-                this._observationScheduler.schedule(0, value, this._next.bind(this));
-            }
-        }, {
-            key: '_next',
-            value: function _next(scheduler, value) {
-                _get(Object.getPrototypeOf(ScheduledObserver.prototype), 'next', this).call(this, value);
+                var _next = _get(Object.getPrototypeOf(ScheduledObserver.prototype), 'next', this);
+                this.observationScheduler.schedule(0, value, function (scheduler, value) {
+                    _next(value);
+                });
+                return { done: false, value: undefined };
             }
         }, {
             key: 'throw',
             value: function _throw(value) {
-                this._observationScheduler.schedule(0, value, this._throw.bind(this));
+                this.observationScheduler.schedule(0, value, this._throw.bind(this));
+                return { done: true, value: undefined };
             }
         }, {
             key: '_throw',
             value: function _throw(scheduler, value) {
-                _get(Object.getPrototypeOf(ScheduledObserver.prototype), 'throw', this).call(this, value);
+                return _get(Object.getPrototypeOf(ScheduledObserver.prototype), 'throw', this).call(this, value);
             }
         }, {
             key: 'return',
             value: function _return(value) {
-                this._observationScheduler.schedule(0, value, this._return.bind(this));
+                this.observationScheduler.schedule(0, value, this._return.bind(this));
+                return { done: true, value: undefined };
             }
         }, {
             key: '_return',
             value: function _return(scheduler, value) {
-                _get(Object.getPrototypeOf(ScheduledObserver.prototype), 'return', this).call(this, value);
+                return _get(Object.getPrototypeOf(ScheduledObserver.prototype), 'return', this).call(this, value);
             }
         }]);
 

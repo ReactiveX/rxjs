@@ -15,17 +15,10 @@ define(['exports', 'module', '../util/get-bound-next'], function (exports, modul
     */
 
     var MicroTaskQueue = (function () {
-        /**
-          @contructor
-          @param gap {Number} the number of ms before a new frame is queued for task processing.
-            if the gap is 0, it will run all tasks in a single frame. (Defaults to 0)
-        */
-
-        function MicroTaskQueue(gap) {
+        function MicroTaskQueue() {
             _classCallCheck(this, MicroTaskQueue);
 
             this._queue = [];
-            this._gap = gap || 0;
             this.isProcessing = false;
             this.isDisposed = false;
             this._flushNext = (0, _getBoundNext)(this.flush.bind(this));
@@ -97,9 +90,6 @@ define(['exports', 'module', '../util/get-bound-next'], function (exports, modul
                 while (this._queue.length > 0) {
                     var task = this._queue.shift();
                     task.work(task.scheduler, task.state);
-                    if (this._gap > 0 && Date.now() - start > this._gap) {
-                        break;
-                    }
                 }
                 if (this._queue.length > 0) {
                     this._flushNext();

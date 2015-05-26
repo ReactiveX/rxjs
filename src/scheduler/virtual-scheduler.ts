@@ -6,10 +6,12 @@ import Task from './task';
   @class VirtualScheduler
 */
 export default class VirtualScheduler extends Scheduler {
-  private _queue : Array<Task>
-
+  private _queue : Array<VirtualTask>
+  private _index: number;
+  
   constructor() {
     super();
+    this._index = 0;
     this._queue = [];
   }
 
@@ -20,8 +22,8 @@ export default class VirtualScheduler extends Scheduler {
   /**
     Schedules a task, but tasks are not run until `flush` is called.
   */
-  schedule(delay:Number, state:any, work:Function) {
-    var task = new Task(delay, state, work, this);
+  schedule(delay:number, state:any, work:Function) {
+    var task = new VirtualTask(delay, state, work, this, this._index++);
     this._queue.push(task);
   }
 
@@ -29,7 +31,7 @@ export default class VirtualScheduler extends Scheduler {
     executes all tasks queued in the virtual scheduler to the specified delay.
     specified delay. If the
     @method flush
-    @param toDelay {Number} [optional] delay in milliseconds, if not passed or falsy,
+    @param toDelay {number} [optional] delay in milliseconds, if not passed or falsy,
       will flush all tasks in queue.
   */
   flush(toDelay) {
@@ -50,16 +52,16 @@ export default class VirtualScheduler extends Scheduler {
   }
 }
 
-function taskSort(a:Task, b:Task):Number {
+function taskSort(a:VirtualTask, b:VirtualTask):number {
   return a.delay === b.delay ?
     (a.index > b.index ? 1 : -1) : 
     (a.delay > b.delay ? 1 : -1);
 }
 
 export class VirtualTask extends Task {
-  index:Number;
+  index:number;
   
-  constructor(delay:Number, state:any, work:Function, scheduler:Scheduler, index:Number) {
+  constructor(delay:number, state:any, work:Function, scheduler:Scheduler, index:number) {
     super(delay, state, work, scheduler);
     this.index = index;
   }

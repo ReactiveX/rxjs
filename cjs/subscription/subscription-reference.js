@@ -1,67 +1,56 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var SubscriptionReference = (function () {
-    function SubscriptionReference() {
-        var subscription = arguments[0] === undefined ? null : arguments[0];
-
-        _classCallCheck(this, SubscriptionReference);
-
-        this._subscription = subscription;
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var subscription_1 = require('./subscription');
+var SubscriptionReference = (function (_super) {
+    __extends(SubscriptionReference, _super);
+    function SubscriptionReference(subscription) {
+        if (subscription === void 0) { subscription = null; }
+        _super.call(this, null);
+        this.isReference = true;
+        this.subscription = subscription;
         this._isDisposeScheduled = false;
         this._isDisposed = false;
     }
-
-    _createClass(SubscriptionReference, [{
-        key: "value",
+    Object.defineProperty(SubscriptionReference.prototype, "value", {
         get: function () {
-            return this._subscription;
+            return this.subscription;
         },
         set: function (subcription) {
             this.setSubscription(subcription);
-        }
-    }, {
-        key: "isDisposed",
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SubscriptionReference.prototype, "isDisposed", {
         get: function () {
             return this._isDisposeScheduled || this._isDisposed;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SubscriptionReference.prototype.setSubscription = function (subscription) {
+        this.subscription = subscription;
+        if (this._isDisposeScheduled) {
+            this._dispose();
         }
-    }, {
-        key: "setSubscription",
-        value: function setSubscription(subscription) {
-            this._subscription = subscription;
-            if (this._isDisposeScheduled) {
-                this._dispose();
-            }
+    };
+    SubscriptionReference.prototype._dispose = function () {
+        this.subscription.dispose();
+        this._isDisposeScheduled = false;
+        this._isDisposed = true;
+    };
+    SubscriptionReference.prototype.dispose = function () {
+        if (!this.subscription) {
+            this._isDisposeScheduled = true;
         }
-    }, {
-        key: "_dispose",
-        value: function _dispose() {
-            this._subscription.dispose();
-            this._isDisposeScheduled = false;
-            this._isDisposed = true;
+        else {
+            this._dispose();
         }
-    }, {
-        key: "dispose",
-        value: function dispose() {
-            if (!this._subscription) {
-                this._isDisposeScheduled = true;
-            } else {
-                this._dispose();
-            }
-        }
-    }]);
-
+    };
     return SubscriptionReference;
-})();
-
+})(subscription_1["default"]);
 exports["default"] = SubscriptionReference;
-module.exports = exports["default"];
-
-//# sourceMappingURL=subscription-reference.js.map

@@ -22,10 +22,10 @@ define(['exports', './observer', '../subscription/composite-subscription', '../s
     var _SubscriptionReference = _interopRequire(_subscriptionSubscriptionReference);
 
     var MergeAllObserver = (function (_Observer) {
-        function MergeAllObserver(generator, subscriptionRef) {
+        function MergeAllObserver(generator, subscription) {
             _classCallCheck(this, MergeAllObserver);
 
-            _get(Object.getPrototypeOf(MergeAllObserver.prototype), 'constructor', this).call(this, generator, subscriptionRef);
+            _get(Object.getPrototypeOf(MergeAllObserver.prototype), 'constructor', this).call(this, generator, subscription);
             this._compositeSubscription = new _CompositeSubscription();
         }
 
@@ -33,32 +33,30 @@ define(['exports', './observer', '../subscription/composite-subscription', '../s
 
         _createClass(MergeAllObserver, [{
             key: 'completed',
-            value: function completed(subscriptionRef) {
-                this._compositeSubscription.remove(subscriptionRef);
-                this.checkReturn();
+            value: function completed(subscription) {
+                this._compositeSubscription.remove(subscription);
+                return this.checkReturn();
             }
         }, {
             key: 'checkReturn',
             value: function checkReturn() {
                 if (this.canReturn && this._compositeSubscription.length === 0) {
-                    var _return = this._generator['return'];
-                    if (_return) {
-                        _return.call(this, this.returnValue);
-                    }
+                    return this.generator['return'](this.returnValue);
                 }
             }
         }, {
             key: 'next',
             value: function next(observable) {
-                var subscriptionRef = new _SubscriptionReference();
-                this._compositeSubscription.add(subscriptionRef);
+                var subscription = new _SubscriptionReference();
+                this._compositeSubscription.add(subscription);
                 var sub;
                 try {
-                    sub = observable.observer(new MergedObservableObserver(this, subscriptionRef));
+                    sub = observable.observer(new MergedObservableObserver(this, subscription));
                 } catch (err) {
                     _get(Object.getPrototypeOf(MergeAllObserver.prototype), 'throw', this).call(this, err);
                 }
-                subscriptionRef.setSubscription(sub);
+                subscription.setSubscription(sub);
+                return { done: false, value: undefined }; //NOTE: should value be subscription?
             }
         }, {
             key: 'return',
@@ -75,10 +73,10 @@ define(['exports', './observer', '../subscription/composite-subscription', '../s
     exports['default'] = MergeAllObserver;
 
     var MergedObservableObserver = (function (_Observer2) {
-        function MergedObservableObserver(source, subscriptionRef) {
+        function MergedObservableObserver(source, subscription) {
             _classCallCheck(this, MergedObservableObserver);
 
-            _get(Object.getPrototypeOf(MergedObservableObserver.prototype), 'constructor', this).call(this, source._generator, subscriptionRef);
+            _get(Object.getPrototypeOf(MergedObservableObserver.prototype), 'constructor', this).call(this, source._generator, subscription);
             this._source = source;
         }
 
@@ -87,7 +85,7 @@ define(['exports', './observer', '../subscription/composite-subscription', '../s
         _createClass(MergedObservableObserver, [{
             key: 'return',
             value: function _return() {
-                this._source.completed(this._subscriptionDisposable);
+                return this._source.completed(this.subscription);
             }
         }]);
 

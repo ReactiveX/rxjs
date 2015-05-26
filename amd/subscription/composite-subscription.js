@@ -31,13 +31,11 @@ define(['exports', 'module', './subscription'], function (exports, module, _subs
             key: 'add',
             value: function add(subscription) {
                 this._subscriptions.push(subscription);
-                return this;
             }
         }, {
             key: 'remove',
             value: function remove(subscription) {
                 this._subscriptions.splice(this._subscriptions.indexOf(subscription), 1);
-                return this;
             }
         }, {
             key: 'length',

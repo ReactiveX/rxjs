@@ -1,104 +1,57 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-var _observer = require('./observer');
-
-var _observer2 = _interopRequireDefault(_observer);
-
-var _subscriptionCompositeSubscription = require('../subscription/composite-subscription');
-
-var _subscriptionCompositeSubscription2 = _interopRequireDefault(_subscriptionCompositeSubscription);
-
-var _subscriptionSubscriptionReference = require('../subscription/subscription-reference');
-
-var _subscriptionSubscriptionReference2 = _interopRequireDefault(_subscriptionSubscriptionReference);
-
-var MergeAllObserver = (function (_Observer) {
-    function MergeAllObserver(generator, subscriptionRef) {
-        _classCallCheck(this, MergeAllObserver);
-
-        _get(Object.getPrototypeOf(MergeAllObserver.prototype), 'constructor', this).call(this, generator, subscriptionRef);
-        this._compositeSubscription = new _subscriptionCompositeSubscription2['default']();
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var observer_1 = require('./observer');
+var composite_subscription_1 = require('../subscription/composite-subscription');
+var subscription_reference_1 = require('../subscription/subscription-reference');
+var MergeAllObserver = (function (_super) {
+    __extends(MergeAllObserver, _super);
+    function MergeAllObserver(generator, subscription) {
+        _super.call(this, generator, subscription);
+        this._compositeSubscription = new composite_subscription_1["default"]();
     }
-
-    _inherits(MergeAllObserver, _Observer);
-
-    _createClass(MergeAllObserver, [{
-        key: 'completed',
-        value: function completed(subscriptionRef) {
-            this._compositeSubscription.remove(subscriptionRef);
-            this.checkReturn();
+    MergeAllObserver.prototype.completed = function (subscription) {
+        this._compositeSubscription.remove(subscription);
+        return this.checkReturn();
+    };
+    MergeAllObserver.prototype.checkReturn = function () {
+        if (this.canReturn && this._compositeSubscription.length === 0) {
+            return this.generator.return(this.returnValue);
         }
-    }, {
-        key: 'checkReturn',
-        value: function checkReturn() {
-            if (this.canReturn && this._compositeSubscription.length === 0) {
-                var _return = this._generator['return'];
-                if (_return) {
-                    _return.call(this, this.returnValue);
-                }
-            }
+    };
+    MergeAllObserver.prototype.next = function (observable) {
+        var subscription = new subscription_reference_1["default"]();
+        this._compositeSubscription.add(subscription);
+        var sub;
+        try {
+            sub = observable.observer(new MergedObservableObserver(this, subscription));
         }
-    }, {
-        key: 'next',
-        value: function next(observable) {
-            var subscriptionRef = new _subscriptionSubscriptionReference2['default']();
-            this._compositeSubscription.add(subscriptionRef);
-            var sub;
-            try {
-                sub = observable.observer(new MergedObservableObserver(this, subscriptionRef));
-            } catch (err) {
-                _get(Object.getPrototypeOf(MergeAllObserver.prototype), 'throw', this).call(this, err);
-            }
-            subscriptionRef.setSubscription(sub);
+        catch (err) {
+            _super.prototype.throw.call(this, err);
         }
-    }, {
-        key: 'return',
-        value: function _return(value) {
-            this.canReturn = true;
-            this.returnValue = value;
-            return this.checkReturn();
-        }
-    }]);
-
+        subscription.setSubscription(sub);
+        return { done: false, value: undefined }; //NOTE: should value be subscription?
+    };
+    MergeAllObserver.prototype.return = function (value) {
+        this.canReturn = true;
+        this.returnValue = value;
+        return this.checkReturn();
+    };
     return MergeAllObserver;
-})(_observer2['default']);
-
-exports['default'] = MergeAllObserver;
-
-var MergedObservableObserver = (function (_Observer2) {
-    function MergedObservableObserver(source, subscriptionRef) {
-        _classCallCheck(this, MergedObservableObserver);
-
-        _get(Object.getPrototypeOf(MergedObservableObserver.prototype), 'constructor', this).call(this, source._generator, subscriptionRef);
+})(observer_1["default"]);
+exports["default"] = MergeAllObserver;
+var MergedObservableObserver = (function (_super) {
+    __extends(MergedObservableObserver, _super);
+    function MergedObservableObserver(source, subscription) {
+        _super.call(this, source._generator, subscription);
         this._source = source;
     }
-
-    _inherits(MergedObservableObserver, _Observer2);
-
-    _createClass(MergedObservableObserver, [{
-        key: 'return',
-        value: function _return() {
-            this._source.completed(this._subscriptionDisposable);
-        }
-    }]);
-
+    MergedObservableObserver.prototype.return = function () {
+        return this._source.completed(this.subscription);
+    };
     return MergedObservableObserver;
-})(_observer2['default']);
-
+})(observer_1["default"]);
 exports.MergedObservableObserver = MergedObservableObserver;
-
-//# sourceMappingURL=merge-all-observer.js.map

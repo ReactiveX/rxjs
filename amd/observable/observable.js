@@ -1,11 +1,11 @@
-define(['exports', '../observer/observer', '../observer/map-observer', '../subscription/subscription-reference', '../observer/merge-all-observer', '../subscription/subscription', '../scheduler/global/current-frame', '../observer/scheduled-observer'], function (exports, _observerObserver, _observerMapObserver, _subscriptionSubscriptionReference, _observerMergeAllObserver, _subscriptionSubscription, _schedulerGlobalCurrentFrame, _observerScheduledObserver) {
+define(['exports', '../observer/observer', '../observer/map-observer', '../subscription/subscription-reference', '../observer/merge-all-observer', '../subscription/subscription', '../scheduler/global/current-frame', '../observer/scheduled-observer', '../util/noop'], function (exports, _observerObserver, _observerMapObserver, _subscriptionSubscriptionReference, _observerMergeAllObserver, _subscriptionSubscription, _schedulerGlobalCurrentFrame, _observerScheduledObserver, _utilNoop) {
     'use strict';
 
     Object.defineProperty(exports, '__esModule', {
         value: true
     });
 
-    var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -29,10 +29,11 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
 
     var _ScheduledObserver = _interopRequire(_observerScheduledObserver);
 
-    function noop() {}
+    var _noop = _interopRequire(_utilNoop);
 
     var Observable = (function () {
-        function Observable(observer) {
+        function Observable() {
+            var observer = arguments[0] === undefined ? _noop : arguments[0];
             var scheduler = arguments[1] === undefined ? _currentFrameScheduler : arguments[1];
 
             _classCallCheck(this, Observable);
@@ -48,10 +49,10 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
                 var state = {
                     source: this,
                     generator: new _Observer(generator, subref),
-                    subscriptionReference: subref
+                    subscription: subref
                 };
                 this._scheduler.schedule(0, state, this.scheduledObservation);
-                return state.subscriptionReference;
+                return state.subscription;
             }
         }, {
             key: 'scheduledObservation',
@@ -60,7 +61,7 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
                 var subscription;
                 switch (typeof result) {
                     case 'undefined':
-                        subscription = new _Subscription(noop);
+                        subscription = new _Subscription(_noop);
                         break;
                     case 'function':
                         subscription = new _Subscription(result);
@@ -69,7 +70,7 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
                         subscription = result;
                         break;
                 }
-                state.subscriptionReference.setSubscription(subscription);
+                state.subscription.setSubscription(subscription);
             }
         }, {
             key: 'map',
@@ -98,7 +99,7 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
             value: function _return(value) {
                 return Observable.create(function (generator) {
                     generator.next(value);
-                    generator['return']();
+                    generator['return'](value);
                 });
             }
         }, {
@@ -113,32 +114,21 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
 
     exports.Observable = Observable;
 
-    Observable['return'] = function (value) {
-        return new Observable(function (generator) {
-            generator.next(value);
-            generator['return'](value);
-        });
-    };
-
     var ScheduledObservable = (function (_Observable) {
         function ScheduledObservable(source, observationScheduler) {
             _classCallCheck(this, ScheduledObservable);
 
             _get(Object.getPrototypeOf(ScheduledObservable.prototype), 'constructor', this).call(this);
+            this._observer = function (generator) {
+                var subscription = new _SubscriptionReference();
+                subscription.setSubscription(this._source.observer(new _ScheduledObserver(this._observationScheduler, generator, subscription)));
+                return subscription.value;
+            };
             this._observationScheduler = observationScheduler;
             this._source = source;
         }
 
         _inherits(ScheduledObservable, _Observable);
-
-        _createClass(ScheduledObservable, [{
-            key: '_observer',
-            value: function _observer(generator) {
-                var subscriptionReference = new _SubscriptionReference();
-                subscriptionReference.setSubscription(this._source.observer(new _ScheduledObserver(this._observationScheduler, generator, subscriptionReference)));
-                return subscriptionReference.value;
-            }
-        }]);
 
         return ScheduledObservable;
     })(Observable);
@@ -150,19 +140,15 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
             _classCallCheck(this, MergeAllObservable);
 
             _get(Object.getPrototypeOf(MergeAllObservable.prototype), 'constructor', this).call(this);
+            this._observer = function (generator) {
+                var subscription = new _SubscriptionReference();
+                subscription.setSubscription(this._source.observer(new _MergeAllObserver(generator, subscription)));
+                return subscription.value;
+            };
             this._source = source;
         }
 
         _inherits(MergeAllObservable, _Observable2);
-
-        _createClass(MergeAllObservable, [{
-            key: '_observer',
-            value: function _observer(generator) {
-                var subscriptionReference = new _SubscriptionReference();
-                subscriptionReference.setSubscription(this._source.observer(new _MergeAllObserver(generator, subscriptionReference)));
-                return subscriptionReference.value;
-            }
-        }]);
 
         return MergeAllObservable;
     })(Observable);
@@ -174,20 +160,16 @@ define(['exports', '../observer/observer', '../observer/map-observer', '../subsc
             _classCallCheck(this, MapObservable);
 
             _get(Object.getPrototypeOf(MapObservable.prototype), 'constructor', this).call(this);
+            this._observer = function (generator) {
+                var subscription = new _SubscriptionReference();
+                subscription.setSubscription(this._source.observer(new _MapObserver(this._projection, generator, subscription)));
+                return subscription.value;
+            };
             this._projection = projection;
             this._source = source;
         }
 
         _inherits(MapObservable, _Observable3);
-
-        _createClass(MapObservable, [{
-            key: '_observer',
-            value: function _observer(generator) {
-                var subscriptionReference = new _SubscriptionReference();
-                subscriptionReference.setSubscription(this._source.observer(new _MapObserver(this._projection, generator, subscriptionReference)));
-                return subscriptionReference.value;
-            }
-        }]);
 
         return MapObservable;
     })(Observable);

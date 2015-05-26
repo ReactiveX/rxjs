@@ -10,7 +10,9 @@ import noop from '../util/noop';
 
 export class Observable<T> {
 
-  protected _observer: (generator:Generator<any>) => void|Subscription|Function;
+  protected _observer(generator:Generator<any>) : void|Subscription|Function {
+    return void(0);
+  }
 
   protected _scheduler: Scheduler;
 
@@ -92,7 +94,7 @@ export class ScheduledObservable<T> extends Observable<T> {
     this._source = source;
   }
   
-  _observer = function(generator:Generator<any>) : Subscription {
+  _observer(generator:Generator<any>) : Subscription {
     var subscription = new SubscriptionReference();
     subscription.setSubscription(this._source.observer(new ScheduledObserver<T>(this._observationScheduler, generator, subscription)));
     return subscription.value;
@@ -100,16 +102,16 @@ export class ScheduledObservable<T> extends Observable<T> {
 }
 
 export class MergeAllObservable<T> extends Observable<T> {
-  private _source:Observable<T>
+  private _source:Observable<Observable<any>>
 
   constructor(source) {
     super();
     this._source = source;
   }
-
-  _observer = function(generator:Generator<any>) : Subscription {
+  
+  _observer(generator:Generator<any>) : Subscription {
     var subscription = new SubscriptionReference();
-    subscription.setSubscription(this._source.observer(new MergeAllObserver<T>(generator, subscription)));
+    subscription.setSubscription(this._source.observer(new MergeAllObserver(generator, subscription)));
     return subscription.value;
   }
 }
@@ -125,7 +127,7 @@ export class MapObservable<T> extends Observable<T> {
     this._source = source;
   }
   
-  _observer = function(generator:Generator<any>) : Subscription {
+  _observer(generator:Generator<any>) : Subscription {
     var subscription = new SubscriptionReference();
     subscription.setSubscription(this._source.observer(new MapObserver<T>(this._projection, generator, subscription)));
     return subscription.value;

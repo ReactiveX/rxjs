@@ -5,7 +5,7 @@ export default class RequestAnimationFrameScheduler extends Scheduler{
     super();
   }
 
-  schedule(delay:Number, state:any, work:(Scheduler, any) => any) {
+  schedule(delay:number, state:any, work:(Scheduler, any) => any) {
     var argsLen = arguments.length;
 
     if(delay === 0) {
