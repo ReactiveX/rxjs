@@ -1,77 +1,71 @@
+var noop = function(){};
 
-require({
-  baseUrl: '../../',
-  paths: {
-    'benchmark': '../../assets/benchmark/benchmark',
-    'platform': '../../assets/platform/platform',
-    'lodash': '../../assets/lodash',
-    'rx2': '../../assets/rxjs2/rx',
-    'perf-helpers': '../perf/perf-helpers'
+var Rx3TestObservable = new Observable(function(generator) {
+  debugger
+  var i = 1000;
+  while (i--) {
+    generator.next(i);
   }
-},
-['benchmark', 'src/observable/observable', 'src/subscription/subscription', 'rx2', 'perf-helpers'], 
-function(Benchmark, observable, Subscription, Rx, helpers) {
-  var Observable = observable.Observable;
-  var printLn = helpers.printLn;
 
-  printLn('starting tests');
-  var suite = new Benchmark.Suite;
+  generator.return();
 
+  //HACK: junk subscription
+  return new Subscription(noop);
+});
 
-  var noop = function(){};
+var Rx2TestObservable = Rx.Observable.create(function(observer) {
+  var i = 1000;
+  while (i--) {
+    observer.onNext(i);
+  }
 
+  observer.onCompleted();
 
-  var testObservable = new Observable(function(generator) {
-    generator.next(42);
-    generator.return();
+  //HACK: junk subscription
+  return new noop;
+});
 
-    //HACK: junk subscription
-    return new Subscription(noop);
-  });
-
-  var projection = function(x) {
-    return new Observable(function(generator) {
-      var tid = setTimeout(function(){
-        generator.next(x + '!!!');
-        generator.return();
-      });
-      return new Subscription(function(){
-        clearTimeout(tid);
-      });
+var projectionRx3 = function(x) {
+  debugger
+  return new Observable(function(generator) {
+    var tid = setTimeout(function(){
+      console.log('timeout');
+      generator.next(x + '!!!');
+      generator.return();
     });
-  };
+    return new Subscription(function(){
+      clearTimeout(tid);
+    });
+  });
+};
 
-  var rx2TestObservable = Rx.Observable.just(42);
+var projectionRx2 = function(x) {
+  return Rx.Observable.create(function(observer) {
+    var tid = setTimeout(function(){
+      observer.onNext(x + '!!!');
+      observer.onCompleted();
+    }, 0);
 
-  suite.
-    add('Observable.flatMap', function(d) {
-      testObservable.flatMap(projection).observer({
-        next: noop,
-        error: noop,
-        return: noop
-      });
-    }).
-    add('RxJS 2 Observable.flatMap', function(d) {
-      rx2TestObservable.flatMap(function(x) {
-        return Observable.create(function(observer) {
-          var tid = setTimeout(function(){
-            observer.onNext(x + '!!!');
-            observer.onCompleted();
-          }, 0);
+    return function(){
+      clearTimeout(tid);
+    }
+  });
+};
 
-          return function(){
-            clearTimeout(tid);
-          }
-        });
-      }).forEach(noop, noop, noop);
-    })
+var rx3FlatMap = document.querySelector('#rx-3-flatmap');
+var rx2FlatMap = document.querySelector('#rx-2-flatmap');
+rx3FlatMap.addEventListener('click', function() {
+  debugger
+  console.log('rx3 clicked');
+  Rx3TestObservable.flatMap(projectionRx3).observer({
+    next: noop,
+    error: noop,
+    return: noop
+  });
+});
 
-  suite.
-    on('cycle', function(event) {
-      printLn(String(event.target));
-    }).
-    on('complete', function() {
-      printLn('Fastest is ' + this.filter('fastest').pluck('name'));
-    })
-    .run({ async: true });
+rx2FlatMap.addEventListener('click', function() {
+  console.log('rx2 clicked');
+  Rx2TestObservable.flatMap(projectionRx2).
+    forEach(noop, noop, noop);
 });
