@@ -8,6 +8,7 @@
     "build_es6": "rm -rf dist/cjs && tsc src/rx.ts --outDir dist/es6 --target ES6 -d",
     "build_cjs": "rm -rf dist/cjs && tsc src/rx.ts --module commonjs --outDir dist/cjs --target ES5 -d",
     "build_amd": "rm -rf dist/amd && tsc src/rx.ts --module amd --outDir dist/amd --target ES5 -d",
+    "build_test": "rm -rf dist/cjs && tsc spec/observable/observable-spec.ts --module commonjs --outDir dist/test_cjs --target ES5 -d && node node_modules/.bin/jasmine dist/test_cjs/tests/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "benchmark": "^1.0.0",
     "benchpress": "^2.0.0-alpha.25",
     "http-server": "^0.7.5",
+    "jasmine": "^2.3.1",
     "jasmine-core": "^2.2.0",
     "lodash": "^3.5.0",
     "platform": "^1.3.0",

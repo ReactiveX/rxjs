@@ -52,7 +52,7 @@ export class MergedObservableObserver<T> extends Observer<T> {
   private _source: MergeAllObserver;
 
   constructor(source, subscription) {
-    super(source._generator, subscription);
+    super(source.generator, subscription);
     this._source = source;
   }
 

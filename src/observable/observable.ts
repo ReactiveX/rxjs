@@ -10,8 +10,9 @@ import noop from '../util/noop';
 
 export class Observable<T> {
 
+  protected __observer: any;
   protected _observer(generator:Generator<any>) : void|Subscription|Function {
-    return void(0);
+    return this.__observer(generator);
   }
 
   protected _scheduler: Scheduler;
@@ -28,7 +29,7 @@ export class Observable<T> {
   }
 
   constructor(observer: (generator:Generator<any>) => void|Subscription|Function = noop, scheduler:Scheduler=currentFrameScheduler) {
-    this._observer = observer;
+    this.__observer = observer;
     this._scheduler = scheduler || currentFrameScheduler;
   }
   
@@ -102,7 +103,7 @@ export class ScheduledObservable<T> extends Observable<T> {
 }
 
 export class MergeAllObservable<T> extends Observable<T> {
-  private _source:Observable<Observable<any>>
+  private _source:Observable<Observable<any>>;
 
   constructor(source) {
     super();
