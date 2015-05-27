@@ -8,7 +8,7 @@
     "build_es6": "rm -rf dist/cjs && tsc src/Rx3.ts --outDir dist/es6 --target ES6 -d",
     "build_cjs": "rm -rf dist/cjs && tsc src/Rx3.ts --module commonjs --outDir dist/cjs --target ES5 -d",
     "build_amd": "rm -rf dist/amd && tsc src/Rx3.ts --module amd --outDir dist/amd --target ES5 -d",
-    "build_test": "rm -rf dist/test_cjs && tsc spec/observable/observable-spec.ts --module commonjs --outDir dist/test_cjs --target ES5 -d && node node_modules/.bin/jasmine dist/test_cjs/tests/**/*.js",
+    "build_test": "rm -rf dist/test_cjs && tsc spec/observable/observable-spec.ts --module commonjs --outDir dist/test_cjs --target ES5 -d && node node_modules/.bin/jasmine dist/test_cjs/spec/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
