@@ -9,7 +9,8 @@
     "build_cjs": "rm -rf dist/cjs && tsc src/RxNext.ts --module commonjs --outDir dist/cjs --target ES5 -d",
     "build_amd": "rm -rf dist/amd && tsc src/RxNext.ts --module amd --outDir dist/amd --target ES5 -d",
     "build_test": "rm -rf dist/test_cjs && tsc spec/observable/observable-spec.ts --module commonjs --outDir dist/test_cjs --target ES5 -d && node node_modules/.bin/jasmine dist/test_cjs/spec/**/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build_all": "npm run build_cjs && npm run build_amd && npm run build_es6 && npm run build_global"
   },
   "repository": {
     "type": "git",
