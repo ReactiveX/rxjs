@@ -3,8 +3,8 @@ export default class Subscription {
 	unsubscribed:boolean = false;
 	_unsubscribe:Function;
 	
-	constructor(unsubscribe:Function) {
-    this._unsubscribe = unsubscribe;
+	constructor(_unsubscribe:Function) {
+    this._unsubscribe = _unsubscribe;
 	}
 	
 	static get empty() {

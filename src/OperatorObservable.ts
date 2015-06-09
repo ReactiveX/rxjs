@@ -21,8 +21,11 @@ export default class OperatorObservable {
   static value:(value:any,scheduler:Scheduler)=>OperatorObservable;
   static return:(value:any,scheduler:Scheduler)=>OperatorObservable;
   
-  select:(project:(any)=>any)=>OperatorObservable;
-  map:(project:(any)=>any)=>OperatorObservable;
+  select:(project:any)=>OperatorObservable;
+  map:(project:any)=>OperatorObservable;
+  mergeAll:(concurrent?:number)=>OperatorObservable;
+  selectMany:(project:any, concurrent?:number)=>OperatorObservable;
+  flatMap:(project:any, concurrent?:number)=>OperatorObservable;
   
   constructor(source:OperatorObservable, observerProvider:ObserverProvider=defaultObserverProvider) {
     this.source = source;

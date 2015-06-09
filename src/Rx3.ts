@@ -6,12 +6,17 @@ import Scheduler from './Scheduler';
 import value from './observable/value';
 
 import select from './operator/select';
+import mergeAll from './operator/mergeAll';
+import selectMany from './operator/selectMany';
 
 OperatorObservable.value = value;
 OperatorObservable.return = value;
 
 OperatorObservable.prototype.select = select;
 OperatorObservable.prototype.map = select;
+OperatorObservable.prototype.mergeAll = mergeAll;
+OperatorObservable.prototype.selectMany = selectMany;
+OperatorObservable.prototype.flatMap = selectMany;
 
 var Rx3 = {
   Observable,

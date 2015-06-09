@@ -1,6 +1,7 @@
 import Observer from '../Observer';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
+import OperatorObservable from '../OperatorObservable';
 
 interface IteratorResult<T> {
 	done:boolean;
@@ -39,6 +40,6 @@ SelectObserver.prototype.project = function projectValue():any {
     return this.value;
 };
 
-export default function select(project:(any)=>any) {
+export default function select(project:(any)=>any) : OperatorObservable {
     return new this.constructor(this, { project: project, getObserver: getObserver });
 };
