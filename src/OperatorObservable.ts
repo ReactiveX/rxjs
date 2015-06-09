@@ -3,6 +3,7 @@ import Scheduler from './Scheduler';
 import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
 
+
 export interface ObserverProvider {
   getObserver(destination:Observer):Observer;
 }
@@ -13,9 +14,11 @@ var defaultObserverProvider:ObserverProvider = {
     }
 };
 
-export default class OperatorObservable {
+export default class OperatorObservable {  
   source:OperatorObservable = null;
   observerProvider:ObserverProvider = null;
+  value:(value:any,scheduler:Scheduler)=>OperatorObservable;
+  return:(value:any,scheduler:Scheduler)=>OperatorObservable;
   
   constructor(source:OperatorObservable, observerProvider:ObserverProvider=defaultObserverProvider) {
     this.source = source;

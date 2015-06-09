@@ -5,15 +5,8 @@ import Scheduler from './Scheduler';
 
 import value from './observable/value';
 
-class RxLiteMixin {
-  value:(value:any,scheduler:Scheduler)=>OperatorObservable;
-  return:(value:any,scheduler:Scheduler)=>OperatorObservable;
-}
-
-RxLiteMixin.prototype.value = value;
-RxLiteMixin.prototype.return = value;
-
-applyMixins(OperatorObservable, [RxLiteMixin]);
+OperatorObservable.prototype.value = value;
+OperatorObservable.prototype.return = value;
 
 var Rx3 = {
   Observable,
