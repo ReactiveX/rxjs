@@ -3,7 +3,7 @@ import Scheduler from './Scheduler';
 import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
 
-interface ObserverProvider {
+export interface ObserverProvider {
   getObserver(destination:Observer):Observer;
 }
 

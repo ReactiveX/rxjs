@@ -93,7 +93,7 @@ if(JSGlobal.setImmediate) {
         function installNextTickImplementation() {
             return function setImmediate() {
                 var handle = addFromSetImmediateArguments(arguments);
-                process.nextTick(partiallyApplied(runIfPresent, handle));
+                global.process.nextTick(partiallyApplied(runIfPresent, handle));
                 return handle;
             };
         }

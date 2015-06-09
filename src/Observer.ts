@@ -1,5 +1,10 @@
 import noop from './util/noop';
 
+export interface IteratorResult<T> {
+  done: boolean;
+  value?: T;
+}
+
 export default class Observer {
   destination:Observer;
   unsubscribed:boolean = false;

@@ -42,6 +42,6 @@ function dispatch(state) {
     }
 }
 
-export default function value(value:any, scheduler:Scheduler) : OperatorObservable {
+export default function value(value:any, scheduler:Scheduler=Scheduler) : OperatorObservable {
     return new ValueObservable(value, scheduler);
 };
