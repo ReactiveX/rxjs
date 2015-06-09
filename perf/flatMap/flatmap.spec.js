@@ -12,11 +12,11 @@ describe('flatMap comparison', function() {
     1000,
     10000
   ].forEach(function(val) {
-    it('should be fast in Rx3', function(done) {
+    it('should be fast in RxNext', function(done) {
       browser.ignoreSynchronization = true;
       browser.get('http://localhost:8080/perf/flatMap/index.html?iterations='+val);
       runner.sample({
-        id: 'flatMap Rx3',
+        id: 'flatMap RxNext',
         execute: function() {
           $('#rx-3-flatmap').click();
         },

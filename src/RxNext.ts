@@ -2,6 +2,10 @@ import OperatorObservable from './OperatorObservable';
 import Observable from './Observable';
 import Observer from './Observer';
 import Scheduler from './Scheduler';
+import Subscription from './Subscription';
+import CompositeSubscription from './CompositeSubscription';
+import SerialSubscription from './SerialSubscription';
+
 
 import value from './observable/value';
 
@@ -18,21 +22,16 @@ OperatorObservable.prototype.mergeAll = mergeAll;
 OperatorObservable.prototype.selectMany = selectMany;
 OperatorObservable.prototype.flatMap = selectMany;
 
-var Rx3 = {
+var RxNext = {
   Observable,
   Scheduler,
   Observer,
-  OperatorObservable
+  OperatorObservable,
+  Subscription,
+  CompositeSubscription,
+  SerialSubscription
 };
 
 export default {
-  Rx3: Rx3
-}
-
-function applyMixins(derivedCtor: any, baseCtors: any[]) {
-    baseCtors.forEach(baseCtor => {
-        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-            derivedCtor.prototype[name] = baseCtor.prototype[name];
-        })
-    }); 
+  RxNext: RxNext
 }
