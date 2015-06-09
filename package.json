@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build_global": "mkdir -p dist/global && babel dist/es6/RxNext.js -o dist/global/RxNext.js --loose --modules umd",
-    "build_es6": "rm -rf dist/cjs && tsc src/RxNext.ts --outDir dist/es6 --target ES6 -d",
+    "build_es6": "rm -rf dist/es6 && tsc src/RxNext.ts --outDir dist/es6 --target ES6 -d",
     "build_cjs": "rm -rf dist/cjs && tsc src/RxNext.ts --module commonjs --outDir dist/cjs --target ES5 -d",
     "build_amd": "rm -rf dist/amd && tsc src/RxNext.ts --module amd --outDir dist/amd --target ES5 -d",
     "build_test": "rm -rf dist/test_cjs && tsc spec/observable/observable-spec.ts --module commonjs --outDir dist/test_cjs --target ES5 -d && node node_modules/.bin/jasmine dist/test_cjs/spec/**/*.js",
