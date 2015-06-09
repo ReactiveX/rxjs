@@ -1,9 +1,18 @@
-import {Observable} from './observable/observable';
-import Subscription from './subscription/subscription';
+import OperatorObservable from './OperatorObservable';
+import Observable from './Observable';
+import Observer from './Observer';
+import Scheduler from './Scheduler';
+
+import value from './observable/value';
+
+OperatorObservable.prototype.value = value;
+OperatorObservable.prototype.return = value;
 
 var Rx3 = {
   Observable,
-  Subscription
+  Scheduler,
+  Observer,
+  OperatorObservable
 };
 
 export default {
