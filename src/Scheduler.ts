@@ -1,6 +1,6 @@
 import isNumeric from './util/isNumeric';
 import Observer from './Observer';
-import Immediate from 'util/Immediate';
+import Immediate from './util/Immediate';
 import SerialSubscription from './SerialSubscription';
 
 interface Scheduler {
