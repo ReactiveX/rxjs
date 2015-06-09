@@ -5,8 +5,13 @@ import Scheduler from './Scheduler';
 
 import value from './observable/value';
 
-OperatorObservable.prototype.value = value;
-OperatorObservable.prototype.return = value;
+import select from './operator/select';
+
+OperatorObservable.value = value;
+OperatorObservable.return = value;
+
+OperatorObservable.prototype.select = select;
+OperatorObservable.prototype.map = select;
 
 var Rx3 = {
   Observable,

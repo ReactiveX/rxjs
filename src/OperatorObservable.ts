@@ -17,8 +17,12 @@ var defaultObserverProvider:ObserverProvider = {
 export default class OperatorObservable {  
   source:OperatorObservable = null;
   observerProvider:ObserverProvider = null;
-  value:(value:any,scheduler:Scheduler)=>OperatorObservable;
-  return:(value:any,scheduler:Scheduler)=>OperatorObservable;
+  
+  static value:(value:any,scheduler:Scheduler)=>OperatorObservable;
+  static return:(value:any,scheduler:Scheduler)=>OperatorObservable;
+  
+  select:(project:(any)=>any)=>OperatorObservable;
+  map:(project:(any)=>any)=>OperatorObservable;
   
   constructor(source:OperatorObservable, observerProvider:ObserverProvider=defaultObserverProvider) {
     this.source = source;
