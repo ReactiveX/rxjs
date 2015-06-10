@@ -13,7 +13,7 @@ import JSGlobal from './root';
 
 var Immediate:Immediate = <Immediate>{};
 
-if(JSGlobal.setImmediate) {
+if(JSGlobal && JSGlobal.setImmediate) {
     Immediate.setImmediate = JSGlobal.setImmediate;
     Immediate.clearImmediate = JSGlobal.clearImmediate;
 } else {
