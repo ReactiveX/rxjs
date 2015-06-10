@@ -32,6 +32,4 @@ var RxNext = {
   SerialSubscription
 };
 
-export default {
-  RxNext: RxNext
-}
+export default RxNext;
