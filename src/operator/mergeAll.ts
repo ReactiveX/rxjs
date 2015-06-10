@@ -84,13 +84,11 @@ class MergeInnerObserver extends Observer {
     this.parent = parent;
     this.subscription = subscription;
   }
-}
-
-MergeInnerObserver.prototype = Object.create(Observer.prototype);
-
-MergeInnerObserver.prototype._return = function _mergeInnerReturn() {
+  
+  _return() {
     return this.parent._innerReturn(this.subscription);
-};
+  }
+}
 
 export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : OperatorObservable {
     return new this.constructor(this, { concurrent: concurrent, getObserver: getObserver });
