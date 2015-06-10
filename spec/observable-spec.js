@@ -1,7 +1,10 @@
-/* globals RxNext, describe, it, iit, expect */
-var Observable = require('../dist/cjs/Observable');
-var Subscription = require('../dist/cjs/Subscription');
-var Observer = require('../dist/cjs/Observer');
+/* globals RxNext, describe, it, iit, expect, jasmine */
+
+var RxNext = require('../dist/cjs/RxNext');
+
+var Observable = RxNext.Observable;
+var Subscription = RxNext.Subscription;
+var Observer = RxNext.Observer;
 
 describe('Observable', function() {
   it('should exist', function() {
@@ -50,12 +53,10 @@ describe('Observable', function() {
         generator.return(undefined);
       });
 
-      observable.map(function(x) { return x + 1; }).subscribe({
-        next: function(x) {
+      observable.map(function(x) { return x + 1; }).subscribe(Observer.create(function(x) {
           expect(x).toEqual(43);
           done();
-        }
-      });
+      }, null, null));
     });
   });
 
@@ -69,12 +70,13 @@ describe('Observable', function() {
         generator.return(undefined);
       });
 
-      observable.flatMap(function(x) { return x; }).subscribe({
-        next: function(x) {
+      observable.flatMap(function(x) { return x; }).subscribe(Observer.create(
+        function(x) {
           expect(x).toEqual(42);
           done();
-        }
-      });
+        },
+        null, null
+      ));
     });
   });
 
@@ -83,16 +85,14 @@ describe('Observable', function() {
       var observable = Observable.return(42);
       var calls = 0;
 
-      observable.subscribe({
-        next: function(x) {
+      observable.subscribe(function(x) {
           expect(x).toEqual(42);
           expect(++calls).toEqual(1);
         },
-
-        return: function() {
+        null,
+        function() {
           done();
-        }
-      });
+        });
     });
   });
 });

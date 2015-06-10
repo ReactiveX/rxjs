@@ -2,21 +2,22 @@ import OperatorObservable from '../OperatorObservable';
 import Scheduler from '../Scheduler';
 import Observer from '../Observer';
 
-function ValueObservable(value:any, scheduler:Scheduler) {
+class ValueObservable extends OperatorObservable {
+  value:any;
+  scheduler:Scheduler;
+  
+  constructor(value:any, scheduler:Scheduler) {
+    super(null, null);
     this.value = value;
-    this.scheduler = scheduler;
-}
-
-ValueObservable.prototype = Object.create(OperatorObservable.prototype);
-ValueObservable.prototype.constructor = OperatorObservable;
-
-ValueObservable.prototype._subscribe = function _subscribe(observer:Observer) {
-
+    this.scheduler = scheduler;  
+  }
+  
+  _subscribe(observer:Observer) {
     var value = this.value;
     var scheduler = this.scheduler;
 
     if(scheduler) {
-        return scheduler.schedule(["N", observer, value], dispatch);
+        return scheduler.schedule(0, ["N", observer, value], dispatch);
     }
 
     var result = observer.next(value);
@@ -26,7 +27,8 @@ ValueObservable.prototype._subscribe = function _subscribe(observer:Observer) {
     }
 
     observer["return"]();
-};
+  }
+}
 
 function dispatch(state) {
     var phase = state[0];
@@ -42,6 +44,6 @@ function dispatch(state) {
     }
 }
 
-export default function value(value:any, scheduler:Scheduler=Scheduler) : OperatorObservable {
+export default function value(value:any, scheduler:Scheduler=Scheduler.immediate) : OperatorObservable {
     return new ValueObservable(value, scheduler);
 };

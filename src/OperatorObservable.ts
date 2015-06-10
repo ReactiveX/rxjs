@@ -3,6 +3,7 @@ import Scheduler from './Scheduler';
 import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
 
+const immediateScheduler = Scheduler.immediate;
 
 export interface ObserverProvider {
   getObserver(destination:Observer):Observer;
@@ -40,9 +41,9 @@ export default class OperatorObservable {
     if(!a || typeof a !== "object") {
         a = Observer.create(a, b, c);
     }
-    if (!Scheduler.active) {
+    if (!immediateScheduler.active) {
         var self = this;
-        return Scheduler.schedule(0, null, function scheduleSubscribe() {
+        return immediateScheduler.schedule(0, null, function scheduleSubscribe() {
             return self._subscribe(a);
         });
     }
