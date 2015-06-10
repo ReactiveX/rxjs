@@ -1,10 +1,16 @@
 {
-  "name": "RxJS",
-  "version": "3.0.0-alpha",
+  "name": "RxJS-Next",
+  "version": "0.0.1",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build_global": "rm -rf dist/global && mkdir dist/global && browserify src/RxNext.global.js --outfile dist/global/RxNext.js",
+    "build_es6": "rm -rf dist/es6 && tsc src/RxNext.ts --outDir dist/es6 --target ES6 -d",
+    "build_cjs": "rm -rf dist/cjs && tsc src/RxNext.ts --module commonjs --outDir dist/cjs --target ES5 -d",
+    "build_amd": "rm -rf dist/amd && tsc src/RxNext.ts --module amd --outDir dist/amd --target ES5 -d",
+    "build_test": "rm -rf dist/test_cjs && tsc spec/observable/observable-spec.ts --module commonjs --outDir dist/test_cjs --target ES5 -d && node node_modules/.bin/jasmine dist/test_cjs/spec/**/*.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build_all": "npm run build_cjs && npm run build_amd && npm run build_es6 && npm run build_global"
   },
   "repository": {
     "type": "git",
@@ -29,17 +35,16 @@
   },
   "homepage": "https://github.com/ReactiveX/RxJS",
   "devDependencies": {
+    "babelify": "^6.1.2",
     "benchmark": "^1.0.0",
-    "broccoli": "^0.15.0",
-    "broccoli-babel-transpiler": "^4.0.1",
-    "broccoli-jshint": "^0.5.5",
-    "broccoli-merge-trees": "^0.2.1",
-    "broccoli-static-compiler": "^0.2.1",
-    "broccoli-stew": "^0.2.1",
+    "benchpress": "^2.0.0-alpha.25",
+    "glob": "^5.0.10",
+    "http-server": "^0.7.5",
+    "jasmine": "^2.3.1",
     "jasmine-core": "^2.2.0",
     "lodash": "^3.5.0",
     "platform": "^1.3.0",
-    "requirejs": "^2.1.16",
+    "protractor": "^1.7.0",
     "rx": "^2.4.3"
   }
 }
