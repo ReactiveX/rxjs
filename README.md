@@ -1,25 +1,53 @@
-# RxJS 3.0.0-alpha
+# RxJS Next
 
-Reactive Extensions library for ES6.
+Reactive Extensions Library
 
-## Building
+## Goals
 
-There isn't really a "build" for this library. The modules are meant to be in ES6 format for consumption.
+- To model/follow the [ES7 Observable Spec](https://github.com/zenparsing/es-observable) to the observable.
+- Provide better performance than preceding versions of RxJS
+- Provide more modular file structure in a variety of formats
 
-## Tests
+## Building/Testing
 
-For now, tests are run through the broccolijs development server.
+The build and test structure is fairly primitive at the moment. There are various npm scripts that can be run:
 
-install broccoli
+- build_es6: Transpiles the TypeScript files from `src/` to `dist/es6`
+- build_cjs: Transpiles the ES6 files from `dist/es6` to `dist/cjs`
+- build_amd: Transpiles the ES6 files from `dist/es6` to `dist/amd`
+- build_global: Transpiles/Bundles the CommonJS files from `dist/cjs` to `dist/global/RxNext.js`
+- build_all: Performs all of the above in the proper order.
+- build_test: builds ES6, then CommonJS, then runs the tests with `jasmine`
+- test: runs tests with `jasmine`, must have built prior to running.
+
+### Example
 
 ```sh
-npm install -g broccoli-cli
+# build all the things!
+npm run build_all
 ```
 
-serve dev server
+### Prerequisites
+
+Currently, you need `typescript`, `jasmine`, `babel`, and `browserify` globally installed to build and test. 
+This will change as the build process matures. You can install all of these with the following:
+```sh
+npm i -g typescript jasmine babel browserify
+```
+
+## Performance Tests
+
+First you'll need to host the root directory under a web server, the simplest way to do that is to install `http-server` with `npm i -g http-server`,
+then start it in the home directory. After that you can run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor` (which also
+needs to be globally installed)
+
+### Prerequisites
+Running the performance tests requires `protractor` globally installed and an http server of some sort. `http-server` the node module
+will work:
 
 ```sh
-broccoli serve
+npm i -g protractor http-server
 ```
 
-Navigate to `http://localhost:4200` in any browser to view the tests.
+
+

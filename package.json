@@ -1,15 +1,18 @@
 {
-  "name": "RxJS",
-  "version": "3.0.0-alpha",
+  "name": "RxJS-Next",
+  "version": "0.0.1",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "scripts": {
-    "build_global": "mkdir -p dist/global && babel dist/es6/Rx3.js -o dist/global/Rx3.js --loose --modules umd",
-    "build_es6": "rm -rf dist/cjs && tsc src/Rx3.ts --outDir dist/es6 --target ES6 -d",
-    "build_cjs": "rm -rf dist/cjs && tsc src/Rx3.ts --module commonjs --outDir dist/cjs --target ES5 -d",
-    "build_amd": "rm -rf dist/amd && tsc src/Rx3.ts --module amd --outDir dist/amd --target ES5 -d",
-    "build_test": "rm -rf dist/test_cjs && tsc spec/observable/observable-spec.ts --module commonjs --outDir dist/test_cjs --target ES5 -d && node node_modules/.bin/jasmine dist/test_cjs/spec/**/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build_global": "rm -rf dist/global && mkdir dist/global && browserify src/RxNext.global.js --outfile dist/global/RxNext.js",
+    "build_es6": "rm -rf dist/es6 && tsc src/RxNext.ts --outDir dist/es6 --target ES6 -d",
+    "build_cjs": "rm -rf dist/cjs && babel dist/es6 --out-dir dist/cjs --modules common --sourceMaps --loose all",
+    "build_amd": "rm -rf dist/amd && babel dist/es6 --out-dir dist/amd --modules amd --sourceMaps --loose all",
+    "build_test": "rm -rf dist/ && npm run build_es6 && npm run build_cjs && jasmine",
+    "test": "jasmine",
+    "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global",
+    "perf": "protractor protractor.conf.js",
+    "build_perf": "npm run build_es6 && npm run build_cjs && npm run perf"
   },
   "repository": {
     "type": "git",
@@ -34,8 +37,10 @@
   },
   "homepage": "https://github.com/ReactiveX/RxJS",
   "devDependencies": {
+    "babelify": "^6.1.2",
     "benchmark": "^1.0.0",
     "benchpress": "^2.0.0-alpha.25",
+    "glob": "^5.0.10",
     "http-server": "^0.7.5",
     "jasmine": "^2.3.1",
     "jasmine-core": "^2.2.0",
