@@ -21,24 +21,8 @@ export default class Scheduler {
     this.async = async;
   }
   
-  schedule(delay, state, work) {
-    var argsLen = arguments.length;
-
-    if (argsLen === 2) {
-        work = state;
-        state = delay;
-        delay = 0;
-    } else if (argsLen === 1) {
-        work = delay;
-        state = void 0,
-        delay = 0;
-    } else if(argsLen === 0) {
-        throw new Error("Scheduler.schedule requires an action to schedule.");
-    }
-
-    isNumeric(delay) || (delay = 0);
-
-    if (delay <= 0) {
+  schedule(delay:number, state:any, work:Function):ScheduledAction {
+   if (delay <= 0) {
         if (Boolean(this.async)) {
             return scheduleNext(this, state, work);
         } else {
@@ -50,16 +34,16 @@ export default class Scheduler {
   }
 }
 
-function scheduleNow(scheduler, state, work) {
+function scheduleNow(scheduler:Scheduler, state:any, work:Function):ScheduledAction {
     return new ScheduledAction(scheduler, state, work);
 }
 
-function scheduleNext(scheduler, state, work) {
+function scheduleNext(scheduler:Scheduler, state:any, work:Function):ScheduledAction {
     return Boolean(scheduler.scheduled) ?
         new ScheduledAction(scheduler, state, work)    :
         new NextScheduledAction(scheduler, state, work);
 }
 
-function scheduleLater(scheduler, state, work, delay) {
+function scheduleLater(scheduler:Scheduler, state:any, work:Function, delay:number):FutureScheduledAction {
     return new FutureScheduledAction(scheduler, state, work, delay);
 }
