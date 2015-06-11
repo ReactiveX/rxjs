@@ -5,11 +5,16 @@ export default class CompositeSubscription extends Subscription {
   length:number=0;
   _subscriptions:Array<Subscription>;
   
-  constructor(subscriptions:Array<Subscription>=null) {
+  constructor() {
     super(null);
-    if(subscriptions) {
-      this.add.apply(arguments);
+  }
+  
+  static from(subscriptions:Array<Subscription>):CompositeSubscription {
+    var comp = new CompositeSubscription();
+    if(Array.isArray(subscriptions)) {
+      subscriptions.forEach(sub => comp.add(sub));
     }
+    return comp;
   }
   
   unsubscribe():void {
