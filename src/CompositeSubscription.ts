@@ -1,14 +1,15 @@
 import Subscription from './Subscription';
 import arraySlice from './util/arraySlice';
-import flattenArgs from './util/flattenArgs';
 
 export default class CompositeSubscription extends Subscription {
   length:number=0;
   _subscriptions:Array<Subscription>;
   
-  constructor() {
+  constructor(subscriptions:Array<Subscription>=null) {
     super(null);
-    this.add.apply(arguments);
+    if(subscriptions) {
+      this.add.apply(arguments);
+    }
   }
   
   unsubscribe():void {
