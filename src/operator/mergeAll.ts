@@ -15,8 +15,8 @@ class MergeAllObserver extends Observer {
   stopped:boolean = false;
   subscriptions:CompositeSubscription = new CompositeSubscription();
   
-  constructor(destination:Observer, concurrent:number) {
-    super(destination);
+  constructor(destination:Observer, subscription:Subscription, concurrent:number) {
+    super(destination, subscription);
     if (typeof concurrent != 'number' || concurrent !== concurrent || concurrent < 1) {
         this.concurrent = Number.POSITIVE_INFINITY;
     } else {
@@ -73,12 +73,10 @@ class MergeAllObserver extends Observer {
 
 class MergeInnerObserver extends Observer {
   parent:MergeAllObserver;
-  subscription:Subscription;
   
   constructor(parent:MergeAllObserver, subscription:Subscription) {
-    super(parent.destination);
+    super(parent.destination, subscription);
     this.parent = parent;
-    this.subscription = subscription;
   }
   
   _return() {
@@ -97,7 +95,8 @@ class MergeAllObservable extends Observable {
   }
   
   subscriber(observer):Subscription {
-    return Subscription.from(this.source.subscriber(new MergeAllObserver(observer, this.concurrent)));
+    var subscription = new SerialSubscription(null);
+    return Subscription.from(this.source.subscriber(new MergeAllObserver(observer, subscription, this.concurrent)));
   }
 }
 

@@ -1,4 +1,5 @@
 import noop from './util/noop';
+import Subscription from './Subscription';
 
 export interface IteratorResult<T> {
   done: boolean;
@@ -9,11 +10,12 @@ export default class Observer {
   destination:Observer;
   unsubscribed:boolean = false;
   result:IteratorResult<any>
+  subscription:Subscription=null;
   
   static create(_next:(value:any)=>IteratorResult<any>, 
                 _throw:((value:any)=>IteratorResult<any>)=null, 
                 _return:(()=>IteratorResult<any>)=null) : Observer {
-    var observer = new Observer(null);
+    var observer = new Observer(null, null);
     observer._next = _next;
     observer._throw = _throw;
     observer._return = _return;
@@ -32,12 +34,18 @@ export default class Observer {
     return this.destination["return"]();
   }
   
-  constructor(destination:Observer) {
+  constructor(destination:Observer, subscription:Subscription) {
     this.result = destination && destination.result || { done: false }
     this.destination = destination;
+    this.subscription = subscription;
   }
   
   unsubscribe():void {
+    var subscription = this.subscription;
+    if(subscription) {
+      this.subscription = undefined;
+      subscription.unsubscribe();
+    }
     this.unsubscribed = true;
   }
   
