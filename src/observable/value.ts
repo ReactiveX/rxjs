@@ -1,18 +1,18 @@
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import Observer from '../Observer';
 
-class ValueObservable extends OperatorObservable {
+class ValueObservable extends Observable {
   value:any;
   scheduler:Scheduler;
   
   constructor(value:any, scheduler:Scheduler) {
-    super(null, null);
+    super(null);
     this.value = value;
     this.scheduler = scheduler;  
   }
   
-  _subscribe(observer:Observer) {
+  subscriber(observer:Observer) {
     var value = this.value;
     var scheduler = this.scheduler;
 
@@ -44,6 +44,6 @@ function dispatch(state) {
     }
 }
 
-export default function value(value:any, scheduler:Scheduler=Scheduler.immediate) : OperatorObservable {
+export default function value(value:any, scheduler:Scheduler=Scheduler.immediate) : Observable {
     return new ValueObservable(value, scheduler);
 };

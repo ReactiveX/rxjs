@@ -1,7 +1,7 @@
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 
-class EmptyObservable extends OperatorObservable {
+class EmptyObservable extends Observable {
   scheduler:Scheduler;
   
   constructor(scheduler:Scheduler) {
@@ -9,7 +9,7 @@ class EmptyObservable extends OperatorObservable {
     this.scheduler = scheduler;
   }
   
-  _subscribe(observer) {
+  subscriber(observer) {
     var scheduler = this.scheduler;
     if(scheduler) {
         return scheduler.schedule(0, observer, dispatch);
@@ -24,6 +24,6 @@ function dispatch(observer) {
 
 const staticEmpty = new EmptyObservable(Scheduler.immediate);
 
-export default function empty(scheduler:Scheduler=Scheduler.immediate):OperatorObservable {
+export default function empty(scheduler:Scheduler=Scheduler.immediate):Observable {
     return scheduler && new EmptyObservable(scheduler) || staticEmpty;
 };

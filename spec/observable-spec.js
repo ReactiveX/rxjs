@@ -7,11 +7,7 @@ var Subscription = RxNext.Subscription;
 var Observer = RxNext.Observer;
 
 describe('Observable', function() {
-  it('should exist', function() {
-    expect(typeof Observable).toEqual('function');
-  });
-
-  describe('subscribe(generator)', function() {
+  describe('subscribe(observer)', function() {
     it('should return a subscription', function() {
       var observable = new Observable(function() {});
       var subref = observable.subscribe({});
@@ -20,19 +16,26 @@ describe('Observable', function() {
 
     it('should invoke the unsubscribe action '+
         'when the subscription has been unsubscribed', function() {
-      var unsubscribeAction = jasmine.createSpy("unsubscribeAction");
-      var observable = new Observable(function() { return unsubscribeAction; });
-      var subscription = observable.subscribe({});
+      var called = false;
+      var observable = new Observable(function() {
+        return function() {
+          called = true;
+        };   
+      });
+      var subscription = observable.subscribe(new Observer());
 
       subscription.unsubscribe();
 
-      expect(unsubscribeAction).toHaveBeenCalled();
+      expect(called).toBe(true);
     });
 
     it('should not call methods on the subscribe '+
        'after the subscription has been unsubscribed', function() {
-      var generator;
-      var observable = new Observable(function(g) {generator = g;});
+      var observer;
+      var observable = new Observable(function(g) {
+        observer = g;
+      });
+      
       var subscription = observable.subscribe(
         Observer.create(function() {throw 'Should not be called';},
         function() {throw 'Should not be called';},
@@ -40,9 +43,9 @@ describe('Observable', function() {
 
       subscription.unsubscribe();
 
-      expect(function() { return generator.next(42); }).not.toThrow();
-      expect(function() { return generator.throw(new Error()); }).not.toThrow();
-      expect(function() { return generator.return(42); }).not.toThrow();
+      expect(function() { return observer.next(42); }).not.toThrow();
+      expect(function() { return observer.throw(new Error()); }).not.toThrow();
+      expect(function() { return observer.return(42); }).not.toThrow();
     });
   });
 
@@ -70,13 +73,11 @@ describe('Observable', function() {
         generator.return(undefined);
       });
 
-      observable.flatMap(function(x) { return x; }).subscribe(Observer.create(
-        function(x) {
+      observable.flatMap(function(x) { return x; })
+        .subscribe(function(x) {
           expect(x).toEqual(42);
           done();
-        },
-        null, null
-      ));
+        });
     });
   });
 

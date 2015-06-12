@@ -2,16 +2,12 @@ import Observer from '../Observer';
 import Subscription from '../Subscription';
 import SerialSubscription from '../SerialSubscription';
 import CompositeSubscription from '../CompositeSubscription';
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 
 interface IteratorResult<T> {
   value?:T;
   done:boolean;
 }
-
-function getObserver(destination) {
-    return new MergeAllObserver(destination, this.concurrent);
-};
 
 class MergeAllObserver extends Observer {
   buffer:Array<any>;
@@ -90,6 +86,21 @@ class MergeInnerObserver extends Observer {
   }
 }
 
-export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : OperatorObservable {
-    return new this.constructor(this, { concurrent: concurrent, getObserver: getObserver });
+class MergeAllObservable extends Observable {
+  concurrent:number;
+  source:Observable;
+  
+  constructor(source:Observable, concurrent:number) {
+    super(null)
+    this.source = source;
+    this.concurrent = concurrent;  
+  }
+  
+  subscriber(observer):Subscription {
+    return Subscription.from(this.source.subscriber(new MergeAllObserver(observer, this.concurrent)));
+  }
+}
+
+export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : Observable {
+    return new MergeAllObservable(this, concurrent);
 };
