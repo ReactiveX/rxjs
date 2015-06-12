@@ -23,6 +23,7 @@ export default class OperatorObservable {
   static return:(value:any,scheduler:Scheduler)=>OperatorObservable;
   static fromEvent:(element:any, eventName:string, selector:Function)=>OperatorObservable;
   static fromEventPattern:(addHandler:Function, removeHandler:Function, selector:Function)=>OperatorObservable;
+  static throw:(err:any)=>OperatorObservable;
   
   select:(project:any)=>OperatorObservable;
   map:(project:any)=>OperatorObservable;

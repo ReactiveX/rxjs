@@ -10,6 +10,7 @@ import SerialSubscription from './SerialSubscription';
 import value from './observable/value';
 import fromEventPattern from './observable/fromEventPattern';
 import fromEvent from './observable/fromEvent';
+import _throw from './observable/throw';
 
 import select from './operator/select';
 import mergeAll from './operator/mergeAll';
@@ -19,6 +20,7 @@ OperatorObservable.value = value;
 OperatorObservable.return = value;
 OperatorObservable.fromEventPattern = fromEventPattern;
 OperatorObservable.fromEvent = fromEvent;
+OperatorObservable.throw = _throw;
 
 OperatorObservable.prototype.select = select;
 OperatorObservable.prototype.map = select;
