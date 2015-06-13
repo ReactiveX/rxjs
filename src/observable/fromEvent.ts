@@ -1,11 +1,11 @@
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 import Subscription from '../Subscription';
 import CompositeSubscription from '../CompositeSubscription';
 import fromEventPattern from './fromEventPattern';
 
-class EventListenerObservable extends OperatorObservable {
+class EventListenerObservable extends Observable {
   element:Object;
   eventName:string;
   selector:Function;
@@ -77,7 +77,7 @@ function createEventListener(element, eventName, handler) {
  * @returns {Observable} An observable sequence of events from the specified element and the specified event.
  */
 
-export default function fromEvent(element:any, eventName:string, selector:Function=null) : OperatorObservable {
+export default function fromEvent(element:any, eventName:string, selector:Function=null) : Observable {
     // Node.js specific
     if (element.addListener) {
         return fromEventPattern(

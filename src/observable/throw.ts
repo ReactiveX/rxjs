@@ -1,7 +1,7 @@
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 
-class ThrowObservable extends OperatorObservable {
+class ThrowObservable extends Observable {
   scheduler:Scheduler;
   err:any;
   
@@ -37,6 +37,6 @@ function dispatch({ observer, err }) {
 
 var staticEmpty = new ThrowObservable(undefined, undefined);
 
-export default function _throw(err:any=undefined, scheduler:Scheduler=Scheduler.immediate):OperatorObservable {
+export default function _throw(err:any=undefined, scheduler:Scheduler=Scheduler.immediate):Observable {
     return new ThrowObservable(err, scheduler);
 };

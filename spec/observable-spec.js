@@ -11,38 +11,11 @@ describe('Observable', function() {
     expect(typeof Observable).toEqual('function');
   });
 
-  describe('subscribe(generator)', function() {
+  describe('subscribe(observer)', function() {
     it('should return a subscription', function() {
       var observable = new Observable(function() {});
       var subref = observable.subscribe({});
       expect(subref instanceof Subscription).toEqual(true);
-    });
-
-    it('should invoke the unsubscribe action '+
-        'when the subscription has been unsubscribed', function() {
-      var unsubscribeAction = jasmine.createSpy("unsubscribeAction");
-      var observable = new Observable(function() { return unsubscribeAction; });
-      var subscription = observable.subscribe({});
-
-      subscription.unsubscribe();
-
-      expect(unsubscribeAction).toHaveBeenCalled();
-    });
-
-    it('should not call methods on the subscribe '+
-       'after the subscription has been unsubscribed', function() {
-      var generator;
-      var observable = new Observable(function(g) {generator = g;});
-      var subscription = observable.subscribe(
-        Observer.create(function() {throw 'Should not be called';},
-        function() {throw 'Should not be called';},
-        function() {throw 'Should not be called';}));
-
-      subscription.unsubscribe();
-
-      expect(function() { return generator.next(42); }).not.toThrow();
-      expect(function() { return generator.throw(new Error()); }).not.toThrow();
-      expect(function() { return generator.return(42); }).not.toThrow();
     });
   });
 

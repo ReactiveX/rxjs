@@ -1,9 +1,9 @@
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 import Observer from '../Observer';
 
-class FromEventPatternObservable extends OperatorObservable {
+class FromEventPatternObservable extends Observable {
 	add:Function;
 	remove:Function;
 	selector:Function;
@@ -54,6 +54,6 @@ class FromEventPatternObservable extends OperatorObservable {
  * @param {Function} [selector] A selector which takes the arguments from the event handler to produce a single item to yield on next.
  * @returns {Observable} An observable sequence which wraps an event from an event emitter
  */
-export default function fromEventPattern(addHandler:Function, removeHandler:Function=null, selector:Function=null) : OperatorObservable {
+export default function fromEventPattern(addHandler:Function, removeHandler:Function=null, selector:Function=null) : Observable {
     return new FromEventPatternObservable(addHandler, removeHandler, selector);
 };

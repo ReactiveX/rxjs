@@ -1,8 +1,8 @@
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import Observer from '../Observer';
 
-class RangeObservable extends OperatorObservable {
+class RangeObservable extends Observable {
 	scheduler:Scheduler;
 	end:number;
 	start:number;
@@ -50,7 +50,7 @@ function dispatch(state) {
     }
 }
 
-export default function range(start:number, end:number, scheduler:Scheduler=Scheduler.immediate):OperatorObservable {
+export default function range(start:number, end:number, scheduler:Scheduler=Scheduler.immediate):Observable {
     return new RangeObservable(
         Math.min(start || (start = 0), end || (end = 0)),
         Math.max(start, end),

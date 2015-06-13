@@ -1,15 +1,15 @@
 import Observer from '../Observer';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 
 interface IteratorResult<T> {
 	done:boolean;
 	value?:T
 }
 
-function getObserver(destination) {
-    return new SelectObserver(destination, this.project);
+function getObserver(destination, subscription) {
+    return new SelectObserver(destination, subscription, this.project);
 };
 
 class SelectObserver extends Observer {
@@ -17,8 +17,8 @@ class SelectObserver extends Observer {
   
   project:(any)=>any;
   
-  constructor(destination, project) {
-    super(destination);
+  constructor(destination, subscription, project) {
+    super(destination, subscription);
     if(typeof project !== "function") {
         this.value = project;
     } else {
@@ -40,6 +40,6 @@ SelectObserver.prototype.project = function projectValue():any {
     return this.value;
 };
 
-export default function select(project:(any)=>any) : OperatorObservable {
+export default function select(project:(any)=>any) : Observable {
     return new this.constructor(this, { project: project, getObserver: getObserver });
 };
