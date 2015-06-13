@@ -1,6 +1,7 @@
 import Scheduler from './Scheduler';
 import SerialSubscription from './SerialSubscription';
 import Immediate from './util/Immediate';
+import Subscription from './Subscription';
 
 export class ScheduledAction extends SerialSubscription {
   scheduler:Scheduler;
@@ -11,8 +12,8 @@ export class ScheduledAction extends SerialSubscription {
   constructor(scheduler:Scheduler, state:any, work:Function) {
     super(null);
     this.scheduler = scheduler;
-    this.state = state;
     this.work = work;
+    this.schedule(state);
   }
   
   schedule(state) {
@@ -32,10 +33,11 @@ export class ScheduledAction extends SerialSubscription {
     if (this.unsubscribed) {
         throw new Error("How did did we execute a canceled ScheduledAction?");
     }
-    this.add(this.work(this.state));
+    this.add(new Subscription(this.work(this.state)));
   }
 
   unsubscribe() {
+    super.unsubscribe();
     var actions = this.scheduler.actions;
     var index = actions.indexOf(this);
     if(index !== -1) {

@@ -2,15 +2,15 @@ import Observer from '../Observer';
 import Subscription from '../Subscription';
 import SerialSubscription from '../SerialSubscription';
 import CompositeSubscription from '../CompositeSubscription';
-import OperatorObservable from '../OperatorObservable';
+import Observable from '../Observable';
 
 interface IteratorResult<T> {
   value?:T;
   done:boolean;
 }
 
-function getObserver(destination) {
-    return new MergeAllObserver(destination, this.concurrent);
+function getObserver(destination, subscription) {
+    return new MergeAllObserver(destination, subscription, this.concurrent);
 };
 
 class MergeAllObserver extends Observer {
@@ -19,8 +19,8 @@ class MergeAllObserver extends Observer {
   stopped:boolean = false;
   subscriptions:CompositeSubscription = new CompositeSubscription();
   
-  constructor(destination:Observer, concurrent:number) {
-    super(destination);
+  constructor(destination:Observer, subscription:Subscription, concurrent:number) {
+    super(destination, subscription);
     if (typeof concurrent != 'number' || concurrent !== concurrent || concurrent < 1) {
         this.concurrent = Number.POSITIVE_INFINITY;
     } else {
@@ -77,12 +77,10 @@ class MergeAllObserver extends Observer {
 
 class MergeInnerObserver extends Observer {
   parent:MergeAllObserver;
-  subscription:Subscription;
   
   constructor(parent:MergeAllObserver, subscription:Subscription) {
-    super(parent.destination);
+    super(parent.destination, subscription);
     this.parent = parent;
-    this.subscription = subscription;
   }
   
   _return() {
@@ -90,6 +88,6 @@ class MergeInnerObserver extends Observer {
   }
 }
 
-export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : OperatorObservable {
+export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : Observable {
     return new this.constructor(this, { concurrent: concurrent, getObserver: getObserver });
 };

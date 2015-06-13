@@ -1,4 +1,3 @@
-import OperatorObservable from './OperatorObservable';
 import Observable from './Observable';
 import Observer from './Observer';
 import Scheduler from './Scheduler';
@@ -18,25 +17,24 @@ import select from './operator/select';
 import mergeAll from './operator/mergeAll';
 import selectMany from './operator/selectMany';
 
-OperatorObservable.value = value;
-OperatorObservable.return = value;
-OperatorObservable.fromEventPattern = fromEventPattern;
-OperatorObservable.fromEvent = fromEvent;
-OperatorObservable.throw = _throw;
-OperatorObservable.empty = empty;
-OperatorObservable.range = range;
+Observable.value = value;
+Observable.return = value;
+Observable.fromEventPattern = fromEventPattern;
+Observable.fromEvent = fromEvent;
+Observable.throw = _throw;
+Observable.empty = empty;
+Observable.range = range;
 
-OperatorObservable.prototype.select = select;
-OperatorObservable.prototype.map = select;
-OperatorObservable.prototype.mergeAll = mergeAll;
-OperatorObservable.prototype.selectMany = selectMany;
-OperatorObservable.prototype.flatMap = selectMany;
+Observable.prototype.select = select;
+Observable.prototype.map = select;
+Observable.prototype.mergeAll = mergeAll;
+Observable.prototype.selectMany = selectMany;
+Observable.prototype.flatMap = selectMany;
 
 var RxNext = {
-  Observable,
   Scheduler,
   Observer,
-  OperatorObservable,
+  Observable,
   Subscription,
   CompositeSubscription,
   SerialSubscription
