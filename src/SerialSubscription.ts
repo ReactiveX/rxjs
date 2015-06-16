@@ -3,7 +3,7 @@ import Subscription from './Subscription';
 export default class SerialSubscription extends Subscription {
   subscription:Subscription;
   
-  constructor(subscription:Subscription) {
+  constructor(subscription:Subscription=null) {
     super(null);
     this.subscription = subscription;
   }

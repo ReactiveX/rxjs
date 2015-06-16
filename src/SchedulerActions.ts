@@ -57,14 +57,14 @@ export class NextScheduledAction extends ScheduledAction {
     this.state = state;
     scheduler.actions.push(this);
     if (!Boolean(scheduler.scheduled)) {
-        scheduler.active = true;
-        scheduler.scheduled = true;
-        this.id = Immediate.setImmediate(function () {
-            self.id = void 0;
-            scheduler.active = false;
-            scheduler.scheduled = false;
-            flush(scheduler, scheduler.actions);
-        });
+      scheduler.active = true;
+      scheduler.scheduled = true;
+      this.id = Immediate.setImmediate(function () {
+        self.id = void 0;
+        scheduler.active = false;
+        scheduler.scheduled = false;
+        flush(scheduler, scheduler.actions);
+      });
     }
     return this;
   }
@@ -73,13 +73,13 @@ export class NextScheduledAction extends ScheduledAction {
     super.unsubscribe();
     var scheduler = this.scheduler;
     if(scheduler.actions.length === 0) {
-        scheduler.active = false;
-        scheduler.scheduled = false;
-        var id = this.id;
-        if(id) {
-            this.id = void 0;
-            Immediate.clearImmediate(id);
-        }
+      scheduler.active = false;
+      scheduler.scheduled = false;
+      var id = this.id;
+      if(id) {
+        this.id = void 0;
+        Immediate.clearImmediate(id);
+      }
     }
   }
 }
@@ -119,16 +119,13 @@ export class FutureScheduledAction extends ScheduledAction {
   }
 }
 
-
-
 function flush(scheduler, actions) {
-    if (!Boolean(scheduler.active)) {
-        scheduler.active = true;
-        var action;
-        while(action = actions.shift()) {
-            action.execute();
-        };
-        scheduler.head = void 0;
-        scheduler.active = false;
-    }
+  if (!Boolean(scheduler.active)) {
+    scheduler.active = true;
+    var action;
+    while(action = actions.shift()) {
+      action.execute();
+    };
+    scheduler.active = false;
+  }
 }
