@@ -9,7 +9,7 @@ class EmptyObservable extends Observable {
     this.scheduler = scheduler;
   }
   
-  _subscribe(observer) {
+  subscriber(observer) {
     var scheduler = this.scheduler;
     if(scheduler) {
         return scheduler.schedule(0, observer, dispatch);

@@ -14,7 +14,7 @@ class RangeObservable extends Observable {
     this.scheduler = scheduler;
 	}
 	
-	_subscribe(observer:Observer) {
+	subscriber(observer:Observer) {
     var end = this.end;
     var start = this.start - 1;
     var scheduler = this.scheduler;

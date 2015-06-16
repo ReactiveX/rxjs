@@ -11,7 +11,7 @@ class ThrowObservable extends Observable {
     this.scheduler = scheduler;
   }
   
-  _subscribe(observer) {
+  subscriber(observer) {
     var scheduler = this.scheduler;
     var err = this.err;
     if(scheduler) {
@@ -20,16 +20,6 @@ class ThrowObservable extends Observable {
     observer["throw"](this.err);
   }
 }
-
-ThrowObservable.prototype._subscribe = function _subscribe(observer) {
-    var scheduler = this.scheduler;
-
-    if(scheduler) {
-        return scheduler.schedule(observer, dispatch);
-    }
-
-    observer["throw"]();
-};
 
 function dispatch({ observer, err }) {
     observer["throw"](err);

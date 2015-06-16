@@ -9,7 +9,7 @@ export interface IteratorResult<T> {
 export default class Observer {
   destination:Observer;
   unsubscribed:boolean = false;
-  result:IteratorResult<any>
+  result:IteratorResult<any>;
   subscription:Subscription;
   
   static create(_next:(value:any)=>IteratorResult<any>, 
@@ -41,6 +41,11 @@ export default class Observer {
   }
   
   unsubscribe():void {
+    var subscription = this.subscription;
+    if(subscription) {
+      this.subscription = undefined;
+      subscription.unsubscribe();
+    }
     this.unsubscribed = true;
     var subscription = this.subscription;
     if(subscription) {

@@ -2,22 +2,20 @@ import Observer from '../Observer';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
+import Subscription from '../Subscription';
+import SerialSubscription from '../SerialSubscription';
 
 interface IteratorResult<T> {
 	done:boolean;
 	value?:T
 }
 
-function getObserver(destination, subscription) {
-    return new SelectObserver(destination, subscription, this.project);
-};
-
 class SelectObserver extends Observer {
   value:any;
   
   project:(any)=>any;
   
-  constructor(destination, subscription, project) {
+  constructor(destination:Observer, subscription:Subscription, project:(any)=>any) {
     super(destination, subscription);
     if(typeof project !== "function") {
         this.value = project;
@@ -40,6 +38,22 @@ SelectObserver.prototype.project = function projectValue():any {
     return this.value;
 };
 
+class SelectObservable extends Observable {
+  source:Observable;
+  project:(any)=>any;
+  
+  constructor(source:Observable, project:(any)=>any) {
+    super(null);
+    this.source = source;
+    this.project = project;
+  }
+  
+  subscriber(observer:Observer):Subscription {
+    var subscription = new SerialSubscription(null);
+    return Subscription.from(this.source.subscriber(new SelectObserver(observer, subscription, this.project)));
+  }
+}
+
 export default function select(project:(any)=>any) : Observable {
-    return new this.constructor(this, { project: project, getObserver: getObserver });
+  return new SelectObservable(this, project);
 };

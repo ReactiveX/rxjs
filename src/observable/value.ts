@@ -7,12 +7,12 @@ class ValueObservable extends Observable {
   scheduler:Scheduler;
   
   constructor(value:any, scheduler:Scheduler) {
-    super(null, null);
+    super(null);
     this.value = value;
     this.scheduler = scheduler;  
   }
   
-  _subscribe(observer:Observer) {
+  subscriber(observer:Observer) {
     var value = this.value;
     var scheduler = this.scheduler;
 

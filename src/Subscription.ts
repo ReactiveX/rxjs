@@ -28,4 +28,16 @@ export default class Subscription {
 	remove(subscription:Subscription):Subscription {
 		return this;
 	}
+	
+	static from(value:any):Subscription {
+		if(!value) {
+			return Subscription.empty;
+		}
+		else if(value && typeof value.unsubscribe === 'function') {
+			return value;
+		}
+		else if(typeof value === 'function') {
+			return new Subscription(value);
+		}
+	}
 }

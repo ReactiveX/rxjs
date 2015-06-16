@@ -33,13 +33,13 @@ export class ScheduledAction extends SerialSubscription {
     if (this.unsubscribed) {
         throw new Error("How did did we execute a canceled ScheduledAction?");
     }
-    this.add(new Subscription(this.work(this.state)));
+    this.add(Subscription.from(this.work(this.state)));
   }
 
   unsubscribe() {
     super.unsubscribe();
     var actions = this.scheduler.actions;
-    var index = actions.indexOf(this);
+    var index = Array.isArray(actions) ? actions.indexOf(this) : -1;
     if(index !== -1) {
         actions.splice(index, 1);
     }

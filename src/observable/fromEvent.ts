@@ -17,7 +17,7 @@ class EventListenerObservable extends Observable {
     this.selector = selector;
   }
   
-  _subscribe(observer) {
+  subscriber(observer) {
         var selector = this.selector;
         var listeners = createEventListener(
             this.element, this.eventName,

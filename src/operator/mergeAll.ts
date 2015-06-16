@@ -9,10 +9,6 @@ interface IteratorResult<T> {
   done:boolean;
 }
 
-function getObserver(destination, subscription) {
-    return new MergeAllObserver(destination, subscription, this.concurrent);
-};
-
 class MergeAllObserver extends Observer {
   buffer:Array<any>;
   concurrent:number = Number.POSITIVE_INFINITY;
@@ -88,6 +84,22 @@ class MergeInnerObserver extends Observer {
   }
 }
 
+class MergeAllObservable extends Observable {
+  concurrent:number;
+  source:Observable;
+  
+  constructor(source:Observable, concurrent:number) {
+    super(null)
+    this.source = source;
+    this.concurrent = concurrent;  
+  }
+  
+  subscriber(observer):Subscription {
+    var subscription = new SerialSubscription(null);
+    return Subscription.from(this.source.subscriber(new MergeAllObserver(observer, subscription, this.concurrent)));
+  }
+}
+
 export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : Observable {
-    return new this.constructor(this, { concurrent: concurrent, getObserver: getObserver });
+    return new MergeAllObservable(this, concurrent);
 };

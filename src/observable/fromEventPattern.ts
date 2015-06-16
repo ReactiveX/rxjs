@@ -15,7 +15,7 @@ class FromEventPatternObservable extends Observable {
     this.selector = selector;
 	}
 	
-	 _subscribe(subscriber:Observer) : Function {
+	 subscriber(subscriber:Observer) : Function {
 				var unsubscribe = () => {
             if (remove) {
                 remove(innerHandler, token);

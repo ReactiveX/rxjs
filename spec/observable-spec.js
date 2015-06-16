@@ -17,6 +17,21 @@ describe('Observable', function() {
       var subref = observable.subscribe({});
       expect(subref instanceof Subscription).toEqual(true);
     });
+
+    it('should invoke the unsubscribe action '+
+        'when the subscription has been unsubscribed', function() {
+      var called = false;
+      var observable = new Observable(function() {
+        return function() {
+          called = true;
+        };   
+      });
+      var subscription = observable.subscribe(new Observer());
+
+      subscription.unsubscribe();
+
+      expect(called).toBe(true);
+    });
   });
 
   describe('map()', function() {
@@ -43,13 +58,11 @@ describe('Observable', function() {
         generator.return(undefined);
       });
 
-      observable.flatMap(function(x) { return x; }).subscribe(Observer.create(
-        function(x) {
+      observable.flatMap(function(x) { return x; })
+        .subscribe(function(x) {
           expect(x).toEqual(42);
           done();
-        },
-        null, null
-      ));
+        });
     });
   });
 
