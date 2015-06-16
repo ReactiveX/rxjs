@@ -44,6 +44,6 @@ function dispatch(state) {
     }
 }
 
-export default function value(value:any, scheduler:Scheduler=Scheduler.immediate) : Observable {
+export default function value(value:any, scheduler:Scheduler=undefined) : Observable {
     return new ValueObservable(value, scheduler);
 };
