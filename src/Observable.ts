@@ -5,7 +5,6 @@ import SerialSubscription from './SerialSubscription';
 
 const immediateScheduler = Scheduler.immediate;
 
-
 export default class Observable {  
   static value:(value:any,scheduler:Scheduler)=>Observable;
   static return:(value:any,scheduler:Scheduler)=>Observable;

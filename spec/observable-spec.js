@@ -7,12 +7,20 @@ var Subscription = RxNext.Subscription;
 var Observer = RxNext.Observer;
 
 describe('Observable', function() {
+<<<<<<< HEAD
+=======
+  it('should exist', function() {
+    expect(typeof Observable).toEqual('function');
+  });
+
+>>>>>>> f754ead6818b0cf66aefd1b982db5ce6c8e9f9f4
   describe('subscribe(observer)', function() {
     it('should return a subscription', function() {
       var observable = new Observable(function() {});
       var subref = observable.subscribe({});
       expect(subref instanceof Subscription).toEqual(true);
     });
+<<<<<<< HEAD
 
     it('should invoke the unsubscribe action '+
         'when the subscription has been unsubscribed', function() {
@@ -47,6 +55,8 @@ describe('Observable', function() {
       expect(function() { return observer.throw(new Error()); }).not.toThrow();
       expect(function() { return observer.return(42); }).not.toThrow();
     });
+=======
+>>>>>>> f754ead6818b0cf66aefd1b982db5ce6c8e9f9f4
   });
 
   describe('map()', function() {
