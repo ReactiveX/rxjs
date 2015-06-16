@@ -2,6 +2,7 @@ import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
+import SerialSubscription from '../SerialSubscription';
 import CompositeSubscription from '../CompositeSubscription';
 import fromEventPattern from './fromEventPattern';
 
@@ -18,51 +19,51 @@ class EventListenerObservable extends Observable {
   }
   
   _subscribe(observer) {
-        var selector = this.selector;
-        var listeners = createEventListener(
-            this.element, this.eventName,
-            function handler(e) {
-                var result = e;
-                var iteratorResult;
-                
-                if (selector) {
-                    result = try_catch(selector).apply(this, arguments);
-                    if(result === error_obj) {
-                        observer["throw"](error_obj.e);
-                        listeners.unsubscribe();
-                        return;
-                    }
-                }
-                iteratorResult = observer.next(result);
-                if(iteratorResult.done) {
-                    listeners.unsubscribe();
-                }
-            });
-        return listeners;
-    }
+    var selector = this.selector;
+    var subscription = new SerialSubscription(null);
+    subscription.add(createEventListener(this.element, this.eventName, function (e) {
+      var result = e;
+      var iteratorResult;
+      if (selector) {
+        result = try_catch(selector).apply(this, arguments);
+        if(result === error_obj) {
+          subscription.unsubscribe();
+          observer["throw"](error_obj.e);
+          return;
+        }
+      }
+      iteratorResult = observer.next(result);
+      if(iteratorResult.done) {
+        subscription.unsubscribe();
+      }
+    }));
+    return subscription;
+  }
 }
 
+EventListenerObservable.prototype.constructor = Observable;
+
 function createListener(element, name, handler) {
-    if (element.addEventListener) {
-        element.addEventListener(name, handler, false);
-        return new Subscription(function () {
-            element.removeEventListener(name, handler, false);
-        });
-    }
-    throw new Error('No listener found.');
+  if (element.addEventListener) {
+    element.addEventListener(name, handler, false);
+    return new Subscription(function () {
+      element.removeEventListener(name, handler, false);
+    });
+  }
+  throw new Error('No listener found.');
 }
 
 function createEventListener(element, eventName, handler) {
-    var disposables = new CompositeSubscription();
-    // Asume NodeList
-    if (Object.prototype.toString.call(element) === '[object NodeList]') {
-        for (var i = 0, len = element.length; i < len; i++) {
-            disposables.add(createEventListener(element.item(i), eventName, handler));
-        }
-    } else if (element) {
-        disposables.add(createListener(element, eventName, handler));
+  var disposables = new CompositeSubscription();
+  // Asume NodeList
+  if (Object.prototype.toString.call(element) === '[object NodeList]') {
+    for (var i = 0, len = element.length; i < len; i++) {
+      disposables.add(createEventListener(element.item(i), eventName, handler));
     }
-    return disposables;
+  } else if (element) {
+    disposables.add(createListener(element, eventName, handler));
+  }
+  return disposables;
 }
 
 /**
@@ -78,34 +79,28 @@ function createEventListener(element, eventName, handler) {
  */
 
 export default function fromEvent(element:any, eventName:string, selector:Function=null) : Observable {
-    // Node.js specific
-    if (element.addListener) {
-        return fromEventPattern(
-            function (h) {
-                element.addListener(eventName, h);
-            },
-            function (h) {
-                element.removeListener(eventName, h);
-            },
-            selector);
+  // Node.js specific
+  if (element.addListener) {
+    return fromEventPattern(
+      (h) => { element.addListener(eventName, h); },
+      (h) => { element.removeListener(eventName, h); },
+      selector
+    );
+  }
+
+  var config = this.config || {};
+
+  // Use only if non-native events are allowed
+  if (!config.useNativeEvents) {
+    // Handles jq, Angular.js, Zepto, Marionette, Ember.js
+    if (typeof element.on === 'function' && typeof element.off === 'function') {
+      return fromEventPattern(
+        (h) => { element.on(eventName, h); },
+        (h) => { element.off(eventName, h); },
+        selector
+      );
     }
+  }
 
-    var config = this.config || {};
-
-    // Use only if non-native events are allowed
-    if (!config.useNativeEvents) {
-        // Handles jq, Angular.js, Zepto, Marionette, Ember.js
-        if (typeof element.on === 'function' && typeof element.off === 'function') {
-            return fromEventPattern(
-                function (h) {
-                    element.on(eventName, h);
-                },
-                function (h) {
-                    element.off(eventName, h);
-                },
-                selector);
-        }
-    }
-
-    return new EventListenerObservable(element, eventName, selector);
+  return new EventListenerObservable(element, eventName, selector);
 };

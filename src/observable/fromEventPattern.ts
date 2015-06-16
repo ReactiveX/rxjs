@@ -4,48 +4,48 @@ import Observable from '../Observable';
 import Observer from '../Observer';
 
 class FromEventPatternObservable extends Observable {
-	add:Function;
-	remove:Function;
-	selector:Function;
-	
-	constructor(add:Function, remove:Function, selector:Function) {
-		super(null);
+  add:Function;
+  remove:Function;
+  selector:Function;
+  
+  constructor(add:Function, remove:Function, selector:Function) {
+    super(null);
     this.add = add;
     this.remove = remove;
     this.selector = selector;
-	}
-	
-	 _subscribe(subscriber:Observer) : Function {
-				var unsubscribe = () => {
-            if (remove) {
-                remove(innerHandler, token);
-            }
-        }
-				
-        function innerHandler(e) {
-            var result = e;
-            if (selector) {
-                result = try_catch(selector).apply(this, arguments);
-                if(result === error_obj) {
-                    subscriber["throw"](error_obj.e);
-                    unsubscribe();
-                    return;
-                }
-            }
-            result = subscriber.next(result);
-            if(result.done) {
-                unsubscribe();
-            }
-        }
-
-        var self = this;
-        var remove = this.remove;
-        var selector = this.selector;
-        var token = this.add(innerHandler);
-
-        return unsubscribe;
+  }
+  
+  _subscribe(subscriber:Observer) : Function {
+    var remove = this.remove;
+    var selector = this.selector;
+    var unsubscribe = () => {
+      if (remove) {
+        remove(innerHandler, token);
+      }
     }
+    function innerHandler(e) {
+      var result = e;
+      if (selector) {
+        result = try_catch(selector).apply(this, arguments);
+        if(result === error_obj) {
+          unsubscribe();
+          subscriber["throw"](error_obj.e);
+          return;
+        }
+      }
+      result = subscriber.next(result);
+      if(result.done) {
+        unsubscribe();
+      }
+    }
+
+    var token = this.add(innerHandler);
+
+    return unsubscribe;
+  }
 }
+
+FromEventPatternObservable.prototype.constructor = Observable;
 
 /**
  * Creates an observable sequence from an event emitter via an addHandler/removeHandler pair.
@@ -55,5 +55,5 @@ class FromEventPatternObservable extends Observable {
  * @returns {Observable} An observable sequence which wraps an event from an event emitter
  */
 export default function fromEventPattern(addHandler:Function, removeHandler:Function=null, selector:Function=null) : Observable {
-    return new FromEventPatternObservable(addHandler, removeHandler, selector);
+  return new FromEventPatternObservable(addHandler, removeHandler, selector);
 };

@@ -12,7 +12,7 @@ export default class Scheduler {
   actions:Array<ScheduledAction> = [];
   async:boolean = false;
   active:boolean = false;
-  scheduled:boolean = false;  
+  scheduled:boolean = false;
   
   static immediate:Scheduler = new Scheduler(false);
   static nextTick:Scheduler = new Scheduler(true);
@@ -23,13 +23,13 @@ export default class Scheduler {
   
   schedule(delay:number, state:any, work:Function):ScheduledAction {
    if (delay <= 0) {
-        if (Boolean(this.async)) {
-            return scheduleNext(this, state, work);
-        } else {
-            return scheduleNow(this, state, work);
-        }
+      if (Boolean(this.async)) {
+        return scheduleNext(this, state, work);
+      } else {
+        return scheduleNow(this, state, work);
+      }
     } else {
-        return scheduleLater(this, state, work, delay);
+      return scheduleLater(this, state, work, delay);
     }
   }
 }
@@ -39,11 +39,11 @@ function scheduleNow(scheduler:Scheduler, state:any, work:Function):ScheduledAct
 }
 
 function scheduleNext(scheduler:Scheduler, state:any, work:Function):ScheduledAction {
-    return Boolean(scheduler.scheduled) ?
-        new ScheduledAction(scheduler, state, work)    :
-        new NextScheduledAction(scheduler, state, work);
+  return Boolean(scheduler.scheduled) ?
+    new ScheduledAction(scheduler, state, work)    :
+    new NextScheduledAction(scheduler, state, work);
 }
 
 function scheduleLater(scheduler:Scheduler, state:any, work:Function, delay:number):FutureScheduledAction {
-    return new FutureScheduledAction(scheduler, state, work, delay);
+  return new FutureScheduledAction(scheduler, state, work, delay);
 }

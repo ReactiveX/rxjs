@@ -3,29 +3,30 @@ import Subscription from '../Subscription';
 import SerialSubscription from '../SerialSubscription';
 import CompositeSubscription from '../CompositeSubscription';
 import Observable from '../Observable';
+import isNumeric from '../util/isNumeric';
 
 interface IteratorResult<T> {
   value?:T;
   done:boolean;
 }
 
-function getObserver(destination, subscription) {
-    return new MergeAllObserver(destination, subscription, this.concurrent);
+function getObserver(destination) {
+  return new MergeAllObserver(destination, this.concurrent);
 };
 
 class MergeAllObserver extends Observer {
   buffer:Array<any>;
-  concurrent:number = Number.POSITIVE_INFINITY;
+  concurrent:number;
   stopped:boolean = false;
   subscriptions:CompositeSubscription = new CompositeSubscription();
   
-  constructor(destination:Observer, subscription:Subscription, concurrent:number) {
-    super(destination, subscription);
-    if (typeof concurrent != 'number' || concurrent !== concurrent || concurrent < 1) {
-        this.concurrent = Number.POSITIVE_INFINITY;
+  constructor(destination:Observer, concurrent:number) {
+    super(destination);
+    if (isNumeric(concurrent) && concurrent > 0) {
+      this.buffer = [];
+      this.concurrent = concurrent;
     } else {
-        this.buffer = [];
-        this.concurrent = concurrent;
+      this.concurrent = Number.POSITIVE_INFINITY;
     }
   }
   
@@ -35,11 +36,11 @@ class MergeAllObserver extends Observer {
     var subscriptions = this.subscriptions;
 
     if (subscriptions.length < concurrent) {
-        var innerSubscription = new SerialSubscription(null);
-        subscriptions.add(innerSubscription);
-        innerSubscription.add(observable.subscribe(new MergeInnerObserver(this, innerSubscription)));
+      var innerSubscription = new SerialSubscription(null);
+      subscriptions.add(innerSubscription);
+      innerSubscription.add(observable.subscribe(new MergeInnerObserver(this, innerSubscription)));
     } else if (buffer) {
-        buffer.push(observable);
+      buffer.push(observable);
     }
     
     return { done: false };
@@ -51,7 +52,7 @@ class MergeAllObserver extends Observer {
     this.stopped = true;
 
     if (subscriptions.length === 0 && (!buffer || buffer.length === 0)) {
-        return this.destination["return"]();
+      return this.destination["return"]();
     }
     
     return { done: true };
@@ -65,22 +66,24 @@ class MergeAllObserver extends Observer {
     subscriptions.remove(innerSubscription);
 
     if(length < this.concurrent) {
-        if (buffer && buffer.length > 0) {
-            this.next(buffer.shift());
-        } else if (length === 0 && this.stopped) {
-            return this.destination["return"]();
-        }
+      if (buffer && buffer.length > 0) {
+        this.next(buffer.shift());
+      } else if (length === 0 && this.stopped) {
+        return this.destination["return"]();
+      }
     }
     return { done: true };
   }
 }
 
 class MergeInnerObserver extends Observer {
+  subscription:Subscription;
   parent:MergeAllObserver;
   
   constructor(parent:MergeAllObserver, subscription:Subscription) {
-    super(parent.destination, subscription);
+    super(parent.destination);
     this.parent = parent;
+    this.subscription = subscription;
   }
   
   _return() {
@@ -88,6 +91,6 @@ class MergeInnerObserver extends Observer {
   }
 }
 
-export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : Observable {
-    return new this.constructor(this, { concurrent: concurrent, getObserver: getObserver });
+export default function mergeAll(concurrent:number=NaN) : Observable {
+  return new this.constructor(this, { concurrent: concurrent, getObserver: getObserver });
 };

@@ -8,8 +8,8 @@ interface IteratorResult<T> {
 	value?:T
 }
 
-function getObserver(destination, subscription) {
-    return new SelectObserver(destination, subscription, this.project);
+function getObserver(destination) {
+    return new SelectObserver(destination, this.project);
 };
 
 class SelectObserver extends Observer {
@@ -17,12 +17,12 @@ class SelectObserver extends Observer {
   
   project:(any)=>any;
   
-  constructor(destination, subscription, project) {
-    super(destination, subscription);
+  constructor(destination, project) {
+    super(destination);
     if(typeof project !== "function") {
-        this.value = project;
+      this.value = project;
     } else {
-        this.project = project;
+      this.project = project;
     }
   }
   

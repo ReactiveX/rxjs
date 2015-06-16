@@ -20,21 +20,19 @@ describe('Observable', function() {
   });
 
   describe('map()', function() {
-    it('should change the output value', function(done) {
+    it('should change the output value', function() {
       var observable = new Observable(function(generator) {
         generator.next(42);
         generator.return(undefined);
       });
-
-      observable.map(function(x) { return x + 1; }).subscribe(Observer.create(function(x) {
+      observable.map(function(x) { return x + 1; }).subscribe(function(x) {
           expect(x).toEqual(43);
-          done();
-      }, null, null));
+      }, null, null);
     });
   });
 
   describe('flatMap()', function() {
-    it('should flatten return observables', function(done) {
+    it('should flatten return observables', function() {
       var observable = new Observable(function(generator) {
         generator.next(new Observable(function(gen2) {
           gen2.next(42);
@@ -43,29 +41,21 @@ describe('Observable', function() {
         generator.return(undefined);
       });
 
-      observable.flatMap(function(x) { return x; }).subscribe(Observer.create(
-        function(x) {
+      observable.flatMap(function(x) { return x; }).subscribe(function(x) {
           expect(x).toEqual(42);
-          done();
-        },
-        null, null
-      ));
+        }, null, null);
     });
   });
 
   describe('Observable.return(value)', function() {
-    it('should return an observable of just that value', function(done) {
+    it('should return an observable of just that value', function() {
       var observable = Observable.return(42);
       var calls = 0;
-
       observable.subscribe(function(x) {
           expect(x).toEqual(42);
           expect(++calls).toEqual(1);
         },
-        null,
-        function() {
-          done();
-        });
+        null, null);
     });
   });
 });
