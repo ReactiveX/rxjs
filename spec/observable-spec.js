@@ -21,9 +21,14 @@ describe('Observable', function() {
     it('should invoke the unsubscribe action '+
         'when the subscription has been unsubscribed', function() {
       var called = false;
-      var observable = new Observable(function() {
+      var observable = new Observable(function(observer) {
+        var id = setTimeout(function(){
+          observer.next('wee');
+          observer.return();
+        }, 100);
         return function() {
           called = true;
+          clearTimeout(id);
         };   
       });
       var subscription = observable.subscribe(new Observer());

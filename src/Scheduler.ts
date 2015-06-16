@@ -2,6 +2,7 @@ import isNumeric from './util/isNumeric';
 import Observer from './Observer';
 import Immediate from './util/Immediate';
 import SerialSubscription from './SerialSubscription';
+import Subscription from './Subscription';
 import {
   ScheduledAction,
   NextScheduledAction,
@@ -21,12 +22,12 @@ export default class Scheduler {
     this.async = async;
   }
   
-  schedule(delay:number, state:any, work:Function):ScheduledAction {
+  schedule(delay:number, state:any, work:Function):Subscription {
    if (delay <= 0) {
         if (Boolean(this.async)) {
-            return scheduleNext(this, state, work);
+          return scheduleNext(this, state, work);
         } else {
-            return scheduleNow(this, state, work);
+          return scheduleNow(this, state, work);
         }
     } else {
         return scheduleLater(this, state, work, delay);

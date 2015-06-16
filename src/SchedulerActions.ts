@@ -128,7 +128,6 @@ function flush(scheduler, actions) {
         while(action = actions.shift()) {
             action.execute();
         };
-        scheduler.head = void 0;
         scheduler.active = false;
     }
 }
