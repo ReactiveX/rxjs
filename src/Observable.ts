@@ -22,6 +22,8 @@ export default class Observable {
   mergeAll:(concurrent?:number)=>Observable;
   flatMap:(project:any, concurrent?:number)=>Observable;
   concatAll:()=>Observable;
+  skip:(count:number)=>Observable;
+  take:(count:number)=>Observable;
   
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
