@@ -10,18 +10,12 @@ interface IteratorResult<T> {
 	value?:T
 }
 
-class SelectObserver extends Observer {
-  value:any;
-  
+class MapObserver extends Observer {
   project:(any)=>any;
   
   constructor(destination:Observer, subscription:Subscription, project:(any)=>any) {
     super(destination, subscription);
-    if(typeof project !== "function") {
-        this.value = project;
-    } else {
-        this.project = project;
-    }
+    this.project = project;
   }
   
   _next(value:any):IteratorResult<any> {
@@ -34,11 +28,7 @@ class SelectObserver extends Observer {
   }
 }
 
-SelectObserver.prototype.project = function projectValue():any {
-    return this.value;
-};
-
-class SelectObservable extends Observable {
+class MapObservable extends Observable {
   source:Observable;
   project:(any)=>any;
   
@@ -50,10 +40,10 @@ class SelectObservable extends Observable {
   
   subscriber(observer:Observer):Subscription {
     var subscription = new SerialSubscription(null);
-    return Subscription.from(this.source.subscriber(new SelectObserver(observer, subscription, this.project)));
+    return Subscription.from(this.source.subscriber(new MapObserver(observer, subscription, this.project)));
   }
 }
 
 export default function select(project:(any)=>any) : Observable {
-  return new SelectObservable(this, project);
+  return new MapObservable(this, project);
 };

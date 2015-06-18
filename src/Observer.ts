@@ -14,7 +14,7 @@ export default class Observer {
   
   static create(_next:(value:any)=>IteratorResult<any>, 
                 _throw:((value:any)=>IteratorResult<any>)=null, 
-                _return:(()=>IteratorResult<any>)=null) : Observer {
+                _return:((value:any)=>IteratorResult<any>)=null) : Observer {
     var observer = new Observer(null, null);
     observer._next = _next;
     observer._throw = _throw;
@@ -23,15 +23,15 @@ export default class Observer {
   }
   
   _next(value:any):IteratorResult<any> {
-    return this.destination["next"](value);
+    return this.destination.next(value);
   }
 
   _throw(error:any):IteratorResult<any> {
-    return this.destination["throw"](error);
+    return this.destination.throw(error);
   }
 
-  _return():IteratorResult<any> {
-    return this.destination["return"]();
+  _return(value:any):IteratorResult<any> {
+    return this.destination.return(value);
   }
   
   constructor(destination:Observer, subscription:Subscription) {
@@ -89,13 +89,13 @@ export default class Observer {
     return result;
   }
   
-  return():IteratorResult<any> {
+  return(value:any=undefined):IteratorResult<any> {
     var result = this.result;
     if (this.unsubscribed || Boolean(result.done)) {
         return result;
     }
 
-    var result2 = this._return() || result;
+    var result2 = this._return(value) || result;
     if (result !== result2) {
         result.value = result2.value;
     }
