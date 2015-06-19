@@ -1,7 +1,7 @@
 import Scheduler from './Scheduler';
-import SerialSubscription from './SerialSubscription';
-import Immediate from './util/Immediate';
-import Subscription from './Subscription';
+import SerialSubscription from '../SerialSubscription';
+import Immediate from '../util/Immediate';
+import Subscription from '../Subscription';
 
 export class ScheduledAction extends SerialSubscription {
   scheduler:Scheduler;
@@ -21,7 +21,7 @@ export class ScheduledAction extends SerialSubscription {
     var actions = scheduler.actions;
     this.state = state;
     actions.push(this);
-    flush(scheduler, actions);
+    scheduler.flush();
     return this;
   }
  
@@ -56,14 +56,14 @@ export class NextScheduledAction extends ScheduledAction {
     var scheduler = this.scheduler;
     this.state = state;
     scheduler.actions.push(this);
-    if (!Boolean(scheduler.scheduled)) {
+    if (!scheduler.scheduled) {
         scheduler.active = true;
         scheduler.scheduled = true;
         this.id = Immediate.setImmediate(function () {
             self.id = void 0;
             scheduler.active = false;
             scheduler.scheduled = false;
-            flush(scheduler, scheduler.actions);
+            scheduler.flush();
         });
     }
     return this;
@@ -117,17 +117,4 @@ export class FutureScheduledAction extends ScheduledAction {
         clearTimeout(id);
     }
   }
-}
-
-
-
-function flush(scheduler, actions) {
-    if (!Boolean(scheduler.active)) {
-        scheduler.active = true;
-        var action;
-        while(action = actions.shift()) {
-            action.execute();
-        };
-        scheduler.active = false;
-    }
 }

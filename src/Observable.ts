@@ -1,26 +1,29 @@
 import Observer from './Observer';
-import Scheduler from './Scheduler';
 import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
-
-const immediateScheduler = Scheduler.immediate;
+import nextTick from './scheduler/nextTick';
+import $$observer from './util/Symbol_observer';
 
 export default class Observable {  
-  static value:(value:any,scheduler:Scheduler)=>Observable;
-  static return:(value:any,scheduler:Scheduler)=>Observable;
+  static value:(value:any)=>Observable;
+  static return:(returnValue:any)=>Observable;
   static fromEvent:(element:any, eventName:string, selector:Function)=>Observable;
   static fromEventPattern:(addHandler:Function, removeHandler:Function, selector:Function)=>Observable;
-  static throw:(err:any, scheduler:Scheduler)=>Observable;
-  static empty:(scheduler:Scheduler)=>Observable;
-  static range:(start:number,end:number,scheduler:Scheduler)=>Observable;
+  static throw:(err:any)=>Observable;
+  static empty:()=>Observable;
+  static never:()=>Observable;
+  static range:(start:number,end:number)=>Observable;
+  static fromArray:(array:Array<any>)=>Observable;
   
-  select:(project:any)=>Observable;
-  map:(project:any)=>Observable;
+  map:(project:(any)=>any)=>Observable;
+  mapTo:(value:any)=>Observable;
   mergeAll:(concurrent?:number)=>Observable;
-  selectMany:(project:any, concurrent?:number)=>Observable;
   flatMap:(project:any, concurrent?:number)=>Observable;
+  concatAll:()=>Observable;
+  skip:(count:number)=>Observable;
+  take:(count:number)=>Observable;
   
-  constructor(subscriber:(observer:Observer)=>Function) {
+  constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
       this.subscriber = subscriber;
     }
@@ -34,13 +37,40 @@ export default class Observable {
     return void 0;
   }
   
-  subscribe(a, b=null, c=null) {
-    if(!a || typeof a !== "object") {
-        a = Observer.create(a, b, c);
-    }
-    if (!immediateScheduler.active) {
-        return immediateScheduler.schedule(0, null, () => this.subscriber(a));
-    }
-    return Subscription.from(this.subscriber(a));
+  [$$observer](observer:Observer) {
+    return Subscription.from(this.subscriber(observer));
   }
+  
+  subscribe(observerOrNextHandler:Observer|((any)=>IteratorResult<any>),
+    throwHandler:(any)=>IteratorResult<any>=null,
+    returnHandler:(any)=>IteratorResult<any>=null) {
+      var observer;
+      if(typeof observerOrNextHandler === 'object') {
+        observer = observerOrNextHandler;
+      } else {
+        observer = Observer.create(<(any)=>IteratorResult<any>>observerOrNextHandler, throwHandler, returnHandler);
+      }
+      
+      return nextTick.schedule(0, [observer, this], dispatchSubscription);
+    }
+  
+  forEach(nextHandler) {
+    return new Promise((resolve, reject) => {
+      var observer = Observer.create((value) => {
+       nextHandler(value);
+       return { done: false }; 
+      }, (err) => {
+        reject(err); 
+        return { done: true };
+      }, (value) => {
+        resolve(value);
+        return { done: true };
+      });
+      this[$$observer](observer);
+    });
+  }
+}
+
+function dispatchSubscription([observer, observable]) {
+  return observable[$$observer](observer);
 }
