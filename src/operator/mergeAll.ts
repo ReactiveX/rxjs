@@ -3,6 +3,7 @@ import Subscription from '../Subscription';
 import SerialSubscription from '../SerialSubscription';
 import CompositeSubscription from '../CompositeSubscription';
 import Observable from '../Observable';
+import $$observer from '../util/Symbol_observer';
 
 interface IteratorResult<T> {
   value?:T;
@@ -33,7 +34,7 @@ class MergeAllObserver extends Observer {
     if (subscriptions.length < concurrent) {
         var innerSubscription = new SerialSubscription(null);
         subscriptions.add(innerSubscription);
-        innerSubscription.add(observable.subscribe(new MergeInnerObserver(this, innerSubscription)));
+        innerSubscription.add(observable[$$observer](new MergeInnerObserver(this, innerSubscription)));
     } else if (buffer) {
         buffer.push(observable);
     }
