@@ -63,4 +63,8 @@ export default class CompositeSubscription extends Subscription {
     }
     return this;
   }
+  
+  indexOf(subscription:Subscription):number {
+    return this._subscriptions.indexOf(subscription);
+  }
 }

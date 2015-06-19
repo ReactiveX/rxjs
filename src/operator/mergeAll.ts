@@ -33,8 +33,8 @@ class MergeAllObserver extends Observer {
     var subscriptions = this.subscriptions;
 
     if (subscriptions.length < concurrent) {
-      var innerObserver = new MergeInnerObserver(this, innerSubscription);
       var innerSubscription = new SerialSubscription(null);
+      var innerObserver = new MergeInnerObserver(this, innerSubscription);
       subscriptions.add(innerSubscription);
       innerSubscription.add(observable[$$observer](innerObserver));
     } else if (buffer) {
