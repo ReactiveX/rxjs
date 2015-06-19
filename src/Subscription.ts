@@ -1,14 +1,14 @@
+import Observer from './Observer';
+
 export default class Subscription {
 	length:number = 0;
 	unsubscribed:boolean = false;
 	_unsubscribe:Function;
+	observer:Observer;
 	
-	constructor(_unsubscribe:Function) {
+	constructor(_unsubscribe:Function, observer:Observer) {
     this._unsubscribe = _unsubscribe;
-	}
-	
-	static get empty() {
-		return new Subscription(null);
+		this.observer = observer;
 	}
 	
 	unsubscribe():void {
@@ -19,6 +19,11 @@ export default class Subscription {
         this._unsubscribe = undefined;
         unsubscribe.call(this);
     }
+		var observer = this.observer;
+		if(observer) {
+			this.observer = undefined;
+			observer.dispose();
+		}
 	}
 	
 	add(subscription:Subscription):Subscription {
@@ -29,15 +34,15 @@ export default class Subscription {
 		return this;
 	}
 	
-	static from(value:any):Subscription {
+	static from(value:any, observer:Observer):Subscription {
 		if(!value) {
-			return Subscription.empty;
+			return new Subscription(undefined, observer);
 		}
 		else if(value && typeof value.unsubscribe === 'function') {
 			return value;
 		}
 		else if(typeof value === 'function') {
-			return new Subscription(value);
+			return new Subscription(value, observer);
 		}
 	}
 }

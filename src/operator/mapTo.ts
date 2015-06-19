@@ -2,8 +2,6 @@ import Observer from '../Observer';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-import SerialSubscription from '../SerialSubscription';
-
 interface IteratorResult<T> {
 	done:boolean;
 	value?:T
@@ -12,8 +10,8 @@ interface IteratorResult<T> {
 class MapToObserver extends Observer {
   value:any;
   
-  constructor(destination:Observer, subscription:Subscription, value:any) {
-    super(destination, subscription);
+  constructor(destination:Observer, value:any) {
+    super(destination);
     this.value = value;
   }
   
@@ -33,8 +31,8 @@ class MapToObservable extends Observable {
   }
   
   subscriber(observer:Observer):Subscription {
-    var subscription = new SerialSubscription(null);
-    return Subscription.from(this.source.subscriber(new MapToObserver(observer, subscription, this.value)));
+    var mapToObserver = new MapToObserver(observer, this.value);
+    return Subscription.from(this.source.subscriber(mapToObserver), mapToObserver);
   }
 }
 

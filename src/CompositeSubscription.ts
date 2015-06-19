@@ -1,12 +1,13 @@
 import Subscription from './Subscription';
 import arraySlice from './util/arraySlice';
+import Observer from './Observer';
 
 export default class CompositeSubscription extends Subscription {
   length:number=0;
   _subscriptions:Array<Subscription>;
   
   constructor() {
-    super(null);
+    super(null, null);
   }
   
   static from(subscriptions:Array<Subscription>):CompositeSubscription {
@@ -17,7 +18,7 @@ export default class CompositeSubscription extends Subscription {
     return comp;
   }
   
-  unsubscribe():void {
+  unsubscribe() {
     if(this.unsubscribed || !this._subscriptions) { return; }
 
     this.unsubscribed = true;
@@ -31,6 +32,8 @@ export default class CompositeSubscription extends Subscription {
     while(++subscriptionIndex < subscriptionCount) {
         subscriptions[subscriptionIndex].unsubscribe();
     }
+    
+    this.observer.dispose();
   }
   
   add(subscription:Subscription):CompositeSubscription {

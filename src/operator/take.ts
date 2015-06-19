@@ -1,7 +1,6 @@
 import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-import SerialSubscription from '../SerialSubscription';
 
 interface IteratorResult<T> {
 	done:boolean;
@@ -12,8 +11,8 @@ class TakeObserver extends Observer {
   count:number;
 	counter:number=0;
   
-  constructor(destination:Observer, subscription:Subscription, count:number) {
-    super(destination, subscription);
+  constructor(destination:Observer, count:number) {
+    super(destination);
     this.count = count;
   }
   
@@ -37,8 +36,8 @@ class TakeObservable extends Observable {
   }
   
   subscriber(observer:Observer):Subscription {
-    var subscription = new SerialSubscription(null);
-    return Subscription.from(this.source.subscriber(new TakeObserver(observer, subscription, this.count)));
+    var takeObserver = new TakeObserver(observer, this.count);
+    return Subscription.from(this.source.subscriber(takeObserver), takeObserver);
   }
 }
 

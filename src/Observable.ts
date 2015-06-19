@@ -40,7 +40,7 @@ export default class Observable {
   }
   
   [$$observer](observer:Observer) {
-    return Subscription.from(this.subscriber(observer));
+    return Subscription.from(this.subscriber(observer), observer);
   }
   
   subscribe(observerOrNextHandler:Observer|((any)=>IteratorResult<any>),

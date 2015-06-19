@@ -15,7 +15,7 @@ class RangeObservable extends Observable {
     var end = this.end;
     var start = this.start;
     var i;
-    for(i = start; i < end && !observer.unsubscribed; i++) {
+    for(i = start; i < end && !observer.disposed; i++) {
       observer.next(i);
     }
     observer.return();

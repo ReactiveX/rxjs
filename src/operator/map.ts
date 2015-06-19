@@ -3,7 +3,6 @@ import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-import SerialSubscription from '../SerialSubscription';
 
 interface IteratorResult<T> {
 	done:boolean;
@@ -13,8 +12,8 @@ interface IteratorResult<T> {
 class MapObserver extends Observer {
   project:(any)=>any;
   
-  constructor(destination:Observer, subscription:Subscription, project:(any)=>any) {
-    super(destination, subscription);
+  constructor(destination:Observer, project:(any)=>any) {
+    super(destination);
     this.project = project;
   }
   
@@ -39,8 +38,8 @@ class MapObservable extends Observable {
   }
   
   subscriber(observer:Observer):Subscription {
-    var subscription = new SerialSubscription(null);
-    return Subscription.from(this.source.subscriber(new MapObserver(observer, subscription, this.project)));
+    var mapObserver = new MapObserver(observer, this.project);
+    return Subscription.from(this.source.subscriber(mapObserver), mapObserver);
   }
 }
 
