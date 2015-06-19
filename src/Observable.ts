@@ -24,7 +24,8 @@ export default class Observable {
   skip:(count:number)=>Observable;
   take:(count:number)=>Observable;
   subscribeOn:(scheduler:Scheduler)=>Observable;
-    
+  observeOn:(scheduler:Scheduler)=>Observable;
+  
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
       this.subscriber = subscriber;

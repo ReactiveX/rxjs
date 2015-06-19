@@ -26,6 +26,7 @@ import concatAll from './operator/concatAll';
 import skip from './operator/skip';
 import take from './operator/take';
 import subscribeOn from './operator/subscribeOn';
+import observeOn from './operator/observeOn';
 
 Observable.value = value;
 Observable.return = _return;
@@ -44,6 +45,7 @@ Observable.prototype.concatAll = concatAll;
 Observable.prototype.skip = skip;
 Observable.prototype.take = take;
 Observable.prototype.subscribeOn = subscribeOn;
+Observable.prototype.observeOn = observeOn;
 
 var RxNext = {
   Scheduler: {
