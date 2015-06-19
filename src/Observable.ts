@@ -15,6 +15,7 @@ export default class Observable {
   static never:()=>Observable;
   static range:(start:number,end:number)=>Observable;
   static fromArray:(array:Array<any>)=>Observable;
+  static zip:(observables:Array<Observable>,project:(...Observable)=>Observable)=>Observable;
   
   map:(project:(any)=>any)=>Observable;
   mapTo:(value:any)=>Observable;

@@ -17,6 +17,7 @@ import _throw from './observable/throw';
 import empty from './observable/empty';
 import range from './observable/range';
 import fromArray from './observable/fromArray';
+import zip from './observable/zip';
 
 import map from './operator/map';
 import mapTo from './operator/mapTo';
@@ -37,6 +38,7 @@ Observable.throw = _throw;
 Observable.empty = empty;
 Observable.range = range;
 Observable.fromArray = fromArray;
+Observable.zip = zip;
 
 Observable.prototype.map = map;
 Observable.prototype.mapTo = mapTo;
