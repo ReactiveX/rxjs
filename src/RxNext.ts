@@ -1,6 +1,9 @@
 import Observable from './Observable';
 import Observer from './Observer';
-import Scheduler from './Scheduler';
+import nextTick from './scheduler/nextTick';
+import immediate from './scheduler/immediate';
+import NextTickScheduler from './scheduler/NextTickScheduler';
+import Scheduler from './scheduler/Scheduler';
 import Subscription from './Subscription';
 import CompositeSubscription from './CompositeSubscription';
 import SerialSubscription from './SerialSubscription';
@@ -41,7 +44,10 @@ Observable.prototype.skip = skip;
 Observable.prototype.take = take;
 
 var RxNext = {
-  Scheduler,
+  Scheduler: {
+    nextTick,
+    immediate
+  },
   Observer,
   Observable,
   Subscription,

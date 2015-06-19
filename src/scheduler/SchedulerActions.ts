@@ -1,7 +1,7 @@
 import Scheduler from './Scheduler';
-import SerialSubscription from './SerialSubscription';
-import Immediate from './util/Immediate';
-import Subscription from './Subscription';
+import SerialSubscription from '../SerialSubscription';
+import Immediate from '../util/Immediate';
+import Subscription from '../Subscription';
 
 export class ScheduledAction extends SerialSubscription {
   scheduler:Scheduler;

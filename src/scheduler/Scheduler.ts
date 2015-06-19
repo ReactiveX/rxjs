@@ -1,8 +1,6 @@
-import isNumeric from './util/isNumeric';
-import Observer from './Observer';
-import Immediate from './util/Immediate';
-import SerialSubscription from './SerialSubscription';
-import Subscription from './Subscription';
+import Immediate from '../util/Immediate';
+import SerialSubscription from '../SerialSubscription';
+import Subscription from '../Subscription';
 import NextTickScheduler from './NextTickScheduler';
 
 import {
@@ -13,15 +11,10 @@ import {
 
 export default class Scheduler {
   actions:Array<ScheduledAction> = [];
-  async:boolean = false;
   active:boolean = false;
   scheduled:boolean = false;  
   
-  static immediate:Scheduler = new Scheduler(false);
-  static nextTick:Scheduler = new NextTickScheduler(true);
-  
-  constructor(async:boolean=false) {
-    this.async = async;
+  constructor() {
   }
   
   schedule(delay:number, state:any, work:Function):Subscription {

@@ -1,10 +1,8 @@
 import Observer from './Observer';
-import Scheduler from './Scheduler';
 import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
+import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
-
-const immediateScheduler = Scheduler.immediate;
 
 export default class Observable {  
   static value:(value:any)=>Observable;
@@ -53,7 +51,7 @@ export default class Observable {
         observer = Observer.create(<(any)=>IteratorResult<any>>observerOrNextHandler, throwHandler, returnHandler);
       }
       
-      return Scheduler.nextTick.schedule(0, [observer, this], dispatchSubscription);
+      return nextTick.schedule(0, [observer, this], dispatchSubscription);
     }
   
   forEach(nextHandler) {
