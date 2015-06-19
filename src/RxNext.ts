@@ -30,6 +30,7 @@ import subscribeOn from './operator/subscribeOn';
 import observeOn from './operator/observeOn';
 import zipAll from './operator/zipAll';
 import zipProto from './operator/zip';
+import mergeProto from './operator/merge';
 
 Observable.value = value;
 Observable.return = _return;
@@ -52,6 +53,7 @@ Observable.prototype.subscribeOn = subscribeOn;
 Observable.prototype.observeOn = observeOn;
 Observable.prototype.zipAll = zipAll;
 Observable.prototype.zip = zipProto;
+Observable.prototype.merge = mergeProto;
 
 var RxNext = {
   Scheduler: {

@@ -28,7 +28,8 @@ export default class Observable {
   observeOn:(scheduler:Scheduler)=>Observable;
   zipAll:(project:(...Observable)=>Observable)=>Observable;
   zip:(observables:Array<Observable>, project:(...Observable)=>Observable)=>Observable;
-  
+  merge:(observables:Array<Observable>)=>Observable;
+
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
       this.subscriber = subscriber;
