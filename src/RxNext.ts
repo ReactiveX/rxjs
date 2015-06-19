@@ -7,7 +7,7 @@ import Scheduler from './scheduler/Scheduler';
 import Subscription from './Subscription';
 import CompositeSubscription from './CompositeSubscription';
 import SerialSubscription from './SerialSubscription';
-
+import Subject from './Subject';
 
 import value from './observable/value';
 import _return from './observable/return';
@@ -64,7 +64,8 @@ var RxNext = {
   Observable,
   Subscription,
   CompositeSubscription,
-  SerialSubscription
+  SerialSubscription, 
+  Subject
 };
 
 export default RxNext;
