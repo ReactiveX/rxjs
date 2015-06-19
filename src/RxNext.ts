@@ -25,6 +25,7 @@ import flatMap from './operator/flatMap';
 import concatAll from './operator/concatAll';
 import skip from './operator/skip';
 import take from './operator/take';
+import subscribeOn from './operator/subscribeOn';
 
 Observable.value = value;
 Observable.return = _return;
@@ -42,6 +43,7 @@ Observable.prototype.flatMap = flatMap;
 Observable.prototype.concatAll = concatAll;
 Observable.prototype.skip = skip;
 Observable.prototype.take = take;
+Observable.prototype.subscribeOn = subscribeOn;
 
 var RxNext = {
   Scheduler: {

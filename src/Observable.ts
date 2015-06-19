@@ -3,6 +3,7 @@ import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
 import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
+import Scheduler from './scheduler/Scheduler';
 
 export default class Observable {  
   static value:(value:any)=>Observable;
@@ -22,7 +23,8 @@ export default class Observable {
   concatAll:()=>Observable;
   skip:(count:number)=>Observable;
   take:(count:number)=>Observable;
-  
+  subscribeOn:(scheduler:Scheduler)=>Observable;
+    
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
       this.subscriber = subscriber;
