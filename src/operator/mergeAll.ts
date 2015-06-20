@@ -10,20 +10,16 @@ interface IteratorResult<T> {
   done:boolean;
 }
 
+
 class MergeAllObserver extends Observer {
   buffer:Array<any>;
-  concurrent:number = Number.POSITIVE_INFINITY;
-  stopped:boolean = false;
+  concurrent:number;
   subscriptions:CompositeSubscription;
   
   constructor(destination:Observer, concurrent:number) {
     super(destination);
-    if (typeof concurrent != 'number' || concurrent !== concurrent || concurrent < 1) {
-        this.concurrent = Number.POSITIVE_INFINITY;
-    } else {
-        this.buffer = [];
-        this.concurrent = concurrent;
-    }
+    this.buffer = [];
+    this.concurrent = concurrent;
     this.subscriptions = new CompositeSubscription();
   }
   
@@ -47,10 +43,9 @@ class MergeAllObserver extends Observer {
   _return() : IteratorResult<any> {
     var buffer = this.buffer;
     var subscriptions = this.subscriptions;
-    this.stopped = true;
 
     if (subscriptions.length === 0 && (!buffer || buffer.length === 0)) {
-        return this.destination["return"]();
+        return this.destination.return();
     }
     
     return { done: true };
@@ -59,16 +54,15 @@ class MergeAllObserver extends Observer {
   _innerReturn(innerObserver:MergeInnerObserver) : IteratorResult<any> {
     var buffer = this.buffer;
     var subscriptions = this.subscriptions;
-    var length = subscriptions.length - 1;
 
     subscriptions.remove(innerObserver.subscription);
 
-    if(length < this.concurrent) {
-        if (buffer && buffer.length > 0) {
-            this.next(buffer.shift());
-        } else if (length === 0 && this.stopped) {
-            return this.destination["return"]();
-        }
+    if(subscriptions.length < this.concurrent) {
+      if (buffer && buffer.length > 0) {
+        this.next(buffer.shift());
+      } else if (subscriptions.length === 0) {
+        return this.destination.return();
+      }
     }
     return { done: true };
   }
