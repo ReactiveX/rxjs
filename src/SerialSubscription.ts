@@ -1,10 +1,11 @@
 import Subscription from './Subscription';
+import Observer from './Observer';
 
 export default class SerialSubscription extends Subscription {
   subscription:Subscription;
   
   constructor(subscription:Subscription) {
-    super(null);
+    super(null, null);
     this.subscription = subscription;
   }
   

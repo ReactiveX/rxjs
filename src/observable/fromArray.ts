@@ -13,7 +13,7 @@ class ArrayObservable extends Observable {
 		var i, len;
 		var array = this.array;
 		if(Array.isArray(array)) {
-			for(i = 0, len = array.length; i < len && !observer.unsubscribed; i++) {
+			for(i = 0, len = array.length; i < len && !observer.disposed; i++) {
 				observer.next(array[i]);
 			}
 		}

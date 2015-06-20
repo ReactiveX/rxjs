@@ -3,6 +3,7 @@ import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
 import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
+import Scheduler from './scheduler/Scheduler';
 
 export default class Observable {  
   static value:(value:any)=>Observable;
@@ -14,6 +15,7 @@ export default class Observable {
   static never:()=>Observable;
   static range:(start:number,end:number)=>Observable;
   static fromArray:(array:Array<any>)=>Observable;
+  static zip:(observables:Array<Observable>,project:(...observables:Array<Observable>)=>Observable)=>Observable;
   
   map:(project:(any)=>any)=>Observable;
   mapTo:(value:any)=>Observable;
@@ -22,7 +24,12 @@ export default class Observable {
   concatAll:()=>Observable;
   skip:(count:number)=>Observable;
   take:(count:number)=>Observable;
-  
+  subscribeOn:(scheduler:Scheduler)=>Observable;
+  observeOn:(scheduler:Scheduler)=>Observable;
+  zipAll:(project:(...observables:Array<Observable>)=>Observable)=>Observable;
+  zip:(observables:Array<Observable>, project:(...observables:Array<Observable>)=>Observable)=>Observable;
+  merge:(observables:Array<Observable>)=>Observable;
+
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
       this.subscriber = subscriber;
@@ -38,7 +45,7 @@ export default class Observable {
   }
   
   [$$observer](observer:Observer) {
-    return Subscription.from(this.subscriber(observer));
+    return Subscription.from(this.subscriber(observer), observer);
   }
   
   subscribe(observerOrNextHandler:Observer|((any)=>IteratorResult<any>),

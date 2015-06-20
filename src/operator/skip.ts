@@ -1,7 +1,6 @@
 import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-import SerialSubscription from '../SerialSubscription';
 
 interface IteratorResult<T> {
 	done:boolean;
@@ -12,8 +11,8 @@ class SkipObserver extends Observer {
   count:number;
 	counter:number=0;
   
-  constructor(destination:Observer, subscription:Subscription, count:number) {
-    super(destination, subscription);
+  constructor(destination:Observer, count:number) {
+    super(destination);
     this.count = count;
   }
   
@@ -36,8 +35,8 @@ class SkipObservable extends Observable {
   }
   
   subscriber(observer:Observer):Subscription {
-    var subscription = new SerialSubscription(null);
-    return Subscription.from(this.source.subscriber(new SkipObserver(observer, subscription, this.count)));
+    var skipObserver = new SkipObserver(observer, this.count);
+    return Subscription.from(this.source.subscriber(skipObserver), skipObserver);
   }
 }
 

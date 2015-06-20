@@ -4,6 +4,7 @@ import Observable from '../Observable';
 import Subscription from '../Subscription';
 import CompositeSubscription from '../CompositeSubscription';
 import fromEventPattern from './fromEventPattern';
+import Observer from '../Observer';
 
 class EventListenerObservable extends Observable {
   element:Object;
@@ -17,7 +18,7 @@ class EventListenerObservable extends Observable {
     this.selector = selector;
   }
   
-  subscriber(observer) {
+  subscriber(observer:Observer) {
         var selector = this.selector;
         var listeners = createEventListener(
             this.element, this.eventName,
@@ -37,32 +38,32 @@ class EventListenerObservable extends Observable {
                 if(iteratorResult.done) {
                     listeners.unsubscribe();
                 }
-            });
+            }, observer);
         return listeners;
     }
 }
 
-function createListener(element, name, handler) {
+function createListener(element:any, name:string, handler:Function, observer:Observer) : Subscription {
     if (element.addEventListener) {
         element.addEventListener(name, handler, false);
         return new Subscription(function () {
             element.removeEventListener(name, handler, false);
-        });
+        }, observer);
     }
     throw new Error('No listener found.');
 }
 
-function createEventListener(element, eventName, handler) {
-    var disposables = new CompositeSubscription();
+function createEventListener(element:any, eventName:string, handler:Function, observer:Observer) : Subscription {
+    var subscriptions = new CompositeSubscription();
     // Asume NodeList
     if (Object.prototype.toString.call(element) === '[object NodeList]') {
         for (var i = 0, len = element.length; i < len; i++) {
-            disposables.add(createEventListener(element.item(i), eventName, handler));
+            subscriptions.add(createEventListener(element.item(i), eventName, handler, observer));
         }
     } else if (element) {
-        disposables.add(createListener(element, eventName, handler));
+        subscriptions.add(createListener(element, eventName, handler, observer));
     }
-    return disposables;
+    return subscriptions;
 }
 
 /**

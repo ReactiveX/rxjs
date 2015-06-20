@@ -14,16 +14,17 @@ class MergeAllObserver extends Observer {
   buffer:Array<any>;
   concurrent:number = Number.POSITIVE_INFINITY;
   stopped:boolean = false;
-  subscriptions:CompositeSubscription = new CompositeSubscription();
+  subscriptions:CompositeSubscription;
   
-  constructor(destination:Observer, subscription:Subscription, concurrent:number) {
-    super(destination, subscription);
+  constructor(destination:Observer, concurrent:number) {
+    super(destination);
     if (typeof concurrent != 'number' || concurrent !== concurrent || concurrent < 1) {
         this.concurrent = Number.POSITIVE_INFINITY;
     } else {
         this.buffer = [];
         this.concurrent = concurrent;
     }
+    this.subscriptions = new CompositeSubscription();
   }
   
   _next(observable):IteratorResult<any> {
@@ -32,11 +33,12 @@ class MergeAllObserver extends Observer {
     var subscriptions = this.subscriptions;
 
     if (subscriptions.length < concurrent) {
-        var innerSubscription = new SerialSubscription(null);
-        subscriptions.add(innerSubscription);
-        innerSubscription.add(observable[$$observer](new MergeInnerObserver(this, innerSubscription)));
+      var innerSubscription = new SerialSubscription(null);
+      var innerObserver = new MergeInnerObserver(this, innerSubscription);
+      subscriptions.add(innerSubscription);
+      innerSubscription.add(observable[$$observer](innerObserver));
     } else if (buffer) {
-        buffer.push(observable);
+      buffer.push(observable);
     }
     
     return { done: false };
@@ -54,12 +56,12 @@ class MergeAllObserver extends Observer {
     return { done: true };
   }
   
-  _innerReturn(innerSubscription:Subscription) : IteratorResult<any> {
+  _innerReturn(innerObserver:MergeInnerObserver) : IteratorResult<any> {
     var buffer = this.buffer;
     var subscriptions = this.subscriptions;
     var length = subscriptions.length - 1;
 
-    subscriptions.remove(innerSubscription);
+    subscriptions.remove(innerObserver.subscription);
 
     if(length < this.concurrent) {
         if (buffer && buffer.length > 0) {
@@ -74,14 +76,16 @@ class MergeAllObserver extends Observer {
 
 class MergeInnerObserver extends Observer {
   parent:MergeAllObserver;
+  subscription:Subscription;
   
   constructor(parent:MergeAllObserver, subscription:Subscription) {
-    super(parent.destination, subscription);
+    super(parent.destination);
     this.parent = parent;
+    this.subscription = subscription;
   }
   
   _return() {
-    return this.parent._innerReturn(this.subscription);
+    return this.parent._innerReturn(this);
   }
 }
 
@@ -96,8 +100,8 @@ class MergeAllObservable extends Observable {
   }
   
   subscriber(observer):Subscription {
-    var subscription = new SerialSubscription(null);
-    return Subscription.from(this.source.subscriber(new MergeAllObserver(observer, subscription, this.concurrent)));
+    var mergeAllObserver = new MergeAllObserver(observer, this.concurrent);
+    return Subscription.from(this.source.subscriber(mergeAllObserver), mergeAllObserver);
   }
 }
 

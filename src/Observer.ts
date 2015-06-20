@@ -8,18 +8,22 @@ export interface IteratorResult<T> {
 
 export default class Observer {
   destination:Observer;
-  unsubscribed:boolean = false;
-  result:IteratorResult<any>;
-  subscription:Subscription;
+  disposed:boolean = false;
   
   static create(_next:(value:any)=>IteratorResult<any>, 
                 _throw:((value:any)=>IteratorResult<any>)=null, 
-                _return:((value:any)=>IteratorResult<any>)=null) : Observer {
-    var observer = new Observer(null, null);
+                _return:((value:any)=>IteratorResult<any>)=null,
+                _dispose:(()=>void)=null) : Observer {
+    var observer = new Observer(null);
     observer._next = _next;
     observer._throw = _throw;
     observer._return = _return;
+    observer._dispose = _dispose;
     return observer;
+  }
+  
+  _dispose() {
+    this.destination.dispose();
   }
   
   _next(value:any):IteratorResult<any> {
@@ -34,74 +38,45 @@ export default class Observer {
     return this.destination.return(value);
   }
   
-  constructor(destination:Observer, subscription:Subscription) {
-    this.result = destination && destination.result || { done: false }
+  constructor(destination:Observer) {
     this.destination = destination;
-    this.subscription = subscription;
-  }
-  
-  unsubscribe():void {
-    var subscription = this.subscription;
-    if(subscription) {
-      this.subscription = undefined;
-      subscription.unsubscribe();
-    }
-    this.unsubscribed = true;
-    var subscription = this.subscription;
-    if(subscription) {
-      this.subscription = undefined;
-      subscription.unsubscribe();
-    }
   }
   
   next(value:any):IteratorResult<any> { 
-    var result = this.result;
-    if (this.unsubscribed || Boolean(result.done)) {
-        return result;
+    if (this.disposed) {
+        return { done: true };
     }
-
-    var result2 = this._next(value) || result;
-    if (result !== result2) {
-        result.done = result2.done;
-        result.value = result2.value;
-    }
-    
+    var result = this._next(value);
     if (result.done) {
-        this.unsubscribe();
+        this.dispose();
     }
-    
     return result;
   }
   
   throw(error:any):IteratorResult<any> {    
-    var result = this.result;
-    if (this.unsubscribed || Boolean(result.done)) {
-        return result;
+    if (this.disposed) {
+        return { done: true };
     }
-
-    var result2 = this._throw(error) || result;
-    if (result !== result2) {
-        result.value = result2.value;
-    }
-    
-    result.done = true;
-    this.unsubscribe();
-    return result;
+    var result = this._throw(error);    
+    this.dispose();
+    return { done: true, value: result.value };
   }
   
   return(value:any=undefined):IteratorResult<any> {
-    var result = this.result;
-    if (this.unsubscribed || Boolean(result.done)) {
-        return result;
+    if(this.disposed) {
+      return { done: true };
     }
-
-    var result2 = this._return(value) || result;
-    if (result !== result2) {
-        result.value = result2.value;
+    var result = this._return(value);
+    this.dispose();
+    return { done: true, value: result.value };
+  }
+  
+  dispose() {
+    if(!this.disposed) {
+      if(this._dispose) {
+        this._dispose();
+      }
     }
-
-    result.done = true;
-    this.unsubscribe();
-    return result;
+    this.disposed = true;
   }
 }
