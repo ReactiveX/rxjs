@@ -13,10 +13,14 @@ export default class Subject extends Observable {
 	destination:Observer;
 	disposed:boolean=false;
 	observers:Array<Observer> = [];
+	_dispose:Function;
 	
 	dispose() {
 		this.disposed = true;
 		this.observers.length = 0;
+		if(this._dispose) {
+			this._dispose();
+		}
 	}
 	
 	[$$observer](observer:Observer) : Subscription {
@@ -26,17 +30,28 @@ export default class Subject extends Observable {
 	}
 	
 	next(value:any) : IteratorResult<any> {
+		if(this.disposed) {
+			return { done: true };
+		}
 		this.observers.forEach(o => o.next(value));
 		return { done: false };
 	}
 	
 	throw(err:any) : IteratorResult<any> {
+		if(this.disposed) {
+			return { done: true };
+		}
 		this.observers.forEach(o => o.throw(err));
+		this.dispose();
 		return { done: true };
 	}
 
 	return(value:any) : IteratorResult<any> {
+		if(this.disposed) {
+			return { done: true };
+		}
 		this.observers.forEach(o => o.return(value));
+		this.dispose();
 		return { done: true };
 	}	
 }
