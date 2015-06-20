@@ -1,4 +1,4 @@
-# RxJS Next
+# RxJS Next (pre-alpha)
 
 Reactive Extensions Library
 
