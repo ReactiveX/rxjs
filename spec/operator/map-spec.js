@@ -25,4 +25,18 @@ describe('Observable.value or Observable.return', function(){
 			done();
 		});
 	});
+	
+	it('should send errors down the error path', function(done) {
+		Observable.value(42).map(function(x) {
+			throw 'bad';
+		})
+		.subscribe(function(x) {
+			expect(true).toBe(false);
+		}, function(err) {
+			expect(err).toBe('bad');
+			done();
+		}, function() {
+			expect(true).toBe(false);
+		});
+	});
 });

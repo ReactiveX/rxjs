@@ -79,7 +79,7 @@ export default class Observer {
     }
     var result = this._throw(error);  
     this.dispose();
-    return { done: true, value: result.value };
+    return { done: true, value: result ? result.value : undefined };
   }
   
   return(value:any=undefined):IteratorResult<any> {
@@ -88,7 +88,7 @@ export default class Observer {
     }
     var result = this._return(value);
     this.dispose();
-    return { done: true, value: result.value };
+    return { done: true, value: result ? result.value : undefined };
   }
   
   dispose() {
