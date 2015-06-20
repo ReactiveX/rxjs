@@ -18,4 +18,19 @@ describe('mergeAll', function(){
 			done();
 		});
 	});
+	
+	it('should throw if any child observable throws', function(done) {
+		Observable.fromArray([
+			Observable.value(1),
+			Observable.throw('bad'),
+			Observable.value(3)
+		])
+		.mergeAll()
+		.subscribe(function(x) {
+			expect(x).toBe(1);
+		}, function(err) {
+			expect(err).toBe('bad');
+			done();
+		})
+	});
 });
