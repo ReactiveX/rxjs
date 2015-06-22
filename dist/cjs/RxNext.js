@@ -76,6 +76,10 @@ var _observableFromPromise = require('./observable/fromPromise');
 
 var _observableFromPromise2 = _interopRequireDefault(_observableFromPromise);
 
+var _observableOf = require('./observable/of');
+
+var _observableOf2 = _interopRequireDefault(_observableOf);
+
 var _operatorMap = require('./operator/map');
 
 var _operatorMap2 = _interopRequireDefault(_operatorMap);
@@ -138,6 +142,7 @@ _Observable2['default'].range = _observableRange2['default'];
 _Observable2['default'].fromArray = _observableFromArray2['default'];
 _Observable2['default'].zip = _observableZip2['default'];
 _Observable2['default'].fromPromise = _observableFromPromise2['default'];
+_Observable2['default'].of = _observableOf2['default'];
 _Observable2['default'].prototype.map = _operatorMap2['default'];
 _Observable2['default'].prototype.mapTo = _operatorMapTo2['default'];
 _Observable2['default'].prototype.mergeAll = _operatorMergeAll2['default'];
