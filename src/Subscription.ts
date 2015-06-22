@@ -22,7 +22,12 @@ export default class Subscription {
 		var observer = this.observer;
 		if(observer) {
 			this.observer = undefined;
-			observer.dispose();
+			if(observer.dispose && observer._dispose) {
+				observer.dispose();
+			}
+			else if(observer.return && observer._return) {
+				observer.return();
+			}
 		}
 	}
 	

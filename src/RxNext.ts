@@ -18,6 +18,7 @@ import empty from './observable/empty';
 import range from './observable/range';
 import fromArray from './observable/fromArray';
 import zip from './observable/zip';
+import fromPromise from './observable/fromPromise';
 
 import map from './operator/map';
 import mapTo from './operator/mapTo';
@@ -41,6 +42,7 @@ Observable.empty = empty;
 Observable.range = range;
 Observable.fromArray = fromArray;
 Observable.zip = zip;
+Observable.fromPromise = fromPromise;
 
 Observable.prototype.map = map;
 Observable.prototype.mapTo = mapTo;

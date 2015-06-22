@@ -15,6 +15,7 @@ class MergeAllObserver extends Observer {
   buffer:Array<any>;
   concurrent:number;
   subscriptions:CompositeSubscription;
+  stopped:boolean = false;
   
   constructor(destination:Observer, concurrent:number) {
     super(destination);
@@ -23,7 +24,7 @@ class MergeAllObserver extends Observer {
     this.subscriptions = new CompositeSubscription();
   }
   
-  _next(observable):IteratorResult<any> {
+  next(observable):IteratorResult<any> {
     var buffer = this.buffer;
     var concurrent = this.concurrent;
     var subscriptions = this.subscriptions;
@@ -40,14 +41,11 @@ class MergeAllObserver extends Observer {
     return { done: false };
   }
   
-  _return() : IteratorResult<any> {
-    var buffer = this.buffer;
-    var subscriptions = this.subscriptions;
-
-    if (subscriptions.length === 0 && (!buffer || buffer.length === 0)) {
-        return this.destination.return();
+  return() : IteratorResult<any> {
+    this.stopped = true;
+    if(this.subscriptions.length === 0 && (this.buffer && this.buffer.length === 0)) {
+      this.destination.return();
     }
-    
     return { done: true };
   }
   
@@ -60,11 +58,16 @@ class MergeAllObserver extends Observer {
     if(subscriptions.length < this.concurrent) {
       if (buffer && buffer.length > 0) {
         this.next(buffer.shift());
-      } else if (subscriptions.length === 0) {
+      } else if (this.stopped && subscriptions.length === 0) {
         return this.destination.return();
       }
     }
     return { done: true };
+  }
+  
+  _dispose() {
+    console.log('dispose parent');
+    this.subscriptions.unsubscribe();
   }
 }
 

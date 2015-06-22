@@ -32,8 +32,6 @@ export default class CompositeSubscription extends Subscription {
     while(++subscriptionIndex < subscriptionCount) {
         subscriptions[subscriptionIndex].unsubscribe();
     }
-    
-    this.observer.dispose();
   }
   
   add(subscription:Subscription):CompositeSubscription {

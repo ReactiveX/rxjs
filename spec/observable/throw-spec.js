@@ -1,14 +1,15 @@
 /* globals describe, it, expect */
 var RxNext = require('../../dist/cjs/RxNext');
 var Observable = RxNext.Observable;
-var Scheduler = RxNext.Scheduler;
 
-describe('Observable.value', function(){
+describe('Observable.throw', function(){
 	it('should emit one value', function() {
 		var calls = 0;
-		Observable.value(42).subscribe(function(x) {
+		Observable.throw('bad').subscribe(function() {
+			throw 'should not be called';
+		}, function(err) {
 			expect(++calls).toBe(1);
-			expect(x).toBe(42);
+			expect(err).toBe('bad');
 		});
 	});
 });

@@ -16,6 +16,7 @@ export default class Observable {
   static range:(start:number,end:number)=>Observable;
   static fromArray:(array:Array<any>)=>Observable;
   static zip:(observables:Array<Observable>,project:(...observables:Array<Observable>)=>Observable)=>Observable;
+  static fromPromise:(promise:Promise<any>)=>Observable;
   
   map:(project:(any)=>any)=>Observable;
   mapTo:(value:any)=>Observable;

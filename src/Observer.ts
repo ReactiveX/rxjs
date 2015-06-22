@@ -8,7 +8,7 @@ export interface IteratorResult<T> {
 
 export default class Observer {
   destination:Observer;
-  disposed:boolean = false;
+  unsubscribed:boolean = false;
   
   static create(_next:(value:any)=>IteratorResult<any>, 
                 _throw:((value:any)=>IteratorResult<any>)=null, 
@@ -62,41 +62,45 @@ export default class Observer {
   }
   
   next(value:any):IteratorResult<any> { 
-    if (this.disposed) {
+    if (this.unsubscribed) {
         return { done: true };
     }
     var result = this._next(value);
     result = result || { done: false };
     if (result.done) {
-        this.dispose();
+        this.unsubscribe();
     }
     return result;
   }
   
   throw(error:any):IteratorResult<any> {    
-    if (this.disposed) {
+    if (this.unsubscribed) {
         return { done: true };
     }
     var result = this._throw(error);  
-    this.dispose();
+    this.unsubscribe();
     return { done: true, value: result ? result.value : undefined };
   }
   
   return(value:any=undefined):IteratorResult<any> {
-    if(this.disposed) {
+    if(this.unsubscribed) {
       return { done: true };
     }
     var result = this._return(value);
-    this.dispose();
+    this.unsubscribe();
     return { done: true, value: result ? result.value : undefined };
   }
   
+  unsubscribe() {
+    this.unsubscribed = true;
+  }
+  
   dispose() {
-    if(!this.disposed) {
+    if(!this.unsubscribed) {
       if(this._dispose) {
         this._dispose();
       }
     }
-    this.disposed = true;
+    this.unsubscribe();
   }
 }

@@ -1,4 +1,5 @@
 import Observable from '../Observable';
+import Observer from '../Observer';
 
 class PromiseObservable extends Observable {
 	promise:Promise<any>;
@@ -9,6 +10,7 @@ class PromiseObservable extends Observable {
 	}
 	
 	subscriber(observer:Observer) {
+		var promise = this.promise;
 		if(promise) {
 			promise.then(x => {
 				if(!observer.unsubscribed) {
