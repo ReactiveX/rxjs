@@ -27,22 +27,17 @@ var ScheduledAction = (function (_SerialSubscription) {
         _SerialSubscription.call(this, null);
         this.scheduler = scheduler;
         this.work = work;
-        this.schedule(state);
+        this.state = state;
     }
 
     _inherits(ScheduledAction, _SerialSubscription);
 
-    ScheduledAction.prototype.schedule = function schedule(state) {
+    ScheduledAction.prototype.schedule = function schedule() {
         var scheduler = this.scheduler;
         var actions = scheduler.actions;
-        this.state = state;
         actions.push(this);
         scheduler.flush();
         return this;
-    };
-
-    ScheduledAction.prototype.reschedule = function reschedule(state) {
-        return this.schedule(state);
     };
 
     ScheduledAction.prototype.execute = function execute() {
@@ -80,10 +75,9 @@ var NextScheduledAction = (function (_ScheduledAction) {
 
     _inherits(NextScheduledAction, _ScheduledAction);
 
-    NextScheduledAction.prototype.schedule = function schedule(state) {
+    NextScheduledAction.prototype.schedule = function schedule() {
         var self = this;
         var scheduler = this.scheduler;
-        this.state = state;
         scheduler.actions.push(this);
         if (!scheduler.scheduled) {
             scheduler.active = true;
@@ -127,7 +121,7 @@ var FutureScheduledAction = (function (_ScheduledAction2) {
 
     _inherits(FutureScheduledAction, _ScheduledAction2);
 
-    FutureScheduledAction.prototype.schedule = function schedule(state) {
+    FutureScheduledAction.prototype.schedule = function schedule() {
         var self = this;
         var id = this.id;
         var scheduler = this.scheduler;
@@ -135,7 +129,6 @@ var FutureScheduledAction = (function (_ScheduledAction2) {
             this.id = undefined;
             clearTimeout(id);
         }
-        this.state = state;
         var scheduleAction = _ScheduledAction2.prototype.schedule;
         this.id = setTimeout(function executeFutureAction() {
             self.id = void 0;

@@ -6,12 +6,7 @@ export default class Scheduler {
         this.scheduled = false;
     }
     schedule(delay, state, work) {
-        if (delay <= 0) {
-            return this.scheduleNow(state, work);
-        }
-        else {
-            return this.scheduleLater(state, work, delay);
-        }
+        return (delay <= 0) ? this.scheduleNow(state, work) : this.scheduleLater(state, work, delay);
     }
     flush() {
         if (!this.active) {
@@ -25,9 +20,13 @@ export default class Scheduler {
         }
     }
     scheduleNow(state, work) {
-        return new ScheduledAction(this, state, work);
+        var action = new ScheduledAction(this, state, work);
+        action.schedule();
+        return action;
     }
     scheduleLater(state, work, delay) {
-        return new FutureScheduledAction(this, state, work, delay);
+        var action = new FutureScheduledAction(this, state, work, delay);
+        action.schedule();
+        return action;
     }
 }

@@ -20,6 +20,7 @@ import fromArray from './observable/fromArray';
 import zip from './observable/zip';
 import fromPromise from './observable/fromPromise';
 import _of from './observable/of';
+import timer from './observable/timer';
 
 import map from './operator/map';
 import mapTo from './operator/mapTo';
@@ -46,6 +47,8 @@ Observable.fromArray = fromArray;
 Observable.zip = zip;
 Observable.fromPromise = fromPromise;
 Observable.of = _of;
+Observable.timer = timer;
+
 
 Observable.prototype.map = map;
 Observable.prototype.mapTo = mapTo;
