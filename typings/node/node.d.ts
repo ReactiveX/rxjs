@@ -430,41 +430,41 @@ declare module "http" {
      */
     export interface ClientResponse extends IncomingMessage { }
 
-	export interface AgentOptions {
-		/**
-		 * Keep sockets around in a pool to be used by other requests in the future. Default = false
-		 */
-		keepAlive?: boolean;
-		/**
-		 * When using HTTP KeepAlive, how often to send TCP KeepAlive packets over sockets being kept alive. Default = 1000.
-		 * Only relevant if keepAlive is set to true.
-		 */
-		keepAliveMsecs?: number;
-		/**
-		 * Maximum number of sockets to allow per host. Default for Node 0.10 is 5, default for Node 0.12 is Infinity
-		 */
-		maxSockets?: number;
-		/**
-		 * Maximum number of sockets to leave open in a free state. Only relevant if keepAlive is set to true. Default = 256.
-		 */
-		maxFreeSockets?: number;
-	}
+  export interface AgentOptions {
+    /**
+     * Keep sockets around in a pool to be used by other requests in the future. Default = false
+     */
+    keepAlive?: boolean;
+    /**
+     * When using HTTP KeepAlive, how often to send TCP KeepAlive packets over sockets being kept alive. Default = 1000.
+     * Only relevant if keepAlive is set to true.
+     */
+    keepAliveMsecs?: number;
+    /**
+     * Maximum number of sockets to allow per host. Default for Node 0.10 is 5, default for Node 0.12 is Infinity
+     */
+    maxSockets?: number;
+    /**
+     * Maximum number of sockets to leave open in a free state. Only relevant if keepAlive is set to true. Default = 256.
+     */
+    maxFreeSockets?: number;
+  }
 
     export class Agent {
-		maxSockets: number;
-		sockets: any;
-		requests: any;
+    maxSockets: number;
+    sockets: any;
+    requests: any;
 
-		constructor(opts?: AgentOptions);
+    constructor(opts?: AgentOptions);
 
-		/**
-		 * Destroy any sockets that are currently in use by the agent.
-		 * It is usually not necessary to do this. However, if you are using an agent with KeepAlive enabled,
-		 * then it is best to explicitly shut down the agent when you know that it will no longer be used. Otherwise,
-		 * sockets may hang open for quite a long time before the server terminates them.
-		 */
-		destroy(): void;
-	}
+    /**
+     * Destroy any sockets that are currently in use by the agent.
+     * It is usually not necessary to do this. However, if you are using an agent with KeepAlive enabled,
+     * then it is best to explicitly shut down the agent when you know that it will no longer be used. Otherwise,
+     * sockets may hang open for quite a long time before the server terminates them.
+     */
+    destroy(): void;
+  }
 
     export var STATUS_CODES: {
         [errorCode: number]: string;

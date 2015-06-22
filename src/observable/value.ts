@@ -16,5 +16,5 @@ class ValueObservable extends Observable {
 }
 
 export default function value(value:any) : Observable {
-    return new ValueObservable(value);
+  return new ValueObservable(value);
 };

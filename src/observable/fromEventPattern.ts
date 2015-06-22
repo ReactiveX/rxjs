@@ -4,46 +4,46 @@ import Observable from '../Observable';
 import Observer from '../Observer';
 
 class FromEventPatternObservable extends Observable {
-	add:Function;
-	remove:Function;
-	selector:Function;
-	
-	constructor(add:Function, remove:Function, selector:Function) {
-		super(null);
+  add:Function;
+  remove:Function;
+  selector:Function;
+  
+  constructor(add:Function, remove:Function, selector:Function) {
+    super(null);
     this.add = add;
     this.remove = remove;
     this.selector = selector;
-	}
-	
-	 subscriber(subscriber:Observer) : Function {
-				var unsubscribe = () => {
-            if (remove) {
-                remove(innerHandler, token);
-            }
+  }
+  
+   subscriber(subscriber:Observer) : Function {
+      var unsubscribe = () => {
+        if (remove) {
+            remove(innerHandler, token);
         }
-				
-        function innerHandler(e) {
-            var result = e;
-            if (selector) {
-                result = try_catch(selector).apply(this, arguments);
-                if(result === error_obj) {
-                    subscriber["throw"](error_obj.e);
-                    unsubscribe();
-                    return;
-                }
-            }
-            result = subscriber.next(result);
-            if(result.done) {
-                unsubscribe();
-            }
+      }
+      
+      function innerHandler(e) {
+        var result = e;
+        if (selector) {
+          result = try_catch(selector).apply(this, arguments);
+          if(result === error_obj) {
+            subscriber["throw"](error_obj.e);
+            unsubscribe();
+            return;
+          }
         }
+        result = subscriber.next(result);
+        if(result.done) {
+          unsubscribe();
+        }
+      }
 
-        var self = this;
-        var remove = this.remove;
-        var selector = this.selector;
-        var token = this.add(innerHandler);
+      var self = this;
+      var remove = this.remove;
+      var selector = this.selector;
+      var token = this.add(innerHandler);
 
-        return unsubscribe;
+      return unsubscribe;
     }
 }
 

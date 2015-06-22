@@ -23,12 +23,12 @@ export default class Scheduler {
   
   flush() {
     if (!this.active) {
-        this.active = true;
-        var action;
-        while(action = this.actions.shift()) {
-            action.execute();
-        };
-        this.active = false;
+      this.active = true;
+      var action;
+      while(action = this.actions.shift()) {
+          action.execute();
+      };
+      this.active = false;
     } 
   }
   

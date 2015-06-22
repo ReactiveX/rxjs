@@ -59,19 +59,19 @@ export default class Observer {
   
   next(value:any):IteratorResult<any> { 
     if (this.unsubscribed) {
-        return { done: true };
+      return { done: true };
     }
     var result = this._next(value);
     result = result || { done: false };
     if (result.done) {
-        this.unsubscribe();
+      this.unsubscribe();
     }
     return result;
   }
   
   throw(error:any):IteratorResult<any> {    
     if (this.unsubscribed) {
-        return { done: true };
+      return { done: true };
     }
     var result = this._throw(error);  
     this.unsubscribe();

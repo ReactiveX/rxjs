@@ -5,8 +5,8 @@ import Observable from '../Observable';
 import Subscription from '../Subscription';
 
 interface IteratorResult<T> {
-	done:boolean;
-	value?:T
+  done:boolean;
+  value?:T
 }
 
 class MapObserver extends Observer {
