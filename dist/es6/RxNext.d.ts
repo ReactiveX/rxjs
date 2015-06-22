@@ -7,6 +7,7 @@ import CompositeSubscription from './CompositeSubscription';
 import SerialSubscription from './SerialSubscription';
 import Subject from './Subject';
 import BehaviorSubject from './BehaviorSubject';
+import ConnectableObservable from './ConnectableObservable';
 declare var RxNext: {
     Scheduler: {
         nextTick: NextTickScheduler;
@@ -19,5 +20,6 @@ declare var RxNext: {
     SerialSubscription: typeof SerialSubscription;
     Subject: typeof Subject;
     BehaviorSubject: typeof BehaviorSubject;
+    ConnectableObservable: typeof ConnectableObservable;
 };
 export default RxNext;

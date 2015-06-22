@@ -5,6 +5,8 @@ import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
 import Scheduler from './scheduler/Scheduler';
 import { IteratorResult } from './IteratorResult';
+import Subject from './Subject';
+import ConnectableObservable from './ConnectableObservable';
 
 export default class Observable {  
   static value:(value:any)=>Observable;
@@ -35,6 +37,7 @@ export default class Observable {
   zip:(observables:Array<Observable>, project:(...observables:Array<Observable>)=>Observable)=>Observable;
   merge:(observables:Array<Observable>)=>Observable;
   toArray:()=>Observable;
+  multicast: (subject: Subject) => ConnectableObservable;
   
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {

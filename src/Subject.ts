@@ -13,11 +13,15 @@ export default class Subject extends Observable {
   destination:Observer;
   disposed:boolean=false;
   observers:Array<Observer> = [];
-  _dispose:Function;
+  _dispose:()=>void;
+  unsubscribed: boolean = false;
+  _next: (value: any) => IteratorResult<any>;
+  _throw: (err: any) => IteratorResult<any>;
+  _return: (value: any) => IteratorResult<any>;
+  
   
   dispose() {
     this.disposed = true;
-    this.observers.length = 0;
     if(this._dispose) {
       this._dispose();
     }
@@ -30,7 +34,7 @@ export default class Subject extends Observable {
   }
   
   next(value:any) : IteratorResult<any> {
-    if(this.disposed) {
+    if(this.unsubscribed) {
       return { done: true };
     }
     this.observers.forEach(o => o.next(value));
@@ -38,22 +42,27 @@ export default class Subject extends Observable {
   }
   
   throw(err:any) : IteratorResult<any> {
-    if(this.disposed) {
+    if(this.unsubscribed) {
       return { done: true };
     }
     this.observers.forEach(o => o.throw(err));
-    this.dispose();
+    this.unsubscribe();
     return { done: true };
   }
 
   return(value:any) : IteratorResult<any> {
-    if(this.disposed) {
+    if(this.unsubscribed) {
       return { done: true };
     }
     this.observers.forEach(o => o.return(value));
-    this.dispose();
+    this.unsubscribe();
     return { done: true };
   } 
+  
+  unsubscribe() {
+    this.observers.length = 0;
+    this.unsubscribed = true;
+  }
 }
 
 class SubjectSubscription extends Subscription {

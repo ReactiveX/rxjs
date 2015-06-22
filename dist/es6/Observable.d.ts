@@ -3,6 +3,8 @@ import Subscription from './Subscription';
 import SerialSubscription from './SerialSubscription';
 import Scheduler from './scheduler/Scheduler';
 import { IteratorResult } from './IteratorResult';
+import Subject from './Subject';
+import ConnectableObservable from './ConnectableObservable';
 export default class Observable {
     static value: (value: any) => Observable;
     static return: (returnValue: any) => Observable;
@@ -31,6 +33,7 @@ export default class Observable {
     zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
     merge: (observables: Array<Observable>) => Observable;
     toArray: () => Observable;
+    multicast: (subject: Subject) => ConnectableObservable;
     constructor(subscriber: (observer: Observer) => Function | void);
     static create(subscriber: (observer: Observer) => any): Observable;
     subscriber(observer: Observer): Function | Subscription | void;
