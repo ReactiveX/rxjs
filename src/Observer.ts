@@ -1,5 +1,4 @@
 import noop from './util/noop';
-import Subscription from './Subscription';
 
 export interface IteratorResult<T> {
   done: boolean;
