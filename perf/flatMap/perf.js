@@ -59,7 +59,7 @@ var projectionRx2 = function(x) {
 var RxNextFlatMap = document.querySelector('#rx-3-flatmap');
 var rx2FlatMap = document.querySelector('#rx-2-flatmap');
 RxNextFlatMap.addEventListener('click', function() {
-  RxNextTestObservable.flatMap(projectionRxNext).observer({
+  RxNextTestObservable.flatMap(projectionRxNext)[Symbol.observer]({
     next: noop,
     error: noop,
     return: noop

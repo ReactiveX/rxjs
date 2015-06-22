@@ -58,7 +58,7 @@ class InnerZipObserver extends Observer {
 	_canEmit() {
 		return this.subscriptions._subscriptions.every(sub => {
 			var observer = <InnerZipObserver>sub.observer;
-			return !observer.disposed && observer.buffer.length > 0;
+			return !observer.unsubscribed && observer.buffer.length > 0;
 		});
 	}
 	
