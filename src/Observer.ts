@@ -1,10 +1,6 @@
 import noop from './util/noop';
 import Subscription from './Subscription';
-
-export interface IteratorResult<T> {
-  done: boolean;
-  value?: T;
-}
+import { IteratorResult } from './IteratorResult';
 
 export default class Observer {
   destination:Observer;
