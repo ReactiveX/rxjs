@@ -29,8 +29,8 @@ var PromiseObservable = (function (_Observable) {
             promise.then(function (x) {
                 if (!observer.unsubscribed) {
                     observer.next(x);
+                    observer['return'](x);
                 }
-                observer['return']();
             });
         }
     };

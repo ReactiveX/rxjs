@@ -18,11 +18,7 @@ export default class Scheduler {
   }
   
   schedule(delay:number, state:any, work:Function):Subscription {
-    if (delay <= 0) {
-      return this.scheduleNow(state, work);
-    } else {
-      return this.scheduleLater(state, work, delay);
-    }
+    return (delay <= 0) ? this.scheduleNow(state, work) : this.scheduleLater(state, work, delay);
   }
   
   flush() {
@@ -37,10 +33,14 @@ export default class Scheduler {
   }
   
   scheduleNow(state:any, work:Function):ScheduledAction {
-    return new ScheduledAction(this, state, work);
+    var action = new ScheduledAction(this, state, work);
+    action.schedule();
+    return action;
   }
   
   scheduleLater(state:any, work:Function, delay:number) {
-    return new FutureScheduledAction(this, state, work, delay);
+    var action = new FutureScheduledAction(this, state, work, delay);
+    action.schedule();
+    return action;
   }
 }

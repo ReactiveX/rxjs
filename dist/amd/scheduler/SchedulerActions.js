@@ -22,22 +22,17 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
             _SerialSubscription.call(this, null);
             this.scheduler = scheduler;
             this.work = work;
-            this.schedule(state);
+            this.state = state;
         }
 
         _inherits(ScheduledAction, _SerialSubscription);
 
-        ScheduledAction.prototype.schedule = function schedule(state) {
+        ScheduledAction.prototype.schedule = function schedule() {
             var scheduler = this.scheduler;
             var actions = scheduler.actions;
-            this.state = state;
             actions.push(this);
             scheduler.flush();
             return this;
-        };
-
-        ScheduledAction.prototype.reschedule = function reschedule(state) {
-            return this.schedule(state);
         };
 
         ScheduledAction.prototype.execute = function execute() {
@@ -75,10 +70,9 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
 
         _inherits(NextScheduledAction, _ScheduledAction);
 
-        NextScheduledAction.prototype.schedule = function schedule(state) {
+        NextScheduledAction.prototype.schedule = function schedule() {
             var self = this;
             var scheduler = this.scheduler;
-            this.state = state;
             scheduler.actions.push(this);
             if (!scheduler.scheduled) {
                 scheduler.active = true;
@@ -94,7 +88,6 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
         };
 
         NextScheduledAction.prototype.unsubscribe = function unsubscribe() {
-            _ScheduledAction.prototype.unsubscribe.call(this);
             var scheduler = this.scheduler;
             if (scheduler.actions.length === 0) {
                 scheduler.active = false;
@@ -105,6 +98,7 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
                     _Immediate['default'].clearImmediate(id);
                 }
             }
+            _ScheduledAction.prototype.unsubscribe.call(this);
         };
 
         return NextScheduledAction;
@@ -122,7 +116,7 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
 
         _inherits(FutureScheduledAction, _ScheduledAction2);
 
-        FutureScheduledAction.prototype.schedule = function schedule(state) {
+        FutureScheduledAction.prototype.schedule = function schedule() {
             var self = this;
             var id = this.id;
             var scheduler = this.scheduler;
@@ -130,7 +124,6 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
                 this.id = undefined;
                 clearTimeout(id);
             }
-            this.state = state;
             var scheduleAction = _ScheduledAction2.prototype.schedule;
             this.id = setTimeout(function executeFutureAction() {
                 self.id = void 0;
@@ -140,12 +133,12 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
         };
 
         FutureScheduledAction.prototype.unsubscribe = function unsubscribe() {
-            _ScheduledAction2.prototype.unsubscribe.call(this);
             var id = this.id;
             if (id != null) {
                 this.id = void 0;
                 clearTimeout(id);
             }
+            _ScheduledAction2.prototype.unsubscribe.call(this);
         };
 
         return FutureScheduledAction;

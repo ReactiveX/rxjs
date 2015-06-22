@@ -6,6 +6,7 @@ import Subscription from './Subscription';
 import CompositeSubscription from './CompositeSubscription';
 import SerialSubscription from './SerialSubscription';
 import Subject from './Subject';
+import BehaviorSubject from './BehaviorSubject';
 import value from './observable/value';
 import _return from './observable/return';
 import fromEventPattern from './observable/fromEventPattern';
@@ -16,6 +17,9 @@ import range from './observable/range';
 import fromArray from './observable/fromArray';
 import zip from './observable/zip';
 import fromPromise from './observable/fromPromise';
+import _of from './observable/of';
+import timer from './observable/timer';
+import interval from './observable/interval';
 import map from './operator/map';
 import mapTo from './operator/mapTo';
 import mergeAll from './operator/mergeAll';
@@ -28,6 +32,7 @@ import observeOn from './operator/observeOn';
 import zipAll from './operator/zipAll';
 import zipProto from './operator/zip';
 import mergeProto from './operator/merge';
+import toArray from './operator/toArray';
 Observable.value = value;
 Observable.return = _return;
 Observable.fromEventPattern = fromEventPattern;
@@ -38,6 +43,9 @@ Observable.range = range;
 Observable.fromArray = fromArray;
 Observable.zip = zip;
 Observable.fromPromise = fromPromise;
+Observable.of = _of;
+Observable.timer = timer;
+Observable.interval = interval;
 Observable.prototype.map = map;
 Observable.prototype.mapTo = mapTo;
 Observable.prototype.mergeAll = mergeAll;
@@ -50,6 +58,7 @@ Observable.prototype.observeOn = observeOn;
 Observable.prototype.zipAll = zipAll;
 Observable.prototype.zip = zipProto;
 Observable.prototype.merge = mergeProto;
+Observable.prototype.toArray = toArray;
 var RxNext = {
     Scheduler: {
         nextTick,
@@ -60,6 +69,7 @@ var RxNext = {
     Subscription,
     CompositeSubscription,
     SerialSubscription,
-    Subject
+    Subject,
+    BehaviorSubject
 };
 export default RxNext;

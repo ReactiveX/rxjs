@@ -14,6 +14,10 @@ var _Subscription = require('./Subscription');
 
 var _Subscription2 = _interopRequireDefault(_Subscription);
 
+var _SerialSubscription = require('./SerialSubscription');
+
+var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
+
 var _schedulerNextTick = require('./scheduler/nextTick');
 
 var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
@@ -46,14 +50,18 @@ var Observable = (function () {
     Observable.prototype.subscribe = function subscribe(observerOrNextHandler) {
         var throwHandler = arguments[1] === undefined ? null : arguments[1];
         var returnHandler = arguments[2] === undefined ? null : arguments[2];
+        var disposeHandler = arguments[3] === undefined ? null : arguments[3];
 
         var observer;
         if (typeof observerOrNextHandler === 'object') {
             observer = observerOrNextHandler;
         } else {
-            observer = _Observer2['default'].create(observerOrNextHandler, throwHandler, returnHandler);
+            observer = _Observer2['default'].create(observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
         }
-        return _schedulerNextTick2['default'].schedule(0, [observer, this], dispatchSubscription);
+        var subscription = new _SerialSubscription2['default'](null);
+        subscription.observer = observer;
+        subscription.add(_schedulerNextTick2['default'].schedule(0, [observer, this], dispatchSubscription));
+        return subscription;
     };
 
     Observable.prototype.forEach = function forEach(nextHandler) {

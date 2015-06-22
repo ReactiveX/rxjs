@@ -36,6 +36,10 @@ var _Subject = require('./Subject');
 
 var _Subject2 = _interopRequireDefault(_Subject);
 
+var _BehaviorSubject = require('./BehaviorSubject');
+
+var _BehaviorSubject2 = _interopRequireDefault(_BehaviorSubject);
+
 var _observableValue = require('./observable/value');
 
 var _observableValue2 = _interopRequireDefault(_observableValue);
@@ -75,6 +79,18 @@ var _observableZip2 = _interopRequireDefault(_observableZip);
 var _observableFromPromise = require('./observable/fromPromise');
 
 var _observableFromPromise2 = _interopRequireDefault(_observableFromPromise);
+
+var _observableOf = require('./observable/of');
+
+var _observableOf2 = _interopRequireDefault(_observableOf);
+
+var _observableTimer = require('./observable/timer');
+
+var _observableTimer2 = _interopRequireDefault(_observableTimer);
+
+var _observableInterval = require('./observable/interval');
+
+var _observableInterval2 = _interopRequireDefault(_observableInterval);
 
 var _operatorMap = require('./operator/map');
 
@@ -124,6 +140,10 @@ var _operatorMerge = require('./operator/merge');
 
 var _operatorMerge2 = _interopRequireDefault(_operatorMerge);
 
+var _operatorToArray = require('./operator/toArray');
+
+var _operatorToArray2 = _interopRequireDefault(_operatorToArray);
+
 _Observable2['default'].value = _observableValue2['default'];
 _Observable2['default']['return'] = _observableReturn2['default'];
 _Observable2['default'].fromEventPattern = _observableFromEventPattern2['default'];
@@ -134,6 +154,9 @@ _Observable2['default'].range = _observableRange2['default'];
 _Observable2['default'].fromArray = _observableFromArray2['default'];
 _Observable2['default'].zip = _observableZip2['default'];
 _Observable2['default'].fromPromise = _observableFromPromise2['default'];
+_Observable2['default'].of = _observableOf2['default'];
+_Observable2['default'].timer = _observableTimer2['default'];
+_Observable2['default'].interval = _observableInterval2['default'];
 _Observable2['default'].prototype.map = _operatorMap2['default'];
 _Observable2['default'].prototype.mapTo = _operatorMapTo2['default'];
 _Observable2['default'].prototype.mergeAll = _operatorMergeAll2['default'];
@@ -146,6 +169,7 @@ _Observable2['default'].prototype.observeOn = _operatorObserveOn2['default'];
 _Observable2['default'].prototype.zipAll = _operatorZipAll2['default'];
 _Observable2['default'].prototype.zip = _operatorZip2['default'];
 _Observable2['default'].prototype.merge = _operatorMerge2['default'];
+_Observable2['default'].prototype.toArray = _operatorToArray2['default'];
 var RxNext = {
     Scheduler: {
         nextTick: _schedulerNextTick2['default'],
@@ -156,7 +180,8 @@ var RxNext = {
     Subscription: _Subscription2['default'],
     CompositeSubscription: _CompositeSubscription2['default'],
     SerialSubscription: _SerialSubscription2['default'],
-    Subject: _Subject2['default']
+    Subject: _Subject2['default'],
+    BehaviorSubject: _BehaviorSubject2['default']
 };
 exports['default'] = RxNext;
 module.exports = exports['default'];

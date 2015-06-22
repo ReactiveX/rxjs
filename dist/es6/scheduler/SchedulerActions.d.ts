@@ -6,18 +6,17 @@ export declare class ScheduledAction extends SerialSubscription {
     state: any;
     id: any;
     constructor(scheduler: Scheduler, state: any, work: Function);
-    schedule(state: any): ScheduledAction;
-    reschedule(state: any): ScheduledAction;
+    schedule(): ScheduledAction;
     execute(): void;
     unsubscribe(): void;
 }
 export declare class NextScheduledAction extends ScheduledAction {
-    schedule(state: any): NextScheduledAction;
+    schedule(): NextScheduledAction;
     unsubscribe(): void;
 }
 export declare class FutureScheduledAction extends ScheduledAction {
     delay: number;
     constructor(scheduler: Scheduler, state: any, work: Function, delay: number);
-    schedule(state: any): FutureScheduledAction;
+    schedule(): FutureScheduledAction;
     unsubscribe(): void;
 }

@@ -16,11 +16,7 @@ var Scheduler = (function () {
     }
 
     Scheduler.prototype.schedule = function schedule(delay, state, work) {
-        if (delay <= 0) {
-            return this.scheduleNow(state, work);
-        } else {
-            return this.scheduleLater(state, work, delay);
-        }
+        return delay <= 0 ? this.scheduleNow(state, work) : this.scheduleLater(state, work, delay);
     };
 
     Scheduler.prototype.flush = function flush() {
@@ -36,11 +32,15 @@ var Scheduler = (function () {
     };
 
     Scheduler.prototype.scheduleNow = function scheduleNow(state, work) {
-        return new _SchedulerActions.ScheduledAction(this, state, work);
+        var action = new _SchedulerActions.ScheduledAction(this, state, work);
+        action.schedule();
+        return action;
     };
 
     Scheduler.prototype.scheduleLater = function scheduleLater(state, work, delay) {
-        return new _SchedulerActions.FutureScheduledAction(this, state, work, delay);
+        var action = new _SchedulerActions.FutureScheduledAction(this, state, work, delay);
+        action.schedule();
+        return action;
     };
 
     return Scheduler;

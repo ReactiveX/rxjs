@@ -14,20 +14,15 @@ export class ScheduledAction extends SerialSubscription {
     super(null);
     this.scheduler = scheduler;
     this.work = work;
-    this.schedule(state);
+    this.state = state;
   }
   
-  schedule(state) {
+  schedule() {
     var scheduler = this.scheduler;
     var actions = scheduler.actions;
-    this.state = state;
     actions.push(this);
     scheduler.flush();
     return this;
-  }
- 
-  reschedule(state) {
-    return this.schedule(state);
   }
 
   execute() {
@@ -52,10 +47,9 @@ export class ScheduledAction extends SerialSubscription {
 
 
 export class NextScheduledAction extends ScheduledAction {
-  schedule(state) {
+  schedule() {
     var self = this;
     var scheduler = this.scheduler;
-    this.state = state;
     scheduler.actions.push(this);
     if (!scheduler.scheduled) {
         scheduler.active = true;
@@ -71,7 +65,6 @@ export class NextScheduledAction extends ScheduledAction {
   }
   
   unsubscribe() {
-    super.unsubscribe();
     var scheduler = this.scheduler;
     if(scheduler.actions.length === 0) {
         scheduler.active = false;
@@ -82,6 +75,7 @@ export class NextScheduledAction extends ScheduledAction {
             Immediate.clearImmediate(id);
         }
     }
+    super.unsubscribe();
   }
 }
 
@@ -93,7 +87,7 @@ export class FutureScheduledAction extends ScheduledAction {
     this.delay = delay;
   }
   
-  schedule(state) {
+  schedule() {
     var self = this;
     var id = this.id;
     var scheduler = this.scheduler;
@@ -101,7 +95,6 @@ export class FutureScheduledAction extends ScheduledAction {
         this.id = undefined;
         clearTimeout(id);
     }
-    this.state = state;
     var scheduleAction = super.schedule;
     this.id = setTimeout(function executeFutureAction() {
         self.id = void 0;
@@ -111,11 +104,11 @@ export class FutureScheduledAction extends ScheduledAction {
   }
 
   unsubscribe() {
-    super.unsubscribe();
     var id = this.id;
     if(id != null) {
         this.id = void 0;
         clearTimeout(id);
     }
+    super.unsubscribe();
   }
 }

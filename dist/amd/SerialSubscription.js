@@ -42,6 +42,7 @@ define(['exports', 'module', './Subscription'], function (exports, module, _Subs
         };
 
         SerialSubscription.prototype.unsubscribe = function unsubscribe() {
+            _Subscription.prototype.unsubscribe.call(this);
             if (this.unsubscribed) {
                 return;
             }

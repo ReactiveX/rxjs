@@ -26,6 +26,7 @@ export default class SerialSubscription extends Subscription {
         return this;
     }
     unsubscribe() {
+        super.unsubscribe();
         if (this.unsubscribed) {
             return;
         }

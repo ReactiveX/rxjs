@@ -4,6 +4,7 @@ import SerialSubscription from './SerialSubscription';
 import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
 import Scheduler from './scheduler/Scheduler';
+import { IteratorResult } from './IteratorResult';
 
 export default class Observable {  
   static value:(value:any)=>Observable;
@@ -17,6 +18,9 @@ export default class Observable {
   static fromArray:(array:Array<any>)=>Observable;
   static zip:(observables:Array<Observable>,project:(...observables:Array<Observable>)=>Observable)=>Observable;
   static fromPromise:(promise:Promise<any>)=>Observable;
+  static of:(...values:Array<any>)=>Observable;
+  static timer:(delay:number)=>Observable;
+  static interval:(interval:number)=>Observable;
   
   map:(project:(any)=>any)=>Observable;
   mapTo:(value:any)=>Observable;
@@ -30,7 +34,8 @@ export default class Observable {
   zipAll:(project:(...observables:Array<Observable>)=>Observable)=>Observable;
   zip:(observables:Array<Observable>, project:(...observables:Array<Observable>)=>Observable)=>Observable;
   merge:(observables:Array<Observable>)=>Observable;
-
+  toArray:()=>Observable;
+  
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
       this.subscriber = subscriber;
@@ -51,15 +56,18 @@ export default class Observable {
   
   subscribe(observerOrNextHandler:Observer|((any)=>IteratorResult<any>),
     throwHandler:(any)=>IteratorResult<any>=null,
-    returnHandler:(any)=>IteratorResult<any>=null) {
+    returnHandler:(any)=>IteratorResult<any>=null,
+    disposeHandler:()=>void=null) {
       var observer;
       if(typeof observerOrNextHandler === 'object') {
         observer = observerOrNextHandler;
       } else {
-        observer = Observer.create(<(any)=>IteratorResult<any>>observerOrNextHandler, throwHandler, returnHandler);
+        observer = Observer.create(<(any)=>IteratorResult<any>>observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
       }
-      
-      return nextTick.schedule(0, [observer, this], dispatchSubscription);
+      var subscription = new SerialSubscription(null);
+      subscription.observer = observer;
+      subscription.add(nextTick.schedule(0, [observer, this], dispatchSubscription));
+      return subscription;
     }
   
   forEach(nextHandler) {

@@ -1,4 +1,4 @@
-define(['exports', 'module', './Observer', './Subscription', './scheduler/nextTick', './util/Symbol_observer'], function (exports, module, _Observer, _Subscription, _schedulerNextTick, _utilSymbol_observer) {
+define(['exports', 'module', './Observer', './Subscription', './SerialSubscription', './scheduler/nextTick', './util/Symbol_observer'], function (exports, module, _Observer, _Subscription, _SerialSubscription, _schedulerNextTick, _utilSymbol_observer) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -8,6 +8,8 @@ define(['exports', 'module', './Observer', './Subscription', './scheduler/nextTi
     var _Observer2 = _interopRequireDefault(_Observer);
 
     var _Subscription2 = _interopRequireDefault(_Subscription);
+
+    var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
 
     var _nextTick = _interopRequireDefault(_schedulerNextTick);
 
@@ -37,14 +39,18 @@ define(['exports', 'module', './Observer', './Subscription', './scheduler/nextTi
         Observable.prototype.subscribe = function subscribe(observerOrNextHandler) {
             var throwHandler = arguments[1] === undefined ? null : arguments[1];
             var returnHandler = arguments[2] === undefined ? null : arguments[2];
+            var disposeHandler = arguments[3] === undefined ? null : arguments[3];
 
             var observer;
             if (typeof observerOrNextHandler === 'object') {
                 observer = observerOrNextHandler;
             } else {
-                observer = _Observer2['default'].create(observerOrNextHandler, throwHandler, returnHandler);
+                observer = _Observer2['default'].create(observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
             }
-            return _nextTick['default'].schedule(0, [observer, this], dispatchSubscription);
+            var subscription = new _SerialSubscription2['default'](null);
+            subscription.observer = observer;
+            subscription.add(_nextTick['default'].schedule(0, [observer, this], dispatchSubscription));
+            return subscription;
         };
 
         Observable.prototype.forEach = function forEach(nextHandler) {

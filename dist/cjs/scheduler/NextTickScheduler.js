@@ -26,7 +26,9 @@ var NextTickScheduler = (function (_Scheduler) {
     _inherits(NextTickScheduler, _Scheduler);
 
     NextTickScheduler.prototype.scheduleNow = function scheduleNow(state, work) {
-        return this.scheduled ? new _SchedulerActions.ScheduledAction(this, state, work) : new _SchedulerActions.NextScheduledAction(this, state, work);
+        var action = this.scheduled ? new _SchedulerActions.ScheduledAction(this, state, work) : new _SchedulerActions.NextScheduledAction(this, state, work);
+        action.schedule();
+        return action;
     };
 
     return NextTickScheduler;

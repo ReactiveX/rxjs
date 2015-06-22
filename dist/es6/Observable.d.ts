@@ -1,6 +1,8 @@
 import Observer from './Observer';
 import Subscription from './Subscription';
+import SerialSubscription from './SerialSubscription';
 import Scheduler from './scheduler/Scheduler';
+import { IteratorResult } from './IteratorResult';
 export default class Observable {
     static value: (value: any) => Observable;
     static return: (returnValue: any) => Observable;
@@ -13,6 +15,9 @@ export default class Observable {
     static fromArray: (array: Array<any>) => Observable;
     static zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
     static fromPromise: (promise: Promise<any>) => Observable;
+    static of: (...values: Array<any>) => Observable;
+    static timer: (delay: number) => Observable;
+    static interval: (interval: number) => Observable;
     map: (project: (any) => any) => Observable;
     mapTo: (value: any) => Observable;
     mergeAll: (concurrent?: number) => Observable;
@@ -25,9 +30,10 @@ export default class Observable {
     zipAll: (project: (...observables: Array<Observable>) => Observable) => Observable;
     zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
     merge: (observables: Array<Observable>) => Observable;
+    toArray: () => Observable;
     constructor(subscriber: (observer: Observer) => Function | void);
     static create(subscriber: (observer: Observer) => any): Observable;
     subscriber(observer: Observer): Function | Subscription | void;
-    subscribe(observerOrNextHandler: Observer | ((any) => IteratorResult<any>), throwHandler?: (any) => IteratorResult<any>, returnHandler?: (any) => IteratorResult<any>): Subscription;
+    subscribe(observerOrNextHandler: Observer | ((any) => IteratorResult<any>), throwHandler?: (any) => IteratorResult<any>, returnHandler?: (any) => IteratorResult<any>, disposeHandler?: () => void): SerialSubscription;
     forEach(nextHandler: any): Promise<{}>;
 }

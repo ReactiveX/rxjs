@@ -27,8 +27,8 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
                 promise.then(function (x) {
                     if (!observer.unsubscribed) {
                         observer.next(x);
+                        observer['return'](x);
                     }
-                    observer['return']();
                 });
             }
         };

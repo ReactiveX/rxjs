@@ -1,5 +1,6 @@
 import Observer from './Observer';
 import Subscription from './Subscription';
+import SerialSubscription from './SerialSubscription';
 import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
 export default class Observable {
@@ -17,15 +18,18 @@ export default class Observable {
     [$$observer](observer) {
         return Subscription.from(this.subscriber(observer), observer);
     }
-    subscribe(observerOrNextHandler, throwHandler = null, returnHandler = null) {
+    subscribe(observerOrNextHandler, throwHandler = null, returnHandler = null, disposeHandler = null) {
         var observer;
         if (typeof observerOrNextHandler === 'object') {
             observer = observerOrNextHandler;
         }
         else {
-            observer = Observer.create(observerOrNextHandler, throwHandler, returnHandler);
+            observer = Observer.create(observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
         }
-        return nextTick.schedule(0, [observer, this], dispatchSubscription);
+        var subscription = new SerialSubscription(null);
+        subscription.observer = observer;
+        subscription.add(nextTick.schedule(0, [observer, this], dispatchSubscription));
+        return subscription;
     }
     forEach(nextHandler) {
         return new Promise((resolve, reject) => {
