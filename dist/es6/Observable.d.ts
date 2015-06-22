@@ -17,6 +17,7 @@ export default class Observable {
     static fromPromise: (promise: Promise<any>) => Observable;
     static of: (...values: Array<any>) => Observable;
     static timer: (delay: number) => Observable;
+    static interval: (interval: number) => Observable;
     map: (project: (any) => any) => Observable;
     mapTo: (value: any) => Observable;
     mergeAll: (concurrent?: number) => Observable;

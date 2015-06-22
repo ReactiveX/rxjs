@@ -21,6 +21,7 @@ import zip from './observable/zip';
 import fromPromise from './observable/fromPromise';
 import _of from './observable/of';
 import timer from './observable/timer';
+import interval from './observable/interval';
 
 import map from './operator/map';
 import mapTo from './operator/mapTo';
@@ -48,7 +49,7 @@ Observable.zip = zip;
 Observable.fromPromise = fromPromise;
 Observable.of = _of;
 Observable.timer = timer;
-
+Observable.interval = interval;
 
 Observable.prototype.map = map;
 Observable.prototype.mapTo = mapTo;
