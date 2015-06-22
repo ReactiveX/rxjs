@@ -25,6 +25,7 @@ export default class Observable {
     zipAll: (project: (...observables: Array<Observable>) => Observable) => Observable;
     zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
     merge: (observables: Array<Observable>) => Observable;
+    toArray: () => Observable;
     constructor(subscriber: (observer: Observer) => Function | void);
     static create(subscriber: (observer: Observer) => any): Observable;
     subscriber(observer: Observer): Function | Subscription | void;

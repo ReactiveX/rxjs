@@ -124,6 +124,10 @@ var _operatorMerge = require('./operator/merge');
 
 var _operatorMerge2 = _interopRequireDefault(_operatorMerge);
 
+var _operatorToArray = require('./operator/toArray');
+
+var _operatorToArray2 = _interopRequireDefault(_operatorToArray);
+
 _Observable2['default'].value = _observableValue2['default'];
 _Observable2['default']['return'] = _observableReturn2['default'];
 _Observable2['default'].fromEventPattern = _observableFromEventPattern2['default'];
@@ -146,6 +150,7 @@ _Observable2['default'].prototype.observeOn = _operatorObserveOn2['default'];
 _Observable2['default'].prototype.zipAll = _operatorZipAll2['default'];
 _Observable2['default'].prototype.zip = _operatorZip2['default'];
 _Observable2['default'].prototype.merge = _operatorMerge2['default'];
+_Observable2['default'].prototype.toArray = _operatorToArray2['default'];
 var RxNext = {
     Scheduler: {
         nextTick: _schedulerNextTick2['default'],

@@ -28,6 +28,7 @@ import observeOn from './operator/observeOn';
 import zipAll from './operator/zipAll';
 import zipProto from './operator/zip';
 import mergeProto from './operator/merge';
+import toArray from './operator/toArray';
 Observable.value = value;
 Observable.return = _return;
 Observable.fromEventPattern = fromEventPattern;
@@ -50,6 +51,7 @@ Observable.prototype.observeOn = observeOn;
 Observable.prototype.zipAll = zipAll;
 Observable.prototype.zip = zipProto;
 Observable.prototype.merge = mergeProto;
+Observable.prototype.toArray = toArray;
 var RxNext = {
     Scheduler: {
         nextTick,

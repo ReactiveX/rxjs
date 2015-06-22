@@ -30,7 +30,8 @@ export default class Observable {
   zipAll:(project:(...observables:Array<Observable>)=>Observable)=>Observable;
   zip:(observables:Array<Observable>, project:(...observables:Array<Observable>)=>Observable)=>Observable;
   merge:(observables:Array<Observable>)=>Observable;
-
+  toArray:()=>Observable;
+  
   constructor(subscriber:(observer:Observer)=>Function|void) {
     if(subscriber) {
       this.subscriber = subscriber;
