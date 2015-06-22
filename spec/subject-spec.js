@@ -2,6 +2,7 @@
 var RxNext = require('../dist/cjs/RxNext');
 
 var Subject = RxNext.Subject;
+var nextTick = RxNext.Scheduler.nextTick;
 
 describe('Subject', function() {
 	it('should pump values right on through itself', function(done) {
@@ -42,13 +43,34 @@ describe('Subject', function() {
 			done();
 		});
 		
-		
 		// HACK
-		RxNext.Scheduler.nextTick.schedule(0, null, function(){
+		nextTick.schedule(0, null, function(){
 			expect(subject.observers.length).toBe(2);
 			subject.next('foo');
 			subject.next('bar');
 			subject.return();
+		});
+	});
+	
+	
+	it('should not allow values to be nexted after a return', function(done) {
+		var subject = new Subject();
+		var expected = ['foo'];
+		var i = 0;
+		
+		subject.subscribe(function(x) {
+			expect(x).toBe(expected[i++]);
+		}, null,
+		function(){
+			//HACK
+			nextTick.schedule(0, null, done);
+		});
+		
+		// HACK
+		nextTick.schedule(0, null, function(){
+			subject.next('foo');
+			subject.return();
+			subject.next('bar');
 		});
 	});
 });
