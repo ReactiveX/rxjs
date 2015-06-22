@@ -9,6 +9,56 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
+var _utilSymbol_observer = require('./util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
+var _Subscription = require('./Subscription');
+
+var _Subscription2 = _interopRequireDefault(_Subscription);
+
+var _Subject2 = require('./Subject');
+
+var _Subject3 = _interopRequireDefault(_Subject2);
+
+var BehaviorSubject = (function (_Subject) {
+    function BehaviorSubject(value) {
+        _classCallCheck(this, BehaviorSubject);
+
+        _Subject.call(this, null);
+        this.value = value;
+    }
+
+    _inherits(BehaviorSubject, _Subject);
+
+    BehaviorSubject.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        this.observers.push(observer);
+        var subscription = new _Subscription2['default'](null, observer);
+        this.next(this.value);
+        return subscription;
+    };
+
+    BehaviorSubject.prototype.next = function next(value) {
+        this.value = value;
+        return _Subject.prototype.next.call(this, value);
+    };
+
+    return BehaviorSubject;
+})(_Subject3['default']);
+
+exports['default'] = BehaviorSubject;
+module.exports = exports['default'];
+},{"./Subject":7,"./Subscription":8,"./util/Symbol_observer":42}],2:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
 var _Subscription2 = require('./Subscription');
 
 var _Subscription3 = _interopRequireDefault(_Subscription2);
@@ -88,7 +138,7 @@ var CompositeSubscription = (function (_Subscription) {
 
 exports['default'] = CompositeSubscription;
 module.exports = exports['default'];
-},{"./Subscription":7,"./util/arraySlice":42}],2:[function(require,module,exports){
+},{"./Subscription":8,"./util/arraySlice":43}],3:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -185,7 +235,7 @@ function dispatchSubscription(_ref) {
     return observable[_utilSymbol_observer2['default']](observer);
 }
 module.exports = exports['default'];
-},{"./Observer":3,"./SerialSubscription":5,"./Subscription":7,"./scheduler/nextTick":39,"./util/Symbol_observer":41}],3:[function(require,module,exports){
+},{"./Observer":4,"./SerialSubscription":6,"./Subscription":8,"./scheduler/nextTick":40,"./util/Symbol_observer":42}],4:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -300,7 +350,7 @@ var Observer = (function () {
 
 exports["default"] = Observer;
 module.exports = exports["default"];
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -338,6 +388,10 @@ var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
 var _Subject = require('./Subject');
 
 var _Subject2 = _interopRequireDefault(_Subject);
+
+var _BehaviorSubject = require('./BehaviorSubject');
+
+var _BehaviorSubject2 = _interopRequireDefault(_BehaviorSubject);
 
 var _observableValue = require('./observable/value');
 
@@ -479,11 +533,12 @@ var RxNext = {
     Subscription: _Subscription2['default'],
     CompositeSubscription: _CompositeSubscription2['default'],
     SerialSubscription: _SerialSubscription2['default'],
-    Subject: _Subject2['default']
+    Subject: _Subject2['default'],
+    BehaviorSubject: _BehaviorSubject2['default']
 };
 exports['default'] = RxNext;
 module.exports = exports['default'];
-},{"./CompositeSubscription":1,"./Observable":2,"./Observer":3,"./SerialSubscription":5,"./Subject":6,"./Subscription":7,"./observable/empty":9,"./observable/fromArray":10,"./observable/fromEvent":11,"./observable/fromEventPattern":12,"./observable/fromPromise":13,"./observable/interval":14,"./observable/of":15,"./observable/range":16,"./observable/return":17,"./observable/throw":18,"./observable/timer":19,"./observable/value":20,"./observable/zip":21,"./operator/concatAll":22,"./operator/flatMap":23,"./operator/map":24,"./operator/mapTo":25,"./operator/merge":26,"./operator/mergeAll":27,"./operator/observeOn":28,"./operator/skip":29,"./operator/subscribeOn":30,"./operator/take":31,"./operator/toArray":32,"./operator/zip":33,"./operator/zipAll":34,"./scheduler/immediate":38,"./scheduler/nextTick":39}],5:[function(require,module,exports){
+},{"./BehaviorSubject":1,"./CompositeSubscription":2,"./Observable":3,"./Observer":4,"./SerialSubscription":6,"./Subject":7,"./Subscription":8,"./observable/empty":10,"./observable/fromArray":11,"./observable/fromEvent":12,"./observable/fromEventPattern":13,"./observable/fromPromise":14,"./observable/interval":15,"./observable/of":16,"./observable/range":17,"./observable/return":18,"./observable/throw":19,"./observable/timer":20,"./observable/value":21,"./observable/zip":22,"./operator/concatAll":23,"./operator/flatMap":24,"./operator/map":25,"./operator/mapTo":26,"./operator/merge":27,"./operator/mergeAll":28,"./operator/observeOn":29,"./operator/skip":30,"./operator/subscribeOn":31,"./operator/take":32,"./operator/toArray":33,"./operator/zip":34,"./operator/zipAll":35,"./scheduler/immediate":39,"./scheduler/nextTick":40}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -548,7 +603,7 @@ var SerialSubscription = (function (_Subscription) {
 
 exports['default'] = SerialSubscription;
 module.exports = exports['default'];
-},{"./Subscription":7}],6:[function(require,module,exports){
+},{"./Subscription":8}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -660,7 +715,7 @@ var SubjectSubscription = (function (_Subscription) {
 })(_Subscription3['default']);
 
 module.exports = exports['default'];
-},{"./Observable":2,"./Subscription":7,"./util/Symbol_observer":41}],7:[function(require,module,exports){
+},{"./Observable":3,"./Subscription":8,"./util/Symbol_observer":42}],8:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -721,7 +776,7 @@ var Subscription = (function () {
 
 exports['default'] = Subscription;
 module.exports = exports['default'];
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -762,7 +817,7 @@ var ArrayObservable = (function (_Observable) {
 
 exports['default'] = ArrayObservable;
 module.exports = exports['default'];
-},{"../Observable":2}],9:[function(require,module,exports){
+},{"../Observable":3}],10:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -784,7 +839,7 @@ function empty() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2}],10:[function(require,module,exports){
+},{"../Observable":3}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -801,7 +856,7 @@ function fromArray(array) {
 }
 
 module.exports = exports['default'];
-},{"./ArrayObservable":8}],11:[function(require,module,exports){
+},{"./ArrayObservable":9}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -934,7 +989,7 @@ function fromEvent(element, eventName) {
 
 ;
 module.exports = exports['default'];
-},{"../CompositeSubscription":1,"../Observable":2,"../Subscription":7,"../util/errorObject":43,"../util/tryCatch":45,"./fromEventPattern":12}],12:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":3,"../Subscription":8,"../util/errorObject":44,"../util/tryCatch":46,"./fromEventPattern":13}],13:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1018,7 +1073,7 @@ function fromEventPattern(addHandler) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../util/errorObject":43,"../util/tryCatch":45}],13:[function(require,module,exports){
+},{"../Observable":3,"../util/errorObject":44,"../util/tryCatch":46}],14:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1064,7 +1119,7 @@ function fromPromise(promise) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":2}],14:[function(require,module,exports){
+},{"../Observable":3}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1141,7 +1196,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../Observer":3,"../scheduler/nextTick":39}],15:[function(require,module,exports){
+},{"../Observable":3,"../Observer":4,"../scheduler/nextTick":40}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1163,7 +1218,7 @@ function of() {
 
 ;
 module.exports = exports['default'];
-},{"./ArrayObservable":8}],16:[function(require,module,exports){
+},{"./ArrayObservable":9}],17:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1212,7 +1267,7 @@ function range() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2}],17:[function(require,module,exports){
+},{"../Observable":3}],18:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1252,7 +1307,7 @@ function _return() {
 }
 
 module.exports = exports['default'];
-},{"../Observable":2}],18:[function(require,module,exports){
+},{"../Observable":3}],19:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1295,7 +1350,7 @@ function _throw() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2}],19:[function(require,module,exports){
+},{"../Observable":3}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1349,7 +1404,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../scheduler/nextTick":39}],20:[function(require,module,exports){
+},{"../Observable":3,"../scheduler/nextTick":40}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1389,7 +1444,7 @@ function value(value) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2}],21:[function(require,module,exports){
+},{"../Observable":3}],22:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1512,7 +1567,7 @@ function zip(observables, project) {
 }
 
 module.exports = exports['default'];
-},{"../CompositeSubscription":1,"../Observable":2,"../Observer":3,"../Subscription":7,"../util/Symbol_observer":41,"../util/errorObject":43,"../util/tryCatch":45}],22:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":3,"../Observer":4,"../Subscription":8,"../util/Symbol_observer":42,"../util/errorObject":44,"../util/tryCatch":46}],23:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1529,7 +1584,7 @@ function concatAll() {
 }
 
 module.exports = exports['default'];
-},{"./mergeAll":27}],23:[function(require,module,exports){
+},{"./mergeAll":28}],24:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1552,7 +1607,7 @@ function flatMap(project) {
 }
 
 module.exports = exports['default'];
-},{"./map":24,"./mergeAll":27}],24:[function(require,module,exports){
+},{"./map":25,"./mergeAll":28}],25:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1631,7 +1686,7 @@ function select(project) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../Observer":3,"../Subscription":7,"../util/errorObject":43,"../util/tryCatch":45}],25:[function(require,module,exports){
+},{"../Observable":3,"../Observer":4,"../Subscription":8,"../util/errorObject":44,"../util/tryCatch":46}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1697,7 +1752,7 @@ function mapTo(value) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../Observer":3,"../Subscription":7}],26:[function(require,module,exports){
+},{"../Observable":3,"../Observer":4,"../Subscription":8}],27:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1714,7 +1769,7 @@ function merge(observables) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":2}],27:[function(require,module,exports){
+},{"../Observable":3}],28:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1853,7 +1908,7 @@ function mergeAll() {
 
 ;
 module.exports = exports['default'];
-},{"../CompositeSubscription":1,"../Observable":2,"../Observer":3,"../SerialSubscription":5,"../Subscription":7,"../util/Symbol_observer":41}],28:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":3,"../Observer":4,"../SerialSubscription":6,"../Subscription":8,"../util/Symbol_observer":42}],29:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1953,7 +2008,7 @@ function observeOn(scheduler) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":2,"../Observer":3,"../Subscription":7}],29:[function(require,module,exports){
+},{"../Observable":3,"../Observer":4,"../Subscription":8}],30:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2023,7 +2078,7 @@ function skip(count) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../Observer":3,"../Subscription":7}],30:[function(require,module,exports){
+},{"../Observable":3,"../Observer":4,"../Subscription":8}],31:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2083,7 +2138,7 @@ function subscribeOn(scheduler) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../SerialSubscription":5,"../util/Symbol_observer":41}],31:[function(require,module,exports){
+},{"../Observable":3,"../SerialSubscription":6,"../util/Symbol_observer":42}],32:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2154,7 +2209,7 @@ function take(count) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":2,"../Observer":3,"../Subscription":7}],32:[function(require,module,exports){
+},{"../Observable":3,"../Observer":4,"../Subscription":8}],33:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2224,7 +2279,7 @@ function toArray() {
 }
 
 module.exports = exports['default'];
-},{"../Observable":2,"../Observer":3,"../Subscription":7}],33:[function(require,module,exports){
+},{"../Observable":3,"../Observer":4,"../Subscription":8}],34:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2241,7 +2296,7 @@ function zip(observables, project) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":2}],34:[function(require,module,exports){
+},{"../Observable":3}],35:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2260,7 +2315,7 @@ function zipAll(project) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":2}],35:[function(require,module,exports){
+},{"../Observable":3}],36:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2299,7 +2354,7 @@ var NextTickScheduler = (function (_Scheduler) {
 
 exports['default'] = NextTickScheduler;
 module.exports = exports['default'];
-},{"./Scheduler":36,"./SchedulerActions":37}],36:[function(require,module,exports){
+},{"./Scheduler":37,"./SchedulerActions":38}],37:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2350,7 +2405,7 @@ var Scheduler = (function () {
 
 exports['default'] = Scheduler;
 module.exports = exports['default'];
-},{"./SchedulerActions":37}],37:[function(require,module,exports){
+},{"./SchedulerActions":38}],38:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2503,7 +2558,7 @@ var FutureScheduledAction = (function (_ScheduledAction2) {
 })(ScheduledAction);
 
 exports.FutureScheduledAction = FutureScheduledAction;
-},{"../SerialSubscription":5,"../Subscription":7,"../util/Immediate":40}],38:[function(require,module,exports){
+},{"../SerialSubscription":6,"../Subscription":8,"../util/Immediate":41}],39:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2517,7 +2572,7 @@ var _Scheduler2 = _interopRequireDefault(_Scheduler);
 var immediate = new _Scheduler2['default']();
 exports['default'] = immediate;
 module.exports = exports['default'];
-},{"./Scheduler":36}],39:[function(require,module,exports){
+},{"./Scheduler":37}],40:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2531,7 +2586,7 @@ var _NextTickScheduler2 = _interopRequireDefault(_NextTickScheduler);
 var nextTick = new _NextTickScheduler2['default']();
 exports['default'] = nextTick;
 module.exports = exports['default'];
-},{"./NextTickScheduler":35}],40:[function(require,module,exports){
+},{"./NextTickScheduler":36}],41:[function(require,module,exports){
 /**
 All credit for this helper goes to http://github.com/YuzuJS/setImmediate
 */
@@ -2700,7 +2755,7 @@ if (_root2["default"] && _root2["default"].setImmediate) {
 }
 exports["default"] = Immediate;
 module.exports = exports["default"];
-},{"./root":44}],41:[function(require,module,exports){
+},{"./root":45}],42:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2722,7 +2777,7 @@ if (!_root2['default'].Symbol.observer) {
 }
 exports['default'] = _root2['default'].Symbol.observer;
 module.exports = exports['default'];
-},{"./root":44}],42:[function(require,module,exports){
+},{"./root":45}],43:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2746,14 +2801,14 @@ function arraySlice(array) {
 
 ;
 module.exports = exports["default"];
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
 var errorObject = { e: {} };
 exports["default"] = errorObject;
 module.exports = exports["default"];
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2777,7 +2832,7 @@ if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === fre
 exports['default'] = root;
 module.exports = exports['default'];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2806,7 +2861,7 @@ function tryCatch(fn) {
 
 ;
 module.exports = exports['default'];
-},{"./errorObject":43}],46:[function(require,module,exports){
+},{"./errorObject":44}],47:[function(require,module,exports){
 (function (global){
 (function(root, factory){
 		root.RxNext = factory();
@@ -2814,4 +2869,4 @@ module.exports = exports['default'];
 	return require('../dist/cjs/RxNext');	
 }));
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../dist/cjs/RxNext":4}]},{},[46]);
+},{"../dist/cjs/RxNext":5}]},{},[47]);

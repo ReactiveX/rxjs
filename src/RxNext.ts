@@ -8,6 +8,7 @@ import Subscription from './Subscription';
 import CompositeSubscription from './CompositeSubscription';
 import SerialSubscription from './SerialSubscription';
 import Subject from './Subject';
+import BehaviorSubject from './BehaviorSubject';
 
 import value from './observable/value';
 import _return from './observable/return';
@@ -75,7 +76,8 @@ var RxNext = {
   Subscription,
   CompositeSubscription,
   SerialSubscription, 
-  Subject
+  Subject,
+  BehaviorSubject
 };
 
 export default RxNext;

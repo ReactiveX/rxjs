@@ -36,6 +36,10 @@ var _Subject = require('./Subject');
 
 var _Subject2 = _interopRequireDefault(_Subject);
 
+var _BehaviorSubject = require('./BehaviorSubject');
+
+var _BehaviorSubject2 = _interopRequireDefault(_BehaviorSubject);
+
 var _observableValue = require('./observable/value');
 
 var _observableValue2 = _interopRequireDefault(_observableValue);
@@ -176,7 +180,8 @@ var RxNext = {
     Subscription: _Subscription2['default'],
     CompositeSubscription: _CompositeSubscription2['default'],
     SerialSubscription: _SerialSubscription2['default'],
-    Subject: _Subject2['default']
+    Subject: _Subject2['default'],
+    BehaviorSubject: _BehaviorSubject2['default']
 };
 exports['default'] = RxNext;
 module.exports = exports['default'];
