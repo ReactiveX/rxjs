@@ -3,13 +3,13 @@ import Observable from '../Observable';
 import Subscription from '../Subscription';
 
 interface IteratorResult<T> {
-	done:boolean;
-	value?:T
+  done:boolean;
+  value?:T
 }
 
 class SkipObserver extends Observer {
   count:number;
-	counter:number=0;
+  counter:number=0;
   
   constructor(destination:Observer, count:number) {
     super(destination);
@@ -17,16 +17,16 @@ class SkipObserver extends Observer {
   }
   
   _next(value:any):IteratorResult<any> {
-		if(this.counter++ >= this.count) {
-			return this.destination.next(value);
-		}
-		return { done: false };
+    if(this.counter++ >= this.count) {
+      return this.destination.next(value);
+    }
+    return { done: false };
   }
 }
 
 class SkipObservable extends Observable {
   source:Observable;
-	count:number;
+  count:number;
   
   constructor(source:Observable, count:number) {
     super(null);

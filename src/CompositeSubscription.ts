@@ -37,11 +37,11 @@ export default class CompositeSubscription extends Subscription {
   add(subscription:Subscription):CompositeSubscription {
     var subscriptions = this._subscriptions || (this._subscriptions = []);
     if (subscription && !subscription.unsubscribed) {
-        if (this.unsubscribed) {
-            subscription.unsubscribe();
-        } else {
-            subscriptions.push(subscription);
-        }
+      if (this.unsubscribed) {
+          subscription.unsubscribe();
+      } else {
+          subscriptions.push(subscription);
+      }
     }
     this.length = subscriptions.length;
     return this;
@@ -53,7 +53,7 @@ export default class CompositeSubscription extends Subscription {
     if(subscriptions) {
       var subscriptionIndex = subscriptions.indexOf(subscription);
       if (subscriptionIndex !== -1) {
-          subscriptions.splice(subscriptionIndex, 1);
+        subscriptions.splice(subscriptionIndex, 1);
       }
       this.length = subscriptions.length;
     } else {

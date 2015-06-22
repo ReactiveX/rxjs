@@ -3,8 +3,8 @@ import error_obj from '../util/errorObject';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
 interface IteratorResult<T> {
-	done:boolean;
-	value?:T
+  done:boolean;
+  value?:T
 }
 
 class MapToObserver extends Observer {
@@ -22,7 +22,7 @@ class MapToObserver extends Observer {
 
 class MapToObservable extends Observable {
   source:Observable;
-	value:any;
+  value:any;
   
   constructor(source:Observable, value:any) {
     super(null);

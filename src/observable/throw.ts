@@ -17,5 +17,5 @@ class ThrowObservable extends Observable {
 const EMPTY_THROW = new ThrowObservable(undefined);
 
 export default function _throw(err:any=undefined):Observable {
-    return err ? new ThrowObservable(err) : EMPTY_THROW;
+  return err ? new ThrowObservable(err) : EMPTY_THROW;
 };

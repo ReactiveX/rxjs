@@ -103,5 +103,5 @@ class MergeAllObservable extends Observable {
 }
 
 export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : Observable {
-    return new MergeAllObservable(this, concurrent);
+  return new MergeAllObservable(this, concurrent);
 };
