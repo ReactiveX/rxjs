@@ -45,6 +45,7 @@ var SerialSubscription = (function (_Subscription) {
     };
 
     SerialSubscription.prototype.unsubscribe = function unsubscribe() {
+        _Subscription.prototype.unsubscribe.call(this);
         if (this.unsubscribed) {
             return;
         }

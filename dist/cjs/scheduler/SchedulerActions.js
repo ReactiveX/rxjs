@@ -99,7 +99,6 @@ var NextScheduledAction = (function (_ScheduledAction) {
     };
 
     NextScheduledAction.prototype.unsubscribe = function unsubscribe() {
-        _ScheduledAction.prototype.unsubscribe.call(this);
         var scheduler = this.scheduler;
         if (scheduler.actions.length === 0) {
             scheduler.active = false;
@@ -110,6 +109,7 @@ var NextScheduledAction = (function (_ScheduledAction) {
                 _utilImmediate2['default'].clearImmediate(id);
             }
         }
+        _ScheduledAction.prototype.unsubscribe.call(this);
     };
 
     return NextScheduledAction;
@@ -145,12 +145,12 @@ var FutureScheduledAction = (function (_ScheduledAction2) {
     };
 
     FutureScheduledAction.prototype.unsubscribe = function unsubscribe() {
-        _ScheduledAction2.prototype.unsubscribe.call(this);
         var id = this.id;
         if (id != null) {
             this.id = void 0;
             clearTimeout(id);
         }
+        _ScheduledAction2.prototype.unsubscribe.call(this);
     };
 
     return FutureScheduledAction;

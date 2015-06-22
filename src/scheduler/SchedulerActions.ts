@@ -71,7 +71,6 @@ export class NextScheduledAction extends ScheduledAction {
   }
   
   unsubscribe() {
-    super.unsubscribe();
     var scheduler = this.scheduler;
     if(scheduler.actions.length === 0) {
         scheduler.active = false;
@@ -82,6 +81,7 @@ export class NextScheduledAction extends ScheduledAction {
             Immediate.clearImmediate(id);
         }
     }
+    super.unsubscribe();
   }
 }
 
@@ -111,11 +111,11 @@ export class FutureScheduledAction extends ScheduledAction {
   }
 
   unsubscribe() {
-    super.unsubscribe();
     var id = this.id;
     if(id != null) {
         this.id = void 0;
         clearTimeout(id);
     }
+    super.unsubscribe();
   }
 }

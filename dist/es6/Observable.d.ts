@@ -1,6 +1,8 @@
 import Observer from './Observer';
 import Subscription from './Subscription';
+import SerialSubscription from './SerialSubscription';
 import Scheduler from './scheduler/Scheduler';
+import { IteratorResult } from './IteratorResult';
 export default class Observable {
     static value: (value: any) => Observable;
     static return: (returnValue: any) => Observable;
@@ -30,6 +32,6 @@ export default class Observable {
     constructor(subscriber: (observer: Observer) => Function | void);
     static create(subscriber: (observer: Observer) => any): Observable;
     subscriber(observer: Observer): Function | Subscription | void;
-    subscribe(observerOrNextHandler: Observer | ((any) => IteratorResult<any>), throwHandler?: (any) => IteratorResult<any>, returnHandler?: (any) => IteratorResult<any>): Subscription;
+    subscribe(observerOrNextHandler: Observer | ((any) => IteratorResult<any>), throwHandler?: (any) => IteratorResult<any>, returnHandler?: (any) => IteratorResult<any>, disposeHandler?: () => void): SerialSubscription;
     forEach(nextHandler: any): Promise<{}>;
 }

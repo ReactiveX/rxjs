@@ -4,6 +4,7 @@ import SerialSubscription from './SerialSubscription';
 import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
 import Scheduler from './scheduler/Scheduler';
+import { IteratorResult } from './IteratorResult';
 
 export default class Observable {  
   static value:(value:any)=>Observable;
@@ -53,15 +54,18 @@ export default class Observable {
   
   subscribe(observerOrNextHandler:Observer|((any)=>IteratorResult<any>),
     throwHandler:(any)=>IteratorResult<any>=null,
-    returnHandler:(any)=>IteratorResult<any>=null) {
+    returnHandler:(any)=>IteratorResult<any>=null,
+    disposeHandler:()=>void=null) {
       var observer;
       if(typeof observerOrNextHandler === 'object') {
         observer = observerOrNextHandler;
       } else {
-        observer = Observer.create(<(any)=>IteratorResult<any>>observerOrNextHandler, throwHandler, returnHandler);
+        observer = Observer.create(<(any)=>IteratorResult<any>>observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
       }
-      
-      return nextTick.schedule(0, [observer, this], dispatchSubscription);
+      var subscription = new SerialSubscription(null);
+      subscription.observer = observer;
+      subscription.add(nextTick.schedule(0, [observer, this], dispatchSubscription));
+      return subscription;
     }
   
   forEach(nextHandler) {
