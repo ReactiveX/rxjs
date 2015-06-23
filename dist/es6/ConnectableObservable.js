@@ -26,6 +26,30 @@ export default class ConnectableObservable extends Observable {
         }
         return this.subject[$$observer](observer);
     }
+    refCount() {
+        return new RefCountObservable(this);
+    }
+}
+class RefCountObservable extends Observable {
+    constructor(source) {
+        super(null);
+        this.refCount = 0;
+        this.source = source;
+    }
+    subscriber(observer) {
+        this.refCount++;
+        this.source[$$observer](observer);
+        var shouldConnect = this.refCount === 1;
+        if (shouldConnect) {
+            this.connectionSubscription = this.source.connectSync();
+        }
+        return () => {
+            var refCount = this.refCount--;
+            if (refCount === 0) {
+                this.connectionSubscription.unsubscribe();
+            }
+        };
+    }
 }
 function dispatchConnection(connectable) {
     if (!connectable.subscription) {

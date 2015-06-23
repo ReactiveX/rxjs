@@ -9,6 +9,9 @@ export default class Subscription {
   constructor(_unsubscribe:Function, observer:Observer) {
     this._unsubscribe = _unsubscribe;
     this.observer = observer;
+    if (observer) {
+      observer.setSubscription(this);
+    }
   }
   
   unsubscribe():void {

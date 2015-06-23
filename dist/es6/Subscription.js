@@ -4,6 +4,9 @@ export default class Subscription {
         this.unsubscribed = false;
         this._unsubscribe = _unsubscribe;
         this.observer = observer;
+        if (observer) {
+            observer.setSubscription(this);
+        }
     }
     unsubscribe() {
         if (this.unsubscribed) {

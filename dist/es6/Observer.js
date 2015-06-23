@@ -73,6 +73,15 @@ export default class Observer {
     }
     unsubscribe() {
         this.unsubscribed = true;
+        if (this.subscription && this.subscription._unsubscribe) {
+            this.subscription._unsubscribe();
+        }
+    }
+    setSubscription(subscription) {
+        this.subscription = subscription;
+        if (this.unsubscribed && subscription._unsubscribe) {
+            subscription._unsubscribe();
+        }
     }
     dispose() {
         if (!this.unsubscribed) {

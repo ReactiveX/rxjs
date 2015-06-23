@@ -11,6 +11,9 @@ define(['exports', 'module'], function (exports, module) {
             this.unsubscribed = false;
             this._unsubscribe = _unsubscribe;
             this.observer = observer;
+            if (observer) {
+                observer.setSubscription(this);
+            }
         }
 
         Subscription.prototype.unsubscribe = function unsubscribe() {
