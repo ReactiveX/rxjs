@@ -20,6 +20,7 @@ export default class Observable {
     static of: (...values: Array<any>) => Observable;
     static timer: (delay: number) => Observable;
     static interval: (interval: number) => Observable;
+    filter: (predicate: (any) => boolean) => Observable;
     map: (project: (any) => any) => Observable;
     mapTo: (value: any) => Observable;
     mergeAll: (concurrent?: number) => Observable;

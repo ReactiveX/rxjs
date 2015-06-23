@@ -96,6 +96,10 @@ var _observableInterval = require('./observable/interval');
 
 var _observableInterval2 = _interopRequireDefault(_observableInterval);
 
+var _operatorFilter = require('./operator/filter');
+
+var _operatorFilter2 = _interopRequireDefault(_operatorFilter);
+
 var _operatorMap = require('./operator/map');
 
 var _operatorMap2 = _interopRequireDefault(_operatorMap);
@@ -169,6 +173,7 @@ _Observable2['default'].fromPromise = _observableFromPromise2['default'];
 _Observable2['default'].of = _observableOf2['default'];
 _Observable2['default'].timer = _observableTimer2['default'];
 _Observable2['default'].interval = _observableInterval2['default'];
+_Observable2['default'].prototype.filter = _operatorFilter2['default'];
 _Observable2['default'].prototype.map = _operatorMap2['default'];
 _Observable2['default'].prototype.mapTo = _operatorMapTo2['default'];
 _Observable2['default'].prototype.mergeAll = _operatorMergeAll2['default'];
