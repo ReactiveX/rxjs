@@ -55,7 +55,6 @@ describe('Observable.prototype.multicast()', function () {
       return subject;
     });
     
-    debugger;
     source.subscribe(function (x) {
       expect(x).toBe(expected[i++]);
     }, null, function () {
