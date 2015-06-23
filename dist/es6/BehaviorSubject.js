@@ -3,7 +3,7 @@ import Subscription from './Subscription';
 import Subject from './Subject';
 export default class BehaviorSubject extends Subject {
     constructor(value) {
-        super(null);
+        super();
         this.value = value;
     }
     [$$observer](observer) {

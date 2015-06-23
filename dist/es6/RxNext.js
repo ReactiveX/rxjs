@@ -35,6 +35,7 @@ import zipProto from './operator/zip';
 import mergeProto from './operator/merge';
 import toArray from './operator/toArray';
 import multicast from './operator/multicast';
+import publish from './operator/publish';
 Observable.value = value;
 Observable.return = _return;
 Observable.fromEventPattern = fromEventPattern;
@@ -62,6 +63,7 @@ Observable.prototype.zip = zipProto;
 Observable.prototype.merge = mergeProto;
 Observable.prototype.toArray = toArray;
 Observable.prototype.multicast = multicast;
+Observable.prototype.publish = publish;
 var RxNext = {
     Scheduler: {
         nextTick,

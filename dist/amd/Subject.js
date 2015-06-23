@@ -15,13 +15,9 @@ define(['exports', 'module', './Observable', './util/Symbol_observer', './Subscr
 
     var Subject = (function (_Observable) {
         function Subject() {
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
-
             _classCallCheck(this, Subject);
 
-            _Observable.call.apply(_Observable, [this].concat(args));
+            _Observable.call(this, null);
             this.disposed = false;
             this.observers = [];
             this.unsubscribed = false;

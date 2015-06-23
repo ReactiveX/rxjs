@@ -19,6 +19,9 @@ export default class Subject extends Observable {
   _throw: (err: any) => IteratorResult<any>;
   _return: (value: any) => IteratorResult<any>;
   
+  constructor() {
+    super(null);
+  }
   
   dispose() {
     this.disposed = true;

@@ -2,8 +2,8 @@ import Observable from './Observable';
 import $$observer from './util/Symbol_observer';
 import Subscription from './Subscription';
 export default class Subject extends Observable {
-    constructor(...args) {
-        super(...args);
+    constructor() {
+        super(null);
         this.disposed = false;
         this.observers = [];
         this.unsubscribed = false;

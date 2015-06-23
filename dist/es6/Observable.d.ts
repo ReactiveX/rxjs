@@ -34,6 +34,7 @@ export default class Observable {
     merge: (observables: Array<Observable>) => Observable;
     toArray: () => Observable;
     multicast: (subjectFactory: () => Subject) => ConnectableObservable;
+    publish: () => ConnectableObservable;
     constructor(subscriber: (observer: Observer) => Function | void);
     static create(subscriber: (observer: Observer) => any): Observable;
     subscriber(observer: Observer): Function | Subscription | void;
