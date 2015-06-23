@@ -48,7 +48,7 @@ var BehaviorSubject = (function (_Subject) {
 
 exports['default'] = BehaviorSubject;
 module.exports = exports['default'];
-},{"./Subject":8,"./Subscription":9,"./util/Symbol_observer":45}],2:[function(require,module,exports){
+},{"./Subject":8,"./Subscription":9,"./util/Symbol_observer":46}],2:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -138,7 +138,7 @@ var CompositeSubscription = (function (_Subscription) {
 
 exports['default'] = CompositeSubscription;
 module.exports = exports['default'];
-},{"./Subscription":9,"./util/arraySlice":46}],3:[function(require,module,exports){
+},{"./Subscription":9,"./util/arraySlice":47}],3:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -247,7 +247,7 @@ function dispatchConnection(connectable) {
     return connectable.subscription;
 }
 module.exports = exports['default'];
-},{"./Observable":4,"./Observer":5,"./scheduler/nextTick":43,"./util/Symbol_observer":45}],4:[function(require,module,exports){
+},{"./Observable":4,"./Observer":5,"./scheduler/nextTick":44,"./util/Symbol_observer":46}],4:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -347,7 +347,7 @@ function dispatchSubscription(_ref) {
     return observable[_utilSymbol_observer2['default']](observer);
 }
 module.exports = exports['default'];
-},{"./Observer":5,"./SerialSubscription":7,"./Subscription":9,"./scheduler/nextTick":43,"./util/Symbol_observer":45}],5:[function(require,module,exports){
+},{"./Observer":5,"./SerialSubscription":7,"./Subscription":9,"./scheduler/nextTick":44,"./util/Symbol_observer":46}],5:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -571,6 +571,10 @@ var _observableInterval = require('./observable/interval');
 
 var _observableInterval2 = _interopRequireDefault(_observableInterval);
 
+var _operatorFilter = require('./operator/filter');
+
+var _operatorFilter2 = _interopRequireDefault(_operatorFilter);
+
 var _operatorMap = require('./operator/map');
 
 var _operatorMap2 = _interopRequireDefault(_operatorMap);
@@ -644,6 +648,7 @@ _Observable2['default'].fromPromise = _observableFromPromise2['default'];
 _Observable2['default'].of = _observableOf2['default'];
 _Observable2['default'].timer = _observableTimer2['default'];
 _Observable2['default'].interval = _observableInterval2['default'];
+_Observable2['default'].prototype.filter = _operatorFilter2['default'];
 _Observable2['default'].prototype.map = _operatorMap2['default'];
 _Observable2['default'].prototype.mapTo = _operatorMapTo2['default'];
 _Observable2['default'].prototype.mergeAll = _operatorMergeAll2['default'];
@@ -675,7 +680,7 @@ var RxNext = {
 };
 exports['default'] = RxNext;
 module.exports = exports['default'];
-},{"./BehaviorSubject":1,"./CompositeSubscription":2,"./ConnectableObservable":3,"./Observable":4,"./Observer":5,"./SerialSubscription":7,"./Subject":8,"./Subscription":9,"./observable/empty":11,"./observable/fromArray":12,"./observable/fromEvent":13,"./observable/fromEventPattern":14,"./observable/fromPromise":15,"./observable/interval":16,"./observable/of":17,"./observable/range":18,"./observable/return":19,"./observable/throw":20,"./observable/timer":21,"./observable/value":22,"./observable/zip":23,"./operator/concatAll":24,"./operator/flatMap":25,"./operator/map":26,"./operator/mapTo":27,"./operator/merge":28,"./operator/mergeAll":29,"./operator/multicast":30,"./operator/observeOn":31,"./operator/publish":32,"./operator/skip":33,"./operator/subscribeOn":34,"./operator/take":35,"./operator/toArray":36,"./operator/zip":37,"./operator/zipAll":38,"./scheduler/immediate":42,"./scheduler/nextTick":43}],7:[function(require,module,exports){
+},{"./BehaviorSubject":1,"./CompositeSubscription":2,"./ConnectableObservable":3,"./Observable":4,"./Observer":5,"./SerialSubscription":7,"./Subject":8,"./Subscription":9,"./observable/empty":11,"./observable/fromArray":12,"./observable/fromEvent":13,"./observable/fromEventPattern":14,"./observable/fromPromise":15,"./observable/interval":16,"./observable/of":17,"./observable/range":18,"./observable/return":19,"./observable/throw":20,"./observable/timer":21,"./observable/value":22,"./observable/zip":23,"./operator/concatAll":24,"./operator/filter":25,"./operator/flatMap":26,"./operator/map":27,"./operator/mapTo":28,"./operator/merge":29,"./operator/mergeAll":30,"./operator/multicast":31,"./operator/observeOn":32,"./operator/publish":33,"./operator/skip":34,"./operator/subscribeOn":35,"./operator/take":36,"./operator/toArray":37,"./operator/zip":38,"./operator/zipAll":39,"./scheduler/immediate":43,"./scheduler/nextTick":44}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -869,7 +874,7 @@ var SubjectSubscription = (function (_Subscription) {
 })(_Subscription3['default']);
 
 module.exports = exports['default'];
-},{"./Observable":4,"./Subscription":9,"./util/Symbol_observer":45}],9:[function(require,module,exports){
+},{"./Observable":4,"./Subscription":9,"./util/Symbol_observer":46}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1146,7 +1151,7 @@ function fromEvent(element, eventName) {
 
 ;
 module.exports = exports['default'];
-},{"../CompositeSubscription":2,"../Observable":4,"../Subscription":9,"../util/errorObject":47,"../util/tryCatch":49,"./fromEventPattern":14}],14:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":4,"../Subscription":9,"../util/errorObject":48,"../util/tryCatch":50,"./fromEventPattern":14}],14:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1230,7 +1235,7 @@ function fromEventPattern(addHandler) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../util/errorObject":47,"../util/tryCatch":49}],15:[function(require,module,exports){
+},{"../Observable":4,"../util/errorObject":48,"../util/tryCatch":50}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1353,7 +1358,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../scheduler/nextTick":43}],17:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../scheduler/nextTick":44}],17:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1561,7 +1566,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../scheduler/nextTick":43}],22:[function(require,module,exports){
+},{"../Observable":4,"../scheduler/nextTick":44}],22:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1724,7 +1729,7 @@ function zip(observables, project) {
 }
 
 module.exports = exports['default'];
-},{"../CompositeSubscription":2,"../Observable":4,"../Observer":5,"../Subscription":9,"../util/Symbol_observer":45,"../util/errorObject":47,"../util/tryCatch":49}],24:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":4,"../Observer":5,"../Subscription":9,"../util/Symbol_observer":46,"../util/errorObject":48,"../util/tryCatch":50}],24:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1741,7 +1746,86 @@ function concatAll() {
 }
 
 module.exports = exports['default'];
-},{"./mergeAll":29}],25:[function(require,module,exports){
+},{"./mergeAll":30}],25:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = select;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _Observer2 = require('../Observer');
+
+var _Observer3 = _interopRequireDefault(_Observer2);
+
+var _utilTryCatch = require('../util/tryCatch');
+
+var _utilTryCatch2 = _interopRequireDefault(_utilTryCatch);
+
+var _utilErrorObject = require('../util/errorObject');
+
+var _utilErrorObject2 = _interopRequireDefault(_utilErrorObject);
+
+var _Observable2 = require('../Observable');
+
+var _Observable3 = _interopRequireDefault(_Observable2);
+
+var _Subscription = require('../Subscription');
+
+var _Subscription2 = _interopRequireDefault(_Subscription);
+
+var FilterObserver = (function (_Observer) {
+    function FilterObserver(destination, predicate) {
+        _classCallCheck(this, FilterObserver);
+
+        _Observer.call(this, destination);
+        this.predicate = predicate;
+    }
+
+    _inherits(FilterObserver, _Observer);
+
+    FilterObserver.prototype._next = function _next(value) {
+        var result = (0, _utilTryCatch2['default'])(this.predicate).call(this, value);
+        if (result === _utilErrorObject2['default']) {
+            return this.destination['throw'](_utilErrorObject2['default'].e);
+        } else if (Boolean(result)) {
+            return this.destination.next(value);
+        }
+    };
+
+    return FilterObserver;
+})(_Observer3['default']);
+
+var FilterObservable = (function (_Observable) {
+    function FilterObservable(source, predicate) {
+        _classCallCheck(this, FilterObservable);
+
+        _Observable.call(this, null);
+        this.source = source;
+        this.predicate = predicate;
+    }
+
+    _inherits(FilterObservable, _Observable);
+
+    FilterObservable.prototype.subscriber = function subscriber(observer) {
+        var filterObserver = new FilterObserver(observer, this.predicate);
+        return _Subscription2['default'].from(this.source.subscriber(filterObserver), filterObserver);
+    };
+
+    return FilterObservable;
+})(_Observable3['default']);
+
+function select(predicate) {
+    return new FilterObservable(this, predicate);
+}
+
+;
+module.exports = exports['default'];
+},{"../Observable":4,"../Observer":5,"../Subscription":9,"../util/errorObject":48,"../util/tryCatch":50}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1764,7 +1848,7 @@ function flatMap(project) {
 }
 
 module.exports = exports['default'];
-},{"./map":26,"./mergeAll":29}],26:[function(require,module,exports){
+},{"./map":27,"./mergeAll":30}],27:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1843,7 +1927,7 @@ function select(project) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9,"../util/errorObject":47,"../util/tryCatch":49}],27:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../Subscription":9,"../util/errorObject":48,"../util/tryCatch":50}],28:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1909,7 +1993,7 @@ function mapTo(value) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],28:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../Subscription":9}],29:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1926,7 +2010,7 @@ function merge(observables) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],29:[function(require,module,exports){
+},{"../Observable":4}],30:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2065,7 +2149,7 @@ function mergeAll() {
 
 ;
 module.exports = exports['default'];
-},{"../CompositeSubscription":2,"../Observable":4,"../Observer":5,"../SerialSubscription":7,"../Subscription":9,"../util/Symbol_observer":45}],30:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":4,"../Observer":5,"../SerialSubscription":7,"../Subscription":9,"../util/Symbol_observer":46}],31:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2083,7 +2167,7 @@ function multicast(subjectFactory) {
 
 ;
 module.exports = exports['default'];
-},{"../ConnectableObservable":3}],31:[function(require,module,exports){
+},{"../ConnectableObservable":3}],32:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2183,7 +2267,7 @@ function observeOn(scheduler) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],32:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../Subscription":9}],33:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2204,7 +2288,7 @@ function publish() {
 }
 
 module.exports = exports['default'];
-},{"../Subject":8}],33:[function(require,module,exports){
+},{"../Subject":8}],34:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2274,7 +2358,7 @@ function skip(count) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],34:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../Subscription":9}],35:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2334,7 +2418,7 @@ function subscribeOn(scheduler) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../SerialSubscription":7,"../util/Symbol_observer":45}],35:[function(require,module,exports){
+},{"../Observable":4,"../SerialSubscription":7,"../util/Symbol_observer":46}],36:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2405,7 +2489,7 @@ function take(count) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],36:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../Subscription":9}],37:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2475,7 +2559,7 @@ function toArray() {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],37:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../Subscription":9}],38:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2492,7 +2576,7 @@ function zip(observables, project) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],38:[function(require,module,exports){
+},{"../Observable":4}],39:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2511,7 +2595,7 @@ function zipAll(project) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],39:[function(require,module,exports){
+},{"../Observable":4}],40:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2550,7 +2634,7 @@ var NextTickScheduler = (function (_Scheduler) {
 
 exports['default'] = NextTickScheduler;
 module.exports = exports['default'];
-},{"./Scheduler":40,"./SchedulerActions":41}],40:[function(require,module,exports){
+},{"./Scheduler":41,"./SchedulerActions":42}],41:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2601,7 +2685,7 @@ var Scheduler = (function () {
 
 exports['default'] = Scheduler;
 module.exports = exports['default'];
-},{"./SchedulerActions":41}],41:[function(require,module,exports){
+},{"./SchedulerActions":42}],42:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2754,7 +2838,7 @@ var FutureScheduledAction = (function (_ScheduledAction2) {
 })(ScheduledAction);
 
 exports.FutureScheduledAction = FutureScheduledAction;
-},{"../SerialSubscription":7,"../Subscription":9,"../util/Immediate":44}],42:[function(require,module,exports){
+},{"../SerialSubscription":7,"../Subscription":9,"../util/Immediate":45}],43:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2768,7 +2852,7 @@ var _Scheduler2 = _interopRequireDefault(_Scheduler);
 var immediate = new _Scheduler2['default']();
 exports['default'] = immediate;
 module.exports = exports['default'];
-},{"./Scheduler":40}],43:[function(require,module,exports){
+},{"./Scheduler":41}],44:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2782,7 +2866,7 @@ var _NextTickScheduler2 = _interopRequireDefault(_NextTickScheduler);
 var nextTick = new _NextTickScheduler2['default']();
 exports['default'] = nextTick;
 module.exports = exports['default'];
-},{"./NextTickScheduler":39}],44:[function(require,module,exports){
+},{"./NextTickScheduler":40}],45:[function(require,module,exports){
 /**
 All credit for this helper goes to http://github.com/YuzuJS/setImmediate
 */
@@ -2951,7 +3035,7 @@ if (_root2["default"] && _root2["default"].setImmediate) {
 }
 exports["default"] = Immediate;
 module.exports = exports["default"];
-},{"./root":48}],45:[function(require,module,exports){
+},{"./root":49}],46:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2973,7 +3057,7 @@ if (!_root2['default'].Symbol.observer) {
 }
 exports['default'] = _root2['default'].Symbol.observer;
 module.exports = exports['default'];
-},{"./root":48}],46:[function(require,module,exports){
+},{"./root":49}],47:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2997,14 +3081,14 @@ function arraySlice(array) {
 
 ;
 module.exports = exports["default"];
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
 var errorObject = { e: {} };
 exports["default"] = errorObject;
 module.exports = exports["default"];
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3028,7 +3112,7 @@ if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === fre
 exports['default'] = root;
 module.exports = exports['default'];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3057,7 +3141,7 @@ function tryCatch(fn) {
 
 ;
 module.exports = exports['default'];
-},{"./errorObject":47}],50:[function(require,module,exports){
+},{"./errorObject":48}],51:[function(require,module,exports){
 (function (global){
 (function (root, factory) {
   root.RxNext = factory();
@@ -3065,4 +3149,4 @@ module.exports = exports['default'];
   return require('../dist/cjs/RxNext');	
 }));
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../dist/cjs/RxNext":6}]},{},[50]);
+},{"../dist/cjs/RxNext":6}]},{},[51]);

@@ -25,6 +25,7 @@ import _of from './observable/of';
 import timer from './observable/timer';
 import interval from './observable/interval';
 
+import filter from './operator/filter';
 import map from './operator/map';
 import mapTo from './operator/mapTo';
 import mergeAll from './operator/mergeAll';
@@ -55,6 +56,7 @@ Observable.of = _of;
 Observable.timer = timer;
 Observable.interval = interval;
 
+Observable.prototype.filter = filter;
 Observable.prototype.map = map;
 Observable.prototype.mapTo = mapTo;
 Observable.prototype.mergeAll = mergeAll;
