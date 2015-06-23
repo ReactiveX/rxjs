@@ -7,6 +7,7 @@ import CompositeSubscription from './CompositeSubscription';
 import SerialSubscription from './SerialSubscription';
 import Subject from './Subject';
 import BehaviorSubject from './BehaviorSubject';
+import ConnectableObservable from './ConnectableObservable';
 import value from './observable/value';
 import _return from './observable/return';
 import fromEventPattern from './observable/fromEventPattern';
@@ -33,6 +34,8 @@ import zipAll from './operator/zipAll';
 import zipProto from './operator/zip';
 import mergeProto from './operator/merge';
 import toArray from './operator/toArray';
+import multicast from './operator/multicast';
+import publish from './operator/publish';
 Observable.value = value;
 Observable.return = _return;
 Observable.fromEventPattern = fromEventPattern;
@@ -59,6 +62,8 @@ Observable.prototype.zipAll = zipAll;
 Observable.prototype.zip = zipProto;
 Observable.prototype.merge = mergeProto;
 Observable.prototype.toArray = toArray;
+Observable.prototype.multicast = multicast;
+Observable.prototype.publish = publish;
 var RxNext = {
     Scheduler: {
         nextTick,
@@ -70,6 +75,7 @@ var RxNext = {
     CompositeSubscription,
     SerialSubscription,
     Subject,
-    BehaviorSubject
+    BehaviorSubject,
+    ConnectableObservable
 };
 export default RxNext;

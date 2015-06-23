@@ -5,6 +5,7 @@ import { IteratorResult } from './IteratorResult';
 export default class Observer {
   destination:Observer;
   unsubscribed:boolean = false;
+  subscription: Subscription;
   
   static create(_next:(value:any)=>IteratorResult<any>, 
                 _throw:((value:any)=>IteratorResult<any>)=null, 
@@ -89,6 +90,16 @@ export default class Observer {
   
   unsubscribe() {
     this.unsubscribed = true;
+    if(this.subscription && this.subscription._unsubscribe) {
+      this.subscription._unsubscribe();
+    }
+  }
+  
+  setSubscription(subscription: Subscription) {
+    this.subscription = subscription;
+    if(this.unsubscribed && subscription._unsubscribe) {
+      subscription._unsubscribe();
+    }
   }
   
   dispose() {

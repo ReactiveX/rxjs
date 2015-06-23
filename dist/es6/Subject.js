@@ -2,14 +2,14 @@ import Observable from './Observable';
 import $$observer from './util/Symbol_observer';
 import Subscription from './Subscription';
 export default class Subject extends Observable {
-    constructor(...args) {
-        super(...args);
+    constructor() {
+        super(null);
         this.disposed = false;
         this.observers = [];
+        this.unsubscribed = false;
     }
     dispose() {
         this.disposed = true;
-        this.observers.length = 0;
         if (this._dispose) {
             this._dispose();
         }
@@ -20,27 +20,46 @@ export default class Subject extends Observable {
         return subscription;
     }
     next(value) {
-        if (this.disposed) {
+        if (this.unsubscribed) {
             return { done: true };
         }
         this.observers.forEach(o => o.next(value));
+        this._cleanUnsubbedObservers();
         return { done: false };
     }
     throw(err) {
-        if (this.disposed) {
+        if (this.unsubscribed) {
             return { done: true };
         }
         this.observers.forEach(o => o.throw(err));
-        this.dispose();
+        this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
     }
     return(value) {
-        if (this.disposed) {
+        if (this.unsubscribed) {
             return { done: true };
         }
         this.observers.forEach(o => o.return(value));
-        this.dispose();
+        this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
+    }
+    _cleanUnsubbedObservers() {
+        var i;
+        var observers = this.observers;
+        for (i = observers.length; i--;) {
+            if (observers[i].unsubscribed) {
+                observers.splice(i, 1);
+            }
+        }
+        if (observers.length === 0) {
+            this.unsubscribe();
+        }
+    }
+    unsubscribe() {
+        this.observers.length = 0;
+        this.unsubscribed = true;
     }
 }
 class SubjectSubscription extends Subscription {

@@ -1,4 +1,4 @@
-define(['exports', 'module', './Observable', './Observer', './scheduler/nextTick', './scheduler/immediate', './Subscription', './CompositeSubscription', './SerialSubscription', './Subject', './BehaviorSubject', './observable/value', './observable/return', './observable/fromEventPattern', './observable/fromEvent', './observable/throw', './observable/empty', './observable/range', './observable/fromArray', './observable/zip', './observable/fromPromise', './observable/of', './observable/timer', './observable/interval', './operator/map', './operator/mapTo', './operator/mergeAll', './operator/flatMap', './operator/concatAll', './operator/skip', './operator/take', './operator/subscribeOn', './operator/observeOn', './operator/zipAll', './operator/zip', './operator/merge', './operator/toArray'], function (exports, module, _Observable, _Observer, _schedulerNextTick, _schedulerImmediate, _Subscription, _CompositeSubscription, _SerialSubscription, _Subject, _BehaviorSubject, _observableValue, _observableReturn, _observableFromEventPattern, _observableFromEvent, _observableThrow, _observableEmpty, _observableRange, _observableFromArray, _observableZip, _observableFromPromise, _observableOf, _observableTimer, _observableInterval, _operatorMap, _operatorMapTo, _operatorMergeAll, _operatorFlatMap, _operatorConcatAll, _operatorSkip, _operatorTake, _operatorSubscribeOn, _operatorObserveOn, _operatorZipAll, _operatorZip, _operatorMerge, _operatorToArray) {
+define(['exports', 'module', './Observable', './Observer', './scheduler/nextTick', './scheduler/immediate', './Subscription', './CompositeSubscription', './SerialSubscription', './Subject', './BehaviorSubject', './ConnectableObservable', './observable/value', './observable/return', './observable/fromEventPattern', './observable/fromEvent', './observable/throw', './observable/empty', './observable/range', './observable/fromArray', './observable/zip', './observable/fromPromise', './observable/of', './observable/timer', './observable/interval', './operator/map', './operator/mapTo', './operator/mergeAll', './operator/flatMap', './operator/concatAll', './operator/skip', './operator/take', './operator/subscribeOn', './operator/observeOn', './operator/zipAll', './operator/zip', './operator/merge', './operator/toArray', './operator/multicast', './operator/publish'], function (exports, module, _Observable, _Observer, _schedulerNextTick, _schedulerImmediate, _Subscription, _CompositeSubscription, _SerialSubscription, _Subject, _BehaviorSubject, _ConnectableObservable, _observableValue, _observableReturn, _observableFromEventPattern, _observableFromEvent, _observableThrow, _observableEmpty, _observableRange, _observableFromArray, _observableZip, _observableFromPromise, _observableOf, _observableTimer, _observableInterval, _operatorMap, _operatorMapTo, _operatorMergeAll, _operatorFlatMap, _operatorConcatAll, _operatorSkip, _operatorTake, _operatorSubscribeOn, _operatorObserveOn, _operatorZipAll, _operatorZip, _operatorMerge, _operatorToArray, _operatorMulticast, _operatorPublish) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -20,6 +20,8 @@ define(['exports', 'module', './Observable', './Observer', './scheduler/nextTick
     var _Subject2 = _interopRequireDefault(_Subject);
 
     var _BehaviorSubject2 = _interopRequireDefault(_BehaviorSubject);
+
+    var _ConnectableObservable2 = _interopRequireDefault(_ConnectableObservable);
 
     var _value = _interopRequireDefault(_observableValue);
 
@@ -73,6 +75,10 @@ define(['exports', 'module', './Observable', './Observer', './scheduler/nextTick
 
     var _toArray = _interopRequireDefault(_operatorToArray);
 
+    var _multicast = _interopRequireDefault(_operatorMulticast);
+
+    var _publish = _interopRequireDefault(_operatorPublish);
+
     _Observable2['default'].value = _value['default'];
     _Observable2['default']['return'] = _return2['default'];
     _Observable2['default'].fromEventPattern = _fromEventPattern['default'];
@@ -99,6 +105,8 @@ define(['exports', 'module', './Observable', './Observer', './scheduler/nextTick
     _Observable2['default'].prototype.zip = _zipProto['default'];
     _Observable2['default'].prototype.merge = _mergeProto['default'];
     _Observable2['default'].prototype.toArray = _toArray['default'];
+    _Observable2['default'].prototype.multicast = _multicast['default'];
+    _Observable2['default'].prototype.publish = _publish['default'];
     var RxNext = {
         Scheduler: {
             nextTick: _nextTick['default'],
@@ -110,7 +118,8 @@ define(['exports', 'module', './Observable', './Observer', './scheduler/nextTick
         CompositeSubscription: _CompositeSubscription2['default'],
         SerialSubscription: _SerialSubscription2['default'],
         Subject: _Subject2['default'],
-        BehaviorSubject: _BehaviorSubject2['default']
+        BehaviorSubject: _BehaviorSubject2['default'],
+        ConnectableObservable: _ConnectableObservable2['default']
     };
     module.exports = RxNext;
 });

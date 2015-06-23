@@ -16,6 +16,9 @@ export default class Observable {
         return void 0;
     }
     [$$observer](observer) {
+        if (!(observer instanceof Observer)) {
+            observer = new Observer(observer);
+        }
         return Subscription.from(this.subscriber(observer), observer);
     }
     subscribe(observerOrNextHandler, throwHandler = null, returnHandler = null, disposeHandler = null) {

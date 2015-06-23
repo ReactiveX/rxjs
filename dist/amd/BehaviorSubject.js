@@ -17,7 +17,7 @@ define(['exports', 'module', './util/Symbol_observer', './Subscription', './Subj
         function BehaviorSubject(value) {
             _classCallCheck(this, BehaviorSubject);
 
-            _Subject.call(this, null);
+            _Subject.call(this);
             this.value = value;
         }
 

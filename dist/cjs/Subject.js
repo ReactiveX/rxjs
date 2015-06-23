@@ -22,22 +22,18 @@ var _Subscription3 = _interopRequireDefault(_Subscription2);
 
 var Subject = (function (_Observable) {
     function Subject() {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
         _classCallCheck(this, Subject);
 
-        _Observable.call.apply(_Observable, [this].concat(args));
+        _Observable.call(this, null);
         this.disposed = false;
         this.observers = [];
+        this.unsubscribed = false;
     }
 
     _inherits(Subject, _Observable);
 
     Subject.prototype.dispose = function dispose() {
         this.disposed = true;
-        this.observers.length = 0;
         if (this._dispose) {
             this._dispose();
         }
@@ -50,35 +46,56 @@ var Subject = (function (_Observable) {
     };
 
     Subject.prototype.next = function next(value) {
-        if (this.disposed) {
+        if (this.unsubscribed) {
             return { done: true };
         }
         this.observers.forEach(function (o) {
             return o.next(value);
         });
+        this._cleanUnsubbedObservers();
         return { done: false };
     };
 
     Subject.prototype['throw'] = function _throw(err) {
-        if (this.disposed) {
+        if (this.unsubscribed) {
             return { done: true };
         }
         this.observers.forEach(function (o) {
             return o['throw'](err);
         });
-        this.dispose();
+        this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
     };
 
     Subject.prototype['return'] = function _return(value) {
-        if (this.disposed) {
+        if (this.unsubscribed) {
             return { done: true };
         }
         this.observers.forEach(function (o) {
             return o['return'](value);
         });
-        this.dispose();
+        this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
+    };
+
+    Subject.prototype._cleanUnsubbedObservers = function _cleanUnsubbedObservers() {
+        var i;
+        var observers = this.observers;
+        for (i = observers.length; i--;) {
+            if (observers[i].unsubscribed) {
+                observers.splice(i, 1);
+            }
+        }
+        if (observers.length === 0) {
+            this.unsubscribe();
+        }
+    };
+
+    Subject.prototype.unsubscribe = function unsubscribe() {
+        this.observers.length = 0;
+        this.unsubscribed = true;
     };
 
     return Subject;

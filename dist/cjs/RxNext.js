@@ -40,6 +40,10 @@ var _BehaviorSubject = require('./BehaviorSubject');
 
 var _BehaviorSubject2 = _interopRequireDefault(_BehaviorSubject);
 
+var _ConnectableObservable = require('./ConnectableObservable');
+
+var _ConnectableObservable2 = _interopRequireDefault(_ConnectableObservable);
+
 var _observableValue = require('./observable/value');
 
 var _observableValue2 = _interopRequireDefault(_observableValue);
@@ -144,6 +148,14 @@ var _operatorToArray = require('./operator/toArray');
 
 var _operatorToArray2 = _interopRequireDefault(_operatorToArray);
 
+var _operatorMulticast = require('./operator/multicast');
+
+var _operatorMulticast2 = _interopRequireDefault(_operatorMulticast);
+
+var _operatorPublish = require('./operator/publish');
+
+var _operatorPublish2 = _interopRequireDefault(_operatorPublish);
+
 _Observable2['default'].value = _observableValue2['default'];
 _Observable2['default']['return'] = _observableReturn2['default'];
 _Observable2['default'].fromEventPattern = _observableFromEventPattern2['default'];
@@ -170,6 +182,8 @@ _Observable2['default'].prototype.zipAll = _operatorZipAll2['default'];
 _Observable2['default'].prototype.zip = _operatorZip2['default'];
 _Observable2['default'].prototype.merge = _operatorMerge2['default'];
 _Observable2['default'].prototype.toArray = _operatorToArray2['default'];
+_Observable2['default'].prototype.multicast = _operatorMulticast2['default'];
+_Observable2['default'].prototype.publish = _operatorPublish2['default'];
 var RxNext = {
     Scheduler: {
         nextTick: _schedulerNextTick2['default'],
@@ -181,7 +195,8 @@ var RxNext = {
     CompositeSubscription: _CompositeSubscription2['default'],
     SerialSubscription: _SerialSubscription2['default'],
     Subject: _Subject2['default'],
-    BehaviorSubject: _BehaviorSubject2['default']
+    BehaviorSubject: _BehaviorSubject2['default'],
+    ConnectableObservable: _ConnectableObservable2['default']
 };
 exports['default'] = RxNext;
 module.exports = exports['default'];

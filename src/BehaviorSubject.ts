@@ -10,7 +10,7 @@ export default class BehaviorSubject extends Subject {
   value:any;
   
   constructor(value:any) {
-    super(null);
+    super();
     this.value = value;
   }
   

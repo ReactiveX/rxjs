@@ -95,6 +95,16 @@ define(["exports", "module"], function (exports, module) {
 
         Observer.prototype.unsubscribe = function unsubscribe() {
             this.unsubscribed = true;
+            if (this.subscription && this.subscription._unsubscribe) {
+                this.subscription._unsubscribe();
+            }
+        };
+
+        Observer.prototype.setSubscription = function setSubscription(subscription) {
+            this.subscription = subscription;
+            if (this.unsubscribed && subscription._unsubscribe) {
+                subscription._unsubscribe();
+            }
         };
 
         Observer.prototype.dispose = function dispose() {

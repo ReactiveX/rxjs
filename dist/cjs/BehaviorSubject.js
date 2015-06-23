@@ -24,7 +24,7 @@ var BehaviorSubject = (function (_Subject) {
     function BehaviorSubject(value) {
         _classCallCheck(this, BehaviorSubject);
 
-        _Subject.call(this, null);
+        _Subject.call(this);
         this.value = value;
     }
 

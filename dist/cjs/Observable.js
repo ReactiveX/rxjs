@@ -44,6 +44,9 @@ var Observable = (function () {
     };
 
     Observable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        if (!(observer instanceof _Observer2['default'])) {
+            observer = new _Observer2['default'](observer);
+        }
         return _Subscription2['default'].from(this.subscriber(observer), observer);
     };
 
