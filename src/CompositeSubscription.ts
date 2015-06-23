@@ -1,6 +1,5 @@
 import Subscription from './Subscription';
 import arraySlice from './util/arraySlice';
-import Observer from './Observer';
 
 export default class CompositeSubscription extends Subscription {
   length:number=0;
