@@ -38,6 +38,7 @@ export default class Subject extends Observable {
       return { done: true };
     }
     this.observers.forEach(o => o.next(value));
+    this._cleanUnsubbedObservers();
     return { done: false };
   }
   
@@ -47,6 +48,7 @@ export default class Subject extends Observable {
     }
     this.observers.forEach(o => o.throw(err));
     this.unsubscribe();
+    this._cleanUnsubbedObservers();
     return { done: true };
   }
 
@@ -56,8 +58,22 @@ export default class Subject extends Observable {
     }
     this.observers.forEach(o => o.return(value));
     this.unsubscribe();
+    this._cleanUnsubbedObservers();
     return { done: true };
   } 
+  
+  _cleanUnsubbedObservers() {
+    var i;
+    var observers = this.observers;
+    for (i = observers.length; i--;) {
+      if (observers[i].unsubscribed) {
+        observers.splice(i, 1);
+      }
+    }
+    if (observers.length === 0) {
+      this.unsubscribe();
+    }
+  }
   
   unsubscribe() {
     this.observers.length = 0;

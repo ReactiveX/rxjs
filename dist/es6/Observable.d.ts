@@ -33,7 +33,7 @@ export default class Observable {
     zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
     merge: (observables: Array<Observable>) => Observable;
     toArray: () => Observable;
-    multicast: (subject: Subject) => ConnectableObservable;
+    multicast: (subjectFactory: () => Subject) => ConnectableObservable;
     constructor(subscriber: (observer: Observer) => Function | void);
     static create(subscriber: (observer: Observer) => any): Observable;
     subscriber(observer: Observer): Function | Subscription | void;

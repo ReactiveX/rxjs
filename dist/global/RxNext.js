@@ -153,29 +153,43 @@ var _Observable2 = require('./Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _Observer = require('./Observer');
+
+var _Observer2 = _interopRequireDefault(_Observer);
+
 var _utilSymbol_observer = require('./util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
 
+var _schedulerNextTick = require('./scheduler/nextTick');
+
+var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
+
 var ConnectableObservable = (function (_Observable) {
-    function ConnectableObservable(source, subject) {
+    function ConnectableObservable(source, subjectFactory) {
         _classCallCheck(this, ConnectableObservable);
 
         _Observable.call(this, null);
         this.source = source;
-        this.subject = subject;
+        this.subjectFactory = subjectFactory;
     }
 
     _inherits(ConnectableObservable, _Observable);
 
     ConnectableObservable.prototype.connect = function connect() {
-        if (!this.subscription) {
-            this.subscription = this.source.subscribe(this.subject);
-        }
-        return this.subscription;
+        return _schedulerNextTick2['default'].schedule(0, this, dispatchConnection);
     };
 
     ConnectableObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        if (!(observer instanceof _Observer2['default'])) {
+            observer = new _Observer2['default'](observer);
+        }
+        if (!this.subject || this.subject.unsubscribed) {
+            if (this.subscription) {
+                this.subscription = undefined;
+            }
+            this.subject = this.subjectFactory();
+        }
         return this.subject[_utilSymbol_observer2['default']](observer);
     };
 
@@ -183,8 +197,18 @@ var ConnectableObservable = (function (_Observable) {
 })(_Observable3['default']);
 
 exports['default'] = ConnectableObservable;
+
+function dispatchConnection(connectable) {
+    if (!connectable.subscription) {
+        if (!connectable.subject) {
+            connectable.subject = connectable.subjectFactory();
+        }
+        connectable.subscription = connectable.source.subscribe(connectable.subject);
+    }
+    return connectable.subscription;
+}
 module.exports = exports['default'];
-},{"./Observable":4,"./util/Symbol_observer":44}],4:[function(require,module,exports){
+},{"./Observable":4,"./Observer":5,"./scheduler/nextTick":42,"./util/Symbol_observer":44}],4:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -231,6 +255,9 @@ var Observable = (function () {
     };
 
     Observable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        if (!(observer instanceof _Observer2['default'])) {
+            observer = new _Observer2['default'](observer);
+        }
         return _Subscription2['default'].from(this.subscriber(observer), observer);
     };
 
@@ -718,6 +745,7 @@ var Subject = (function (_Observable) {
         this.observers.forEach(function (o) {
             return o.next(value);
         });
+        this._cleanUnsubbedObservers();
         return { done: false };
     };
 
@@ -729,6 +757,7 @@ var Subject = (function (_Observable) {
             return o['throw'](err);
         });
         this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
     };
 
@@ -740,7 +769,21 @@ var Subject = (function (_Observable) {
             return o['return'](value);
         });
         this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
+    };
+
+    Subject.prototype._cleanUnsubbedObservers = function _cleanUnsubbedObservers() {
+        var i;
+        var observers = this.observers;
+        for (i = observers.length; i--;) {
+            if (observers[i].unsubscribed) {
+                observers.splice(i, 1);
+            }
+        }
+        if (observers.length === 0) {
+            this.unsubscribe();
+        }
     };
 
     Subject.prototype.unsubscribe = function unsubscribe() {
@@ -1981,8 +2024,8 @@ var _ConnectableObservable = require('../ConnectableObservable');
 
 var _ConnectableObservable2 = _interopRequireDefault(_ConnectableObservable);
 
-function multicast(subject) {
-    return new _ConnectableObservable2['default'](this, subject);
+function multicast(subjectFactory) {
+    return new _ConnectableObservable2['default'](this, subjectFactory);
 }
 
 ;

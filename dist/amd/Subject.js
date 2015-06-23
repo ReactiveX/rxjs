@@ -49,6 +49,7 @@ define(['exports', 'module', './Observable', './util/Symbol_observer', './Subscr
             this.observers.forEach(function (o) {
                 return o.next(value);
             });
+            this._cleanUnsubbedObservers();
             return { done: false };
         };
 
@@ -60,6 +61,7 @@ define(['exports', 'module', './Observable', './util/Symbol_observer', './Subscr
                 return o['throw'](err);
             });
             this.unsubscribe();
+            this._cleanUnsubbedObservers();
             return { done: true };
         };
 
@@ -71,7 +73,21 @@ define(['exports', 'module', './Observable', './util/Symbol_observer', './Subscr
                 return o['return'](value);
             });
             this.unsubscribe();
+            this._cleanUnsubbedObservers();
             return { done: true };
+        };
+
+        Subject.prototype._cleanUnsubbedObservers = function _cleanUnsubbedObservers() {
+            var i;
+            var observers = this.observers;
+            for (i = observers.length; i--;) {
+                if (observers[i].unsubscribed) {
+                    observers.splice(i, 1);
+                }
+            }
+            if (observers.length === 0) {
+                this.unsubscribe();
+            }
         };
 
         Subject.prototype.unsubscribe = function unsubscribe() {

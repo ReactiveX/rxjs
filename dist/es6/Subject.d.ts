@@ -17,5 +17,6 @@ export default class Subject extends Observable {
     next(value: any): IteratorResult<any>;
     throw(err: any): IteratorResult<any>;
     return(value: any): IteratorResult<any>;
+    _cleanUnsubbedObservers(): void;
     unsubscribe(): void;
 }

@@ -1,5 +1,5 @@
 import ConnectableObservable from '../ConnectableObservable';
-export default function multicast(subject) {
-    return new ConnectableObservable(this, subject);
+export default function multicast(subjectFactory) {
+    return new ConnectableObservable(this, subjectFactory);
 }
 ;

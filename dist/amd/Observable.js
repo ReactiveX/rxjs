@@ -33,6 +33,9 @@ define(['exports', 'module', './Observer', './Subscription', './SerialSubscripti
         };
 
         Observable.prototype[_$$observer['default']] = function (observer) {
+            if (!(observer instanceof _Observer2['default'])) {
+                observer = new _Observer2['default'](observer);
+            }
             return _Subscription2['default'].from(this.subscriber(observer), observer);
         };
 

@@ -7,8 +7,8 @@ define(['exports', 'module', '../ConnectableObservable'], function (exports, mod
 
     var _ConnectableObservable2 = _interopRequireDefault(_ConnectableObservable);
 
-    function multicast(subject) {
-        return new _ConnectableObservable2['default'](this, subject);
+    function multicast(subjectFactory) {
+        return new _ConnectableObservable2['default'](this, subjectFactory);
     }
 
     ;

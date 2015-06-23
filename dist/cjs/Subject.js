@@ -56,6 +56,7 @@ var Subject = (function (_Observable) {
         this.observers.forEach(function (o) {
             return o.next(value);
         });
+        this._cleanUnsubbedObservers();
         return { done: false };
     };
 
@@ -67,6 +68,7 @@ var Subject = (function (_Observable) {
             return o['throw'](err);
         });
         this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
     };
 
@@ -78,7 +80,21 @@ var Subject = (function (_Observable) {
             return o['return'](value);
         });
         this.unsubscribe();
+        this._cleanUnsubbedObservers();
         return { done: true };
+    };
+
+    Subject.prototype._cleanUnsubbedObservers = function _cleanUnsubbedObservers() {
+        var i;
+        var observers = this.observers;
+        for (i = observers.length; i--;) {
+            if (observers[i].unsubscribed) {
+                observers.splice(i, 1);
+            }
+        }
+        if (observers.length === 0) {
+            this.unsubscribe();
+        }
     };
 
     Subject.prototype.unsubscribe = function unsubscribe() {

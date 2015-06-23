@@ -1,4 +1,4 @@
-define(['exports', 'module', './Observable', './util/Symbol_observer'], function (exports, module, _Observable2, _utilSymbol_observer) {
+define(['exports', 'module', './Observable', './Observer', './util/Symbol_observer', './scheduler/nextTick'], function (exports, module, _Observable2, _Observer, _utilSymbol_observer, _schedulerNextTick) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -9,27 +9,37 @@ define(['exports', 'module', './Observable', './util/Symbol_observer'], function
 
     var _Observable3 = _interopRequireDefault(_Observable2);
 
+    var _Observer2 = _interopRequireDefault(_Observer);
+
     var _$$observer = _interopRequireDefault(_utilSymbol_observer);
 
+    var _nextTick = _interopRequireDefault(_schedulerNextTick);
+
     var ConnectableObservable = (function (_Observable) {
-        function ConnectableObservable(source, subject) {
+        function ConnectableObservable(source, subjectFactory) {
             _classCallCheck(this, ConnectableObservable);
 
             _Observable.call(this, null);
             this.source = source;
-            this.subject = subject;
+            this.subjectFactory = subjectFactory;
         }
 
         _inherits(ConnectableObservable, _Observable);
 
         ConnectableObservable.prototype.connect = function connect() {
-            if (!this.subscription) {
-                this.subscription = this.source.subscribe(this.subject);
-            }
-            return this.subscription;
+            return _nextTick['default'].schedule(0, this, dispatchConnection);
         };
 
         ConnectableObservable.prototype[_$$observer['default']] = function (observer) {
+            if (!(observer instanceof _Observer2['default'])) {
+                observer = new _Observer2['default'](observer);
+            }
+            if (!this.subject || this.subject.unsubscribed) {
+                if (this.subscription) {
+                    this.subscription = undefined;
+                }
+                this.subject = this.subjectFactory();
+            }
             return this.subject[_$$observer['default']](observer);
         };
 
@@ -37,4 +47,14 @@ define(['exports', 'module', './Observable', './util/Symbol_observer'], function
     })(_Observable3['default']);
 
     module.exports = ConnectableObservable;
+
+    function dispatchConnection(connectable) {
+        if (!connectable.subscription) {
+            if (!connectable.subject) {
+                connectable.subject = connectable.subjectFactory();
+            }
+            connectable.subscription = connectable.source.subscribe(connectable.subject);
+        }
+        return connectable.subscription;
+    }
 });
