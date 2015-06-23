@@ -40,7 +40,8 @@ export default class Observable {
   toArray: () => Observable;
   multicast: (subjectFactory: () => Subject) => ConnectableObservable;
   publish: () => ConnectableObservable;
-
+  reduce: (processor: (accum: any, value: any) => any, initialValue: any) => Observable;
+  
   constructor(subscriber: (observer: Observer) => Function|void) {
     if (subscriber) {
       this.subscriber = subscriber;

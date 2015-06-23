@@ -37,6 +37,7 @@ import mergeProto from './operator/merge';
 import toArray from './operator/toArray';
 import multicast from './operator/multicast';
 import publish from './operator/publish';
+import reduce from './operator/reduce';
 Observable.value = value;
 Observable.return = _return;
 Observable.fromEventPattern = fromEventPattern;
@@ -66,6 +67,7 @@ Observable.prototype.merge = mergeProto;
 Observable.prototype.toArray = toArray;
 Observable.prototype.multicast = multicast;
 Observable.prototype.publish = publish;
+Observable.prototype.reduce = reduce;
 var RxNext = {
     Scheduler: {
         nextTick,

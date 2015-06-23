@@ -160,6 +160,10 @@ var _operatorPublish = require('./operator/publish');
 
 var _operatorPublish2 = _interopRequireDefault(_operatorPublish);
 
+var _operatorReduce = require('./operator/reduce');
+
+var _operatorReduce2 = _interopRequireDefault(_operatorReduce);
+
 _Observable2['default'].value = _observableValue2['default'];
 _Observable2['default']['return'] = _observableReturn2['default'];
 _Observable2['default'].fromEventPattern = _observableFromEventPattern2['default'];
@@ -189,6 +193,7 @@ _Observable2['default'].prototype.merge = _operatorMerge2['default'];
 _Observable2['default'].prototype.toArray = _operatorToArray2['default'];
 _Observable2['default'].prototype.multicast = _operatorMulticast2['default'];
 _Observable2['default'].prototype.publish = _operatorPublish2['default'];
+_Observable2['default'].prototype.reduce = _operatorReduce2['default'];
 var RxNext = {
     Scheduler: {
         nextTick: _schedulerNextTick2['default'],
