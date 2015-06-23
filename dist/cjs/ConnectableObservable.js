@@ -39,6 +39,10 @@ var ConnectableObservable = (function (_Observable) {
         return _schedulerNextTick2['default'].schedule(0, this, dispatchConnection);
     };
 
+    ConnectableObservable.prototype.connectSync = function connectSync() {
+        return dispatchConnection(this);
+    };
+
     ConnectableObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         if (!(observer instanceof _Observer2['default'])) {
             observer = new _Observer2['default'](observer);

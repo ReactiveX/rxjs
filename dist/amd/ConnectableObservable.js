@@ -30,6 +30,10 @@ define(['exports', 'module', './Observable', './Observer', './util/Symbol_observ
             return _nextTick['default'].schedule(0, this, dispatchConnection);
         };
 
+        ConnectableObservable.prototype.connectSync = function connectSync() {
+            return dispatchConnection(this);
+        };
+
         ConnectableObservable.prototype[_$$observer['default']] = function (observer) {
             if (!(observer instanceof _Observer2['default'])) {
                 observer = new _Observer2['default'](observer);

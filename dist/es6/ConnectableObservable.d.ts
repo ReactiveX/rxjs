@@ -8,4 +8,5 @@ export default class ConnectableObservable extends Observable {
     subject: Subject;
     constructor(source: Observable, subjectFactory: () => Subject);
     connect(): Subscription;
+    connectSync(): Subscription;
 }

@@ -21,6 +21,10 @@ export default class ConnectableObservable extends Observable {
     return nextTick.schedule(0, this, dispatchConnection);
   }
   
+  connectSync() : Subscription {
+    return dispatchConnection(this);
+  }
+  
   [$$observer](observer: Observer) {
     if (!(observer instanceof Observer)) {
       observer = new Observer(observer);
