@@ -11,7 +11,7 @@ class MapObserver extends Observer {
     _next(value) {
         value = try_catch(this.project).call(this, value);
         if (value === error_obj) {
-            return this.destination["throw"](error_obj.e);
+            return this.destination.throw(error_obj.e);
         }
         else {
             return this.destination.next(value);
