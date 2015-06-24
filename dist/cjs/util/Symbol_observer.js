@@ -14,8 +14,9 @@ if (!_root2['default'].Symbol) {
 if (!_root2['default'].Symbol.observer) {
     if (typeof _root2['default'].Symbol['for'] === 'function') {
         _root2['default'].Symbol.observer = _root2['default'].Symbol['for']('observer');
+    } else {
+        _root2['default'].Symbol.observer = '@@observer';
     }
-    _root2['default'].Symbol.observer = '@@observer';
 }
 exports['default'] = _root2['default'].Symbol.observer;
 module.exports = exports['default'];
