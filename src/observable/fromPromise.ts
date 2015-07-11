@@ -17,6 +17,10 @@ class PromiseObservable extends Observable {
           observer.next(x);
           observer.return(x);
         }
+      }, e => {
+        if(!observer.unsubscribed) {
+          observer.throw(e);
+        }
       });
     }
   }
