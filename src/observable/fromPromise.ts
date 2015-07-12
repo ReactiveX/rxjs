@@ -1,6 +1,5 @@
 import Observable from '../Observable';
 import Observer from '../Observer';
-import $$observer from '../util/Symbol_observer';
 
 class PromiseObservable extends Observable {
   promise: Promise<any>;
@@ -10,7 +9,7 @@ class PromiseObservable extends Observable {
     this.promise = promise; 
   }
   
-  [$$observer](observer:Observer) {
+  subscriber(observer:Observer) {
     var promise = this.promise;
     if(promise) {
       promise.then(x => {

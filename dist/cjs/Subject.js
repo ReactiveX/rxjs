@@ -55,7 +55,7 @@ var Subject = (function (_Observable) {
         this._cleanUnsubbedObservers();
     };
 
-    Subject.prototype['throw'] = function _throw(err) {
+    Subject.prototype.error = function error(err) {
         if (this.unsubscribed) {
             return;
         }
@@ -66,7 +66,7 @@ var Subject = (function (_Observable) {
         this._cleanUnsubbedObservers();
     };
 
-    Subject.prototype['return'] = function _return(value) {
+    Subject.prototype.complete = function complete(value) {
         if (this.unsubscribed) {
             return;
         }

@@ -1,11 +1,10 @@
 import Observable from '../Observable';
-import $$observer from '../util/Symbol_observer';
 export default class ArrayObservable extends Observable {
     constructor(array) {
         super(null);
         this.array = array;
     }
-    [$$observer](observer) {
+    subscriber(observer) {
         var i, len;
         var array = this.array;
         if (Array.isArray(array)) {
@@ -13,6 +12,7 @@ export default class ArrayObservable extends Observable {
                 observer.next(array[i]);
             }
         }
-        observer.complete();
+        if (observer.complete)
+            observer.complete();
     }
 }

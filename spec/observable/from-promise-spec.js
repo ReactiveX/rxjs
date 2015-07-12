@@ -10,7 +10,7 @@ describe('Observable.fromPromise', function(){
 				expect(x).toBe(42);
 			}, null,
 			function(x) {
-				expect(x).toBe(42);
+				expect(x).toBe(undefined);
 				done();
 			});
 	});
@@ -22,7 +22,7 @@ describe('Observable.fromPromise', function(){
 				expect(x).toBe(42);
 			}, null,
 			function(x) {
-				expect(x).toBe(42);
+				expect(x).toBe(undefined);
 			},
 			function() {
 				done();

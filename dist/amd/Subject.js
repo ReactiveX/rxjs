@@ -48,7 +48,7 @@ define(['exports', 'module', './Observable', './util/Symbol_observer', './Subscr
             this._cleanUnsubbedObservers();
         };
 
-        Subject.prototype['throw'] = function _throw(err) {
+        Subject.prototype.error = function error(err) {
             if (this.unsubscribed) {
                 return;
             }
@@ -59,7 +59,7 @@ define(['exports', 'module', './Observable', './util/Symbol_observer', './Subscr
             this._cleanUnsubbedObservers();
         };
 
-        Subject.prototype['return'] = function _return(value) {
+        Subject.prototype.complete = function complete(value) {
             if (this.unsubscribed) {
                 return;
             }
