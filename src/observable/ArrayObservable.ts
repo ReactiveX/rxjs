@@ -1,6 +1,5 @@
 import Observable from '../Observable';
 import Observer from '../Observer';
-import $$observer from '../util/Symbol_observer';
 
 export default class ArrayObservable extends Observable {
   array:Array<any>;
@@ -10,7 +9,7 @@ export default class ArrayObservable extends Observable {
     this.array = array;
   }
   
-  [$$observer](observer: Observer) {
+  subscriber(observer: Observer) {
     var i, len;
     var array = this.array;
     if(Array.isArray(array)) {
@@ -18,6 +17,6 @@ export default class ArrayObservable extends Observable {
         observer.next(array[i]);
       }
     }
-    observer.complete();
+    if(observer.complete) observer.complete();
   }
 }

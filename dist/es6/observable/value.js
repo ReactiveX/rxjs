@@ -1,11 +1,10 @@
 import Observable from '../Observable';
-import $$observer from '../util/Symbol_observer';
 class ValueObservable extends Observable {
     constructor(value) {
         super(null);
         this.value = value;
     }
-    [$$observer](observer) {
+    subscriber(observer) {
         observer.next(this.value);
         observer.complete();
     }

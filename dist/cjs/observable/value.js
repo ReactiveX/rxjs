@@ -13,10 +13,6 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var ValueObservable = (function (_Observable) {
     function ValueObservable(value) {
         _classCallCheck(this, ValueObservable);
@@ -27,7 +23,7 @@ var ValueObservable = (function (_Observable) {
 
     _inherits(ValueObservable, _Observable);
 
-    ValueObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    ValueObservable.prototype.subscriber = function subscriber(observer) {
         observer.next(this.value);
         observer.complete();
     };

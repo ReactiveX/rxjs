@@ -798,7 +798,7 @@ var Subject = (function (_Observable) {
         this._cleanUnsubbedObservers();
     };
 
-    Subject.prototype['throw'] = function _throw(err) {
+    Subject.prototype.error = function error(err) {
         if (this.unsubscribed) {
             return;
         }
@@ -809,7 +809,7 @@ var Subject = (function (_Observable) {
         this._cleanUnsubbedObservers();
     };
 
-    Subject.prototype['return'] = function _return(value) {
+    Subject.prototype.complete = function complete(value) {
         if (this.unsubscribed) {
             return;
         }
@@ -938,10 +938,6 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var ArrayObservable = (function (_Observable) {
     function ArrayObservable(array) {
         _classCallCheck(this, ArrayObservable);
@@ -952,7 +948,7 @@ var ArrayObservable = (function (_Observable) {
 
     _inherits(ArrayObservable, _Observable);
 
-    ArrayObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    ArrayObservable.prototype.subscriber = function subscriber(observer) {
         var i, len;
         var array = this.array;
         if (Array.isArray(array)) {
@@ -960,7 +956,7 @@ var ArrayObservable = (function (_Observable) {
                 observer.next(array[i]);
             }
         }
-        observer.complete();
+        if (observer.complete) observer.complete();
     };
 
     return ArrayObservable;
@@ -968,7 +964,7 @@ var ArrayObservable = (function (_Observable) {
 
 exports['default'] = ArrayObservable;
 module.exports = exports['default'];
-},{"../Observable":4,"../util/Symbol_observer":48}],12:[function(require,module,exports){
+},{"../Observable":4}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1240,10 +1236,6 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var PromiseObservable = (function (_Observable) {
     function PromiseObservable(promise) {
         _classCallCheck(this, PromiseObservable);
@@ -1254,7 +1246,7 @@ var PromiseObservable = (function (_Observable) {
 
     _inherits(PromiseObservable, _Observable);
 
-    PromiseObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    PromiseObservable.prototype.subscriber = function subscriber(observer) {
         var promise = this.promise;
         if (promise) {
             promise.then(function (x) {
@@ -1274,7 +1266,7 @@ function fromPromise(promise) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4,"../util/Symbol_observer":48}],17:[function(require,module,exports){
+},{"../Observable":4}],17:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1298,10 +1290,6 @@ var _schedulerNextTick = require('../scheduler/nextTick');
 
 var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var IntervalObservable = (function (_Observable) {
     function IntervalObservable(interval, scheduler) {
         _classCallCheck(this, IntervalObservable);
@@ -1313,7 +1301,7 @@ var IntervalObservable = (function (_Observable) {
 
     _inherits(IntervalObservable, _Observable);
 
-    IntervalObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    IntervalObservable.prototype.subscriber = function subscriber(observer) {
         this.scheduler.schedule(this.interval, new IntervalObserver(observer, this.interval, this.scheduler), dispatch);
     };
 
@@ -1355,7 +1343,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../scheduler/nextTick":46,"../util/Symbol_observer":48}],18:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../scheduler/nextTick":46}],18:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1393,10 +1381,6 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var RangeObservable = (function (_Observable) {
     function RangeObservable(start, end) {
         _classCallCheck(this, RangeObservable);
@@ -1408,7 +1392,7 @@ var RangeObservable = (function (_Observable) {
 
     _inherits(RangeObservable, _Observable);
 
-    RangeObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    RangeObservable.prototype.subscriber = function subscriber(observer) {
         var end = this.end;
         var start = this.start;
         var i;
@@ -1430,7 +1414,7 @@ function range() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../util/Symbol_observer":48}],20:[function(require,module,exports){
+},{"../Observable":4}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1446,10 +1430,6 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var ReturnObservable = (function (_Observable) {
     function ReturnObservable(returnValue) {
         _classCallCheck(this, ReturnObservable);
@@ -1460,7 +1440,7 @@ var ReturnObservable = (function (_Observable) {
 
     _inherits(ReturnObservable, _Observable);
 
-    ReturnObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    ReturnObservable.prototype.subscriber = function subscriber(observer) {
         observer.complete(this.returnValue);
     };
 
@@ -1474,7 +1454,7 @@ function _return() {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4,"../util/Symbol_observer":48}],21:[function(require,module,exports){
+},{"../Observable":4}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1490,10 +1470,6 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var ThrowObservable = (function (_Observable) {
     function ThrowObservable(err) {
         _classCallCheck(this, ThrowObservable);
@@ -1504,7 +1480,7 @@ var ThrowObservable = (function (_Observable) {
 
     _inherits(ThrowObservable, _Observable);
 
-    ThrowObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    ThrowObservable.prototype.subscriber = function subscriber(observer) {
         observer.error(this.err);
     };
 
@@ -1521,7 +1497,7 @@ function _throw() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../util/Symbol_observer":48}],22:[function(require,module,exports){
+},{"../Observable":4}],22:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1541,10 +1517,6 @@ var _schedulerNextTick = require('../scheduler/nextTick');
 
 var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var TimerObservable = (function (_Observable) {
     function TimerObservable(delay, scheduler) {
         _classCallCheck(this, TimerObservable);
@@ -1556,7 +1528,7 @@ var TimerObservable = (function (_Observable) {
 
     _inherits(TimerObservable, _Observable);
 
-    TimerObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    TimerObservable.prototype.subscriber = function subscriber(observer) {
         this.scheduler.schedule(this.delay, observer, dispatch);
     };
 
@@ -1579,7 +1551,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../scheduler/nextTick":46,"../util/Symbol_observer":48}],23:[function(require,module,exports){
+},{"../Observable":4,"../scheduler/nextTick":46}],23:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1595,10 +1567,6 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
-var _utilSymbol_observer = require('../util/Symbol_observer');
-
-var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
 var ValueObservable = (function (_Observable) {
     function ValueObservable(value) {
         _classCallCheck(this, ValueObservable);
@@ -1609,7 +1577,7 @@ var ValueObservable = (function (_Observable) {
 
     _inherits(ValueObservable, _Observable);
 
-    ValueObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+    ValueObservable.prototype.subscriber = function subscriber(observer) {
         observer.next(this.value);
         observer.complete();
     };
@@ -1623,7 +1591,7 @@ function value(value) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../util/Symbol_observer":48}],24:[function(require,module,exports){
+},{"../Observable":4}],24:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;

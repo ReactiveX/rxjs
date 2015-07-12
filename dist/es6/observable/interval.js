@@ -1,14 +1,13 @@
 import Observable from '../Observable';
 import Observer from '../Observer';
 import nextTick from '../scheduler/nextTick';
-import $$observer from '../util/Symbol_observer';
 class IntervalObservable extends Observable {
     constructor(interval, scheduler) {
         super(null);
         this.interval = interval;
         this.scheduler = scheduler;
     }
-    [$$observer](observer) {
+    subscriber(observer) {
         this.scheduler.schedule(this.interval, new IntervalObserver(observer, this.interval, this.scheduler), dispatch);
     }
 }
