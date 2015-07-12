@@ -36,9 +36,9 @@ define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Obse
             function innerHandler(e) {
                 var result = e;
                 if (selector) {
-                    result = (0, _try_catch['default'])(selector).apply(this, arguments);
+                    result = _try_catch['default'](selector).apply(this, arguments);
                     if (result === _error_obj['default']) {
-                        _subscriber['throw'](_error_obj['default'].e);
+                        _subscriber.error(_error_obj['default'].e);
                         unsubscribe();
                         return;
                     }

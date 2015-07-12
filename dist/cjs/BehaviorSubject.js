@@ -39,7 +39,7 @@ var BehaviorSubject = (function (_Subject) {
 
     BehaviorSubject.prototype.next = function next(value) {
         this.value = value;
-        return _Subject.prototype.next.call(this, value);
+        _Subject.prototype.next.call(this, value);
     };
 
     return BehaviorSubject;

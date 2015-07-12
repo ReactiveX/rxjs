@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorObject', '../Observable', '../Subscription'], function (exports, module, _Observer2, _utilTryCatch, _utilErrorObject, _Observable2, _Subscription) {
+define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorObject', '../ObserverFactory'], function (exports, module, _Observer2, _utilTryCatch, _utilErrorObject, _ObserverFactory2) {
     'use strict';
 
     module.exports = select;
@@ -15,9 +15,7 @@ define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorOb
 
     var _error_obj = _interopRequireDefault(_utilErrorObject);
 
-    var _Observable3 = _interopRequireDefault(_Observable2);
-
-    var _Subscription2 = _interopRequireDefault(_Subscription);
+    var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
     var MapObserver = (function (_Observer) {
         function MapObserver(destination, project) {
@@ -30,38 +28,36 @@ define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorOb
         _inherits(MapObserver, _Observer);
 
         MapObserver.prototype._next = function _next(value) {
-            value = (0, _try_catch['default'])(this.project).call(this, value);
+            value = _try_catch['default'](this.project).call(this, value);
             if (value === _error_obj['default']) {
-                return this.destination['throw'](_error_obj['default'].e);
+                this.destination.error(_error_obj['default'].e);
             } else {
-                return this.destination.next(value);
+                this.destination.next(value);
             }
         };
 
         return MapObserver;
     })(_Observer3['default']);
 
-    var MapObservable = (function (_Observable) {
-        function MapObservable(source, project) {
-            _classCallCheck(this, MapObservable);
+    var MapObserverFactory = (function (_ObserverFactory) {
+        function MapObserverFactory(project) {
+            _classCallCheck(this, MapObserverFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _ObserverFactory.call(this);
             this.project = project;
         }
 
-        _inherits(MapObservable, _Observable);
+        _inherits(MapObserverFactory, _ObserverFactory);
 
-        MapObservable.prototype.subscriber = function subscriber(observer) {
-            var mapObserver = new MapObserver(observer, this.project);
-            return _Subscription2['default'].from(this.source.subscriber(mapObserver), mapObserver);
+        MapObserverFactory.prototype.create = function create(destination) {
+            return new MapObserver(destination, this.project);
         };
 
-        return MapObservable;
-    })(_Observable3['default']);
+        return MapObserverFactory;
+    })(_ObserverFactory3['default']);
 
     function select(project) {
-        return new MapObservable(this, project);
+        return this.lift(new MapObserverFactory(project));
     }
 
     ;

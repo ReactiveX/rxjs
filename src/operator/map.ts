@@ -3,11 +3,7 @@ import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-
-interface IteratorResult<T> {
-  done:boolean;
-  value?:T
-}
+import ObserverFactory from '../ObserverFactory';
 
 class MapObserver extends Observer {
   project:(any)=>any;
@@ -17,32 +13,29 @@ class MapObserver extends Observer {
     this.project = project;
   }
   
-  _next(value:any):IteratorResult<any> {
+  _next(value:any) {
     value = try_catch(this.project).call(this, value);
     if(value === error_obj) {
-        return this.destination.throw(error_obj.e);
+      this.destination.error(error_obj.e);
     } else {
-        return this.destination.next(value);
+      this.destination.next(value);
     }
   }
 }
 
-class MapObservable extends Observable {
-  source:Observable;
-  project:(any)=>any;
-  
-  constructor(source:Observable, project:(any)=>any) {
-    super(null);
-    this.source = source;
+class MapObserverFactory extends ObserverFactory {
+  project: (any) => any;
+
+  constructor(project: (any) => any) {
+    super();
     this.project = project;
   }
   
-  subscriber(observer:Observer):Subscription {
-    var mapObserver = new MapObserver(observer, this.project);
-    return Subscription.from(this.source.subscriber(mapObserver), mapObserver);
+  create(destination: Observer): Observer {
+    return new MapObserver(destination, this.project);
   }
 }
 
 export default function select(project:(any)=>any) : Observable {
-  return new MapObservable(this, project);
+  return this.lift(new MapObserverFactory(project))
 };

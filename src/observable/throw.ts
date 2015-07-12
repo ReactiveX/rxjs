@@ -1,5 +1,6 @@
 import Observable from '../Observable';
 import Observer from '../Observer';
+import $$observer from '../util/Symbol_observer';
 
 class ThrowObservable extends Observable {
   err:any;
@@ -9,8 +10,8 @@ class ThrowObservable extends Observable {
     this.err = err;
   }
   
-  subscriber(observer:Observer) {
-    observer.throw(this.err);
+  [$$observer](observer:Observer) {
+    observer.error(this.err);
   }
 }
 

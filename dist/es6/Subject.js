@@ -21,29 +21,26 @@ export default class Subject extends Observable {
     }
     next(value) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
         this.observers.forEach(o => o.next(value));
         this._cleanUnsubbedObservers();
-        return { done: false };
     }
     throw(err) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
-        this.observers.forEach(o => o.throw(err));
+        this.observers.forEach(o => o.error(err));
         this.unsubscribe();
         this._cleanUnsubbedObservers();
-        return { done: true };
     }
     return(value) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
-        this.observers.forEach(o => o.return(value));
+        this.observers.forEach(o => o.complete(value));
         this.unsubscribe();
         this._cleanUnsubbedObservers();
-        return { done: true };
     }
     _cleanUnsubbedObservers() {
         var i;

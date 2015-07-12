@@ -1,11 +1,7 @@
 import Observable from '../Observable';
 import Observer from '../Observer';
 import Subscription from '../Subscription';
-
-interface IteratorResult<T> {
-  value?:T;
-  done:boolean;
-}
+import ObserverFactory from '../ObserverFactory';
 
 class ToArrayObserver extends Observer {
   array:Array<any> = [];
@@ -14,31 +10,22 @@ class ToArrayObserver extends Observer {
     super(destination);
   }
   
-  _next(value:any):IteratorResult<any> {
+  _next(value: any) {
     this.array.push(value);
-    return { done: false };
   }
   
-  _return(value:any):IteratorResult<any> {
+  _complete(value: any) {
     this.destination.next(this.array);
-    return this.destination.return(value);
+    this.destination.complete(value);
   }
 }
 
-class ToArrayObservable extends Observable {
-  source:Observable;
-  
-  constructor(source:Observable) {
-    super(null);
-    this.source = source;
-  }
-  
-  subscriber(observer:Observer) {
-    var toArrayObserver = new ToArrayObserver(observer);
-    return Subscription.from(this.source.subscriber(toArrayObserver), toArrayObserver);
+class ToArrayObserverFactory extends ObserverFactory {  
+  create(destination: Observer): Observer {
+    return new ToArrayObserver(destination);
   }
 }
 
-export default function toArray():Observable {
-  return new ToArrayObservable(this);
+export default function toArray(): Observable {
+  return this.lift(new ToArrayObserverFactory());
 }

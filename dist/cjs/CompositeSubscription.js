@@ -41,7 +41,7 @@ var CompositeSubscription = (function (_Subscription) {
             return;
         }
         this.unsubscribed = true;
-        var subscriptions = (0, _utilArraySlice2['default'])(this._subscriptions);
+        var subscriptions = _utilArraySlice2['default'](this._subscriptions);
         var subscriptionCount = subscriptions && subscriptions.length || 0;
         var subscriptionIndex = -1;
         this._subscriptions = undefined;

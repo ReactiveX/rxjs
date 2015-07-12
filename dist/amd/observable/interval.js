@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable', '../Observer', '../scheduler/nextTick'], function (exports, module, _Observable2, _Observer2, _schedulerNextTick) {
+define(['exports', 'module', '../Observable', '../Observer', '../scheduler/nextTick', '../util/Symbol_observer'], function (exports, module, _Observable2, _Observer2, _schedulerNextTick, _utilSymbol_observer) {
     'use strict';
 
     module.exports = timer;
@@ -15,6 +15,8 @@ define(['exports', 'module', '../Observable', '../Observer', '../scheduler/nextT
 
     var _nextTick = _interopRequireDefault(_schedulerNextTick);
 
+    var _$$observer = _interopRequireDefault(_utilSymbol_observer);
+
     var IntervalObservable = (function (_Observable) {
         function IntervalObservable(interval, scheduler) {
             _classCallCheck(this, IntervalObservable);
@@ -26,7 +28,7 @@ define(['exports', 'module', '../Observable', '../Observer', '../scheduler/nextT
 
         _inherits(IntervalObservable, _Observable);
 
-        IntervalObservable.prototype.subscriber = function subscriber(observer) {
+        IntervalObservable.prototype[_$$observer['default']] = function (observer) {
             this.scheduler.schedule(this.interval, new IntervalObserver(observer, this.interval, this.scheduler), dispatch);
         };
 

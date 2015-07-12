@@ -36,7 +36,7 @@ define(['exports', 'module', './Subscription', './util/arraySlice'], function (e
                 return;
             }
             this.unsubscribed = true;
-            var subscriptions = (0, _arraySlice['default'])(this._subscriptions);
+            var subscriptions = _arraySlice['default'](this._subscriptions);
             var subscriptionCount = subscriptions && subscriptions.length || 0;
             var subscriptionIndex = -1;
             this._subscriptions = undefined;
