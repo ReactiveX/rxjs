@@ -11,8 +11,8 @@ export default class Subject extends Observable {
   _dispose:()=>void;
   unsubscribed: boolean = false;
   _next: (value: any) => void;
-  _throw: (err: any) => void;
-  _return: (value: any) => void;
+  _error: (err: any) => void;
+  _complete: (value: any) => void;
   
   constructor() {
     super(null);
@@ -39,7 +39,7 @@ export default class Subject extends Observable {
     this._cleanUnsubbedObservers();
   }
   
-  throw(err: any) {
+  error(err: any) {
     if(this.unsubscribed) {
       return;
     }
@@ -48,7 +48,7 @@ export default class Subject extends Observable {
     this._cleanUnsubbedObservers();
   }
 
-  return(value: any) {
+  complete(value: any) {
     if(this.unsubscribed) {
       return;
     }

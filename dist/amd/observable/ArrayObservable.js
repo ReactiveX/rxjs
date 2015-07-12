@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable', '../util/Symbol_observer'], function (exports, module, _Observable2, _utilSymbol_observer) {
+define(['exports', 'module', '../Observable'], function (exports, module, _Observable2) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -8,8 +8,6 @@ define(['exports', 'module', '../Observable', '../util/Symbol_observer'], functi
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
     var _Observable3 = _interopRequireDefault(_Observable2);
-
-    var _$$observer = _interopRequireDefault(_utilSymbol_observer);
 
     var ArrayObservable = (function (_Observable) {
         function ArrayObservable(array) {
@@ -21,7 +19,7 @@ define(['exports', 'module', '../Observable', '../util/Symbol_observer'], functi
 
         _inherits(ArrayObservable, _Observable);
 
-        ArrayObservable.prototype[_$$observer['default']] = function (observer) {
+        ArrayObservable.prototype.subscriber = function subscriber(observer) {
             var i, len;
             var array = this.array;
             if (Array.isArray(array)) {
@@ -29,7 +27,7 @@ define(['exports', 'module', '../Observable', '../util/Symbol_observer'], functi
                     observer.next(array[i]);
                 }
             }
-            observer.complete();
+            if (observer.complete) observer.complete();
         };
 
         return ArrayObservable;

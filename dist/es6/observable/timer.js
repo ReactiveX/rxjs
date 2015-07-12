@@ -1,13 +1,12 @@
 import Observable from '../Observable';
 import nextTick from '../scheduler/nextTick';
-import $$observer from '../util/Symbol_observer';
 class TimerObservable extends Observable {
     constructor(delay, scheduler) {
         super(null);
         this.delay = delay;
         this.scheduler = scheduler;
     }
-    [$$observer](observer) {
+    subscriber(observer) {
         this.scheduler.schedule(this.delay, observer, dispatch);
     }
 }

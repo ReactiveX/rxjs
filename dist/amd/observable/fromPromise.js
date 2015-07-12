@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable', '../util/Symbol_observer'], function (exports, module, _Observable2, _utilSymbol_observer) {
+define(['exports', 'module', '../Observable'], function (exports, module, _Observable2) {
     'use strict';
 
     module.exports = fromPromise;
@@ -11,8 +11,6 @@ define(['exports', 'module', '../Observable', '../util/Symbol_observer'], functi
 
     var _Observable3 = _interopRequireDefault(_Observable2);
 
-    var _$$observer = _interopRequireDefault(_utilSymbol_observer);
-
     var PromiseObservable = (function (_Observable) {
         function PromiseObservable(promise) {
             _classCallCheck(this, PromiseObservable);
@@ -23,7 +21,7 @@ define(['exports', 'module', '../Observable', '../util/Symbol_observer'], functi
 
         _inherits(PromiseObservable, _Observable);
 
-        PromiseObservable.prototype[_$$observer['default']] = function (observer) {
+        PromiseObservable.prototype.subscriber = function subscriber(observer) {
             var promise = this.promise;
             if (promise) {
                 promise.then(function (x) {

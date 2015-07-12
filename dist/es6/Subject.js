@@ -26,7 +26,7 @@ export default class Subject extends Observable {
         this.observers.forEach(o => o.next(value));
         this._cleanUnsubbedObservers();
     }
-    throw(err) {
+    error(err) {
         if (this.unsubscribed) {
             return;
         }
@@ -34,7 +34,7 @@ export default class Subject extends Observable {
         this.unsubscribe();
         this._cleanUnsubbedObservers();
     }
-    return(value) {
+    complete(value) {
         if (this.unsubscribed) {
             return;
         }
