@@ -7,16 +7,11 @@ import $$observer from '../util/Symbol_observer';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 
-interface IteratorResult<T> {
-  value?:T;
-  done:boolean;
-}
-
 class ZipObservable extends Observable {
   observables:Array<Observable>;
-  project:(...observables:Array<Observable>)=>Observable;
+  project:(...observables: Array<Observable>)=>Observable;
   
-  constructor(observables:Array<Observable>, project:(...observables:Array<Observable>)=>Observable) {
+  constructor(observables: Array<Observable>, project:(...observables:Array<Observable>)=>Observable) {
     super(null);
     this.observables = observables;
     this.project = project;
@@ -50,9 +45,8 @@ class InnerZipObserver extends Observer {
     this.observable = observable;
   }
   
-  _next(value:any):IteratorResult<any> {
+  _next(value: any) {
     this.buffer.push(value);
-    return { done: false };
   }
   
   _canEmit() {
@@ -77,12 +71,12 @@ class InnerZipObserver extends Observer {
     }
   }
   
-  _sendNext(args:Array<any>):IteratorResult<any> {
+  _sendNext(args: Array<any>) {
     var value = try_catch(this.project).apply(this, args);
     if(value === error_obj) {
-      return this.destination["throw"](error_obj.e);
+      this.destination.error(error_obj.e);
     } else {
-      return this.destination.next(value);
+      this.destination.next(value);
     }
   }
 }

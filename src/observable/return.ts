@@ -10,7 +10,7 @@ class ReturnObservable extends Observable {
   }
   
   subscriber(observer:Observer) {
-    observer.return(this.returnValue);
+    observer.complete(this.returnValue);
   }
 }
 

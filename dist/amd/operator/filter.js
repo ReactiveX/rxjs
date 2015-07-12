@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorObject', '../Observable', '../Subscription'], function (exports, module, _Observer2, _utilTryCatch, _utilErrorObject, _Observable2, _Subscription) {
+define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorObject', '../ObserverFactory'], function (exports, module, _Observer2, _utilTryCatch, _utilErrorObject, _ObserverFactory2) {
     'use strict';
 
     module.exports = select;
@@ -15,9 +15,7 @@ define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorOb
 
     var _error_obj = _interopRequireDefault(_utilErrorObject);
 
-    var _Observable3 = _interopRequireDefault(_Observable2);
-
-    var _Subscription2 = _interopRequireDefault(_Subscription);
+    var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
     var FilterObserver = (function (_Observer) {
         function FilterObserver(destination, predicate) {
@@ -30,38 +28,36 @@ define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorOb
         _inherits(FilterObserver, _Observer);
 
         FilterObserver.prototype._next = function _next(value) {
-            var result = (0, _try_catch['default'])(this.predicate).call(this, value);
+            var result = _try_catch['default'](this.predicate).call(this, value);
             if (result === _error_obj['default']) {
-                return this.destination['throw'](_error_obj['default'].e);
+                this.destination.error(_error_obj['default'].e);
             } else if (Boolean(result)) {
-                return this.destination.next(value);
+                this.destination.next(value);
             }
         };
 
         return FilterObserver;
     })(_Observer3['default']);
 
-    var FilterObservable = (function (_Observable) {
-        function FilterObservable(source, predicate) {
-            _classCallCheck(this, FilterObservable);
+    var FilterObserverFactory = (function (_ObserverFactory) {
+        function FilterObserverFactory(predicate) {
+            _classCallCheck(this, FilterObserverFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _ObserverFactory.call(this);
             this.predicate = predicate;
         }
 
-        _inherits(FilterObservable, _Observable);
+        _inherits(FilterObserverFactory, _ObserverFactory);
 
-        FilterObservable.prototype.subscriber = function subscriber(observer) {
-            var filterObserver = new FilterObserver(observer, this.predicate);
-            return _Subscription2['default'].from(this.source.subscriber(filterObserver), filterObserver);
+        FilterObserverFactory.prototype.create = function create(destination) {
+            return new FilterObserver(destination, this.predicate);
         };
 
-        return FilterObservable;
-    })(_Observable3['default']);
+        return FilterObserverFactory;
+    })(_ObserverFactory3['default']);
 
     function select(predicate) {
-        return new FilterObservable(this, predicate);
+        return this.lift(new FilterObserverFactory(predicate));
     }
 
     ;

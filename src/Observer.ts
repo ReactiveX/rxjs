@@ -1,56 +1,41 @@
 import noop from './util/noop';
 import Subscription from './Subscription';
-import { IteratorResult } from './IteratorResult';
 
 export default class Observer {
   destination:Observer;
   unsubscribed:boolean = false;
-  subscription: Subscription;
   
-  static create(_next:(value:any)=>IteratorResult<any>, 
-                _throw:((value:any)=>IteratorResult<any>)=null, 
-                _return:((value:any)=>IteratorResult<any>)=null,
-                _dispose:(()=>void)=null) : Observer {
+  static create(_next: (value:any) => void, 
+                _error: ((value:any) => void) = null, 
+                _completed: ((value:any) => void) = null) : Observer {
     var observer = new Observer(null);
     observer._next = _next;
-    if(_throw) { 
-      observer._throw = _throw; 
+    if(_error) { 
+      observer._error = _error; 
     }
-    if(_return) {
-      observer._return = _return;
-    }
-    if(_dispose) {
-      observer._dispose = _dispose;
+    if(_completed) {
+      observer._completed = _completed;
     }
     return observer;
   }
   
-  _dispose() {
-    var destination = this.destination;
-    if(destination && destination.dispose) {
-      destination.dispose();
-    }
-  }
-  
-  _next(value:any):IteratorResult<any> {
-    return this.destination.next(value);
+  _next(value:any) {
+    this.destination.next(value);
   }
 
-  _throw(error:any):IteratorResult<any> {
+  _error(error:any) {
     var destination = this.destination;
-    if(destination && destination.throw) {
-      return destination.throw(error);
+    if(destination && destination.error) {
+      destination.error(error);
     } else {
       throw error;
     }
   }
 
-  _return(value:any):IteratorResult<any> {
+  _completed(value:any) {
     var destination = this.destination;
-    if(destination && destination.return) {
-      return destination.return(value);
-    } else {
-      return { done: true };
+    if(destination && destination.complete) {
+      destination.complete(value);
     }
   }
   
@@ -58,56 +43,30 @@ export default class Observer {
     this.destination = destination;
   }
   
-  next(value:any):IteratorResult<any> { 
+  next(value:any) { 
     if (this.unsubscribed) {
-      return { done: true };
+      return;
     }
-    var result = this._next(value);
-    result = result || { done: false };
-    if (result.done) {
-      this.unsubscribe();
-    }
-    return result;
+    this._next(value);
   }
   
-  throw(error:any):IteratorResult<any> {    
+  error(error:any) {    
     if (this.unsubscribed) {
-      return { done: true };
+      return;
     }
-    var result = this._throw(error);  
+    var result = this._error(error);  
     this.unsubscribe();
-    return { done: true, value: result ? result.value : undefined };
   }
   
-  return(value:any=undefined):IteratorResult<any> {
+  complete(value:any=undefined) {
     if(this.unsubscribed) {
-      return { done: true };
+      return;
     }
-    var result = this._return(value);
+    var result = this._completed(value);
     this.unsubscribe();
-    return { done: true, value: result ? result.value : undefined };
   }
   
   unsubscribe() {
     this.unsubscribed = true;
-    if(this.subscription && this.subscription._unsubscribe) {
-      this.subscription._unsubscribe();
-    }
-  }
-  
-  setSubscription(subscription: Subscription) {
-    this.subscription = subscription;
-    if(this.unsubscribed && subscription._unsubscribe) {
-      subscription._unsubscribe();
-    }
-  }
-  
-  dispose() {
-    if(!this.unsubscribed) {
-      if(this._dispose) {
-        this._dispose();
-      }
-    }
-    this.unsubscribe();
   }
 }

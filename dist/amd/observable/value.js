@@ -23,7 +23,7 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         ValueObservable.prototype.subscriber = function subscriber(observer) {
             observer.next(this.value);
-            observer['return']();
+            observer.complete();
         };
 
         return ValueObservable;

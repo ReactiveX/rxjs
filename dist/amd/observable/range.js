@@ -29,7 +29,7 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
             for (i = start; i < end && !observer.unsubscribed; i++) {
                 observer.next(i);
             }
-            observer['return']();
+            observer.complete();
         };
 
         return RangeObservable;

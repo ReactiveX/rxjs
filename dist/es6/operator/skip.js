@@ -1,6 +1,5 @@
 import Observer from '../Observer';
-import Observable from '../Observable';
-import Subscription from '../Subscription';
+import ObserverFactory from '../ObserverFactory';
 class SkipObserver extends Observer {
     constructor(destination, count) {
         super(destination);
@@ -11,21 +10,18 @@ class SkipObserver extends Observer {
         if (this.counter++ >= this.count) {
             return this.destination.next(value);
         }
-        return { done: false };
     }
 }
-class SkipObservable extends Observable {
-    constructor(source, count) {
-        super(null);
-        this.source = source;
+class SkipObserverFactory extends ObserverFactory {
+    constructor(count) {
+        super();
         this.count = count;
     }
-    subscriber(observer) {
-        var skipObserver = new SkipObserver(observer, this.count);
-        return Subscription.from(this.source.subscriber(skipObserver), skipObserver);
+    create(destination) {
+        return new SkipObserver(destination, this.count);
     }
 }
 export default function skip(count) {
-    return new SkipObservable(this, count);
+    return this.lift(new SkipObserverFactory(count));
 }
 ;

@@ -51,9 +51,9 @@ var EventListenerObservable = (function (_Observable) {
             var result = e;
             var iteratorResult;
             if (selector) {
-                result = (0, _utilTryCatch2['default'])(selector).apply(this, arguments);
+                result = _utilTryCatch2['default'](selector).apply(this, arguments);
                 if (result === _utilErrorObject2['default']) {
-                    observer['throw'](_utilErrorObject2['default'].e);
+                    observer.error(_utilErrorObject2['default'].e);
                     listeners.unsubscribe();
                     return;
                 }
@@ -107,7 +107,7 @@ function fromEvent(element, eventName) {
 
     // Node.js specific
     if (element.addListener) {
-        return (0, _fromEventPattern2['default'])(function (h) {
+        return _fromEventPattern2['default'](function (h) {
             element.addListener(eventName, h);
         }, function (h) {
             element.removeListener(eventName, h);
@@ -118,7 +118,7 @@ function fromEvent(element, eventName) {
     if (!config.useNativeEvents) {
         // Handles jq, Angular.js, Zepto, Marionette, Ember.js
         if (typeof element.on === 'function' && typeof element.off === 'function') {
-            return (0, _fromEventPattern2['default'])(function (h) {
+            return _fromEventPattern2['default'](function (h) {
                 element.on(eventName, h);
             }, function (h) {
                 element.off(eventName, h);

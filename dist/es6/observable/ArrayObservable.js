@@ -12,6 +12,7 @@ export default class ArrayObservable extends Observable {
                 observer.next(array[i]);
             }
         }
-        observer.return();
+        if (observer.complete)
+            observer.complete();
     }
 }

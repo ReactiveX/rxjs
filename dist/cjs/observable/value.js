@@ -25,7 +25,7 @@ var ValueObservable = (function (_Observable) {
 
     ValueObservable.prototype.subscriber = function subscriber(observer) {
         observer.next(this.value);
-        observer['return']();
+        observer.complete();
     };
 
     return ValueObservable;

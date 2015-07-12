@@ -20,7 +20,7 @@ describe('Observable.prototype.publish()', function () {
       observer.next(2);
       observer.next(3);
       observer.next(4);
-      observer.return();
+      observer.complete();
     });
     
     var connectable = source.publish();

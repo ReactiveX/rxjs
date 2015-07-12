@@ -22,7 +22,7 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
         _inherits(ReturnObservable, _Observable);
 
         ReturnObservable.prototype.subscriber = function subscriber(observer) {
-            observer['return'](this.returnValue);
+            observer.complete(this.returnValue);
         };
 
         return ReturnObservable;

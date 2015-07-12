@@ -4,9 +4,6 @@ export default class Subscription {
         this.unsubscribed = false;
         this._unsubscribe = _unsubscribe;
         this.observer = observer;
-        if (observer) {
-            observer.setSubscription(this);
-        }
     }
     unsubscribe() {
         if (this.unsubscribed) {
@@ -21,12 +18,7 @@ export default class Subscription {
         var observer = this.observer;
         if (observer) {
             this.observer = undefined;
-            if (observer.dispose && observer._dispose) {
-                observer.dispose();
-            }
-            else if (observer.return && observer._return) {
-                observer.return();
-            }
+            observer.unsubscribe();
         }
     }
     add(subscription) {

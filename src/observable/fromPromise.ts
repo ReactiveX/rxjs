@@ -2,9 +2,9 @@ import Observable from '../Observable';
 import Observer from '../Observer';
 
 class PromiseObservable extends Observable {
-  promise:Promise<any>;
+  promise: Promise<any>;
   
-  constructor(promise:Promise<any>) {
+  constructor(promise: Promise<any>) {
     super(null);
     this.promise = promise; 
   }
@@ -15,13 +15,13 @@ class PromiseObservable extends Observable {
       promise.then(x => {
         if(!observer.unsubscribed) {
           observer.next(x);
-          observer.return(x);
+          observer.complete();
         }
       });
     }
   }
 }
 
-export default function fromPromise(promise:Promise<any>) : Observable {
+export default function fromPromise(promise: Promise<any>) : Observable {
   return new PromiseObservable(promise);
 }

@@ -31,7 +31,7 @@ var RangeObservable = (function (_Observable) {
         for (i = start; i < end && !observer.unsubscribed; i++) {
             observer.next(i);
         }
-        observer['return']();
+        observer.complete();
     };
 
     return RangeObservable;

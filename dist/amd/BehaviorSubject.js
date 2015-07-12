@@ -32,7 +32,7 @@ define(['exports', 'module', './util/Symbol_observer', './Subscription', './Subj
 
         BehaviorSubject.prototype.next = function next(value) {
             this.value = value;
-            return _Subject.prototype.next.call(this, value);
+            _Subject.prototype.next.call(this, value);
         };
 
         return BehaviorSubject;

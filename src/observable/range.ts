@@ -11,14 +11,14 @@ class RangeObservable extends Observable {
     this.start = start;
   }
   
-  subscriber(observer:Observer) {
+  subscriber(observer: Observer) {
     var end = this.end;
     var start = this.start;
     var i;
     for(i = start; i < end && !observer.unsubscribed; i++) {
       observer.next(i);
     }
-    observer.return();
+    observer.complete();
   }
 }
 

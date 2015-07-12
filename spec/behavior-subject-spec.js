@@ -25,7 +25,7 @@ describe('BehaviorSubject', function() {
 		// HACK
 		RxNext.Scheduler.nextTick.schedule(0, null, function(){
 			subject.next('bar');
-			subject.return();
+			subject.complete();
 		});
 	});
 });

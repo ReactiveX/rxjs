@@ -39,9 +39,9 @@ define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Obse
                 var result = e;
                 var iteratorResult;
                 if (selector) {
-                    result = (0, _try_catch['default'])(selector).apply(this, arguments);
+                    result = _try_catch['default'](selector).apply(this, arguments);
                     if (result === _error_obj['default']) {
-                        observer['throw'](_error_obj['default'].e);
+                        observer.error(_error_obj['default'].e);
                         listeners.unsubscribe();
                         return;
                     }
@@ -95,7 +95,7 @@ define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Obse
 
         // Node.js specific
         if (element.addListener) {
-            return (0, _fromEventPattern2['default'])(function (h) {
+            return _fromEventPattern2['default'](function (h) {
                 element.addListener(eventName, h);
             }, function (h) {
                 element.removeListener(eventName, h);
@@ -106,7 +106,7 @@ define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Obse
         if (!config.useNativeEvents) {
             // Handles jq, Angular.js, Zepto, Marionette, Ember.js
             if (typeof element.on === 'function' && typeof element.off === 'function') {
-                return (0, _fromEventPattern2['default'])(function (h) {
+                return _fromEventPattern2['default'](function (h) {
                     element.on(eventName, h);
                 }, function (h) {
                     element.off(eventName, h);

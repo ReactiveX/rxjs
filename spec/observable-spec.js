@@ -7,7 +7,7 @@ describe('Observable', function () {
   it('should be constructed with a subscriber function', function (done) {
     var source = new Observable(function (observer) {
       observer.next(1);
-      observer.return();
+      observer.complete();
       return function () {
         done();
       };

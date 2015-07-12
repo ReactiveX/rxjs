@@ -34,7 +34,7 @@ define(['exports', 'module', '../Observable', '../scheduler/nextTick'], function
     function dispatch(observer) {
         if (!observer.unsubscribed) {
             observer.next(0);
-            observer['return']();
+            observer.complete();
         }
     }
 

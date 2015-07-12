@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../Observable', '../Subscription'], function (exports, module, _Observer2, _Observable2, _Subscription) {
+define(['exports', 'module', '../Observer', '../ObserverFactory'], function (exports, module, _Observer2, _ObserverFactory2) {
     'use strict';
 
     module.exports = mapTo;
@@ -11,9 +11,7 @@ define(['exports', 'module', '../Observer', '../Observable', '../Subscription'],
 
     var _Observer3 = _interopRequireDefault(_Observer2);
 
-    var _Observable3 = _interopRequireDefault(_Observable2);
-
-    var _Subscription2 = _interopRequireDefault(_Subscription);
+    var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
     var MapToObserver = (function (_Observer) {
         function MapToObserver(destination, value) {
@@ -32,27 +30,25 @@ define(['exports', 'module', '../Observer', '../Observable', '../Subscription'],
         return MapToObserver;
     })(_Observer3['default']);
 
-    var MapToObservable = (function (_Observable) {
-        function MapToObservable(source, value) {
-            _classCallCheck(this, MapToObservable);
+    var MapToObserverFactory = (function (_ObserverFactory) {
+        function MapToObserverFactory(value) {
+            _classCallCheck(this, MapToObserverFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _ObserverFactory.call(this);
             this.value = value;
         }
 
-        _inherits(MapToObservable, _Observable);
+        _inherits(MapToObserverFactory, _ObserverFactory);
 
-        MapToObservable.prototype.subscriber = function subscriber(observer) {
-            var mapToObserver = new MapToObserver(observer, this.value);
-            return _Subscription2['default'].from(this.source.subscriber(mapToObserver), mapToObserver);
+        MapToObserverFactory.prototype.create = function create(destination) {
+            return new MapToObserver(destination, this.value);
         };
 
-        return MapToObservable;
-    })(_Observable3['default']);
+        return MapToObserverFactory;
+    })(_ObserverFactory3['default']);
 
     function mapTo(value) {
-        return new MapToObservable(this, value);
+        return this.lift(new MapToObserverFactory(value));
     }
 
     ;

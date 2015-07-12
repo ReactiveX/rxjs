@@ -38,7 +38,7 @@ var TimerObservable = (function (_Observable) {
 function dispatch(observer) {
     if (!observer.unsubscribed) {
         observer.next(0);
-        observer['return']();
+        observer.complete();
     }
 }
 
