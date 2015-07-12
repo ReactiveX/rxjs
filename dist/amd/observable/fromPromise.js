@@ -29,6 +29,10 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
                         observer.next(x);
                         observer.complete();
                     }
+                }, function (e) {
+                    if (!observer.unsubscribed) {
+                        observer.error(e);
+                    }
                 });
             }
         };
