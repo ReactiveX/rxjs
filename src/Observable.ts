@@ -4,9 +4,9 @@ import SerialSubscription from './SerialSubscription';
 import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
 import Scheduler from './scheduler/Scheduler';
-import { IteratorResult } from './IteratorResult';
 import Subject from './Subject';
 import ConnectableObservable from './ConnectableObservable';
+import ObserverFactory from './ObserverFactory';
 
 export default class Observable {
   static value: (value: any) => Observable;
@@ -42,7 +42,10 @@ export default class Observable {
   publish: () => ConnectableObservable;
   reduce: (processor: (accum: any, value: any) => any, initialValue: any) => Observable;
   
-  constructor(subscriber: (observer: Observer) => Function|void) {
+  source: Observable = null;
+  observerFactory: ObserverFactory = new ObserverFactory();
+  
+  constructor(subscriber=null) {
     if (subscriber) {
       this.subscriber = subscriber;
     }
@@ -52,8 +55,15 @@ export default class Observable {
     return new Observable(subscriber);
   }
 
-  subscriber(observer: Observer): Function|Subscription|void {
-    return void 0;
+  subscriber(observer: Observer): Subscription|Function|void {
+    return this.source.subscribe(this.observerFactory.create(observer));
+  }
+  
+  lift(observerFactory: ObserverFactory): Observable {
+    var observable = new Observable();
+    observable.source = this;
+    observable.observerFactory = observerFactory;
+    return observable;
   }
 
   [$$observer](observer: Observer) {
@@ -63,25 +73,21 @@ export default class Observable {
     return Subscription.from(this.subscriber(observer), observer);
   }
 
-  subscribe(observerOrNextHandler: Observer|((any) => IteratorResult<any>),
-    throwHandler: (any) => IteratorResult<any> = null,
-    returnHandler: (any) => IteratorResult<any> = null,
-    disposeHandler: () => void = null) {
-    var observer;
-    if (typeof observerOrNextHandler === 'object') {
-      observer = observerOrNextHandler;
+  subscribe(observerOrNext, error=null, complete=null):Subscription {
+    let observer;
+
+    if (typeof observerOrNext === 'object') {
+      observer = observerOrNext;
     } else {
-      observer = Observer.create(<(any) => IteratorResult<any>>observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
+      observer = Observer.create(<(any) => void>observerOrNext, error, complete);
     }
-    var subscription = new SerialSubscription(null);
-    subscription.observer = observer;
-    subscription.add(nextTick.schedule(0, [observer, this], dispatchSubscription));
-    return subscription;
+
+    return this[$$observer](observer);
   }
 
   forEach(nextHandler) {
     return new Promise((resolve, reject) => {
-      var observer = Observer.create((value) => {
+      let observer = Observer.create((value) => {
         nextHandler(value);
         return { done: false };
       }, (err) => {

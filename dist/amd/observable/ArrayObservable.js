@@ -27,7 +27,7 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
                     observer.next(array[i]);
                 }
             }
-            observer['return']();
+            if (observer.complete) observer.complete();
         };
 
         return ArrayObservable;

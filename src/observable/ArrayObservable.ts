@@ -4,12 +4,12 @@ import Observer from '../Observer';
 export default class ArrayObservable extends Observable {
   array:Array<any>;
   
-  constructor(array:Array<any>) {
+  constructor(array: Array<any>) {
     super(null);
     this.array = array;
   }
   
-  subscriber(observer:Observer) {
+  subscriber(observer: Observer) {
     var i, len;
     var array = this.array;
     if(Array.isArray(array)) {
@@ -17,6 +17,6 @@ export default class ArrayObservable extends Observable {
         observer.next(array[i]);
       }
     }
-    observer.return();
+    if(observer.complete) observer.complete();
   }
 }

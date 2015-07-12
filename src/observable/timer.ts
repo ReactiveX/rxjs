@@ -21,7 +21,7 @@ class TimerObservable extends Observable {
 function dispatch(observer:Observer) {
   if(!observer.unsubscribed) {
     observer.next(0);
-    observer.return();
+    observer.complete();
   }
 }
 

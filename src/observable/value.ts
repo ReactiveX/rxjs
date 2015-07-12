@@ -11,7 +11,7 @@ class ValueObservable extends Observable {
   
   subscriber(observer:Observer) {
     observer.next(this.value);
-    observer.return();
+    observer.complete();
   }
 }
 

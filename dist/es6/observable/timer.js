@@ -13,7 +13,7 @@ class TimerObservable extends Observable {
 function dispatch(observer) {
     if (!observer.unsubscribed) {
         observer.next(0);
-        observer.return();
+        observer.complete();
     }
 }
 export default function timer(delay = 0, scheduler = nextTick) {

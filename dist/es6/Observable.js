@@ -1,10 +1,11 @@
 import Observer from './Observer';
 import Subscription from './Subscription';
-import SerialSubscription from './SerialSubscription';
-import nextTick from './scheduler/nextTick';
 import $$observer from './util/Symbol_observer';
+import ObserverFactory from './ObserverFactory';
 export default class Observable {
-    constructor(subscriber) {
+    constructor(subscriber = null) {
+        this.source = null;
+        this.observerFactory = new ObserverFactory();
         if (subscriber) {
             this.subscriber = subscriber;
         }
@@ -13,7 +14,13 @@ export default class Observable {
         return new Observable(subscriber);
     }
     subscriber(observer) {
-        return void 0;
+        return this.source.subscribe(this.observerFactory.create(observer));
+    }
+    lift(observerFactory) {
+        var observable = new Observable();
+        observable.source = this;
+        observable.observerFactory = observerFactory;
+        return observable;
     }
     [$$observer](observer) {
         if (!(observer instanceof Observer)) {
@@ -21,22 +28,19 @@ export default class Observable {
         }
         return Subscription.from(this.subscriber(observer), observer);
     }
-    subscribe(observerOrNextHandler, throwHandler = null, returnHandler = null, disposeHandler = null) {
-        var observer;
-        if (typeof observerOrNextHandler === 'object') {
-            observer = observerOrNextHandler;
+    subscribe(observerOrNext, error = null, complete = null) {
+        let observer;
+        if (typeof observerOrNext === 'object') {
+            observer = observerOrNext;
         }
         else {
-            observer = Observer.create(observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
+            observer = Observer.create(observerOrNext, error, complete);
         }
-        var subscription = new SerialSubscription(null);
-        subscription.observer = observer;
-        subscription.add(nextTick.schedule(0, [observer, this], dispatchSubscription));
-        return subscription;
+        return this[$$observer](observer);
     }
     forEach(nextHandler) {
         return new Promise((resolve, reject) => {
-            var observer = Observer.create((value) => {
+            let observer = Observer.create((value) => {
                 nextHandler(value);
                 return { done: false };
             }, (err) => {

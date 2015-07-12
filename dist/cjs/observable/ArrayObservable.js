@@ -30,7 +30,7 @@ var ArrayObservable = (function (_Observable) {
                 observer.next(array[i]);
             }
         }
-        observer['return']();
+        if (observer.complete) observer.complete();
     };
 
     return ArrayObservable;

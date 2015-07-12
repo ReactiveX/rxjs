@@ -21,7 +21,7 @@ describe('Subject', function () {
     RxNext.Scheduler.nextTick.schedule(0, null, function () {
       subject.next('foo');
       subject.next('bar');
-      subject.return();
+      subject.complete();
     });
   });
 
@@ -48,7 +48,7 @@ describe('Subject', function () {
       expect(subject.observers.length).toBe(2);
       subject.next('foo');
       subject.next('bar');
-      subject.return();
+      subject.complete();
     });
   });
 
@@ -69,7 +69,7 @@ describe('Subject', function () {
     // HACK
     nextTick.schedule(0, null, function () {
       subject.next('foo');
-      subject.return();
+      subject.complete();
       subject.next('bar');
     });
   });

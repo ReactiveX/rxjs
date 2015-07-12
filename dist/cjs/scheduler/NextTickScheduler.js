@@ -18,9 +18,7 @@ var NextTickScheduler = (function (_Scheduler) {
     function NextTickScheduler() {
         _classCallCheck(this, NextTickScheduler);
 
-        if (_Scheduler != null) {
-            _Scheduler.apply(this, arguments);
-        }
+        _Scheduler.apply(this, arguments);
     }
 
     _inherits(NextTickScheduler, _Scheduler);

@@ -1,11 +1,7 @@
 import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-
-interface IteratorResult<T> {
-  done:boolean;
-  value?:T
-}
+import ObserverFactory from '../ObserverFactory';
 
 class TakeObserver extends Observer {
   count:number;
@@ -16,31 +12,28 @@ class TakeObserver extends Observer {
     this.count = count;
   }
   
-  _next(value:any):IteratorResult<any> {
+  _next(value:any) {
     if(this.counter++ < this.count) {
-      return this.destination.next(value);
+      this.destination.next(value);
     } else {
-      return this.destination.return();
+      this.destination.complete();
     }
   }
 }
 
-class TakeObservable extends Observable {
-  source:Observable;
+class TakeObserverFactory extends ObserverFactory {
   count:number;
   
-  constructor(source:Observable, count:number) {
-    super(null);
-    this.source = source;
+  constructor(count:number) {
+    super();
     this.count = count;
   }
   
-  subscriber(observer:Observer):Subscription {
-    var takeObserver = new TakeObserver(observer, this.count);
-    return Subscription.from(this.source.subscriber(takeObserver), takeObserver);
+  create(destination: Observer): Observer {
+    return new TakeObserver(destination, this.count);
   }
 }
 
 export default function take(count:number) : Observable {
-  return new TakeObservable(this, count);
+  return this.lift(new TakeObserverFactory(count));
 };

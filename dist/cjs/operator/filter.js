@@ -21,13 +21,9 @@ var _utilErrorObject = require('../util/errorObject');
 
 var _utilErrorObject2 = _interopRequireDefault(_utilErrorObject);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var FilterObserver = (function (_Observer) {
     function FilterObserver(destination, predicate) {
@@ -40,38 +36,36 @@ var FilterObserver = (function (_Observer) {
     _inherits(FilterObserver, _Observer);
 
     FilterObserver.prototype._next = function _next(value) {
-        var result = (0, _utilTryCatch2['default'])(this.predicate).call(this, value);
+        var result = _utilTryCatch2['default'](this.predicate).call(this, value);
         if (result === _utilErrorObject2['default']) {
-            return this.destination['throw'](_utilErrorObject2['default'].e);
+            this.destination.error(_utilErrorObject2['default'].e);
         } else if (Boolean(result)) {
-            return this.destination.next(value);
+            this.destination.next(value);
         }
     };
 
     return FilterObserver;
 })(_Observer3['default']);
 
-var FilterObservable = (function (_Observable) {
-    function FilterObservable(source, predicate) {
-        _classCallCheck(this, FilterObservable);
+var FilterObserverFactory = (function (_ObserverFactory) {
+    function FilterObserverFactory(predicate) {
+        _classCallCheck(this, FilterObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.predicate = predicate;
     }
 
-    _inherits(FilterObservable, _Observable);
+    _inherits(FilterObserverFactory, _ObserverFactory);
 
-    FilterObservable.prototype.subscriber = function subscriber(observer) {
-        var filterObserver = new FilterObserver(observer, this.predicate);
-        return _Subscription2['default'].from(this.source.subscriber(filterObserver), filterObserver);
+    FilterObserverFactory.prototype.create = function create(destination) {
+        return new FilterObserver(destination, this.predicate);
     };
 
-    return FilterObservable;
-})(_Observable3['default']);
+    return FilterObserverFactory;
+})(_ObserverFactory3['default']);
 
 function select(predicate) {
-    return new FilterObservable(this, predicate);
+    return this.lift(new FilterObserverFactory(predicate));
 }
 
 ;
