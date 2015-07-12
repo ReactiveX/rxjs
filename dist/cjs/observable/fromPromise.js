@@ -31,6 +31,10 @@ var PromiseObservable = (function (_Observable) {
                     observer.next(x);
                     observer.complete();
                 }
+            }, function (e) {
+                if (!observer.unsubscribed) {
+                    observer.error(e);
+                }
             });
         }
     };
