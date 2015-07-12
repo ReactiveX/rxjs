@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable'], function (exports, module, _Observable2) {
+define(['exports', 'module', '../Observable', '../util/Symbol_observer'], function (exports, module, _Observable2, _utilSymbol_observer) {
     'use strict';
 
     module.exports = range;
@@ -11,6 +11,8 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
     var _Observable3 = _interopRequireDefault(_Observable2);
 
+    var _$$observer = _interopRequireDefault(_utilSymbol_observer);
+
     var RangeObservable = (function (_Observable) {
         function RangeObservable(start, end) {
             _classCallCheck(this, RangeObservable);
@@ -22,14 +24,14 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(RangeObservable, _Observable);
 
-        RangeObservable.prototype.subscriber = function subscriber(observer) {
+        RangeObservable.prototype[_$$observer['default']] = function (observer) {
             var end = this.end;
             var start = this.start;
             var i;
             for (i = start; i < end && !observer.unsubscribed; i++) {
                 observer.next(i);
             }
-            observer['return']();
+            observer.complete();
         };
 
         return RangeObservable;

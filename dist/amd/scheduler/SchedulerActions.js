@@ -63,9 +63,7 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
         function NextScheduledAction() {
             _classCallCheck(this, NextScheduledAction);
 
-            if (_ScheduledAction != null) {
-                _ScheduledAction.apply(this, arguments);
-            }
+            _ScheduledAction.apply(this, arguments);
         }
 
         _inherits(NextScheduledAction, _ScheduledAction);

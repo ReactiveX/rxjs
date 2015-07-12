@@ -2,6 +2,7 @@ import Observable from '../Observable';
 import Observer from '../Observer';
 import Scheduler from '../scheduler/Scheduler';
 import nextTick from '../scheduler/nextTick';
+import $$observer from '../util/Symbol_observer';
 
 class TimerObservable extends Observable {
   delay:number;
@@ -13,7 +14,7 @@ class TimerObservable extends Observable {
     this.scheduler = scheduler;
   }
   
-  subscriber(observer:Observer) {
+  [$$observer](observer:Observer) {
     this.scheduler.schedule(this.delay, observer, dispatch);
   }
 }
@@ -21,7 +22,7 @@ class TimerObservable extends Observable {
 function dispatch(observer:Observer) {
   if(!observer.unsubscribed) {
     observer.next(0);
-    observer.return();
+    observer.complete();
   }
 }
 

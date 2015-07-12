@@ -13,6 +13,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var ReturnObservable = (function (_Observable) {
     function ReturnObservable(returnValue) {
         _classCallCheck(this, ReturnObservable);
@@ -23,8 +27,8 @@ var ReturnObservable = (function (_Observable) {
 
     _inherits(ReturnObservable, _Observable);
 
-    ReturnObservable.prototype.subscriber = function subscriber(observer) {
-        observer['return'](this.returnValue);
+    ReturnObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        observer.complete(this.returnValue);
     };
 
     return ReturnObservable;

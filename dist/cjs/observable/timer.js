@@ -17,6 +17,10 @@ var _schedulerNextTick = require('../scheduler/nextTick');
 
 var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var TimerObservable = (function (_Observable) {
     function TimerObservable(delay, scheduler) {
         _classCallCheck(this, TimerObservable);
@@ -28,7 +32,7 @@ var TimerObservable = (function (_Observable) {
 
     _inherits(TimerObservable, _Observable);
 
-    TimerObservable.prototype.subscriber = function subscriber(observer) {
+    TimerObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         this.scheduler.schedule(this.delay, observer, dispatch);
     };
 
@@ -38,7 +42,7 @@ var TimerObservable = (function (_Observable) {
 function dispatch(observer) {
     if (!observer.unsubscribed) {
         observer.next(0);
-        observer['return']();
+        observer.complete();
     }
 }
 

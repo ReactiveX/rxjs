@@ -42,9 +42,9 @@ var FromEventPatternObservable = (function (_Observable) {
         function innerHandler(e) {
             var result = e;
             if (selector) {
-                result = (0, _utilTryCatch2['default'])(selector).apply(this, arguments);
+                result = _utilTryCatch2['default'](selector).apply(this, arguments);
                 if (result === _utilErrorObject2['default']) {
-                    _subscriber['throw'](_utilErrorObject2['default'].e);
+                    _subscriber.error(_utilErrorObject2['default'].e);
                     unsubscribe();
                     return;
                 }

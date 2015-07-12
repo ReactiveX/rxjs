@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable'], function (exports, module, _Observable2) {
+define(['exports', 'module', '../Observable', '../util/Symbol_observer'], function (exports, module, _Observable2, _utilSymbol_observer) {
     'use strict';
 
     module.exports = value;
@@ -11,6 +11,8 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
     var _Observable3 = _interopRequireDefault(_Observable2);
 
+    var _$$observer = _interopRequireDefault(_utilSymbol_observer);
+
     var ValueObservable = (function (_Observable) {
         function ValueObservable(value) {
             _classCallCheck(this, ValueObservable);
@@ -21,9 +23,9 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(ValueObservable, _Observable);
 
-        ValueObservable.prototype.subscriber = function subscriber(observer) {
+        ValueObservable.prototype[_$$observer['default']] = function (observer) {
             observer.next(this.value);
-            observer['return']();
+            observer.complete();
         };
 
         return ValueObservable;

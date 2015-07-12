@@ -21,6 +21,10 @@ var _schedulerNextTick = require('../scheduler/nextTick');
 
 var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var IntervalObservable = (function (_Observable) {
     function IntervalObservable(interval, scheduler) {
         _classCallCheck(this, IntervalObservable);
@@ -32,7 +36,7 @@ var IntervalObservable = (function (_Observable) {
 
     _inherits(IntervalObservable, _Observable);
 
-    IntervalObservable.prototype.subscriber = function subscriber(observer) {
+    IntervalObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         this.scheduler.schedule(this.interval, new IntervalObserver(observer, this.interval, this.scheduler), dispatch);
     };
 

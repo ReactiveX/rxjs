@@ -1,11 +1,12 @@
 import Observable from '../Observable';
+import $$observer from '../util/Symbol_observer';
 class ThrowObservable extends Observable {
     constructor(err) {
         super(null);
         this.err = err;
     }
-    subscriber(observer) {
-        observer.throw(this.err);
+    [$$observer](observer) {
+        observer.error(this.err);
     }
 }
 const EMPTY_THROW = new ThrowObservable(undefined);

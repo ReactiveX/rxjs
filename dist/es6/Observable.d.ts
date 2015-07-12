@@ -1,10 +1,9 @@
 import Observer from './Observer';
 import Subscription from './Subscription';
-import SerialSubscription from './SerialSubscription';
 import Scheduler from './scheduler/Scheduler';
-import { IteratorResult } from './IteratorResult';
 import Subject from './Subject';
 import ConnectableObservable from './ConnectableObservable';
+import ObserverFactory from './ObserverFactory';
 export default class Observable {
     static value: (value: any) => Observable;
     static return: (returnValue: any) => Observable;
@@ -37,9 +36,12 @@ export default class Observable {
     multicast: (subjectFactory: () => Subject) => ConnectableObservable;
     publish: () => ConnectableObservable;
     reduce: (processor: (accum: any, value: any) => any, initialValue: any) => Observable;
-    constructor(subscriber: (observer: Observer) => Function | void);
+    source: Observable;
+    observerFactory: ObserverFactory;
+    constructor(subscriber?: any);
     static create(subscriber: (observer: Observer) => any): Observable;
-    subscriber(observer: Observer): Function | Subscription | void;
-    subscribe(observerOrNextHandler: Observer | ((any) => IteratorResult<any>), throwHandler?: (any) => IteratorResult<any>, returnHandler?: (any) => IteratorResult<any>, disposeHandler?: () => void): SerialSubscription;
+    subscriber(observer: Observer): Subscription | Function | void;
+    lift(observerFactory: ObserverFactory): Observable;
+    subscribe(observerOrNext: any, error?: any, complete?: any): Subscription;
     forEach(nextHandler: any): Promise<{}>;
 }

@@ -9,9 +9,6 @@ export default class Subscription {
   constructor(_unsubscribe:Function, observer:Observer) {
     this._unsubscribe = _unsubscribe;
     this.observer = observer;
-    if (observer) {
-      observer.setSubscription(this);
-    }
   }
   
   unsubscribe():void {
@@ -25,12 +22,7 @@ export default class Subscription {
     var observer = this.observer;
     if(observer) {
       this.observer = undefined;
-      if(observer.dispose && observer._dispose) {
-        observer.dispose();
-      }
-      else if(observer.return && observer._return) {
-        observer.return();
-      }
+      observer.unsubscribe();
     }
   }
   

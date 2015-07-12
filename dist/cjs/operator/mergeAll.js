@@ -13,10 +13,6 @@ var _Observer3 = require('../Observer');
 
 var _Observer4 = _interopRequireDefault(_Observer3);
 
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
-
 var _SerialSubscription = require('../SerialSubscription');
 
 var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
@@ -25,13 +21,13 @@ var _CompositeSubscription = require('../CompositeSubscription');
 
 var _CompositeSubscription2 = _interopRequireDefault(_CompositeSubscription);
 
-var _Observable2 = require('../Observable');
-
-var _Observable3 = _interopRequireDefault(_Observable2);
-
 var _utilSymbol_observer = require('../util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
+var _ObserverFactory2 = require('../ObserverFactory');
+
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var MergeAllObserver = (function (_Observer) {
     function MergeAllObserver(destination, concurrent) {
@@ -58,18 +54,16 @@ var MergeAllObserver = (function (_Observer) {
         } else if (buffer) {
             buffer.push(observable);
         }
-        return { done: false };
     };
 
-    MergeAllObserver.prototype['return'] = function _return() {
+    MergeAllObserver.prototype.complete = function complete(value) {
         this.stopped = true;
         if (this.subscriptions.length === 0 && (this.buffer && this.buffer.length === 0)) {
-            this.destination['return']();
+            this.destination.complete(value);
         }
-        return { done: true };
     };
 
-    MergeAllObserver.prototype._innerReturn = function _innerReturn(innerObserver) {
+    MergeAllObserver.prototype._innerComplete = function _innerComplete(innerObserver) {
         var buffer = this.buffer;
         var subscriptions = this.subscriptions;
         subscriptions.remove(innerObserver.subscription);
@@ -77,14 +71,13 @@ var MergeAllObserver = (function (_Observer) {
             if (buffer && buffer.length > 0) {
                 this.next(buffer.shift());
             } else if (this.stopped && subscriptions.length === 0) {
-                return this.destination['return']();
+                return this.destination.complete();
             }
         }
-        return { done: true };
     };
 
-    MergeAllObserver.prototype._dispose = function _dispose() {
-        console.log('dispose parent');
+    MergeAllObserver.prototype.unsubscribe = function unsubscribe() {
+        _Observer.prototype.unsubscribe.call(this);
         this.subscriptions.unsubscribe();
     };
 
@@ -102,36 +95,34 @@ var MergeInnerObserver = (function (_Observer2) {
 
     _inherits(MergeInnerObserver, _Observer2);
 
-    MergeInnerObserver.prototype._return = function _return() {
-        return this.parent._innerReturn(this);
+    MergeInnerObserver.prototype._complete = function _complete(value) {
+        return this.parent._innerComplete(this);
     };
 
     return MergeInnerObserver;
 })(_Observer4['default']);
 
-var MergeAllObservable = (function (_Observable) {
-    function MergeAllObservable(source, concurrent) {
-        _classCallCheck(this, MergeAllObservable);
+var MergeAllObserverFactory = (function (_ObserverFactory) {
+    function MergeAllObserverFactory(concurrent) {
+        _classCallCheck(this, MergeAllObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.concurrent = concurrent;
     }
 
-    _inherits(MergeAllObservable, _Observable);
+    _inherits(MergeAllObserverFactory, _ObserverFactory);
 
-    MergeAllObservable.prototype.subscriber = function subscriber(observer) {
-        var mergeAllObserver = new MergeAllObserver(observer, this.concurrent);
-        return _Subscription2['default'].from(this.source.subscriber(mergeAllObserver), mergeAllObserver);
+    MergeAllObserverFactory.prototype.create = function create(destination) {
+        return new MergeAllObserver(destination, this.concurrent);
     };
 
-    return MergeAllObservable;
-})(_Observable3['default']);
+    return MergeAllObserverFactory;
+})(_ObserverFactory3['default']);
 
 function mergeAll() {
     var concurrent = arguments[0] === undefined ? Number.POSITIVE_INFINITY : arguments[0];
 
-    return new MergeAllObservable(this, concurrent);
+    return this.lift(new MergeAllObserverFactory(concurrent));
 }
 
 ;

@@ -40,7 +40,7 @@ var BehaviorSubject = (function (_Subject) {
 
     BehaviorSubject.prototype.next = function next(value) {
         this.value = value;
-        return _Subject.prototype.next.call(this, value);
+        _Subject.prototype.next.call(this, value);
     };
 
     return BehaviorSubject;
@@ -48,7 +48,7 @@ var BehaviorSubject = (function (_Subject) {
 
 exports['default'] = BehaviorSubject;
 module.exports = exports['default'];
-},{"./Subject":8,"./Subscription":9,"./util/Symbol_observer":47}],2:[function(require,module,exports){
+},{"./Subject":9,"./Subscription":10,"./util/Symbol_observer":48}],2:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -92,7 +92,7 @@ var CompositeSubscription = (function (_Subscription) {
             return;
         }
         this.unsubscribed = true;
-        var subscriptions = (0, _utilArraySlice2['default'])(this._subscriptions);
+        var subscriptions = _utilArraySlice2['default'](this._subscriptions);
         var subscriptionCount = subscriptions && subscriptions.length || 0;
         var subscriptionIndex = -1;
         this._subscriptions = undefined;
@@ -138,7 +138,7 @@ var CompositeSubscription = (function (_Subscription) {
 
 exports['default'] = CompositeSubscription;
 module.exports = exports['default'];
-},{"./Subscription":9,"./util/arraySlice":48}],3:[function(require,module,exports){
+},{"./Subscription":10,"./util/arraySlice":49}],3:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -247,7 +247,7 @@ function dispatchConnection(connectable) {
     return connectable.subscription;
 }
 module.exports = exports['default'];
-},{"./Observable":4,"./Observer":5,"./scheduler/nextTick":45,"./util/Symbol_observer":47}],4:[function(require,module,exports){
+},{"./Observable":4,"./Observer":5,"./scheduler/nextTick":46,"./util/Symbol_observer":48}],4:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -264,22 +264,22 @@ var _Subscription = require('./Subscription');
 
 var _Subscription2 = _interopRequireDefault(_Subscription);
 
-var _SerialSubscription = require('./SerialSubscription');
-
-var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
-
-var _schedulerNextTick = require('./scheduler/nextTick');
-
-var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
-
 var _utilSymbol_observer = require('./util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
 
+var _ObserverFactory = require('./ObserverFactory');
+
+var _ObserverFactory2 = _interopRequireDefault(_ObserverFactory);
+
 var Observable = (function () {
-    function Observable(subscriber) {
+    function Observable() {
+        var subscriber = arguments[0] === undefined ? null : arguments[0];
+
         _classCallCheck(this, Observable);
 
+        this.source = null;
+        this.observerFactory = new _ObserverFactory2['default']();
         if (subscriber) {
             this.subscriber = subscriber;
         }
@@ -290,7 +290,14 @@ var Observable = (function () {
     };
 
     Observable.prototype.subscriber = function subscriber(observer) {
-        return void 0;
+        return this.source.subscribe(this.observerFactory.create(observer));
+    };
+
+    Observable.prototype.lift = function lift(observerFactory) {
+        var observable = new Observable();
+        observable.source = this;
+        observable.observerFactory = observerFactory;
+        return observable;
     };
 
     Observable.prototype[_utilSymbol_observer2['default']] = function (observer) {
@@ -300,21 +307,17 @@ var Observable = (function () {
         return _Subscription2['default'].from(this.subscriber(observer), observer);
     };
 
-    Observable.prototype.subscribe = function subscribe(observerOrNextHandler) {
-        var throwHandler = arguments[1] === undefined ? null : arguments[1];
-        var returnHandler = arguments[2] === undefined ? null : arguments[2];
-        var disposeHandler = arguments[3] === undefined ? null : arguments[3];
+    Observable.prototype.subscribe = function subscribe(observerOrNext) {
+        var error = arguments[1] === undefined ? null : arguments[1];
+        var complete = arguments[2] === undefined ? null : arguments[2];
 
-        var observer;
-        if (typeof observerOrNextHandler === 'object') {
-            observer = observerOrNextHandler;
+        var observer = undefined;
+        if (typeof observerOrNext === 'object') {
+            observer = observerOrNext;
         } else {
-            observer = _Observer2['default'].create(observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
+            observer = _Observer2['default'].create(observerOrNext, error, complete);
         }
-        var subscription = new _SerialSubscription2['default'](null);
-        subscription.observer = observer;
-        subscription.add(_schedulerNextTick2['default'].schedule(0, [observer, this], dispatchSubscription));
-        return subscription;
+        return this[_utilSymbol_observer2['default']](observer);
     };
 
     Observable.prototype.forEach = function forEach(nextHandler) {
@@ -347,7 +350,7 @@ function dispatchSubscription(_ref) {
     return observable[_utilSymbol_observer2['default']](observer);
 }
 module.exports = exports['default'];
-},{"./Observer":5,"./SerialSubscription":7,"./Subscription":9,"./scheduler/nextTick":45,"./util/Symbol_observer":47}],5:[function(require,module,exports){
+},{"./Observer":5,"./ObserverFactory":6,"./Subscription":10,"./util/Symbol_observer":48}],5:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -363,108 +366,68 @@ var Observer = (function () {
     }
 
     Observer.create = function create(_next) {
-        var _throw = arguments[1] === undefined ? null : arguments[1];
+        var _error = arguments[1] === undefined ? null : arguments[1];
 
-        var _return = arguments[2] === undefined ? null : arguments[2];
-
-        var _dispose = arguments[3] === undefined ? null : arguments[3];
+        var _completed = arguments[2] === undefined ? null : arguments[2];
 
         var observer = new Observer(null);
         observer._next = _next;
-        if (_throw) {
-            observer._throw = _throw;
+        if (_error) {
+            observer._error = _error;
         }
-        if (_return) {
-            observer._return = _return;
-        }
-        if (_dispose) {
-            observer._dispose = _dispose;
+        if (_completed) {
+            observer._completed = _completed;
         }
         return observer;
     };
 
-    Observer.prototype._dispose = function _dispose() {
-        var destination = this.destination;
-        if (destination && destination.dispose) {
-            destination.dispose();
-        }
-    };
-
     Observer.prototype._next = function _next(value) {
-        return this.destination.next(value);
+        this.destination.next(value);
     };
 
-    Observer.prototype._throw = function _throw(error) {
+    Observer.prototype._error = function _error(error) {
         var destination = this.destination;
-        if (destination && destination["throw"]) {
-            return destination["throw"](error);
+        if (destination && destination.error) {
+            destination.error(error);
         } else {
             throw error;
         }
     };
 
-    Observer.prototype._return = function _return(value) {
+    Observer.prototype._completed = function _completed(value) {
         var destination = this.destination;
-        if (destination && destination["return"]) {
-            return destination["return"](value);
-        } else {
-            return { done: true };
+        if (destination && destination.complete) {
+            destination.complete(value);
         }
     };
 
     Observer.prototype.next = function next(value) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
-        var result = this._next(value);
-        result = result || { done: false };
-        if (result.done) {
-            this.unsubscribe();
-        }
-        return result;
+        this._next(value);
     };
 
-    Observer.prototype["throw"] = function _throw(error) {
+    Observer.prototype.error = function error(_error2) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
-        var result = this._throw(error);
+        var result = this._error(_error2);
         this.unsubscribe();
-        return { done: true, value: result ? result.value : undefined };
     };
 
-    Observer.prototype["return"] = function _return() {
+    Observer.prototype.complete = function complete() {
         var value = arguments[0] === undefined ? undefined : arguments[0];
 
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
-        var result = this._return(value);
+        var result = this._completed(value);
         this.unsubscribe();
-        return { done: true, value: result ? result.value : undefined };
     };
 
     Observer.prototype.unsubscribe = function unsubscribe() {
         this.unsubscribed = true;
-        if (this.subscription && this.subscription._unsubscribe) {
-            this.subscription._unsubscribe();
-        }
-    };
-
-    Observer.prototype.setSubscription = function setSubscription(subscription) {
-        this.subscription = subscription;
-        if (this.unsubscribed && subscription._unsubscribe) {
-            subscription._unsubscribe();
-        }
-    };
-
-    Observer.prototype.dispose = function dispose() {
-        if (!this.unsubscribed) {
-            if (this._dispose) {
-                this._dispose();
-            }
-        }
-        this.unsubscribe();
     };
 
     return Observer;
@@ -473,6 +436,33 @@ var Observer = (function () {
 exports["default"] = Observer;
 module.exports = exports["default"];
 },{}],6:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _Observer = require('./Observer');
+
+var _Observer2 = _interopRequireDefault(_Observer);
+
+var ObserverFactory = (function () {
+    function ObserverFactory() {
+        _classCallCheck(this, ObserverFactory);
+    }
+
+    ObserverFactory.prototype.create = function create(destination) {
+        return new _Observer2['default'](destination);
+    };
+
+    return ObserverFactory;
+})();
+
+exports['default'] = ObserverFactory;
+module.exports = exports['default'];
+},{"./Observer":5}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -685,7 +675,7 @@ var RxNext = {
 };
 exports['default'] = RxNext;
 module.exports = exports['default'];
-},{"./BehaviorSubject":1,"./CompositeSubscription":2,"./ConnectableObservable":3,"./Observable":4,"./Observer":5,"./SerialSubscription":7,"./Subject":8,"./Subscription":9,"./observable/empty":11,"./observable/fromArray":12,"./observable/fromEvent":13,"./observable/fromEventPattern":14,"./observable/fromPromise":15,"./observable/interval":16,"./observable/of":17,"./observable/range":18,"./observable/return":19,"./observable/throw":20,"./observable/timer":21,"./observable/value":22,"./observable/zip":23,"./operator/concatAll":24,"./operator/filter":25,"./operator/flatMap":26,"./operator/map":27,"./operator/mapTo":28,"./operator/merge":29,"./operator/mergeAll":30,"./operator/multicast":31,"./operator/observeOn":32,"./operator/publish":33,"./operator/reduce":34,"./operator/skip":35,"./operator/subscribeOn":36,"./operator/take":37,"./operator/toArray":38,"./operator/zip":39,"./operator/zipAll":40,"./scheduler/immediate":44,"./scheduler/nextTick":45}],7:[function(require,module,exports){
+},{"./BehaviorSubject":1,"./CompositeSubscription":2,"./ConnectableObservable":3,"./Observable":4,"./Observer":5,"./SerialSubscription":8,"./Subject":9,"./Subscription":10,"./observable/empty":12,"./observable/fromArray":13,"./observable/fromEvent":14,"./observable/fromEventPattern":15,"./observable/fromPromise":16,"./observable/interval":17,"./observable/of":18,"./observable/range":19,"./observable/return":20,"./observable/throw":21,"./observable/timer":22,"./observable/value":23,"./observable/zip":24,"./operator/concatAll":25,"./operator/filter":26,"./operator/flatMap":27,"./operator/map":28,"./operator/mapTo":29,"./operator/merge":30,"./operator/mergeAll":31,"./operator/multicast":32,"./operator/observeOn":33,"./operator/publish":34,"./operator/reduce":35,"./operator/skip":36,"./operator/subscribeOn":37,"./operator/take":38,"./operator/toArray":39,"./operator/zip":40,"./operator/zipAll":41,"./scheduler/immediate":45,"./scheduler/nextTick":46}],8:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -750,7 +740,7 @@ var SerialSubscription = (function (_Subscription) {
 
 exports['default'] = SerialSubscription;
 module.exports = exports['default'];
-},{"./Subscription":9}],8:[function(require,module,exports){
+},{"./Subscription":10}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -800,37 +790,34 @@ var Subject = (function (_Observable) {
 
     Subject.prototype.next = function next(value) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
         this.observers.forEach(function (o) {
             return o.next(value);
         });
         this._cleanUnsubbedObservers();
-        return { done: false };
     };
 
     Subject.prototype['throw'] = function _throw(err) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
         this.observers.forEach(function (o) {
-            return o['throw'](err);
+            return o.error(err);
         });
         this.unsubscribe();
         this._cleanUnsubbedObservers();
-        return { done: true };
     };
 
     Subject.prototype['return'] = function _return(value) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
         this.observers.forEach(function (o) {
-            return o['return'](value);
+            return o.complete(value);
         });
         this.unsubscribe();
         this._cleanUnsubbedObservers();
-        return { done: true };
     };
 
     Subject.prototype._cleanUnsubbedObservers = function _cleanUnsubbedObservers() {
@@ -879,7 +866,7 @@ var SubjectSubscription = (function (_Subscription) {
 })(_Subscription3['default']);
 
 module.exports = exports['default'];
-},{"./Observable":4,"./Subscription":9,"./util/Symbol_observer":47}],9:[function(require,module,exports){
+},{"./Observable":4,"./Subscription":10,"./util/Symbol_observer":48}],10:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -894,9 +881,6 @@ var Subscription = (function () {
         this.unsubscribed = false;
         this._unsubscribe = _unsubscribe;
         this.observer = observer;
-        if (observer) {
-            observer.setSubscription(this);
-        }
     }
 
     Subscription.prototype.unsubscribe = function unsubscribe() {
@@ -912,11 +896,7 @@ var Subscription = (function () {
         var observer = this.observer;
         if (observer) {
             this.observer = undefined;
-            if (observer.dispose && observer._dispose) {
-                observer.dispose();
-            } else if (observer['return'] && observer._return) {
-                observer['return']();
-            }
+            observer.unsubscribe();
         }
     };
 
@@ -943,7 +923,7 @@ var Subscription = (function () {
 
 exports['default'] = Subscription;
 module.exports = exports['default'];
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -958,6 +938,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var ArrayObservable = (function (_Observable) {
     function ArrayObservable(array) {
         _classCallCheck(this, ArrayObservable);
@@ -968,7 +952,7 @@ var ArrayObservable = (function (_Observable) {
 
     _inherits(ArrayObservable, _Observable);
 
-    ArrayObservable.prototype.subscriber = function subscriber(observer) {
+    ArrayObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         var i, len;
         var array = this.array;
         if (Array.isArray(array)) {
@@ -976,7 +960,7 @@ var ArrayObservable = (function (_Observable) {
                 observer.next(array[i]);
             }
         }
-        observer['return']();
+        observer.complete();
     };
 
     return ArrayObservable;
@@ -984,7 +968,7 @@ var ArrayObservable = (function (_Observable) {
 
 exports['default'] = ArrayObservable;
 module.exports = exports['default'];
-},{"../Observable":4}],11:[function(require,module,exports){
+},{"../Observable":4,"../util/Symbol_observer":48}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -997,7 +981,7 @@ var _Observable = require('../Observable');
 var _Observable2 = _interopRequireDefault(_Observable);
 
 var EMPTY = new _Observable2['default'](function (observer) {
-    observer['return']();
+    observer.complete();
 });
 
 function empty() {
@@ -1006,7 +990,7 @@ function empty() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4}],12:[function(require,module,exports){
+},{"../Observable":4}],13:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1023,7 +1007,7 @@ function fromArray(array) {
 }
 
 module.exports = exports['default'];
-},{"./ArrayObservable":10}],13:[function(require,module,exports){
+},{"./ArrayObservable":11}],14:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1077,9 +1061,9 @@ var EventListenerObservable = (function (_Observable) {
             var result = e;
             var iteratorResult;
             if (selector) {
-                result = (0, _utilTryCatch2['default'])(selector).apply(this, arguments);
+                result = _utilTryCatch2['default'](selector).apply(this, arguments);
                 if (result === _utilErrorObject2['default']) {
-                    observer['throw'](_utilErrorObject2['default'].e);
+                    observer.error(_utilErrorObject2['default'].e);
                     listeners.unsubscribe();
                     return;
                 }
@@ -1133,7 +1117,7 @@ function fromEvent(element, eventName) {
 
     // Node.js specific
     if (element.addListener) {
-        return (0, _fromEventPattern2['default'])(function (h) {
+        return _fromEventPattern2['default'](function (h) {
             element.addListener(eventName, h);
         }, function (h) {
             element.removeListener(eventName, h);
@@ -1144,7 +1128,7 @@ function fromEvent(element, eventName) {
     if (!config.useNativeEvents) {
         // Handles jq, Angular.js, Zepto, Marionette, Ember.js
         if (typeof element.on === 'function' && typeof element.off === 'function') {
-            return (0, _fromEventPattern2['default'])(function (h) {
+            return _fromEventPattern2['default'](function (h) {
                 element.on(eventName, h);
             }, function (h) {
                 element.off(eventName, h);
@@ -1156,7 +1140,7 @@ function fromEvent(element, eventName) {
 
 ;
 module.exports = exports['default'];
-},{"../CompositeSubscription":2,"../Observable":4,"../Subscription":9,"../util/errorObject":49,"../util/tryCatch":51,"./fromEventPattern":14}],14:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":4,"../Subscription":10,"../util/errorObject":50,"../util/tryCatch":52,"./fromEventPattern":15}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1201,9 +1185,9 @@ var FromEventPatternObservable = (function (_Observable) {
         function innerHandler(e) {
             var result = e;
             if (selector) {
-                result = (0, _utilTryCatch2['default'])(selector).apply(this, arguments);
+                result = _utilTryCatch2['default'](selector).apply(this, arguments);
                 if (result === _utilErrorObject2['default']) {
-                    _subscriber['throw'](_utilErrorObject2['default'].e);
+                    _subscriber.error(_utilErrorObject2['default'].e);
                     unsubscribe();
                     return;
                 }
@@ -1240,7 +1224,7 @@ function fromEventPattern(addHandler) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../util/errorObject":49,"../util/tryCatch":51}],15:[function(require,module,exports){
+},{"../Observable":4,"../util/errorObject":50,"../util/tryCatch":52}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1256,6 +1240,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var PromiseObservable = (function (_Observable) {
     function PromiseObservable(promise) {
         _classCallCheck(this, PromiseObservable);
@@ -1266,13 +1254,13 @@ var PromiseObservable = (function (_Observable) {
 
     _inherits(PromiseObservable, _Observable);
 
-    PromiseObservable.prototype.subscriber = function subscriber(observer) {
+    PromiseObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         var promise = this.promise;
         if (promise) {
             promise.then(function (x) {
                 if (!observer.unsubscribed) {
                     observer.next(x);
-                    observer['return'](x);
+                    observer.complete();
                 }
             });
         }
@@ -1286,7 +1274,7 @@ function fromPromise(promise) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],16:[function(require,module,exports){
+},{"../Observable":4,"../util/Symbol_observer":48}],17:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1310,6 +1298,10 @@ var _schedulerNextTick = require('../scheduler/nextTick');
 
 var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var IntervalObservable = (function (_Observable) {
     function IntervalObservable(interval, scheduler) {
         _classCallCheck(this, IntervalObservable);
@@ -1321,7 +1313,7 @@ var IntervalObservable = (function (_Observable) {
 
     _inherits(IntervalObservable, _Observable);
 
-    IntervalObservable.prototype.subscriber = function subscriber(observer) {
+    IntervalObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         this.scheduler.schedule(this.interval, new IntervalObserver(observer, this.interval, this.scheduler), dispatch);
     };
 
@@ -1363,7 +1355,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../scheduler/nextTick":45}],17:[function(require,module,exports){
+},{"../Observable":4,"../Observer":5,"../scheduler/nextTick":46,"../util/Symbol_observer":48}],18:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1385,7 +1377,7 @@ function of() {
 
 ;
 module.exports = exports['default'];
-},{"./ArrayObservable":10}],18:[function(require,module,exports){
+},{"./ArrayObservable":11}],19:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1401,6 +1393,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var RangeObservable = (function (_Observable) {
     function RangeObservable(start, end) {
         _classCallCheck(this, RangeObservable);
@@ -1412,14 +1408,14 @@ var RangeObservable = (function (_Observable) {
 
     _inherits(RangeObservable, _Observable);
 
-    RangeObservable.prototype.subscriber = function subscriber(observer) {
+    RangeObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         var end = this.end;
         var start = this.start;
         var i;
         for (i = start; i < end && !observer.unsubscribed; i++) {
             observer.next(i);
         }
-        observer['return']();
+        observer.complete();
     };
 
     return RangeObservable;
@@ -1434,7 +1430,7 @@ function range() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4}],19:[function(require,module,exports){
+},{"../Observable":4,"../util/Symbol_observer":48}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1450,6 +1446,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var ReturnObservable = (function (_Observable) {
     function ReturnObservable(returnValue) {
         _classCallCheck(this, ReturnObservable);
@@ -1460,8 +1460,8 @@ var ReturnObservable = (function (_Observable) {
 
     _inherits(ReturnObservable, _Observable);
 
-    ReturnObservable.prototype.subscriber = function subscriber(observer) {
-        observer['return'](this.returnValue);
+    ReturnObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        observer.complete(this.returnValue);
     };
 
     return ReturnObservable;
@@ -1474,7 +1474,7 @@ function _return() {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],20:[function(require,module,exports){
+},{"../Observable":4,"../util/Symbol_observer":48}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1490,6 +1490,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var ThrowObservable = (function (_Observable) {
     function ThrowObservable(err) {
         _classCallCheck(this, ThrowObservable);
@@ -1500,8 +1504,8 @@ var ThrowObservable = (function (_Observable) {
 
     _inherits(ThrowObservable, _Observable);
 
-    ThrowObservable.prototype.subscriber = function subscriber(observer) {
-        observer['throw'](this.err);
+    ThrowObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        observer.error(this.err);
     };
 
     return ThrowObservable;
@@ -1517,7 +1521,7 @@ function _throw() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4}],21:[function(require,module,exports){
+},{"../Observable":4,"../util/Symbol_observer":48}],22:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1537,6 +1541,10 @@ var _schedulerNextTick = require('../scheduler/nextTick');
 
 var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var TimerObservable = (function (_Observable) {
     function TimerObservable(delay, scheduler) {
         _classCallCheck(this, TimerObservable);
@@ -1548,7 +1556,7 @@ var TimerObservable = (function (_Observable) {
 
     _inherits(TimerObservable, _Observable);
 
-    TimerObservable.prototype.subscriber = function subscriber(observer) {
+    TimerObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         this.scheduler.schedule(this.delay, observer, dispatch);
     };
 
@@ -1558,7 +1566,7 @@ var TimerObservable = (function (_Observable) {
 function dispatch(observer) {
     if (!observer.unsubscribed) {
         observer.next(0);
-        observer['return']();
+        observer.complete();
     }
 }
 
@@ -1571,7 +1579,7 @@ function timer() {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../scheduler/nextTick":45}],22:[function(require,module,exports){
+},{"../Observable":4,"../scheduler/nextTick":46,"../util/Symbol_observer":48}],23:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1587,6 +1595,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var ValueObservable = (function (_Observable) {
     function ValueObservable(value) {
         _classCallCheck(this, ValueObservable);
@@ -1597,9 +1609,9 @@ var ValueObservable = (function (_Observable) {
 
     _inherits(ValueObservable, _Observable);
 
-    ValueObservable.prototype.subscriber = function subscriber(observer) {
+    ValueObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         observer.next(this.value);
-        observer['return']();
+        observer.complete();
     };
 
     return ValueObservable;
@@ -1611,7 +1623,7 @@ function value(value) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4}],23:[function(require,module,exports){
+},{"../Observable":4,"../util/Symbol_observer":48}],24:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1692,7 +1704,6 @@ var InnerZipObserver = (function (_Observer) {
 
     InnerZipObserver.prototype._next = function _next(value) {
         this.buffer.push(value);
-        return { done: false };
     };
 
     InnerZipObserver.prototype._canEmit = function _canEmit() {
@@ -1718,11 +1729,11 @@ var InnerZipObserver = (function (_Observer) {
     };
 
     InnerZipObserver.prototype._sendNext = function _sendNext(args) {
-        var value = (0, _utilTryCatch2['default'])(this.project).apply(this, args);
+        var value = _utilTryCatch2['default'](this.project).apply(this, args);
         if (value === _utilErrorObject2['default']) {
-            return this.destination['throw'](_utilErrorObject2['default'].e);
+            this.destination.error(_utilErrorObject2['default'].e);
         } else {
-            return this.destination.next(value);
+            this.destination.next(value);
         }
     };
 
@@ -1734,7 +1745,7 @@ function zip(observables, project) {
 }
 
 module.exports = exports['default'];
-},{"../CompositeSubscription":2,"../Observable":4,"../Observer":5,"../Subscription":9,"../util/Symbol_observer":47,"../util/errorObject":49,"../util/tryCatch":51}],24:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observable":4,"../Observer":5,"../Subscription":10,"../util/Symbol_observer":48,"../util/errorObject":50,"../util/tryCatch":52}],25:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1751,7 +1762,7 @@ function concatAll() {
 }
 
 module.exports = exports['default'];
-},{"./mergeAll":30}],25:[function(require,module,exports){
+},{"./mergeAll":31}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1775,13 +1786,9 @@ var _utilErrorObject = require('../util/errorObject');
 
 var _utilErrorObject2 = _interopRequireDefault(_utilErrorObject);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var FilterObserver = (function (_Observer) {
     function FilterObserver(destination, predicate) {
@@ -1794,43 +1801,41 @@ var FilterObserver = (function (_Observer) {
     _inherits(FilterObserver, _Observer);
 
     FilterObserver.prototype._next = function _next(value) {
-        var result = (0, _utilTryCatch2['default'])(this.predicate).call(this, value);
+        var result = _utilTryCatch2['default'](this.predicate).call(this, value);
         if (result === _utilErrorObject2['default']) {
-            return this.destination['throw'](_utilErrorObject2['default'].e);
+            this.destination.error(_utilErrorObject2['default'].e);
         } else if (Boolean(result)) {
-            return this.destination.next(value);
+            this.destination.next(value);
         }
     };
 
     return FilterObserver;
 })(_Observer3['default']);
 
-var FilterObservable = (function (_Observable) {
-    function FilterObservable(source, predicate) {
-        _classCallCheck(this, FilterObservable);
+var FilterObserverFactory = (function (_ObserverFactory) {
+    function FilterObserverFactory(predicate) {
+        _classCallCheck(this, FilterObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.predicate = predicate;
     }
 
-    _inherits(FilterObservable, _Observable);
+    _inherits(FilterObserverFactory, _ObserverFactory);
 
-    FilterObservable.prototype.subscriber = function subscriber(observer) {
-        var filterObserver = new FilterObserver(observer, this.predicate);
-        return _Subscription2['default'].from(this.source.subscriber(filterObserver), filterObserver);
+    FilterObserverFactory.prototype.create = function create(destination) {
+        return new FilterObserver(destination, this.predicate);
     };
 
-    return FilterObservable;
-})(_Observable3['default']);
+    return FilterObserverFactory;
+})(_ObserverFactory3['default']);
 
 function select(predicate) {
-    return new FilterObservable(this, predicate);
+    return this.lift(new FilterObserverFactory(predicate));
 }
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9,"../util/errorObject":49,"../util/tryCatch":51}],26:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6,"../util/errorObject":50,"../util/tryCatch":52}],27:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1853,7 +1858,7 @@ function flatMap(project) {
 }
 
 module.exports = exports['default'];
-},{"./map":27,"./mergeAll":30}],27:[function(require,module,exports){
+},{"./map":28,"./mergeAll":31}],28:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1877,13 +1882,9 @@ var _utilErrorObject = require('../util/errorObject');
 
 var _utilErrorObject2 = _interopRequireDefault(_utilErrorObject);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var MapObserver = (function (_Observer) {
     function MapObserver(destination, project) {
@@ -1896,43 +1897,41 @@ var MapObserver = (function (_Observer) {
     _inherits(MapObserver, _Observer);
 
     MapObserver.prototype._next = function _next(value) {
-        value = (0, _utilTryCatch2['default'])(this.project).call(this, value);
+        value = _utilTryCatch2['default'](this.project).call(this, value);
         if (value === _utilErrorObject2['default']) {
-            return this.destination['throw'](_utilErrorObject2['default'].e);
+            this.destination.error(_utilErrorObject2['default'].e);
         } else {
-            return this.destination.next(value);
+            this.destination.next(value);
         }
     };
 
     return MapObserver;
 })(_Observer3['default']);
 
-var MapObservable = (function (_Observable) {
-    function MapObservable(source, project) {
-        _classCallCheck(this, MapObservable);
+var MapObserverFactory = (function (_ObserverFactory) {
+    function MapObserverFactory(project) {
+        _classCallCheck(this, MapObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.project = project;
     }
 
-    _inherits(MapObservable, _Observable);
+    _inherits(MapObserverFactory, _ObserverFactory);
 
-    MapObservable.prototype.subscriber = function subscriber(observer) {
-        var mapObserver = new MapObserver(observer, this.project);
-        return _Subscription2['default'].from(this.source.subscriber(mapObserver), mapObserver);
+    MapObserverFactory.prototype.create = function create(destination) {
+        return new MapObserver(destination, this.project);
     };
 
-    return MapObservable;
-})(_Observable3['default']);
+    return MapObserverFactory;
+})(_ObserverFactory3['default']);
 
 function select(project) {
-    return new MapObservable(this, project);
+    return this.lift(new MapObserverFactory(project));
 }
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9,"../util/errorObject":49,"../util/tryCatch":51}],28:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6,"../util/errorObject":50,"../util/tryCatch":52}],29:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1948,13 +1947,9 @@ var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var MapToObserver = (function (_Observer) {
     function MapToObserver(destination, value) {
@@ -1973,32 +1968,30 @@ var MapToObserver = (function (_Observer) {
     return MapToObserver;
 })(_Observer3['default']);
 
-var MapToObservable = (function (_Observable) {
-    function MapToObservable(source, value) {
-        _classCallCheck(this, MapToObservable);
+var MapToObserverFactory = (function (_ObserverFactory) {
+    function MapToObserverFactory(value) {
+        _classCallCheck(this, MapToObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.value = value;
     }
 
-    _inherits(MapToObservable, _Observable);
+    _inherits(MapToObserverFactory, _ObserverFactory);
 
-    MapToObservable.prototype.subscriber = function subscriber(observer) {
-        var mapToObserver = new MapToObserver(observer, this.value);
-        return _Subscription2['default'].from(this.source.subscriber(mapToObserver), mapToObserver);
+    MapToObserverFactory.prototype.create = function create(destination) {
+        return new MapToObserver(destination, this.value);
     };
 
-    return MapToObservable;
-})(_Observable3['default']);
+    return MapToObserverFactory;
+})(_ObserverFactory3['default']);
 
 function mapTo(value) {
-    return new MapToObservable(this, value);
+    return this.lift(new MapToObserverFactory(value));
 }
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],29:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6}],30:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2015,7 +2008,7 @@ function merge(observables) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],30:[function(require,module,exports){
+},{"../Observable":4}],31:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2031,10 +2024,6 @@ var _Observer3 = require('../Observer');
 
 var _Observer4 = _interopRequireDefault(_Observer3);
 
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
-
 var _SerialSubscription = require('../SerialSubscription');
 
 var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
@@ -2043,13 +2032,13 @@ var _CompositeSubscription = require('../CompositeSubscription');
 
 var _CompositeSubscription2 = _interopRequireDefault(_CompositeSubscription);
 
-var _Observable2 = require('../Observable');
-
-var _Observable3 = _interopRequireDefault(_Observable2);
-
 var _utilSymbol_observer = require('../util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
+var _ObserverFactory2 = require('../ObserverFactory');
+
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var MergeAllObserver = (function (_Observer) {
     function MergeAllObserver(destination, concurrent) {
@@ -2076,18 +2065,16 @@ var MergeAllObserver = (function (_Observer) {
         } else if (buffer) {
             buffer.push(observable);
         }
-        return { done: false };
     };
 
-    MergeAllObserver.prototype['return'] = function _return() {
+    MergeAllObserver.prototype.complete = function complete(value) {
         this.stopped = true;
         if (this.subscriptions.length === 0 && (this.buffer && this.buffer.length === 0)) {
-            this.destination['return']();
+            this.destination.complete(value);
         }
-        return { done: true };
     };
 
-    MergeAllObserver.prototype._innerReturn = function _innerReturn(innerObserver) {
+    MergeAllObserver.prototype._innerComplete = function _innerComplete(innerObserver) {
         var buffer = this.buffer;
         var subscriptions = this.subscriptions;
         subscriptions.remove(innerObserver.subscription);
@@ -2095,14 +2082,13 @@ var MergeAllObserver = (function (_Observer) {
             if (buffer && buffer.length > 0) {
                 this.next(buffer.shift());
             } else if (this.stopped && subscriptions.length === 0) {
-                return this.destination['return']();
+                return this.destination.complete();
             }
         }
-        return { done: true };
     };
 
-    MergeAllObserver.prototype._dispose = function _dispose() {
-        console.log('dispose parent');
+    MergeAllObserver.prototype.unsubscribe = function unsubscribe() {
+        _Observer.prototype.unsubscribe.call(this);
         this.subscriptions.unsubscribe();
     };
 
@@ -2120,41 +2106,39 @@ var MergeInnerObserver = (function (_Observer2) {
 
     _inherits(MergeInnerObserver, _Observer2);
 
-    MergeInnerObserver.prototype._return = function _return() {
-        return this.parent._innerReturn(this);
+    MergeInnerObserver.prototype._complete = function _complete(value) {
+        return this.parent._innerComplete(this);
     };
 
     return MergeInnerObserver;
 })(_Observer4['default']);
 
-var MergeAllObservable = (function (_Observable) {
-    function MergeAllObservable(source, concurrent) {
-        _classCallCheck(this, MergeAllObservable);
+var MergeAllObserverFactory = (function (_ObserverFactory) {
+    function MergeAllObserverFactory(concurrent) {
+        _classCallCheck(this, MergeAllObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.concurrent = concurrent;
     }
 
-    _inherits(MergeAllObservable, _Observable);
+    _inherits(MergeAllObserverFactory, _ObserverFactory);
 
-    MergeAllObservable.prototype.subscriber = function subscriber(observer) {
-        var mergeAllObserver = new MergeAllObserver(observer, this.concurrent);
-        return _Subscription2['default'].from(this.source.subscriber(mergeAllObserver), mergeAllObserver);
+    MergeAllObserverFactory.prototype.create = function create(destination) {
+        return new MergeAllObserver(destination, this.concurrent);
     };
 
-    return MergeAllObservable;
-})(_Observable3['default']);
+    return MergeAllObserverFactory;
+})(_ObserverFactory3['default']);
 
 function mergeAll() {
     var concurrent = arguments[0] === undefined ? Number.POSITIVE_INFINITY : arguments[0];
 
-    return new MergeAllObservable(this, concurrent);
+    return this.lift(new MergeAllObserverFactory(concurrent));
 }
 
 ;
 module.exports = exports['default'];
-},{"../CompositeSubscription":2,"../Observable":4,"../Observer":5,"../SerialSubscription":7,"../Subscription":9,"../util/Symbol_observer":47}],31:[function(require,module,exports){
+},{"../CompositeSubscription":2,"../Observer":5,"../ObserverFactory":6,"../SerialSubscription":8,"../util/Symbol_observer":48}],32:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2172,7 +2156,7 @@ function multicast(subjectFactory) {
 
 ;
 module.exports = exports['default'];
-},{"../ConnectableObservable":3}],32:[function(require,module,exports){
+},{"../ConnectableObservable":3}],33:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2184,17 +2168,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-var _Observable2 = require('../Observable');
-
-var _Observable3 = _interopRequireDefault(_Observable2);
-
 var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Subscription = require('../Subscription');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var ObserveOnObserver = (function (_Observer) {
     function ObserveOnObserver(destination, scheduler) {
@@ -2206,19 +2186,16 @@ var ObserveOnObserver = (function (_Observer) {
 
     _inherits(ObserveOnObserver, _Observer);
 
-    ObserveOnObserver.prototype._next = function _next(value) {
+    ObserveOnObserver.prototype.next = function next(value) {
         this.scheduler.schedule(0, [this.destination, value], dispatchNext);
-        return { done: false };
     };
 
-    ObserveOnObserver.prototype._throw = function _throw(err) {
-        this.scheduler.schedule(0, [this.destination, err], dispatchThrow);
-        return { done: true };
+    ObserveOnObserver.prototype._error = function _error(err) {
+        this.scheduler.schedule(0, [this.destination, err], dispatchError);
     };
 
-    ObserveOnObserver.prototype._return = function _return(value) {
-        this.scheduler.schedule(0, [this.destination, value], dispatchReturn);
-        return { done: true };
+    ObserveOnObserver.prototype._complete = function _complete(value) {
+        this.scheduler.schedule(0, [this.destination, value], dispatchComplete);
     };
 
     return ObserveOnObserver;
@@ -2233,46 +2210,44 @@ function dispatchNext(_ref) {
         destination.dispose();
     }
 }
-function dispatchThrow(_ref2) {
+function dispatchError(_ref2) {
     var destination = _ref2[0];
     var err = _ref2[1];
 
-    var result = destination['throw'](err);
+    var result = destination.error(err);
     destination.dispose();
 }
-function dispatchReturn(_ref3) {
+function dispatchComplete(_ref3) {
     var destination = _ref3[0];
     var value = _ref3[1];
 
-    var result = destination['return'](value);
+    var result = destination.complete(value);
     destination.dispose();
 }
 
-var ObserveOnObservable = (function (_Observable) {
-    function ObserveOnObservable(source, scheduler) {
-        _classCallCheck(this, ObserveOnObservable);
+var ObserveOnObserverFactory = (function (_ObserverFactory) {
+    function ObserveOnObserverFactory(scheduler) {
+        _classCallCheck(this, ObserveOnObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.scheduler = scheduler;
     }
 
-    _inherits(ObserveOnObservable, _Observable);
+    _inherits(ObserveOnObserverFactory, _ObserverFactory);
 
-    ObserveOnObservable.prototype.subscriber = function subscriber(observer) {
-        var observeOnObserver = new ObserveOnObserver(observer, this.scheduler);
-        return _Subscription2['default'].from(this.source.subscriber(observeOnObserver), observeOnObserver);
+    ObserveOnObserverFactory.prototype.create = function create(destination) {
+        return new ObserveOnObserver(destination, this.scheduler);
     };
 
-    return ObserveOnObservable;
-})(_Observable3['default']);
+    return ObserveOnObserverFactory;
+})(_ObserverFactory3['default']);
 
 function observeOn(scheduler) {
-    return new ObserveOnObservable(this, scheduler);
+    return this.lift(new ObserveOnObserverFactory(scheduler));
 }
 
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],33:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6}],34:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2293,7 +2268,7 @@ function publish() {
 }
 
 module.exports = exports['default'];
-},{"../Subject":8}],34:[function(require,module,exports){
+},{"../Subject":9}],35:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2313,17 +2288,13 @@ var _utilErrorObject = require('../util/errorObject');
 
 var _utilErrorObject2 = _interopRequireDefault(_utilErrorObject);
 
-var _Observable2 = require('../Observable');
-
-var _Observable3 = _interopRequireDefault(_Observable2);
-
 var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Subscription = require('../Subscription');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var ReduceObserver = (function (_Observer) {
     function ReduceObserver(destination, processor, initialValue) {
@@ -2337,49 +2308,46 @@ var ReduceObserver = (function (_Observer) {
     _inherits(ReduceObserver, _Observer);
 
     ReduceObserver.prototype._next = function _next(value) {
-        var result = (0, _utilTryCatch2['default'])(this.processor)(this.aggregate, value);
+        var result = _utilTryCatch2['default'](this.processor)(this.aggregate, value);
         if (result === _utilErrorObject2['default'].e) {
-            this.destination['throw'](_utilErrorObject2['default'].e);
+            this.destination.error(_utilErrorObject2['default'].e);
         } else {
             this.aggregate = result;
         }
-        return { done: false };
     };
 
-    ReduceObserver.prototype._return = function _return(value) {
+    ReduceObserver.prototype._complete = function _complete(value) {
         this.destination.next(this.aggregate);
-        return this.destination['return'](value);
+        this.destination.complete(value);
     };
 
     return ReduceObserver;
 })(_Observer3['default']);
 
-var ReduceObservable = (function (_Observable) {
-    function ReduceObservable(source, processor, initialValue) {
-        _classCallCheck(this, ReduceObservable);
+var ReduceObserverFactory = (function (_ObserverFactory) {
+    function ReduceObserverFactory(processor, initialValue) {
+        _classCallCheck(this, ReduceObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.processor = processor;
         this.initialValue = initialValue;
     }
 
-    _inherits(ReduceObservable, _Observable);
+    _inherits(ReduceObserverFactory, _ObserverFactory);
 
-    ReduceObservable.prototype.subscriber = function subscriber(observer) {
-        var reduceObserver = new ReduceObserver(observer, this.processor, this.initialValue);
-        return _Subscription2['default'].from(this.source.subscriber(reduceObserver), reduceObserver);
+    ReduceObserverFactory.prototype.create = function create(destination) {
+        return new ReduceObserver(destination, this.processor, this.initialValue);
     };
 
-    return ReduceObservable;
-})(_Observable3['default']);
+    return ReduceObserverFactory;
+})(_ObserverFactory3['default']);
 
 function reduce(processor, initialValue) {
-    return new ReduceObservable(this, processor, initialValue);
+    return this.lift(new ReduceObserverFactory(processor, initialValue));
 }
 
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9,"../util/errorObject":49,"../util/tryCatch":51}],35:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6,"../util/errorObject":50,"../util/tryCatch":52}],36:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2395,13 +2363,9 @@ var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var SkipObserver = (function (_Observer) {
     function SkipObserver(destination, count) {
@@ -2418,38 +2382,35 @@ var SkipObserver = (function (_Observer) {
         if (this.counter++ >= this.count) {
             return this.destination.next(value);
         }
-        return { done: false };
     };
 
     return SkipObserver;
 })(_Observer3['default']);
 
-var SkipObservable = (function (_Observable) {
-    function SkipObservable(source, count) {
-        _classCallCheck(this, SkipObservable);
+var SkipObserverFactory = (function (_ObserverFactory) {
+    function SkipObserverFactory(count) {
+        _classCallCheck(this, SkipObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.count = count;
     }
 
-    _inherits(SkipObservable, _Observable);
+    _inherits(SkipObserverFactory, _ObserverFactory);
 
-    SkipObservable.prototype.subscriber = function subscriber(observer) {
-        var skipObserver = new SkipObserver(observer, this.count);
-        return _Subscription2['default'].from(this.source.subscriber(skipObserver), skipObserver);
+    SkipObserverFactory.prototype.create = function create(destination) {
+        return new SkipObserver(destination, this.count);
     };
 
-    return SkipObservable;
-})(_Observable3['default']);
+    return SkipObserverFactory;
+})(_ObserverFactory3['default']);
 
 function skip(count) {
-    return new SkipObservable(this, count);
+    return this.lift(new SkipObserverFactory(count));
 }
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],36:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6}],37:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2509,7 +2470,7 @@ function subscribeOn(scheduler) {
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../SerialSubscription":7,"../util/Symbol_observer":47}],37:[function(require,module,exports){
+},{"../Observable":4,"../SerialSubscription":8,"../util/Symbol_observer":48}],38:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2525,13 +2486,9 @@ var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var TakeObserver = (function (_Observer) {
     function TakeObserver(destination, count) {
@@ -2546,41 +2503,39 @@ var TakeObserver = (function (_Observer) {
 
     TakeObserver.prototype._next = function _next(value) {
         if (this.counter++ < this.count) {
-            return this.destination.next(value);
+            this.destination.next(value);
         } else {
-            return this.destination['return']();
+            this.destination.complete();
         }
     };
 
     return TakeObserver;
 })(_Observer3['default']);
 
-var TakeObservable = (function (_Observable) {
-    function TakeObservable(source, count) {
-        _classCallCheck(this, TakeObservable);
+var TakeObserverFactory = (function (_ObserverFactory) {
+    function TakeObserverFactory(count) {
+        _classCallCheck(this, TakeObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.count = count;
     }
 
-    _inherits(TakeObservable, _Observable);
+    _inherits(TakeObserverFactory, _ObserverFactory);
 
-    TakeObservable.prototype.subscriber = function subscriber(observer) {
-        var takeObserver = new TakeObserver(observer, this.count);
-        return _Subscription2['default'].from(this.source.subscriber(takeObserver), takeObserver);
+    TakeObserverFactory.prototype.create = function create(destination) {
+        return new TakeObserver(destination, this.count);
     };
 
-    return TakeObservable;
-})(_Observable3['default']);
+    return TakeObserverFactory;
+})(_ObserverFactory3['default']);
 
 function take(count) {
-    return new TakeObservable(this, count);
+    return this.lift(new TakeObserverFactory(count));
 }
 
 ;
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],38:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6}],39:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2592,17 +2547,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-var _Observable2 = require('../Observable');
-
-var _Observable3 = _interopRequireDefault(_Observable2);
-
 var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Subscription = require('../Subscription');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var ToArrayObserver = (function (_Observer) {
     function ToArrayObserver(destination) {
@@ -2616,41 +2567,38 @@ var ToArrayObserver = (function (_Observer) {
 
     ToArrayObserver.prototype._next = function _next(value) {
         this.array.push(value);
-        return { done: false };
     };
 
-    ToArrayObserver.prototype._return = function _return(value) {
+    ToArrayObserver.prototype._complete = function _complete(value) {
         this.destination.next(this.array);
-        return this.destination['return'](value);
+        this.destination.complete(value);
     };
 
     return ToArrayObserver;
 })(_Observer3['default']);
 
-var ToArrayObservable = (function (_Observable) {
-    function ToArrayObservable(source) {
-        _classCallCheck(this, ToArrayObservable);
+var ToArrayObserverFactory = (function (_ObserverFactory) {
+    function ToArrayObserverFactory() {
+        _classCallCheck(this, ToArrayObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.apply(this, arguments);
     }
 
-    _inherits(ToArrayObservable, _Observable);
+    _inherits(ToArrayObserverFactory, _ObserverFactory);
 
-    ToArrayObservable.prototype.subscriber = function subscriber(observer) {
-        var toArrayObserver = new ToArrayObserver(observer);
-        return _Subscription2['default'].from(this.source.subscriber(toArrayObserver), toArrayObserver);
+    ToArrayObserverFactory.prototype.create = function create(destination) {
+        return new ToArrayObserver(destination);
     };
 
-    return ToArrayObservable;
-})(_Observable3['default']);
+    return ToArrayObserverFactory;
+})(_ObserverFactory3['default']);
 
 function toArray() {
-    return new ToArrayObservable(this);
+    return this.lift(new ToArrayObserverFactory());
 }
 
 module.exports = exports['default'];
-},{"../Observable":4,"../Observer":5,"../Subscription":9}],39:[function(require,module,exports){
+},{"../Observer":5,"../ObserverFactory":6}],40:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2667,7 +2615,7 @@ function zip(observables, project) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],40:[function(require,module,exports){
+},{"../Observable":4}],41:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2686,7 +2634,7 @@ function zipAll(project) {
 }
 
 module.exports = exports['default'];
-},{"../Observable":4}],41:[function(require,module,exports){
+},{"../Observable":4}],42:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2707,9 +2655,7 @@ var NextTickScheduler = (function (_Scheduler) {
     function NextTickScheduler() {
         _classCallCheck(this, NextTickScheduler);
 
-        if (_Scheduler != null) {
-            _Scheduler.apply(this, arguments);
-        }
+        _Scheduler.apply(this, arguments);
     }
 
     _inherits(NextTickScheduler, _Scheduler);
@@ -2725,7 +2671,7 @@ var NextTickScheduler = (function (_Scheduler) {
 
 exports['default'] = NextTickScheduler;
 module.exports = exports['default'];
-},{"./Scheduler":42,"./SchedulerActions":43}],42:[function(require,module,exports){
+},{"./Scheduler":43,"./SchedulerActions":44}],43:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2776,7 +2722,7 @@ var Scheduler = (function () {
 
 exports['default'] = Scheduler;
 module.exports = exports['default'];
-},{"./SchedulerActions":43}],43:[function(require,module,exports){
+},{"./SchedulerActions":44}],44:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2847,9 +2793,7 @@ var NextScheduledAction = (function (_ScheduledAction) {
     function NextScheduledAction() {
         _classCallCheck(this, NextScheduledAction);
 
-        if (_ScheduledAction != null) {
-            _ScheduledAction.apply(this, arguments);
-        }
+        _ScheduledAction.apply(this, arguments);
     }
 
     _inherits(NextScheduledAction, _ScheduledAction);
@@ -2929,7 +2873,7 @@ var FutureScheduledAction = (function (_ScheduledAction2) {
 })(ScheduledAction);
 
 exports.FutureScheduledAction = FutureScheduledAction;
-},{"../SerialSubscription":7,"../Subscription":9,"../util/Immediate":46}],44:[function(require,module,exports){
+},{"../SerialSubscription":8,"../Subscription":10,"../util/Immediate":47}],45:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2943,7 +2887,7 @@ var _Scheduler2 = _interopRequireDefault(_Scheduler);
 var immediate = new _Scheduler2['default']();
 exports['default'] = immediate;
 module.exports = exports['default'];
-},{"./Scheduler":42}],45:[function(require,module,exports){
+},{"./Scheduler":43}],46:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2957,7 +2901,7 @@ var _NextTickScheduler2 = _interopRequireDefault(_NextTickScheduler);
 var nextTick = new _NextTickScheduler2['default']();
 exports['default'] = nextTick;
 module.exports = exports['default'];
-},{"./NextTickScheduler":41}],46:[function(require,module,exports){
+},{"./NextTickScheduler":42}],47:[function(require,module,exports){
 /**
 All credit for this helper goes to http://github.com/YuzuJS/setImmediate
 */
@@ -3126,7 +3070,7 @@ if (_root2["default"] && _root2["default"].setImmediate) {
 }
 exports["default"] = Immediate;
 module.exports = exports["default"];
-},{"./root":50}],47:[function(require,module,exports){
+},{"./root":51}],48:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3149,7 +3093,7 @@ if (!_root2['default'].Symbol.observer) {
 }
 exports['default'] = _root2['default'].Symbol.observer;
 module.exports = exports['default'];
-},{"./root":50}],48:[function(require,module,exports){
+},{"./root":51}],49:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3173,14 +3117,14 @@ function arraySlice(array) {
 
 ;
 module.exports = exports["default"];
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
 var errorObject = { e: {} };
 exports["default"] = errorObject;
 module.exports = exports["default"];
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3204,7 +3148,7 @@ if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === fre
 exports['default'] = root;
 module.exports = exports['default'];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3233,7 +3177,7 @@ function tryCatch(fn) {
 
 ;
 module.exports = exports['default'];
-},{"./errorObject":49}],52:[function(require,module,exports){
+},{"./errorObject":50}],53:[function(require,module,exports){
 (function (global){
 (function (root, factory) {
   root.RxNext = factory();
@@ -3241,4 +3185,4 @@ module.exports = exports['default'];
   return require('../dist/cjs/RxNext');	
 }));
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../dist/cjs/RxNext":6}]},{},[52]);
+},{"../dist/cjs/RxNext":7}]},{},[53]);
