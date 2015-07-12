@@ -47,37 +47,34 @@ var Subject = (function (_Observable) {
 
     Subject.prototype.next = function next(value) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
         this.observers.forEach(function (o) {
             return o.next(value);
         });
         this._cleanUnsubbedObservers();
-        return { done: false };
     };
 
     Subject.prototype['throw'] = function _throw(err) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
         this.observers.forEach(function (o) {
-            return o['throw'](err);
+            return o.error(err);
         });
         this.unsubscribe();
         this._cleanUnsubbedObservers();
-        return { done: true };
     };
 
     Subject.prototype['return'] = function _return(value) {
         if (this.unsubscribed) {
-            return { done: true };
+            return;
         }
         this.observers.forEach(function (o) {
-            return o['return'](value);
+            return o.complete(value);
         });
         this.unsubscribe();
         this._cleanUnsubbedObservers();
-        return { done: true };
     };
 
     Subject.prototype._cleanUnsubbedObservers = function _cleanUnsubbedObservers() {

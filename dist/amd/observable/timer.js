@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable', '../scheduler/nextTick'], function (exports, module, _Observable2, _schedulerNextTick) {
+define(['exports', 'module', '../Observable', '../scheduler/nextTick', '../util/Symbol_observer'], function (exports, module, _Observable2, _schedulerNextTick, _utilSymbol_observer) {
     'use strict';
 
     module.exports = timer;
@@ -13,6 +13,8 @@ define(['exports', 'module', '../Observable', '../scheduler/nextTick'], function
 
     var _nextTick = _interopRequireDefault(_schedulerNextTick);
 
+    var _$$observer = _interopRequireDefault(_utilSymbol_observer);
+
     var TimerObservable = (function (_Observable) {
         function TimerObservable(delay, scheduler) {
             _classCallCheck(this, TimerObservable);
@@ -24,7 +26,7 @@ define(['exports', 'module', '../Observable', '../scheduler/nextTick'], function
 
         _inherits(TimerObservable, _Observable);
 
-        TimerObservable.prototype.subscriber = function subscriber(observer) {
+        TimerObservable.prototype[_$$observer['default']] = function (observer) {
             this.scheduler.schedule(this.delay, observer, dispatch);
         };
 
@@ -34,7 +36,7 @@ define(['exports', 'module', '../Observable', '../scheduler/nextTick'], function
     function dispatch(observer) {
         if (!observer.unsubscribed) {
             observer.next(0);
-            observer['return']();
+            observer.complete();
         }
     }
 

@@ -5,11 +5,6 @@ import Subscription from '../Subscription';
 import $$observer from '../util/Symbol_observer';
 import SerialSubscription from '../SerialSubscription';
 
-interface IteratorResult<T> {
-  done:boolean;
-  value?:T
-}
-
 class SubscribeOnObservable extends Observable {
   source:Observable;
   scheduler:Scheduler;

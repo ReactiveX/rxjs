@@ -9,17 +9,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-var _Observable2 = require('../Observable');
-
-var _Observable3 = _interopRequireDefault(_Observable2);
-
 var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Subscription = require('../Subscription');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var ToArrayObserver = (function (_Observer) {
     function ToArrayObserver(destination) {
@@ -33,37 +29,34 @@ var ToArrayObserver = (function (_Observer) {
 
     ToArrayObserver.prototype._next = function _next(value) {
         this.array.push(value);
-        return { done: false };
     };
 
-    ToArrayObserver.prototype._return = function _return(value) {
+    ToArrayObserver.prototype._complete = function _complete(value) {
         this.destination.next(this.array);
-        return this.destination['return'](value);
+        this.destination.complete(value);
     };
 
     return ToArrayObserver;
 })(_Observer3['default']);
 
-var ToArrayObservable = (function (_Observable) {
-    function ToArrayObservable(source) {
-        _classCallCheck(this, ToArrayObservable);
+var ToArrayObserverFactory = (function (_ObserverFactory) {
+    function ToArrayObserverFactory() {
+        _classCallCheck(this, ToArrayObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.apply(this, arguments);
     }
 
-    _inherits(ToArrayObservable, _Observable);
+    _inherits(ToArrayObserverFactory, _ObserverFactory);
 
-    ToArrayObservable.prototype.subscriber = function subscriber(observer) {
-        var toArrayObserver = new ToArrayObserver(observer);
-        return _Subscription2['default'].from(this.source.subscriber(toArrayObserver), toArrayObserver);
+    ToArrayObserverFactory.prototype.create = function create(destination) {
+        return new ToArrayObserver(destination);
     };
 
-    return ToArrayObservable;
-})(_Observable3['default']);
+    return ToArrayObserverFactory;
+})(_ObserverFactory3['default']);
 
 function toArray() {
-    return new ToArrayObservable(this);
+    return this.lift(new ToArrayObserverFactory());
 }
 
 module.exports = exports['default'];

@@ -13,13 +13,9 @@ var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var SkipObserver = (function (_Observer) {
     function SkipObserver(destination, count) {
@@ -36,33 +32,30 @@ var SkipObserver = (function (_Observer) {
         if (this.counter++ >= this.count) {
             return this.destination.next(value);
         }
-        return { done: false };
     };
 
     return SkipObserver;
 })(_Observer3['default']);
 
-var SkipObservable = (function (_Observable) {
-    function SkipObservable(source, count) {
-        _classCallCheck(this, SkipObservable);
+var SkipObserverFactory = (function (_ObserverFactory) {
+    function SkipObserverFactory(count) {
+        _classCallCheck(this, SkipObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.count = count;
     }
 
-    _inherits(SkipObservable, _Observable);
+    _inherits(SkipObserverFactory, _ObserverFactory);
 
-    SkipObservable.prototype.subscriber = function subscriber(observer) {
-        var skipObserver = new SkipObserver(observer, this.count);
-        return _Subscription2['default'].from(this.source.subscriber(skipObserver), skipObserver);
+    SkipObserverFactory.prototype.create = function create(destination) {
+        return new SkipObserver(destination, this.count);
     };
 
-    return SkipObservable;
-})(_Observable3['default']);
+    return SkipObserverFactory;
+})(_ObserverFactory3['default']);
 
 function skip(count) {
-    return new SkipObservable(this, count);
+    return this.lift(new SkipObserverFactory(count));
 }
 
 ;

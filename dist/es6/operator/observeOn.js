@@ -1,22 +1,18 @@
-import Observable from '../Observable';
 import Observer from '../Observer';
-import Subscription from '../Subscription';
+import ObserverFactory from '../ObserverFactory';
 class ObserveOnObserver extends Observer {
     constructor(destination, scheduler) {
         super(destination);
         this.scheduler = scheduler;
     }
-    _next(value) {
+    next(value) {
         this.scheduler.schedule(0, [this.destination, value], dispatchNext);
-        return { done: false };
     }
-    _throw(err) {
-        this.scheduler.schedule(0, [this.destination, err], dispatchThrow);
-        return { done: true };
+    _error(err) {
+        this.scheduler.schedule(0, [this.destination, err], dispatchError);
     }
-    _return(value) {
-        this.scheduler.schedule(0, [this.destination, value], dispatchReturn);
-        return { done: true };
+    _complete(value) {
+        this.scheduler.schedule(0, [this.destination, value], dispatchComplete);
     }
 }
 function dispatchNext([destination, value]) {
@@ -25,25 +21,23 @@ function dispatchNext([destination, value]) {
         destination.dispose();
     }
 }
-function dispatchThrow([destination, err]) {
-    var result = destination.throw(err);
+function dispatchError([destination, err]) {
+    var result = destination.error(err);
     destination.dispose();
 }
-function dispatchReturn([destination, value]) {
-    var result = destination.return(value);
+function dispatchComplete([destination, value]) {
+    var result = destination.complete(value);
     destination.dispose();
 }
-class ObserveOnObservable extends Observable {
-    constructor(source, scheduler) {
-        super(null);
-        this.source = source;
+class ObserveOnObserverFactory extends ObserverFactory {
+    constructor(scheduler) {
+        super();
         this.scheduler = scheduler;
     }
-    subscriber(observer) {
-        var observeOnObserver = new ObserveOnObserver(observer, this.scheduler);
-        return Subscription.from(this.source.subscriber(observeOnObserver), observeOnObserver);
+    create(destination) {
+        return new ObserveOnObserver(destination, this.scheduler);
     }
 }
 export default function observeOn(scheduler) {
-    return new ObserveOnObservable(this, scheduler);
+    return this.lift(new ObserveOnObserverFactory(scheduler));
 }

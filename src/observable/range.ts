@@ -1,5 +1,6 @@
 import Observable from '../Observable';
 import Observer from '../Observer';
+import $$observer from '../util/Symbol_observer';
 
 class RangeObservable extends Observable {
   end:number;
@@ -11,14 +12,14 @@ class RangeObservable extends Observable {
     this.start = start;
   }
   
-  subscriber(observer:Observer) {
+  [$$observer](observer: Observer) {
     var end = this.end;
     var start = this.start;
     var i;
     for(i = start; i < end && !observer.unsubscribed; i++) {
       observer.next(i);
     }
-    observer.return();
+    observer.complete();
   }
 }
 

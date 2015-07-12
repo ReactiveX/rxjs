@@ -19,7 +19,7 @@ class EventListenerObservable extends Observable {
             if (selector) {
                 result = try_catch(selector).apply(this, arguments);
                 if (result === error_obj) {
-                    observer["throw"](error_obj.e);
+                    observer.error(error_obj.e);
                     listeners.unsubscribe();
                     return;
                 }

@@ -13,6 +13,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var ThrowObservable = (function (_Observable) {
     function ThrowObservable(err) {
         _classCallCheck(this, ThrowObservable);
@@ -23,8 +27,8 @@ var ThrowObservable = (function (_Observable) {
 
     _inherits(ThrowObservable, _Observable);
 
-    ThrowObservable.prototype.subscriber = function subscriber(observer) {
-        observer['throw'](this.err);
+    ThrowObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
+        observer.error(this.err);
     };
 
     return ThrowObservable;

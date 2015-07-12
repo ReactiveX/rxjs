@@ -12,6 +12,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var ArrayObservable = (function (_Observable) {
     function ArrayObservable(array) {
         _classCallCheck(this, ArrayObservable);
@@ -22,7 +26,7 @@ var ArrayObservable = (function (_Observable) {
 
     _inherits(ArrayObservable, _Observable);
 
-    ArrayObservable.prototype.subscriber = function subscriber(observer) {
+    ArrayObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         var i, len;
         var array = this.array;
         if (Array.isArray(array)) {
@@ -30,7 +34,7 @@ var ArrayObservable = (function (_Observable) {
                 observer.next(array[i]);
             }
         }
-        observer['return']();
+        observer.complete();
     };
 
     return ArrayObservable;

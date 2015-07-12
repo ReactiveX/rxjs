@@ -18,29 +18,29 @@ class EventListenerObservable extends Observable {
     this.selector = selector;
   }
   
-  subscriber(observer:Observer) {
-        var selector = this.selector;
-        var listeners = createEventListener(
-            this.element, this.eventName,
-            function handler(e) {
-                var result = e;
-                var iteratorResult;
-                
-                if (selector) {
-                    result = try_catch(selector).apply(this, arguments);
-                    if(result === error_obj) {
-                        observer["throw"](error_obj.e);
-                        listeners.unsubscribe();
-                        return;
-                    }
-                }
-                iteratorResult = observer.next(result);
-                if(iteratorResult.done) {
-                    listeners.unsubscribe();
-                }
-            }, observer);
-        return listeners;
-    }
+  subscriber(observer: Observer) {
+    var selector = this.selector;
+    var listeners = createEventListener(
+        this.element, this.eventName,
+        function handler(e) {
+            var result = e;
+            var iteratorResult;
+            
+            if (selector) {
+              result = try_catch(selector).apply(this, arguments);
+              if(result === error_obj) {
+                observer.error(error_obj.e);
+                listeners.unsubscribe();
+                return;
+              }
+            }
+            iteratorResult = observer.next(result);
+            if(iteratorResult.done) {
+              listeners.unsubscribe();
+            }
+        }, observer);
+    return listeners;
+  }
 }
 
 function createListener(element:any, name:string, handler:Function, observer:Observer) : Subscription {

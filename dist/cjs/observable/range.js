@@ -13,6 +13,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var RangeObservable = (function (_Observable) {
     function RangeObservable(start, end) {
         _classCallCheck(this, RangeObservable);
@@ -24,14 +28,14 @@ var RangeObservable = (function (_Observable) {
 
     _inherits(RangeObservable, _Observable);
 
-    RangeObservable.prototype.subscriber = function subscriber(observer) {
+    RangeObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         var end = this.end;
         var start = this.start;
         var i;
         for (i = start; i < end && !observer.unsubscribed; i++) {
             observer.next(i);
         }
-        observer['return']();
+        observer.complete();
     };
 
     return RangeObservable;

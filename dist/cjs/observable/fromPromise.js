@@ -13,6 +13,10 @@ var _Observable2 = require('../Observable');
 
 var _Observable3 = _interopRequireDefault(_Observable2);
 
+var _utilSymbol_observer = require('../util/Symbol_observer');
+
+var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
+
 var PromiseObservable = (function (_Observable) {
     function PromiseObservable(promise) {
         _classCallCheck(this, PromiseObservable);
@@ -23,13 +27,13 @@ var PromiseObservable = (function (_Observable) {
 
     _inherits(PromiseObservable, _Observable);
 
-    PromiseObservable.prototype.subscriber = function subscriber(observer) {
+    PromiseObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         var promise = this.promise;
         if (promise) {
             promise.then(function (x) {
                 if (!observer.unsubscribed) {
                     observer.next(x);
-                    observer['return'](x);
+                    observer.complete();
                 }
             });
         }

@@ -31,7 +31,6 @@ class InnerZipObserver extends Observer {
     }
     _next(value) {
         this.buffer.push(value);
-        return { done: false };
     }
     _canEmit() {
         return this.subscriptions._subscriptions.every(sub => {
@@ -55,10 +54,10 @@ class InnerZipObserver extends Observer {
     _sendNext(args) {
         var value = try_catch(this.project).apply(this, args);
         if (value === error_obj) {
-            return this.destination["throw"](error_obj.e);
+            this.destination.error(error_obj.e);
         }
         else {
-            return this.destination.next(value);
+            this.destination.next(value);
         }
     }
 }

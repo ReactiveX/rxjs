@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable'], function (exports, module, _Observable2) {
+define(['exports', 'module', '../Observable', '../util/Symbol_observer'], function (exports, module, _Observable2, _utilSymbol_observer) {
     'use strict';
 
     module.exports = _throw;
@@ -11,6 +11,8 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
     var _Observable3 = _interopRequireDefault(_Observable2);
 
+    var _$$observer = _interopRequireDefault(_utilSymbol_observer);
+
     var ThrowObservable = (function (_Observable) {
         function ThrowObservable(err) {
             _classCallCheck(this, ThrowObservable);
@@ -21,8 +23,8 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(ThrowObservable, _Observable);
 
-        ThrowObservable.prototype.subscriber = function subscriber(observer) {
-            observer['throw'](this.err);
+        ThrowObservable.prototype[_$$observer['default']] = function (observer) {
+            observer.error(this.err);
         };
 
         return ThrowObservable;

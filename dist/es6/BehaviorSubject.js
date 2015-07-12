@@ -14,6 +14,6 @@ export default class BehaviorSubject extends Subject {
     }
     next(value) {
         this.value = value;
-        return super.next(value);
+        super.next(value);
     }
 }

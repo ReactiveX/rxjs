@@ -1,4 +1,4 @@
-define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Observable', '../Observer', '../Subscription'], function (exports, module, _utilTryCatch, _utilErrorObject, _Observable2, _Observer2, _Subscription) {
+define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Observer', '../ObserverFactory'], function (exports, module, _utilTryCatch, _utilErrorObject, _Observer2, _ObserverFactory2) {
     'use strict';
 
     module.exports = reduce;
@@ -13,11 +13,9 @@ define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Obse
 
     var _error_obj = _interopRequireDefault(_utilErrorObject);
 
-    var _Observable3 = _interopRequireDefault(_Observable2);
-
     var _Observer3 = _interopRequireDefault(_Observer2);
 
-    var _Subscription2 = _interopRequireDefault(_Subscription);
+    var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
     var ReduceObserver = (function (_Observer) {
         function ReduceObserver(destination, processor, initialValue) {
@@ -31,44 +29,41 @@ define(['exports', 'module', '../util/tryCatch', '../util/errorObject', '../Obse
         _inherits(ReduceObserver, _Observer);
 
         ReduceObserver.prototype._next = function _next(value) {
-            var result = (0, _try_catch['default'])(this.processor)(this.aggregate, value);
+            var result = _try_catch['default'](this.processor)(this.aggregate, value);
             if (result === _error_obj['default'].e) {
-                this.destination['throw'](_error_obj['default'].e);
+                this.destination.error(_error_obj['default'].e);
             } else {
                 this.aggregate = result;
             }
-            return { done: false };
         };
 
-        ReduceObserver.prototype._return = function _return(value) {
+        ReduceObserver.prototype._complete = function _complete(value) {
             this.destination.next(this.aggregate);
-            return this.destination['return'](value);
+            this.destination.complete(value);
         };
 
         return ReduceObserver;
     })(_Observer3['default']);
 
-    var ReduceObservable = (function (_Observable) {
-        function ReduceObservable(source, processor, initialValue) {
-            _classCallCheck(this, ReduceObservable);
+    var ReduceObserverFactory = (function (_ObserverFactory) {
+        function ReduceObserverFactory(processor, initialValue) {
+            _classCallCheck(this, ReduceObserverFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _ObserverFactory.call(this);
             this.processor = processor;
             this.initialValue = initialValue;
         }
 
-        _inherits(ReduceObservable, _Observable);
+        _inherits(ReduceObserverFactory, _ObserverFactory);
 
-        ReduceObservable.prototype.subscriber = function subscriber(observer) {
-            var reduceObserver = new ReduceObserver(observer, this.processor, this.initialValue);
-            return _Subscription2['default'].from(this.source.subscriber(reduceObserver), reduceObserver);
+        ReduceObserverFactory.prototype.create = function create(destination) {
+            return new ReduceObserver(destination, this.processor, this.initialValue);
         };
 
-        return ReduceObservable;
-    })(_Observable3['default']);
+        return ReduceObserverFactory;
+    })(_ObserverFactory3['default']);
 
     function reduce(processor, initialValue) {
-        return new ReduceObservable(this, processor, initialValue);
+        return this.lift(new ReduceObserverFactory(processor, initialValue));
     }
 });

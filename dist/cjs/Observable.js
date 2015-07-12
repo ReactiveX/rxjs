@@ -14,22 +14,22 @@ var _Subscription = require('./Subscription');
 
 var _Subscription2 = _interopRequireDefault(_Subscription);
 
-var _SerialSubscription = require('./SerialSubscription');
-
-var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
-
-var _schedulerNextTick = require('./scheduler/nextTick');
-
-var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
-
 var _utilSymbol_observer = require('./util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
 
+var _ObserverFactory = require('./ObserverFactory');
+
+var _ObserverFactory2 = _interopRequireDefault(_ObserverFactory);
+
 var Observable = (function () {
-    function Observable(subscriber) {
+    function Observable() {
+        var subscriber = arguments[0] === undefined ? null : arguments[0];
+
         _classCallCheck(this, Observable);
 
+        this.source = null;
+        this.observerFactory = new _ObserverFactory2['default']();
         if (subscriber) {
             this.subscriber = subscriber;
         }
@@ -40,7 +40,14 @@ var Observable = (function () {
     };
 
     Observable.prototype.subscriber = function subscriber(observer) {
-        return void 0;
+        return this.source.subscribe(this.observerFactory.create(observer));
+    };
+
+    Observable.prototype.lift = function lift(observerFactory) {
+        var observable = new Observable();
+        observable.source = this;
+        observable.observerFactory = observerFactory;
+        return observable;
     };
 
     Observable.prototype[_utilSymbol_observer2['default']] = function (observer) {
@@ -50,21 +57,17 @@ var Observable = (function () {
         return _Subscription2['default'].from(this.subscriber(observer), observer);
     };
 
-    Observable.prototype.subscribe = function subscribe(observerOrNextHandler) {
-        var throwHandler = arguments[1] === undefined ? null : arguments[1];
-        var returnHandler = arguments[2] === undefined ? null : arguments[2];
-        var disposeHandler = arguments[3] === undefined ? null : arguments[3];
+    Observable.prototype.subscribe = function subscribe(observerOrNext) {
+        var error = arguments[1] === undefined ? null : arguments[1];
+        var complete = arguments[2] === undefined ? null : arguments[2];
 
-        var observer;
-        if (typeof observerOrNextHandler === 'object') {
-            observer = observerOrNextHandler;
+        var observer = undefined;
+        if (typeof observerOrNext === 'object') {
+            observer = observerOrNext;
         } else {
-            observer = _Observer2['default'].create(observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
+            observer = _Observer2['default'].create(observerOrNext, error, complete);
         }
-        var subscription = new _SerialSubscription2['default'](null);
-        subscription.observer = observer;
-        subscription.add(_schedulerNextTick2['default'].schedule(0, [observer, this], dispatchSubscription));
-        return subscription;
+        return this[_utilSymbol_observer2['default']](observer);
     };
 
     Observable.prototype.forEach = function forEach(nextHandler) {
