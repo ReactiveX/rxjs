@@ -1,5 +1,5 @@
 import Observable from './Observable';
-import Observer from './Observer';
+import Subscriber from './Subscriber';
 import $$observer from './util/Symbol_observer';
 import nextTick from './scheduler/nextTick';
 export default class ConnectableObservable extends Observable {
@@ -14,9 +14,9 @@ export default class ConnectableObservable extends Observable {
     connectSync() {
         return dispatchConnection(this);
     }
-    [$$observer](observer) {
-        if (!(observer instanceof Observer)) {
-            observer = new Observer(observer);
+    [$$observer](subscriber) {
+        if (!(subscriber instanceof Subscriber)) {
+            subscriber = new Subscriber(subscriber);
         }
         if (!this.subject || this.subject.unsubscribed) {
             if (this.subscription) {
@@ -24,7 +24,7 @@ export default class ConnectableObservable extends Observable {
             }
             this.subject = this.subjectFactory();
         }
-        return this.subject[$$observer](observer);
+        return this.subject[$$observer](subscriber);
     }
     refCount() {
         return new RefCountObservable(this);
@@ -36,9 +36,9 @@ class RefCountObservable extends Observable {
         this.refCount = 0;
         this.source = source;
     }
-    subscriber(observer) {
+    subscriber(subscriber) {
         this.refCount++;
-        this.source[$$observer](observer);
+        this.source[$$observer](subscriber);
         var shouldConnect = this.refCount === 1;
         if (shouldConnect) {
             this.connectionSubscription = this.source.connectSync();

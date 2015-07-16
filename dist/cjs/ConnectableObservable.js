@@ -12,9 +12,9 @@ var _Observable3 = require('./Observable');
 
 var _Observable4 = _interopRequireDefault(_Observable3);
 
-var _Observer = require('./Observer');
+var _Subscriber = require('./Subscriber');
 
-var _Observer2 = _interopRequireDefault(_Observer);
+var _Subscriber2 = _interopRequireDefault(_Subscriber);
 
 var _utilSymbol_observer = require('./util/Symbol_observer');
 
@@ -43,9 +43,9 @@ var ConnectableObservable = (function (_Observable) {
         return dispatchConnection(this);
     };
 
-    ConnectableObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
-        if (!(observer instanceof _Observer2['default'])) {
-            observer = new _Observer2['default'](observer);
+    ConnectableObservable.prototype[_utilSymbol_observer2['default']] = function (subscriber) {
+        if (!(subscriber instanceof _Subscriber2['default'])) {
+            subscriber = new _Subscriber2['default'](subscriber);
         }
         if (!this.subject || this.subject.unsubscribed) {
             if (this.subscription) {
@@ -53,7 +53,7 @@ var ConnectableObservable = (function (_Observable) {
             }
             this.subject = this.subjectFactory();
         }
-        return this.subject[_utilSymbol_observer2['default']](observer);
+        return this.subject[_utilSymbol_observer2['default']](subscriber);
     };
 
     ConnectableObservable.prototype.refCount = function refCount() {
@@ -76,11 +76,11 @@ var RefCountObservable = (function (_Observable2) {
 
     _inherits(RefCountObservable, _Observable2);
 
-    RefCountObservable.prototype.subscriber = function subscriber(observer) {
+    RefCountObservable.prototype.subscriber = function subscriber(_subscriber) {
         var _this = this;
 
         this.refCount++;
-        this.source[_utilSymbol_observer2['default']](observer);
+        this.source[_utilSymbol_observer2['default']](_subscriber);
         var shouldConnect = this.refCount === 1;
         if (shouldConnect) {
             this.connectionSubscription = this.source.connectSync();

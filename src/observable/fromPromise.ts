@@ -1,5 +1,5 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 class PromiseObservable extends Observable {
   promise: Promise<any>;
@@ -9,17 +9,17 @@ class PromiseObservable extends Observable {
     this.promise = promise; 
   }
   
-  subscriber(observer:Observer) {
+  subscriber(subscriber:Subscriber) {
     var promise = this.promise;
     if(promise) {
       promise.then(x => {
-        if(!observer.unsubscribed) {
-          observer.next(x);
-          observer.complete();
+        if(!subscriber.isUnsubscribed) {
+          subscriber.next(x);
+          subscriber.complete();
         }
       }, e => {
-        if(!observer.unsubscribed) {
-          observer.error(e);
+        if(!subscriber.isUnsubscribed) {
+          subscriber.error(e);
         }
       });
     }

@@ -1,30 +1,20 @@
-'use strict';
+"use strict";
 
 exports.__esModule = true;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-var _Subscription2 = require('./Subscription');
-
-var _Subscription3 = _interopRequireDefault(_Subscription2);
-
-var SerialSubscription = (function (_Subscription) {
+var SerialSubscription = (function () {
     function SerialSubscription(subscription) {
         _classCallCheck(this, SerialSubscription);
 
-        _Subscription.call(this, null, null);
+        this.isUnsubscribed = false;
         this.subscription = subscription;
     }
 
-    _inherits(SerialSubscription, _Subscription);
-
     SerialSubscription.prototype.add = function add(subscription) {
         if (subscription) {
-            if (this.unsubscribed) {
+            if (this.isUnsubscribed) {
                 subscription.unsubscribe();
             } else {
                 var currentSubscription = this.subscription;
@@ -45,20 +35,18 @@ var SerialSubscription = (function (_Subscription) {
     };
 
     SerialSubscription.prototype.unsubscribe = function unsubscribe() {
-        _Subscription.prototype.unsubscribe.call(this);
-        if (this.unsubscribed) {
-            return;
-        }
-        this.unsubscribed = true;
-        var subscription = this.subscription;
-        if (subscription) {
-            this.subscription = undefined;
-            subscription.unsubscribe();
+        if (!this.isUnsubscribed) {
+            this.isUnsubscribed = true;
+            var subscription = this.subscription;
+            if (subscription) {
+                this.subscription = undefined;
+                subscription.unsubscribe();
+            }
         }
     };
 
     return SerialSubscription;
-})(_Subscription3['default']);
+})();
 
-exports['default'] = SerialSubscription;
-module.exports = exports['default'];
+exports["default"] = SerialSubscription;
+module.exports = exports["default"];

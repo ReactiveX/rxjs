@@ -1,8 +1,8 @@
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
-import Observer from '../Observer';
-import ObserverFactory from '../ObserverFactory';
-class ReduceObserver extends Observer {
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
+class ReduceSubscriber extends Subscriber {
     constructor(destination, processor, initialValue) {
         super(destination);
         this.processor = processor;
@@ -22,16 +22,16 @@ class ReduceObserver extends Observer {
         this.destination.complete(value);
     }
 }
-class ReduceObserverFactory extends ObserverFactory {
+class ReduceSubscriberFactory extends SubscriberFactory {
     constructor(processor, initialValue) {
         super();
         this.processor = processor;
         this.initialValue = initialValue;
     }
     create(destination) {
-        return new ReduceObserver(destination, this.processor, this.initialValue);
+        return new ReduceSubscriber(destination, this.processor, this.initialValue);
     }
 }
 export default function reduce(processor, initialValue) {
-    return this.lift(new ReduceObserverFactory(processor, initialValue));
+    return this.lift(new ReduceSubscriberFactory(processor, initialValue));
 }

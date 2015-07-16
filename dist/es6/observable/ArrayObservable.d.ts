@@ -1,7 +1,7 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 export default class ArrayObservable extends Observable {
     array: Array<any>;
     constructor(array: Array<any>);
-    subscriber(observer: Observer): void;
+    subscriber(subscriber: Subscriber): void;
 }

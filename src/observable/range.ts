@@ -1,5 +1,5 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 class RangeObservable extends Observable {
   end:number;
@@ -11,14 +11,14 @@ class RangeObservable extends Observable {
     this.start = start;
   }
   
-  subscriber(observer: Observer) {
+  subscriber(subscriber: Subscriber) {
     var end = this.end;
     var start = this.start;
     var i;
-    for(i = start; i < end && !observer.unsubscribed; i++) {
-      observer.next(i);
+    for(i = start; i < end && !subscriber.isUnsubscribed; i++) {
+      subscriber.next(i);
     }
-    observer.complete();
+    subscriber.complete();
   }
 }
 

@@ -1,4 +1,4 @@
-define(['exports', 'module', './Observable', './Observer', './util/Symbol_observer', './scheduler/nextTick'], function (exports, module, _Observable3, _Observer, _utilSymbol_observer, _schedulerNextTick) {
+define(['exports', 'module', './Observable', './Subscriber', './util/Symbol_observer', './scheduler/nextTick'], function (exports, module, _Observable3, _Subscriber, _utilSymbol_observer, _schedulerNextTick) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -9,7 +9,7 @@ define(['exports', 'module', './Observable', './Observer', './util/Symbol_observ
 
     var _Observable4 = _interopRequireDefault(_Observable3);
 
-    var _Observer2 = _interopRequireDefault(_Observer);
+    var _Subscriber2 = _interopRequireDefault(_Subscriber);
 
     var _$$observer = _interopRequireDefault(_utilSymbol_observer);
 
@@ -34,9 +34,9 @@ define(['exports', 'module', './Observable', './Observer', './util/Symbol_observ
             return dispatchConnection(this);
         };
 
-        ConnectableObservable.prototype[_$$observer['default']] = function (observer) {
-            if (!(observer instanceof _Observer2['default'])) {
-                observer = new _Observer2['default'](observer);
+        ConnectableObservable.prototype[_$$observer['default']] = function (subscriber) {
+            if (!(subscriber instanceof _Subscriber2['default'])) {
+                subscriber = new _Subscriber2['default'](subscriber);
             }
             if (!this.subject || this.subject.unsubscribed) {
                 if (this.subscription) {
@@ -44,7 +44,7 @@ define(['exports', 'module', './Observable', './Observer', './util/Symbol_observ
                 }
                 this.subject = this.subjectFactory();
             }
-            return this.subject[_$$observer['default']](observer);
+            return this.subject[_$$observer['default']](subscriber);
         };
 
         ConnectableObservable.prototype.refCount = function refCount() {
@@ -67,11 +67,11 @@ define(['exports', 'module', './Observable', './Observer', './util/Symbol_observ
 
         _inherits(RefCountObservable, _Observable2);
 
-        RefCountObservable.prototype.subscriber = function subscriber(observer) {
+        RefCountObservable.prototype.subscriber = function subscriber(_subscriber) {
             var _this = this;
 
             this.refCount++;
-            this.source[_$$observer['default']](observer);
+            this.source[_$$observer['default']](_subscriber);
             var shouldConnect = this.refCount === 1;
             if (shouldConnect) {
                 this.connectionSubscription = this.source.connectSync();

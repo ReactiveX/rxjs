@@ -1,8 +1,8 @@
-import Subscription from './Subscription';
-export default class CompositeSubscription extends Subscription {
+import { Subscription } from './Subscription';
+export default class CompositeSubscription implements Subscription {
     length: number;
-    _subscriptions: Array<Subscription>;
-    constructor();
+    subscriptions: Array<Subscription>;
+    isUnsubscribed: boolean;
     static from(subscriptions: Array<Subscription>): CompositeSubscription;
     unsubscribe(): void;
     add(subscription: Subscription): CompositeSubscription;

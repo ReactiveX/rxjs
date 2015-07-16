@@ -1,9 +1,9 @@
 import Observable from './Observable';
-import Observer from './Observer';
+import Subscriber from './Subscriber';
 export default class Subject extends Observable {
-    destination: Observer;
+    destination: Subscriber;
     disposed: boolean;
-    observers: Array<Observer>;
+    subscribers: Array<Subscriber>;
     _dispose: () => void;
     unsubscribed: boolean;
     _next: (value: any) => void;
@@ -14,6 +14,6 @@ export default class Subject extends Observable {
     next(value: any): void;
     error(err: any): void;
     complete(value: any): void;
-    _cleanUnsubbedObservers(): void;
+    _cleanUnsubbedSubscribers(): void;
     unsubscribe(): void;
 }

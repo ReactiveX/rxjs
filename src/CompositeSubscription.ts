@@ -1,14 +1,13 @@
-import Subscription from './Subscription';
+import { Subscription } from './Subscription';
 import arraySlice from './util/arraySlice';
 
-export default class CompositeSubscription extends Subscription {
+export default class CompositeSubscription implements Subscription {
   length:number=0;
-  _subscriptions:Array<Subscription>;
+
+  subscriptions: Array<Subscription>;
   
-  constructor() {
-    super(null, null);
-  }
-  
+  isUnsubscribed: boolean = false;
+
   static from(subscriptions:Array<Subscription>):CompositeSubscription {
     var comp = new CompositeSubscription();
     if(Array.isArray(subscriptions)) {
@@ -18,15 +17,15 @@ export default class CompositeSubscription extends Subscription {
   }
   
   unsubscribe() {
-    if(this.unsubscribed || !this._subscriptions) { return; }
+    if(this.isUnsubscribed || !this.subscriptions) { return; }
 
-    this.unsubscribed = true;
+    this.isUnsubscribed = true;
     
-    var subscriptions = arraySlice(this._subscriptions);
+    var subscriptions = arraySlice(this.subscriptions);
     var subscriptionCount = subscriptions && subscriptions.length || 0;
     var subscriptionIndex = -1;
 
-    this._subscriptions = undefined;
+    this.subscriptions = undefined;
 
     while(++subscriptionIndex < subscriptionCount) {
         subscriptions[subscriptionIndex].unsubscribe();
@@ -34,9 +33,9 @@ export default class CompositeSubscription extends Subscription {
   }
   
   add(subscription:Subscription):CompositeSubscription {
-    var subscriptions = this._subscriptions || (this._subscriptions = []);
-    if (subscription && !subscription.unsubscribed) {
-      if (this.unsubscribed) {
+    var subscriptions = this.subscriptions || (this.subscriptions = []);
+    if (subscription && !subscription.isUnsubscribed) {
+      if (this.isUnsubscribed) {
           subscription.unsubscribe();
       } else {
           subscriptions.push(subscription);
@@ -47,8 +46,8 @@ export default class CompositeSubscription extends Subscription {
   }
   
   remove(subscription:Subscription):CompositeSubscription {
-    var unsubscribed = this.unsubscribed;
-    var subscriptions = this._subscriptions;
+    var isUnsubscribed = this.isUnsubscribed;
+    var subscriptions = this.subscriptions;
     if(subscriptions) {
       var subscriptionIndex = subscriptions.indexOf(subscription);
       if (subscriptionIndex !== -1) {
@@ -62,6 +61,6 @@ export default class CompositeSubscription extends Subscription {
   }
   
   indexOf(subscription:Subscription):number {
-    return this._subscriptions.indexOf(subscription);
+    return this.subscriptions.indexOf(subscription);
   }
 }

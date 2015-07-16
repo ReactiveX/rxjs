@@ -21,17 +21,17 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(PromiseObservable, _Observable);
 
-        PromiseObservable.prototype.subscriber = function subscriber(observer) {
+        PromiseObservable.prototype.subscriber = function subscriber(_subscriber) {
             var promise = this.promise;
             if (promise) {
                 promise.then(function (x) {
-                    if (!observer.unsubscribed) {
-                        observer.next(x);
-                        observer.complete();
+                    if (!_subscriber.isUnsubscribed) {
+                        _subscriber.next(x);
+                        _subscriber.complete();
                     }
                 }, function (e) {
-                    if (!observer.unsubscribed) {
-                        observer.error(e);
+                    if (!_subscriber.isUnsubscribed) {
+                        _subscriber.error(e);
                     }
                 });
             }

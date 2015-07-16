@@ -1,13 +1,13 @@
 import Observable from './Observable';
-import Observer from './Observer';
+import Subscriber from './Subscriber';
 import $$observer from './util/Symbol_observer';
 import SerialSubscription from './SerialSubscription';
-import Subscription from './Subscription';
+import { Subscription } from './Subscription';
 
 export default class Subject extends Observable {
-  destination:Observer;
+  destination:Subscriber;
   disposed:boolean=false;
-  observers:Array<Observer> = [];
+  subscribers:Array<Subscriber> = [];
   _dispose:()=>void;
   unsubscribed: boolean = false;
   _next: (value: any) => void;
@@ -25,71 +25,53 @@ export default class Subject extends Observable {
     }
   }
   
-  [$$observer](observer:Observer) : Subscription {
-    this.observers.push(observer);
-    var subscription = new Subscription(null, observer);
-    return subscription;
+  [$$observer](observer: Subscriber): Subscription {
+    var subscriber = new Subscriber(observer);
+    this.subscribers.push(subscriber);
+    return subscriber;
   }
   
   next(value: any) {
     if(this.unsubscribed) {
       return;
     }
-    this.observers.forEach(o => o.next(value));
-    this._cleanUnsubbedObservers();
+    this.subscribers.forEach(o => o.next(value));
+    this._cleanUnsubbedSubscribers();
   }
   
   error(err: any) {
     if(this.unsubscribed) {
       return;
     }
-    this.observers.forEach(o => o.error(err));
+    this.subscribers.forEach(o => o.error(err));
     this.unsubscribe();
-    this._cleanUnsubbedObservers();
+    this._cleanUnsubbedSubscribers();
   }
 
   complete(value: any) {
     if(this.unsubscribed) {
       return;
     }
-    this.observers.forEach(o => o.complete(value));
+    this.subscribers.forEach(o => o.complete(value));
     this.unsubscribe();
-    this._cleanUnsubbedObservers();
+    this._cleanUnsubbedSubscribers();
   } 
   
-  _cleanUnsubbedObservers() {
+  _cleanUnsubbedSubscribers() {
     var i;
-    var observers = this.observers;
-    for (i = observers.length; i--;) {
-      if (observers[i].unsubscribed) {
-        observers.splice(i, 1);
+    var subscribers = this.subscribers;
+    for (i = subscribers.length; i--;) {
+      if (subscribers[i].isUnsubscribed) {
+        subscribers.splice(i, 1);
       }
     }
-    if (observers.length === 0) {
+    if (subscribers.length === 0) {
       this.unsubscribe();
     }
   }
   
   unsubscribe() {
-    this.observers.length = 0;
+    this.subscribers.length = 0;
     this.unsubscribed = true;
-  }
-}
-
-class SubjectSubscription extends Subscription {
-  subject:Subject;
-  
-  constructor(observer:Observer, subject:Subject) {
-    super(null, observer);
-    this.subject = subject; 
-  }
-  
-  unsubscribe() {
-    var observers = this.subject.observers;
-    var index = observers.indexOf(this.observer);
-    if(index !== -1) {
-      observers.splice(index, 1);
-    }
-    super.unsubscribe();
   }
 }

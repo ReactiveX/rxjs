@@ -1,13 +1,12 @@
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
-import Subscription from '../Subscription';
-import ObserverFactory from '../ObserverFactory';
+import SubscriberFactory from '../SubscriberFactory';
 
-class MapToObserver extends Observer {
+class MapToSubscriber extends Subscriber {
   value:any;
   
-  constructor(destination: Observer, value: any) {
+  constructor(destination: Subscriber, value: any) {
     super(destination);
     this.value = value;
   }
@@ -17,7 +16,7 @@ class MapToObserver extends Observer {
   }
 }
 
-class MapToObserverFactory extends ObserverFactory {
+class MapToSubscriberFactory extends SubscriberFactory {
   value: any;
   
   constructor(value: any) {
@@ -25,11 +24,11 @@ class MapToObserverFactory extends ObserverFactory {
     this.value = value;
   }
   
-  create(destination: Observer): Observer {
-    return new MapToObserver(destination, this.value);
+  create(destination: Subscriber): Subscriber {
+    return new MapToSubscriber(destination, this.value);
   }
 }
 
 export default function mapTo(value: any): Observable {
-  return this.lift(new MapToObserverFactory(value));
+  return this.lift(new MapToSubscriberFactory(value));
 };

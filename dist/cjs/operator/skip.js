@@ -9,53 +9,53 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-var _Observer2 = require('../Observer');
+var _Subscriber2 = require('../Subscriber');
 
-var _Observer3 = _interopRequireDefault(_Observer2);
+var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-var _ObserverFactory2 = require('../ObserverFactory');
+var _SubscriberFactory2 = require('../SubscriberFactory');
 
-var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
+var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-var SkipObserver = (function (_Observer) {
-    function SkipObserver(destination, count) {
-        _classCallCheck(this, SkipObserver);
+var SkipSubscriber = (function (_Subscriber) {
+    function SkipSubscriber(destination, count) {
+        _classCallCheck(this, SkipSubscriber);
 
-        _Observer.call(this, destination);
+        _Subscriber.call(this, destination);
         this.counter = 0;
         this.count = count;
     }
 
-    _inherits(SkipObserver, _Observer);
+    _inherits(SkipSubscriber, _Subscriber);
 
-    SkipObserver.prototype._next = function _next(value) {
+    SkipSubscriber.prototype._next = function _next(value) {
         if (this.counter++ >= this.count) {
             return this.destination.next(value);
         }
     };
 
-    return SkipObserver;
-})(_Observer3['default']);
+    return SkipSubscriber;
+})(_Subscriber3['default']);
 
-var SkipObserverFactory = (function (_ObserverFactory) {
-    function SkipObserverFactory(count) {
-        _classCallCheck(this, SkipObserverFactory);
+var SkipSubscriberFactory = (function (_SubscriberFactory) {
+    function SkipSubscriberFactory(count) {
+        _classCallCheck(this, SkipSubscriberFactory);
 
-        _ObserverFactory.call(this);
+        _SubscriberFactory.call(this);
         this.count = count;
     }
 
-    _inherits(SkipObserverFactory, _ObserverFactory);
+    _inherits(SkipSubscriberFactory, _SubscriberFactory);
 
-    SkipObserverFactory.prototype.create = function create(destination) {
-        return new SkipObserver(destination, this.count);
+    SkipSubscriberFactory.prototype.create = function create(destination) {
+        return new SkipSubscriber(destination, this.count);
     };
 
-    return SkipObserverFactory;
-})(_ObserverFactory3['default']);
+    return SkipSubscriberFactory;
+})(_SubscriberFactory3['default']);
 
 function skip(count) {
-    return this.lift(new SkipObserverFactory(count));
+    return this.lift(new SkipSubscriberFactory(count));
 }
 
 ;

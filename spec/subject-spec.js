@@ -26,7 +26,7 @@ describe('Subject', function () {
   });
 
 
-  it('should pump values to multiple observers', function (done) {
+  it('should pump values to multiple subscribers', function (done) {
     var subject = new Subject();
     var expected = ['foo', 'bar'];
     var i = 0;
@@ -45,7 +45,7 @@ describe('Subject', function () {
 		
     // HACK
     nextTick.schedule(0, null, function () {
-      expect(subject.observers.length).toBe(2);
+      expect(subject.subscribers.length).toBe(2);
       subject.next('foo');
       subject.next('bar');
       subject.complete();
@@ -74,7 +74,7 @@ describe('Subject', function () {
     });
   });
 
-  it('should clean out unsubscribed observers after a next', function (done) {
+  it('should clean out unsubscribed subscribers after a next', function (done) {
     var subject = new Subject();
     var expected1 = ['foo', 'bar'];
     var expected2 = ['foo', 'bar'];
@@ -91,9 +91,9 @@ describe('Subject', function () {
     });
     
     nextTick.schedule(0, null, function () {
-      expect(subject.observers.length).toBe(2);
+      expect(subject.subscribers.length).toBe(2);
       subject.next('foo');
-      expect(subject.observers.length).toBe(1);
+      expect(subject.subscribers.length).toBe(1);
       subject.next('bar');
       done();
     });

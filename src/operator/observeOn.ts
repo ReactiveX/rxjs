@@ -1,13 +1,12 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Scheduler from '../scheduler/Scheduler';
-import Subscription from '../Subscription';
-import ObserverFactory from '../ObserverFactory';
+import SubscriberFactory from '../SubscriberFactory';
 
-class ObserveOnObserver extends Observer {
+class ObserveOnSubscriber extends Subscriber {
   scheduler:Scheduler;
   
-  constructor(destination:Observer, scheduler:Scheduler) {
+  constructor(destination:Subscriber, scheduler:Scheduler) {
     super(destination);
     this.scheduler = scheduler;   
   }
@@ -42,7 +41,7 @@ function dispatchComplete([destination, value]) {
   destination.dispose();
 }
 
-class ObserveOnObserverFactory extends ObserverFactory {
+class ObserveOnSubscriberFactory extends SubscriberFactory {
   scheduler: Scheduler;
   
   constructor(scheduler: Scheduler) {
@@ -50,11 +49,11 @@ class ObserveOnObserverFactory extends ObserverFactory {
     this.scheduler = scheduler;
   }
   
-  create(destination: Observer): Observer {
-    return new ObserveOnObserver(destination, this.scheduler);
+  create(destination: Subscriber): Subscriber {
+    return new ObserveOnSubscriber(destination, this.scheduler);
   }
 }
 
 export default function observeOn(scheduler: Scheduler): Observable {
-  return this.lift(new ObserveOnObserverFactory(scheduler));
+  return this.lift(new ObserveOnSubscriberFactory(scheduler));
 }

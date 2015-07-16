@@ -17,26 +17,26 @@ var _utilErrorObject = require('../util/errorObject');
 
 var _utilErrorObject2 = _interopRequireDefault(_utilErrorObject);
 
-var _Observer2 = require('../Observer');
+var _Subscriber2 = require('../Subscriber');
 
-var _Observer3 = _interopRequireDefault(_Observer2);
+var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-var _ObserverFactory2 = require('../ObserverFactory');
+var _SubscriberFactory2 = require('../SubscriberFactory');
 
-var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
+var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-var ReduceObserver = (function (_Observer) {
-    function ReduceObserver(destination, processor, initialValue) {
-        _classCallCheck(this, ReduceObserver);
+var ReduceSubscriber = (function (_Subscriber) {
+    function ReduceSubscriber(destination, processor, initialValue) {
+        _classCallCheck(this, ReduceSubscriber);
 
-        _Observer.call(this, destination);
+        _Subscriber.call(this, destination);
         this.processor = processor;
         this.aggregate = initialValue;
     }
 
-    _inherits(ReduceObserver, _Observer);
+    _inherits(ReduceSubscriber, _Subscriber);
 
-    ReduceObserver.prototype._next = function _next(value) {
+    ReduceSubscriber.prototype._next = function _next(value) {
         var result = _utilTryCatch2['default'](this.processor)(this.aggregate, value);
         if (result === _utilErrorObject2['default'].e) {
             this.destination.error(_utilErrorObject2['default'].e);
@@ -45,34 +45,34 @@ var ReduceObserver = (function (_Observer) {
         }
     };
 
-    ReduceObserver.prototype._complete = function _complete(value) {
+    ReduceSubscriber.prototype._complete = function _complete(value) {
         this.destination.next(this.aggregate);
         this.destination.complete(value);
     };
 
-    return ReduceObserver;
-})(_Observer3['default']);
+    return ReduceSubscriber;
+})(_Subscriber3['default']);
 
-var ReduceObserverFactory = (function (_ObserverFactory) {
-    function ReduceObserverFactory(processor, initialValue) {
-        _classCallCheck(this, ReduceObserverFactory);
+var ReduceSubscriberFactory = (function (_SubscriberFactory) {
+    function ReduceSubscriberFactory(processor, initialValue) {
+        _classCallCheck(this, ReduceSubscriberFactory);
 
-        _ObserverFactory.call(this);
+        _SubscriberFactory.call(this);
         this.processor = processor;
         this.initialValue = initialValue;
     }
 
-    _inherits(ReduceObserverFactory, _ObserverFactory);
+    _inherits(ReduceSubscriberFactory, _SubscriberFactory);
 
-    ReduceObserverFactory.prototype.create = function create(destination) {
-        return new ReduceObserver(destination, this.processor, this.initialValue);
+    ReduceSubscriberFactory.prototype.create = function create(destination) {
+        return new ReduceSubscriber(destination, this.processor, this.initialValue);
     };
 
-    return ReduceObserverFactory;
-})(_ObserverFactory3['default']);
+    return ReduceSubscriberFactory;
+})(_SubscriberFactory3['default']);
 
 function reduce(processor, initialValue) {
-    return this.lift(new ReduceObserverFactory(processor, initialValue));
+    return this.lift(new ReduceSubscriberFactory(processor, initialValue));
 }
 
 module.exports = exports['default'];

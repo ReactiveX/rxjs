@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../ObserverFactory'], function (exports, module, _Observer2, _ObserverFactory2) {
+define(['exports', 'module', '../Subscriber', '../SubscriberFactory'], function (exports, module, _Subscriber2, _SubscriberFactory2) {
     'use strict';
 
     module.exports = toArray;
@@ -9,49 +9,49 @@ define(['exports', 'module', '../Observer', '../ObserverFactory'], function (exp
 
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-    var _Observer3 = _interopRequireDefault(_Observer2);
+    var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-    var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
+    var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-    var ToArrayObserver = (function (_Observer) {
-        function ToArrayObserver(destination) {
-            _classCallCheck(this, ToArrayObserver);
+    var ToArraySubscriber = (function (_Subscriber) {
+        function ToArraySubscriber(destination) {
+            _classCallCheck(this, ToArraySubscriber);
 
-            _Observer.call(this, destination);
+            _Subscriber.call(this, destination);
             this.array = [];
         }
 
-        _inherits(ToArrayObserver, _Observer);
+        _inherits(ToArraySubscriber, _Subscriber);
 
-        ToArrayObserver.prototype._next = function _next(value) {
+        ToArraySubscriber.prototype._next = function _next(value) {
             this.array.push(value);
         };
 
-        ToArrayObserver.prototype._complete = function _complete(value) {
+        ToArraySubscriber.prototype._complete = function _complete(value) {
             this.destination.next(this.array);
             this.destination.complete(value);
         };
 
-        return ToArrayObserver;
-    })(_Observer3['default']);
+        return ToArraySubscriber;
+    })(_Subscriber3['default']);
 
-    var ToArrayObserverFactory = (function (_ObserverFactory) {
-        function ToArrayObserverFactory() {
-            _classCallCheck(this, ToArrayObserverFactory);
+    var ToArraySubscriberFactory = (function (_SubscriberFactory) {
+        function ToArraySubscriberFactory() {
+            _classCallCheck(this, ToArraySubscriberFactory);
 
-            _ObserverFactory.apply(this, arguments);
+            _SubscriberFactory.apply(this, arguments);
         }
 
-        _inherits(ToArrayObserverFactory, _ObserverFactory);
+        _inherits(ToArraySubscriberFactory, _SubscriberFactory);
 
-        ToArrayObserverFactory.prototype.create = function create(destination) {
-            return new ToArrayObserver(destination);
+        ToArraySubscriberFactory.prototype.create = function create(destination) {
+            return new ToArraySubscriber(destination);
         };
 
-        return ToArrayObserverFactory;
-    })(_ObserverFactory3['default']);
+        return ToArraySubscriberFactory;
+    })(_SubscriberFactory3['default']);
 
     function toArray() {
-        return this.lift(new ToArrayObserverFactory());
+        return this.lift(new ToArraySubscriberFactory());
     }
 });
