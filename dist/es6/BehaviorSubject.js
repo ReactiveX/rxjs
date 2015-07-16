@@ -1,16 +1,14 @@
 import $$observer from './util/Symbol_observer';
-import Subscription from './Subscription';
 import Subject from './Subject';
 export default class BehaviorSubject extends Subject {
     constructor(value) {
         super();
         this.value = value;
     }
-    [$$observer](observer) {
-        this.observers.push(observer);
-        var subscription = new Subscription(null, observer);
+    [$$observer](subscriber) {
+        this.subscribers.push(subscriber);
         this.next(this.value);
-        return subscription;
+        return subscriber;
     }
     next(value) {
         this.value = value;

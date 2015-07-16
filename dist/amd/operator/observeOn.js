@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../ObserverFactory'], function (exports, module, _Observer2, _ObserverFactory2) {
+define(['exports', 'module', '../Subscriber', '../SubscriberFactory'], function (exports, module, _Subscriber2, _SubscriberFactory2) {
     'use strict';
 
     module.exports = observeOn;
@@ -9,34 +9,34 @@ define(['exports', 'module', '../Observer', '../ObserverFactory'], function (exp
 
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-    var _Observer3 = _interopRequireDefault(_Observer2);
+    var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-    var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
+    var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-    var ObserveOnObserver = (function (_Observer) {
-        function ObserveOnObserver(destination, scheduler) {
-            _classCallCheck(this, ObserveOnObserver);
+    var ObserveOnSubscriber = (function (_Subscriber) {
+        function ObserveOnSubscriber(destination, scheduler) {
+            _classCallCheck(this, ObserveOnSubscriber);
 
-            _Observer.call(this, destination);
+            _Subscriber.call(this, destination);
             this.scheduler = scheduler;
         }
 
-        _inherits(ObserveOnObserver, _Observer);
+        _inherits(ObserveOnSubscriber, _Subscriber);
 
-        ObserveOnObserver.prototype.next = function next(value) {
+        ObserveOnSubscriber.prototype.next = function next(value) {
             this.scheduler.schedule(0, [this.destination, value], dispatchNext);
         };
 
-        ObserveOnObserver.prototype._error = function _error(err) {
+        ObserveOnSubscriber.prototype._error = function _error(err) {
             this.scheduler.schedule(0, [this.destination, err], dispatchError);
         };
 
-        ObserveOnObserver.prototype._complete = function _complete(value) {
+        ObserveOnSubscriber.prototype._complete = function _complete(value) {
             this.scheduler.schedule(0, [this.destination, value], dispatchComplete);
         };
 
-        return ObserveOnObserver;
-    })(_Observer3['default']);
+        return ObserveOnSubscriber;
+    })(_Subscriber3['default']);
 
     function dispatchNext(_ref) {
         var destination = _ref[0];
@@ -62,24 +62,24 @@ define(['exports', 'module', '../Observer', '../ObserverFactory'], function (exp
         destination.dispose();
     }
 
-    var ObserveOnObserverFactory = (function (_ObserverFactory) {
-        function ObserveOnObserverFactory(scheduler) {
-            _classCallCheck(this, ObserveOnObserverFactory);
+    var ObserveOnSubscriberFactory = (function (_SubscriberFactory) {
+        function ObserveOnSubscriberFactory(scheduler) {
+            _classCallCheck(this, ObserveOnSubscriberFactory);
 
-            _ObserverFactory.call(this);
+            _SubscriberFactory.call(this);
             this.scheduler = scheduler;
         }
 
-        _inherits(ObserveOnObserverFactory, _ObserverFactory);
+        _inherits(ObserveOnSubscriberFactory, _SubscriberFactory);
 
-        ObserveOnObserverFactory.prototype.create = function create(destination) {
-            return new ObserveOnObserver(destination, this.scheduler);
+        ObserveOnSubscriberFactory.prototype.create = function create(destination) {
+            return new ObserveOnSubscriber(destination, this.scheduler);
         };
 
-        return ObserveOnObserverFactory;
-    })(_ObserverFactory3['default']);
+        return ObserveOnSubscriberFactory;
+    })(_SubscriberFactory3['default']);
 
     function observeOn(scheduler) {
-        return this.lift(new ObserveOnObserverFactory(scheduler));
+        return this.lift(new ObserveOnSubscriberFactory(scheduler));
     }
 });

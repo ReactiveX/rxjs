@@ -1,8 +1,8 @@
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
-import ObserverFactory from '../ObserverFactory';
-class FilterObserver extends Observer {
+import SubscriberFactory from '../SubscriberFactory';
+class FilterSubscriber extends Subscriber {
     constructor(destination, predicate) {
         super(destination);
         this.predicate = predicate;
@@ -17,16 +17,16 @@ class FilterObserver extends Observer {
         }
     }
 }
-class FilterObserverFactory extends ObserverFactory {
+class FilterSubscriberFactory extends SubscriberFactory {
     constructor(predicate) {
         super();
         this.predicate = predicate;
     }
     create(destination) {
-        return new FilterObserver(destination, this.predicate);
+        return new FilterSubscriber(destination, this.predicate);
     }
 }
 export default function select(predicate) {
-    return this.lift(new FilterObserverFactory(predicate));
+    return this.lift(new FilterSubscriberFactory(predicate));
 }
 ;

@@ -9,9 +9,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-var _Observer2 = require('../Observer');
+var _Subscriber2 = require('../Subscriber');
 
-var _Observer3 = _interopRequireDefault(_Observer2);
+var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
 var _utilTryCatch = require('../util/tryCatch');
 
@@ -21,21 +21,21 @@ var _utilErrorObject = require('../util/errorObject');
 
 var _utilErrorObject2 = _interopRequireDefault(_utilErrorObject);
 
-var _ObserverFactory2 = require('../ObserverFactory');
+var _SubscriberFactory2 = require('../SubscriberFactory');
 
-var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
+var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-var MapObserver = (function (_Observer) {
-    function MapObserver(destination, project) {
-        _classCallCheck(this, MapObserver);
+var MapSubscriber = (function (_Subscriber) {
+    function MapSubscriber(destination, project) {
+        _classCallCheck(this, MapSubscriber);
 
-        _Observer.call(this, destination);
+        _Subscriber.call(this, destination);
         this.project = project;
     }
 
-    _inherits(MapObserver, _Observer);
+    _inherits(MapSubscriber, _Subscriber);
 
-    MapObserver.prototype._next = function _next(value) {
+    MapSubscriber.prototype._next = function _next(value) {
         value = _utilTryCatch2['default'](this.project).call(this, value);
         if (value === _utilErrorObject2['default']) {
             this.destination.error(_utilErrorObject2['default'].e);
@@ -44,28 +44,28 @@ var MapObserver = (function (_Observer) {
         }
     };
 
-    return MapObserver;
-})(_Observer3['default']);
+    return MapSubscriber;
+})(_Subscriber3['default']);
 
-var MapObserverFactory = (function (_ObserverFactory) {
-    function MapObserverFactory(project) {
-        _classCallCheck(this, MapObserverFactory);
+var MapSubscriberFactory = (function (_SubscriberFactory) {
+    function MapSubscriberFactory(project) {
+        _classCallCheck(this, MapSubscriberFactory);
 
-        _ObserverFactory.call(this);
+        _SubscriberFactory.call(this);
         this.project = project;
     }
 
-    _inherits(MapObserverFactory, _ObserverFactory);
+    _inherits(MapSubscriberFactory, _SubscriberFactory);
 
-    MapObserverFactory.prototype.create = function create(destination) {
-        return new MapObserver(destination, this.project);
+    MapSubscriberFactory.prototype.create = function create(destination) {
+        return new MapSubscriber(destination, this.project);
     };
 
-    return MapObserverFactory;
-})(_ObserverFactory3['default']);
+    return MapSubscriberFactory;
+})(_SubscriberFactory3['default']);
 
 function select(project) {
-    return this.lift(new MapObserverFactory(project));
+    return this.lift(new MapSubscriberFactory(project));
 }
 
 ;

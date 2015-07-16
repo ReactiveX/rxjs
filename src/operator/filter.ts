@@ -1,14 +1,13 @@
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
-import Subscription from '../Subscription';
-import ObserverFactory from '../ObserverFactory';
+import SubscriberFactory from '../SubscriberFactory';
 
-class FilterObserver extends Observer {
+class FilterSubscriber extends Subscriber {
   predicate: (x: any) => boolean;
   
-  constructor(destination: Observer, predicate: (x: any) => boolean) {
+  constructor(destination: Subscriber, predicate: (x: any) => boolean) {
     super(destination);
     this.predicate = predicate;
   }
@@ -23,7 +22,7 @@ class FilterObserver extends Observer {
   }
 }
 
-class FilterObserverFactory extends ObserverFactory {
+class FilterSubscriberFactory extends SubscriberFactory {
   predicate: (x: any) => boolean;
   
   constructor(predicate: (x: any) => boolean) {
@@ -31,12 +30,12 @@ class FilterObserverFactory extends ObserverFactory {
     this.predicate = predicate;
   }
   
-  create(destination: Observer): Observer {
-    return new FilterObserver(destination, this.predicate);
+  create(destination: Subscriber): Subscriber {
+    return new FilterSubscriber(destination, this.predicate);
   }
 }
 
 
 export default function select(predicate: (x: any) => boolean) : Observable {
-  return this.lift(new FilterObserverFactory(predicate));
+  return this.lift(new FilterSubscriberFactory(predicate));
 };

@@ -1,8 +1,8 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
-const EMPTY = new Observable((observer: Observer) => {
-  observer.complete();
+const EMPTY = new Observable((subscriber: Subscriber) => {
+  subscriber.complete();
 });
 
 export default function empty():Observable {

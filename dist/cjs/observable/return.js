@@ -23,8 +23,8 @@ var ReturnObservable = (function (_Observable) {
 
     _inherits(ReturnObservable, _Observable);
 
-    ReturnObservable.prototype.subscriber = function subscriber(observer) {
-        observer.complete(this.returnValue);
+    ReturnObservable.prototype.subscriber = function subscriber(_subscriber) {
+        _subscriber.complete(this.returnValue);
     };
 
     return ReturnObservable;

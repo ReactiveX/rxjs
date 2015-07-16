@@ -1,15 +1,14 @@
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
-import Observer from '../Observer';
-import Subscription from '../Subscription';
-import ObserverFactory from '../ObserverFactory';
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
 
-class ReduceObserver extends Observer {
+class ReduceSubscriber extends Subscriber {
   processor: (accum: any, value: any) => any;
   aggregate: any;
   
-  constructor(destination: Observer, processor: (accum: any, value: any) => any, initialValue: any) {
+  constructor(destination: Subscriber, processor: (accum: any, value: any) => any, initialValue: any) {
     super(destination);
     this.processor = processor;
     this.aggregate = initialValue;
@@ -30,7 +29,7 @@ class ReduceObserver extends Observer {
   }
 }
 
-class ReduceObserverFactory extends ObserverFactory {
+class ReduceSubscriberFactory extends SubscriberFactory {
   processor: (accum: any, value: any) => any;
   initialValue: any;
   
@@ -40,11 +39,11 @@ class ReduceObserverFactory extends ObserverFactory {
     this.initialValue = initialValue;
   }
   
-  create(destination: Observer): Observer {
-    return new ReduceObserver(destination, this.processor, this.initialValue);
+  create(destination: Subscriber): Subscriber {
+    return new ReduceSubscriber(destination, this.processor, this.initialValue);
   }
 }
 
 export default function reduce(processor:(accum:any, value:any)=>any, initialValue: any) : Observable {
-  return this.lift(new ReduceObserverFactory(processor, initialValue));
+  return this.lift(new ReduceSubscriberFactory(processor, initialValue));
 }

@@ -1,8 +1,8 @@
 import Observable from './Observable';
-import Observer from './Observer';
+import Subscriber from './Subscriber';
 import $$observer from './util/Symbol_observer';
 import SerialSubscription from './SerialSubscription';
-import Subscription from './Subscription';
+import { Subscription } from './Subscription';
 import Subject from './Subject';
 
 export default class BehaviorSubject extends Subject {
@@ -13,11 +13,10 @@ export default class BehaviorSubject extends Subject {
     this.value = value;
   }
   
-  [$$observer](observer:Observer) {
-    this.observers.push(observer);
-    var subscription = new Subscription(null, observer);
+  [$$observer](subscriber:Subscriber) : Subscription {
+    this.subscribers.push(subscriber);
     this.next(this.value);
-    return subscription;
+    return subscriber;
   }
   
   next(value:any) {

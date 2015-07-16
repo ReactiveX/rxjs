@@ -1,6 +1,6 @@
-import Observer from '../Observer';
-import ObserverFactory from '../ObserverFactory';
-class ToArrayObserver extends Observer {
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
+class ToArraySubscriber extends Subscriber {
     constructor(destination) {
         super(destination);
         this.array = [];
@@ -13,11 +13,11 @@ class ToArrayObserver extends Observer {
         this.destination.complete(value);
     }
 }
-class ToArrayObserverFactory extends ObserverFactory {
+class ToArraySubscriberFactory extends SubscriberFactory {
     create(destination) {
-        return new ToArrayObserver(destination);
+        return new ToArraySubscriber(destination);
     }
 }
 export default function toArray() {
-    return this.lift(new ToArrayObserverFactory());
+    return this.lift(new ToArraySubscriberFactory());
 }

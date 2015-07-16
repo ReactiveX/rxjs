@@ -19,15 +19,15 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(ArrayObservable, _Observable);
 
-        ArrayObservable.prototype.subscriber = function subscriber(observer) {
+        ArrayObservable.prototype.subscriber = function subscriber(_subscriber) {
             var i, len;
             var array = this.array;
             if (Array.isArray(array)) {
-                for (i = 0, len = array.length; i < len && !observer.unsubscribed; i++) {
-                    observer.next(array[i]);
+                for (i = 0, len = array.length; i < len && !_subscriber.isUnsubscribed; i++) {
+                    _subscriber.next(array[i]);
                 }
             }
-            if (observer.complete) observer.complete();
+            if (_subscriber.complete) _subscriber.complete();
         };
 
         return ArrayObservable;

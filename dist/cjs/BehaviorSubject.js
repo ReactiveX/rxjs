@@ -12,10 +12,6 @@ var _utilSymbol_observer = require('./util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
 
-var _Subscription = require('./Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
-
 var _Subject2 = require('./Subject');
 
 var _Subject3 = _interopRequireDefault(_Subject2);
@@ -30,11 +26,10 @@ var BehaviorSubject = (function (_Subject) {
 
     _inherits(BehaviorSubject, _Subject);
 
-    BehaviorSubject.prototype[_utilSymbol_observer2['default']] = function (observer) {
-        this.observers.push(observer);
-        var subscription = new _Subscription2['default'](null, observer);
+    BehaviorSubject.prototype[_utilSymbol_observer2['default']] = function (subscriber) {
+        this.subscribers.push(subscriber);
         this.next(this.value);
-        return subscription;
+        return subscriber;
     };
 
     BehaviorSubject.prototype.next = function next(value) {

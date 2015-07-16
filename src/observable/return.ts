@@ -1,5 +1,5 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 class ReturnObservable extends Observable {
   returnValue:any;
@@ -9,8 +9,8 @@ class ReturnObservable extends Observable {
     this.returnValue = returnValue; 
   }
   
-  subscriber(observer:Observer) {
-    observer.complete(this.returnValue);
+  subscriber(subscriber:Subscriber) {
+    subscriber.complete(this.returnValue);
   }
 }
 

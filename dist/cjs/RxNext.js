@@ -8,9 +8,9 @@ var _Observable = require('./Observable');
 
 var _Observable2 = _interopRequireDefault(_Observable);
 
-var _Observer = require('./Observer');
+var _Subscriber = require('./Subscriber');
 
-var _Observer2 = _interopRequireDefault(_Observer);
+var _Subscriber2 = _interopRequireDefault(_Subscriber);
 
 var _schedulerNextTick = require('./scheduler/nextTick');
 
@@ -19,10 +19,6 @@ var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 var _schedulerImmediate = require('./scheduler/immediate');
 
 var _schedulerImmediate2 = _interopRequireDefault(_schedulerImmediate);
-
-var _Subscription = require('./Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
 
 var _CompositeSubscription = require('./CompositeSubscription');
 
@@ -199,9 +195,8 @@ var RxNext = {
         nextTick: _schedulerNextTick2['default'],
         immediate: _schedulerImmediate2['default']
     },
-    Observer: _Observer2['default'],
+    Subscriber: _Subscriber2['default'],
     Observable: _Observable2['default'],
-    Subscription: _Subscription2['default'],
     CompositeSubscription: _CompositeSubscription2['default'],
     SerialSubscription: _SerialSubscription2['default'],
     Subject: _Subject2['default'],

@@ -45,7 +45,7 @@ describe('Observable.prototype.multicast()', function () {
     });
   });
   
-  it('should remove all observers from the subject when disconnected', function (done) {
+  it('should remove all subscribers from the subject when disconnected', function (done) {
     var subject = new Subject();
     var expected = [1, 2, 3, 4];
     var i = 0;
@@ -60,7 +60,7 @@ describe('Observable.prototype.multicast()', function () {
     }, null, function () {
       setTimeout(function () {
         //HACK: everything is good and done now...
-        expect(subject.observers.length).toBe(0);
+        expect(subject.subscribers.length).toBe(0);
         done();
       }, 10);
     });

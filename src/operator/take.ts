@@ -1,13 +1,12 @@
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Observable from '../Observable';
-import Subscription from '../Subscription';
-import ObserverFactory from '../ObserverFactory';
+import SubscriberFactory from '../SubscriberFactory';
 
-class TakeObserver extends Observer {
+class TakeSubscriber extends Subscriber {
   count:number;
   counter:number=0;
   
-  constructor(destination:Observer, count:number) {
+  constructor(destination:Subscriber, count:number) {
     super(destination);
     this.count = count;
   }
@@ -21,7 +20,7 @@ class TakeObserver extends Observer {
   }
 }
 
-class TakeObserverFactory extends ObserverFactory {
+class TakeSubscriberFactory extends SubscriberFactory {
   count:number;
   
   constructor(count:number) {
@@ -29,11 +28,11 @@ class TakeObserverFactory extends ObserverFactory {
     this.count = count;
   }
   
-  create(destination: Observer): Observer {
-    return new TakeObserver(destination, this.count);
+  create(destination: Subscriber): Subscriber {
+    return new TakeSubscriber(destination, this.count);
   }
 }
 
 export default function take(count:number) : Observable {
-  return this.lift(new TakeObserverFactory(count));
+  return this.lift(new TakeSubscriberFactory(count));
 };

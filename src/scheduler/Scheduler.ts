@@ -1,6 +1,6 @@
 import Immediate from '../util/Immediate';
 import SerialSubscription from '../SerialSubscription';
-import Subscription from '../Subscription';
+import { Subscription } from '../Subscription';
 import NextTickScheduler from './NextTickScheduler';
 
 import {

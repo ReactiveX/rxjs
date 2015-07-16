@@ -1,12 +1,11 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
-import Subscription from '../Subscription';
-import ObserverFactory from '../ObserverFactory';
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
 
-class ToArrayObserver extends Observer {
+class ToArraySubscriber extends Subscriber {
   array:Array<any> = [];
   
-  constructor(destination:Observer) {
+  constructor(destination:Subscriber) {
     super(destination);
   }
   
@@ -20,12 +19,12 @@ class ToArrayObserver extends Observer {
   }
 }
 
-class ToArrayObserverFactory extends ObserverFactory {  
-  create(destination: Observer): Observer {
-    return new ToArrayObserver(destination);
+class ToArraySubscriberFactory extends SubscriberFactory {  
+  create(destination: Subscriber): Subscriber {
+    return new ToArraySubscriber(destination);
   }
 }
 
 export default function toArray(): Observable {
-  return this.lift(new ToArrayObserverFactory());
+  return this.lift(new ToArraySubscriberFactory());
 }
