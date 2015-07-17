@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../Observable', '../Subscription'], function (exports, module, _Observer2, _Observable2, _Subscription) {
+define(['exports', 'module', '../Subscriber', '../SubscriberFactory'], function (exports, module, _Subscriber2, _SubscriberFactory2) {
     'use strict';
 
     module.exports = mapTo;
@@ -9,50 +9,46 @@ define(['exports', 'module', '../Observer', '../Observable', '../Subscription'],
 
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-    var _Observer3 = _interopRequireDefault(_Observer2);
+    var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-    var _Observable3 = _interopRequireDefault(_Observable2);
+    var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-    var _Subscription2 = _interopRequireDefault(_Subscription);
+    var MapToSubscriber = (function (_Subscriber) {
+        function MapToSubscriber(destination, value) {
+            _classCallCheck(this, MapToSubscriber);
 
-    var MapToObserver = (function (_Observer) {
-        function MapToObserver(destination, value) {
-            _classCallCheck(this, MapToObserver);
-
-            _Observer.call(this, destination);
+            _Subscriber.call(this, destination);
             this.value = value;
         }
 
-        _inherits(MapToObserver, _Observer);
+        _inherits(MapToSubscriber, _Subscriber);
 
-        MapToObserver.prototype._next = function _next(_) {
+        MapToSubscriber.prototype._next = function _next(_) {
             return this.destination.next(this.value);
         };
 
-        return MapToObserver;
-    })(_Observer3['default']);
+        return MapToSubscriber;
+    })(_Subscriber3['default']);
 
-    var MapToObservable = (function (_Observable) {
-        function MapToObservable(source, value) {
-            _classCallCheck(this, MapToObservable);
+    var MapToSubscriberFactory = (function (_SubscriberFactory) {
+        function MapToSubscriberFactory(value) {
+            _classCallCheck(this, MapToSubscriberFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _SubscriberFactory.call(this);
             this.value = value;
         }
 
-        _inherits(MapToObservable, _Observable);
+        _inherits(MapToSubscriberFactory, _SubscriberFactory);
 
-        MapToObservable.prototype.subscriber = function subscriber(observer) {
-            var mapToObserver = new MapToObserver(observer, this.value);
-            return _Subscription2['default'].from(this.source.subscriber(mapToObserver), mapToObserver);
+        MapToSubscriberFactory.prototype.create = function create(destination) {
+            return new MapToSubscriber(destination, this.value);
         };
 
-        return MapToObservable;
-    })(_Observable3['default']);
+        return MapToSubscriberFactory;
+    })(_SubscriberFactory3['default']);
 
     function mapTo(value) {
-        return new MapToObservable(this, value);
+        return this.lift(new MapToSubscriberFactory(value));
     }
 
     ;

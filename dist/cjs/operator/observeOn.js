@@ -9,45 +9,38 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-var _Observable2 = require('../Observable');
+var _Subscriber2 = require('../Subscriber');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
+var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-var _Observer2 = require('../Observer');
+var _SubscriberFactory2 = require('../SubscriberFactory');
 
-var _Observer3 = _interopRequireDefault(_Observer2);
+var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-var _Subscription = require('../Subscription');
+var ObserveOnSubscriber = (function (_Subscriber) {
+    function ObserveOnSubscriber(destination, scheduler) {
+        _classCallCheck(this, ObserveOnSubscriber);
 
-var _Subscription2 = _interopRequireDefault(_Subscription);
-
-var ObserveOnObserver = (function (_Observer) {
-    function ObserveOnObserver(destination, scheduler) {
-        _classCallCheck(this, ObserveOnObserver);
-
-        _Observer.call(this, destination);
+        _Subscriber.call(this, destination);
         this.scheduler = scheduler;
     }
 
-    _inherits(ObserveOnObserver, _Observer);
+    _inherits(ObserveOnSubscriber, _Subscriber);
 
-    ObserveOnObserver.prototype._next = function _next(value) {
+    ObserveOnSubscriber.prototype.next = function next(value) {
         this.scheduler.schedule(0, [this.destination, value], dispatchNext);
-        return { done: false };
     };
 
-    ObserveOnObserver.prototype._throw = function _throw(err) {
-        this.scheduler.schedule(0, [this.destination, err], dispatchThrow);
-        return { done: true };
+    ObserveOnSubscriber.prototype._error = function _error(err) {
+        this.scheduler.schedule(0, [this.destination, err], dispatchError);
     };
 
-    ObserveOnObserver.prototype._return = function _return(value) {
-        this.scheduler.schedule(0, [this.destination, value], dispatchReturn);
-        return { done: true };
+    ObserveOnSubscriber.prototype._complete = function _complete(value) {
+        this.scheduler.schedule(0, [this.destination, value], dispatchComplete);
     };
 
-    return ObserveOnObserver;
-})(_Observer3['default']);
+    return ObserveOnSubscriber;
+})(_Subscriber3['default']);
 
 function dispatchNext(_ref) {
     var destination = _ref[0];
@@ -58,42 +51,40 @@ function dispatchNext(_ref) {
         destination.dispose();
     }
 }
-function dispatchThrow(_ref2) {
+function dispatchError(_ref2) {
     var destination = _ref2[0];
     var err = _ref2[1];
 
-    var result = destination['throw'](err);
+    var result = destination.error(err);
     destination.dispose();
 }
-function dispatchReturn(_ref3) {
+function dispatchComplete(_ref3) {
     var destination = _ref3[0];
     var value = _ref3[1];
 
-    var result = destination['return'](value);
+    var result = destination.complete(value);
     destination.dispose();
 }
 
-var ObserveOnObservable = (function (_Observable) {
-    function ObserveOnObservable(source, scheduler) {
-        _classCallCheck(this, ObserveOnObservable);
+var ObserveOnSubscriberFactory = (function (_SubscriberFactory) {
+    function ObserveOnSubscriberFactory(scheduler) {
+        _classCallCheck(this, ObserveOnSubscriberFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _SubscriberFactory.call(this);
         this.scheduler = scheduler;
     }
 
-    _inherits(ObserveOnObservable, _Observable);
+    _inherits(ObserveOnSubscriberFactory, _SubscriberFactory);
 
-    ObserveOnObservable.prototype.subscriber = function subscriber(observer) {
-        var observeOnObserver = new ObserveOnObserver(observer, this.scheduler);
-        return _Subscription2['default'].from(this.source.subscriber(observeOnObserver), observeOnObserver);
+    ObserveOnSubscriberFactory.prototype.create = function create(destination) {
+        return new ObserveOnSubscriber(destination, this.scheduler);
     };
 
-    return ObserveOnObservable;
-})(_Observable3['default']);
+    return ObserveOnSubscriberFactory;
+})(_SubscriberFactory3['default']);
 
 function observeOn(scheduler) {
-    return new ObserveOnObservable(this, scheduler);
+    return this.lift(new ObserveOnSubscriberFactory(scheduler));
 }
 
 module.exports = exports['default'];

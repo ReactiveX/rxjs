@@ -4,13 +4,17 @@ class PromiseObservable extends Observable {
         super(null);
         this.promise = promise;
     }
-    subscriber(observer) {
+    subscriber(subscriber) {
         var promise = this.promise;
         if (promise) {
             promise.then(x => {
-                if (!observer.unsubscribed) {
-                    observer.next(x);
-                    observer.return(x);
+                if (!subscriber.isUnsubscribed) {
+                    subscriber.next(x);
+                    subscriber.complete();
+                }
+            }, e => {
+                if (!subscriber.isUnsubscribed) {
+                    subscriber.error(e);
                 }
             });
         }

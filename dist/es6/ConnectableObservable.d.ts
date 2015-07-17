@@ -1,5 +1,5 @@
 import Observable from './Observable';
-import Subscription from './Subscription';
+import { Subscription } from './Subscription';
 import Subject from './Subject';
 export default class ConnectableObservable extends Observable {
     source: Observable;
@@ -8,6 +8,5 @@ export default class ConnectableObservable extends Observable {
     subject: Subject;
     constructor(source: Observable, subjectFactory: () => Subject);
     connect(): Subscription;
-    connectSync(): Subscription;
     refCount(): Observable;
 }

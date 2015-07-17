@@ -13,9 +13,7 @@ define(['exports', 'module', './Scheduler', './SchedulerActions'], function (exp
         function NextTickScheduler() {
             _classCallCheck(this, NextTickScheduler);
 
-            if (_Scheduler != null) {
-                _Scheduler.apply(this, arguments);
-            }
+            _Scheduler.apply(this, arguments);
         }
 
         _inherits(NextTickScheduler, _Scheduler);

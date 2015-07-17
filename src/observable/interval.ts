@@ -1,5 +1,5 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Scheduler from '../scheduler/Scheduler';
 import nextTick from '../scheduler/nextTick';
 
@@ -13,31 +13,31 @@ class IntervalObservable extends Observable {
     this.scheduler = scheduler;
   }
   
-  subscriber(observer:Observer) {
-    this.scheduler.schedule(this.interval, new IntervalObserver(observer, this.interval, this.scheduler), dispatch);
+  subscriber(observer:Subscriber) {
+    this.scheduler.schedule(this.interval, new IntervalSubscriber(observer, this.interval, this.scheduler), dispatch);
   }
 }
 
-class IntervalObserver extends Observer {
+class IntervalSubscriber extends Subscriber {
   interval:number;
   scheduler:Scheduler;
   counter:number = 0;
   
-  constructor(destination:Observer, interval:number, scheduler:Scheduler) {
+  constructor(destination:Subscriber, interval:number, scheduler:Scheduler) {
     super(destination);
     this.interval = interval;
     this.scheduler = scheduler;
   }
   
   emitNext() {
-    if(!this.unsubscribed) {
+    if(!this.isUnsubscribed) {
       this.next(this.counter++);
       this.scheduler.schedule(this.interval, this, dispatch);
     }
   }
 }
 
-function dispatch(observer:IntervalObserver) {
+function dispatch(observer:IntervalSubscriber) {
   observer.emitNext();
 }
 

@@ -6,81 +6,83 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _Observer = require('./Observer');
-
-var _Observer2 = _interopRequireDefault(_Observer);
-
-var _Subscription = require('./Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
-
-var _SerialSubscription = require('./SerialSubscription');
-
-var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
-
-var _schedulerNextTick = require('./scheduler/nextTick');
-
-var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
-
 var _utilSymbol_observer = require('./util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
 
+var _SubscriberFactory = require('./SubscriberFactory');
+
+var _SubscriberFactory2 = _interopRequireDefault(_SubscriberFactory);
+
+var _Subscriber = require('./Subscriber');
+
+var _Subscriber2 = _interopRequireDefault(_Subscriber);
+
 var Observable = (function () {
-    function Observable(subscriber) {
+    function Observable() {
+        var subscriber = arguments[0] === undefined ? null : arguments[0];
+
         _classCallCheck(this, Observable);
 
+        this.source = null;
+        this.subscriberFactory = new _SubscriberFactory2['default']();
         if (subscriber) {
             this.subscriber = subscriber;
         }
+        this.source = this;
     }
 
     Observable.create = function create(subscriber) {
         return new Observable(subscriber);
     };
 
-    Observable.prototype.subscriber = function subscriber(observer) {
-        return void 0;
+    Observable.prototype.subscriber = function subscriber(_subscriber) {
+        return this.source.subscribe(this.subscriberFactory.create(_subscriber));
+    };
+
+    Observable.prototype.lift = function lift(subscriberFactory) {
+        var observable = new Observable();
+        observable.source = this;
+        observable.subscriberFactory = subscriberFactory;
+        return observable;
     };
 
     Observable.prototype[_utilSymbol_observer2['default']] = function (observer) {
-        if (!(observer instanceof _Observer2['default'])) {
-            observer = new _Observer2['default'](observer);
-        }
-        return _Subscription2['default'].from(this.subscriber(observer), observer);
+        var subscriber = new _Subscriber2['default'](observer);
+        subscriber.add(this.subscriber(subscriber));
+        return subscriber;
     };
 
-    Observable.prototype.subscribe = function subscribe(observerOrNextHandler) {
-        var throwHandler = arguments[1] === undefined ? null : arguments[1];
-        var returnHandler = arguments[2] === undefined ? null : arguments[2];
-        var disposeHandler = arguments[3] === undefined ? null : arguments[3];
+    Observable.prototype.subscribe = function subscribe(observerOrNext) {
+        var error = arguments[1] === undefined ? null : arguments[1];
+        var complete = arguments[2] === undefined ? null : arguments[2];
 
-        var observer;
-        if (typeof observerOrNextHandler === 'object') {
-            observer = observerOrNextHandler;
+        var observer = undefined;
+        if (typeof observerOrNext === 'object') {
+            observer = observerOrNext;
         } else {
-            observer = _Observer2['default'].create(observerOrNextHandler, throwHandler, returnHandler, disposeHandler);
+            observer = {
+                next: observerOrNext,
+                error: error,
+                complete: complete
+            };
         }
-        var subscription = new _SerialSubscription2['default'](null);
-        subscription.observer = observer;
-        subscription.add(_schedulerNextTick2['default'].schedule(0, [observer, this], dispatchSubscription));
-        return subscription;
+        return this[_utilSymbol_observer2['default']](observer);
     };
 
     Observable.prototype.forEach = function forEach(nextHandler) {
         var _this = this;
 
         return new Promise(function (resolve, reject) {
-            var observer = _Observer2['default'].create(function (value) {
-                nextHandler(value);
-                return { done: false };
-            }, function (err) {
-                reject(err);
-                return { done: true };
-            }, function (value) {
-                resolve(value);
-                return { done: true };
-            });
+            var observer = {
+                next: nextHandler,
+                error: function error(err) {
+                    reject(err);
+                },
+                complete: function complete(value) {
+                    resolve(value);
+                }
+            };
             _this[_utilSymbol_observer2['default']](observer);
         });
     };

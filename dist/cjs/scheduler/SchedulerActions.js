@@ -16,10 +16,6 @@ var _utilImmediate = require('../util/Immediate');
 
 var _utilImmediate2 = _interopRequireDefault(_utilImmediate);
 
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
-
 var ScheduledAction = (function (_SerialSubscription) {
     function ScheduledAction(scheduler, state, work) {
         _classCallCheck(this, ScheduledAction);
@@ -41,10 +37,10 @@ var ScheduledAction = (function (_SerialSubscription) {
     };
 
     ScheduledAction.prototype.execute = function execute() {
-        if (this.unsubscribed) {
+        if (this.isUnsubscribed) {
             throw new Error('How did did we execute a canceled ScheduledAction?');
         }
-        this.add(_Subscription2['default'].from(this.work(this.state), this.observer));
+        this.add(this.work(this.state));
     };
 
     ScheduledAction.prototype.unsubscribe = function unsubscribe() {
@@ -68,9 +64,7 @@ var NextScheduledAction = (function (_ScheduledAction) {
     function NextScheduledAction() {
         _classCallCheck(this, NextScheduledAction);
 
-        if (_ScheduledAction != null) {
-            _ScheduledAction.apply(this, arguments);
-        }
+        _ScheduledAction.apply(this, arguments);
     }
 
     _inherits(NextScheduledAction, _ScheduledAction);

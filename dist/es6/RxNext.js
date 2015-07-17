@@ -1,8 +1,7 @@
 import Observable from './Observable';
-import Observer from './Observer';
+import Subscriber from './Subscriber';
 import nextTick from './scheduler/nextTick';
 import immediate from './scheduler/immediate';
-import Subscription from './Subscription';
 import CompositeSubscription from './CompositeSubscription';
 import SerialSubscription from './SerialSubscription';
 import Subject from './Subject';
@@ -14,6 +13,7 @@ import fromEventPattern from './observable/fromEventPattern';
 import fromEvent from './observable/fromEvent';
 import _throw from './observable/throw';
 import empty from './observable/empty';
+import never from './observable/never';
 import range from './observable/range';
 import fromArray from './observable/fromArray';
 import zip from './observable/zip';
@@ -44,6 +44,7 @@ Observable.fromEventPattern = fromEventPattern;
 Observable.fromEvent = fromEvent;
 Observable.throw = _throw;
 Observable.empty = empty;
+Observable.never = never;
 Observable.range = range;
 Observable.fromArray = fromArray;
 Observable.zip = zip;
@@ -73,9 +74,8 @@ var RxNext = {
         nextTick,
         immediate
     },
-    Observer,
+    Subscriber,
     Observable,
-    Subscription,
     CompositeSubscription,
     SerialSubscription,
     Subject,

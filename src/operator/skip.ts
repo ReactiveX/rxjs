@@ -1,45 +1,36 @@
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Observable from '../Observable';
-import Subscription from '../Subscription';
+import SubscriberFactory from '../SubscriberFactory';
 
-interface IteratorResult<T> {
-  done:boolean;
-  value?:T
-}
-
-class SkipObserver extends Observer {
+class SkipSubscriber extends Subscriber {
   count:number;
   counter:number=0;
   
-  constructor(destination:Observer, count:number) {
+  constructor(destination:Subscriber, count:number) {
     super(destination);
     this.count = count;
   }
   
-  _next(value:any):IteratorResult<any> {
+  _next(value:any) {
     if(this.counter++ >= this.count) {
       return this.destination.next(value);
     }
-    return { done: false };
   }
 }
 
-class SkipObservable extends Observable {
-  source:Observable;
+class SkipSubscriberFactory extends SubscriberFactory {
   count:number;
   
-  constructor(source:Observable, count:number) {
-    super(null);
-    this.source = source;
+  constructor(count:number) {
+    super();
     this.count = count;
   }
   
-  subscriber(observer:Observer):Subscription {
-    var skipObserver = new SkipObserver(observer, this.count);
-    return Subscription.from(this.source.subscriber(skipObserver), skipObserver);
+  create(destination: Subscriber): Subscriber {
+    return new SkipSubscriber(destination, this.count);
   }
 }
 
 export default function skip(count:number) : Observable {
-  return new SkipObservable(this, count);
+  return this.lift(new SkipSubscriberFactory(count));
 };

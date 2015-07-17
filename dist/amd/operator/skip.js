@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../Observable', '../Subscription'], function (exports, module, _Observer2, _Observable2, _Subscription) {
+define(['exports', 'module', '../Subscriber', '../SubscriberFactory'], function (exports, module, _Subscriber2, _SubscriberFactory2) {
     'use strict';
 
     module.exports = skip;
@@ -9,54 +9,49 @@ define(['exports', 'module', '../Observer', '../Observable', '../Subscription'],
 
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-    var _Observer3 = _interopRequireDefault(_Observer2);
+    var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-    var _Observable3 = _interopRequireDefault(_Observable2);
+    var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-    var _Subscription2 = _interopRequireDefault(_Subscription);
+    var SkipSubscriber = (function (_Subscriber) {
+        function SkipSubscriber(destination, count) {
+            _classCallCheck(this, SkipSubscriber);
 
-    var SkipObserver = (function (_Observer) {
-        function SkipObserver(destination, count) {
-            _classCallCheck(this, SkipObserver);
-
-            _Observer.call(this, destination);
+            _Subscriber.call(this, destination);
             this.counter = 0;
             this.count = count;
         }
 
-        _inherits(SkipObserver, _Observer);
+        _inherits(SkipSubscriber, _Subscriber);
 
-        SkipObserver.prototype._next = function _next(value) {
+        SkipSubscriber.prototype._next = function _next(value) {
             if (this.counter++ >= this.count) {
                 return this.destination.next(value);
             }
-            return { done: false };
         };
 
-        return SkipObserver;
-    })(_Observer3['default']);
+        return SkipSubscriber;
+    })(_Subscriber3['default']);
 
-    var SkipObservable = (function (_Observable) {
-        function SkipObservable(source, count) {
-            _classCallCheck(this, SkipObservable);
+    var SkipSubscriberFactory = (function (_SubscriberFactory) {
+        function SkipSubscriberFactory(count) {
+            _classCallCheck(this, SkipSubscriberFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _SubscriberFactory.call(this);
             this.count = count;
         }
 
-        _inherits(SkipObservable, _Observable);
+        _inherits(SkipSubscriberFactory, _SubscriberFactory);
 
-        SkipObservable.prototype.subscriber = function subscriber(observer) {
-            var skipObserver = new SkipObserver(observer, this.count);
-            return _Subscription2['default'].from(this.source.subscriber(skipObserver), skipObserver);
+        SkipSubscriberFactory.prototype.create = function create(destination) {
+            return new SkipSubscriber(destination, this.count);
         };
 
-        return SkipObservable;
-    })(_Observable3['default']);
+        return SkipSubscriberFactory;
+    })(_SubscriberFactory3['default']);
 
     function skip(count) {
-        return new SkipObservable(this, count);
+        return this.lift(new SkipSubscriberFactory(count));
     }
 
     ;

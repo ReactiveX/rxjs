@@ -1,7 +1,9 @@
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
+
+import $$observer from '../util/Symbol_observer';
 
 class FromEventPatternObservable extends Observable {
   add:Function;
@@ -15,36 +17,36 @@ class FromEventPatternObservable extends Observable {
     this.selector = selector;
   }
   
-   subscriber(subscriber:Observer) : Function {
-      var unsubscribe = () => {
-        if (remove) {
-            remove(innerHandler, token);
-        }
+  subscriber(subscriber:Subscriber) : Function {
+    var unsubscribe = () => {
+      if (remove) {
+          remove(innerHandler, token);
       }
-      
-      function innerHandler(e) {
-        var result = e;
-        if (selector) {
-          result = try_catch(selector).apply(this, arguments);
-          if(result === error_obj) {
-            subscriber["throw"](error_obj.e);
-            unsubscribe();
-            return;
-          }
-        }
-        result = subscriber.next(result);
-        if(result.done) {
-          unsubscribe();
-        }
-      }
-
-      var self = this;
-      var remove = this.remove;
-      var selector = this.selector;
-      var token = this.add(innerHandler);
-
-      return unsubscribe;
     }
+    
+    function innerHandler(e) {
+      var result = e;
+      if (selector) {
+        result = try_catch(selector).apply(this, arguments);
+        if(result === error_obj) {
+          subscriber.error(error_obj.e);
+          unsubscribe();
+          return;
+        }
+      }
+      result = subscriber.next(result);
+      if(result.done) {
+        unsubscribe();
+      }
+    }
+
+    var self = this;
+    var remove = this.remove;
+    var selector = this.selector;
+    var token = this.add(innerHandler);
+
+    return unsubscribe;
+  }
 }
 
 /**

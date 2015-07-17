@@ -22,14 +22,14 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(RangeObservable, _Observable);
 
-        RangeObservable.prototype.subscriber = function subscriber(observer) {
+        RangeObservable.prototype.subscriber = function subscriber(_subscriber) {
             var end = this.end;
             var start = this.start;
             var i;
-            for (i = start; i < end && !observer.unsubscribed; i++) {
-                observer.next(i);
+            for (i = start; i < end && !_subscriber.isUnsubscribed; i++) {
+                _subscriber.next(i);
             }
-            observer['return']();
+            _subscriber.complete();
         };
 
         return RangeObservable;

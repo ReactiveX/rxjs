@@ -4,8 +4,8 @@ class ReturnObservable extends Observable {
         super(null);
         this.returnValue = returnValue;
     }
-    subscriber(observer) {
-        observer.return(this.returnValue);
+    subscriber(subscriber) {
+        subscriber.complete(this.returnValue);
     }
 }
 export default function _return(returnValue = undefined) {

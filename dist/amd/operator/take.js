@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../Observable', '../Subscription'], function (exports, module, _Observer2, _Observable2, _Subscription) {
+define(['exports', 'module', '../Subscriber', '../SubscriberFactory'], function (exports, module, _Subscriber2, _SubscriberFactory2) {
     'use strict';
 
     module.exports = take;
@@ -9,55 +9,51 @@ define(['exports', 'module', '../Observer', '../Observable', '../Subscription'],
 
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-    var _Observer3 = _interopRequireDefault(_Observer2);
+    var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
-    var _Observable3 = _interopRequireDefault(_Observable2);
+    var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-    var _Subscription2 = _interopRequireDefault(_Subscription);
+    var TakeSubscriber = (function (_Subscriber) {
+        function TakeSubscriber(destination, count) {
+            _classCallCheck(this, TakeSubscriber);
 
-    var TakeObserver = (function (_Observer) {
-        function TakeObserver(destination, count) {
-            _classCallCheck(this, TakeObserver);
-
-            _Observer.call(this, destination);
+            _Subscriber.call(this, destination);
             this.counter = 0;
             this.count = count;
         }
 
-        _inherits(TakeObserver, _Observer);
+        _inherits(TakeSubscriber, _Subscriber);
 
-        TakeObserver.prototype._next = function _next(value) {
+        TakeSubscriber.prototype._next = function _next(value) {
             if (this.counter++ < this.count) {
-                return this.destination.next(value);
+                this.destination.next(value);
             } else {
-                return this.destination['return']();
+                this.destination.complete();
             }
         };
 
-        return TakeObserver;
-    })(_Observer3['default']);
+        return TakeSubscriber;
+    })(_Subscriber3['default']);
 
-    var TakeObservable = (function (_Observable) {
-        function TakeObservable(source, count) {
-            _classCallCheck(this, TakeObservable);
+    var TakeSubscriberFactory = (function (_SubscriberFactory) {
+        function TakeSubscriberFactory(count) {
+            _classCallCheck(this, TakeSubscriberFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _SubscriberFactory.call(this);
             this.count = count;
         }
 
-        _inherits(TakeObservable, _Observable);
+        _inherits(TakeSubscriberFactory, _SubscriberFactory);
 
-        TakeObservable.prototype.subscriber = function subscriber(observer) {
-            var takeObserver = new TakeObserver(observer, this.count);
-            return _Subscription2['default'].from(this.source.subscriber(takeObserver), takeObserver);
+        TakeSubscriberFactory.prototype.create = function create(destination) {
+            return new TakeSubscriber(destination, this.count);
         };
 
-        return TakeObservable;
-    })(_Observable3['default']);
+        return TakeSubscriberFactory;
+    })(_SubscriberFactory3['default']);
 
     function take(count) {
-        return new TakeObservable(this, count);
+        return this.lift(new TakeSubscriberFactory(count));
     }
 
     ;

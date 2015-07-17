@@ -19,7 +19,7 @@ class FromEventPatternObservable extends Observable {
             if (selector) {
                 result = try_catch(selector).apply(this, arguments);
                 if (result === error_obj) {
-                    subscriber["throw"](error_obj.e);
+                    subscriber.error(error_obj.e);
                     unsubscribe();
                     return;
                 }

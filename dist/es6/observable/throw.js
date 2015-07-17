@@ -4,8 +4,8 @@ class ThrowObservable extends Observable {
         super(null);
         this.err = err;
     }
-    subscriber(observer) {
-        observer.throw(this.err);
+    subscriber(subscriber) {
+        subscriber.error(this.err);
     }
 }
 const EMPTY_THROW = new ThrowObservable(undefined);

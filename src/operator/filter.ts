@@ -1,48 +1,41 @@
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
-import Subscription from '../Subscription';
+import SubscriberFactory from '../SubscriberFactory';
 
-interface IteratorResult<T> {
-  done:boolean;
-  value?:T
-}
-
-class FilterObserver extends Observer {
-  predicate:(any)=>boolean;
+class FilterSubscriber extends Subscriber {
+  predicate: (x: any) => boolean;
   
-  constructor(destination:Observer, predicate:(any)=>boolean) {
+  constructor(destination: Subscriber, predicate: (x: any) => boolean) {
     super(destination);
     this.predicate = predicate;
   }
   
-  _next(value:any):IteratorResult<any> {
+  _next(value: any) {
     var result = try_catch(this.predicate).call(this, value);
     if(result === error_obj) {
-        return this.destination["throw"](error_obj.e);
+       this.destination.error(error_obj.e);
     } else if (Boolean(result)) {
-        return this.destination.next(value);
+       this.destination.next(value);
     }
   }
 }
 
-class FilterObservable extends Observable {
-  source:Observable;
-  predicate:(any)=>boolean;
+class FilterSubscriberFactory extends SubscriberFactory {
+  predicate: (x: any) => boolean;
   
-  constructor(source:Observable, predicate:(any)=>boolean) {
-    super(null);
-    this.source = source;
+  constructor(predicate: (x: any) => boolean) {
+    super();
     this.predicate = predicate;
   }
   
-  subscriber(observer:Observer):Subscription {
-    var filterObserver = new FilterObserver(observer, this.predicate);
-    return Subscription.from(this.source.subscriber(filterObserver), filterObserver);
+  create(destination: Subscriber): Subscriber {
+    return new FilterSubscriber(destination, this.predicate);
   }
 }
 
-export default function select(predicate:(any)=>boolean) : Observable {
-  return new FilterObservable(this, predicate);
+
+export default function select(predicate: (x: any) => boolean) : Observable {
+  return this.lift(new FilterSubscriberFactory(predicate));
 };

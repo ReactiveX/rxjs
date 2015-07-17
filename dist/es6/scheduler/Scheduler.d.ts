@@ -1,4 +1,4 @@
-import Subscription from '../Subscription';
+import { Subscription } from '../Subscription';
 import { ScheduledAction, FutureScheduledAction } from './SchedulerActions';
 export default class Scheduler {
     actions: Array<ScheduledAction>;

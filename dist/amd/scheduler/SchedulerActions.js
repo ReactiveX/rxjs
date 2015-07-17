@@ -1,4 +1,4 @@
-define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscription'], function (exports, _SerialSubscription2, _utilImmediate, _Subscription) {
+define(['exports', '../SerialSubscription', '../util/Immediate'], function (exports, _SerialSubscription2, _utilImmediate) {
     'use strict';
 
     exports.__esModule = true;
@@ -12,8 +12,6 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
     var _SerialSubscription3 = _interopRequireDefault(_SerialSubscription2);
 
     var _Immediate = _interopRequireDefault(_utilImmediate);
-
-    var _Subscription2 = _interopRequireDefault(_Subscription);
 
     var ScheduledAction = (function (_SerialSubscription) {
         function ScheduledAction(scheduler, state, work) {
@@ -36,10 +34,10 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
         };
 
         ScheduledAction.prototype.execute = function execute() {
-            if (this.unsubscribed) {
+            if (this.isUnsubscribed) {
                 throw new Error('How did did we execute a canceled ScheduledAction?');
             }
-            this.add(_Subscription2['default'].from(this.work(this.state), this.observer));
+            this.add(this.work(this.state));
         };
 
         ScheduledAction.prototype.unsubscribe = function unsubscribe() {
@@ -63,9 +61,7 @@ define(['exports', '../SerialSubscription', '../util/Immediate', '../Subscriptio
         function NextScheduledAction() {
             _classCallCheck(this, NextScheduledAction);
 
-            if (_ScheduledAction != null) {
-                _ScheduledAction.apply(this, arguments);
-            }
+            _ScheduledAction.apply(this, arguments);
         }
 
         _inherits(NextScheduledAction, _ScheduledAction);

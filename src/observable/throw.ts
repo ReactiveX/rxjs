@@ -1,5 +1,5 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 class ThrowObservable extends Observable {
   err:any;
@@ -9,8 +9,8 @@ class ThrowObservable extends Observable {
     this.err = err;
   }
   
-  subscriber(observer:Observer) {
-    observer.throw(this.err);
+  subscriber(subscriber: Subscriber) {
+    subscriber.error(this.err);
   }
 }
 
