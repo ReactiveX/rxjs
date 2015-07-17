@@ -7,16 +7,16 @@ if (match) {
 }
 var numIterations = iterationInput.valueAsNumber;
 
-var RxNextTestObservable = new RxNext.Observable(function(generator) {
+var RxNextTestObservable = new RxNext.Observable(function(subscriber) {
   var i = numIterations;
   while (i--) {
-    generator.next(i);
+    subscriber.next(i);
   }
 
-  generator.return();
+  subscriber.complete();
 
   //HACK: junk subscription
-  return new RxNext.Subscription(noop);
+  // return new RxNext.Subscription(noop);
 });
 
 var Rx2TestObservable = Rx.Observable.create(function(observer) {
@@ -28,18 +28,18 @@ var Rx2TestObservable = Rx.Observable.create(function(observer) {
   observer.onCompleted();
 
   //HACK: junk subscription
-  return new noop;
+  // return new noop;
 });
 
 var projectionRxNext = function(x) {
-  return new RxNext.Observable(function(generator) {
+  return new RxNext.Observable(function(subscriber) {
     // var tid = setTimeout(function(){
-      generator.next(x + '!!!');
-      generator.return();
+      subscriber.next(x + '!!!');
+      subscriber.complete();
     // });
-    return new RxNext.Subscription(function(){
-      // clearTimeout(tid);
-    });
+    // return new RxNext.Subscription(function(){
+    //   // clearTimeout(tid);
+    // });
   });
 };
 
@@ -50,9 +50,9 @@ var projectionRx2 = function(x) {
       observer.onCompleted();
     // }, 0);
 
-    return function(){
-      // clearTimeout(tid);
-    }
+    // return function(){
+    //   // clearTimeout(tid);
+    // }
   });
 };
 
