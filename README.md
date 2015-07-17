@@ -2,13 +2,14 @@
 
 # RxJS Next (pre-alpha)
 
+Reactive Extensions Library for JavaScript
+
 [Apache 2.0 License](LICENSE.txt)
 
 ## Important
 
 By contributing or commenting on issues in this repository, whether you've read them or not, you're agreeing to the [Contributor Code of Conduct](CODE_OF_CONDUCT.md). Much like traffic laws, ignorance doesn't grant you immunity.
 
-Reactive Extensions Library
 
 ## Goals
 
