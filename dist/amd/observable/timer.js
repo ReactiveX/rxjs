@@ -24,17 +24,17 @@ define(['exports', 'module', '../Observable', '../scheduler/nextTick'], function
 
         _inherits(TimerObservable, _Observable);
 
-        TimerObservable.prototype.subscriber = function subscriber(observer) {
-            this.scheduler.schedule(this.delay, observer, dispatch);
+        TimerObservable.prototype.subscriber = function subscriber(_subscriber) {
+            return this.scheduler.schedule(this.delay, _subscriber, dispatch);
         };
 
         return TimerObservable;
     })(_Observable3['default']);
 
-    function dispatch(observer) {
-        if (!observer.unsubscribed) {
-            observer.next(0);
-            observer['return']();
+    function dispatch(subscriber) {
+        if (!subscriber.isUnsubscribed) {
+            subscriber.next(0);
+            subscriber.complete();
         }
     }
 

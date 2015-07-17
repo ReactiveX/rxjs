@@ -10,23 +10,25 @@ describe('Observable.fromPromise', function(){
 				expect(x).toBe(42);
 			}, null,
 			function(x) {
-				expect(x).toBe(42);
+				expect(x).toBe(undefined);
 				done();
 			});
 	});
-	
-	it('should cancel', function(done){
+
+	it('should not emit, throw or complete if immediately unsubscribed', function(done){
+		var nextSpy = jasmine.createSpy('next');
+		var throwSpy = jasmine.createSpy('throw');
+		var completeSpy = jasmine.createSpy('complete');
 		var promise = Promise.resolve(42);
 		var subscription = Observable.fromPromise(promise)
-			.subscribe(function(x) {
-				expect(x).toBe(42);
-			}, null,
-			function(x) {
-				expect(x).toBe(42);
-			},
-			function() {
-				done();
-			});
-	  subscription.unsubscribe();
+			.subscribe(nextSpy, throwSpy, completeSpy);
+		subscription.unsubscribe();
+
+	  setTimeout(function() {
+		  expect(nextSpy).not.toHaveBeenCalled();
+		  expect(throwSpy).not.toHaveBeenCalled();
+		  expect(completeSpy).not.toHaveBeenCalled();
+		  done();
+	  });
 	});
 });

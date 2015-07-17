@@ -1,5 +1,5 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Scheduler from '../scheduler/Scheduler';
 import nextTick from '../scheduler/nextTick';
 
@@ -13,15 +13,15 @@ class TimerObservable extends Observable {
     this.scheduler = scheduler;
   }
   
-  subscriber(observer:Observer) {
-    this.scheduler.schedule(this.delay, observer, dispatch);
+  subscriber(subscriber:Subscriber) {
+    return this.scheduler.schedule(this.delay, subscriber, dispatch);
   }
 }
 
-function dispatch(observer:Observer) {
-  if(!observer.unsubscribed) {
-    observer.next(0);
-    observer.return();
+function dispatch(subscriber:Subscriber) {
+  if(!subscriber.isUnsubscribed) {
+    subscriber.next(0);
+    subscriber.complete();
   }
 }
 

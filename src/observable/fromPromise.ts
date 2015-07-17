@@ -1,31 +1,31 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 class PromiseObservable extends Observable {
-  promise:Promise<any>;
+  promise: Promise<any>;
   
-  constructor(promise:Promise<any>) {
+  constructor(promise: Promise<any>) {
     super(null);
     this.promise = promise; 
   }
   
-  subscriber(observer:Observer) {
+  subscriber(subscriber:Subscriber) {
     var promise = this.promise;
     if(promise) {
       promise.then(x => {
-        if(!observer.unsubscribed) {
-          observer.next(x);
-          observer.return(x);
+        if(!subscriber.isUnsubscribed) {
+          subscriber.next(x);
+          subscriber.complete();
         }
       }, e => {
-        if(!observer.unsubscribed) {
-          observer.throw(e);
+        if(!subscriber.isUnsubscribed) {
+          subscriber.error(e);
         }
       });
     }
   }
 }
 
-export default function fromPromise(promise:Promise<any>) : Observable {
+export default function fromPromise(promise: Promise<any>) : Observable {
   return new PromiseObservable(promise);
 }

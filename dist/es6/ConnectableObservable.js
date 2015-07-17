@@ -1,7 +1,6 @@
 import Observable from './Observable';
-import Observer from './Observer';
+import Subscriber from './Subscriber';
 import $$observer from './util/Symbol_observer';
-import nextTick from './scheduler/nextTick';
 export default class ConnectableObservable extends Observable {
     constructor(source, subjectFactory) {
         super(null);
@@ -9,25 +8,37 @@ export default class ConnectableObservable extends Observable {
         this.subjectFactory = subjectFactory;
     }
     connect() {
-        return nextTick.schedule(0, this, dispatchConnection);
-    }
-    connectSync() {
-        return dispatchConnection(this);
-    }
-    [$$observer](observer) {
-        if (!(observer instanceof Observer)) {
-            observer = new Observer(observer);
+        if (!this.subscription) {
+            this.subscription = this.source.subscribe(this.subject);
         }
-        if (!this.subject || this.subject.unsubscribed) {
+        return this.subscription;
+    }
+    [$$observer](subscriber) {
+        if (!(subscriber instanceof ConnectableSubscriber)) {
+            subscriber = new ConnectableSubscriber(subscriber, this);
+        }
+        if (!this.subject || this.subject.isUnsubscribed) {
             if (this.subscription) {
+                this.subscription.unsubscribe();
                 this.subscription = undefined;
             }
             this.subject = this.subjectFactory();
         }
-        return this.subject[$$observer](observer);
+        this.subject.subscribe(subscriber);
+        return subscriber;
     }
     refCount() {
         return new RefCountObservable(this);
+    }
+}
+class ConnectableSubscriber extends Subscriber {
+    constructor(destination, source) {
+        super(destination);
+        this.source = source;
+    }
+    _complete(value) {
+        this.source.subject.remove(this);
+        super._complete(value);
     }
 }
 class RefCountObservable extends Observable {
@@ -36,27 +47,19 @@ class RefCountObservable extends Observable {
         this.refCount = 0;
         this.source = source;
     }
-    subscriber(observer) {
+    subscriber(subscriber) {
         this.refCount++;
-        this.source[$$observer](observer);
+        this.source.subscribe(subscriber);
         var shouldConnect = this.refCount === 1;
         if (shouldConnect) {
-            this.connectionSubscription = this.source.connectSync();
+            this.connectionSubscription = this.source.connect();
         }
+        // HACK: closure, refactor soon    
         return () => {
-            var refCount = this.refCount--;
-            if (refCount === 0) {
+            this.refCount--;
+            if (this.refCount === 0) {
                 this.connectionSubscription.unsubscribe();
             }
         };
     }
-}
-function dispatchConnection(connectable) {
-    if (!connectable.subscription) {
-        if (!connectable.subject) {
-            connectable.subject = connectable.subjectFactory();
-        }
-        connectable.subscription = connectable.source.subscribe(connectable.subject);
-    }
-    return connectable.subscription;
 }

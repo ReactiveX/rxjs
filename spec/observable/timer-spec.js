@@ -5,17 +5,19 @@ var immediate = RxNext.Scheduler.immediate;
 var Observer = RxNext.Observer;
 
 describe('Observable.timer', function(){
-	it('schedule a value of 0 then complete', function(done) {
+	it('schedule a value of 0 then complete', function() {
+		jasmine.clock().install();
+		jasmine.clock().mockDate();
 		var start = Date.now();
 		
-		//HACK: need virtual scheduler here.
-	  Observable.timer(100)
+	  	Observable.timer(100)
 			.subscribe(function(x) {
 				expect(x).toBe(0)
-			}, null, 
+			}, null,
 			function() {
 				expect(Date.now() - start >= 100).toBe(true);
-				done();
 			});
+		jasmine.clock().tick(101);
+		jasmine.clock().uninstall();
 	});
 });

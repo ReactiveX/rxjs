@@ -12,17 +12,13 @@ var _Observable3 = require('./Observable');
 
 var _Observable4 = _interopRequireDefault(_Observable3);
 
-var _Observer = require('./Observer');
+var _Subscriber2 = require('./Subscriber');
 
-var _Observer2 = _interopRequireDefault(_Observer);
+var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
 var _utilSymbol_observer = require('./util/Symbol_observer');
 
 var _utilSymbol_observer2 = _interopRequireDefault(_utilSymbol_observer);
-
-var _schedulerNextTick = require('./scheduler/nextTick');
-
-var _schedulerNextTick2 = _interopRequireDefault(_schedulerNextTick);
 
 var ConnectableObservable = (function (_Observable) {
     function ConnectableObservable(source, subjectFactory) {
@@ -36,24 +32,25 @@ var ConnectableObservable = (function (_Observable) {
     _inherits(ConnectableObservable, _Observable);
 
     ConnectableObservable.prototype.connect = function connect() {
-        return _schedulerNextTick2['default'].schedule(0, this, dispatchConnection);
-    };
-
-    ConnectableObservable.prototype.connectSync = function connectSync() {
-        return dispatchConnection(this);
-    };
-
-    ConnectableObservable.prototype[_utilSymbol_observer2['default']] = function (observer) {
-        if (!(observer instanceof _Observer2['default'])) {
-            observer = new _Observer2['default'](observer);
+        if (!this.subscription) {
+            this.subscription = this.source.subscribe(this.subject);
         }
-        if (!this.subject || this.subject.unsubscribed) {
+        return this.subscription;
+    };
+
+    ConnectableObservable.prototype[_utilSymbol_observer2['default']] = function (subscriber) {
+        if (!(subscriber instanceof ConnectableSubscriber)) {
+            subscriber = new ConnectableSubscriber(subscriber, this);
+        }
+        if (!this.subject || this.subject.isUnsubscribed) {
             if (this.subscription) {
+                this.subscription.unsubscribe();
                 this.subscription = undefined;
             }
             this.subject = this.subjectFactory();
         }
-        return this.subject[_utilSymbol_observer2['default']](observer);
+        this.subject.subscribe(subscriber);
+        return subscriber;
     };
 
     ConnectableObservable.prototype.refCount = function refCount() {
@@ -64,6 +61,24 @@ var ConnectableObservable = (function (_Observable) {
 })(_Observable4['default']);
 
 exports['default'] = ConnectableObservable;
+
+var ConnectableSubscriber = (function (_Subscriber) {
+    function ConnectableSubscriber(destination, source) {
+        _classCallCheck(this, ConnectableSubscriber);
+
+        _Subscriber.call(this, destination);
+        this.source = source;
+    }
+
+    _inherits(ConnectableSubscriber, _Subscriber);
+
+    ConnectableSubscriber.prototype._complete = function _complete(value) {
+        this.source.subject.remove(this);
+        _Subscriber.prototype._complete.call(this, value);
+    };
+
+    return ConnectableSubscriber;
+})(_Subscriber3['default']);
 
 var RefCountObservable = (function (_Observable2) {
     function RefCountObservable(source) {
@@ -76,18 +91,19 @@ var RefCountObservable = (function (_Observable2) {
 
     _inherits(RefCountObservable, _Observable2);
 
-    RefCountObservable.prototype.subscriber = function subscriber(observer) {
+    RefCountObservable.prototype.subscriber = function subscriber(_subscriber) {
         var _this = this;
 
         this.refCount++;
-        this.source[_utilSymbol_observer2['default']](observer);
+        this.source.subscribe(_subscriber);
         var shouldConnect = this.refCount === 1;
         if (shouldConnect) {
-            this.connectionSubscription = this.source.connectSync();
+            this.connectionSubscription = this.source.connect();
         }
+        // HACK: closure, refactor soon   
         return function () {
-            var refCount = _this.refCount--;
-            if (refCount === 0) {
+            _this.refCount--;
+            if (_this.refCount === 0) {
                 _this.connectionSubscription.unsubscribe();
             }
         };
@@ -96,13 +112,4 @@ var RefCountObservable = (function (_Observable2) {
     return RefCountObservable;
 })(_Observable4['default']);
 
-function dispatchConnection(connectable) {
-    if (!connectable.subscription) {
-        if (!connectable.subject) {
-            connectable.subject = connectable.subjectFactory();
-        }
-        connectable.subscription = connectable.source.subscribe(connectable.subject);
-    }
-    return connectable.subscription;
-}
 module.exports = exports['default'];

@@ -9,8 +9,8 @@ var _Observable = require('../Observable');
 
 var _Observable2 = _interopRequireDefault(_Observable);
 
-var EMPTY = new _Observable2['default'](function (observer) {
-    observer['return']();
+var EMPTY = new _Observable2['default'](function (subscriber) {
+    subscriber.complete();
 });
 
 function empty() {

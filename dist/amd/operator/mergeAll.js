@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../Subscription', '../SerialSubscription', '../CompositeSubscription', '../Observable', '../util/Symbol_observer'], function (exports, module, _Observer3, _Subscription, _SerialSubscription, _CompositeSubscription, _Observable2, _utilSymbol_observer) {
+define(['exports', 'module', '../Subscriber', '../util/Symbol_observer', '../SubscriberFactory'], function (exports, module, _Subscriber3, _utilSymbol_observer, _SubscriberFactory2) {
     'use strict';
 
     module.exports = mergeAll;
@@ -9,117 +9,97 @@ define(['exports', 'module', '../Observer', '../Subscription', '../SerialSubscri
 
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-    var _Observer4 = _interopRequireDefault(_Observer3);
-
-    var _Subscription2 = _interopRequireDefault(_Subscription);
-
-    var _SerialSubscription2 = _interopRequireDefault(_SerialSubscription);
-
-    var _CompositeSubscription2 = _interopRequireDefault(_CompositeSubscription);
-
-    var _Observable3 = _interopRequireDefault(_Observable2);
+    var _Subscriber4 = _interopRequireDefault(_Subscriber3);
 
     var _$$observer = _interopRequireDefault(_utilSymbol_observer);
 
-    var MergeAllObserver = (function (_Observer) {
-        function MergeAllObserver(destination, concurrent) {
-            _classCallCheck(this, MergeAllObserver);
+    var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-            _Observer.call(this, destination);
+    var MergeAllSubscriber = (function (_Subscriber) {
+        function MergeAllSubscriber(destination, concurrent) {
+            _classCallCheck(this, MergeAllSubscriber);
+
+            _Subscriber.call(this, destination);
             this.stopped = false;
             this.buffer = [];
             this.concurrent = concurrent;
-            this.subscriptions = new _CompositeSubscription2['default']();
         }
 
-        _inherits(MergeAllObserver, _Observer);
+        _inherits(MergeAllSubscriber, _Subscriber);
 
-        MergeAllObserver.prototype.next = function next(observable) {
+        MergeAllSubscriber.prototype.next = function next(observable) {
             var buffer = this.buffer;
             var concurrent = this.concurrent;
             var subscriptions = this.subscriptions;
             if (subscriptions.length < concurrent) {
-                var innerSubscription = new _SerialSubscription2['default'](null);
-                var innerObserver = new MergeInnerObserver(this, innerSubscription);
-                subscriptions.add(innerSubscription);
-                innerSubscription.add(observable[_$$observer['default']](innerObserver));
+                var innerSubscriber = new MergeInnerSubscriber(this);
+                this.add(innerSubscriber);
+                innerSubscriber.add(observable[_$$observer['default']](innerSubscriber));
             } else if (buffer) {
                 buffer.push(observable);
             }
-            return { done: false };
         };
 
-        MergeAllObserver.prototype['return'] = function _return() {
+        MergeAllSubscriber.prototype.complete = function complete(value) {
             this.stopped = true;
             if (this.subscriptions.length === 0 && (this.buffer && this.buffer.length === 0)) {
-                this.destination['return']();
+                this.destination.complete(value);
             }
-            return { done: true };
         };
 
-        MergeAllObserver.prototype._innerReturn = function _innerReturn(innerObserver) {
+        MergeAllSubscriber.prototype._innerComplete = function _innerComplete(innerSubscriber) {
             var buffer = this.buffer;
-            var subscriptions = this.subscriptions;
-            subscriptions.remove(innerObserver.subscription);
-            if (subscriptions.length < this.concurrent) {
+            this.remove(innerSubscriber);
+            if (this.subscriptions.length < this.concurrent) {
                 if (buffer && buffer.length > 0) {
                     this.next(buffer.shift());
-                } else if (this.stopped && subscriptions.length === 0) {
-                    return this.destination['return']();
+                } else if (this.stopped && this.subscriptions.length === 0) {
+                    return this.destination.complete();
                 }
             }
-            return { done: true };
         };
 
-        MergeAllObserver.prototype._dispose = function _dispose() {
-            console.log('dispose parent');
-            this.subscriptions.unsubscribe();
-        };
+        return MergeAllSubscriber;
+    })(_Subscriber4['default']);
 
-        return MergeAllObserver;
-    })(_Observer4['default']);
+    var MergeInnerSubscriber = (function (_Subscriber2) {
+        function MergeInnerSubscriber(parent) {
+            _classCallCheck(this, MergeInnerSubscriber);
 
-    var MergeInnerObserver = (function (_Observer2) {
-        function MergeInnerObserver(parent, subscription) {
-            _classCallCheck(this, MergeInnerObserver);
-
-            _Observer2.call(this, parent.destination);
+            _Subscriber2.call(this, parent.destination);
             this.parent = parent;
-            this.subscription = subscription;
         }
 
-        _inherits(MergeInnerObserver, _Observer2);
+        _inherits(MergeInnerSubscriber, _Subscriber2);
 
-        MergeInnerObserver.prototype._return = function _return() {
-            return this.parent._innerReturn(this);
+        MergeInnerSubscriber.prototype._complete = function _complete(value) {
+            return this.parent._innerComplete(this);
         };
 
-        return MergeInnerObserver;
-    })(_Observer4['default']);
+        return MergeInnerSubscriber;
+    })(_Subscriber4['default']);
 
-    var MergeAllObservable = (function (_Observable) {
-        function MergeAllObservable(source, concurrent) {
-            _classCallCheck(this, MergeAllObservable);
+    var MergeAllSubscriberFactory = (function (_SubscriberFactory) {
+        function MergeAllSubscriberFactory(concurrent) {
+            _classCallCheck(this, MergeAllSubscriberFactory);
 
-            _Observable.call(this, null);
-            this.source = source;
+            _SubscriberFactory.call(this);
             this.concurrent = concurrent;
         }
 
-        _inherits(MergeAllObservable, _Observable);
+        _inherits(MergeAllSubscriberFactory, _SubscriberFactory);
 
-        MergeAllObservable.prototype.subscriber = function subscriber(observer) {
-            var mergeAllObserver = new MergeAllObserver(observer, this.concurrent);
-            return _Subscription2['default'].from(this.source.subscriber(mergeAllObserver), mergeAllObserver);
+        MergeAllSubscriberFactory.prototype.create = function create(destination) {
+            return new MergeAllSubscriber(destination, this.concurrent);
         };
 
-        return MergeAllObservable;
-    })(_Observable3['default']);
+        return MergeAllSubscriberFactory;
+    })(_SubscriberFactory3['default']);
 
     function mergeAll() {
         var concurrent = arguments[0] === undefined ? Number.POSITIVE_INFINITY : arguments[0];
 
-        return new MergeAllObservable(this, concurrent);
+        return this.lift(new MergeAllSubscriberFactory(concurrent));
     }
 
     ;

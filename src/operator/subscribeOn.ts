@@ -1,14 +1,8 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Scheduler from '../scheduler/Scheduler';
-import Subscription from '../Subscription';
 import $$observer from '../util/Symbol_observer';
 import SerialSubscription from '../SerialSubscription';
-
-interface IteratorResult<T> {
-  done:boolean;
-  value?:T
-}
 
 class SubscribeOnObservable extends Observable {
   source:Observable;
@@ -20,7 +14,7 @@ class SubscribeOnObservable extends Observable {
     this.scheduler = scheduler;
   }
   
-  [$$observer](observer:Observer) {
+  [$$observer](observer:Subscriber) {
     var subscription = new SerialSubscription(null);
     var observerFn = Observable.prototype[$$observer]; //HACK: https://github.com/Microsoft/TypeScript/issues/3573
     this.scheduler.schedule(0, [this, observer, observerFn, subscription], dispatchSubscription);

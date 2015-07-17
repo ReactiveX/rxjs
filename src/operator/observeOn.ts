@@ -1,34 +1,26 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Scheduler from '../scheduler/Scheduler';
-import Subscription from '../Subscription';
+import SubscriberFactory from '../SubscriberFactory';
 
-interface IteratorResult<T> {
-  value?:T;
-  done:boolean;
-}
-
-class ObserveOnObserver extends Observer {
+class ObserveOnSubscriber extends Subscriber {
   scheduler:Scheduler;
   
-  constructor(destination:Observer, scheduler:Scheduler) {
+  constructor(destination:Subscriber, scheduler:Scheduler) {
     super(destination);
     this.scheduler = scheduler;   
   }
   
-  _next(value:any) : IteratorResult<any> {
+  next(value: any) {
     this.scheduler.schedule(0, [this.destination, value], dispatchNext);
-    return { done: false };
   }
   
-  _throw(err:any) : IteratorResult<any> {
-    this.scheduler.schedule(0, [this.destination, err], dispatchThrow);
-    return { done: true };
+  _error(err: any) {
+    this.scheduler.schedule(0, [this.destination, err], dispatchError);
   }
   
-  _return(value:any) : IteratorResult<any> {
-    this.scheduler.schedule(0, [this.destination, value], dispatchReturn);
-    return { done: true };
+  _complete(value:any) {
+    this.scheduler.schedule(0, [this.destination, value], dispatchComplete);
   }
 }
 
@@ -39,32 +31,29 @@ function dispatchNext([destination, value]) {
   }
 }
 
-function dispatchThrow([destination, err]) {
-  var result = destination.throw(err);
+function dispatchError([destination, err]) {
+  var result = destination.error(err);
   destination.dispose();
 }
 
-function dispatchReturn([destination, value]) {
-  var result = destination.return(value);
+function dispatchComplete([destination, value]) {
+  var result = destination.complete(value);
   destination.dispose();
 }
 
-class ObserveOnObservable extends Observable {
-  scheduler:Scheduler;
-  source:Observable;
+class ObserveOnSubscriberFactory extends SubscriberFactory {
+  scheduler: Scheduler;
   
-  constructor(source:Observable, scheduler:Scheduler) {
-    super(null);
-    this.source = source;
-    this.scheduler = scheduler; 
+  constructor(scheduler: Scheduler) {
+    super();
+    this.scheduler = scheduler;
   }
-
-  subscriber(observer:Observer):Subscription {
-    var observeOnObserver = new ObserveOnObserver(observer, this.scheduler);
-    return Subscription.from(this.source.subscriber(observeOnObserver), observeOnObserver);
+  
+  create(destination: Subscriber): Subscriber {
+    return new ObserveOnSubscriber(destination, this.scheduler);
   }
 }
 
-export default function observeOn(scheduler:Scheduler):Observable {
-  return new ObserveOnObservable(this, scheduler);
+export default function observeOn(scheduler: Scheduler): Observable {
+  return this.lift(new ObserveOnSubscriberFactory(scheduler));
 }

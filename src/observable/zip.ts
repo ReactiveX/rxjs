@@ -1,71 +1,61 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import CompositeSubscription from '../CompositeSubscription';
 import SerialSubscription from '../SerialSubscription';
-import Subscription from '../Subscription';
 import $$observer from '../util/Symbol_observer';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
-
-interface IteratorResult<T> {
-  value?:T;
-  done:boolean;
-}
+import { Subscription } from '../Subscription';
 
 class ZipObservable extends Observable {
   observables:Array<Observable>;
-  project:(...observables:Array<Observable>)=>Observable;
+  project:(...observables: Array<Observable>)=>Observable;
   
-  constructor(observables:Array<Observable>, project:(...observables:Array<Observable>)=>Observable) {
+  constructor(observables: Array<Observable>, project:(...observables:Array<Observable>)=>Observable) {
     super(null);
     this.observables = observables;
     this.project = project;
   }
   
-  subscriber(observer:Observer):Subscription {
-    var subscriptions = new CompositeSubscription();
+  subscriber(subscriber:Subscriber):Subscription {
     this.observables.forEach((obs, i) => {
-      var innerObserver = new InnerZipObserver(observer, i, this.project, subscriptions, obs);
-      subscriptions.add(Subscription.from(obs[$$observer](innerObserver), innerObserver));
+      var innerSubscriber = new InnerZipSubscriber(subscriber, i, this.project, obs);
+      subscriber.add(obs[$$observer](innerSubscriber));
     });
-    return subscriptions;
+    return subscriber;
   }
 }
 
-class InnerZipObserver extends Observer {
+class InnerZipSubscriber extends Subscriber {
   index:number;
   project:(...observer:Array<Observable>)=>Observable;
-  subscriptions:CompositeSubscription
   observable:Observable;
   buffer:Array<any> = [];
   
-  constructor(destination:Observer, index:number, 
+  constructor(destination:Subscriber, index:number, 
     project:(...observables:Array<Observable>)=>Observable,
-    subscriptions:CompositeSubscription,
     observable:Observable) {
     super(destination);
     this.index = index;
     this.project = project;
-    this.subscriptions = subscriptions;
     this.observable = observable;
   }
   
-  _next(value:any):IteratorResult<any> {
+  _next(value: any) {
     this.buffer.push(value);
-    return { done: false };
   }
   
   _canEmit() {
-    return this.subscriptions._subscriptions.every(sub => {
-      var observer = <InnerZipObserver>sub.observer;
-      return !observer.unsubscribed && observer.buffer.length > 0;
+    return this.subscriptions.every(subscription => {
+      var sub = <InnerZipSubscriber>subscription;
+      return !sub.isUnsubscribed && sub.buffer.length > 0;
     });
   }
   
   _getArgs() {
-    return this.subscriptions._subscriptions.reduce((args, sub) => {
-      var observer = <InnerZipObserver>sub.observer;
-      args.push(observer.buffer.shift());
+    return this.subscriptions.reduce((args, subcription) => {
+      var sub = <InnerZipSubscriber>subcription;
+      args.push(sub.buffer.shift());
       return args;
     }, []);
   }
@@ -77,12 +67,12 @@ class InnerZipObserver extends Observer {
     }
   }
   
-  _sendNext(args:Array<any>):IteratorResult<any> {
+  _sendNext(args: Array<any>) {
     var value = try_catch(this.project).apply(this, args);
     if(value === error_obj) {
-      return this.destination["throw"](error_obj.e);
+      this.destination.error(error_obj.e);
     } else {
-      return this.destination.next(value);
+      this.destination.next(value);
     }
   }
 }

@@ -21,9 +21,9 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(ValueObservable, _Observable);
 
-        ValueObservable.prototype.subscriber = function subscriber(observer) {
-            observer.next(this.value);
-            observer['return']();
+        ValueObservable.prototype.subscriber = function subscriber(_subscriber) {
+            _subscriber.next(this.value);
+            _subscriber.complete();
         };
 
         return ValueObservable;

@@ -1,7 +1,6 @@
-import Observer from '../Observer';
-import Observable from '../Observable';
-import Subscription from '../Subscription';
-class MapToObserver extends Observer {
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
+class MapToSubscriber extends Subscriber {
     constructor(destination, value) {
         super(destination);
         this.value = value;
@@ -10,18 +9,16 @@ class MapToObserver extends Observer {
         return this.destination.next(this.value);
     }
 }
-class MapToObservable extends Observable {
-    constructor(source, value) {
-        super(null);
-        this.source = source;
+class MapToSubscriberFactory extends SubscriberFactory {
+    constructor(value) {
+        super();
         this.value = value;
     }
-    subscriber(observer) {
-        var mapToObserver = new MapToObserver(observer, this.value);
-        return Subscription.from(this.source.subscriber(mapToObserver), mapToObserver);
+    create(destination) {
+        return new MapToSubscriber(destination, this.value);
     }
 }
 export default function mapTo(value) {
-    return new MapToObservable(this, value);
+    return this.lift(new MapToSubscriberFactory(value));
 }
 ;

@@ -21,8 +21,8 @@ define(['exports', 'module', '../Observable'], function (exports, module, _Obser
 
         _inherits(ThrowObservable, _Observable);
 
-        ThrowObservable.prototype.subscriber = function subscriber(observer) {
-            observer['throw'](this.err);
+        ThrowObservable.prototype.subscriber = function subscriber(_subscriber) {
+            _subscriber.error(this.err);
         };
 
         return ThrowObservable;

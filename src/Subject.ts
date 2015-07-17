@@ -1,103 +1,80 @@
 import Observable from './Observable';
-import Observer from './Observer';
+import Subscriber from './Subscriber';
 import $$observer from './util/Symbol_observer';
 import SerialSubscription from './SerialSubscription';
-import Subscription from './Subscription';
+import { Subscription } from './Subscription';
+import { Observer } from './Observer';
 
-export interface IteratorResult<T> {
-  value?:T;
-  done:boolean;
-}
-
-export default class Subject extends Observable {
-  destination:Observer;
+export default class Subject extends Observable implements Observer, Subscription {
+  destination:Subscriber;
   disposed:boolean=false;
-  observers:Array<Observer> = [];
-  _dispose:()=>void;
-  unsubscribed: boolean = false;
-  _next: (value: any) => IteratorResult<any>;
-  _throw: (err: any) => IteratorResult<any>;
-  _return: (value: any) => IteratorResult<any>;
+  subscribers:Array<Subscriber> = [];
+  isUnsubscribed: boolean = false;
+  _next: (value: any) => void;
+  _error: (err: any) => void;
+  _complete: (value: any) => void;
   
   constructor() {
     super(null);
   }
   
-  dispose() {
-    this.disposed = true;
-    if(this._dispose) {
-      this._dispose();
+  [$$observer](subscriber: Subscriber): Subscription {
+    if (!(subscriber instanceof Subscriber)) {
+      subscriber = new Subscriber(subscriber);
     }
-  }
-  
-  [$$observer](observer:Observer) : Subscription {
-    this.observers.push(observer);
-    var subscription = new Subscription(null, observer);
-    return subscription;
-  }
-  
-  next(value:any) : IteratorResult<any> {
-    if(this.unsubscribed) {
-      return { done: true };
-    }
-    this.observers.forEach(o => o.next(value));
-    this._cleanUnsubbedObservers();
-    return { done: false };
-  }
-  
-  throw(err:any) : IteratorResult<any> {
-    if(this.unsubscribed) {
-      return { done: true };
-    }
-    this.observers.forEach(o => o.throw(err));
-    this.unsubscribe();
-    this._cleanUnsubbedObservers();
-    return { done: true };
-  }
-
-  return(value:any) : IteratorResult<any> {
-    if(this.unsubscribed) {
-      return { done: true };
-    }
-    this.observers.forEach(o => o.return(value));
-    this.unsubscribe();
-    this._cleanUnsubbedObservers();
-    return { done: true };
-  } 
-  
-  _cleanUnsubbedObservers() {
-    var i;
-    var observers = this.observers;
-    for (i = observers.length; i--;) {
-      if (observers[i].unsubscribed) {
-        observers.splice(i, 1);
+    this.add(subscriber);
+    
+    //HACK: return a subscription that will remove the subscriber from the list
+    return <Subscription>{
+      subscriber: subscriber,
+      subject: this,
+      isUnsubscribed: false,
+      add() { },
+      remove() { },
+      unsubscribe() {
+        this.isUnsubscribed = true;
+        this.subscriber.unsubscribe;
+        this.subject.remove(this.subscriber);
       }
-    }
-    if (observers.length === 0) {
-      this.unsubscribe();
-    }
+    };
   }
   
-  unsubscribe() {
-    this.observers.length = 0;
-    this.unsubscribed = true;
+  next(value: any) {
+    if(this.isUnsubscribed) {
+      return;
+    }
+    this.subscribers.forEach(o => o.next(value));
   }
-}
+  
+  error(err: any) {
+    if(this.isUnsubscribed) {
+      return;
+    }
+    this.subscribers.forEach(o => o.error(err));
+    this.unsubscribe();
+  }
 
-class SubjectSubscription extends Subscription {
-  subject:Subject;
+  complete(value: any) {
+    if(this.isUnsubscribed) {
+      return;
+    }
+    this.subscribers.forEach(o => o.complete(value));
+    this.unsubscribe();
+  }
   
-  constructor(observer:Observer, subject:Subject) {
-    super(null, observer);
-    this.subject = subject; 
+  add(subscriber: Subscriber) {
+    this.subscribers.push(subscriber);
+  }
+  
+  remove(subscriber: Subscriber) {
+    let index = this.subscribers.indexOf(subscriber);
+    if (index !== -1) {
+      this.subscribers.splice(index, 1);
+    }  
   }
   
   unsubscribe() {
-    var observers = this.subject.observers;
-    var index = observers.indexOf(this.observer);
-    if(index !== -1) {
-      observers.splice(index, 1);
-    }
-    super.unsubscribe();
+    this.subscribers.length = 0;
+    this.isUnsubscribed = true;
   }
 }
