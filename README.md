@@ -2,13 +2,18 @@
 
 # RxJS Next (pre-alpha)
 
+[Apache 2.0 License](LICENSE.txt)
+
+## Important
+
+By contributing or commenting on issues in this repository, whether you've read them or not, you're agreeing to the [Contributor Code of Conduct](CODE_OF_CONDUCT.md). Much like traffic laws, ignorance doesn't grant you immunity.
 
 Reactive Extensions Library
 
 ## Goals
 
-- To model/follow the [ES7 Observable Spec](https://github.com/zenparsing/es-observable) to the observable.
 - Provide better performance than preceding versions of RxJS
+- To model/follow the [ES7 Observable Spec](https://github.com/zenparsing/es-observable) to the observable.
 - Provide more modular file structure in a variety of formats
 
 ## Building/Testing
