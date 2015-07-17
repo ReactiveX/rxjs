@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ReactiveX/RxJS.svg?branch=master)](https://travis-ci.org/ReactiveX/RxJS)
+
 # RxJS Next (pre-alpha)
 
 Reactive Extensions Library
@@ -29,7 +31,7 @@ npm run build_all
 
 ### Prerequisites
 
-Currently, you need `typescript`, `jasmine`, `babel`, and `browserify` globally installed to build and test. 
+Currently, you need `typescript`, `jasmine`, `babel`, and `browserify` globally installed to build and test.
 This will change as the build process matures. You can install all of these with the following:
 ```sh
 npm i -g typescript jasmine babel browserify
