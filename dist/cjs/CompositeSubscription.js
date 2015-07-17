@@ -6,25 +6,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-var _Subscription2 = require('./Subscription');
-
-var _Subscription3 = _interopRequireDefault(_Subscription2);
-
 var _utilArraySlice = require('./util/arraySlice');
 
 var _utilArraySlice2 = _interopRequireDefault(_utilArraySlice);
 
-var CompositeSubscription = (function (_Subscription) {
+var CompositeSubscription = (function () {
     function CompositeSubscription() {
         _classCallCheck(this, CompositeSubscription);
 
-        _Subscription.call(this, null, null);
         this.length = 0;
+        this.isUnsubscribed = false;
     }
-
-    _inherits(CompositeSubscription, _Subscription);
 
     CompositeSubscription.from = function from(subscriptions) {
         var comp = new CompositeSubscription();
@@ -37,23 +29,23 @@ var CompositeSubscription = (function (_Subscription) {
     };
 
     CompositeSubscription.prototype.unsubscribe = function unsubscribe() {
-        if (this.unsubscribed || !this._subscriptions) {
+        if (this.isUnsubscribed || !this.subscriptions) {
             return;
         }
-        this.unsubscribed = true;
-        var subscriptions = _utilArraySlice2['default'](this._subscriptions);
+        this.isUnsubscribed = true;
+        var subscriptions = _utilArraySlice2['default'](this.subscriptions);
         var subscriptionCount = subscriptions && subscriptions.length || 0;
         var subscriptionIndex = -1;
-        this._subscriptions = undefined;
+        this.subscriptions = undefined;
         while (++subscriptionIndex < subscriptionCount) {
             subscriptions[subscriptionIndex].unsubscribe();
         }
     };
 
     CompositeSubscription.prototype.add = function add(subscription) {
-        var subscriptions = this._subscriptions || (this._subscriptions = []);
-        if (subscription && !subscription.unsubscribed) {
-            if (this.unsubscribed) {
+        var subscriptions = this.subscriptions || (this.subscriptions = []);
+        if (subscription && !subscription.isUnsubscribed) {
+            if (this.isUnsubscribed) {
                 subscription.unsubscribe();
             } else {
                 subscriptions.push(subscription);
@@ -64,8 +56,8 @@ var CompositeSubscription = (function (_Subscription) {
     };
 
     CompositeSubscription.prototype.remove = function remove(subscription) {
-        var unsubscribed = this.unsubscribed;
-        var subscriptions = this._subscriptions;
+        var isUnsubscribed = this.isUnsubscribed;
+        var subscriptions = this.subscriptions;
         if (subscriptions) {
             var subscriptionIndex = subscriptions.indexOf(subscription);
             if (subscriptionIndex !== -1) {
@@ -79,11 +71,11 @@ var CompositeSubscription = (function (_Subscription) {
     };
 
     CompositeSubscription.prototype.indexOf = function indexOf(subscription) {
-        return this._subscriptions.indexOf(subscription);
+        return this.subscriptions.indexOf(subscription);
     };
 
     return CompositeSubscription;
-})(_Subscription3['default']);
+})();
 
 exports['default'] = CompositeSubscription;
 module.exports = exports['default'];

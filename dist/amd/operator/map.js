@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorObject', '../ObserverFactory'], function (exports, module, _Observer2, _utilTryCatch, _utilErrorObject, _ObserverFactory2) {
+define(['exports', 'module', '../Subscriber', '../util/tryCatch', '../util/errorObject', '../SubscriberFactory'], function (exports, module, _Subscriber2, _utilTryCatch, _utilErrorObject, _SubscriberFactory2) {
     'use strict';
 
     module.exports = select;
@@ -9,25 +9,25 @@ define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorOb
 
     function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-    var _Observer3 = _interopRequireDefault(_Observer2);
+    var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
     var _try_catch = _interopRequireDefault(_utilTryCatch);
 
     var _error_obj = _interopRequireDefault(_utilErrorObject);
 
-    var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
+    var _SubscriberFactory3 = _interopRequireDefault(_SubscriberFactory2);
 
-    var MapObserver = (function (_Observer) {
-        function MapObserver(destination, project) {
-            _classCallCheck(this, MapObserver);
+    var MapSubscriber = (function (_Subscriber) {
+        function MapSubscriber(destination, project) {
+            _classCallCheck(this, MapSubscriber);
 
-            _Observer.call(this, destination);
+            _Subscriber.call(this, destination);
             this.project = project;
         }
 
-        _inherits(MapObserver, _Observer);
+        _inherits(MapSubscriber, _Subscriber);
 
-        MapObserver.prototype._next = function _next(value) {
+        MapSubscriber.prototype._next = function _next(value) {
             value = _try_catch['default'](this.project).call(this, value);
             if (value === _error_obj['default']) {
                 this.destination.error(_error_obj['default'].e);
@@ -36,28 +36,28 @@ define(['exports', 'module', '../Observer', '../util/tryCatch', '../util/errorOb
             }
         };
 
-        return MapObserver;
-    })(_Observer3['default']);
+        return MapSubscriber;
+    })(_Subscriber3['default']);
 
-    var MapObserverFactory = (function (_ObserverFactory) {
-        function MapObserverFactory(project) {
-            _classCallCheck(this, MapObserverFactory);
+    var MapSubscriberFactory = (function (_SubscriberFactory) {
+        function MapSubscriberFactory(project) {
+            _classCallCheck(this, MapSubscriberFactory);
 
-            _ObserverFactory.call(this);
+            _SubscriberFactory.call(this);
             this.project = project;
         }
 
-        _inherits(MapObserverFactory, _ObserverFactory);
+        _inherits(MapSubscriberFactory, _SubscriberFactory);
 
-        MapObserverFactory.prototype.create = function create(destination) {
-            return new MapObserver(destination, this.project);
+        MapSubscriberFactory.prototype.create = function create(destination) {
+            return new MapSubscriber(destination, this.project);
         };
 
-        return MapObserverFactory;
-    })(_ObserverFactory3['default']);
+        return MapSubscriberFactory;
+    })(_SubscriberFactory3['default']);
 
     function select(project) {
-        return this.lift(new MapObserverFactory(project));
+        return this.lift(new MapSubscriberFactory(project));
     }
 
     ;

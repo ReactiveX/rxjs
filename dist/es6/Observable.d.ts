@@ -1,9 +1,9 @@
-import Observer from './Observer';
-import Subscription from './Subscription';
+import { Subscription } from './Subscription';
 import Scheduler from './scheduler/Scheduler';
 import Subject from './Subject';
 import ConnectableObservable from './ConnectableObservable';
-import ObserverFactory from './ObserverFactory';
+import SubscriberFactory from './SubscriberFactory';
+import Subscriber from './Subscriber';
 export default class Observable {
     static value: (value: any) => Observable;
     static return: (returnValue: any) => Observable;
@@ -37,11 +37,11 @@ export default class Observable {
     publish: () => ConnectableObservable;
     reduce: (processor: (accum: any, value: any) => any, initialValue: any) => Observable;
     source: Observable;
-    observerFactory: ObserverFactory;
+    subscriberFactory: SubscriberFactory;
     constructor(subscriber?: any);
-    static create(subscriber: (observer: Observer) => any): Observable;
-    subscriber(observer: Observer): Subscription | Function | void;
-    lift(observerFactory: ObserverFactory): Observable;
+    static create(subscriber: (subscriber: Subscriber) => any): Observable;
+    subscriber(subscriber: Subscriber): Subscription | Function | void;
+    lift(subscriberFactory: SubscriberFactory): Observable;
     subscribe(observerOrNext: any, error?: any, complete?: any): Subscription;
     forEach(nextHandler: any): Promise<{}>;
 }

@@ -1,4 +1,4 @@
-define(['exports', 'module', '../Observable', '../Observer', '../scheduler/nextTick'], function (exports, module, _Observable2, _Observer2, _schedulerNextTick) {
+define(['exports', 'module', '../Observable', '../Subscriber', '../scheduler/nextTick'], function (exports, module, _Observable2, _Subscriber2, _schedulerNextTick) {
     'use strict';
 
     module.exports = timer;
@@ -11,7 +11,7 @@ define(['exports', 'module', '../Observable', '../Observer', '../scheduler/nextT
 
     var _Observable3 = _interopRequireDefault(_Observable2);
 
-    var _Observer3 = _interopRequireDefault(_Observer2);
+    var _Subscriber3 = _interopRequireDefault(_Subscriber2);
 
     var _nextTick = _interopRequireDefault(_schedulerNextTick);
 
@@ -27,33 +27,33 @@ define(['exports', 'module', '../Observable', '../Observer', '../scheduler/nextT
         _inherits(IntervalObservable, _Observable);
 
         IntervalObservable.prototype.subscriber = function subscriber(observer) {
-            this.scheduler.schedule(this.interval, new IntervalObserver(observer, this.interval, this.scheduler), dispatch);
+            this.scheduler.schedule(this.interval, new IntervalSubscriber(observer, this.interval, this.scheduler), dispatch);
         };
 
         return IntervalObservable;
     })(_Observable3['default']);
 
-    var IntervalObserver = (function (_Observer) {
-        function IntervalObserver(destination, interval, scheduler) {
-            _classCallCheck(this, IntervalObserver);
+    var IntervalSubscriber = (function (_Subscriber) {
+        function IntervalSubscriber(destination, interval, scheduler) {
+            _classCallCheck(this, IntervalSubscriber);
 
-            _Observer.call(this, destination);
+            _Subscriber.call(this, destination);
             this.counter = 0;
             this.interval = interval;
             this.scheduler = scheduler;
         }
 
-        _inherits(IntervalObserver, _Observer);
+        _inherits(IntervalSubscriber, _Subscriber);
 
-        IntervalObserver.prototype.emitNext = function emitNext() {
-            if (!this.unsubscribed) {
+        IntervalSubscriber.prototype.emitNext = function emitNext() {
+            if (!this.isUnsubscribed) {
                 this.next(this.counter++);
                 this.scheduler.schedule(this.interval, this, dispatch);
             }
         };
 
-        return IntervalObserver;
-    })(_Observer3['default']);
+        return IntervalSubscriber;
+    })(_Subscriber3['default']);
 
     function dispatch(observer) {
         observer.emitNext();

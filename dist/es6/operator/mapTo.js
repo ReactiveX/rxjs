@@ -1,6 +1,6 @@
-import Observer from '../Observer';
-import ObserverFactory from '../ObserverFactory';
-class MapToObserver extends Observer {
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
+class MapToSubscriber extends Subscriber {
     constructor(destination, value) {
         super(destination);
         this.value = value;
@@ -9,16 +9,16 @@ class MapToObserver extends Observer {
         return this.destination.next(this.value);
     }
 }
-class MapToObserverFactory extends ObserverFactory {
+class MapToSubscriberFactory extends SubscriberFactory {
     constructor(value) {
         super();
         this.value = value;
     }
     create(destination) {
-        return new MapToObserver(destination, this.value);
+        return new MapToSubscriber(destination, this.value);
     }
 }
 export default function mapTo(value) {
-    return this.lift(new MapToObserverFactory(value));
+    return this.lift(new MapToSubscriberFactory(value));
 }
 ;

@@ -4,9 +4,9 @@ class ValueObservable extends Observable {
         super(null);
         this.value = value;
     }
-    subscriber(observer) {
-        observer.next(this.value);
-        observer.complete();
+    subscriber(subscriber) {
+        subscriber.next(this.value);
+        subscriber.complete();
     }
 }
 export default function value(value) {

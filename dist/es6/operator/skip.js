@@ -1,6 +1,6 @@
-import Observer from '../Observer';
-import ObserverFactory from '../ObserverFactory';
-class SkipObserver extends Observer {
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
+class SkipSubscriber extends Subscriber {
     constructor(destination, count) {
         super(destination);
         this.counter = 0;
@@ -12,16 +12,16 @@ class SkipObserver extends Observer {
         }
     }
 }
-class SkipObserverFactory extends ObserverFactory {
+class SkipSubscriberFactory extends SubscriberFactory {
     constructor(count) {
         super();
         this.count = count;
     }
     create(destination) {
-        return new SkipObserver(destination, this.count);
+        return new SkipSubscriber(destination, this.count);
     }
 }
 export default function skip(count) {
-    return this.lift(new SkipObserverFactory(count));
+    return this.lift(new SkipSubscriberFactory(count));
 }
 ;

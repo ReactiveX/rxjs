@@ -6,14 +6,14 @@ class TimerObservable extends Observable {
         this.delay = delay;
         this.scheduler = scheduler;
     }
-    subscriber(observer) {
-        this.scheduler.schedule(this.delay, observer, dispatch);
+    subscriber(subscriber) {
+        return this.scheduler.schedule(this.delay, subscriber, dispatch);
     }
 }
-function dispatch(observer) {
-    if (!observer.unsubscribed) {
-        observer.next(0);
-        observer.complete();
+function dispatch(subscriber) {
+    if (!subscriber.isUnsubscribed) {
+        subscriber.next(0);
+        subscriber.complete();
     }
 }
 export default function timer(delay = 0, scheduler = nextTick) {

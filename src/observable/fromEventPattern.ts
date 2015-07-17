@@ -1,7 +1,7 @@
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 import $$observer from '../util/Symbol_observer';
 
@@ -17,7 +17,7 @@ class FromEventPatternObservable extends Observable {
     this.selector = selector;
   }
   
-  subscriber(subscriber:Observer) : Function {
+  subscriber(subscriber:Subscriber) : Function {
     var unsubscribe = () => {
       if (remove) {
           remove(innerHandler, token);

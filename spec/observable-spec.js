@@ -13,6 +13,7 @@ describe('Observable', function () {
       };
     });
     
-    source.subscribe(function (x) { expect(x).toBe(1); });
+    source.subscribe(function (x) { expect(x).toBe(1); }, null, function () {
+    });
   });
 });

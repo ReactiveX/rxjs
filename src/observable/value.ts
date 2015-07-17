@@ -1,5 +1,5 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 class ValueObservable extends Observable {
   value:any;
@@ -9,9 +9,9 @@ class ValueObservable extends Observable {
     this.value = value;
   }
   
-  subscriber(observer:Observer) {
-    observer.next(this.value);
-    observer.complete();
+  subscriber(subscriber:Subscriber) {
+    subscriber.next(this.value);
+    subscriber.complete();
   }
 }
 

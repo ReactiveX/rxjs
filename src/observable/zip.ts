@@ -1,11 +1,11 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import CompositeSubscription from '../CompositeSubscription';
 import SerialSubscription from '../SerialSubscription';
-import Subscription from '../Subscription';
 import $$observer from '../util/Symbol_observer';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
+import { Subscription } from '../Subscription';
 
 class ZipObservable extends Observable {
   observables:Array<Observable>;
@@ -17,31 +17,27 @@ class ZipObservable extends Observable {
     this.project = project;
   }
   
-  subscriber(observer:Observer):Subscription {
-    var subscriptions = new CompositeSubscription();
+  subscriber(subscriber:Subscriber):Subscription {
     this.observables.forEach((obs, i) => {
-      var innerObserver = new InnerZipObserver(observer, i, this.project, subscriptions, obs);
-      subscriptions.add(Subscription.from(obs[$$observer](innerObserver), innerObserver));
+      var innerSubscriber = new InnerZipSubscriber(subscriber, i, this.project, obs);
+      subscriber.add(obs[$$observer](innerSubscriber));
     });
-    return subscriptions;
+    return subscriber;
   }
 }
 
-class InnerZipObserver extends Observer {
+class InnerZipSubscriber extends Subscriber {
   index:number;
   project:(...observer:Array<Observable>)=>Observable;
-  subscriptions:CompositeSubscription
   observable:Observable;
   buffer:Array<any> = [];
   
-  constructor(destination:Observer, index:number, 
+  constructor(destination:Subscriber, index:number, 
     project:(...observables:Array<Observable>)=>Observable,
-    subscriptions:CompositeSubscription,
     observable:Observable) {
     super(destination);
     this.index = index;
     this.project = project;
-    this.subscriptions = subscriptions;
     this.observable = observable;
   }
   
@@ -50,16 +46,16 @@ class InnerZipObserver extends Observer {
   }
   
   _canEmit() {
-    return this.subscriptions._subscriptions.every(sub => {
-      var observer = <InnerZipObserver>sub.observer;
-      return !observer.unsubscribed && observer.buffer.length > 0;
+    return this.subscriptions.every(subscription => {
+      var sub = <InnerZipSubscriber>subscription;
+      return !sub.isUnsubscribed && sub.buffer.length > 0;
     });
   }
   
   _getArgs() {
-    return this.subscriptions._subscriptions.reduce((args, sub) => {
-      var observer = <InnerZipObserver>sub.observer;
-      args.push(observer.buffer.shift());
+    return this.subscriptions.reduce((args, subcription) => {
+      var sub = <InnerZipSubscriber>subcription;
+      args.push(sub.buffer.shift());
       return args;
     }, []);
   }

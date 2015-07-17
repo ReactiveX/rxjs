@@ -1,8 +1,8 @@
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import try_catch from '../util/tryCatch';
 import error_obj from '../util/errorObject';
-import ObserverFactory from '../ObserverFactory';
-class MapObserver extends Observer {
+import SubscriberFactory from '../SubscriberFactory';
+class MapSubscriber extends Subscriber {
     constructor(destination, project) {
         super(destination);
         this.project = project;
@@ -17,16 +17,16 @@ class MapObserver extends Observer {
         }
     }
 }
-class MapObserverFactory extends ObserverFactory {
+class MapSubscriberFactory extends SubscriberFactory {
     constructor(project) {
         super();
         this.project = project;
     }
     create(destination) {
-        return new MapObserver(destination, this.project);
+        return new MapSubscriber(destination, this.project);
     }
 }
 export default function select(project) {
-    return this.lift(new MapObserverFactory(project));
+    return this.lift(new MapSubscriberFactory(project));
 }
 ;

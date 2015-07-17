@@ -1,12 +1,6 @@
-import Observer from './Observer';
-export default class Subscription {
-    length: number;
-    unsubscribed: boolean;
-    _unsubscribe: Function;
-    observer: Observer;
-    constructor(_unsubscribe: Function, observer: Observer);
+export interface Subscription {
+    isUnsubscribed: boolean;
     unsubscribe(): void;
-    add(subscription: Subscription): Subscription;
-    remove(subscription: Subscription): Subscription;
-    static from(value: any, observer: Observer): Subscription;
+    add(subscription: Subscription): void;
+    remove(subscription: Subscription): void;
 }

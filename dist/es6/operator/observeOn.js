@@ -1,6 +1,6 @@
-import Observer from '../Observer';
-import ObserverFactory from '../ObserverFactory';
-class ObserveOnObserver extends Observer {
+import Subscriber from '../Subscriber';
+import SubscriberFactory from '../SubscriberFactory';
+class ObserveOnSubscriber extends Subscriber {
     constructor(destination, scheduler) {
         super(destination);
         this.scheduler = scheduler;
@@ -29,15 +29,15 @@ function dispatchComplete([destination, value]) {
     var result = destination.complete(value);
     destination.dispose();
 }
-class ObserveOnObserverFactory extends ObserverFactory {
+class ObserveOnSubscriberFactory extends SubscriberFactory {
     constructor(scheduler) {
         super();
         this.scheduler = scheduler;
     }
     create(destination) {
-        return new ObserveOnObserver(destination, this.scheduler);
+        return new ObserveOnSubscriber(destination, this.scheduler);
     }
 }
 export default function observeOn(scheduler) {
-    return this.lift(new ObserveOnObserverFactory(scheduler));
+    return this.lift(new ObserveOnSubscriberFactory(scheduler));
 }
