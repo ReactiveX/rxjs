@@ -32,20 +32,16 @@ describe('Observable.prototype.publish()', function () {
     connectable.subscribe(function (x) {
       results2.push(x);
     });
-    
-    RxNext.Scheduler.nextTick.schedule(0, null, function () {
-      expect(results1).toEqual([]);
-      expect(results2).toEqual([]);
-    
-      connectable.connect();
-      
-      RxNext.Scheduler.nextTick.schedule(10, null, function () {
-        expect(results1).toEqual([1, 2, 3, 4]);
-        expect(results1).toEqual([1, 2, 3, 4]);
-        expect(subscriptions).toBe(1);
-        done();
-      });
-    });
+ 
+    expect(results1).toEqual([]);
+    expect(results2).toEqual([]);
+  
+    connectable.connect();
+  
+    expect(results1).toEqual([1, 2, 3, 4]);
+    expect(results1).toEqual([1, 2, 3, 4]);
+    expect(subscriptions).toBe(1);
+    done();
   });
   
   it('should allow you to reconnect by subscribing again', function (done) {
@@ -59,17 +55,14 @@ describe('Observable.prototype.publish()', function () {
     }, null,
     function () {
       i = 0;
+      
       source.subscribe(function (x) {
         expect(x).toBe(expected[i++]);
       }, null, done);
       
-      setTimeout(function () {
-        source.connect();
-      }, 10);
+      source.connect();
     });
     
-    setTimeout(function () {
-      source.connect();
-    }, 10)
+    source.connect();
   });
 });

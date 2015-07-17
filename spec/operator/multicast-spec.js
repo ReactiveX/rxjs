@@ -30,19 +30,15 @@ describe('Observable.prototype.multicast()', function () {
       results2.push(x);
     });
     
-    RxNext.Scheduler.nextTick.schedule(0, null, function () {
-      expect(results1).toEqual([]);
-      expect(results2).toEqual([]);
+    expect(results1).toEqual([]);
+    expect(results2).toEqual([]);
     
-      connectable.connect();
+    connectable.connect();
       
-      RxNext.Scheduler.nextTick.schedule(10, null, function () {
-        expect(results1).toEqual([1, 2, 3, 4]);
-        expect(results1).toEqual([1, 2, 3, 4]);
-        expect(subscriptions).toBe(1);
-        done();
-      });
-    });
+    expect(results1).toEqual([1, 2, 3, 4]);
+    expect(results1).toEqual([1, 2, 3, 4]);
+    expect(subscriptions).toBe(1);
+    done();
   });
   
   it('should remove all subscribers from the subject when disconnected', function (done) {
@@ -58,11 +54,8 @@ describe('Observable.prototype.multicast()', function () {
     source.subscribe(function (x) {
       expect(x).toBe(expected[i++]);
     }, null, function () {
-      setTimeout(function () {
-        //HACK: everything is good and done now...
-        expect(subject.subscribers.length).toBe(0);
-        done();
-      }, 10);
+      expect(subject.subscribers.length).toBe(0);
+      done();
     });
     
     source.connect();
@@ -81,17 +74,14 @@ describe('Observable.prototype.multicast()', function () {
     }, null,
     function () {
       i = 0;
+      
       source.subscribe(function (x) {
         expect(x).toBe(expected[i++]);
       }, null, done);
-      
-      setTimeout(function () {
-        source.connect();
-      }, 10);
-    });
-    
-    setTimeout(function () {
+
       source.connect();
-    }, 10)
+    });
+
+    source.connect();
   });
 });

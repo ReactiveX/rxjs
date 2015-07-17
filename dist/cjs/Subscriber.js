@@ -28,6 +28,7 @@ var Subscriber = (function () {
     Subscriber.prototype.error = function error(err) {
         if (!this.isUnsubscribed) {
             this._error(err);
+            this.unsubscribe();
         }
     };
 
@@ -45,6 +46,7 @@ var Subscriber = (function () {
 
         if (!this.isUnsubscribed) {
             this._complete(value);
+            this.unsubscribe();
         }
     };
 
@@ -68,21 +70,22 @@ var Subscriber = (function () {
 
     Subscriber.prototype.unsubscribe = function unsubscribe() {
         this.isUnsubscribed = true;
-        while (this.subscriptions.length > 1) {
+        while (this.subscriptions.length > 0) {
             var sub = this.subscriptions.shift();
             sub.unsubscribe();
         }
     };
 
     Subscriber.prototype.add = function add(subscriptionOrAction) {
-        var subscription;
-        if (typeof subscription === 'function') {
-            var unsubscribe = subscription;
-            subscription = { unsubscribe: unsubscribe };
-        } else {
-            subscription = subscriptionOrAction;
+        if (!subscriptionOrAction) {
+            return;
         }
-        this.subscriptions.push(subscription);
+        var subscription = typeof subscriptionOrAction === 'function' ? { unsubscribe: subscriptionOrAction } : subscriptionOrAction;
+        if (this.isUnsubscribed) {
+            subscription.unsubscribe();
+        } else if (typeof subscription.unsubscribe === 'function') {
+            this.subscriptions.push(subscription);
+        }
     };
 
     Subscriber.prototype.remove = function remove(subscription) {

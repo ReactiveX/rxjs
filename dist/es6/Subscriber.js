@@ -17,6 +17,7 @@ export default class Subscriber {
     error(err) {
         if (!this.isUnsubscribed) {
             this._error(err);
+            this.unsubscribe();
         }
     }
     _error(err) {
@@ -31,6 +32,7 @@ export default class Subscriber {
     complete(value = undefined) {
         if (!this.isUnsubscribed) {
             this._complete(value);
+            this.unsubscribe();
         }
     }
     _complete(value) {
@@ -50,21 +52,24 @@ export default class Subscriber {
     }
     unsubscribe() {
         this.isUnsubscribed = true;
-        while (this.subscriptions.length > 1) {
+        while (this.subscriptions.length > 0) {
             var sub = this.subscriptions.shift();
             sub.unsubscribe();
         }
     }
     add(subscriptionOrAction) {
-        var subscription;
-        if (typeof subscription === 'function') {
-            let unsubscribe = subscription;
-            subscription = { unsubscribe };
+        if (!subscriptionOrAction) {
+            return;
         }
-        else {
-            subscription = subscriptionOrAction;
+        let subscription = (typeof subscriptionOrAction === 'function' ?
+            { unsubscribe: subscriptionOrAction } :
+            subscriptionOrAction);
+        if (this.isUnsubscribed) {
+            subscription.unsubscribe();
         }
-        this.subscriptions.push(subscription);
+        else if (typeof subscription.unsubscribe === 'function') {
+            this.subscriptions.push(subscription);
+        }
     }
     remove(subscription) {
         var index = this.subscriptions.indexOf(subscription);

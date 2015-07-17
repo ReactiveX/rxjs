@@ -1,4 +1,4 @@
-define(['exports', 'module', './Observable', './Subscriber', './scheduler/nextTick', './scheduler/immediate', './CompositeSubscription', './SerialSubscription', './Subject', './BehaviorSubject', './ConnectableObservable', './observable/value', './observable/return', './observable/fromEventPattern', './observable/fromEvent', './observable/throw', './observable/empty', './observable/range', './observable/fromArray', './observable/zip', './observable/fromPromise', './observable/of', './observable/timer', './observable/interval', './operator/filter', './operator/map', './operator/mapTo', './operator/mergeAll', './operator/flatMap', './operator/concatAll', './operator/skip', './operator/take', './operator/subscribeOn', './operator/observeOn', './operator/zipAll', './operator/zip', './operator/merge', './operator/toArray', './operator/multicast', './operator/publish', './operator/reduce'], function (exports, module, _Observable, _Subscriber, _schedulerNextTick, _schedulerImmediate, _CompositeSubscription, _SerialSubscription, _Subject, _BehaviorSubject, _ConnectableObservable, _observableValue, _observableReturn, _observableFromEventPattern, _observableFromEvent, _observableThrow, _observableEmpty, _observableRange, _observableFromArray, _observableZip, _observableFromPromise, _observableOf, _observableTimer, _observableInterval, _operatorFilter, _operatorMap, _operatorMapTo, _operatorMergeAll, _operatorFlatMap, _operatorConcatAll, _operatorSkip, _operatorTake, _operatorSubscribeOn, _operatorObserveOn, _operatorZipAll, _operatorZip, _operatorMerge, _operatorToArray, _operatorMulticast, _operatorPublish, _operatorReduce) {
+define(['exports', 'module', './Observable', './Subscriber', './scheduler/nextTick', './scheduler/immediate', './CompositeSubscription', './SerialSubscription', './Subject', './BehaviorSubject', './ConnectableObservable', './observable/value', './observable/return', './observable/fromEventPattern', './observable/fromEvent', './observable/throw', './observable/empty', './observable/never', './observable/range', './observable/fromArray', './observable/zip', './observable/fromPromise', './observable/of', './observable/timer', './observable/interval', './operator/filter', './operator/map', './operator/mapTo', './operator/mergeAll', './operator/flatMap', './operator/concatAll', './operator/skip', './operator/take', './operator/subscribeOn', './operator/observeOn', './operator/zipAll', './operator/zip', './operator/merge', './operator/toArray', './operator/multicast', './operator/publish', './operator/reduce'], function (exports, module, _Observable, _Subscriber, _schedulerNextTick, _schedulerImmediate, _CompositeSubscription, _SerialSubscription, _Subject, _BehaviorSubject, _ConnectableObservable, _observableValue, _observableReturn, _observableFromEventPattern, _observableFromEvent, _observableThrow, _observableEmpty, _observableNever, _observableRange, _observableFromArray, _observableZip, _observableFromPromise, _observableOf, _observableTimer, _observableInterval, _operatorFilter, _operatorMap, _operatorMapTo, _operatorMergeAll, _operatorFlatMap, _operatorConcatAll, _operatorSkip, _operatorTake, _operatorSubscribeOn, _operatorObserveOn, _operatorZipAll, _operatorZip, _operatorMerge, _operatorToArray, _operatorMulticast, _operatorPublish, _operatorReduce) {
     'use strict';
 
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -32,6 +32,8 @@ define(['exports', 'module', './Observable', './Subscriber', './scheduler/nextTi
     var _throw2 = _interopRequireDefault(_observableThrow);
 
     var _empty = _interopRequireDefault(_observableEmpty);
+
+    var _never = _interopRequireDefault(_observableNever);
 
     var _range = _interopRequireDefault(_observableRange);
 
@@ -87,6 +89,7 @@ define(['exports', 'module', './Observable', './Subscriber', './scheduler/nextTi
     _Observable2['default'].fromEvent = _fromEvent['default'];
     _Observable2['default']['throw'] = _throw2['default'];
     _Observable2['default'].empty = _empty['default'];
+    _Observable2['default'].never = _never['default'];
     _Observable2['default'].range = _range['default'];
     _Observable2['default'].fromArray = _fromArray['default'];
     _Observable2['default'].zip = _zip['default'];

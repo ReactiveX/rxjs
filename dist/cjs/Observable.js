@@ -49,7 +49,8 @@ var Observable = (function () {
 
     Observable.prototype[_utilSymbol_observer2['default']] = function (observer) {
         var subscriber = new _Subscriber2['default'](observer);
-        this.subscriber(subscriber);
+        subscriber.add(this.subscriber(subscriber));
+        return subscriber;
     };
 
     Observable.prototype.subscribe = function subscribe(observerOrNext) {

@@ -17,12 +17,9 @@ describe('Subject', function () {
         done();
       });
 		
-    // HACK
-    RxNext.Scheduler.nextTick.schedule(0, null, function () {
-      subject.next('foo');
-      subject.next('bar');
-      subject.complete();
-    });
+    subject.next('foo');
+    subject.next('bar');
+    subject.complete();
   });
 
 
@@ -74,28 +71,20 @@ describe('Subject', function () {
     });
   });
 
-  it('should clean out unsubscribed subscribers after a next', function (done) {
+  it('should clean out unsubscribed subscribers', function (done) {
     var subject = new Subject();
-    var expected1 = ['foo', 'bar'];
-    var expected2 = ['foo', 'bar'];
-    var i1 = 0;
-    var i2 = 0;
     
     var sub1 = subject.subscribe(function (x) {
-      expect(x).toBe(expected1[i1++]);
-      sub1.unsubscribe();
     });
     
-    subject.subscribe(function (x) {
-      expect(x).toBe(expected2[i2++]);
+    var sub2 = subject.subscribe(function (x) {
     });
     
-    nextTick.schedule(0, null, function () {
-      expect(subject.subscribers.length).toBe(2);
-      subject.next('foo');
-      expect(subject.subscribers.length).toBe(1);
-      subject.next('bar');
-      done();
-    });
+    expect(subject.subscribers.length).toBe(2);
+    sub1.unsubscribe();
+    expect(subject.subscribers.length).toBe(1);
+    sub2.unsubscribe();
+    expect(subject.subscribers.length).toBe(0);
+    done();
   });
 });
