@@ -70,7 +70,8 @@ export default class Observable {
 
   [$$observer](observer: Observer) {
     let subscriber = new Subscriber(observer);
-    this.subscriber(subscriber);
+    subscriber.add(this.subscriber(subscriber));
+    return subscriber;
   }
 
   subscribe(observerOrNext, error=null, complete=null):Subscription {

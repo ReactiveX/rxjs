@@ -14,6 +14,6 @@ export default class Subscriber implements Observer, Subscription {
     subscribe(subscription: Subscription): void;
     _subscribe(subscription: Subscription): void;
     unsubscribe(): void;
-    add(subscriptionOrAction: Subscription | Function): void;
+    add(subscriptionOrAction: Subscription | Function | void): void;
     remove(subscription: Subscription): void;
 }

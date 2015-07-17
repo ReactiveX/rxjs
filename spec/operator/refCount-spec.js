@@ -6,43 +6,41 @@ var Observer = RxNext.Observer;
 
 describe('Observable.prototype.publish().refCount()', function () {
   it('should count references', function () {
-    var source = Observable.value(1).publish().refCount();
-       
-    source[Symbol.observer](Observer.create(function () { }));
-    source[Symbol.observer](Observer.create(function () { }));
-    source[Symbol.observer](Observer.create(function () { }));
+    var source = Observable.never().publish().refCount();
+    
+    var sub1 = source.subscribe({ next: function () { } });
+    var sub2 = source.subscribe({ next: function () { } });
+    var sub3 = source.subscribe({ next: function () { } });
     
     expect(source.refCount).toBe(3);
+    
+    sub1.unsubscribe();
+    sub2.unsubscribe();
+    sub3.unsubscribe();
   });
   
   it('should unsub from the source when all other subscriptions are unsubbed', function (done) {
     var unsubscribeCalled = false;
-    var source = Observable.create(function (observer) {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.next(4);
-      observer.next(5);
-      observer.next(6);
-      observer.complete();
-      
+    var source = new Observable(function (observer) {
+      observer.next(true);
+
       return function () {
         unsubscribeCalled = true;
-      }
+      };
     }).publish().refCount();
     
-    source.take(1).subscribe(function () {});
-    source.take(3).subscribe(function () {});
-    source.take(5).subscribe(function (x) {
-      if (x > 3) {
+    var sub1 = source.subscribe(function () {});
+    var sub2 = source.subscribe(function () {});
+    var sub3 = source.subscribe(function (x) {
         expect(source.refCount).toBe(1);
-      }
-    }, null, function () {
-      setTimeout(function () {
-        expect(source.refCount).toBe(0);
-        expect(unsubscribeCalled).toBe(true);
-        done();
-      })
     });
+    
+    sub1.unsubscribe();
+    sub2.unsubscribe();
+    sub3.unsubscribe();
+    
+    expect(source.refCount).toBe(0);
+    expect(unsubscribeCalled).toBe(true);
+    done();
   });
 });

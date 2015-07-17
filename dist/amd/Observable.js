@@ -42,7 +42,8 @@ define(['exports', 'module', './util/Symbol_observer', './SubscriberFactory', '.
 
         Observable.prototype[_$$observer['default']] = function (observer) {
             var subscriber = new _Subscriber2['default'](observer);
-            this.subscriber(subscriber);
+            subscriber.add(this.subscriber(subscriber));
+            return subscriber;
         };
 
         Observable.prototype.subscribe = function subscribe(observerOrNext) {

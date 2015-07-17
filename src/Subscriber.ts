@@ -27,6 +27,7 @@ export default class Subscriber implements Observer, Subscription {
   error(err: any) {
     if (!this.isUnsubscribed) {
       this._error(err);
+      this.unsubscribe();
     }
   }
   
@@ -42,6 +43,7 @@ export default class Subscriber implements Observer, Subscription {
   complete(value: any = undefined) {
     if (!this.isUnsubscribed) {
       this._complete(value);
+      this.unsubscribe();
     }
   }
 
@@ -65,21 +67,25 @@ export default class Subscriber implements Observer, Subscription {
   
   unsubscribe() {
     this.isUnsubscribed = true;
-    while (this.subscriptions.length > 1) {
+    while (this.subscriptions.length > 0) {
       var sub = this.subscriptions.shift();
       sub.unsubscribe();
     }
   }
   
-  add(subscriptionOrAction: Subscription|Function) {
-    var subscription;
-    if (typeof subscription === 'function') {
-      let unsubscribe = subscription;
-      subscription = { unsubscribe };
-    } else {
-      subscription = subscriptionOrAction;
+  add(subscriptionOrAction: Subscription|Function|void) {
+    if (!subscriptionOrAction) {
+      return;
     }
-    this.subscriptions.push(subscription);
+    let subscription:Subscription = <Subscription>(typeof subscriptionOrAction === 'function' ?
+      { unsubscribe: subscriptionOrAction } :
+      subscriptionOrAction);
+    
+    if (this.isUnsubscribed) {
+      subscription.unsubscribe();
+    } else if(typeof subscription.unsubscribe === 'function'){
+      this.subscriptions.push(subscription);
+    }
   }
   
   remove(subscription: Subscription) {

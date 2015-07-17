@@ -3,13 +3,13 @@ import Subscriber from './Subscriber';
 import $$observer from './util/Symbol_observer';
 import SerialSubscription from './SerialSubscription';
 import { Subscription } from './Subscription';
+import { Observer } from './Observer';
 
-export default class Subject extends Observable {
+export default class Subject extends Observable implements Observer, Subscription {
   destination:Subscriber;
   disposed:boolean=false;
   subscribers:Array<Subscriber> = [];
-  _dispose:()=>void;
-  unsubscribed: boolean = false;
+  isUnsubscribed: boolean = false;
   _next: (value: any) => void;
   _error: (err: any) => void;
   _complete: (value: any) => void;
@@ -18,60 +18,63 @@ export default class Subject extends Observable {
     super(null);
   }
   
-  dispose() {
-    this.disposed = true;
-    if(this._dispose) {
-      this._dispose();
+  [$$observer](subscriber: Subscriber): Subscription {
+    if (!(subscriber instanceof Subscriber)) {
+      subscriber = new Subscriber(subscriber);
     }
-  }
-  
-  [$$observer](observer: Subscriber): Subscription {
-    var subscriber = new Subscriber(observer);
-    this.subscribers.push(subscriber);
-    return subscriber;
+    this.add(subscriber);
+    
+    //HACK: return a subscription that will remove the subscriber from the list
+    return <Subscription>{
+      subscriber: subscriber,
+      subject: this,
+      isUnsubscribed: false,
+      add() { },
+      remove() { },
+      unsubscribe() {
+        this.isUnsubscribed = true;
+        this.subscriber.unsubscribe;
+        this.subject.remove(this.subscriber);
+      }
+    };
   }
   
   next(value: any) {
-    if(this.unsubscribed) {
+    if(this.isUnsubscribed) {
       return;
     }
     this.subscribers.forEach(o => o.next(value));
-    this._cleanUnsubbedSubscribers();
   }
   
   error(err: any) {
-    if(this.unsubscribed) {
+    if(this.isUnsubscribed) {
       return;
     }
     this.subscribers.forEach(o => o.error(err));
     this.unsubscribe();
-    this._cleanUnsubbedSubscribers();
   }
 
   complete(value: any) {
-    if(this.unsubscribed) {
+    if(this.isUnsubscribed) {
       return;
     }
     this.subscribers.forEach(o => o.complete(value));
     this.unsubscribe();
-    this._cleanUnsubbedSubscribers();
-  } 
+  }
   
-  _cleanUnsubbedSubscribers() {
-    var i;
-    var subscribers = this.subscribers;
-    for (i = subscribers.length; i--;) {
-      if (subscribers[i].isUnsubscribed) {
-        subscribers.splice(i, 1);
-      }
-    }
-    if (subscribers.length === 0) {
-      this.unsubscribe();
-    }
+  add(subscriber: Subscriber) {
+    this.subscribers.push(subscriber);
+  }
+  
+  remove(subscriber: Subscriber) {
+    let index = this.subscribers.indexOf(subscriber);
+    if (index !== -1) {
+      this.subscribers.splice(index, 1);
+    }  
   }
   
   unsubscribe() {
     this.subscribers.length = 0;
-    this.unsubscribed = true;
+    this.isUnsubscribed = true;
   }
 }

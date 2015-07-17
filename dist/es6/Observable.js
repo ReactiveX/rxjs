@@ -24,7 +24,8 @@ export default class Observable {
     }
     [$$observer](observer) {
         let subscriber = new Subscriber(observer);
-        this.subscriber(subscriber);
+        subscriber.add(this.subscriber(subscriber));
+        return subscriber;
     }
     subscribe(observerOrNext, error = null, complete = null) {
         let observer;

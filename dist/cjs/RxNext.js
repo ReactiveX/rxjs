@@ -64,6 +64,10 @@ var _observableEmpty = require('./observable/empty');
 
 var _observableEmpty2 = _interopRequireDefault(_observableEmpty);
 
+var _observableNever = require('./observable/never');
+
+var _observableNever2 = _interopRequireDefault(_observableNever);
+
 var _observableRange = require('./observable/range');
 
 var _observableRange2 = _interopRequireDefault(_observableRange);
@@ -166,6 +170,7 @@ _Observable2['default'].fromEventPattern = _observableFromEventPattern2['default
 _Observable2['default'].fromEvent = _observableFromEvent2['default'];
 _Observable2['default']['throw'] = _observableThrow2['default'];
 _Observable2['default'].empty = _observableEmpty2['default'];
+_Observable2['default'].never = _observableNever2['default'];
 _Observable2['default'].range = _observableRange2['default'];
 _Observable2['default'].fromArray = _observableFromArray2['default'];
 _Observable2['default'].zip = _observableZip2['default'];

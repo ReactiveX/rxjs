@@ -27,72 +27,74 @@ var Subject = (function (_Observable) {
         _Observable.call(this, null);
         this.disposed = false;
         this.subscribers = [];
-        this.unsubscribed = false;
+        this.isUnsubscribed = false;
     }
 
     _inherits(Subject, _Observable);
 
-    Subject.prototype.dispose = function dispose() {
-        this.disposed = true;
-        if (this._dispose) {
-            this._dispose();
+    Subject.prototype[_utilSymbol_observer2['default']] = function (subscriber) {
+        if (!(subscriber instanceof _Subscriber2['default'])) {
+            subscriber = new _Subscriber2['default'](subscriber);
         }
-    };
-
-    Subject.prototype[_utilSymbol_observer2['default']] = function (observer) {
-        var subscriber = new _Subscriber2['default'](observer);
-        this.subscribers.push(subscriber);
-        return subscriber;
+        this.add(subscriber);
+        //HACK: return a subscription that will remove the subscriber from the list
+        return {
+            subscriber: subscriber,
+            subject: this,
+            isUnsubscribed: false,
+            add: function add() {},
+            remove: function remove() {},
+            unsubscribe: function unsubscribe() {
+                this.isUnsubscribed = true;
+                this.subscriber.unsubscribe;
+                this.subject.remove(this.subscriber);
+            }
+        };
     };
 
     Subject.prototype.next = function next(value) {
-        if (this.unsubscribed) {
+        if (this.isUnsubscribed) {
             return;
         }
         this.subscribers.forEach(function (o) {
             return o.next(value);
         });
-        this._cleanUnsubbedSubscribers();
     };
 
     Subject.prototype.error = function error(err) {
-        if (this.unsubscribed) {
+        if (this.isUnsubscribed) {
             return;
         }
         this.subscribers.forEach(function (o) {
             return o.error(err);
         });
         this.unsubscribe();
-        this._cleanUnsubbedSubscribers();
     };
 
     Subject.prototype.complete = function complete(value) {
-        if (this.unsubscribed) {
+        if (this.isUnsubscribed) {
             return;
         }
         this.subscribers.forEach(function (o) {
             return o.complete(value);
         });
         this.unsubscribe();
-        this._cleanUnsubbedSubscribers();
     };
 
-    Subject.prototype._cleanUnsubbedSubscribers = function _cleanUnsubbedSubscribers() {
-        var i;
-        var subscribers = this.subscribers;
-        for (i = subscribers.length; i--;) {
-            if (subscribers[i].isUnsubscribed) {
-                subscribers.splice(i, 1);
-            }
-        }
-        if (subscribers.length === 0) {
-            this.unsubscribe();
+    Subject.prototype.add = function add(subscriber) {
+        this.subscribers.push(subscriber);
+    };
+
+    Subject.prototype.remove = function remove(subscriber) {
+        var index = this.subscribers.indexOf(subscriber);
+        if (index !== -1) {
+            this.subscribers.splice(index, 1);
         }
     };
 
     Subject.prototype.unsubscribe = function unsubscribe() {
         this.subscribers.length = 0;
-        this.unsubscribed = true;
+        this.isUnsubscribed = true;
     };
 
     return Subject;

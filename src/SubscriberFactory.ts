@@ -1,7 +1,8 @@
 import Subscriber from './Subscriber';
+import { Observer } from './Observer';
 
 export default class SubscriberFactory {
-  create(destination:Subscriber) : Subscriber {
+  create(destination:Observer) : Subscriber {
     return new Subscriber(destination);
   }
 }
