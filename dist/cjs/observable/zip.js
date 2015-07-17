@@ -78,7 +78,6 @@ var InnerZipObserver = (function (_Observer) {
 
     InnerZipObserver.prototype._next = function _next(value) {
         this.buffer.push(value);
-        return { done: false };
     };
 
     InnerZipObserver.prototype._canEmit = function _canEmit() {
@@ -104,11 +103,11 @@ var InnerZipObserver = (function (_Observer) {
     };
 
     InnerZipObserver.prototype._sendNext = function _sendNext(args) {
-        var value = (0, _utilTryCatch2['default'])(this.project).apply(this, args);
+        var value = _utilTryCatch2['default'](this.project).apply(this, args);
         if (value === _utilErrorObject2['default']) {
-            return this.destination['throw'](_utilErrorObject2['default'].e);
+            this.destination.error(_utilErrorObject2['default'].e);
         } else {
-            return this.destination.next(value);
+            this.destination.next(value);
         }
     };
 

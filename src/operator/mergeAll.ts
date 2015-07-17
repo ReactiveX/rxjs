@@ -4,12 +4,7 @@ import SerialSubscription from '../SerialSubscription';
 import CompositeSubscription from '../CompositeSubscription';
 import Observable from '../Observable';
 import $$observer from '../util/Symbol_observer';
-
-interface IteratorResult<T> {
-  value?:T;
-  done:boolean;
-}
-
+import ObserverFactory from '../ObserverFactory';
 
 class MergeAllObserver extends Observer {
   buffer:Array<any>;
@@ -24,7 +19,7 @@ class MergeAllObserver extends Observer {
     this.subscriptions = new CompositeSubscription();
   }
   
-  next(observable):IteratorResult<any> {
+  next(observable) {
     var buffer = this.buffer;
     var concurrent = this.concurrent;
     var subscriptions = this.subscriptions;
@@ -37,19 +32,16 @@ class MergeAllObserver extends Observer {
     } else if (buffer) {
       buffer.push(observable);
     }
-    
-    return { done: false };
   }
   
-  return() : IteratorResult<any> {
+  complete(value: any) {
     this.stopped = true;
     if(this.subscriptions.length === 0 && (this.buffer && this.buffer.length === 0)) {
-      this.destination.return();
+      this.destination.complete(value);
     }
-    return { done: true };
   }
   
-  _innerReturn(innerObserver:MergeInnerObserver) : IteratorResult<any> {
+  _innerComplete(innerObserver:MergeInnerObserver) {
     var buffer = this.buffer;
     var subscriptions = this.subscriptions;
 
@@ -59,14 +51,13 @@ class MergeAllObserver extends Observer {
       if (buffer && buffer.length > 0) {
         this.next(buffer.shift());
       } else if (this.stopped && subscriptions.length === 0) {
-        return this.destination.return();
+        return this.destination.complete();
       }
     }
-    return { done: true };
   }
   
-  _dispose() {
-    console.log('dispose parent');
+  unsubscribe() {
+    super.unsubscribe();
     this.subscriptions.unsubscribe();
   }
 }
@@ -81,27 +72,24 @@ class MergeInnerObserver extends Observer {
     this.subscription = subscription;
   }
   
-  _return() {
-    return this.parent._innerReturn(this);
+  _complete(value: any) {
+    return this.parent._innerComplete(this);
   }
 }
 
-class MergeAllObservable extends Observable {
-  concurrent:number;
-  source:Observable;
+class MergeAllObserverFactory extends ObserverFactory {
+  concurrent: number;
   
-  constructor(source:Observable, concurrent:number) {
-    super(null)
-    this.source = source;
-    this.concurrent = concurrent;  
+  constructor(concurrent: number) {
+    super();
+    this.concurrent = concurrent;
   }
   
-  subscriber(observer):Subscription {
-    var mergeAllObserver = new MergeAllObserver(observer, this.concurrent);
-    return Subscription.from(this.source.subscriber(mergeAllObserver), mergeAllObserver);
+  create(destination: Observer): Observer {
+    return new MergeAllObserver(destination, this.concurrent);
   }
 }
 
-export default function mergeAll(concurrent:number=Number.POSITIVE_INFINITY) : Observable {
-  return new MergeAllObservable(this, concurrent);
+export default function mergeAll(concurrent: number = Number.POSITIVE_INFINITY): Observable {
+  return this.lift(new MergeAllObserverFactory(concurrent));
 };

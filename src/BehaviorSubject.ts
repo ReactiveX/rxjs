@@ -4,7 +4,6 @@ import $$observer from './util/Symbol_observer';
 import SerialSubscription from './SerialSubscription';
 import Subscription from './Subscription';
 import Subject from './Subject';
-import { IteratorResult } from './IteratorResult';
 
 export default class BehaviorSubject extends Subject {
   value:any;
@@ -21,8 +20,8 @@ export default class BehaviorSubject extends Subject {
     return subscription;
   }
   
-  next(value:any):IteratorResult<any> {
+  next(value:any) {
     this.value = value;
-    return super.next(value);
+    super.next(value);
   }
 }

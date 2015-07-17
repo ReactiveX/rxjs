@@ -13,13 +13,9 @@ var _Observer2 = require('../Observer');
 
 var _Observer3 = _interopRequireDefault(_Observer2);
 
-var _Observable2 = require('../Observable');
+var _ObserverFactory2 = require('../ObserverFactory');
 
-var _Observable3 = _interopRequireDefault(_Observable2);
-
-var _Subscription = require('../Subscription');
-
-var _Subscription2 = _interopRequireDefault(_Subscription);
+var _ObserverFactory3 = _interopRequireDefault(_ObserverFactory2);
 
 var TakeObserver = (function (_Observer) {
     function TakeObserver(destination, count) {
@@ -34,36 +30,34 @@ var TakeObserver = (function (_Observer) {
 
     TakeObserver.prototype._next = function _next(value) {
         if (this.counter++ < this.count) {
-            return this.destination.next(value);
+            this.destination.next(value);
         } else {
-            return this.destination['return']();
+            this.destination.complete();
         }
     };
 
     return TakeObserver;
 })(_Observer3['default']);
 
-var TakeObservable = (function (_Observable) {
-    function TakeObservable(source, count) {
-        _classCallCheck(this, TakeObservable);
+var TakeObserverFactory = (function (_ObserverFactory) {
+    function TakeObserverFactory(count) {
+        _classCallCheck(this, TakeObserverFactory);
 
-        _Observable.call(this, null);
-        this.source = source;
+        _ObserverFactory.call(this);
         this.count = count;
     }
 
-    _inherits(TakeObservable, _Observable);
+    _inherits(TakeObserverFactory, _ObserverFactory);
 
-    TakeObservable.prototype.subscriber = function subscriber(observer) {
-        var takeObserver = new TakeObserver(observer, this.count);
-        return _Subscription2['default'].from(this.source.subscriber(takeObserver), takeObserver);
+    TakeObserverFactory.prototype.create = function create(destination) {
+        return new TakeObserver(destination, this.count);
     };
 
-    return TakeObservable;
-})(_Observable3['default']);
+    return TakeObserverFactory;
+})(_ObserverFactory3['default']);
 
 function take(count) {
-    return new TakeObservable(this, count);
+    return this.lift(new TakeObserverFactory(count));
 }
 
 ;

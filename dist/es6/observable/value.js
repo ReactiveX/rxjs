@@ -6,7 +6,7 @@ class ValueObservable extends Observable {
     }
     subscriber(observer) {
         observer.next(this.value);
-        observer.return();
+        observer.complete();
     }
 }
 export default function value(value) {

@@ -2,40 +2,34 @@ import Observer from '../Observer';
 import error_obj from '../util/errorObject';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-interface IteratorResult<T> {
-  done:boolean;
-  value?:T
-}
+import ObserverFactory from '../ObserverFactory';
 
 class MapToObserver extends Observer {
   value:any;
   
-  constructor(destination:Observer, value:any) {
+  constructor(destination: Observer, value: any) {
     super(destination);
     this.value = value;
   }
   
-  _next(_:any):IteratorResult<any> {
+  _next(_: any) {
     return this.destination.next(this.value);
   }
 }
 
-class MapToObservable extends Observable {
-  source:Observable;
-  value:any;
+class MapToObserverFactory extends ObserverFactory {
+  value: any;
   
-  constructor(source:Observable, value:any) {
-    super(null);
-    this.source = source;
+  constructor(value: any) {
+    super();
     this.value = value;
   }
   
-  subscriber(observer:Observer):Subscription {
-    var mapToObserver = new MapToObserver(observer, this.value);
-    return Subscription.from(this.source.subscriber(mapToObserver), mapToObserver);
+  create(destination: Observer): Observer {
+    return new MapToObserver(destination, this.value);
   }
 }
 
-export default function mapTo(value:any) : Observable {
-  return new MapToObservable(this, value);
+export default function mapTo(value: any): Observable {
+  return this.lift(new MapToObserverFactory(value));
 };

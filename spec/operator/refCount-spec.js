@@ -24,7 +24,7 @@ describe('Observable.prototype.publish().refCount()', function () {
       observer.next(4);
       observer.next(5);
       observer.next(6);
-      observer.return();
+      observer.complete();
       
       return function () {
         unsubscribeCalled = true;

@@ -24,7 +24,7 @@ var ThrowObservable = (function (_Observable) {
     _inherits(ThrowObservable, _Observable);
 
     ThrowObservable.prototype.subscriber = function subscriber(observer) {
-        observer['throw'](this.err);
+        observer.error(this.err);
     };
 
     return ThrowObservable;

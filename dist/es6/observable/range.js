@@ -12,7 +12,7 @@ class RangeObservable extends Observable {
         for (i = start; i < end && !observer.unsubscribed; i++) {
             observer.next(i);
         }
-        observer.return();
+        observer.complete();
     }
 }
 export default function range(start = 0, end = 0) {

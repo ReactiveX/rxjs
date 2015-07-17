@@ -9,8 +9,8 @@ class ThrowObservable extends Observable {
     this.err = err;
   }
   
-  subscriber(observer:Observer) {
-    observer.throw(this.err);
+  subscriber(observer: Observer) {
+    observer.error(this.err);
   }
 }
 

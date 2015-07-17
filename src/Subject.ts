@@ -4,20 +4,15 @@ import $$observer from './util/Symbol_observer';
 import SerialSubscription from './SerialSubscription';
 import Subscription from './Subscription';
 
-export interface IteratorResult<T> {
-  value?:T;
-  done:boolean;
-}
-
 export default class Subject extends Observable {
   destination:Observer;
   disposed:boolean=false;
   observers:Array<Observer> = [];
   _dispose:()=>void;
   unsubscribed: boolean = false;
-  _next: (value: any) => IteratorResult<any>;
-  _throw: (err: any) => IteratorResult<any>;
-  _return: (value: any) => IteratorResult<any>;
+  _next: (value: any) => void;
+  _error: (err: any) => void;
+  _complete: (value: any) => void;
   
   constructor() {
     super(null);
@@ -36,33 +31,30 @@ export default class Subject extends Observable {
     return subscription;
   }
   
-  next(value:any) : IteratorResult<any> {
+  next(value: any) {
     if(this.unsubscribed) {
-      return { done: true };
+      return;
     }
     this.observers.forEach(o => o.next(value));
     this._cleanUnsubbedObservers();
-    return { done: false };
   }
   
-  throw(err:any) : IteratorResult<any> {
+  error(err: any) {
     if(this.unsubscribed) {
-      return { done: true };
+      return;
     }
-    this.observers.forEach(o => o.throw(err));
+    this.observers.forEach(o => o.error(err));
     this.unsubscribe();
     this._cleanUnsubbedObservers();
-    return { done: true };
   }
 
-  return(value:any) : IteratorResult<any> {
+  complete(value: any) {
     if(this.unsubscribed) {
-      return { done: true };
+      return;
     }
-    this.observers.forEach(o => o.return(value));
+    this.observers.forEach(o => o.complete(value));
     this.unsubscribe();
     this._cleanUnsubbedObservers();
-    return { done: true };
   } 
   
   _cleanUnsubbedObservers() {

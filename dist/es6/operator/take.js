@@ -1,6 +1,5 @@
 import Observer from '../Observer';
-import Observable from '../Observable';
-import Subscription from '../Subscription';
+import ObserverFactory from '../ObserverFactory';
 class TakeObserver extends Observer {
     constructor(destination, count) {
         super(destination);
@@ -9,25 +8,23 @@ class TakeObserver extends Observer {
     }
     _next(value) {
         if (this.counter++ < this.count) {
-            return this.destination.next(value);
+            this.destination.next(value);
         }
         else {
-            return this.destination.return();
+            this.destination.complete();
         }
     }
 }
-class TakeObservable extends Observable {
-    constructor(source, count) {
-        super(null);
-        this.source = source;
+class TakeObserverFactory extends ObserverFactory {
+    constructor(count) {
+        super();
         this.count = count;
     }
-    subscriber(observer) {
-        var takeObserver = new TakeObserver(observer, this.count);
-        return Subscription.from(this.source.subscriber(takeObserver), takeObserver);
+    create(destination) {
+        return new TakeObserver(destination, this.count);
     }
 }
 export default function take(count) {
-    return new TakeObservable(this, count);
+    return this.lift(new TakeObserverFactory(count));
 }
 ;
