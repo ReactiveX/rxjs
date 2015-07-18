@@ -2,7 +2,7 @@
 var RxNext = require('../../dist/cjs/RxNext');
 var Observable = RxNext.Observable;
 
-describe('Observable.partition.filter()', function(){
+describe('Observable.prototype.partition()', function(){
    
    it('should partition an observable into two using a predicate', function(done){
        
