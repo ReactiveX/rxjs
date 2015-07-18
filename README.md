@@ -36,14 +36,6 @@ The build and test structure is fairly primitive at the moment. There are variou
 npm run build_all
 ```
 
-### Prerequisites
-
-Currently, you need `typescript`, `jasmine`, `babel`, and `browserify` globally installed to build and test.
-This will change as the build process matures. You can install all of these with the following:
-```sh
-npm i -g typescript jasmine babel browserify
-```
-
 ## Performance Tests
 
 First you'll need to host the root directory under a web server, the simplest way to do that is to install `http-server` with `npm i -g http-server`,
