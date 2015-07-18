@@ -40,6 +40,7 @@ export default class Observable {
   merge: (observables: Array<Observable>) => Observable;
   toArray: () => Observable;
   multicast: (subjectFactory: () => Subject) => ConnectableObservable;
+  partition: (predicate: (any) => boolean) => Observable[];
   publish: () => ConnectableObservable;
   reduce: (processor: (accum: any, value: any) => any, initialValue: any) => Observable;
   
