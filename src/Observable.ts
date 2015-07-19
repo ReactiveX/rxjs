@@ -19,6 +19,7 @@ export default class Observable {
   static never: () => Observable;
   static range: (start: number, end: number) => Observable;
   static fromArray: (array: Array<any>) => Observable;
+  static combineLatest: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
   static zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
   static fromPromise: (promise: Promise<any>) => Observable;
   static of: (...values: Array<any>) => Observable;
@@ -35,6 +36,7 @@ export default class Observable {
   take: (count: number) => Observable;
   subscribeOn: (scheduler: Scheduler) => Observable;
   observeOn: (scheduler: Scheduler) => Observable;
+  combineLatest: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
   zipAll: (project: (...observables: Array<Observable>) => Observable) => Observable;
   zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
   merge: (observables: Array<Observable>) => Observable;
