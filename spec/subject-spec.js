@@ -16,7 +16,7 @@ describe('Subject', function () {
       function () {
         done();
       });
-		
+    
     subject.next('foo');
     subject.next('bar');
     subject.complete();
@@ -39,7 +39,7 @@ describe('Subject', function () {
       function () {
         done();
       });
-		
+    
     // HACK
     nextTick.schedule(0, null, function () {
       expect(subject.subscribers.length).toBe(2);
@@ -62,7 +62,7 @@ describe('Subject', function () {
         //HACK
         nextTick.schedule(0, null, done);
       });
-		
+    
     // HACK
     nextTick.schedule(0, null, function () {
       subject.next('foo');
