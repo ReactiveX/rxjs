@@ -12,7 +12,8 @@
     "test": "jasmine",
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global",
     "perf": "protractor protractor.conf.js",
-    "build_perf": "npm run build_es6 && npm run build_cjs && npm run perf"
+    "build_perf": "npm run build_es6 && npm run build_cjs && npm run perf",
+    "prepublish": "npm run build_all"
   },
   "repository": {
     "type": "git",
