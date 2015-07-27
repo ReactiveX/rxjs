@@ -1,0 +1,28 @@
+import Scheduler from '../Scheduler';
+import Observable from '../Observable';
+
+export default class EmptyObservable<T> extends Observable<T> {
+
+  static create<T>(scheduler?: Scheduler) {
+    return new EmptyObservable(scheduler);
+  }
+
+  static dispatch({ subscriber }) {
+    subscriber.complete();
+  }
+
+  constructor(private scheduler?: Scheduler) {
+    super();
+  }
+
+  _subscribe(subscriber) {
+
+    const scheduler = this.scheduler;
+
+    if (scheduler) {
+      subscriber.add(scheduler.schedule(0, { subscriber }, EmptyObservable.dispatch));
+    } else {
+      subscriber.complete();
+    }
+  }
+}

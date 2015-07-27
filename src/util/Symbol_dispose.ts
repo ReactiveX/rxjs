@@ -1,10 +1,10 @@
-import root from './root';
+import {root} from './root';
 
-if(!root.Symbol) {
+if (!root.Symbol) {
   root.Symbol = {};
 }
 
-if(!root.Symbol.dispose) {
+if (!root.Symbol.dispose) {
   if (typeof root.Symbol.for === 'function') {
     root.Symbol.dispose = root.Symbol.for('dispose');
   } else {

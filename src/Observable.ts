@@ -1,114 +1,125 @@
-import { Observer } from './Observer';
-import { Subscription } from './Subscription';
-import SerialSubscription from './SerialSubscription';
-import nextTick from './scheduler/nextTick';
-import $$observer from './util/Symbol_observer';
-import Scheduler from './scheduler/Scheduler';
 import Subject from './Subject';
-import ConnectableObservable from './ConnectableObservable';
-import SubscriberFactory from './SubscriberFactory';
+import Observer from './Observer';
+import Operator from './Operator';
+import Scheduler from './Scheduler';
 import Subscriber from './Subscriber';
+import Subscription from './Subscription';
+import ConnectableObservable from './observables/ConnectableObservable';
 
-export default class Observable {
-  static value: (value: any) => Observable;
-  static return: (returnValue: any) => Observable;
-  static fromEvent: (element: any, eventName: string, selector: Function) => Observable;
-  static fromEventPattern: (addHandler: Function, removeHandler: Function, selector: Function) => Observable;
-  static throw: (err: any) => Observable;
-  static empty: () => Observable;
-  static never: () => Observable;
-  static range: (start: number, end: number) => Observable;
-  static fromArray: (array: Array<any>) => Observable;
-  static combineLatest: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
-  static zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
-  static fromPromise: (promise: Promise<any>) => Observable;
-  static of: (...values: Array<any>) => Observable;
-  static timer: (delay: number) => Observable;
-  static interval: (interval: number) => Observable;
+import $$observer from './util/Symbol_observer';
 
-  filter: (predicate: (any) => boolean) => Observable;
-  map: (project: (any) => any) => Observable;
-  mapTo: (value: any) => Observable;
-  mergeAll: (concurrent?: number) => Observable;
-  flatMap: (project: any, concurrent?: number) => Observable;
-  concatAll: () => Observable;
-  skip: (count: number) => Observable;
-  take: (count: number) => Observable;
-  subscribeOn: (scheduler: Scheduler) => Observable;
-  observeOn: (scheduler: Scheduler) => Observable;
-  combineLatest: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
-  zipAll: (project: (...observables: Array<Observable>) => Observable) => Observable;
-  zip: (observables: Array<Observable>, project: (...observables: Array<Observable>) => Observable) => Observable;
-  merge: (observables: Array<Observable>) => Observable;
-  toArray: () => Observable;
-  multicast: (subjectFactory: () => Subject) => ConnectableObservable;
-  partition: (predicate: (any) => boolean) => Observable[];
-  publish: () => ConnectableObservable;
-  reduce: (processor: (accum: any, value: any) => any, initialValue: any) => Observable;
-  
-  source: Observable = null;
-  subscriberFactory: SubscriberFactory = new SubscriberFactory();
-  
-  constructor(subscriber=null) {
-    if (subscriber) {
-      this.subscriber = subscriber;
+export default class Observable<T> {
+
+  source: Observable<any>;
+  operator: Operator<any, T>;
+
+  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T> | Function | void) {
+    if (subscribe) {
+      this._subscribe = subscribe;
     }
-    this.source = this;
   }
 
-  static create(subscriber: (subscriber: Subscriber) => any): Observable {
-    return new Observable(subscriber);
-  }
-
-  subscriber(subscriber: Subscriber): Subscription|Function|void {
-    return this.source.subscribe(this.subscriberFactory.create(subscriber));
-  }
-  
-  lift(subscriberFactory: SubscriberFactory): Observable {
-    var observable = new Observable();
+  lift<T, R>(operator: Operator<T, R>): Observable<T> {
+    const observable = new Observable();
     observable.source = this;
-    observable.subscriberFactory = subscriberFactory;
+    observable.operator = operator;
     return observable;
   }
 
-  [$$observer](observer: Observer) {
-    let subscriber = new Subscriber(observer);
-    subscriber.add(this.subscriber(subscriber));
+  [$$observer](observer: Observer<T>) {
+    return this.subscribe(observer);
+  }
+
+  subscribe(observerOrNext?: Observer<T> | ((value: T) => void),
+            error?: (error: T) => void,
+            complete?: () => void): Subscription<T> {
+
+    let subscriber: Subscriber<T>;
+
+    if (observerOrNext && typeof observerOrNext === "object") {
+      subscriber = new Subscriber(<Observer<T>> observerOrNext);
+    } else {
+      const next = <((x?) => void)> observerOrNext;
+      subscriber = Subscriber.create(next, error, complete);
+    }
+
+    subscriber.add(this._subscribe(subscriber));
+
     return subscriber;
   }
 
-  subscribe(observerOrNext, error=null, complete=null):Subscription {
-    let observer;
-
-    if (typeof observerOrNext === 'object') {
-      observer = observerOrNext;
-    } else {
-      observer = {
-        next: observerOrNext,
-        error,
-        complete
-      };
-    }
-
-    return this[$$observer](observer);
-  }
-
-  forEach(nextHandler) {
+  forEach(nextHandler:Function) {
     return new Promise((resolve, reject) => {
-      let observer = {
+      this[$$observer]({
         next: nextHandler,
-        error(err) {
-          reject(err);
-        },
-        complete(value) {
-          resolve(value);
-        }
-      };
-      this[$$observer](observer);
+        error: reject,
+        complete: resolve
+      });
     });
   }
-}
 
-function dispatchSubscription([observer, observable]) {
-  return observable[$$observer](observer);
+  _subscribe(subscriber: Observer<any>): Subscription<T> | Function | void {
+    return this.source._subscribe(this.operator.call(subscriber));
+  }
+
+  // TODO: convert this to an `abstract` class in TypeScript 1.6.
+
+  static from: <T>(iterable: any, project?: (x?: any, i?: number) => T, thisArg?: any, scheduler?: Scheduler) => Observable<T>;
+  static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
+  // static fromEvent: <T, R>(element: any, eventName: string, selector: (event: R) => T) => Observable<T>;
+  // static fromEventPattern: <T, R>(addHandler: Function, removeHandler: Function, selector: (event: R) => T) => Observable<T>;
+  static throw: <T>(error: T) => Observable<T>;
+  static empty: <T>() => Observable<T>;
+  static never: <T>() => Observable<T>;
+  static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
+  static range: <T>(start: number, end: number, scheduler?: Scheduler) => Observable<number>;
+  static return: <T>(value: T, scheduler?: Scheduler) => Observable<T>;
+  static value: <T>(value: T, scheduler?: Scheduler) => Observable<T>;
+  static just: <T>(value: T, scheduler?: Scheduler) => Observable<T>;
+  static fromPromise: <T>(promise: Promise<T>) => Observable<T>;
+  static timer: (delay: number) => Observable<number>;
+  static interval: (interval: number) => Observable<number>;
+
+  static concat: (scheduler?: any, ...observables: Observable<any>[]) => Observable<any>;
+  concat: (scheduler?: any, ...observables: Observable<any>[]) => Observable<any>;
+  concatAll: () => Observable<any>;
+  concatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+                 projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  concatMapTo: <R>(observable: Observable<any>,
+                   projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+
+  static merge: (scheduler?: any, concurrent?: any, ...observables: Observable<any>[]) => Observable<any>;
+  merge: (scheduler?: any, concurrent?: any, ...observables: Observable<any>[]) => Observable<any>;
+  mergeAll: (concurrent?: any) => Observable<any>;
+  flatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+               projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+               concurrent?: number) => Observable<R>;
+  flatMapTo: <R>(observable: Observable<any>,
+                 projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+                 concurrent?: number) => Observable<R>;
+
+  static combineLatest: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
+  combineLatest: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
+  combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
+
+  static zip: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
+  zip: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
+  zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
+
+  map: <T, R>(project: (x: T) => R) => Observable<R>;
+  mapTo: <R>(value: R) => Observable<R>;
+  toArray: () => Observable<T[]>;
+  scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
+  reduce: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
+
+  filter: (predicate: (x: T) => boolean) => Observable<T>;
+  skip: (count: number) => Observable<T>;
+  take: (count: number) => Observable<T>;
+  partition: (predicate: (x: T) => boolean) => Observable<T>[];
+
+  observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
+  subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
+
+  publish: () => ConnectableObservable<T>;
+  multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
 }

@@ -4,16 +4,15 @@ All credit for this helper goes to http://github.com/YuzuJS/setImmediate
 
 // var JSGlobal = global || window || new Function("return this")(),
 
-interface Immediate {
-  setImmediate(Function):any;
-  clearImmediate(any):any;
-}
+import noop from './noop';
+import {root as JSGlobal} from './root';
 
-import JSGlobal from './root';
+export var Immediate = {
+  setImmediate: (x) => { return 0; },
+  clearImmediate: (id) => {}
+};
 
-var Immediate:Immediate = <Immediate>{};
-
-if(JSGlobal && JSGlobal.setImmediate) {
+if (JSGlobal && JSGlobal.setImmediate) {
   Immediate.setImmediate = JSGlobal.setImmediate;
   Immediate.clearImmediate = JSGlobal.clearImmediate;
 } else {
@@ -181,5 +180,3 @@ if(JSGlobal && JSGlobal.setImmediate) {
     }
   }(JSGlobal, Immediate));
 }
-
-export default Immediate;

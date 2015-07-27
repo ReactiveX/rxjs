@@ -1,12 +1,13 @@
-import errorObj from './errorObject';
+import {errorObject} from './errorObject';
+
 var tryCatchTarget;
 
 function tryCatcher():any {
   try {
     return tryCatchTarget.apply(this, arguments);
   } catch (e) {
-    errorObj.e = e;
-    return errorObj;
+    errorObject.e = e;
+    return errorObject;
   }
 }
 

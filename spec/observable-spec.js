@@ -1,7 +1,7 @@
 /* globals describe, it, expect */
-var RxNext = require('../dist/cjs/RxNext');
+var Rx = require('../dist/cjs/Rx');
 
-var Observable = RxNext.Observable;
+var Observable = Rx.Observable;
 
 describe('Observable', function () {
   it('should be constructed with a subscriber function', function (done) {

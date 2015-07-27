@@ -1,80 +1,236 @@
+import Operator from './Operator';
+import Observer from './Observer';
 import Observable from './Observable';
 import Subscriber from './Subscriber';
-import $$observer from './util/Symbol_observer';
-import SerialSubscription from './SerialSubscription';
-import { Subscription } from './Subscription';
-import { Observer } from './Observer';
+import Subscription from './Subscription';
 
-export default class Subject extends Observable implements Observer, Subscription {
-  destination:Subscriber;
-  disposed:boolean=false;
-  subscribers:Array<Subscriber> = [];
+const emptySubscription = Subscription.empty;
+const subscriptionAdd = Subscription.prototype.add;
+const subscriptionRemove = Subscription.prototype.remove;
+const subscriptionUnsubscribe = Subscription.prototype.unsubscribe;
+
+const subscriberNext = Subscriber.prototype.next;
+const subscriberError = Subscriber.prototype.error;
+const subscriberComplete = Subscriber.prototype.complete;
+const _subscriberNext = Subscriber.prototype._next;
+const _subscriberError = Subscriber.prototype._error;
+const _subscriberComplete = Subscriber.prototype._complete;
+
+const _observableSubscribe = Observable.prototype._subscribe;
+
+export default class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
+
+  static create<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
+    return new BidiSubject(source, destination);
+  }
+
+  destination: Observer<T>;
+
+  observers: Observer<T>[] = [];
   isUnsubscribed: boolean = false;
-  _next: (value: any) => void;
-  _error: (err: any) => void;
-  _complete: (value: any) => void;
-  
-  constructor() {
-    super(null);
+
+  dispatching: boolean = false;
+  errorSignal: boolean = false;
+  errorInstance: any;
+  completeSignal: boolean = false;
+
+  lift<T, R>(operator: Operator<T, R>): Observable<T> {
+    const subject = new BidiSubject(this, this.destination || this);
+    subject.operator = operator;
+    return subject;
   }
-  
-  [$$observer](subscriber: Subscriber): Subscription {
-    if (!(subscriber instanceof Subscriber)) {
-      subscriber = new Subscriber(subscriber);
+
+  _subscribe(subscriber): Subscription<T> {
+
+    if (this.errorSignal) {
+      this.error(this.errorInstance);
+      return emptySubscription;
+    } else if (this.completeSignal) {
+      this.complete();
+      return emptySubscription;
+    } else if (this.isUnsubscribed) {
+      throw new Error("Cannot subscribe to a disposed Subject.");
     }
-    this.add(subscriber);
-    
-    //HACK: return a subscription that will remove the subscriber from the list
-    return <Subscription>{
-      subscriber: subscriber,
-      subject: this,
-      isUnsubscribed: false,
-      add() { },
-      remove() { },
-      unsubscribe() {
-        this.isUnsubscribed = true;
-        this.subscriber.unsubscribe;
-        this.subject.remove(this.subscriber);
-      }
-    };
+
+    this.observers.push(subscriber);
+
+    return new SubjectSubscription(this, subscriber);
   }
-  
-  next(value: any) {
-    if(this.isUnsubscribed) {
+
+  add(subscription?) {
+    subscriptionAdd.call(this, subscription);
+  }
+
+  remove(subscription?) {
+    subscriptionRemove.call(this, subscription);
+  }
+
+  unsubscribe() {
+    this.observers = void 0;
+    subscriptionUnsubscribe.call(this);
+  }
+
+  next(value) {
+
+    if (this.isUnsubscribed) {
       return;
     }
-    this.subscribers.forEach(o => o.next(value));
+
+    this.dispatching = true;
+    this._next(value);
+    this.dispatching = false;
+
+    if (this.errorSignal) {
+      this.error(this.errorInstance);
+    } else if (this.completeSignal) {
+      this.complete();
+    }
   }
-  
-  error(err: any) {
-    if(this.isUnsubscribed) {
+
+  error(error) {
+
+    if (this.isUnsubscribed) {
+      return;
+    } else if (this.dispatching) {
+      this.errorSignal = true;
+      this.errorInstance = error;
       return;
     }
-    this.subscribers.forEach(o => o.error(err));
+
+    this._error(error);
     this.unsubscribe();
   }
 
-  complete(value: any) {
-    if(this.isUnsubscribed) {
+  complete() {
+
+    if (this.isUnsubscribed) {
+      return;
+    } else if (this.dispatching) {
+      this.completeSignal = true;
       return;
     }
-    this.subscribers.forEach(o => o.complete(value));
+
+    this._complete();
     this.unsubscribe();
   }
-  
-  add(subscriber: Subscriber) {
-    this.subscribers.push(subscriber);
+
+
+  _next(value?) {
+    let index = -1;
+    const observers = this.observers.slice(0);
+    const len = observers.length;
+
+    while (++index < len) {
+      observers[index].next(value);
+    }
   }
-  
-  remove(subscriber: Subscriber) {
-    let index = this.subscribers.indexOf(subscriber);
-    if (index !== -1) {
-      this.subscribers.splice(index, 1);
-    }  
-  }
-  
-  unsubscribe() {
-    this.subscribers.length = 0;
+
+  _error(error?) {
+    let index = -1;
+    const observers = this.observers;
+    const len = observers.length;
+
+    // optimization -- block next, complete, and unsubscribe while dispatching
+    this.observers = void 0;
     this.isUnsubscribed = true;
+
+    while(++index < len) {
+      observers[index].error(error);
+    }
+
+    this.isUnsubscribed = false;
+  }
+
+  _complete() {
+    let index = -1;
+    const observers = this.observers;
+    const len = observers.length;
+
+    // optimization -- block next, complete, and unsubscribe while dispatching
+    this.observers = void 0; // optimization
+    this.isUnsubscribed = true;
+
+    while (++index < len) {
+      observers[index].complete();
+    }
+
+    this.isUnsubscribed = false;
+  }
+}
+
+class SubjectSubscription<T> implements Subscription<T> {
+
+  isUnsubscribed: boolean = false;
+
+  constructor(public subject: Subject<T>, public observer: Observer<any>) {
+  }
+
+  add(x?) {
+    subscriptionAdd.call(this, x);
+  }
+
+  remove(x?) {
+    subscriptionRemove.call(this, x);
+  }
+
+  unsubscribe() {
+
+    if (this.isUnsubscribed) {
+      return;
+    }
+
+    this.isUnsubscribed = true;
+
+    const subject = this.subject;
+    const observers = subject.observers;
+
+    this.subject = void 0;
+
+    if (!observers || observers.length === 0 || subject.isUnsubscribed) {
+      return;
+    }
+
+    const subscriberIndex = observers.indexOf(this.observer);
+
+    if (subscriberIndex !== -1) {
+      observers.splice(subscriberIndex, 1);
+    }
+  }
+}
+
+class BidiSubject<T> extends Subject<T> {
+
+  constructor(source: Observable<any>, destination: Observer<any>) {
+    super();
+    this.source = source;
+    this.destination = destination;
+  }
+
+  _subscribe(subscriber: Subscriber<T>):Subscription<T> {
+    return _observableSubscribe.call(this, subscriber);
+  }
+
+  next(x) {
+    subscriberNext.call(this, x);
+  }
+
+  error(e) {
+    subscriberError.call(this, e);
+  }
+
+  complete() {
+    subscriberComplete.call(this);
+  }
+
+  _next(x) {
+    _subscriberNext.call(this, x);
+  }
+
+  _error(e) {
+    _subscriberError.call(this, e);
+  }
+
+  _complete() {
+    _subscriberComplete.call(this);
   }
 }

@@ -1,8 +1,8 @@
 /* globals describe, it, expect */
-var RxNext = require('../dist/cjs/RxNext');
+var Rx = require('../dist/cjs/Rx');
 
-var Subject = RxNext.Subject;
-var nextTick = RxNext.Scheduler.nextTick;
+var Subject = Rx.Subject;
+var nextTick = Rx.Scheduler.nextTick;
 
 describe('Subject', function () {
   it('should pump values right on through itself', function (done) {
@@ -21,7 +21,6 @@ describe('Subject', function () {
     subject.next('bar');
     subject.complete();
   });
-
 
   it('should pump values to multiple subscribers', function (done) {
     var subject = new Subject();
@@ -42,13 +41,12 @@ describe('Subject', function () {
     
     // HACK
     nextTick.schedule(0, null, function () {
-      expect(subject.subscribers.length).toBe(2);
+      expect(subject.observers.length).toBe(2);
       subject.next('foo');
       subject.next('bar');
       subject.complete();
     });
   });
-
 
   it('should not allow values to be nexted after a return', function (done) {
     var subject = new Subject();
@@ -72,6 +70,7 @@ describe('Subject', function () {
   });
 
   it('should clean out unsubscribed subscribers', function (done) {
+    debugger;
     var subject = new Subject();
     
     var sub1 = subject.subscribe(function (x) {
@@ -80,11 +79,11 @@ describe('Subject', function () {
     var sub2 = subject.subscribe(function (x) {
     });
     
-    expect(subject.subscribers.length).toBe(2);
+    expect(subject.observers.length).toBe(2);
     sub1.unsubscribe();
-    expect(subject.subscribers.length).toBe(1);
+    expect(subject.observers.length).toBe(1);
     sub2.unsubscribe();
-    expect(subject.subscribers.length).toBe(0);
+    expect(subject.observers.length).toBe(0);
     done();
   });
 });

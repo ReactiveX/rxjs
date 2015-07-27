@@ -1,3 +1,1 @@
-var errorObject = { e: {} };
-
-export default errorObject;
+export var errorObject = { e: {} };

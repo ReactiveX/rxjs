@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/RxNext');
+module.exports = require('./dist/cjs/Rx');

@@ -1,13 +1,13 @@
 /* globals describe, it, expect */
-var RxNext = require('../dist/cjs/RxNext');
+var Rx = require('../dist/cjs/Rx');
 
-var BehaviorSubject = RxNext.BehaviorSubject;
-var nextTick = RxNext.Scheduler.nextTick;
+var BehaviorSubject = Rx.BehaviorSubject;
+var nextTick = Rx.Scheduler.nextTick;
 
 describe('BehaviorSubject', function() {
   it('should extend Subject', function(){
     var subject = new BehaviorSubject(null);
-    expect(subject instanceof RxNext.Subject).toBe(true);
+    expect(subject instanceof Rx.Subject).toBe(true);
   });
   
   it('should start with an initialization value', function(done) {
@@ -23,7 +23,7 @@ describe('BehaviorSubject', function() {
     });
     
     // HACK
-    RxNext.Scheduler.nextTick.schedule(0, null, function(){
+    Rx.Scheduler.nextTick.schedule(0, null, function(){
       subject.next('bar');
       subject.complete();
     });

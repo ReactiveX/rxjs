@@ -1,7 +1,7 @@
 /* globals describe, it, expect */
-var RxNext = require('../dist/cjs/RxNext');
+var Rx = require('../dist/cjs/Rx');
 
-var Scheduler = RxNext.Scheduler;
+var Scheduler = Rx.Scheduler;
 
 describe('Scheduler.immediate', function() {
   it('should schedule things recursively', function() {
