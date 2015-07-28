@@ -19,10 +19,14 @@ export default function merge(scheduler?: any, concurrent?: any, ...observables:
     xs.push(concurrent);
     concurrent = scheduler;
   }
-  if (scheduler && typeof scheduler.subscribe === "function") {
-    xs.push(scheduler);
-    scheduler = undefined;
-    concurrent = Number.POSITIVE_INFINITY
+  if (scheduler && typeof scheduler === "object") {
+    if (typeof scheduler.subscribe === "function") {
+      xs.push(scheduler);
+      scheduler = undefined;
+      concurrent = Number.POSITIVE_INFINITY;
+    } else if(typeof scheduler.schedule === "function") {
+      concurrent = Number.POSITIVE_INFINITY;
+    }
   }
   return new ArrayObservable(xs.concat(observables), scheduler).lift(new MergeOperator(concurrent));
 }
@@ -40,7 +44,7 @@ export class MergeOperator<T, R> extends Operator<T, R> {
 
 export class MergeSubscriber<T, R> extends Subscriber<T> {
 
-  buffer: Observable<any>[];
+  buffer: Observable<any>[] = [];
   active: number = 0;
   stopped: boolean = false;
 
@@ -48,7 +52,6 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
               protected concurrent: number,
               protected count: number = 0) {
       super(destination);
-      this.buffer = [];
   }
 
   _next(value) {
@@ -64,7 +67,7 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
         this.add(this._subscribeInner(observable, value, index));
       }
     } else {
-      this.buffer.push(value);
+      this._buffer(value);
     }
   }
 
@@ -81,6 +84,10 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
 
   _project(value, index) {
     return value;
+  }
+
+  _buffer(value) {
+    this.buffer.push(value);
   }
 
   _subscribeInner(observable, value, index) {

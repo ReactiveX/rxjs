@@ -13,7 +13,7 @@ export default class TimerObservable<T> extends Observable<T> {
     const { index, period, subscriber } = state;
     const action = (<any> this);
 
-    subscriber.next(index + 1);
+    subscriber.next(index);
 
     if (typeof period === "undefined") {
       subscriber.complete();
@@ -24,7 +24,7 @@ export default class TimerObservable<T> extends Observable<T> {
 
     if (typeof action.delay === 'undefined') {
       action.add(action.scheduler.schedule(period, {
-        index, period, subscriber
+        index: index + 1, period, subscriber
       }, TimerObservable.dispatch));
     } else {
       state.index = index + 1;
@@ -49,7 +49,7 @@ export default class TimerObservable<T> extends Observable<T> {
 
   _subscribe(subscriber) {
 
-    const index = -1;
+    const index = 0;
     const period = this._period;
     const dueTime = this.dueTime;
     const scheduler = this.scheduler;
