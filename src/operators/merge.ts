@@ -5,6 +5,7 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 
 import ArrayObservable from '../observables/ArrayObservable';
+import ScalarObservable from '../observables/ScalarObservable';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -83,10 +84,15 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
   }
 
   _subscribeInner(observable, value, index) {
-    return observable._subscribe(new MergeInnerSubscriber(this));
+    if(observable instanceof ScalarObservable) {
+      this.destination.next((<ScalarObservable<T>> observable).value);
+      this._innerComplete();
+    } else {
+      return observable._subscribe(new MergeInnerSubscriber(this));
+    }
   }
 
-  _innerComplete(innerSubscriber) {
+  _innerComplete() {
 
     const buffer = this.buffer;
     const active = this.active -= 1;
@@ -108,6 +114,6 @@ export class MergeInnerSubscriber<T, R> extends Subscriber<T> {
   }
 
   _complete() {
-    this.parent._innerComplete(this);
+    this.parent._innerComplete();
   }
 }

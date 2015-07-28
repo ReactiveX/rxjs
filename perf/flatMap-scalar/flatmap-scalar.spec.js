@@ -7,19 +7,18 @@ var runner = new benchpress.Runner([
   benchpress.bind(benchpress.Options.FORCE_GC).toValue(false)
 ]);
 
-describe('flatMap comparison', function() {
+describe('flatMap comparison', function () {
   [
     1000,
     10000
   ].forEach(function (val) {
-
     it('should be fast in Rx2', function (done) {
       browser.ignoreSynchronization = true;
-      browser.get('http://localhost:8080/perf/flatMap/index.html?iterations=' + val);
+      browser.get('http://localhost:8080/perf/flatMap-scalar/index.html?iterations=' + val);
       runner.sample({
-        id: 'flatMap Rx2',
+        id: 'flatMap-range-to-scalar Rx2',
         execute: function () {
-          $('#rx-2-flatmap').click();
+          $('#rx-2-flatmap-range-to-scalar').click();
         },
         bindings: [
           benchpress.bind(benchpress.Options.SAMPLE_DESCRIPTION).toValue({
@@ -31,11 +30,11 @@ describe('flatMap comparison', function() {
 
     it('should be fast in RxNext', function (done) {
       browser.ignoreSynchronization = true;
-      browser.get('http://localhost:8080/perf/flatMap/index.html?iterations=' + val);
+      browser.get('http://localhost:8080/perf/flatMap-scalar/index.html?iterations=' + val);
       runner.sample({
-        id: 'flatMap RxNext',
+        id: 'flatMap-range-to-scalar RxNext',
         execute: function () {
-          $('#rx-3-flatmap').click();
+          $('#rx-3-flatmap-range-to-scalar').click();
         },
         bindings: [
           benchpress.bind(benchpress.Options.SAMPLE_DESCRIPTION).toValue({

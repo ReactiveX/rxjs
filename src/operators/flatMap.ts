@@ -4,6 +4,7 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 
 import {MergeSubscriber, MergeInnerSubscriber} from './merge';
+import ScalarObservable from '../observables/ScalarObservable';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -46,7 +47,15 @@ export class FlatMapSubscriber<T, R> extends MergeSubscriber<T, R> {
   }
 
   _subscribeInner(observable, value, index) {
-    return observable.subscribe(new FlatMapInnerSubscriber(this, value, index, this.projectResult))
+    const projectResult = this.projectResult;
+    if(projectResult) {
+      return observable.subscribe(new FlatMapInnerSubscriber(this, value, index, projectResult));
+    } else if(observable instanceof ScalarObservable) {
+      this.destination.next((<ScalarObservable<T>> observable).value);
+      this._innerComplete();
+    } else {
+      return observable.subscribe(new MergeInnerSubscriber(this));
+    }
   }
 }
 
@@ -63,14 +72,9 @@ export class FlatMapInnerSubscriber<T, R> extends MergeInnerSubscriber<T, R> {
   _next(value) {
     let result = value;
     const index = this.count++;
-    const project = this.project;
-    if (project) {
-      result = tryCatch(project).call(this, this.value, value, this.index, index);
-      if (result === errorObject) {
-        this.destination.error(errorObject.e);
-      } else {
-        this.destination.next(result);
-      }
+    result = tryCatch(this.project).call(this, this.value, value, this.index, index);
+    if (result === errorObject) {
+      this.destination.error(errorObject.e);
     } else {
       this.destination.next(result);
     }
