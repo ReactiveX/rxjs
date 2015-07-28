@@ -34,7 +34,7 @@ export default class RangeObservable<T> extends Observable<T> {
 
   _subscribe(subscriber) {
 
-    let index = -1;
+    let index = 0;
     let start = this.start;
     const count = this.count;
     const scheduler = this.scheduler;
@@ -45,7 +45,7 @@ export default class RangeObservable<T> extends Observable<T> {
       }, RangeObservable.dispatch));
     } else {
       do {
-        if (++index >= count) {
+        if (index++ >= count) {
           subscriber.complete();
           break;
         }

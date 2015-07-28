@@ -26,7 +26,7 @@ export default class ArrayObservable<T> extends Observable<T> {
       return;
     }
 
-    subscriber.next(array[index + 1]);
+    subscriber.next(array[index]);
 
     if (subscriber.isUnsubscribed) {
       return;
@@ -43,7 +43,7 @@ export default class ArrayObservable<T> extends Observable<T> {
 
   _subscribe(subscriber) {
 
-    let index = -1;
+    let index = 0;
     const array = this.array;
     const count = array.length;
     const scheduler = this.scheduler;
@@ -54,11 +54,11 @@ export default class ArrayObservable<T> extends Observable<T> {
       }, ArrayObservable.dispatch));
     } else {
       do {
-        if (++index >= count) {
+        if (index >= count) {
           subscriber.complete();
           break;
         }
-        subscriber.next(array[index]);
+        subscriber.next(array[index++]);
         if (subscriber.isUnsubscribed) {
           break;
         }
