@@ -106,7 +106,7 @@ export default class Observable<T> {
   zip: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 
-  map: <T, R>(project: (x: T) => R) => Observable<R>;
+  map: <T, R>(project: (x: T, ix?: number) => R) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
   toArray: () => Observable<T[]>;
   scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
