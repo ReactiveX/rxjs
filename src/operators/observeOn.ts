@@ -21,8 +21,8 @@ export class ObserveOnOperator<T, R> extends Operator<T, R> {
 
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
 
-  static dispatch({ value, destination }) {
-    destination.next(value);
+  static dispatch({ type, value, destination }) {
+    destination[type](value);
   }
 
   constructor(public    destination: Observer<T>,
@@ -32,8 +32,28 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 
   _next(x) {
-    this.add(this.scheduler.schedule(this.delay, {
-      value: x, destination: this.destination
-    }, ObserveOnSubscriber.dispatch));
+    this.add(this.scheduler.schedule(this.delay,
+      new ScheduledNotification("next", x, this.destination),
+      ObserveOnSubscriber.dispatch)
+    );
+  }
+
+  _error(e) {
+    this.add(this.scheduler.schedule(this.delay, 
+      new ScheduledNotification("error", e, this.destination),
+      ObserveOnSubscriber.dispatch));
+  }
+
+  _complete() {
+    this.add(this.scheduler.schedule(this.delay, 
+      new ScheduledNotification("complete", void 0, this.destination),
+      ObserveOnSubscriber.dispatch));
+  }
+}
+
+class ScheduledNotification {
+  constructor(public type: string,
+              public value: any,
+              public destination: Observer<any>) {
   }
 }
