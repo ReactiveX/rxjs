@@ -38,7 +38,7 @@ export default class IteratorObservable<T> extends Observable<T> {
     }
 
     if (project) {
-      result = tryCatch(project).call(thisArg, result.value, index + 1);
+      result = tryCatch(project).call(thisArg, result.value, index);
       if (result === errorObject) {
         state.error = errorObject.e;
         state.hasError = true;
@@ -67,7 +67,7 @@ export default class IteratorObservable<T> extends Observable<T> {
 
   _subscribe(subscriber) {
 
-    let index = -1;
+    let index = 0;
     const project = this.project;
     const thisArg = this.thisArg;
     const iterator = this.iterator;
@@ -84,7 +84,7 @@ export default class IteratorObservable<T> extends Observable<T> {
           subscriber.complete();
           break;
         } else if (project) {
-          result = tryCatch(project).call(thisArg, result.value, ++index);
+          result = tryCatch(project).call(thisArg, result.value, index++);
           if (result === errorObject) {
             subscriber.error(errorObject.e);
             break;
