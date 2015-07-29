@@ -37,7 +37,11 @@ export default class Observable<T> {
     let subscriber: Subscriber<T>;
 
     if (observerOrNext && typeof observerOrNext === "object") {
-      subscriber = new Subscriber(<Observer<T>> observerOrNext);
+      if(observerOrNext instanceof Subscriber) {
+        subscriber = (<Subscriber<T>> observerOrNext);
+      } else {
+        subscriber = new Subscriber(<Observer<T>> observerOrNext);
+      }
     } else {
       const next = <((x?) => void)> observerOrNext;
       subscriber = Subscriber.create(next, error, complete);
