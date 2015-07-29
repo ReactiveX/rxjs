@@ -10,8 +10,12 @@ export default function map<T, R>(project: (x: T, ix?: number) => R) {
 }
 
 export class MapOperator<T, R> extends Operator<T, R> {
-  constructor(protected project: (x: T, ix?: number) => R) {
+
+  project: (x: T, ix?: number) => R;
+
+  constructor(project: (x: T, ix?: number) => R) {
     super();
+    this.project = project;
   }
   call(observer: Observer<R>): Observer<T> {
     return new MapSubscriber(observer, this.project);
@@ -20,10 +24,13 @@ export class MapOperator<T, R> extends Operator<T, R> {
 
 export class MapSubscriber<T, R> extends Subscriber<T> {
 
-  constructor(public    destination: Observer<R>,
-              protected project: (x: T, ix?: number) => R,
-              protected count: number = 0) {
+  count: number = 0;
+  project: (x: T, ix?: number) => R;
+
+  constructor(destination: Observer<R>,
+              project: (x: T, ix?: number) => R) {
     super(destination);
+    this.project = project;
   }
 
   _next(x) {

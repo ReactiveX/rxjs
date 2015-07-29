@@ -7,9 +7,14 @@ export default function mapTo<T, R>(value: R) {
 }
 
 export class MapToOperator<T, R> extends Operator<T, R> {
-  constructor(protected value: R) {
+
+  value: R;
+
+  constructor(value: R) {
     super();
+    this.value = value;
   }
+
   call(observer: Observer<R>): Observer<T> {
     return new MapToSubscriber(observer, this.value);
   }
@@ -17,9 +22,11 @@ export class MapToOperator<T, R> extends Operator<T, R> {
 
 export class MapToSubscriber<T, R> extends Subscriber<T> {
 
-  constructor(public    destination: Observer<R>,
-              protected value: R) {
+  value: R;
+
+  constructor(destination: Observer<R>, value: R) {
     super(destination);
+    this.value = value;
   }
 
   _next(x) {

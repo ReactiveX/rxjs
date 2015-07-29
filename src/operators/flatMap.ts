@@ -30,11 +30,16 @@ export class FlatMapOperator<T, R> extends Operator<T, R> {
 
 export class FlatMapSubscriber<T, R> extends MergeSubscriber<T, R> {
 
-  constructor(public    destination: Observer<R>,
-              protected concurrent: number,
-              protected project: (x: T, ix: number) => Observable<any>,
-              protected projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
+  project: (x: T, ix: number) => Observable<any>;
+  projectResult: (x: T, y: any, ix: number, iy: number) => R;
+
+  constructor(destination: Observer<R>,
+              concurrent: number,
+              project: (x: T, ix: number) => Observable<any>,
+              projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
     super(destination, concurrent);
+    this.project = project;
+    this.projectResult = projectResult;
   }
 
   _project(value, index) {
@@ -61,12 +66,19 @@ export class FlatMapSubscriber<T, R> extends MergeSubscriber<T, R> {
 
 export class FlatMapInnerSubscriber<T, R> extends MergeInnerSubscriber<T, R> {
 
-  constructor(protected parent: FlatMapSubscriber<T, R>,
-              protected value: any,
-              protected index: number,
-              protected project?: (x: T, y: any, ix: number, iy: number) => R,
-              protected count: number = 0) {
+  value: any;
+  index: number;
+  project: (x: T, y: any, ix: number, iy: number) => R;
+  count: number = 0;
+
+  constructor(parent: FlatMapSubscriber<T, R>,
+              value: any,
+              index: number,
+              project?: (x: T, y: any, ix: number, iy: number) => R) {
     super(parent);
+    this.value = value;
+    this.index = index;
+    this.project = project;
   }
 
   _next(value) {

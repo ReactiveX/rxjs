@@ -4,13 +4,16 @@ import tryOrOnError from './util/tryOrOnError';
 
 export default class Observer<T> {
 
-  constructor(public destination?: Observer<any>) {
+  destination: Observer<any>;
+
+  constructor(destination?: Observer<any>) {
     if (!destination) {
       return;
     }
     (typeof destination.next === "function") || (destination.next = noop);
     (typeof destination.error === "function") || (destination.error = throwError);
     (typeof destination.complete === "function") || (destination.complete = noop);
+    this.destination = destination;
   }
 
   next(value?): void {

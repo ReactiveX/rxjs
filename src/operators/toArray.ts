@@ -14,8 +14,9 @@ export class ToArrayOperator<T, R> extends Operator<T, R> {
 
 export class ToArraySubscriber<T> extends Subscriber<T> {
 
-  constructor(public    destination: Observer<T[]>,
-              protected array: T [] = []) {
+  array: T [] = [];
+
+  constructor(destination: Observer<T[]>) {
     super(destination);
   }
 

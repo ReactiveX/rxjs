@@ -22,8 +22,11 @@ export default function zip<T, R>(...xs: (Observable<any> | ((...values: Array<a
 
 export class ZipOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected project?: (...values: Array<any>) => R) {
+  project: (...values: Array<any>) => R
+
+  constructor(project?: (...values: Array<any>) => R) {
     super();
+    this.project = project;
   }
 
   call(observer: Observer<R>): Observer<T> {
@@ -33,14 +36,18 @@ export class ZipOperator<T, R> extends Operator<T, R> {
 
 export class ZipSubscriber<T, R> extends Subscriber<T> {
 
-  constructor(public    destination: Observer<R>,
-              public    project?: (...values: Array<any>) => R,
-              public    limit: number = Number.POSITIVE_INFINITY,
-              protected values: any = Object.create(null),
-              protected active: number = 0,
-              protected observables: Observable<any>[] = []) {
+  values: any;
+  active: number = 0;
+  observables: Observable<any>[] = [];
+  project: (...values: Array<any>) => R;
+  limit: number = Number.POSITIVE_INFINITY;
+
+  constructor(destination: Observer<R>,
+              project?: (...values: Array<any>) => R,
+              values: any = Object.create(null)) {
     super(destination);
     this.project = (typeof project === "function") ? project : null;
+    this.values = values;
   }
 
   _next(observable) {
@@ -77,12 +84,18 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
 
 export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
 
-  constructor(protected parent: ZipSubscriber<T, R>,
-              protected values: any,
-              protected index : number,
-              protected total : number,
-              protected events: number = 0) {
+  parent: ZipSubscriber<T, R>;
+  values: any;
+  index: number;
+  total: number;
+  events: number = 0;
+
+  constructor(parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
     super(parent.destination);
+    this.parent = parent;
+    this.values = values;
+    this.index = index;
+    this.total = total;
   }
 
   _next(x) {
