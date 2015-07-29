@@ -26,9 +26,9 @@ export class SwitchLatestSubscriber<T, R> extends FlatMapSubscriber<T, R> {
 
   innerSubscription: Subscription<T>;
 
-  constructor(public    destination: Observer<R>,
-              protected project: (x: T, ix: number) => Observable<any>,
-              protected projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
+  constructor(public destination: Observer<R>,
+              public project: (x: T, ix: number) => Observable<any>,
+              public projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
     super(destination, 1, project, projectResult);
   }
 
