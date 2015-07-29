@@ -98,6 +98,12 @@ export default class Observable<T> {
                  projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                  concurrent?: number) => Observable<R>;
 
+  switchAll: <R>() => Observable<R>;
+  switchLatest: <R>(project: ((x: T, ix: number) => Observable<any>),
+                    projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  switchLatestTo: <R>(observable: Observable<any>,
+                      projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+
   static combineLatest: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
   combineLatest: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;

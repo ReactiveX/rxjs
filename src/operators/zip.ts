@@ -63,7 +63,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   }
 
   _subscribeInner(observable, values, index, total) {
-    return observable._subscribe(new ZipInnerSubscriber(this, values, index, total));
+    return observable.subscribe(new ZipInnerSubscriber(this, values, index, total));
   }
 
   _innerComplete(innerSubscriber) {

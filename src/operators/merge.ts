@@ -95,7 +95,7 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
       this.destination.next((<ScalarObservable<T>> observable).value);
       this._innerComplete();
     } else {
-      return observable._subscribe(new MergeInnerSubscriber(this));
+      return observable.subscribe(new MergeInnerSubscriber(this));
     }
   }
 

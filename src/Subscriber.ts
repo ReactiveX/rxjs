@@ -23,7 +23,6 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
 
   _subscription: Subscription<T>;
   _isUnsubscribed: boolean = false;
-  // isUnsubscribed: boolean = false;
 
   constructor(destination?: Observer<any>) {
     super(destination);
