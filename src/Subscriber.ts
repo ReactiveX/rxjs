@@ -33,14 +33,14 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
     if (subscription) {
       this._subscription = subscription;
     } else if (destination instanceof Subscriber) {
-      this._subscription = (<any> destination);
+      this._subscription = (<Subscription<T>> destination);
     }
   }
 
   get isUnsubscribed(): boolean {
     const subscription = this._subscription;
     if (subscription) {
-      // route add to the shared Subscription if it exists
+      // route to the shared Subscription if it exists
       return subscription.isUnsubscribed;
     } else {
       return this._isUnsubscribed;
@@ -50,7 +50,7 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
   set isUnsubscribed(value: boolean) {
     const subscription = this._subscription;
     if (subscription) {
-      // route add to the shared Subscription if it exists
+      // route to the shared Subscription if it exists
       subscription.isUnsubscribed = value;
     } else {
       this._isUnsubscribed = value;
@@ -58,36 +58,20 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
   }
 
   add(sub?) {
-    const subscription = this._subscription;
-    if (subscription) {
-      // route add to the shared Subscription if it exists
-      subscription.add(sub);
-    } else {
-        subscriptionAdd.call(this, sub);
-    }
+    // route add to the shared Subscription if it exists
+    subscriptionAdd.call(this._subscription || this, sub);
   }
 
   remove(sub?) {
-    const subscription = this._subscription;
-    if (subscription) {
-      // route remove to the shared Subscription if it exists
-      subscription.remove(sub);
-    } else {
-      subscriptionRemove.call(this, sub);
-    }
+    // route remove to the shared Subscription if it exists
+    subscriptionRemove.call(this._subscription || this, sub);
   }
 
   unsubscribe() {
-    if(this._isUnsubscribed || this.isUnsubscribed) {
+    if(this._subscription || this._isUnsubscribed) {
       return;
     }
-    const subscription = this._subscription;
-    if(subscription) {
-      this._isUnsubscribed = true;
-      this._subscription = void 0;
-    } else {
-      subscriptionUnsubscribe.call(this);
-    }
+    subscriptionUnsubscribe.call(this);
   }
 
   next(value?) {
