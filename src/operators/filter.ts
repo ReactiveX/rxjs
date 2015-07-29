@@ -11,8 +11,11 @@ export default function filter<T>(select: (x: T) => boolean) {
 
 export class FilterOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected select: (x: T) => boolean) {
+  select: (x: T) => boolean;
+
+  constructor(select: (x: T) => boolean) {
     super();
+    this.select = select;
   }
 
   call(observer: Observer<T>): Observer<T> {

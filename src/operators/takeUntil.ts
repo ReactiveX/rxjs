@@ -9,8 +9,11 @@ export default function takeUntil<T>(observable: Observable<any>) {
 
 export class TakeUntilOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected observable: Observable<any>) {
+  observable: Observable<any>;
+
+  constructor(observable: Observable<any>) {
     super();
+    this.observable = observable;
   }
 
   call(observer: Observer<T>): Observer<T> {
@@ -27,8 +30,8 @@ export class TakeUntilSubscriber<T> extends Subscriber<T> {
 }
 
 export class TakeUntilInnerSubscriber<T> extends Subscriber<T> {
-  constructor(public destination: Observer<T>) {
-    super();
+  constructor(destination: Observer<T>) {
+    super(destination);
   }
   _next() {
     this.destination.complete();

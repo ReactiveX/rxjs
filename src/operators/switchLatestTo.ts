@@ -3,18 +3,18 @@ import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
 
-import {FlatMapToSubscriber} from './flatMapTo';
+import {FlatMapToOperator, FlatMapToSubscriber} from './flatMapTo';
 
 export default function switchLatestTo<T, R>(observable: Observable<any>,
                                              projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
   return this.lift(new SwitchLatestToOperator(observable, projectResult));
 }
 
-export class SwitchLatestToOperator<T, R> extends Operator<T, R> {
+export class SwitchLatestToOperator<T, R> extends FlatMapToOperator<T, R> {
 
-  constructor(protected observable: Observable<any>,
-              protected projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
-    super();
+  constructor(observable: Observable<any>,
+              projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
+    super(observable, projectResult, 1);
   }
 
   call(observer: Observer<R>): Observer<T> {
@@ -26,9 +26,9 @@ export class SwitchLatestToSubscriber<T, R> extends FlatMapToSubscriber<T, R> {
 
   innerSubscription: Subscription<T>;
 
-  constructor(public destination: Observer<R>,
-              public observable: Observable<any>,
-              public projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
+  constructor(destination: Observer<R>,
+              observable: Observable<any>,
+              projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
     super(destination, 1, observable, projectResult);
   }
 
