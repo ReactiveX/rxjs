@@ -25,7 +25,7 @@ export class SwitchSubscriber<T, R> extends MergeSubscriber<T, R> {
 
   innerSubscription: Subscription<T>;
 
-  constructor(public destination: Observer<R>) {
+  constructor(destination: Observer<R>) {
     super(destination, 1);
   }
 

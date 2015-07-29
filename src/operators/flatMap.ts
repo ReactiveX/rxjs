@@ -17,10 +17,17 @@ export default function flatMap<T, R>(project: (x: T, ix: number) => Observable<
 
 export class FlatMapOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected project: (x: T, ix: number) => Observable<any>,
-              protected projectResult?: (x: T, y: any, ix: number, iy: number) => R,
-              protected concurrent: number = Number.POSITIVE_INFINITY) {
+  project: (x: T, ix: number) => Observable<any>;
+  projectResult: (x: T, y: any, ix: number, iy: number) => R;
+  concurrent: number;
+
+  constructor(project: (x: T, ix: number) => Observable<any>,
+              projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+              concurrent: number = Number.POSITIVE_INFINITY) {
     super();
+    this.project = project;
+    this.projectResult = projectResult;
+    this.concurrent = concurrent;
   }
 
   call(observer: Observer<R>): Observer<T> {

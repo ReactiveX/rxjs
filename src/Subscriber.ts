@@ -41,7 +41,7 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
     const subscription = this._subscription;
     if (subscription) {
       // route to the shared Subscription if it exists
-      return subscription.isUnsubscribed;
+      return this._isUnsubscribed || subscription.isUnsubscribed;
     } else {
       return this._isUnsubscribed;
     }
@@ -68,10 +68,13 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
   }
 
   unsubscribe() {
-    if(this._subscription || this._isUnsubscribed) {
+    if(this._isUnsubscribed) {
       return;
+    } else if(this._subscription) {
+      this._isUnsubscribed = true;
+    } else  {
+      subscriptionUnsubscribe.call(this);
     }
-    subscriptionUnsubscribe.call(this);
   }
 
   next(value?) {
