@@ -23,8 +23,11 @@ export default function combineLatest<T, R>(...xs: (Observable<any> | ((...value
 
 export class CombineLatestOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected project?: (...values: Array<any>) => R) {
+  project: (...values: Array<any>) => R;
+
+  constructor(project?: (...values: Array<any>) => R) {
     super();
+    this.project = project;
   }
 
   call(observer: Observer<R>): Observer<T> {
@@ -34,9 +37,10 @@ export class CombineLatestOperator<T, R> extends Operator<T, R> {
 
 export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
 
-  constructor(public    destination: Observer<R>,
-              public    project?: (...values: Array<any>) => R) {
-    super(destination, project, 0, []);
+  project: (...values: Array<any>) => R;
+
+  constructor(destination: Observer<R>, project?: (...values: Array<any>) => R) {
+    super(destination, project, []);
   }
 
   _subscribeInner(observable, values, index, total) {
@@ -52,12 +56,8 @@ export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
 
 export class CombineLatestInnerSubscriber<T, R> extends ZipInnerSubscriber<T, R> {
 
-  constructor(protected parent: ZipSubscriber<T, R>,
-              protected values: any,
-              protected index : number,
-              protected total : number,
-              protected events: number = 0) {
-    super(parent, values, index, total, events);
+  constructor(parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
+    super(parent, values, index, total);
   }
 
   _next(x) {

@@ -13,10 +13,17 @@ export default function flatMapTo<T, R>(observable: Observable<any>,
 
 export class FlatMapToOperator<T, R> extends Operator<T, R> {
 
-  constructor(public observable: Observable<any>,
-              public projectResult?: (x: T, y: any, ix: number, iy: number) => R,
-              public concurrent: number = Number.POSITIVE_INFINITY) {
+  observable: Observable<any>;
+  projectResult: (x: T, y: any, ix: number, iy: number) => R
+  concurrent: number;
+
+  constructor(observable: Observable<any>,
+              projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+              concurrent: number = Number.POSITIVE_INFINITY) {
     super();
+    this.observable = observable;
+    this.projectResult = projectResult;
+    this.concurrent = concurrent;
   }
 
   call(observer: Observer<R>): Observer<T> {
@@ -26,11 +33,14 @@ export class FlatMapToOperator<T, R> extends Operator<T, R> {
 
 export class FlatMapToSubscriber<T, R> extends FlatMapSubscriber<T, R> {
 
-  constructor(public    destination: Observer<R>,
-              protected concurrent: number,
-              protected observable: Observable<T>,
-              protected projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
+  observable: Observable<T>;
+
+  constructor(destination: Observer<R>,
+              concurrent: number,
+              observable: Observable<T>,
+              projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
     super(destination, concurrent, null, projectResult);
+    this.observable = observable;
   }
 
   _project(value, index) {

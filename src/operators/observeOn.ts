@@ -10,8 +10,13 @@ export default function observeOn<T>(scheduler: Scheduler, delay: number = 0): O
 
 export class ObserveOnOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected scheduler: Scheduler, protected delay: number = 0) {
+  delay: number;
+  scheduler: Scheduler;
+
+  constructor(scheduler: Scheduler, delay: number = 0) {
     super();
+    this.delay = delay;
+    this.scheduler = scheduler;
   }
 
   call(observer: Observer<T>): Observer<T> {
@@ -25,10 +30,13 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
     destination[type](value);
   }
 
-  constructor(public    destination: Observer<T>,
-              protected scheduler: Scheduler,
-              protected delay: number = 0) {
+  delay: number;
+  scheduler: Scheduler;
+
+  constructor(destination: Observer<T>, scheduler: Scheduler, delay: number = 0) {
     super(destination);
+    this.delay = delay;
+    this.scheduler = scheduler;
   }
 
   _next(x) {
@@ -52,8 +60,14 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 }
 
 class ScheduledNotification {
-  constructor(public type: string,
-              public value: any,
-              public destination: Observer<any>) {
+
+  type: string;
+  value: any;
+  destination: Observer<any>;
+
+  constructor(type: string, value: any, destination: Observer<any>) {
+    this.type = type;
+    this.value = value;
+    this.destination = destination;
   }
 }

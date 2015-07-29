@@ -8,8 +8,11 @@ export default function take(total) {
 
 export class TakeOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected total: number) {
+  total: number;
+
+  constructor(total: number) {
     super();
+    this.total = total;
   }
 
   call(observer: Observer<R>): Observer<T> {
@@ -19,10 +22,12 @@ export class TakeOperator<T, R> extends Operator<T, R> {
 
 export class TakeSubscriber<T> extends Subscriber<T> {
 
-  constructor(public    destination: Observer<T>,
-              protected total: number,
-              protected count: number = 0) {
+  total: number;
+  count: number = 0;
+
+  constructor(destination: Observer<T>, total: number) {
     super(destination);
+    this.total = total;
   }
 
   _next(x) {

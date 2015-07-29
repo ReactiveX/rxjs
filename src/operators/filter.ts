@@ -22,9 +22,11 @@ export class FilterOperator<T, R> extends Operator<T, R> {
 
 export class FilterSubscriber<T> extends Subscriber<T> {
 
-  constructor(public    destination: Observer<T>,
-              protected select: (x: T) => boolean) {
+  select: (x: T) => boolean;
+
+  constructor(destination: Observer<T>, select: (x: T) => boolean) {
     super(destination);
+    this.select = select;
   }
 
   _next(x) {

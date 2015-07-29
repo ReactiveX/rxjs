@@ -33,8 +33,11 @@ export default function merge(scheduler?: any, concurrent?: any, ...observables:
 
 export class MergeOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected concurrent: number = Number.POSITIVE_INFINITY) {
+  concurrent: number;
+
+  constructor(concurrent: number = Number.POSITIVE_INFINITY) {
     super();
+    this.concurrent = concurrent;
   }
 
   call(observer: Observer<R>): Observer<T> {
@@ -44,14 +47,15 @@ export class MergeOperator<T, R> extends Operator<T, R> {
 
 export class MergeSubscriber<T, R> extends Subscriber<T> {
 
-  buffer: Observable<any>[] = [];
+  count: number = 0;
   active: number = 0;
   stopped: boolean = false;
+  buffer: Observable<any>[] = [];
+  concurrent: number;
 
-  constructor(public    destination: Observer<R>,
-              protected concurrent: number,
-              protected count: number = 0) {
-      super(destination);
+  constructor(destination: Observer<R>, concurrent: number) {
+    super(destination);
+    this.concurrent = concurrent;
   }
 
   _next(value) {
@@ -116,8 +120,11 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
 
 export class MergeInnerSubscriber<T, R> extends Subscriber<T> {
 
-  constructor(protected parent: MergeSubscriber<T, R>) {
+  parent: MergeSubscriber<T, R>;
+
+  constructor(parent: MergeSubscriber<T, R>) {
     super(parent.destination);
+    this.parent = parent;
   }
 
   _complete() {

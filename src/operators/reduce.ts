@@ -11,9 +11,13 @@ export default function reduce<T, R>(project: (acc: R, x: T) => R, acc?: R) {
 
 export class ReduceOperator<T, R> extends Operator<T, R> {
 
-  constructor(protected project: (acc: R, x: T) => R,
-              protected acc?: R) {
+  acc: R;
+  project: (acc: R, x: T) => R;
+
+  constructor(project: (acc: R, x: T) => R, acc?: R) {
     super();
+    this.acc = acc;
+    this.project = project;
   }
 
   call(observer: Observer<T>): Observer<T> {
@@ -23,12 +27,16 @@ export class ReduceOperator<T, R> extends Operator<T, R> {
 
 export class ReduceSubscriber<T, R> extends Subscriber<T> {
 
-  constructor(public    destination: Observer<T>,
-              protected project: (acc: R, x: T) => R,
-              protected acc?: R,
-              protected hasValue: boolean = false,
-              protected hasSeed: boolean = typeof acc !== "undefined") {
+  acc: R;
+  hasSeed: boolean;
+  hasValue: boolean = false;
+  project: (acc: R, x: T) => R;
+
+  constructor(destination: Observer<T>, project: (acc: R, x: T) => R, acc?: R) {
     super(destination);
+    this.acc = acc;
+    this.project = project;
+    this.hasSeed = typeof acc !== "undefined";
   }
 
   _next(x) {
