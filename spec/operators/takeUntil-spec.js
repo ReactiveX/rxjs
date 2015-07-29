@@ -8,8 +8,8 @@ describe('Observable.prototype.takeUntil()', function () {
     var i = 0;
     var nextSpy = jasmine.createSpy('nextSpy');
 
-    Observable.timer(0, 9)
-      .takeUntil(Observable.timer(50))
+    Observable.timer(0, 16)
+      .takeUntil(Observable.timer(81))
       .subscribe(nextSpy, null, function () {
         expect(nextSpy.calls.count()).toBe(5);
         expected.forEach(function (v) {
