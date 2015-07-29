@@ -72,7 +72,7 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
       return;
     } else if(this._subscription) {
       this._isUnsubscribed = true;
-    } else  {
+    } else {
       subscriptionUnsubscribe.call(this);
     }
   }
