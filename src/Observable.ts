@@ -121,6 +121,7 @@ export default class Observable<T> {
   filter: (predicate: (x: T) => boolean) => Observable<T>;
   skip: (count: number) => Observable<T>;
   take: (count: number) => Observable<T>;
+  takeUntil: (observable: Observable<any>) => Observable<T>;
   partition: (predicate: (x: T) => boolean) => Observable<T>[];
 
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;

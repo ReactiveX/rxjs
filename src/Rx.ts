@@ -77,11 +77,13 @@ observableProto.scan = scan;
 observableProto.reduce = reduce;
 
 import filter from './operators/filter';
-import take from './operators/take'
-import skip from './operators/skip'
+import take from './operators/take';
+import skip from './operators/skip';
+import takeUntil from './operators/takeUntil';
 
 observableProto.take = take;
 observableProto.skip = skip;
+observableProto.takeUntil = takeUntil;
 observableProto.filter = filter;
 
 import combineLatest from './operators/combineLatest';
@@ -110,7 +112,7 @@ import subscribeOn from './operators/subscribeOn';
 observableProto.observeOn = observeOn;
 observableProto.subscribeOn = subscribeOn;
 
-import partition from './operators/partition'
+import partition from './operators/partition';
 
 observableProto.partition = partition;
 
