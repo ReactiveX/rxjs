@@ -126,8 +126,10 @@ import partition from './operators/partition';
 observableProto.partition = partition;
 
 import _catch from './operators/catch';
+import retryWhen from './operators/retryWhen';
 
 observableProto.catch = _catch;
+observableProto.retryWhen = retryWhen;
 
 export default {
     Subject,
