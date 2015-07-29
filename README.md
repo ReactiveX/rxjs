@@ -24,9 +24,10 @@ The build and test structure is fairly primitive at the moment. There are variou
 - build_es6: Transpiles the TypeScript files from `src/` to `dist/es6`
 - build_cjs: Transpiles the ES6 files from `dist/es6` to `dist/cjs`
 - build_amd: Transpiles the ES6 files from `dist/es6` to `dist/amd`
-- build_global: Transpiles/Bundles the CommonJS files from `dist/cjs` to `dist/global/RxNext.js`
+- build_global: Transpiles/Bundles the CommonJS files from `dist/cjs` to `dist/global/Rx.js`
 - build_all: Performs all of the above in the proper order.
 - build_test: builds ES6, then CommonJS, then runs the tests with `jasmine`
+- build_perf: builds ES6, CommonJS, then global, then runs the performance tests with `protractor`
 - test: runs tests with `jasmine`, must have built prior to running.
 
 ### Example
