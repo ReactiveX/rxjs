@@ -119,6 +119,10 @@ import partition from './operators/partition';
 
 observableProto.partition = partition;
 
+import _catch from './operators/catch';
+
+observableProto.catch = _catch;
+
 export default {
     Subject,
     Scheduler,

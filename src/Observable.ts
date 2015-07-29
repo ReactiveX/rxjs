@@ -134,4 +134,6 @@ export default class Observable<T> {
 
   publish: () => ConnectableObservable<T>;
   multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
+  
+  catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
 }
