@@ -14,9 +14,7 @@ var Rx2ObservableReturn = Rx.Observable.return;
 var RxNextObservableReturn = RxNext.Observable.return;
 
 var Rx2TestRange = Rx.Observable.range(0, numIterations);
-var Rx2TestScalar = Rx.Observable.return(numIterations);
 var RxNextTestRange = RxNext.Observable.range(0, numIterations);
-var RxNextTestScalar = RxNext.Observable.return(numIterations);
 
 Rx2FlatMapRange.addEventListener('click', function() {
   Rx2TestRange.flatMap(projectionRx2).subscribe();
