@@ -70,7 +70,7 @@ export default class IteratorObservable<T> extends Observable<T> {
     let index = 0;
     const project = this.project;
     const thisArg = this.thisArg;
-    const iterator = this.iterator;
+    const iterator = getIterator(Object(this.iterator));
     const scheduler = this.scheduler;
 
     if (scheduler) {

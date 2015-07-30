@@ -74,7 +74,7 @@ export class Action<T> extends Subscription<T> {
     if (this.isUnsubscribed) {
       throw new Error("How did did we execute a canceled Action?");
     }
-    this.add(this.work(this.state));
+    this.work(this.state);
   }
 
   unsubscribe() {
