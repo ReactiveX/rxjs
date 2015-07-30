@@ -68,6 +68,7 @@ export default class Observable<T> {
 
   // TODO: convert this to an `abstract` class in TypeScript 1.6.
 
+  static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
   static from: <T>(iterable: any, project?: (x?: any, i?: number) => T, thisArg?: any, scheduler?: Scheduler) => Observable<T>;
   static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
   // static fromEvent: <T, R>(element: any, eventName: string, selector: (event: R) => T) => Observable<T>;
