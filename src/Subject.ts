@@ -41,7 +41,9 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
 
   _subscribe(subscriber) {
 
-    if (this.errorSignal) {
+    if (subscriber.isUnsubscribed) {
+      return;
+    } else if (this.errorSignal) {
       subscriber.error(this.errorInstance);
       return;
     } else if (this.completeSignal) {
