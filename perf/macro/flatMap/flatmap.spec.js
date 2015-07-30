@@ -15,7 +15,7 @@ describe('flatMap comparison', function() {
 
     it('should be fast in Rx2', function (done) {
       browser.ignoreSynchronization = true;
-      browser.get('http://localhost:8080/perf/flatMap/index.html?iterations=' + val);
+      browser.get('http://localhost:8080/perf/macro/flatMap/index.html?iterations=' + val);
       runner.sample({
         id: 'flatMap Rx2',
         execute: function () {
@@ -31,7 +31,7 @@ describe('flatMap comparison', function() {
 
     it('should be fast in RxNext', function (done) {
       browser.ignoreSynchronization = true;
-      browser.get('http://localhost:8080/perf/flatMap/index.html?iterations=' + val);
+      browser.get('http://localhost:8080/perf/macro/flatMap/index.html?iterations=' + val);
       runner.sample({
         id: 'flatMap RxNext',
         execute: function () {
