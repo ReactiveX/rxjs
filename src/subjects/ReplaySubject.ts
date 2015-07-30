@@ -31,7 +31,7 @@ export default class ReplaySubject<T> extends Subject<T> {
     const events = this._getEvents(this._getNow());
     let index = -1;
     const len = events.length;
-    while(++index < len) {
+    while(!subscriber.isUnsubscribed && ++index < len) {
       subscriber.next(events[index].value);
     }
     return super._subscribe(subscriber);
