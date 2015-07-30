@@ -7,6 +7,7 @@ import BehaviorSubject from './subjects/BehaviorSubject';
 import ConnectableObservable from './observables/ConnectableObservable';
 
 import ArrayObservable from './observables/ArrayObservable';
+import DeferObservable from './observables/DeferObservable';
 import EmptyObservable from './observables/EmptyObservable';
 import ErrorObservable from './observables/ErrorObservable';
 import InfiniteObservable from './observables/InfiniteObservable';
@@ -17,6 +18,7 @@ import RangeObservable from './observables/RangeObservable';
 import ScalarObservable from './observables/ScalarObservable';
 import TimerObservable from './observables/TimerObservable';
 
+Observable.defer = DeferObservable.create;
 Observable.from = IteratorObservable.create;
 Observable.fromArray = ArrayObservable.create;
 Observable.fromPromise = PromiseObservable.create;
