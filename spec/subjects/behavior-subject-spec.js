@@ -1,13 +1,14 @@
 /* globals describe, it, expect */
-var Rx = require('../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx');
 
 var BehaviorSubject = Rx.BehaviorSubject;
 var nextTick = Rx.Scheduler.nextTick;
 
 describe('BehaviorSubject', function() {
-  it('should extend Subject', function(){
+  it('should extend Subject', function(done){
     var subject = new BehaviorSubject(null);
     expect(subject instanceof Rx.Subject).toBe(true);
+    done();
   });
   
   it('should start with an initialization value', function(done) {

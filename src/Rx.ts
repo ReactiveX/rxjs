@@ -3,6 +3,7 @@ import Scheduler from './Scheduler';
 import Observable from './Observable';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
+import ReplaySubject from './subjects/ReplaySubject';
 import BehaviorSubject from './subjects/BehaviorSubject';
 import ConnectableObservable from './observables/ConnectableObservable';
 
@@ -122,6 +123,7 @@ export default {
     Observable,
     Subscriber,
     Subscription,
+    ReplaySubject,
     BehaviorSubject,
     ConnectableObservable
 };

@@ -4,7 +4,6 @@ import Observable from './Observable';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
 
-const emptySubscription = Subscription.empty;
 const subscriptionAdd = Subscription.prototype.add;
 const subscriptionRemove = Subscription.prototype.remove;
 const subscriptionUnsubscribe = Subscription.prototype.unsubscribe;
@@ -40,14 +39,14 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     return subject;
   }
 
-  _subscribe(subscriber): Subscription<T> {
+  _subscribe(subscriber) {
 
     if (this.errorSignal) {
-      this.error(this.errorInstance);
-      return emptySubscription;
+      subscriber.error(this.errorInstance);
+      return;
     } else if (this.completeSignal) {
-      this.complete();
-      return emptySubscription;
+      subscriber.complete();
+      return;
     } else if (this.isUnsubscribed) {
       throw new Error("Cannot subscribe to a disposed Subject.");
     }
@@ -89,11 +88,14 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
 
   error(error) {
 
-    if (this.isUnsubscribed) {
+    if (this.isUnsubscribed || this.completeSignal) {
       return;
-    } else if (this.dispatching) {
-      this.errorSignal = true;
-      this.errorInstance = error;
+    }
+
+    this.errorSignal = true;
+    this.errorInstance = error;
+
+    if (this.dispatching) {
       return;
     }
 
@@ -103,10 +105,13 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
 
   complete() {
 
-    if (this.isUnsubscribed) {
+    if (this.isUnsubscribed || this.errorSignal) {
       return;
-    } else if (this.dispatching) {
-      this.completeSignal = true;
+    }
+
+    this.completeSignal = true;
+
+    if (this.dispatching) {
       return;
     }
 
@@ -158,7 +163,7 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
   }
 }
 
-class SubjectSubscription<T> implements Subscription<T> {
+export class SubjectSubscription<T> implements Subscription<T> {
 
   isUnsubscribed: boolean = false;
 
@@ -206,7 +211,7 @@ class BidiSubject<T> extends Subject<T> {
     this.destination = destination;
   }
 
-  _subscribe(subscriber: Subscriber<T>):Subscription<T> {
+  _subscribe(subscriber: Subscriber<T>) {
     return _observableSubscribe.call(this, subscriber);
   }
 
