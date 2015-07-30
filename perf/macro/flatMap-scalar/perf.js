@@ -13,15 +13,28 @@ var RxNextFlatMapRange = document.querySelector('#rx-3-flatmap-range-to-scalar')
 var Rx2ObservableReturn = Rx.Observable.return;
 var RxNextObservableReturn = RxNext.Observable.return;
 
-var Rx2TestRange = Rx.Observable.range(0, numIterations);
-var RxNextTestRange = RxNext.Observable.range(0, numIterations);
+var RxNextTestObservable = new RxNext.Observable(function(observer) {
+  var index = -1;
+  while(++index < numIterations) {
+    observer.next(index);
+  }
+  observer.completed();
+});
+
+var Rx2TestObservable = Rx.Observable.create(function(observer) {
+  var index = -1;
+  while(++index < numIterations) {
+    observer.onNext(index);
+  }
+  observer.onCompleted();
+});
 
 Rx2FlatMapRange.addEventListener('click', function() {
-  Rx2TestRange.flatMap(projectionRx2).subscribe();
+  Rx2TestObservable.flatMap(projectionRx2).subscribe();
 });
 
 RxNextFlatMapRange.addEventListener('click', function() {
-  RxNextTestRange.flatMap(projectionRxNext).subscribe();
+  RxNextTestObservable.flatMap(projectionRxNext).subscribe();
 });
 
 function projectionRxNext(x) {
