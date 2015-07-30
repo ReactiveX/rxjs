@@ -17,7 +17,7 @@ exports.config = {
     }
   },
 
-  specs: ['perf/**/*.spec.js'],
+  specs: ['perf/macro/**/*.spec.js'],
   framework: 'jasmine2',
 
   beforeLaunch: function () {
