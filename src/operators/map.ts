@@ -4,18 +4,19 @@ import Subscriber from '../Subscriber';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import bindCallback from '../util/bindCallback';
 
-export default function map<T, R>(project: (x: T, ix?: number) => R) {
-  return this.lift(new MapOperator(project));
+export default function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any) {
+  return this.lift(new MapOperator(project, thisArg));
 }
 
 export class MapOperator<T, R> extends Operator<T, R> {
 
   project: (x: T, ix?: number) => R;
 
-  constructor(project: (x: T, ix?: number) => R) {
+  constructor(project: (x: T, ix?: number) => R, thisArg?: any) {
     super();
-    this.project = project;
+    this.project = <(x: T, ix?: number) => R>bindCallback(project, thisArg, 2);
   }
   call(observer: Observer<R>): Observer<T> {
     return new MapSubscriber(observer, this.project);
@@ -34,7 +35,7 @@ export class MapSubscriber<T, R> extends Subscriber<T> {
   }
 
   _next(x) {
-    const result = tryCatch(this.project).call(this, x, this.count++);
+    const result = tryCatch(this.project)(x, this.count++);
     if (result === errorObject) {
       this.error(errorObject.e);
     } else {

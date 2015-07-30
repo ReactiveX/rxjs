@@ -116,13 +116,13 @@ export default class Observable<T> {
   zip: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 
-  map: <T, R>(project: (x: T, ix?: number) => R) => Observable<R>;
+  map: <T, R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
   toArray: () => Observable<T[]>;
   scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   reduce: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
 
-  filter: (predicate: (x: T) => boolean) => Observable<T>;
+  filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   skip: (count: number) => Observable<T>;
   take: (count: number) => Observable<T>;
   takeUntil: (observable: Observable<any>) => Observable<T>;
