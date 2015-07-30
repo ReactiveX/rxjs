@@ -6,17 +6,17 @@ import Subscription from '../Subscription';
 
 export default class ReplaySubject<T> extends Subject<T> {
 
-  size: number;
-  window: number;
+  bufferSize: number;
+  windowTime: number;
   scheduler: Scheduler;
   private events: ReplayEvent<T> [] = [];
 
-  constructor(size: number = Number.POSITIVE_INFINITY,
-              window: number = Number.POSITIVE_INFINITY,
+  constructor(bufferSize: number = Number.POSITIVE_INFINITY,
+              windowTime: number = Number.POSITIVE_INFINITY,
               scheduler?: Scheduler) {
     super();
-    this.size = size < 1 ? 1 : size;
-    this.window = window < 1 ? 1 : window;
+    this.bufferSize = bufferSize < 1 ? 1 : bufferSize;
+    this.windowTime = windowTime < 1 ? 1 : windowTime;
     this.scheduler = scheduler;
   }
 
@@ -42,15 +42,32 @@ export default class ReplaySubject<T> extends Subject<T> {
   }
 
   private _getEvents(now) {
-    const size = this.size;
-    const window = this.window;
+
+    const bufferSize = this.bufferSize;
+    const windowTime = this.windowTime;
     const events = this.events;
-    while(events.length > size) {
-      events.shift();
+
+    let eventsCount = events.length;
+    let spliceCount = 0;
+
+    // Trim events that fall out of the time window.
+    // Start at the front of the list. Break early once
+    // we encounter an event that falls within the window.
+    while(spliceCount < eventsCount) {
+      if((now - events[spliceCount].time) < windowTime) {
+        break;
+      }
+      spliceCount += 1;
     }
-    while(events.length > 0 && (now - events[0].time) > window) {
-      events.shift();
+
+    if(eventsCount > bufferSize) {
+      spliceCount = Math.max(spliceCount, eventsCount - bufferSize);
     }
+
+    if(spliceCount > 0) {
+      events.splice(0, spliceCount);
+    }
+
     return events;
   }
 }
