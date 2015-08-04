@@ -71,7 +71,7 @@ export default class Observable<T> {
   static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
   static from: <T>(iterable: any, project?: (x?: any, i?: number) => T, thisArg?: any, scheduler?: Scheduler) => Observable<T>;
   static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
-  // static fromEvent: <T, R>(element: any, eventName: string, selector: (event: R) => T) => Observable<T>;
+  static fromEvent: <T>(element: any, eventName: string, selector: (...args:Array<any>) => T) => Observable<T>;
   static fromEventPattern: <T>(addHandler: (handler:Function)=>void, removeHandler: (handler:Function) => void, selector?: (...args:Array<any>) => T) => Observable<T>;
   static throw: <T>(error: T) => Observable<T>;
   static empty: <T>() => Observable<T>;

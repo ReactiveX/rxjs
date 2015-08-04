@@ -19,6 +19,7 @@ import RangeObservable from './observables/RangeObservable';
 import ScalarObservable from './observables/ScalarObservable';
 import TimerObservable from './observables/TimerObservable';
 import FromEventPatternObservable from './observables/FromEventPatternObservable';
+import FromEventObservable from './observables/FromEventObservable';
 
 Observable.defer = DeferObservable.create;
 Observable.from = IteratorObservable.create;
@@ -38,6 +39,7 @@ Observable.never = InfiniteObservable.create;
 
 Observable.timer = TimerObservable.create;
 Observable.interval = IntervalObservable.create;
+Observable.fromEvent = FromEventObservable.create;
 
 const observableProto = Observable.prototype;
 
