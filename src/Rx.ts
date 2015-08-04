@@ -18,6 +18,7 @@ import PromiseObservable from './observables/PromiseObservable';
 import RangeObservable from './observables/RangeObservable';
 import ScalarObservable from './observables/ScalarObservable';
 import TimerObservable from './observables/TimerObservable';
+import FromEventPatternObservable from './observables/FromEventPatternObservable';
 
 Observable.defer = DeferObservable.create;
 Observable.from = IteratorObservable.create;
@@ -25,6 +26,7 @@ Observable.fromArray = ArrayObservable.create;
 Observable.fromPromise = PromiseObservable.create;
 Observable.of = ArrayObservable.of;
 Observable.range = RangeObservable.create;
+Observable.fromEventPattern = FromEventPatternObservable.create;
 
 Observable.just = ScalarObservable.create;
 Observable.return = ScalarObservable.create;
