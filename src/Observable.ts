@@ -5,6 +5,10 @@ import Scheduler from './Scheduler';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
 import ConnectableObservable from './observables/ConnectableObservable';
+// HACK: the Babel part of the build doesn't like this reference.
+// seems to put it in an infinite loop.
+//import Notification from './Notification';
+
 
 import $$observer from './util/Symbol_observer';
 
@@ -131,6 +135,9 @@ export default class Observable<T> {
   partition: (predicate: (x: T) => boolean) => Observable<T>[];
   toPromise: (PromiseCtor: PromiseConstructor) => Promise<T>;
   defaultIfEmpty: <T, R>(defaultValue: R) => Observable<T>|Observable<R>;
+  // HACK: this should be Observable<Notification<T>>, but the build process didn't like it. :(
+  //   this will be fixed when we can move everything to the TypeScript compiler I suspect.
+  materialize: () => Observable<any>;
 
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;

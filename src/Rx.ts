@@ -3,6 +3,8 @@ import Scheduler from './Scheduler';
 import Observable from './Observable';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
+import Notification from './Notification';
+
 import ReplaySubject from './subjects/ReplaySubject';
 import BehaviorSubject from './subjects/BehaviorSubject';
 import ConnectableObservable from './observables/ConnectableObservable';
@@ -124,10 +126,12 @@ observableProto.subscribeOn = subscribeOn;
 import partition from './operators/partition';
 import toPromise from './operators/toPromise';
 import defaultIfEmpty from './operators/defaultIfEmpty';
+import materialize from './operators/materialize';
 
 observableProto.partition = partition;
 observableProto.toPromise = toPromise;
 observableProto.defaultIfEmpty = defaultIfEmpty;
+observableProto.materialize = materialize;
 
 import _catch from './operators/catch';
 import retryWhen from './operators/retryWhen';
@@ -143,5 +147,6 @@ export default {
     Subscription,
     ReplaySubject,
     BehaviorSubject,
-    ConnectableObservable
+    ConnectableObservable,
+    Notification 
 };
