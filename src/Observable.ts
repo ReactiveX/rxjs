@@ -129,7 +129,8 @@ export default class Observable<T> {
   take: (count: number) => Observable<T>;
   takeUntil: (observable: Observable<any>) => Observable<T>;
   partition: (predicate: (x: T) => boolean) => Observable<T>[];
-
+  toPromise: (PromiseCtor: PromiseConstructor) => Promise<T>;
+  
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
 

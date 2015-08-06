@@ -122,8 +122,10 @@ observableProto.observeOn = observeOn;
 observableProto.subscribeOn = subscribeOn;
 
 import partition from './operators/partition';
+import toPromise from './operators/toPromise';
 
 observableProto.partition = partition;
+observableProto.toPromise = toPromise;
 
 import _catch from './operators/catch';
 import retryWhen from './operators/retryWhen';
