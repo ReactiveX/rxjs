@@ -122,6 +122,7 @@ export default class Observable<T> {
   toArray: () => Observable<T[]>;
   scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   reduce: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
+  startWith: <T>(x: T) => Observable<T>;
 
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   skip: (count: number) => Observable<T>;
@@ -134,6 +135,6 @@ export default class Observable<T> {
 
   publish: () => ConnectableObservable<T>;
   multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
-  
+
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
 }
