@@ -76,12 +76,14 @@ import mapTo from './operators/mapTo';
 import toArray from './operators/toArray';
 import scan from './operators/scan';
 import reduce from './operators/reduce';
+import startWith from './operators/startWith';
 
 observableProto.map = map;
 observableProto.mapTo = mapTo;
 observableProto.toArray = toArray;
 observableProto.scan = scan;
 observableProto.reduce = reduce;
+observableProto.startWith = startWith;
 
 import filter from './operators/filter';
 import take from './operators/take';
