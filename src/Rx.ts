@@ -149,6 +149,10 @@ import _finally from './operators/finally';
 
 observableProto.finally = _finally;
 
+import groupBy from './operators/groupBy';
+
+observableProto.groupBy = groupBy;
+
 export default {
     Subject,
     Scheduler,

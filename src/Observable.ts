@@ -6,6 +6,7 @@ import Subscriber from './Subscriber';
 import Subscription from './Subscription';
 import ConnectableObservable from './observables/ConnectableObservable';
 // HACK: the Babel part of the build doesn't like this reference.
+import { GroupSubject } from './operators/groupBy';
 // seems to put it in an infinite loop.
 //import Notification from './Notification';
 
@@ -151,6 +152,8 @@ export default class Observable<T> {
 
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
+  
+  groupBy: <T, R>(keySelector: (value:T) => string, durationSelector?: (group:GroupSubject<R>) => Observable<any>, elementSelector?: (value:T) => R) => Observable<R>;
 
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
-}
+ }
