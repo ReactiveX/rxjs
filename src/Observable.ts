@@ -130,7 +130,8 @@ export default class Observable<T> {
   takeUntil: (observable: Observable<any>) => Observable<T>;
   partition: (predicate: (x: T) => boolean) => Observable<T>[];
   toPromise: (PromiseCtor: PromiseConstructor) => Promise<T>;
-  
+  defaultIfEmpty: <T, R>(defaultValue: R) => Observable<T>|Observable<R>;
+
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
 

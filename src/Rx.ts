@@ -123,9 +123,11 @@ observableProto.subscribeOn = subscribeOn;
 
 import partition from './operators/partition';
 import toPromise from './operators/toPromise';
+import defaultIfEmpty from './operators/defaultIfEmpty';
 
 observableProto.partition = partition;
 observableProto.toPromise = toPromise;
+observableProto.defaultIfEmpty = defaultIfEmpty;
 
 import _catch from './operators/catch';
 import retryWhen from './operators/retryWhen';
