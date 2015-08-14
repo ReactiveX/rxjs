@@ -147,4 +147,7 @@ export default class Observable<T> {
 
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
+
+  ensure: (ensure: () => void, thisArg?: any) => Observable<T>;
+  finally: (ensure: () => void, thisArg?: any) => Observable<T>;
 }
