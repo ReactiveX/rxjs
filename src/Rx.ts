@@ -143,6 +143,11 @@ import retryWhen from './operators/retryWhen';
 observableProto.catch = _catch;
 observableProto.retryWhen = retryWhen;
 
+import _finally from './operators/finally';
+
+observableProto.ensure = _finally;
+observableProto.finally = _finally;
+
 export default {
     Subject,
     Scheduler,
