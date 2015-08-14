@@ -147,7 +147,6 @@ observableProto.retryWhen = retryWhen;
 
 import _finally from './operators/finally';
 
-observableProto.ensure = _finally;
 observableProto.finally = _finally;
 
 export default {
