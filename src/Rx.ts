@@ -87,15 +87,19 @@ observableProto.scan = scan;
 observableProto.reduce = reduce;
 observableProto.startWith = startWith;
 
-import filter from './operators/filter';
 import take from './operators/take';
 import skip from './operators/skip';
 import takeUntil from './operators/takeUntil';
+import filter from './operators/filter';
+import distinctUntilChanged from './operators/distinctUntilChanged';
+import distinctUntilKeyChanged from './operators/distinctUntilKeyChanged';
 
 observableProto.take = take;
 observableProto.skip = skip;
 observableProto.takeUntil = takeUntil;
 observableProto.filter = filter;
+observableProto.distinctUntilChanged = distinctUntilChanged;
+observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
 import combineLatest from './operators/combineLatest';
 import combineAll from './operators/combineAll';
