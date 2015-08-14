@@ -107,6 +107,8 @@ export default class Observable<T> {
                  projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                  concurrent?: number) => Observable<R>;
 
+  expand: (project: (x: T, ix: number) => Observable<any>) => Observable<any>;
+
   switchAll: <R>() => Observable<R>;
   switchLatest: <R>(project: ((x: T, ix: number) => Observable<any>),
                     projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
