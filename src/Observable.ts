@@ -147,6 +147,7 @@ export default class Observable<T> {
   // HACK: this should be Observable<Notification<T>>, but the build process didn't like it. :(
   //   this will be fixed when we can move everything to the TypeScript compiler I suspect.
   materialize: () => Observable<any>;
+  throttle: (delay: number, scheduler?: Scheduler) => Observable<T>;
 
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;

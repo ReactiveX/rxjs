@@ -17,4 +17,20 @@ describe('Scheduler.immediate', function() {
     expect(call1).toBe(true);
     expect(call2).toBe(true);
   });
+  
+  it('should schedule things in the future too', function (done) {
+    var called = false;
+    Scheduler.immediate.schedule(500, null, function () {
+      called = true;
+    });
+    
+    setTimeout(function () {
+      expect(called).toBe(false);
+    }, 400);
+    
+    setTimeout(function() {
+      expect(called).toBe(true);
+      done();
+    }, 700);
+  })
 });

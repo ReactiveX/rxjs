@@ -162,9 +162,13 @@ import groupBy from './operators/groupBy';
 observableProto.groupBy = groupBy;
 
 import delay from './operators/delay';
+import throttle from './operators/throttle';
+
 observableProto.delay = delay;
+observableProto.throttle = throttle;
 
 export {
+
     Subject,
     Scheduler,
     Observable,
