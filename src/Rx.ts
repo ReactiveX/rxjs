@@ -91,6 +91,7 @@ observableProto.startWith = startWith;
 
 import take from './operators/take';
 import skip from './operators/skip';
+import skipUntil from './operators/skipUntil';
 import takeUntil from './operators/takeUntil';
 import filter from './operators/filter';
 import distinctUntilChanged from './operators/distinctUntilChanged';
@@ -99,6 +100,7 @@ import distinctUntilKeyChanged from './operators/distinctUntilKeyChanged';
 observableProto.take = take;
 observableProto.skip = skip;
 observableProto.takeUntil = takeUntil;
+observableProto.skipUntil = skipUntil;
 observableProto.filter = filter;
 observableProto.distinctUntilChanged = distinctUntilChanged;
 observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
