@@ -123,6 +123,7 @@ export default class Observable<T> {
   zip: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 
+  do: <T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
   map: <T, R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
   toArray: () => Observable<T[]>;

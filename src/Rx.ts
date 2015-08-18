@@ -75,6 +75,7 @@ observableProto.switchLatest = switchLatest;
 observableProto.switchLatestTo = switchLatestTo;
 observableProto.expand = expand;
 
+import _do from './operators/do';
 import map from './operators/map';
 import mapTo from './operators/mapTo';
 import toArray from './operators/toArray';
@@ -82,6 +83,7 @@ import scan from './operators/scan';
 import reduce from './operators/reduce';
 import startWith from './operators/startWith';
 
+observableProto.do = _do;
 observableProto.map = map;
 observableProto.mapTo = mapTo;
 observableProto.toArray = toArray;
