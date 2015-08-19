@@ -157,6 +157,9 @@ import groupBy from './operators/groupBy';
 
 observableProto.groupBy = groupBy;
 
+import delay from './operators/delay';
+observableProto.delay = delay;
+
 export default {
     Subject,
     Scheduler,
