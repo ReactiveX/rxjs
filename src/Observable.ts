@@ -108,6 +108,7 @@ export default class Observable<T> {
                  concurrent?: number) => Observable<R>;
 
   expand: (project: (x: T, ix: number) => Observable<any>) => Observable<any>;
+  delay: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;
 
   switchAll: <R>() => Observable<R>;
   switchLatest: <R>(project: ((x: T, ix: number) => Observable<any>),
