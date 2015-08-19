@@ -90,16 +90,16 @@ export default class Observable<T> {
   static timer: (delay: number) => Observable<number>;
   static interval: (interval: number) => Observable<number>;
 
-  static concat: (scheduler?: any, ...observables: Observable<any>[]) => Observable<any>;
-  concat: (scheduler?: any, ...observables: Observable<any>[]) => Observable<any>;
+  static concat: (...observables: any[]) => Observable<any>;
+  concat: (...observables: any[]) => Observable<any>;
   concatAll: () => Observable<any>;
   concatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
                  projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   concatMapTo: <R>(observable: Observable<any>,
                    projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
 
-  static merge: (scheduler?: any, concurrent?: any, ...observables: Observable<any>[]) => Observable<any>;
-  merge: (scheduler?: any, concurrent?: any, ...observables: Observable<any>[]) => Observable<any>;
+  static merge: (...observables:any[]) => Observable<any>;
+  merge: (...observables:any[]) => Observable<any>;
   mergeAll: (concurrent?: any) => Observable<any>;
   flatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
                projectResult?: (x: T, y: any, ix: number, iy: number) => R,

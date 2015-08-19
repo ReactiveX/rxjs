@@ -9,19 +9,20 @@ import ArrayObservable from '../observables/ArrayObservable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function zip<T, R>(...xs: (Observable<any> | ((...values: Array<any>) => R)) []) {
-  const project = <((...ys: Array<any>) => R)> xs[xs.length - 1];
+export function zip<T, R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]): Observable<R> {
+  const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
   if (typeof project === "function") {
-    xs.pop();
+    observables.pop();
   }
-  if (typeof this.subscribe === "function") {
-    return new ArrayObservable([this].concat(xs)).lift(new ZipOperator(project));
-  }
-  return new ArrayObservable(xs).lift(new ZipOperator(project));
+  return new ArrayObservable(observables).lift(new ZipOperator(project));
+}
+
+export function zipProto<R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []): Observable<R> {
+  return zip.apply(this, [this, ...observables]);
 }
 
 export class ZipOperator<T, R> extends Operator<T, R> {
-
+  
   project: (...values: Array<any>) => R
 
   constructor(project?: (...values: Array<any>) => R) {

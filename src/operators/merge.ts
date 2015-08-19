@@ -10,25 +10,29 @@ import ScalarObservable from '../observables/ScalarObservable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function merge(scheduler?: any, concurrent?: any, ...observables: Observable<any>[]) {
-  const xs = [];
-  if (typeof this.subscribe === "function") {
-    xs.push(this);
-  }
-  if (concurrent && typeof concurrent.subscribe === "function") {
-    xs.push(concurrent);
-    concurrent = scheduler;
-  }
-  if (scheduler && typeof scheduler === "object") {
-    if (typeof scheduler.subscribe === "function") {
-      xs.push(scheduler);
-      scheduler = undefined;
-      concurrent = Number.POSITIVE_INFINITY;
-    } else if(typeof scheduler.schedule === "function") {
-      concurrent = Number.POSITIVE_INFINITY;
+export function merge<R>(...observables: (Observable<any>|Scheduler|number)[]): Observable<R> {
+  let concurrent = Number.POSITIVE_INFINITY;
+  let scheduler:Scheduler = Scheduler.immediate;
+  let last:any = observables[observables.length - 1];
+  if (typeof last.schedule === 'function') {
+    scheduler = <Scheduler>observables.pop();
+    if (observables.length > 1 && typeof observables[observables.length - 1] === 'number') {
+      concurrent = <number>observables.pop();
     }
+  } else if (typeof last === 'number') {
+    concurrent = <number>observables.pop();
   }
-  return new ArrayObservable(xs.concat(observables), scheduler).lift(new MergeOperator(concurrent));
+  
+  if(observables.length === 1) {
+    return <Observable<R>>observables[0];
+  }
+  
+  return new ArrayObservable(observables, scheduler).lift(new MergeOperator(concurrent));
+}
+
+export function mergeProto<R>(...observables: (Observable<any>|number)[]): Observable<R> {
+  observables.unshift(this);
+  return merge.apply(this, observables);
 }
 
 export class MergeOperator<T, R> extends Operator<T, R> {

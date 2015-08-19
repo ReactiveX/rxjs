@@ -4,22 +4,28 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 
 import ArrayObservable from '../observables/ArrayObservable';
+import EmptyObservable from '../observables/EmptyObservable';
 import {ZipSubscriber, ZipInnerSubscriber, hasValue, mapValue} from './zip';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function combineLatest<T, R>(...xs: (Observable<any> | ((...values: Array<any>) => R)) []) {
-  const project = <((...ys: Array<any>) => R)> xs[xs.length - 1];
+export function combineLatest<T, R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]): Observable<R> {
+  const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
   if (typeof project === "function") {
-    xs.pop();
+    observables.pop();
   }
-  if (typeof this.subscribe === "function") {
-    return new ArrayObservable([this].concat(xs)).lift(new CombineLatestOperator(project));
-  }
-  return new ArrayObservable(xs).lift(new CombineLatestOperator(project));
+  return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }
 
+export function combineLatestProto<R>(...observables: (Observable<any>|((...values: any[]) => R))[]): Observable<R> {
+  const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
+  if (typeof project === "function") {
+    observables.pop();
+  }
+  observables.unshift(this);
+  return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
+}
 
 export class CombineLatestOperator<T, R> extends Operator<T, R> {
 

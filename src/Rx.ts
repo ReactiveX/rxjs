@@ -45,18 +45,18 @@ Observable.fromEvent = FromEventObservable.create;
 
 const observableProto = Observable.prototype;
 
-import concat from './operators/concat';
+import {concat, concatProto} from './operators/concat';
 import concatAll from './operators/concatAll';
 import concatMap from './operators/concatMap';
 import concatMapTo from './operators/concatMapTo';
 
 Observable.concat = concat;
-observableProto.concat = concat;
+observableProto.concat = concatProto;
 observableProto.concatAll = concatAll;
 observableProto.concatMap = concatMap;
 observableProto.concatMapTo = concatMapTo;
 
-import merge from './operators/merge';
+import {merge, mergeProto} from './operators/merge';
 import mergeAll from './operators/mergeAll';
 import flatMap from './operators/flatMap';
 import flatMapTo from './operators/flatMapTo';
@@ -66,7 +66,7 @@ import switchLatestTo from './operators/switchLatestTo';
 import expand from './operators/expand';
 
 Observable.merge = merge;
-observableProto.merge = merge;
+observableProto.merge = mergeProto;
 observableProto.mergeAll = mergeAll;
 observableProto.flatMap = flatMap;
 observableProto.flatMapTo = flatMapTo;
@@ -107,18 +107,18 @@ observableProto.filter = filter;
 observableProto.distinctUntilChanged = distinctUntilChanged;
 observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
-import combineLatest from './operators/combineLatest';
+import {combineLatest, combineLatestProto} from './operators/combineLatest';
 import combineAll from './operators/combineAll';
 
 Observable.combineLatest = combineLatest;
-observableProto.combineLatest = combineLatest;
+observableProto.combineLatest = combineLatestProto;
 observableProto.combineAll = combineAll;
 
-import zip from './operators/zip';
+import {zip, zipProto} from './operators/zip';
 import zipAll from './operators/zipAll';
 
 Observable.zip = zip;
-observableProto.zip = zip;
+observableProto.zip = zipProto;
 observableProto.zipAll = zipAll;
 
 import publish from './operators/publish';
