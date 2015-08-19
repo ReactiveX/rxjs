@@ -151,6 +151,9 @@ import _finally from './operators/finally';
 
 observableProto.finally = _finally;
 
+import delay from './operators/delay';
+observableProto.delay = delay;
+
 export default {
     Subject,
     Scheduler,

@@ -11,15 +11,19 @@ export default class SubscribeOnObservable<T> extends Observable<T> {
     return source.subscribe(subscriber);
   }
 
-  constructor(public    source: Observable<T>,
-              protected delay: number = 0,
-              protected scheduler: Scheduler = Scheduler.nextTick) {
+  private delayTime: number;
+  private scheduler: Scheduler;
+
+  constructor(source: Observable<T>, delay: number = 0, scheduler: Scheduler = Scheduler.nextTick) {
     super();
+    this.source = source;
+    this.delayTime = delay;
+    this.scheduler = scheduler;
   }
 
   _subscribe(subscriber) {
 
-    const delay = this.delay;
+    const delay = this.delayTime;
     const source = this.source;
     const scheduler = this.scheduler;
 
