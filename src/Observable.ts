@@ -133,7 +133,8 @@ export default class Observable<T> {
   scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   reduce: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   startWith: <T>(x: T) => Observable<T>;
-
+  debounce: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
+  
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   distinctUntilChanged: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;
   distinctUntilKeyChanged: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;

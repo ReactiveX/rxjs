@@ -163,9 +163,11 @@ observableProto.groupBy = groupBy;
 
 import delay from './operators/delay';
 import throttle from './operators/throttle';
+import debounce from './operators/debounce';
 
 observableProto.delay = delay;
 observableProto.throttle = throttle;
+observableProto.debounce = debounce;
 
 export {
 
