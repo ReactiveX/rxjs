@@ -162,6 +162,11 @@ export default class Observable<T> {
   repeat: <T>(count: number) => Observable<T>;
   
   groupBy: <T, R>(keySelector: (value:T) => string, durationSelector?: (group:GroupSubject<R>) => Observable<any>, elementSelector?: (value:T) => R) => Observable<R>;
-
+  window: <T>(closingNotifier: Observable<any>) => Observable<Observable<T>>;
+  windowWhen: <T>(closingSelector: () => Observable<any>) => Observable<Observable<T>>;
+  windowToggle: <T, O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>
+  windowTime: <T>(windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
+  windowCount: <T>(windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
+  
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
  }

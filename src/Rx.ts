@@ -160,8 +160,18 @@ import _finally from './operators/finally';
 observableProto.finally = _finally;
 
 import groupBy from './operators/groupBy';
+import window from './operators/window';
+import windowWhen from './operators/windowWhen';
+import windowToggle from './operators/windowToggle';
+import windowTime from './operators/windowTime';
+import windowCount from './operators/windowCount';
 
 observableProto.groupBy = groupBy;
+observableProto.window = window;
+observableProto.windowWhen = windowWhen;
+observableProto.windowToggle = windowToggle;
+observableProto.windowTime = windowTime;
+observableProto.windowCount = windowCount;
 
 import delay from './operators/delay';
 import throttle from './operators/throttle';

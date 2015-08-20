@@ -66,6 +66,10 @@ export class Action<T> extends Subscription<T> {
   }
 
   schedule(state?:any): Action<T> {
+    if (this.isUnsubscribed) {
+      return this;
+    }
+    
     this.state = state;
     const scheduler = this.scheduler;
     scheduler.actions.push(this);
@@ -103,6 +107,9 @@ export class NextTickAction<T> extends Action<T> {
   id: number;
 
   schedule(state?:any): Action<T> {
+    if (this.isUnsubscribed) {
+      return this;
+    }
 
     this.state = state;
 
@@ -151,7 +158,10 @@ export class FutureAction<T> extends Action<T> {
   }
 
   schedule(state?:any): Action<T> {
-
+    if (this.isUnsubscribed) {
+      return this;
+    }
+    
     this.state = state;
 
     const id = this.id;
