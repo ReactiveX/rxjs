@@ -129,6 +129,7 @@ export default class Observable<T> {
   map: <T, R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
   toArray: () => Observable<T[]>;
+  count: () => Observable<number>;
   scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   reduce: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   startWith: <T>(x: T) => Observable<T>;
