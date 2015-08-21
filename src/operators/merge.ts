@@ -79,10 +79,10 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  complete() {
     this.stopped = true;
     if (this.active === 0 && this.buffer.length === 0) {
-      this.destination.complete();
+      super.complete();
     }
   }
 
@@ -115,7 +115,7 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
     const pending = buffer.length;
 
     if (stopped && active === 0 && pending === 0) {
-      this.destination.complete();
+      super.complete();
     } else if (active < this.concurrent && pending > 0) {
       this._next(buffer.shift());
     }
