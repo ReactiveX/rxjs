@@ -147,9 +147,11 @@ observableProto.materialize = materialize;
 
 import _catch from './operators/catch';
 import retryWhen from './operators/retryWhen';
+import repeat from './operators/repeat';
 
 observableProto.catch = _catch;
 observableProto.retryWhen = retryWhen;
+observableProto.repeat = repeat;
 
 import _finally from './operators/finally';
 
