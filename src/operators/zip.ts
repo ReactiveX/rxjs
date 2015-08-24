@@ -21,12 +21,11 @@ export function zipProto<R>(...observables: (Observable<any> | ((...values: Arra
   return zip.apply(this, [this, ...observables]);
 }
 
-export class ZipOperator<T, R> extends Operator<T, R> {
-  
+export class ZipOperator<T, R> implements Operator<T, R> {
+
   project: (...values: Array<any>) => R
 
   constructor(project?: (...values: Array<any>) => R) {
-    super();
     this.project = project;
   }
 

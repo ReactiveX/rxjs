@@ -12,9 +12,8 @@ export default function retryWhen<T>(notifier: (errors:Observable<any>) => Obser
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
-export class RetryWhenOperator<T, R> extends Operator<T, R> {
+export class RetryWhenOperator<T, R> implements Operator<T, R> {
   constructor(protected notifier: (errors: Observable<any>) => Observable<any>, protected original:Observable<T>) {
-    super();
   }
 
   call(observer: Observer<T>): Observer<T> {
@@ -26,11 +25,11 @@ export class RetryWhenSubscriber<T> extends Subscriber<T> {
   errors: Subject<any>;
   retryNotifications: Observable<any>;
   retryNotificationSubscription: Subscription<any>;
-  
+
   constructor(destination: Observer<T>, public notifier: (errors: Observable<any>) => Observable<any>, public original: Observable<T>) {
     super(destination);
   }
-  
+
   _error(err: any) {
     if (!this.retryNotifications) {
       this.errors = new Subject();
@@ -45,11 +44,11 @@ export class RetryWhenSubscriber<T> extends Subscriber<T> {
     }
     this.errors.next(err);
   }
-  
+
   finalError(err: any) {
     this.destination.error(err);
   }
-  
+
   resubscribe() {
     this.original.subscribe(this);
   }
@@ -57,17 +56,17 @@ export class RetryWhenSubscriber<T> extends Subscriber<T> {
 
 export class RetryNotificationSubscriber<T> extends Subscriber<T> {
   constructor(public parent: RetryWhenSubscriber<any>) {
-    super(null);  
+    super(null);
   }
-  
+
   _next(value: T) {
     this.parent.resubscribe();
   }
-  
+
   _error(err: any) {
     this.parent.finalError(err);
   }
-  
+
   _complete() {
     this.parent.complete();
   }

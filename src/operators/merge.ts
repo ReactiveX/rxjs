@@ -22,11 +22,11 @@ export function merge<R>(...observables: (Observable<any>|Scheduler|number)[]): 
   } else if (typeof last === 'number') {
     concurrent = <number>observables.pop();
   }
-  
+
   if(observables.length === 1) {
     return <Observable<R>>observables[0];
   }
-  
+
   return new ArrayObservable(observables, scheduler).lift(new MergeOperator(concurrent));
 }
 
@@ -35,12 +35,11 @@ export function mergeProto<R>(...observables: (Observable<any>|number)[]): Obser
   return merge.apply(this, observables);
 }
 
-export class MergeOperator<T, R> extends Operator<T, R> {
+export class MergeOperator<T, R> implements Operator<T, R> {
 
   concurrent: number;
 
   constructor(concurrent: number = Number.POSITIVE_INFINITY) {
-    super();
     this.concurrent = concurrent;
   }
 

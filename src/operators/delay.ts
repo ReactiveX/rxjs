@@ -8,13 +8,12 @@ export default function delay<T>(delay: number, scheduler: Scheduler = Scheduler
   return this.lift(new DelayOperator(delay, scheduler));
 }
 
-export class DelayOperator<T, R> extends Operator<T, R> {
+export class DelayOperator<T, R> implements Operator<T, R> {
 
   delay: number;
   scheduler: Scheduler;
 
   constructor(delay: number, scheduler: Scheduler) {
-    super();
     this.delay = delay;
     this.scheduler = scheduler;
   }

@@ -6,12 +6,11 @@ export default function take(total) {
   return this.lift(new TakeOperator(total));
 }
 
-export class TakeOperator<T, R> extends Operator<T, R> {
+export class TakeOperator<T, R> implements Operator<T, R> {
 
   total: number;
 
   constructor(total: number) {
-    super();
     this.total = total;
   }
 

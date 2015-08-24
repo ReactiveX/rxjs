@@ -13,11 +13,10 @@ export default function throttle<T>(delay: number, scheduler: Scheduler = Schedu
   return this.lift(new ThrottleOperator(delay, scheduler));
 }
 
-export class ThrottleOperator<T, R> extends Operator<T, R> {
+export class ThrottleOperator<T, R> implements Operator<T, R> {
   constructor(private delay:number, private scheduler:Scheduler) {
-    super();
   }
-  
+
   call(observer: Observer<R>): Observer<T> {
     return new ThrottleSubscriber(observer, this.delay, this.scheduler);
   }
@@ -25,7 +24,7 @@ export class ThrottleOperator<T, R> extends Operator<T, R> {
 
 export class ThrottleSubscriber<T, R> extends Subscriber<T> {
   private throttled: Subscription<any>;
-  
+
   constructor(destination:Observer<T>, private delay:number, private scheduler:Scheduler) {
     super(destination);
   }
@@ -34,18 +33,18 @@ export class ThrottleSubscriber<T, R> extends Subscriber<T> {
     this.clearThrottle();
     this.add(this.throttled = this.scheduler.schedule(this.delay, { value: x, subscriber: this }, dispatchNext));
   }
-  
+
   throttledNext(x) {
-    this.clearThrottle();  
+    this.clearThrottle();
     this.destination.next(x);
   }
-  
+
   clearThrottle() {
     const throttled = this.throttled;
     if (throttled) {
       this.remove(throttled);
       throttled.unsubscribe();
-      this.throttled = null;  
+      this.throttled = null;
     }
   }
 }

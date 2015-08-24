@@ -14,12 +14,11 @@ export default function expand<T>(project: (x: T, ix: number) => Observable<any>
   return this.lift(new ExpandOperator(project));
 }
 
-export class ExpandOperator<T, R> extends Operator<T, R> {
+export class ExpandOperator<T, R> implements Operator<T, R> {
 
   project: (x: T, ix: number) => Observable<any>;
 
   constructor(project: (x: T, ix: number) => Observable<any>) {
-    super();
     this.project = project;
   }
 
