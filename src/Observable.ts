@@ -168,5 +168,11 @@ export default class Observable<T> {
   windowTime: <T>(windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
   windowCount: <T>(windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
   
+  buffer: <T>(closingNotifier: Observable<any>) => Observable<T[]>;
+  bufferWhen: <T>(closingSelector: () => Observable<any>) => Observable<T[]>;
+  bufferToggle: <T, O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>
+  bufferTime: <T>(bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
+  bufferCount: <T>(bufferSize: number, startBufferEvery: number) => Observable<T[]>;
+  
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
  }

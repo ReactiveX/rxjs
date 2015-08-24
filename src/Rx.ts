@@ -181,6 +181,18 @@ observableProto.delay = delay;
 observableProto.throttle = throttle;
 observableProto.debounce = debounce;
 
+import buffer from './operators/buffer';
+import bufferCount from './operators/bufferCount';
+import bufferTime from './operators/bufferTime';
+import bufferToggle from './operators/bufferToggle';
+import bufferWhen from './operators/bufferWhen';
+
+observableProto.buffer = buffer;
+observableProto.bufferCount = bufferCount;
+observableProto.bufferTime = bufferTime;
+observableProto.bufferToggle = bufferToggle;
+observableProto.bufferWhen = bufferWhen;
+
 export {
 
     Subject,
