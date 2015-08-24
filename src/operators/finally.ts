@@ -13,12 +13,11 @@ export default function _finally<T>(finallySelector: () => void, thisArg?: any) 
     finallySelector));
 }
 
-export class FinallyOperator<T, R> extends Operator<T, R> {
+export class FinallyOperator<T, R> implements Operator<T, R> {
 
   finallySelector: () => void;
 
   constructor(finallySelector: () => void) {
-    super();
     this.finallySelector = finallySelector;
   }
 

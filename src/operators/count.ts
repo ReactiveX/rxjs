@@ -6,7 +6,7 @@ export default function count() {
   return this.lift(new CountOperator());
 }
 
-export class CountOperator<T, R> extends Operator<T, R> {
+export class CountOperator<T, R> implements Operator<T, R> {
   call(observer: Observer<number>): Observer<T> {
     return new CountSubscriber<T>(observer);
   }

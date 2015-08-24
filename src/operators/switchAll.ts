@@ -10,10 +10,9 @@ export default function switchAll() {
   return this.lift(new SwitchOperator());
 }
 
-export class SwitchOperator<T, R> extends Operator<T, R> {
+export class SwitchOperator<T, R> implements Operator<T, R> {
 
   constructor() {
-    super();
   }
 
   call(observer: Observer<R>): Observer<T> {

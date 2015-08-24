@@ -6,12 +6,11 @@ export default function mapTo<T, R>(value: R) {
   return this.lift(new MapToOperator(value));
 }
 
-export class MapToOperator<T, R> extends Operator<T, R> {
+export class MapToOperator<T, R> implements Operator<T, R> {
 
   value: R;
 
   constructor(value: R) {
-    super();
     this.value = value;
   }
 

@@ -12,12 +12,11 @@ export default function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolea
     compare));
 }
 
-export class DistinctUntilChangedOperator<T, R> extends Operator<T, R> {
+export class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
 
   compare: (x: T, y: T) => boolean;
 
   constructor(compare?: (x: T, y: T) => boolean) {
-    super();
     this.compare = compare;
   }
 

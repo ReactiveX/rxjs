@@ -17,13 +17,12 @@ export default function groupBy<T, R>(keySelector: (value: T) => string,
   return this.lift(new GroupByOperator<T, R>(keySelector, durationSelector, elementSelector));
 }
 
-export class GroupByOperator<T, R> extends Operator<T, R> {
-  constructor(private keySelector: (value: T) => string, 
+export class GroupByOperator<T, R> implements Operator<T, R> {
+  constructor(private keySelector: (value: T) => string,
     private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
     private elementSelector?: (value: T) => R) {
-    super();
   }
-  
+
   call(observer: Observer<R>): Observer<T> {
     return new GroupBySubscriber<T, R>(observer, this.keySelector, this.durationSelector, this.elementSelector);
   }
@@ -31,9 +30,9 @@ export class GroupByOperator<T, R> extends Operator<T, R> {
 
 export class GroupBySubscriber<T, R> extends Subscriber<T> {
   private groups = null;
-  
+
   constructor(destination: Observer<R>, private keySelector: (value: T) => string,
-    private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>, 
+    private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
     private elementSelector?: (value: T) => R) {
     super(destination);
   }
@@ -46,16 +45,16 @@ export class GroupBySubscriber<T, R> extends Subscriber<T> {
       let groups = this.groups;
       const elementSelector = this.elementSelector;
       const durationSelector = this.durationSelector;
-      
+
       if (!groups) {
         groups = this.groups = typeof key === 'string' ? new FastMap() : new Map();
       }
-      
+
       let group: GroupSubject<R> = groups.get(key);
-    
+
       if (!group) {
         groups.set(key, group = new GroupSubject(key));
-        
+
         if (durationSelector) {
           let duration = tryCatch(durationSelector)(group);
           if (duration === errorObject) {
@@ -64,10 +63,10 @@ export class GroupBySubscriber<T, R> extends Subscriber<T> {
             this.add(duration.subscribe(new GroupDurationSubscriber(group, this)));
           }
         }
-        
+
         this.destination.next(group);
       }
-      
+
       if (elementSelector) {
         let value = tryCatch(elementSelector)(x)
         if(value === errorObject) {
@@ -80,7 +79,7 @@ export class GroupBySubscriber<T, R> extends Subscriber<T> {
       }
     }
   }
-  
+
   _error(err: any) {
     const groups = this.groups;
     if (groups) {
@@ -91,7 +90,7 @@ export class GroupBySubscriber<T, R> extends Subscriber<T> {
     }
     this.destination.error(err);
   }
-  
+
   _complete() {
     const groups = this.groups;
     if(groups) {
@@ -102,35 +101,35 @@ export class GroupBySubscriber<T, R> extends Subscriber<T> {
     }
     this.destination.complete();
   }
-  
+
   removeGroup(key: string) {
-    this.groups[key] = null;  
-  }  
+    this.groups[key] = null;
+  }
 }
 
 export class GroupSubject<T> extends Subject<T> {
   constructor(public key: string) {
     super();
-  } 
+  }
 }
 
 export class GroupDurationSubscriber<T> extends Subscriber<T> {
   constructor(private group: GroupSubject<T>, private parent:GroupBySubscriber<any, T>) {
     super(null);
   }
-  
+
   _next(value: T) {
     const group = this.group;
     group.complete();
     this.parent.removeGroup(group.key);
   }
-  
+
   _error(err: any) {
-    const group = this.group;  
+    const group = this.group;
     group.error(err);
     this.parent.removeGroup(group.key);
   }
-  
+
   _complete() {
     const group = this.group;
     group.complete();

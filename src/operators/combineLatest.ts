@@ -27,12 +27,11 @@ export function combineLatestProto<R>(...observables: (Observable<any>|((...valu
   return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }
 
-export class CombineLatestOperator<T, R> extends Operator<T, R> {
+export class CombineLatestOperator<T, R> implements Operator<T, R> {
 
   project: (...values: Array<any>) => R;
 
   constructor(project?: (...values: Array<any>) => R) {
-    super();
     this.project = project;
   }
 

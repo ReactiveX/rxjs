@@ -1,5 +1,4 @@
 import Subject from '../Subject';
-import Operator from '../Operator';
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import Subscription from '../Subscription';

@@ -8,13 +8,12 @@ export default function observeOn<T>(scheduler: Scheduler, delay: number = 0): O
   return this.lift(new ObserveOnOperator(scheduler, delay));
 }
 
-export class ObserveOnOperator<T, R> extends Operator<T, R> {
+export class ObserveOnOperator<T, R> implements Operator<T, R> {
 
   delay: number;
   scheduler: Scheduler;
 
   constructor(scheduler: Scheduler, delay: number = 0) {
-    super();
     this.delay = delay;
     this.scheduler = scheduler;
   }
@@ -47,13 +46,13 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 
   _error(e) {
-    this.add(this.scheduler.schedule(this.delay, 
+    this.add(this.scheduler.schedule(this.delay,
       new ScheduledNotification("error", e, this.destination),
       ObserveOnSubscriber.dispatch));
   }
 
   _complete() {
-    this.add(this.scheduler.schedule(this.delay, 
+    this.add(this.scheduler.schedule(this.delay,
       new ScheduledNotification("complete", void 0, this.destination),
       ObserveOnSubscriber.dispatch));
   }

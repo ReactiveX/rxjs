@@ -15,7 +15,7 @@ export default function flatMap<T, R>(project: (x: T, ix: number) => Observable<
   return this.lift(new FlatMapOperator(project, projectResult, concurrent));
 }
 
-export class FlatMapOperator<T, R> extends Operator<T, R> {
+export class FlatMapOperator<T, R> implements Operator<T, R> {
 
   project: (x: T, ix: number) => Observable<any>;
   projectResult: (x: T, y: any, ix: number, iy: number) => R;
@@ -24,7 +24,6 @@ export class FlatMapOperator<T, R> extends Operator<T, R> {
   constructor(project: (x: T, ix: number) => Observable<any>,
               projectResult?: (x: T, y: any, ix: number, iy: number) => R,
               concurrent: number = Number.POSITIVE_INFINITY) {
-    super();
     this.project = project;
     this.projectResult = projectResult;
     this.concurrent = concurrent;

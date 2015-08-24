@@ -11,14 +11,13 @@ export default function _do<T>(next?: (x: T) => void, error?: (e: any) => void, 
   return this.lift(new DoOperator(next || noop, error || noop, complete || noop));
 }
 
-export class DoOperator<T, R> extends Operator<T, R> {
+export class DoOperator<T, R> implements Operator<T, R> {
 
   next: (x: T) => void;
   error: (e: any) => void;
   complete: () => void;
 
   constructor(next: (x: T) => void, error: (e: any) => void, complete: () => void) {
-    super();
     this.next = next;
     this.error = error;
     this.complete = complete;

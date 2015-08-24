@@ -6,12 +6,11 @@ export default function skip(total) {
   return this.lift(new SkipOperator(total));
 }
 
-export class SkipOperator<T, R> extends Operator<T, R> {
+export class SkipOperator<T, R> implements Operator<T, R> {
 
   total: number;
 
   constructor(total: number) {
-    super();
     this.total = total;
   }
 

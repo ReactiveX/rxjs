@@ -13,13 +13,12 @@ export default function _catch<T>(selector: (err:any, caught:Observable<any>) =>
   return caught;
 }
 
-export class CatchOperator<T, R> extends Operator<T, R> {
+export class CatchOperator<T, R> implements Operator<T, R> {
   selector: (err:any, caught:Observable<any>) => Observable<any>;
   caught: Observable<any>;
   source: Observable<T>;
-  
+
   constructor(selector: (err:any, caught:Observable<any>) => Observable<any>) {
-    super();
     this.selector = selector;
   }
 
@@ -31,7 +30,7 @@ export class CatchOperator<T, R> extends Operator<T, R> {
 export class CatchSubscriber<T> extends Subscriber<T> {
   selector: (err:any, caught:Observable<any>) => Observable<any>;
   caught: Observable<any>;
-  
+
   constructor(destination: Observer<T>, selector: (err:any, caught:Observable<any>) => Observable<any>, caught: Observable<any>) {
     super(destination);
     this.selector = selector;
