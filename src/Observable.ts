@@ -157,6 +157,7 @@ export default class Observable<T> {
   multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
 
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
+  retry: <T>(count: number) => Observable<T>;
   retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
   repeat: <T>(count: number) => Observable<T>;
   

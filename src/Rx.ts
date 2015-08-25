@@ -146,10 +146,12 @@ observableProto.defaultIfEmpty = defaultIfEmpty;
 observableProto.materialize = materialize;
 
 import _catch from './operators/catch';
+import retry from './operators/retry';
 import retryWhen from './operators/retryWhen';
 import repeat from './operators/repeat';
 
 observableProto.catch = _catch;
+observableProto.retry = retry;
 observableProto.retryWhen = retryWhen;
 observableProto.repeat = repeat;
 
