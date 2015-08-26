@@ -24,6 +24,7 @@ Observable.from([
 
         require("./immediate-scheduler/operators/map"),
         require("./immediate-scheduler/operators/scan"),
+        require("./immediate-scheduler/operators/skip"),
         require("./immediate-scheduler/operators/to-array"),
         require("./immediate-scheduler/operators/zip"),
 
@@ -46,6 +47,7 @@ Observable.from([
 
         require("./current-thread-scheduler/operators/map"),
         require("./current-thread-scheduler/operators/scan"),
+        require("./current-thread-scheduler/operators/skip"),
         require("./current-thread-scheduler/operators/to-array"),
         require("./current-thread-scheduler/operators/zip"),
 
