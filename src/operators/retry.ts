@@ -7,9 +7,8 @@ export default function retry<T>(count: number = 0): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 
-export class RetryOperator<T, R> extends Operator<T, R> {
+export class RetryOperator<T, R> implements Operator<T, R> {
   constructor(private count: number, protected original:Observable<T>) {
-    super();
   }
 
   call(observer: Observer<T>): Observer<T> {
