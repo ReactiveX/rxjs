@@ -12,6 +12,7 @@ Observable.from([
         require("./immediate-scheduler/observable/range"),
 
         require("./immediate-scheduler/operators/combine-latest"),
+        require("./immediate-scheduler/operators/concat"),
         require("./immediate-scheduler/operators/concat-many"),
         require("./immediate-scheduler/operators/filter"),
         require("./immediate-scheduler/operators/merge"),
@@ -35,6 +36,7 @@ Observable.from([
         require("./current-thread-scheduler/observable/range"),
 
         require("./current-thread-scheduler/operators/combine-latest"),
+        require("./current-thread-scheduler/operators/concat"),
         require("./current-thread-scheduler/operators/concat-many"),
         require("./current-thread-scheduler/operators/filter"),
         require("./current-thread-scheduler/operators/merge"),
