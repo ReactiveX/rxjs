@@ -120,7 +120,7 @@ export default class Observable<T> {
   static combineLatest: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
   combineLatest: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
-
+  withLatestFrom: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
   static zip: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
   zip: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;

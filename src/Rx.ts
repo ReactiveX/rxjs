@@ -111,10 +111,12 @@ observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
 import {combineLatest, combineLatestProto} from './operators/combineLatest';
 import combineAll from './operators/combineAll';
+import withLatestFrom from './operators/withLatestFrom';
 
 Observable.combineLatest = combineLatest;
 observableProto.combineLatest = combineLatestProto;
 observableProto.combineAll = combineAll;
+observableProto.withLatestFrom = withLatestFrom;
 
 import {zip, zipProto} from './operators/zip';
 import zipAll from './operators/zipAll';
