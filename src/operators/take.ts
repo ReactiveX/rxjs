@@ -30,10 +30,12 @@ export class TakeSubscriber<T> extends Subscriber<T> {
   }
 
   _next(x) {
-    if (++this.count <= this.total) {
+    const total = this.total;
+    if (++this.count <= total) {
       this.destination.next(x);
-    } else {
-      this.destination.complete();
+      if (this.count === total) {
+        this.destination.complete();
+      }
     }
   }
 }
