@@ -43,14 +43,12 @@ describe('Observable.prototype.retryWhen()', function () {
         return n;
       })
       .retryWhen(function (errors) {
-        return errors.take(1);
+        return Observable.empty();
       })
       .subscribe(function (n) {
         expect(n).toBe(expected.shift());
       }, function (err) {
         throw 'error should not be called';
-      }, function () {
-        done();
-      });
+      }, done);
   });
 });
