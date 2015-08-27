@@ -126,9 +126,11 @@ observableProto.zip = zipProto;
 observableProto.zipAll = zipAll;
 
 import publish from './operators/publish';
+import publishBehavior from './operators/publishBehavior';
 import multicast from './operators/multicast';
 
 observableProto.publish = publish;
+observableProto.publishBehavior = publishBehavior;
 observableProto.multicast = multicast;
 
 import observeOn from './operators/observeOn';

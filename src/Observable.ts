@@ -154,6 +154,7 @@ export default class Observable<T> {
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
 
   publish: () => ConnectableObservable<T>;
+  publishBehavior: (value: any) => ConnectableObservable<T>;
   multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
 
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
