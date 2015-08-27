@@ -82,6 +82,14 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   }
 }
 
+function arrayInitialize(length) {
+  var arr = Array(length);
+  for (let i = 0; i < length; i++) {
+    arr[i] = null;
+  }
+  return arr;
+}
+
 export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
 
   parent: ZipSubscriber<T, R>;
@@ -102,6 +110,7 @@ export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
 
     const parent = this.parent;
     const events = this.events;
+    const total = this.total;
     const limit = parent.limit;
 
     if (events >= limit) {
@@ -111,11 +120,11 @@ export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
 
     const index = this.index;
     const values = this.values;
-    const zipped = values[events] || (values[events] = []);
+    const zipped = values[events] || (values[events] = arrayInitialize(total));
 
     zipped[index] = [x];
 
-    if (zipped.length === this.total && zipped.every(hasValue)) {
+    if (zipped.every(hasValue)) {
       this._projectNext(zipped, parent.project);
       values[events] = undefined;
     }
