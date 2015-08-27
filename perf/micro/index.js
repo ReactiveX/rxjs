@@ -5,6 +5,7 @@ var Benchmark = require("benchmark");
 var suite = new Benchmark.Suite;
 
 Observable.from([
+        require("./immediate-scheduler/observable/empty"),
         require("./immediate-scheduler/observable/from-array"),
         require("./immediate-scheduler/observable/from-with-array"),
         require("./immediate-scheduler/observable/from-with-string"),
@@ -29,6 +30,7 @@ Observable.from([
         require("./immediate-scheduler/operators/to-array"),
         require("./immediate-scheduler/operators/zip"),
 
+        require("./current-thread-scheduler/observable/empty"),
         require("./current-thread-scheduler/observable/from-array"),
         require("./current-thread-scheduler/observable/from-with-array"),
         require("./current-thread-scheduler/observable/from-with-string"),
