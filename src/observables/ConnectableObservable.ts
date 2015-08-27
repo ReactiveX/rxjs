@@ -74,7 +74,7 @@ export class RefCountObservable<T> extends Observable<T> {
 
 export class RefCountSubscription<T> extends Subscription<T> {
 
-  constructor(protected refCountObservable: RefCountObservable<T>) {
+  constructor(private refCountObservable: RefCountObservable<T>) {
     super();
   }
 

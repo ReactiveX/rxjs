@@ -70,7 +70,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   }
 
   _subscribeInner(observable, values, index, total) {
-    return observable.subscribe(new ZipInnerSubscriber(this, values, index, total));
+    return observable.subscribe(new ZipInnerSubscriber(this.destination, this, values, index, total));
   }
 
   _innerComplete(innerSubscriber) {
@@ -98,8 +98,8 @@ export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
   total: number;
   events: number = 0;
 
-  constructor(parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
-    super(parent.destination);
+  constructor(destination: Observer<T>, parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
+    super(destination);
     this.parent = parent;
     this.values = values;
     this.index = index;

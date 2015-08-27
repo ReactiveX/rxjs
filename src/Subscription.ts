@@ -1,16 +1,20 @@
-export default class Subscription<T> {
 
-  public static empty: Subscription<void> = ((empty) => {
+export default class Subscription<T> {
+  public static EMPTY: Subscription<void> = (function(empty){
     empty.isUnsubscribed = true;
     return empty;
-  })(new Subscription<void>());
+  }(new Subscription<void>()));
   
   isUnsubscribed: boolean = false;
 
+  _subscriptions: Subscription<any>[];
+  
+  _unsubscribe(): void { 
+  }
+  
   constructor(_unsubscribe?: () => void) {
-    // hide `_unsubscribe` from TypeScript so we can implement Subscription
-    if(_unsubscribe) {
-      (<any> this)._unsubscribe = _unsubscribe;
+    if (_unsubscribe) {
+      this._unsubscribe = _unsubscribe;
     }
   }
 
@@ -22,13 +26,12 @@ export default class Subscription<T> {
 
     this.isUnsubscribed = true;
 
-    const self = (<any> this);
-    const unsubscribe = self._unsubscribe;
-    const subscriptions = self._subscriptions;
+    const unsubscribe = this._unsubscribe;
+    const subscriptions = this._subscriptions;
 
-    self._subscriptions = void 0;
-
-    if (unsubscribe != null) {
+    this._subscriptions = void 0;
+    
+    if (unsubscribe) {
       unsubscribe.call(this);
     }
 
@@ -42,22 +45,20 @@ export default class Subscription<T> {
     }
   }
 
-  add(subscription?: Subscription<T> | Function | void): void {
-
+  add(subscription: Subscription<T>|Function|void): void {
     // return early if: 
     //  1. the subscription is null
-    //  2. we're attempting to add ourself
+    //  2. we're attempting to add our this
     //  3. we're attempting to add the static `empty` Subscription
-    if (subscription == null || (
+    if (!subscription || (
         subscription === this) || (
-        subscription === Subscription.empty)) {
+        subscription === Subscription.EMPTY)) {
       return;
     }
 
-    const self = (<any> this);
     let sub = (<Subscription<T>> subscription);
 
-    switch(typeof sub) {
+    switch(typeof subscription) {
       case "function":
         sub = new Subscription<void>(<(() => void) > subscription);
       case "object":
@@ -66,7 +67,7 @@ export default class Subscription<T> {
         } else if (this.isUnsubscribed) {
             sub.unsubscribe();
         } else {
-          const subscriptions = self._subscriptions || (self._subscriptions = []);
+          const subscriptions = this._subscriptions || (this._subscriptions = []);
           subscriptions.push(sub);
         }
         break;
@@ -75,20 +76,19 @@ export default class Subscription<T> {
     }
   }
 
-  remove(subscription?: Subscription<T>): void {
+  remove(subscription: Subscription<T>): void {
 
     // return early if: 
     //  1. the subscription is null
-    //  2. we're attempting to remove ourself
+    //  2. we're attempting to remove ourthis
     //  3. we're attempting to remove the static `empty` Subscription
     if (subscription == null   || (
         subscription === this) || (
-        subscription === Subscription.empty)) {
+        subscription === Subscription.EMPTY)) {
       return;
     }
 
-    const self = (<any> this);
-    const subscriptions = self._subscriptions;
+    const subscriptions = this._subscriptions;
 
     if (subscriptions) {
       const subscriptionIndex = subscriptions.indexOf(subscription);

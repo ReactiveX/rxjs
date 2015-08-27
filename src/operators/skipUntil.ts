@@ -12,7 +12,7 @@ export class SkipUntilOperator<T, R> implements Operator<T, R> {
   }
 
   call(observer: Observer<R>): Observer<T> {
-    return new SkipUntilSubscriber<T>(observer, this.notifier);
+    return new SkipUntilSubscriber(observer, this.notifier);
   }
 }
 

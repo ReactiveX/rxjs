@@ -15,7 +15,7 @@ export class SkipOperator<T, R> implements Operator<T, R> {
   }
 
   call(observer: Observer<R>): Observer<T> {
-    return new SkipSubscriber<T>(observer, this.total);
+    return new SkipSubscriber(observer, this.total);
   }
 }
 

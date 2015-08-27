@@ -49,7 +49,7 @@ export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
   }
 
   _subscribeInner(observable, values, index, total) {
-    return observable.subscribe(new CombineLatestInnerSubscriber(this, values, index, total));
+    return observable.subscribe(new CombineLatestInnerSubscriber(this.destination, this, values, index, total));
   }
 
   _innerComplete(innerSubscriber) {
@@ -61,8 +61,8 @@ export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
 
 export class CombineLatestInnerSubscriber<T, R> extends ZipInnerSubscriber<T, R> {
 
-  constructor(parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
-    super(parent, values, index, total);
+  constructor(destination: Observer<T>, parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
+    super(destination, parent, values, index, total);
   }
 
   _next(x) {

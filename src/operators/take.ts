@@ -15,7 +15,7 @@ export class TakeOperator<T, R> implements Operator<T, R> {
   }
 
   call(observer: Observer<R>): Observer<T> {
-    return new TakeSubscriber<T>(observer, this.total);
+    return new TakeSubscriber(observer, this.total);
   }
 }
 

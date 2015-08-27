@@ -102,7 +102,7 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
       this.destination.next((<ScalarObservable<T>> observable).value);
       this._innerComplete();
     } else {
-      return observable.subscribe(new MergeInnerSubscriber(this));
+      return observable.subscribe(new MergeInnerSubscriber(this.destination, this));
     }
   }
 
@@ -125,8 +125,8 @@ export class MergeInnerSubscriber<T, R> extends Subscriber<T> {
 
   parent: MergeSubscriber<T, R>;
 
-  constructor(parent: MergeSubscriber<T, R>) {
-    super(parent.destination);
+  constructor(destination: Observer<T>, parent: MergeSubscriber<T, R>) {
+    super(destination);
     this.parent = parent;
   }
 

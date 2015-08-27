@@ -54,14 +54,14 @@ export class ExpandSubscriber<T, R> extends MergeSubscriber<T, R> {
     } else if(observable instanceof EmptyObservable) {
       this._innerComplete();
     } else {
-      return observable.subscribe(new ExpandInnerSubscriber(this));
+      return observable.subscribe(new ExpandInnerSubscriber(this.destination, this));
     }
   }
 }
 
 export class ExpandInnerSubscriber<T, R> extends MergeInnerSubscriber<T, R> {
-  constructor(parent: ExpandSubscriber<T, R>) {
-    super(parent);
+  constructor(destination: Observer<T>, parent: ExpandSubscriber<T, R>) {
+    super(destination, parent);
   }
   _next(value) {
     this.destination.next(value);
