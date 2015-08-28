@@ -5,7 +5,7 @@ import Subscriber from '../Subscriber';
 
 import ArrayObservable from '../observables/ArrayObservable';
 import EmptyObservable from '../observables/EmptyObservable';
-import {ZipSubscriber, ZipInnerSubscriber, hasValue, mapValue} from './zip';
+import {ZipSubscriber, ZipInnerSubscriber} from './zip';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -43,6 +43,7 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
 export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
 
   project: (...values: Array<any>) => R;
+  limit: number = 0;
 
   constructor(destination: Observer<R>, project?: (...values: Array<any>) => R) {
     super(destination, project, []);
@@ -82,7 +83,7 @@ export class CombineLatestInnerSubscriber<T, R> extends ZipInnerSubscriber<T, R>
       values[index] = [x];
     }
 
-    if(limit === total) {
+    if(limit >= total) {
       this._projectNext(values, parent.project);
     }
   }
