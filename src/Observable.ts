@@ -89,7 +89,8 @@ export default class Observable<T> {
   static fromPromise: <T>(promise: Promise<T>) => Observable<T>;
   static timer: (delay: number) => Observable<number>;
   static interval: (interval: number) => Observable<number>;
-
+  static forkJoin: (...observables: Observable<any>[]) => Observable<any[]>;
+  
   static concat: (...observables: any[]) => Observable<any>;
   concat: (...observables: any[]) => Observable<any>;
   concatAll: () => Observable<any>;

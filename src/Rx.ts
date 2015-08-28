@@ -22,6 +22,7 @@ import ScalarObservable from './observables/ScalarObservable';
 import TimerObservable from './observables/TimerObservable';
 import FromEventPatternObservable from './observables/FromEventPatternObservable';
 import FromEventObservable from './observables/FromEventObservable';
+import ForkJoinObservable from './observables/ForkJoinObservable';
 
 Observable.defer = DeferObservable.create;
 Observable.from = IteratorObservable.create;
@@ -30,6 +31,7 @@ Observable.fromPromise = PromiseObservable.create;
 Observable.of = ArrayObservable.of;
 Observable.range = RangeObservable.create;
 Observable.fromEventPattern = FromEventPatternObservable.create;
+Observable.forkJoin = ForkJoinObservable.create;
 
 Observable.just = ScalarObservable.create;
 Observable.return = ScalarObservable.create;
