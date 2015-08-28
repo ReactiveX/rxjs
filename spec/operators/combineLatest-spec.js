@@ -12,7 +12,10 @@ describe('combineLatest', function () {
     var i = 0;
     Observable.of(a, b).combineAll().subscribe(function (vals) {
       expect(vals).toDeepEqual(r[i++]);
-    }, null, done);
+    }, null, function() {
+      expect(i).toEqual(r.length);
+      done();
+    });
   });
   it("should combine a source with a second", function (done) {
     var a = Observable.of(1, 2, 3);
@@ -21,7 +24,10 @@ describe('combineLatest', function () {
     var i = 0;
     a.combineLatest(b).subscribe(function (vals) {
       expect(vals).toDeepEqual(r[i++]);
-    }, null, done);
+    }, null, function() {
+      expect(i).toEqual(r.length);
+      done();
+    });
   });
   it("should combine two immediately-scheduled observables", function (done) {
     var a = Observable.of(1, 2, 3, immediateScheduler);
@@ -30,7 +36,10 @@ describe('combineLatest', function () {
     var i = 0;
     Observable.of(a, b, immediateScheduler).combineAll().subscribe(function (vals) {
       expect(vals).toDeepEqual(r[i++]);
-    }, null, done);
+    }, null, function() {
+      expect(i).toEqual(r.length);
+      done();
+    });
   });
   it("should combine an immediately-scheduled source with an immediately-scheduled second", function (done) {
     var a = Observable.of(1, 2, 3, immediateScheduler);
@@ -39,7 +48,10 @@ describe('combineLatest', function () {
     var i = 0;
     a.combineLatest(b).subscribe(function (vals) {
       expect(vals).toDeepEqual(r[i++]);
-    }, null, done);
+    }, null, function() {
+      expect(i).toEqual(r.length);
+      done();
+    });
   });
   it('should combineLatest the source with the provided observables', function (done) {
     var expected = ['00', '01', '11', '12', '22', '23'];
@@ -50,6 +62,9 @@ describe('combineLatest', function () {
       })
       .subscribe(function (x) {
         expect(x).toBe(expected[i++]);
-      }, null, done);
+      }, null, function() {
+        expect(i).toEqual(expected.length);
+        done();
+      });
   }, 300);
 });
