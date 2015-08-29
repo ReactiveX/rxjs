@@ -43,7 +43,7 @@ describe('Observable.prototype.publishBehavior()', function () {
     done();
   });
 
-  it('should emit default value to observer after completed', function (done) {
+  it('should not emit next events to observer after completed', function (done) {
     var results = [];
 
     var source = new Observable(function (observer) {
@@ -55,14 +55,13 @@ describe('Observable.prototype.publishBehavior()', function () {
     });
 
     var connectable = source.publishBehavior(0);
-
     connectable.connect();
 
     connectable.subscribe(function (x) {
       results.push(x);
     });
 
-    expect(results).toEqual([0]);
+    expect(results).toEqual([]);
     done();
   });
 

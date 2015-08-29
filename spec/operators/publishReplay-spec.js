@@ -76,6 +76,28 @@ describe('Observable.prototype.publishReplay()', function () {
     done();
   });
 
+  it('should emit replayed events to observer after completed', function (done) {
+    var results = [];
+
+    var source = new Observable(function (observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.next(4);
+      observer.complete();
+    });
+
+    var connectable = source.publishReplay(2);
+    connectable.connect();
+
+    connectable.subscribe(function (x) {
+      results.push(x);
+    });
+
+    expect(results).toEqual([3, 4]);
+    done();
+  });
+
   it('should allow you to reconnect by subscribing again', function (done) {
     var expected = [1, 2, 3, 4];
     var i = 0;
