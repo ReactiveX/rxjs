@@ -20,6 +20,7 @@ Observable.from([
         require("./immediate-scheduler/operators/filter"),
         require("./immediate-scheduler/operators/merge"),
         require("./immediate-scheduler/operators/reduce"),
+        require("./immediate-scheduler/operators/repeat"),
 
         require("./immediate-scheduler/operators/flat-map"),
         require("./immediate-scheduler/operators/flat-map-scalar"),
@@ -48,6 +49,7 @@ Observable.from([
         require("./current-thread-scheduler/operators/filter"),
         require("./current-thread-scheduler/operators/merge"),
         require("./current-thread-scheduler/operators/reduce"),
+        require("./current-thread-scheduler/operators/repeat"),
 
         require("./current-thread-scheduler/operators/flat-map"),
         require("./current-thread-scheduler/operators/flat-map-scalar"),
