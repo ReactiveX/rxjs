@@ -155,6 +155,7 @@ export default class Observable<T> {
 
   publish: () => ConnectableObservable<T>;
   publishBehavior: (value: any) => ConnectableObservable<T>;
+  publishReplay: (bufferSize: number, windowTime: number, scheduler?: Scheduler) => ConnectableObservable<T>;
   multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
 
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;

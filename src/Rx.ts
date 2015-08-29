@@ -127,10 +127,12 @@ observableProto.zipAll = zipAll;
 
 import publish from './operators/publish';
 import publishBehavior from './operators/publishBehavior';
+import publishReplay from './operators/publishReplay';
 import multicast from './operators/multicast';
 
 observableProto.publish = publish;
 observableProto.publishBehavior = publishBehavior;
+observableProto.publishReplay = publishReplay;
 observableProto.multicast = multicast;
 
 import observeOn from './operators/observeOn';
