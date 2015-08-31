@@ -42,13 +42,10 @@ module.exports = function readTypeScriptModules(tsParser, modules, getFileInfo,
       var parseInfo = tsParser.parse(filesPaths, this.basePath);
       var moduleSymbols = parseInfo.moduleSymbols;
 
-      console.log(moduleSymbols)
       // Iterate through each of the modules that were parsed and generate a module doc
       // as well as docs for each module's exports.
       moduleSymbols.forEach(function(moduleSymbol) {
 
-
-        console.log()
         var moduleDoc = createModuleDoc(moduleSymbol, basePath);
 
         // Add this module doc to the module lookup collection and the docs collection
