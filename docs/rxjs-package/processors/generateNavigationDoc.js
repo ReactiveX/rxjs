@@ -6,7 +6,7 @@ module.exports = function generateNavigationDoc() {
     $runAfter: ['docs-processed'],
     $runBefore: ['rendering-docs'],
     $process: function(docs) {
-     console.log(docs.length)
+
       var modulesDoc = {
         value: { sections: [] },
         moduleName: 'navigation-modules',
@@ -28,10 +28,7 @@ module.exports = function generateNavigationDoc() {
           modulesDoc.value.sections.push(moduleNavItem);
 
           _.forEach(doc.exports, function(exportDoc) {
-            if(exportDoc.default){
-              console.log('default!')
-            }
-            else if (!exportDoc.private) {
+            if (!exportDoc.private) {
               var exportNavItem = {
                 path: exportDoc.path,
                 partial: exportDoc.outputPath,

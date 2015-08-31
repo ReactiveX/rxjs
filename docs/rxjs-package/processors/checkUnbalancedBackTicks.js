@@ -19,7 +19,6 @@ module.exports = function checkUnbalancedBackTicks(log, createDocMessage) {
           var matches = doc.renderedContent.match(BACKTICK_REGEX);
           if (matches && matches.length % 2 !== 0) {
             log.warn(createDocMessage('checkUnbalancedBackTicks processor: unbalanced backticks found in rendered content', doc));
-            console.log(doc.renderedContent);
           }
         }
       });

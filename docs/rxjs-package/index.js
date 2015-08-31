@@ -1,5 +1,3 @@
-//dgneni package for rxjs doc generation
-
 var Dgeni = require('dgeni');
 var typescriptPackage = require('../typescript-package');
 var linksPackage = require('../links-package');
@@ -8,23 +6,26 @@ var nunjucksPackage = require('dgeni-packages/nunjucks');
 var gitPackage = require('dgeni-packages/git');
 var path = require('canonical-path');
 
+
 var rxJSDocPackage = new Dgeni.Package('rxjs-docs', [typescriptPackage, jsdocPackage, nunjucksPackage, linksPackage, gitPackage]);
 
 rxJSDocPackage.config(function(readFilesProcessor, jsdocFileReader, readTypeScriptModules) {
   readFilesProcessor.fileReaders = [jsdocFileReader];
   readFilesProcessor.basePath = path.resolve(__dirname, '../..');
   readFilesProcessor.sourceFiles = [
-    { include: 'guides/**/*.md', basePath: 'docs' }
+    { include: 'guides/**/*.md', basePath: 'docs' },
+    //{ include: 'docs/content/**/*.md', basePath: 'docs/content' }
   ];
 
   readTypeScriptModules.sourceFiles = [
-    'Rx.ts'
+    //'*/*.@(js|es6|ts)',
+    '*.ts'
   ];
   readTypeScriptModules.basePath = path.resolve(readFilesProcessor.basePath, 'src');
 }).config(function(writeFilesProcessor) {
   writeFilesProcessor.outputFolder  = 'dist/docs';
 })
-//.factory(require('./readers/ngdoc'))
+.factory(require('./readers/ngdoc'))
 
 // Register the processors
 .processor(require('./processors/generateNavigationDoc'))
@@ -90,7 +91,7 @@ var dgeni = new Dgeni([rxJSDocPackage]);
 
 dgeni.generate()
     .then(function(results){
-        //console.log(results)
+        console.log('generated docs')
     })
     .catch(function(err){
         console.log(err)

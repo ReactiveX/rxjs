@@ -1,30 +1,22 @@
-{% include "lib/githubLinks.html" -%}
-{% extends 'layout/base.template.html' %}
-
+{% extends 'layout/base.template.html' -%}
 {% block body %}
 <h1 class="id">{$ doc.id $} <span class="type">module</span></h1>
-<p>defined in {$ githubViewLink(doc) $}</p>
-<p>{$ doc.description | marked $}</p>
+{%- for export in doc.exports %}
+  <section class="member">
+    <h1 id="{$ export.id $}" class="name">
+      {$ export.id $}
+    </h1>
+    <ul>
+      {%- for memberExport in export.exports %}
+        <li>{$ memberExport.key $}</li>
+      {% endfor %}
+    </ul>
+    <ul>
+      {%- for member in export.members %}
+        <li>{$ member.key $}</li>
+      {% endfor %}
+    </ul>
+  </section>
 
-{% if not doc.exports.length == 1 %}
-<h2>Exports</h2>
-<ul>
-{%- for exportDoc in doc.exports %}
-  {% if not exportDoc.private -%}
-  <li><a href="{$ exportDoc.path $}"><strong>{$ exportDoc.name $}</strong> {$ exportDoc.docType $}</a></li>
-  {%- endif %}
-{%- endfor %}
-</ul>
-{% endif %}
-
-{% if doc.exports.length == 1 %}
-<h2>Exports</h2>
-<ul>
-{%- for exportDoc in doc.exports %}
-  {% if not exportDoc.private -%}
-  <li><a href="{$ exportDoc.path $}"><strong>{$ exportDoc.name $}</strong> {$ exportDoc.docType $}</a></li>
-  {%- endif %}
-{%- endfor %}
-</ul>
-{% endif %}
+{% endfor %}
 {% endblock %}
