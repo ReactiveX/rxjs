@@ -9,6 +9,7 @@ Observable.from([
         require("./immediate-scheduler/observable/from-array"),
         require("./immediate-scheduler/observable/from-with-array"),
         require("./immediate-scheduler/observable/from-with-string"),
+        require("./immediate-scheduler/observable/just"),
         require("./immediate-scheduler/observable/of"),
         require("./immediate-scheduler/observable/range"),
 
@@ -38,6 +39,7 @@ Observable.from([
         require("./current-thread-scheduler/observable/from-array"),
         require("./current-thread-scheduler/observable/from-with-array"),
         require("./current-thread-scheduler/observable/from-with-string"),
+        require("./current-thread-scheduler/observable/just"),
         require("./current-thread-scheduler/observable/of"),
         require("./current-thread-scheduler/observable/range"),
 
