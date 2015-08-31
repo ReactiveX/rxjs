@@ -6,16 +6,15 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 export default function reduce<T, R>(project: (acc: R, x: T) => R, acc?: R) {
-  return this.lift(new ReduceOperator(project));
+  return this.lift(new ReduceOperator(project, acc));
 }
 
-export class ReduceOperator<T, R> extends Operator<T, R> {
+export class ReduceOperator<T, R> implements Operator<T, R> {
 
   acc: R;
   project: (acc: R, x: T) => R;
 
   constructor(project: (acc: R, x: T) => R, acc?: R) {
-    super();
     this.acc = acc;
     this.project = project;
   }

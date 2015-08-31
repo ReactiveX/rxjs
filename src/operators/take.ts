@@ -6,17 +6,16 @@ export default function take(total) {
   return this.lift(new TakeOperator(total));
 }
 
-export class TakeOperator<T, R> extends Operator<T, R> {
+export class TakeOperator<T, R> implements Operator<T, R> {
 
   total: number;
 
   constructor(total: number) {
-    super();
     this.total = total;
   }
 
   call(observer: Observer<R>): Observer<T> {
-    return new TakeSubscriber<T>(observer, this.total);
+    return new TakeSubscriber(observer, this.total);
   }
 }
 
@@ -31,10 +30,12 @@ export class TakeSubscriber<T> extends Subscriber<T> {
   }
 
   _next(x) {
-    if (++this.count <= this.total) {
+    const total = this.total;
+    if (++this.count <= total) {
       this.destination.next(x);
-    } else {
-      this.destination.complete();
+      if (this.count === total) {
+        this.destination.complete();
+      }
     }
   }
 }

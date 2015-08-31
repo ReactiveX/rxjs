@@ -6,17 +6,17 @@ import Subscription from '../Subscription';
 
 export default class ReplaySubject<T> extends Subject<T> {
 
-  bufferSize: number;
-  windowTime: number;
-  scheduler: Scheduler;
+  private bufferSize: number;
+  private _windowTime: number;
+  private scheduler: Scheduler;
   private events: ReplayEvent<T> [] = [];
 
   constructor(bufferSize: number = Number.POSITIVE_INFINITY,
-              windowTime: number = Number.POSITIVE_INFINITY,
+              _windowTime: number = Number.POSITIVE_INFINITY,
               scheduler?: Scheduler) {
     super();
     this.bufferSize = bufferSize < 1 ? 1 : bufferSize;
-    this.windowTime = windowTime < 1 ? 1 : windowTime;
+    this._windowTime = _windowTime < 1 ? 1 : _windowTime;
     this.scheduler = scheduler;
   }
 
@@ -44,7 +44,7 @@ export default class ReplaySubject<T> extends Subject<T> {
   private _getEvents(now) {
 
     const bufferSize = this.bufferSize;
-    const windowTime = this.windowTime;
+    const _windowTime = this._windowTime;
     const events = this.events;
 
     let eventsCount = events.length;
@@ -54,7 +54,7 @@ export default class ReplaySubject<T> extends Subject<T> {
     // Start at the front of the list. Break early once
     // we encounter an event that falls within the window.
     while(spliceCount < eventsCount) {
-      if((now - events[spliceCount].time) < windowTime) {
+      if((now - events[spliceCount].time) < _windowTime) {
         break;
       }
       spliceCount += 1;

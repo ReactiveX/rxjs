@@ -5,12 +5,14 @@ import tryOrOnError from './util/tryOrOnError';
 import Observer from './Observer';
 import Subscription from './Subscription';
 
-const subscriptionAdd = Subscription.prototype.add;
-const subscriptionRemove = Subscription.prototype.remove;
-const subscriptionUnsubscribe = Subscription.prototype.unsubscribe;
 
-export default class Subscriber<T> extends Observer<T> implements Subscription<T> {
+export default class Subscriber<T> extends Subscription<T> implements Observer<T> {
+  protected destination: Observer<any>;
 
+  private _subscription: Subscription<T>;
+
+  private _isUnsubscribed: boolean = false;
+  
   static create<T>(next    ?: (x?) => void,
                    error   ?: (e?) => void,
                    complete?: () => void): Subscriber<T> {
@@ -20,12 +22,23 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
     subscriber._complete = (typeof complete === "function") && complete || noop;
     return subscriber;
   }
-
-  _subscription: Subscription<T>;
-  _isUnsubscribed: boolean = false;
+  
+  _next(value: T) {
+    this.destination.next(value);
+  }
+  
+  _error(err: any) {
+    this.destination.error(err);
+  }
+  
+  _complete() {
+    this.destination.complete();
+  }
 
   constructor(destination?: Observer<any>) {
-    super(destination);
+    super();
+    this.destination = destination;
+    
     if (!destination) {
       return;
     }
@@ -57,14 +70,23 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
     }
   }
 
-  add(sub?) {
+  add(sub: Subscription<T>|Function|void) {
     // route add to the shared Subscription if it exists
-    subscriptionAdd.call(this._subscription || this, sub);
+    const _subscription = this._subscription;
+    if (_subscription) {
+      _subscription.add(sub);
+    } else {
+      super.add(sub);
+    }
   }
 
-  remove(sub?) {
+  remove(sub: Subscription<T>) {
     // route remove to the shared Subscription if it exists
-    subscriptionRemove.call(this._subscription || this, sub);
+    if (this._subscription) {
+      this._subscription.remove(sub);
+    } else {
+      super.remove(sub);
+    }
   }
 
   unsubscribe() {
@@ -73,7 +95,7 @@ export default class Subscriber<T> extends Observer<T> implements Subscription<T
     } else if(this._subscription) {
       this._isUnsubscribed = true;
     } else {
-      subscriptionUnsubscribe.call(this);
+      super.unsubscribe();
     }
   }
 

@@ -10,12 +10,11 @@ export default function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: a
   return this.lift(new MapOperator(project, thisArg));
 }
 
-export class MapOperator<T, R> extends Operator<T, R> {
+export class MapOperator<T, R> implements Operator<T, R> {
 
   project: (x: T, ix?: number) => R;
 
   constructor(project: (x: T, ix?: number) => R, thisArg?: any) {
-    super();
     this.project = <(x: T, ix?: number) => R>bindCallback(project, thisArg, 2);
   }
   call(observer: Observer<R>): Observer<T> {

@@ -10,33 +10,36 @@ import ScalarObservable from '../observables/ScalarObservable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function merge(scheduler?: any, concurrent?: any, ...observables: Observable<any>[]) {
-  const xs = [];
-  if (typeof this.subscribe === "function") {
-    xs.push(this);
-  }
-  if (concurrent && typeof concurrent.subscribe === "function") {
-    xs.push(concurrent);
-    concurrent = scheduler;
-  }
-  if (scheduler && typeof scheduler === "object") {
-    if (typeof scheduler.subscribe === "function") {
-      xs.push(scheduler);
-      scheduler = undefined;
-      concurrent = Number.POSITIVE_INFINITY;
-    } else if(typeof scheduler.schedule === "function") {
-      concurrent = Number.POSITIVE_INFINITY;
+export function merge<R>(...observables: (Observable<any>|Scheduler|number)[]): Observable<R> {
+  let concurrent = Number.POSITIVE_INFINITY;
+  let scheduler:Scheduler = Scheduler.immediate;
+  let last:any = observables[observables.length - 1];
+  if (typeof last.schedule === 'function') {
+    scheduler = <Scheduler>observables.pop();
+    if (observables.length > 1 && typeof observables[observables.length - 1] === 'number') {
+      concurrent = <number>observables.pop();
     }
+  } else if (typeof last === 'number') {
+    concurrent = <number>observables.pop();
   }
-  return new ArrayObservable(xs.concat(observables), scheduler).lift(new MergeOperator(concurrent));
+
+  if(observables.length === 1) {
+    return <Observable<R>>observables[0];
+  }
+
+  return new ArrayObservable(observables, scheduler).lift(new MergeOperator(concurrent));
 }
 
-export class MergeOperator<T, R> extends Operator<T, R> {
+export function mergeProto<R>(...observables: (Observable<any>|number)[]): Observable<R> {
+  observables.unshift(this);
+  return merge.apply(this, observables);
+}
+
+export class MergeOperator<T, R> implements Operator<T, R> {
 
   concurrent: number;
 
   constructor(concurrent: number = Number.POSITIVE_INFINITY) {
-    super();
     this.concurrent = concurrent;
   }
 
@@ -75,10 +78,10 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  complete() {
     this.stopped = true;
     if (this.active === 0 && this.buffer.length === 0) {
-      this.destination.complete();
+      super.complete();
     }
   }
 
@@ -99,7 +102,7 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
       this.destination.next((<ScalarObservable<T>> observable).value);
       this._innerComplete();
     } else {
-      return observable.subscribe(new MergeInnerSubscriber(this));
+      return observable.subscribe(new MergeInnerSubscriber(this.destination, this));
     }
   }
 
@@ -111,7 +114,7 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
     const pending = buffer.length;
 
     if (stopped && active === 0 && pending === 0) {
-      this.destination.complete();
+      super.complete();
     } else if (active < this.concurrent && pending > 0) {
       this._next(buffer.shift());
     }
@@ -122,8 +125,8 @@ export class MergeInnerSubscriber<T, R> extends Subscriber<T> {
 
   parent: MergeSubscriber<T, R>;
 
-  constructor(parent: MergeSubscriber<T, R>) {
-    super(parent.destination);
+  constructor(destination: Observer<T>, parent: MergeSubscriber<T, R>) {
+    super(destination);
     this.parent = parent;
   }
 

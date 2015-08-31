@@ -1,5 +1,4 @@
 import Subject from '../Subject';
-import Operator from '../Operator';
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
@@ -75,7 +74,7 @@ export class RefCountObservable<T> extends Observable<T> {
 
 export class RefCountSubscription<T> extends Subscription<T> {
 
-  constructor(protected refCountObservable: RefCountObservable<T>) {
+  constructor(private refCountObservable: RefCountObservable<T>) {
     super();
   }
 

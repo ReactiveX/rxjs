@@ -2,7 +2,7 @@ import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 
 import {root} from '../util/root';
-import {$iterator$} from '../util/Symbol_iterator';
+import $iterator$ from '../util/Symbol_iterator';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 

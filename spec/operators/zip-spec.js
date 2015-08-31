@@ -40,4 +40,13 @@ describe("zip", function () {
       expect(vals).toDeepEqual(r[i++]);
     }, null, done);
   });
+  it("should combine a source with an immediately-scheduled source", function (done) {
+    var a = Observable.of(1, 2, 3, immediateScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8);
+    var r = [[1, 4], [2, 5], [3, 6]];
+    var i = 0;
+    Observable.of(a, b, immediateScheduler).zipAll().subscribe(function (vals) {
+      expect(vals).toDeepEqual(r[i++]);
+    }, null, done);
+  });
 });

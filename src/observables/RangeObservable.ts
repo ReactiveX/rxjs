@@ -3,15 +3,15 @@ import Observable from '../Observable';
 
 export default class RangeObservable<T> extends Observable<T> {
 
-  static create(start: number = 0, count: number = 0, scheduler?: Scheduler) {
-    return new RangeObservable(start, count, scheduler);
+  static create(start: number = 0, end: number = 0, scheduler?: Scheduler) {
+    return new RangeObservable(start, end, scheduler);
   }
 
   static dispatch(state) {
 
-    const { start, index, count, subscriber } = state;
+    const { start, index, end, subscriber } = state;
 
-    if (index >= count) {
+    if (index >= end) {
       subscriber.complete();
       return;
     }
@@ -28,24 +28,31 @@ export default class RangeObservable<T> extends Observable<T> {
     (<any> this).schedule(state);
   }
 
-  constructor(private start: number, private count: number, private scheduler?: Scheduler) {
+  private start: number;
+  private end: number;
+  private scheduler: Scheduler;
+
+  constructor(start: number, end: number, scheduler?: Scheduler) {
     super();
+    this.start = start;
+    this.end = end;
+    this.scheduler = scheduler;
   }
 
   _subscribe(subscriber) {
 
     let index = 0;
     let start = this.start;
-    const count = this.count;
+    const end = this.end;
     const scheduler = this.scheduler;
 
     if (scheduler) {
       subscriber.add(scheduler.schedule(0, {
-        index, count, start, subscriber
+        index, end, start, subscriber
       }, RangeObservable.dispatch));
     } else {
       do {
-        if (index++ >= count) {
+        if (index++ >= end) {
           subscriber.complete();
           break;
         }

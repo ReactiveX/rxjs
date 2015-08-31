@@ -70,7 +70,6 @@ describe('Subject', function () {
   });
 
   it('should clean out unsubscribed subscribers', function (done) {
-    debugger;
     var subject = new Subject();
     
     var sub1 = subject.subscribe(function (x) {

@@ -13,6 +13,7 @@ describe('Observable.prototype.switchLatest()', function () {
       expect(x).toBe(r[i++]);
     }, null, done);
   });
+  
   it("should switch with a selector function", function (done) {
     var a = Observable.of(1, 2, 3);
     var r = [11, 12, 13, 12, 13, 14, 13, 14, 15];
@@ -23,6 +24,7 @@ describe('Observable.prototype.switchLatest()', function () {
       expect(x).toBe(r[i++]);
     }, null, done);
   });
+  
   it("should switch to each immediately-scheduled inner Observable", function (done) {
     var a = Observable.of(1, 2, 3, immediateScheduler);
     var b = Observable.of(4, 5, 6, immediateScheduler);

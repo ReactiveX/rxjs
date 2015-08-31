@@ -10,12 +10,11 @@ export default function filter<T>(select: (x: T, ix?: number) => boolean, thisAr
   return this.lift(new FilterOperator(select, thisArg));
 }
 
-export class FilterOperator<T, R> extends Operator<T, R> {
+export class FilterOperator<T, R> implements Operator<T, R> {
 
   select: (x: T, ix?: number) => boolean;
 
   constructor(select: (x: T, ix?: number) => boolean, thisArg?: any) {
-    super();
     this.select = <(x: T, ix?: number) => boolean>bindCallback(select, thisArg, 2);
   }
 

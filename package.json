@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global",
-    "build_amd": "rm -rf dist/amd && babel dist/es6 --out-dir dist/amd --modules amd --sourceMaps --loose all",
-    "build_cjs": "rm -rf dist/cjs && babel dist/es6 --out-dir dist/cjs --modules common --sourceMaps --loose all",
+    "build_amd": "rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m amd --outDir dist/amd --sourcemap --target ES5",
+    "build_cjs": "rm -rf dist/cjs && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m commonjs --outDir dist/cjs --sourcemap --target ES5",
     "build_docs": "rm -rf dist/docs && node docs/rxjs-package/index",
     "build_es6": "rm -rf dist/es6 && tsc src/Rx.ts --outDir dist/es6 --target ES6 -d",
-    "build_global": "rm -rf dist/global && mkdir dist/global && browserify src/Rx.global.js --outfile dist/global/Rx.js",
+    "build_global": "rm -rf dist/global && mkdir dist/global && browserify src/Rx.global.js --outfile dist/global/Rx.js; ./node_modules/.bin/uglifyjs ./dist/global/Rx.js --source-map ./dist/global/Rx.min.js.map --screw-ie8 -o ./dist/global/Rx.min.js",
     "build_perf": "npm run build_es6 && npm run build_cjs && npm run build_global && npm run perf",
     "build_test": "rm -rf dist/ && npm run build_es6 && npm run build_cjs && jasmine",
     "test": "jasmine",
@@ -46,6 +46,7 @@
     "browserify": "^11.0.0",
     "dgeni": "^0.4.1",
     "dgeni-packages": "^0.10.19",
+    "colors": "^1.1.2",
     "glob": "^5.0.10",
     "http-server": "^0.8.0",
     "jasmine": "^2.3.1",
@@ -54,8 +55,9 @@
     "platform": "^1.3.0",
     "promise": "^7.0.3",
     "protractor": "^1.7.0",
-    "rx": "^2.5.3",
-    "typescript": "^1.5.0-beta"
+    "rx": "^3.0.0",
+    "typescript": "^1.5.0-beta",
+    "uglifyjs": "^2.4.10"
   },
   "format": "es6",
   "directories": {

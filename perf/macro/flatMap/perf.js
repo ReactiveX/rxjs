@@ -15,7 +15,7 @@ var RxNextTestObservable = new RxNext.Observable(function(observer) {
   while(++index < numIterations) {
     observer.next(index);
   }
-  observer.completed();
+  observer.complete();
 });
 
 var Rx2TestObservable = Rx.Observable.create(function(observer) {

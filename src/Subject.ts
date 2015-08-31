@@ -18,9 +18,11 @@ const _subscriberComplete = Subscriber.prototype._complete;
 const _observableSubscribe = Observable.prototype._subscribe;
 
 export default class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
-
+  _subscriptions: Subscription<T>[];
+  _unsubscribe: () => void;
+  
   static create<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
-    return new BidiSubject(source, destination);
+    return new BidirectionalSubject(source, destination);
   }
 
   destination: Observer<T>;
@@ -34,12 +36,12 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
   completeSignal: boolean = false;
 
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const subject = new BidiSubject(this, this.destination || this);
+    const subject = new BidirectionalSubject(this, this.destination || this);
     subject.operator = operator;
     return subject;
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Observer<any>) : Subscription<T> {
 
     if (subscriber.isUnsubscribed) {
       return;
@@ -165,23 +167,14 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
   }
 }
 
-export class SubjectSubscription<T> implements Subscription<T> {
-
+export class SubjectSubscription<T> extends Subscription<T> {
   isUnsubscribed: boolean = false;
 
   constructor(public subject: Subject<T>, public observer: Observer<any>) {
-  }
-
-  add(x?) {
-    subscriptionAdd.call(this, x);
-  }
-
-  remove(x?) {
-    subscriptionRemove.call(this, x);
+    super();
   }
 
   unsubscribe() {
-
     if (this.isUnsubscribed) {
       return;
     }
@@ -205,7 +198,7 @@ export class SubjectSubscription<T> implements Subscription<T> {
   }
 }
 
-class BidiSubject<T> extends Subject<T> {
+class BidirectionalSubject<T> extends Subject<T> {
 
   constructor(source: Observable<any>, destination: Observer<any>) {
     super();

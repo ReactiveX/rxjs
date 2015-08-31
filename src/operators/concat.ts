@@ -1,9 +1,19 @@
-import merge from './merge';
+import {merge} from './merge';
 import Observable from '../Observable';
+import Scheduler from '../Scheduler';
 
-export default function concat(scheduler?: any, ...observables: Observable<any>[]) {
-  if (scheduler && typeof scheduler.subscribe === "function") {
-    return merge.apply(this, [1, scheduler].concat(observables));
+export function concat<R>(...observables: any[]) : Observable<R> {
+  let scheduler = Scheduler.immediate;
+  const len = observables.length;
+  if(typeof observables[observables.length - 1].schedule === 'function') {
+    scheduler = observables.pop();
+    observables.push(1, scheduler);
   }
-  return merge.apply(this, [scheduler, 1].concat(observables));
+  return merge.apply(this, observables);
+}
+
+export function concatProto<R>(...observables:any[]) : Observable<R> {
+  observables.unshift(this);
+  observables.push(1);
+  return merge.apply(this, observables);
 }

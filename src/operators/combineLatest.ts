@@ -4,29 +4,34 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 
 import ArrayObservable from '../observables/ArrayObservable';
-import {ZipSubscriber, ZipInnerSubscriber, hasValue, mapValue} from './zip';
+import EmptyObservable from '../observables/EmptyObservable';
+import {ZipSubscriber, ZipInnerSubscriber} from './zip';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function combineLatest<T, R>(...xs: (Observable<any> | ((...values: Array<any>) => R)) []) {
-  const project = <((...ys: Array<any>) => R)> xs[xs.length - 1];
+export function combineLatest<T, R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]): Observable<R> {
+  const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
   if (typeof project === "function") {
-    xs.pop();
+    observables.pop();
   }
-  if (typeof this.subscribe === "function") {
-    return new ArrayObservable([this].concat(xs)).lift(new CombineLatestOperator(project));
-  }
-  return new ArrayObservable(xs).lift(new CombineLatestOperator(project));
+  return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }
 
+export function combineLatestProto<R>(...observables: (Observable<any>|((...values: any[]) => R))[]): Observable<R> {
+  const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
+  if (typeof project === "function") {
+    observables.pop();
+  }
+  observables.unshift(this);
+  return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
+}
 
-export class CombineLatestOperator<T, R> extends Operator<T, R> {
+export class CombineLatestOperator<T, R> implements Operator<T, R> {
 
   project: (...values: Array<any>) => R;
 
   constructor(project?: (...values: Array<any>) => R) {
-    super();
     this.project = project;
   }
 
@@ -38,13 +43,14 @@ export class CombineLatestOperator<T, R> extends Operator<T, R> {
 export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
 
   project: (...values: Array<any>) => R;
+  limit: number = 0;
 
   constructor(destination: Observer<R>, project?: (...values: Array<any>) => R) {
     super(destination, project, []);
   }
 
   _subscribeInner(observable, values, index, total) {
-    return observable.subscribe(new CombineLatestInnerSubscriber(this, values, index, total));
+    return observable.subscribe(new CombineLatestInnerSubscriber(this.destination, this, values, index, total));
   }
 
   _innerComplete(innerSubscriber) {
@@ -56,8 +62,8 @@ export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
 
 export class CombineLatestInnerSubscriber<T, R> extends ZipInnerSubscriber<T, R> {
 
-  constructor(parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
-    super(parent, values, index, total);
+  constructor(destination: Observer<T>, parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
+    super(destination, parent, values, index, total);
   }
 
   _next(x) {
@@ -77,7 +83,7 @@ export class CombineLatestInnerSubscriber<T, R> extends ZipInnerSubscriber<T, R>
       values[index] = [x];
     }
 
-    if(limit === total) {
+    if(limit >= total) {
       this._projectNext(values, parent.project);
     }
   }

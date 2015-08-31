@@ -9,23 +9,23 @@ import ArrayObservable from '../observables/ArrayObservable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function zip<T, R>(...xs: (Observable<any> | ((...values: Array<any>) => R)) []) {
-  const project = <((...ys: Array<any>) => R)> xs[xs.length - 1];
+export function zip<T, R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]): Observable<R> {
+  const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
   if (typeof project === "function") {
-    xs.pop();
+    observables.pop();
   }
-  if (typeof this.subscribe === "function") {
-    return new ArrayObservable([this].concat(xs)).lift(new ZipOperator(project));
-  }
-  return new ArrayObservable(xs).lift(new ZipOperator(project));
+  return new ArrayObservable(observables).lift(new ZipOperator(project));
 }
 
-export class ZipOperator<T, R> extends Operator<T, R> {
+export function zipProto<R>(...observables: (Observable<any> | ((...values: Array<any>) => R)) []): Observable<R> {
+  return zip.apply(this, [this, ...observables]);
+}
+
+export class ZipOperator<T, R> implements Operator<T, R> {
 
   project: (...values: Array<any>) => R
 
   constructor(project?: (...values: Array<any>) => R) {
-    super();
     this.project = project;
   }
 
@@ -70,7 +70,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   }
 
   _subscribeInner(observable, values, index, total) {
-    return observable.subscribe(new ZipInnerSubscriber(this, values, index, total));
+    return observable.subscribe(new ZipInnerSubscriber(this.destination, this, values, index, total));
   }
 
   _innerComplete(innerSubscriber) {
@@ -82,6 +82,14 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   }
 }
 
+function arrayInitialize(length) {
+  var arr = Array(length);
+  for (let i = 0; i < length; i++) {
+    arr[i] = null;
+  }
+  return arr;
+}
+
 export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
 
   parent: ZipSubscriber<T, R>;
@@ -90,8 +98,8 @@ export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
   total: number;
   events: number = 0;
 
-  constructor(parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
-    super(parent.destination);
+  constructor(destination: Observer<T>, parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
+    super(destination);
     this.parent = parent;
     this.values = values;
     this.index = index;
@@ -102,6 +110,7 @@ export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
 
     const parent = this.parent;
     const events = this.events;
+    const total = this.total;
     const limit = parent.limit;
 
     if (events >= limit) {
@@ -111,11 +120,11 @@ export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
 
     const index = this.index;
     const values = this.values;
-    const zipped = values[events] || (values[events] = []);
+    const zipped = values[events] || (values[events] = arrayInitialize(total));
 
     zipped[index] = [x];
 
-    if (zipped.length === this.total && zipped.every(hasValue)) {
+    if (zipped.every(hasValue)) {
       this._projectNext(zipped, parent.project);
       values[events] = undefined;
     }
