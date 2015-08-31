@@ -1,0 +1,22 @@
+{% extends 'layout/base.template.html' -%}
+{% block body %}
+<h1 class="id">{$ doc.id $} <span class="type">module</span></h1>
+{%- for export in doc.exports %}
+  <section class="member">
+    <h1 id="{$ export.id $}" class="name">
+      {$ export.id $}
+    </h1>
+    <ul>
+      {%- for memberExport in export.exports %}
+        <li>{$ memberExport.key $}</li>
+      {% endfor %}
+    </ul>
+    <ul>
+      {%- for member in export.members %}
+        <li>{$ member.key $}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+{% endfor %}
+{% endblock %}

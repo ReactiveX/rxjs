@@ -7,6 +7,7 @@
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global",
     "build_amd": "rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m amd --outDir dist/amd --sourcemap --target ES5",
     "build_cjs": "rm -rf dist/cjs && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m commonjs --outDir dist/cjs --sourcemap --target ES5",
+    "build_docs": "rm -rf dist/docs && node docs/rxjs-package/index",
     "build_es6": "rm -rf dist/es6 && tsc src/Rx.ts --outDir dist/es6 --target ES6 -d",
     "build_global": "rm -rf dist/global && mkdir dist/global && browserify src/Rx.global.js --outfile dist/global/Rx.js; ./node_modules/.bin/uglifyjs ./dist/global/Rx.js --source-map ./dist/global/Rx.min.js.map --screw-ie8 -o ./dist/global/Rx.min.js",
     "build_perf": "npm run build_es6 && npm run build_cjs && npm run build_global && npm run perf",
@@ -17,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ReactiveX/RxJS.git"
+    "url": "https://github.com/ReactiveX/RxJS.git"
   },
   "keywords": [
     "Rx",
@@ -43,6 +44,8 @@
     "benchmark": "^1.0.0",
     "benchpress": "^2.0.0-alpha.25",
     "browserify": "^11.0.0",
+    "dgeni": "^0.4.1",
+    "dgeni-packages": "^0.10.19",
     "colors": "^1.1.2",
     "glob": "^5.0.10",
     "http-server": "^0.8.0",
