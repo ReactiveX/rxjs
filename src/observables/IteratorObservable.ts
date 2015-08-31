@@ -2,7 +2,7 @@ import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 
 import {root} from '../util/root';
-import $iterator$ from '../util/Symbol_iterator';
+import $$iterator from '../util/Symbol_iterator';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -108,7 +108,7 @@ class StringIterator {
               private idx: number = 0,
               private len: number = str.length) {
   }
-  [$iterator$]() { return (this); }
+  [$$iterator]() { return (this); }
   next() {
     return this.idx < this.len ? {
         done: false,
@@ -125,7 +125,7 @@ class ArrayIterator {
               private idx: number = 0,
               private len: number = toLength(arr)) {
   }
-  [$iterator$]() { return this; }
+  [$$iterator]() { return this; }
   next() {
     return this.idx < this.len ? {
         done: false,
@@ -138,7 +138,7 @@ class ArrayIterator {
 }
 
 function getIterator(o) {
-  const i = o[$iterator$];
+  const i = o[$$iterator];
   if (!i && typeof o === 'string') {
     return new StringIterator(o);
   }
@@ -148,7 +148,7 @@ function getIterator(o) {
   if (!i) {
     throw new TypeError('Object is not iterable');
   }
-  return o[$iterator$]();
+  return o[$$iterator]();
 }
 
 function toLength(o) {
