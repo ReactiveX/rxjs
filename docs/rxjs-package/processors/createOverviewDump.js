@@ -10,7 +10,7 @@ module.exports = function createOverviewDump() {
         id: 'overview-dump',
         aliases: ['overview-dump'],
         path: 'overview-dump',
-        outputPath: 'overview-dump.html',
+        outputPath: 'index.html',
         modules: []
       };
       _.forEach(docs, function(doc) {
