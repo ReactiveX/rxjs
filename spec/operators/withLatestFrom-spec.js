@@ -7,7 +7,7 @@ describe('Observable.prototype.withLatestFrom()', function () {
     var a = Observable.of('a');
     var b = Observable.of('b', 'c');
     
-    Observable.value('d').delay(100)
+    Observable.of('d').delay(100)
       .withLatestFrom(a, b, function (x, a, b) { return [x, a, b]; })
       .subscribe(function (x) {
         expect(x).toEqual(['d', 'a', 'c']);
@@ -18,7 +18,7 @@ describe('Observable.prototype.withLatestFrom()', function () {
     var a = Observable.of('a');
     var b = Observable.never();
 
-    Observable.value('d').delay(100)
+    Observable.of('d').delay(100)
       .withLatestFrom(a, b, function (x, a, b) { return [x, a, b]; })
       .subscribe(function (x) {
         expect('this was called').toBe(false);

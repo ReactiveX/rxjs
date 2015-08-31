@@ -16,11 +16,11 @@ describe('Observable.prototype.expand()', function () {
   });
   it('should map and recursively flatten with ScalarObservables', function (done) {
     var expected = [1, 2, 3, 4, 5];
-    Observable.return(0).expand(function (x) {
+    Observable.of(0).expand(function (x) {
       if (x > 4) {
         return Observable.empty();
       }
-      return Observable.return(x + 1);
+      return Observable.of(x + 1);
     })
     .subscribe(function (x) {
       expect(x).toBe(expected.shift());

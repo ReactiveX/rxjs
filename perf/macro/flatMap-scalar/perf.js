@@ -11,7 +11,7 @@ var Rx2FlatMapRange = document.querySelector('#rx-2-flatmap-range-to-scalar');
 var RxNextFlatMapRange = document.querySelector('#rx-3-flatmap-range-to-scalar');
 
 var Rx2ObservableReturn = Rx.Observable.return;
-var RxNextObservableReturn = RxNext.Observable.return;
+var RxNextObservableReturn = RxNext.Observable.of;
 
 var RxNextTestObservable = new RxNext.Observable(function(observer) {
   var index = -1;

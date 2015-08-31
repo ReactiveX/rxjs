@@ -45,7 +45,7 @@ export default class Notification<T> {
     const value = this.value;
     switch (kind) {
       case 'N':
-        return Observable.value(value);  
+        return Observable.of(value);  
       case 'E':
         return Observable.throw(value);
       case 'C':

@@ -7,9 +7,9 @@ describe('mergeAll', function () {
     var expected = [1, 2, 3];
     var i = 0;
     Observable.fromArray([
-      Observable.value(1),
-      Observable.value(2),
-      Observable.value(3)
+      Observable.of(1),
+      Observable.of(2),
+      Observable.of(3)
     ])
     .mergeAll()
     .subscribe(function (x) {
@@ -21,9 +21,9 @@ describe('mergeAll', function () {
 
   it('should throw if any child observable throws', function (done) {
     Observable.fromArray([
-      Observable.value(1),
+      Observable.of(1),
       Observable.throw('bad'),
-      Observable.value(3)
+      Observable.of(3)
     ])
     .mergeAll()
     .subscribe(function (x) {

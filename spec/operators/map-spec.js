@@ -4,7 +4,7 @@ var Observable = Rx.Observable;
 
 describe('Observable.prototype.map()', function () {
   it('should map one value', function (done) {
-    Observable.value(42).map(function (x) {
+    Observable.of(42).map(function (x) {
       return x + '!';
     })
     .subscribe(function (x) {
@@ -25,7 +25,7 @@ describe('Observable.prototype.map()', function () {
   });
 
   it('should send errors down the error path', function (done) {
-    Observable.value(42).map(function (x) {
+    Observable.of(42).map(function (x) {
         throw 'bad';
       })
       .subscribe(function (x) {

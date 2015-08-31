@@ -1,5 +1,7 @@
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
+import ScalarObservable from './ScalarObservable';
+import EmptyObservable from './EmptyObservable';
 
 export default class ArrayObservable<T> extends Observable<T> {
 
@@ -7,14 +9,22 @@ export default class ArrayObservable<T> extends Observable<T> {
     return new ArrayObservable(array, scheduler);
   }
 
-  static of<T>(...array: (T | Scheduler)[]) {
-    let scheduler = array[array.length - 1];
-    if (scheduler && typeof (<Scheduler> scheduler).schedule === "function") {
+  static of<T>(...array: (T | Scheduler)[]) : Observable<T> {
+    let scheduler = <Scheduler>array[array.length - 1];
+    if (scheduler && typeof scheduler.schedule === "function") {
       array.pop();
     } else {
       scheduler = void 0;
     }
-    return new ArrayObservable(array, <Scheduler> scheduler);
+    
+    const len = array.length;
+    if (len > 1) {
+      return new ArrayObservable(array, scheduler);
+    } else if (len === 1) {
+      return new ScalarObservable(array[0], scheduler);
+    } else {
+      return new EmptyObservable(scheduler);
+    }
   }
 
   static dispatch(state) {

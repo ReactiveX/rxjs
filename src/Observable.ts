@@ -83,9 +83,6 @@ export default class Observable<T> {
   static never: <T>() => Observable<T>;
   static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
   static range: <T>(start: number, end: number, scheduler?: Scheduler) => Observable<number>;
-  static return: <T>(value: T, scheduler?: Scheduler) => Observable<T>;
-  static value: <T>(value: T, scheduler?: Scheduler) => Observable<T>;
-  static just: <T>(value: T, scheduler?: Scheduler) => Observable<T>;
   static fromPromise: <T>(promise: Promise<T>) => Observable<T>;
   static timer: (delay: number) => Observable<number>;
   static interval: (interval: number) => Observable<number>;

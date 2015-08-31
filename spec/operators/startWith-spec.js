@@ -9,7 +9,7 @@ describe('Observable.prototype.startWith()', function () {
     var expected = [init, source];
 
     var i = 0;
-    Observable.value(source)
+    Observable.of(source)
       .startWith(init)
       .subscribe(function (x) {
         expect(x).toBe(expected[i++]);

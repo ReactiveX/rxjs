@@ -6,7 +6,7 @@ var Scheduler = Rx.Scheduler;
 describe('Observable.prototype.throttle()', function () {
   it('should delay calls by the specified amount', function (done) {
     var expected = [3, 4];
-    var source = Observable.concat(Observable.value(1),
+    var source = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)

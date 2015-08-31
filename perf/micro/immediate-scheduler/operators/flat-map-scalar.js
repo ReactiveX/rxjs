@@ -4,7 +4,7 @@ var RxNew = require("../../../../index");
 module.exports = function (suite) {
     
     var oldFlatMapWithImmediateScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate).flatMap(function (x) { return RxOld.Observable.return(x, RxOld.Scheduler.immediate); });
-    var newFlatMapWithImmediateScheduler = RxNew.Observable.range(0, 25).flatMap(function (x) { return RxNew.Observable.return(x); });
+    var newFlatMapWithImmediateScheduler = RxNew.Observable.range(0, 25).flatMap(function (x) { return RxNew.Observable.of(x); });
 
     return suite
         .add('old flatMap (scalar) with immediate scheduler', function () {

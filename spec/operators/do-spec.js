@@ -5,7 +5,7 @@ var Observable = Rx.Observable;
 describe('Observable.prototype.do()', function () {
   it('should do one value', function (done) {
     var act = false;
-    Observable.value(42).do(function (x) {
+    Observable.of(42).do(function (x) {
       act = true;
     })
     .subscribe(function (x) {

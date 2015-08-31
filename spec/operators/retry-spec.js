@@ -6,7 +6,7 @@ describe('Observable.prototype.retry()', function () {
   it('should retry a number of times, without error, then complete', function (done) {
     var errors = 0;
     var retries = 2;
-    Observable.value(42)
+    Observable.of(42)
       .map(function(x){
         if ((errors+=1) < retries){
           throw 'bad';
@@ -26,7 +26,7 @@ describe('Observable.prototype.retry()', function () {
   it('should retry a number of times, then call error handler', function (done) {
     var errors = 0;
     var retries = 2;
-    Observable.value(42)
+    Observable.of(42)
       .map(function(x){
         if ((errors+=1) < retries){
           throw 'bad';
@@ -48,7 +48,7 @@ describe('Observable.prototype.retry()', function () {
   it('should retry until successful completion', function (done) {
     var errors = 0;
     var retries = 10;
-    Observable.value(42)
+    Observable.of(42)
       .map(function(x){
         if ((errors+=1) < retries){
           throw 'bad';

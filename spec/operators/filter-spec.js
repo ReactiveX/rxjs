@@ -15,7 +15,7 @@ describe('Observable.prototype.filter()', function () {
   });
 
   it('should send errors down the error path', function (done) {
-    Observable.value(42).filter(function (x) {
+    Observable.of(42).filter(function (x) {
       throw 'bad';
     })
       .subscribe(function (x) {

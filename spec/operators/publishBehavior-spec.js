@@ -4,7 +4,7 @@ var Observable = Rx.Observable;
 
 describe('Observable.prototype.publishBehavior()', function () {
   it('should return a ConnectableObservable', function () {
-    var source = Observable.value(1).publishBehavior(1);
+    var source = Observable.of(1).publishBehavior(1);
     expect(source instanceof Rx.ConnectableObservable).toBe(true);
   });
 

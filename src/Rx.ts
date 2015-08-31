@@ -17,7 +17,6 @@ import InfiniteObservable from './observables/InfiniteObservable';
 import IntervalObservable from './observables/IntervalObservable';
 import PromiseObservable from './observables/PromiseObservable';
 import RangeObservable from './observables/RangeObservable';
-import ScalarObservable from './observables/ScalarObservable';
 import TimerObservable from './observables/TimerObservable';
 import FromEventPatternObservable from './observables/FromEventPatternObservable';
 import FromEventObservable from './observables/FromEventObservable';
@@ -32,10 +31,6 @@ Observable.of = ArrayObservable.of;
 Observable.range = RangeObservable.create;
 Observable.fromEventPattern = FromEventPatternObservable.create;
 Observable.forkJoin = ForkJoinObservable.create;
-
-Observable.just = ScalarObservable.create;
-Observable.return = ScalarObservable.create;
-Observable.value = ScalarObservable.create;
 
 Observable.throw = ErrorObservable.create;
 Observable.empty = EmptyObservable.create;

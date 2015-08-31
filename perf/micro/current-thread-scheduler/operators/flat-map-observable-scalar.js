@@ -4,7 +4,7 @@ var RxNew = require("../../../../index");
 module.exports = function (suite) {
 
     var oldFlatMapWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).flatMap(RxOld.Observable.return(0, RxOld.Scheduler.currentThread));
-    var newFlatMapWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate).flatMapTo(RxNew.Observable.return(0, RxNew.Scheduler.immediate));
+    var newFlatMapWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate).flatMapTo(RxNew.Observable.of(0, RxNew.Scheduler.immediate));
 
     return suite
         .add('old flatMap (scalar Observable) with current thread scheduler', function () {
