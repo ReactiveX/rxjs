@@ -19,7 +19,7 @@ rxJSDocPackage.config(function(readFilesProcessor, jsdocFileReader, readTypeScri
 
   readTypeScriptModules.sourceFiles = [
     //'*/*.@(js|es6|ts)',
-    '*.ts'
+    'Rx.ts'
   ];
   readTypeScriptModules.basePath = path.resolve(readFilesProcessor.basePath, 'src');
 }).config(function(writeFilesProcessor) {
