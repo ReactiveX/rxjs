@@ -3,8 +3,8 @@ var RxNew = require("../../../../index");
 
 module.exports = function (suite) {
     
-    var oldRepeatWithImmediateScheduler = RxOld.Observable.just(25, RxOld.Scheduler.immediate).repeat(5, RxOld.Scheduler.immediate);
-    var newRepeatWithImmediateScheduler = RxNew.Observable.just(25).repeat(5);
+    var oldRepeatWithImmediateScheduler = RxOld.Observable.of(25, RxOld.Scheduler.immediate).repeat(5, RxOld.Scheduler.immediate);
+    var newRepeatWithImmediateScheduler = RxNew.Observable.of(25).repeat(5);
 
     return suite
         .add('old repeat with immediate scheduler', function () {

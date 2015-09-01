@@ -3,8 +3,8 @@ var RxNew = require("../../../../index");
 
 module.exports = function (suite) {
     
-    var oldRepeatWithCurrentThreadScheduler = RxOld.Observable.just(25, RxOld.Scheduler.currentThread).repeat(5, RxOld.Scheduler.currentThread);
-    var newRepeatWithCurrentThreadScheduler = RxNew.Observable.just(25, RxNew.Scheduler.immediate).repeat(5, RxNew.Scheduler.immediate);
+    var oldRepeatWithCurrentThreadScheduler = RxOld.Observable.of(25, RxOld.Scheduler.currentThread).repeat(5, RxOld.Scheduler.currentThread);
+    var newRepeatWithCurrentThreadScheduler = RxNew.Observable.of(25, RxNew.Scheduler.immediate).repeat(5, RxNew.Scheduler.immediate);
 
     return suite
         .add('old repeat with current thread scheduler', function () {
