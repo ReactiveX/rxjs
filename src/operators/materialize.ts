@@ -7,13 +7,13 @@ export default function materialize<T>() {
   return this.lift(new MaterializeOperator());
 }
 
-export class MaterializeOperator<T, R> implements Operator<T, R> {
+class MaterializeOperator<T, R> implements Operator<T, R> {
   call(observer: Observer<T>): Observer<T> {
     return new MaterializeSubscriber(observer);
   }
 }
 
-export class MaterializeSubscriber<T> extends Subscriber<T> {
+class MaterializeSubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<T>) {
     super(destination);
   }

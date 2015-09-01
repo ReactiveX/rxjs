@@ -9,7 +9,7 @@ export default function reduce<T, R>(project: (acc: R, x: T) => R, acc?: R) {
   return this.lift(new ReduceOperator(project, acc));
 }
 
-export class ReduceOperator<T, R> implements Operator<T, R> {
+class ReduceOperator<T, R> implements Operator<T, R> {
 
   acc: R;
   project: (acc: R, x: T) => R;
@@ -24,7 +24,7 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class ReduceSubscriber<T, R> extends Subscriber<T> {
+class ReduceSubscriber<T, R> extends Subscriber<T> {
 
   acc: R;
   hasSeed: boolean;

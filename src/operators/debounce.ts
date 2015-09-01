@@ -13,7 +13,7 @@ export default function debounce<T>(dueTime: number, scheduler: Scheduler = Sche
   return this.lift(new DebounceOperator(dueTime, scheduler));
 }
 
-export class DebounceOperator<T, R> implements Operator<T, R> {
+class DebounceOperator<T, R> implements Operator<T, R> {
 
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
@@ -23,7 +23,7 @@ export class DebounceOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class DebounceSubscriber<T> extends Subscriber<T> {
+class DebounceSubscriber<T> extends Subscriber<T> {
   private debounced: Subscription<any>;
 
   constructor(destination: Observer < T >, private dueTime: number, private scheduler: Scheduler) {

@@ -36,12 +36,12 @@ export default class ConnectableObservable<T> extends Observable<T> {
     return (this.subscription = subscription);
   }
 
-  refCount() {
+  refCount(): Observable<T> {
     return new RefCountObservable(this);
   }
 }
 
-export class ConnectableSubscription<T> extends Subscription<T> {
+class ConnectableSubscription<T> extends Subscription<T> {
   constructor(protected connectable: ConnectableObservable<T>) {
     super();
   }
@@ -54,7 +54,7 @@ export class ConnectableSubscription<T> extends Subscription<T> {
   }
 }
 
-export class RefCountObservable<T> extends Observable<T> {
+class RefCountObservable<T> extends Observable<T> {
   connection: Subscription<T>;
   constructor(protected connectable: ConnectableObservable<T>,
               public    refCount: number = 0) {
@@ -72,7 +72,7 @@ export class RefCountObservable<T> extends Observable<T> {
   }
 }
 
-export class RefCountSubscription<T> extends Subscription<T> {
+class RefCountSubscription<T> extends Subscription<T> {
 
   constructor(private refCountObservable: RefCountObservable<T>) {
     super();

@@ -3,6 +3,7 @@ import Observer from './Observer';
 import Observable from './Observable';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
+import SubjectSubscription from './subjects/SubjectSubscription';
 
 const subscriptionAdd = Subscription.prototype.add;
 const subscriptionRemove = Subscription.prototype.remove;
@@ -164,37 +165,6 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     }
 
     this.isUnsubscribed = false;
-  }
-}
-
-export class SubjectSubscription<T> extends Subscription<T> {
-  isUnsubscribed: boolean = false;
-
-  constructor(public subject: Subject<T>, public observer: Observer<any>) {
-    super();
-  }
-
-  unsubscribe() {
-    if (this.isUnsubscribed) {
-      return;
-    }
-
-    this.isUnsubscribed = true;
-
-    const subject = this.subject;
-    const observers = subject.observers;
-
-    this.subject = void 0;
-
-    if (!observers || observers.length === 0 || subject.isUnsubscribed) {
-      return;
-    }
-
-    const subscriberIndex = observers.indexOf(this.observer);
-
-    if (subscriberIndex !== -1) {
-      observers.splice(subscriberIndex, 1);
-    }
   }
 }
 

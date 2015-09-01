@@ -9,7 +9,7 @@ export default function scan<T, R>(project: (acc: R, x: T) => R, acc?: R) {
   return this.lift(new ScanOperator(project));
 }
 
-export class ScanOperator<T, R> implements Operator<T, R> {
+class ScanOperator<T, R> implements Operator<T, R> {
 
   acc: R;
   project: (acc: R, x: T) => R;
@@ -24,7 +24,7 @@ export class ScanOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class ScanSubscriber<T, R> extends Subscriber<T> {
+class ScanSubscriber<T, R> extends Subscriber<T> {
 
   acc: R;
   hasSeed: boolean;

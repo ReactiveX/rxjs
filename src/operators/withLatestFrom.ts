@@ -12,7 +12,7 @@ export default function withLatestFrom<R>(...args: (Observable<any>|((...values:
   return this.lift(new WithLatestFromOperator(observables, project));
 }
 
-export class WithLatestFromOperator<T, R> implements Operator<T, R> {
+class WithLatestFromOperator<T, R> implements Operator<T, R> {
   constructor(private observables: Observable<any>[], private project: (...values: any[]) => Observable<R>) {
   }
 
@@ -21,7 +21,7 @@ export class WithLatestFromOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class WithLatestFromSubscriber<T, R> extends Subscriber<T> {
+class WithLatestFromSubscriber<T, R> extends Subscriber<T> {
   private values: any[];
   private toSet: number;
   
@@ -53,7 +53,7 @@ export class WithLatestFromSubscriber<T, R> extends Subscriber<T> {
   }
 }
 
-export class WithLatestInnerSubscriber<T, R> extends Subscriber<T> {
+class WithLatestInnerSubscriber<T, R> extends Subscriber<T> {
   constructor(private parent: WithLatestFromSubscriber<T, R>, private valueIndex: number) {
     super(null)
   }

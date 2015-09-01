@@ -42,7 +42,8 @@ Observable.fromEvent = FromEventObservable.create;
 
 const observableProto = Observable.prototype;
 
-import {concat, concatProto} from './operators/concat';
+import concat from './operators/concat-static';
+import concatProto from './operators/concat';
 import concatAll from './operators/concatAll';
 import concatMap from './operators/concatMap';
 import concatMapTo from './operators/concatMapTo';
@@ -53,7 +54,8 @@ observableProto.concatAll = concatAll;
 observableProto.concatMap = concatMap;
 observableProto.concatMapTo = concatMapTo;
 
-import {merge, mergeProto} from './operators/merge';
+import mergeProto from './operators/merge';
+import merge from './operators/merge-static';
 import mergeAll from './operators/mergeAll';
 import flatMap from './operators/flatMap';
 import flatMapTo from './operators/flatMapTo';
@@ -106,7 +108,8 @@ observableProto.filter = filter;
 observableProto.distinctUntilChanged = distinctUntilChanged;
 observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
-import {combineLatest, combineLatestProto} from './operators/combineLatest';
+import combineLatestProto from './operators/combineLatest';
+import combineLatest from './operators/combineLatest-static';
 import combineAll from './operators/combineAll';
 import withLatestFrom from './operators/withLatestFrom';
 
@@ -115,7 +118,8 @@ observableProto.combineLatest = combineLatestProto;
 observableProto.combineAll = combineAll;
 observableProto.withLatestFrom = withLatestFrom;
 
-import {zip, zipProto} from './operators/zip';
+import zipProto from './operators/zip';
+import zip from './operators/zip-static';
 import zipAll from './operators/zipAll';
 
 Observable.zip = zip;

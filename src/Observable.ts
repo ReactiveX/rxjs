@@ -5,10 +5,7 @@ import Scheduler from './Scheduler';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
 import ConnectableObservable from './observables/ConnectableObservable';
-// HACK: the Babel part of the build doesn't like this reference.
-import { GroupSubject } from './operators/groupBy';
-// seems to put it in an infinite loop.
-//import Notification from './Notification';
+import GroupSubject from './subjects/GroupSubject';
 
 
 import $$observer from './util/Symbol_observer';

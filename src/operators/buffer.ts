@@ -11,7 +11,7 @@ export default function buffer<T>(closingNotifier: Observable<any>): Observable<
   return this.lift(new BufferOperator(closingNotifier));
 }
 
-export class BufferOperator<T, R> implements Operator<T, R> {
+class BufferOperator<T, R> implements Operator<T, R> {
 
   constructor(private closingNotifier: Observable<any>) {
   }
@@ -21,7 +21,7 @@ export class BufferOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class BufferSubscriber<T> extends Subscriber<T> {
+class BufferSubscriber<T> extends Subscriber<T> {
   buffer: T[] = [];
   
   constructor(destination: Observer<T>, closingNotifier: Observable<any>) {
@@ -49,7 +49,7 @@ export class BufferSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
+class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
   constructor(private parent: BufferSubscriber<any>) {
     super(null);
   }

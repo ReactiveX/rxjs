@@ -13,7 +13,7 @@ export default function bufferWhen<T>(closingSelector: () => Observable<any>) : 
   return this.lift(new BufferWhenOperator(closingSelector));
 }
 
-export class BufferWhenOperator<T, R> implements Operator<T, R> {
+class BufferWhenOperator<T, R> implements Operator<T, R> {
 
   constructor(private closingSelector: () => Observable<any>) {
   }
@@ -23,7 +23,7 @@ export class BufferWhenOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class BufferWhenSubscriber<T> extends Subscriber<T> {
+class BufferWhenSubscriber<T> extends Subscriber<T> {
   private buffer: T[];
   private closingNotification: Subscription<any>;
   
@@ -72,7 +72,7 @@ export class BufferWhenSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
+class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
   constructor(private parent: BufferWhenSubscriber<any>) {
     super(null);
   }

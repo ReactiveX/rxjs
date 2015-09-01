@@ -10,7 +10,7 @@ export default function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: a
   return this.lift(new MapOperator(project, thisArg));
 }
 
-export class MapOperator<T, R> implements Operator<T, R> {
+class MapOperator<T, R> implements Operator<T, R> {
 
   project: (x: T, ix?: number) => R;
 
@@ -22,7 +22,7 @@ export class MapOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class MapSubscriber<T, R> extends Subscriber<T> {
+class MapSubscriber<T, R> extends Subscriber<T> {
 
   count: number = 0;
   project: (x: T, ix?: number) => R;

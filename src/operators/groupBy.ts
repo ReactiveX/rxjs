@@ -5,6 +5,7 @@ import Observable from '../Observable';
 import Subject from '../Subject';
 import Map from '../util/Map';
 import FastMap from '../util/FastMap';
+import GroupSubject from '../subjects/GroupSubject';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -17,7 +18,7 @@ export default function groupBy<T, R>(keySelector: (value: T) => string,
   return this.lift(new GroupByOperator<T, R>(keySelector, durationSelector, elementSelector));
 }
 
-export class GroupByOperator<T, R> implements Operator<T, R> {
+class GroupByOperator<T, R> implements Operator<T, R> {
   constructor(private keySelector: (value: T) => string,
     private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
     private elementSelector?: (value: T) => R) {
@@ -28,7 +29,7 @@ export class GroupByOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class GroupBySubscriber<T, R> extends Subscriber<T> {
+class GroupBySubscriber<T, R> extends Subscriber<T> {
   private groups = null;
 
   constructor(destination: Observer<R>, private keySelector: (value: T) => string,
@@ -107,13 +108,7 @@ export class GroupBySubscriber<T, R> extends Subscriber<T> {
   }
 }
 
-export class GroupSubject<T> extends Subject<T> {
-  constructor(public key: string) {
-    super();
-  }
-}
-
-export class GroupDurationSubscriber<T> extends Subscriber<T> {
+class GroupDurationSubscriber<T> extends Subscriber<T> {
   constructor(private group: GroupSubject<T>, private parent:GroupBySubscriber<any, T>) {
     super(null);
   }

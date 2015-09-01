@@ -4,7 +4,8 @@ import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import Subject from '../Subject';
 import Subscription from '../Subscription';
-import { default as Scheduler, Action } from '../Scheduler';
+import Scheduler from '../Scheduler';
+import Action from '../schedulers/Action';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -14,7 +15,7 @@ export default function windowTime<T>(windowTimeSpan: number, windowCreationInte
   return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
 }
 
-export class WindowTimeOperator<T, R> implements Operator<T, R> {
+class WindowTimeOperator<T, R> implements Operator<T, R> {
 
   constructor(private windowTimeSpan: number, private windowCreationInterval: number, private scheduler: Scheduler) {
   }
@@ -24,7 +25,7 @@ export class WindowTimeOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class WindowTimeSubscriber<T> extends Subscriber<T> {
+class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
   
   constructor(destination: Observer<T>, private windowTimeSpan: number, private windowCreationInterval: number, private scheduler: Scheduler) {

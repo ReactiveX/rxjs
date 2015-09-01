@@ -12,7 +12,7 @@ export default function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolea
     compare));
 }
 
-export class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
+class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
 
   compare: (x: T, y: T) => boolean;
 
@@ -25,7 +25,7 @@ export class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
+class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
 
   value: T;
   hasValue: boolean = false;

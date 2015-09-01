@@ -6,7 +6,7 @@ export default function skip(total) {
   return this.lift(new SkipOperator(total));
 }
 
-export class SkipOperator<T, R> implements Operator<T, R> {
+class SkipOperator<T, R> implements Operator<T, R> {
 
   total: number;
 
@@ -19,7 +19,7 @@ export class SkipOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class SkipSubscriber<T> extends Subscriber<T> {
+class SkipSubscriber<T> extends Subscriber<T> {
 
   total: number;
   count: number = 0;

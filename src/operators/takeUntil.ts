@@ -7,7 +7,7 @@ export default function takeUntil<T>(observable: Observable<any>) {
   return this.lift(new TakeUntilOperator(observable));
 }
 
-export class TakeUntilOperator<T, R> implements Operator<T, R> {
+class TakeUntilOperator<T, R> implements Operator<T, R> {
 
   observable: Observable<any>;
 
@@ -20,7 +20,7 @@ export class TakeUntilOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class TakeUntilSubscriber<T> extends Subscriber<T> {
+class TakeUntilSubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<T>,
               observable: Observable<any>) {
     super(destination);
@@ -28,7 +28,7 @@ export class TakeUntilSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class TakeUntilInnerSubscriber<T> extends Subscriber<T> {
+class TakeUntilInnerSubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<T>) {
     super(destination);
   }

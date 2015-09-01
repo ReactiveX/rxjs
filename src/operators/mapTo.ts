@@ -6,7 +6,7 @@ export default function mapTo<T, R>(value: R) {
   return this.lift(new MapToOperator(value));
 }
 
-export class MapToOperator<T, R> implements Operator<T, R> {
+class MapToOperator<T, R> implements Operator<T, R> {
 
   value: R;
 
@@ -19,7 +19,7 @@ export class MapToOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class MapToSubscriber<T, R> extends Subscriber<T> {
+class MapToSubscriber<T, R> extends Subscriber<T> {
 
   value: R;
 

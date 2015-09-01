@@ -13,7 +13,7 @@ export default function throttle<T>(delay: number, scheduler: Scheduler = Schedu
   return this.lift(new ThrottleOperator(delay, scheduler));
 }
 
-export class ThrottleOperator<T, R> implements Operator<T, R> {
+class ThrottleOperator<T, R> implements Operator<T, R> {
   constructor(private delay:number, private scheduler:Scheduler) {
   }
 
@@ -22,7 +22,7 @@ export class ThrottleOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class ThrottleSubscriber<T, R> extends Subscriber<T> {
+class ThrottleSubscriber<T, R> extends Subscriber<T> {
   private throttled: Subscription<any>;
 
   constructor(destination:Observer<T>, private delay:number, private scheduler:Scheduler) {

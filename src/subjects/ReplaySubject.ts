@@ -1,5 +1,5 @@
 import Subject from '../Subject';
-import {SubjectSubscription} from '../Subject';
+import SubjectSubscription from '../subjects/SubjectSubscription';
 import Observer from '../Observer';
 import Scheduler from '../Scheduler';
 import Subscription from '../Subscription';

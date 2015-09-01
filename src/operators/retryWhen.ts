@@ -12,7 +12,7 @@ export default function retryWhen<T>(notifier: (errors:Observable<any>) => Obser
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
-export class RetryWhenOperator<T, R> implements Operator<T, R> {
+class RetryWhenOperator<T, R> implements Operator<T, R> {
   constructor(protected notifier: (errors: Observable<any>) => Observable<any>, protected original:Observable<T>) {
   }
 
@@ -21,7 +21,7 @@ export class RetryWhenOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class RetryWhenSubscriber<T> extends Subscriber<T> {
+class RetryWhenSubscriber<T> extends Subscriber<T> {
   errors: Subject<any>;
   retryNotifications: Observable<any>;
   retryNotificationSubscription: Subscription<any>;
@@ -54,7 +54,7 @@ export class RetryWhenSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class RetryNotificationSubscriber<T> extends Subscriber<T> {
+class RetryNotificationSubscriber<T> extends Subscriber<T> {
   constructor(public parent: RetryWhenSubscriber<any>) {
     super(null);
   }

@@ -11,7 +11,7 @@ export default function _do<T>(next?: (x: T) => void, error?: (e: any) => void, 
   return this.lift(new DoOperator(next || noop, error || noop, complete || noop));
 }
 
-export class DoOperator<T, R> implements Operator<T, R> {
+class DoOperator<T, R> implements Operator<T, R> {
 
   next: (x: T) => void;
   error: (e: any) => void;
@@ -28,7 +28,7 @@ export class DoOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class DoSubscriber<T> extends Subscriber<T> {
+class DoSubscriber<T> extends Subscriber<T> {
 
   __next: (x: T) => void;
   __error: (e: any) => void;

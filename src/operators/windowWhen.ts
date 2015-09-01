@@ -13,7 +13,7 @@ export default function window<T>(closingSelector: () => Observable<any>) : Obse
   return this.lift(new WindowOperator(closingSelector));
 }
 
-export class WindowOperator<T, R> implements Operator<T, R> {
+class WindowOperator<T, R> implements Operator<T, R> {
 
   constructor(private closingSelector: () => Observable<any>) {
   }
@@ -23,7 +23,7 @@ export class WindowOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class WindowSubscriber<T> extends Subscriber<T> {
+class WindowSubscriber<T> extends Subscriber<T> {
   private window: Subject<T> = new Subject<T>();
   private closingNotification: Subscription<any>;
   
@@ -71,7 +71,7 @@ export class WindowSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
+class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
   constructor(private parent: WindowSubscriber<any>) {
     super(null);
   }

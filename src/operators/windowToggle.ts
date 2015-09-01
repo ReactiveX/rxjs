@@ -13,7 +13,7 @@ export default function windowToggle<T, O>(openings: Observable<O>, closingSelec
   return this.lift(new WindowToggleOperator<T, T, O>(openings, closingSelector));
 }
 
-export class WindowToggleOperator<T, R, O> implements Operator<T, R> {
+class WindowToggleOperator<T, R, O> implements Operator<T, R> {
 
   constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
   }
@@ -23,7 +23,7 @@ export class WindowToggleOperator<T, R, O> implements Operator<T, R> {
   }
 }
 
-export class WindowToggleSubscriber<T, O> extends Subscriber<T> {
+class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
   private closingNotification: Subscription<any>;
   
@@ -83,7 +83,7 @@ export class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   }
 }
 
-export class WindowClosingNotifierSubscriber<T, O> extends Subscriber<T> {
+class WindowClosingNotifierSubscriber<T, O> extends Subscriber<T> {
   constructor(private parent: WindowToggleSubscriber<T, O>, private windowContext: { window: Subject<T>, subscription: Subscription<T> }) {
     super(null);
   }
@@ -101,7 +101,7 @@ export class WindowClosingNotifierSubscriber<T, O> extends Subscriber<T> {
   }
 }
 
-export class WindowToggleOpeningsSubscriber<T> extends Subscriber<T> {
+class WindowToggleOpeningsSubscriber<T> extends Subscriber<T> {
   constructor(private parent: WindowToggleSubscriber<any, T>) {
     super();
   }

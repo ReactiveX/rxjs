@@ -12,7 +12,7 @@ export default function repeat<T>(count: number): Observable<T> {
   return this.lift(new RepeatOperator(count, this));
 }
 
-export class RepeatOperator<T, R> implements Operator<T, R> {
+class RepeatOperator<T, R> implements Operator<T, R> {
   constructor(protected count: number, protected original:Observable<T>) {
   }
 
@@ -21,7 +21,7 @@ export class RepeatOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class RepeatSubscriber<T> extends Subscriber<T> {
+class RepeatSubscriber<T> extends Subscriber<T> {
   private repeated: number = 0;
   constructor(destination: Observer<T>, public count: number, public original: Observable<T>) {
     super(destination);

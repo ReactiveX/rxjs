@@ -13,7 +13,7 @@ export default function bufferToggle<T, O>(openings: Observable<O>, closingSelec
   return this.lift(new BufferToggleOperator<T, T, O>(openings, closingSelector));
 }
 
-export class BufferToggleOperator<T, R, O> implements Operator<T, R> {
+class BufferToggleOperator<T, R, O> implements Operator<T, R> {
 
   constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
   }
@@ -23,7 +23,7 @@ export class BufferToggleOperator<T, R, O> implements Operator<T, R> {
   }
 }
 
-export class BufferToggleSubscriber<T, O> extends Subscriber<T> {
+class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
   private closingNotification: Subscription<any>;
   
@@ -83,7 +83,7 @@ export class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   }
 }
 
-export class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
+class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
   constructor(private parent: BufferToggleSubscriber<any, T>, private context: { subscription: any, buffer: T[] }) {
     super(null);
   }
@@ -101,7 +101,7 @@ export class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class BufferToggleOpeningsSubscriber<T> extends Subscriber<T> {
+class BufferToggleOpeningsSubscriber<T> extends Subscriber<T> {
   constructor(private parent: BufferToggleSubscriber<any, T>) {
     super(null);
   }

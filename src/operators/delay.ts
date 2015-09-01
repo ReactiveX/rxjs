@@ -8,7 +8,7 @@ export default function delay<T>(delay: number, scheduler: Scheduler = Scheduler
   return this.lift(new DelayOperator(delay, scheduler));
 }
 
-export class DelayOperator<T, R> implements Operator<T, R> {
+class DelayOperator<T, R> implements Operator<T, R> {
 
   delay: number;
   scheduler: Scheduler;
@@ -23,7 +23,7 @@ export class DelayOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class DelaySubscriber<T> extends Subscriber<T> {
+class DelaySubscriber<T> extends Subscriber<T> {
 
   protected delay: number;
   protected queue: Array<any>=[];

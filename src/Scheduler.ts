@@ -12,7 +12,7 @@ export default class Scheduler {
   }
 }
 
-export class ImmediateScheduler extends Scheduler {
+class ImmediateScheduler extends Scheduler {
 
   actions: Action<any>[] = [];
   active: boolean = false;
@@ -45,7 +45,7 @@ export class ImmediateScheduler extends Scheduler {
   }
 }
 
-export class NextTickScheduler extends ImmediateScheduler {
+class NextTickScheduler extends ImmediateScheduler {
   scheduleNow<T>(state: any, work: (x?: any) => Subscription<T> | void): Action<T> {
     return (this.scheduled ?
       new Action(this, work) :
@@ -56,7 +56,7 @@ export class NextTickScheduler extends ImmediateScheduler {
 Scheduler.immediate = new ImmediateScheduler();
 Scheduler.nextTick = new NextTickScheduler();
 
-export class Action<T> extends Subscription<T> {
+class Action<T> extends Subscription<T> {
 
   state: any;
 
@@ -102,7 +102,7 @@ export class Action<T> extends Subscription<T> {
   }
 }
 
-export class NextTickAction<T> extends Action<T> {
+class NextTickAction<T> extends Action<T> {
 
   id: number;
 
@@ -147,7 +147,7 @@ export class NextTickAction<T> extends Action<T> {
   }
 }
 
-export class FutureAction<T> extends Action<T> {
+class FutureAction<T> extends Action<T> {
 
   id: number;
 

@@ -7,7 +7,7 @@ export default function retry<T>(count: number = 0): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 
-export class RetryOperator<T, R> implements Operator<T, R> {
+class RetryOperator<T, R> implements Operator<T, R> {
   constructor(private count: number, protected original:Observable<T>) {
   }
 
@@ -16,7 +16,7 @@ export class RetryOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class RetrySubscriber<T> extends Subscriber<T> {
+class RetrySubscriber<T> extends Subscriber<T> {
   private retries: number = 0;
   constructor(destination: Observer<T>, private count: number, private original: Observable<T>) {
     super(destination);

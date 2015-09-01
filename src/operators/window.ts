@@ -12,7 +12,7 @@ export default function window<T>(closingNotifier: Observable<any>) : Observable
   return this.lift(new WindowOperator(closingNotifier));
 }
 
-export class WindowOperator<T, R> implements Operator<T, R> {
+class WindowOperator<T, R> implements Operator<T, R> {
 
   constructor(private closingNotifier: Observable<any>) {
   }
@@ -22,7 +22,7 @@ export class WindowOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class WindowSubscriber<T> extends Subscriber<T> {
+class WindowSubscriber<T> extends Subscriber<T> {
   private window: Subject<T> = new Subject<T>();
   
   constructor(destination: Observer<T>, private closingNotifier: Observable<any>) {
@@ -54,7 +54,7 @@ export class WindowSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
+class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
   constructor(private parent: WindowSubscriber<any>) {
     super(null);
   }

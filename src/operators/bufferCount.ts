@@ -11,7 +11,7 @@ export default function bufferCount<T>(bufferSize: number, startBufferEvery: num
   return this.lift(new BufferCountOperator(bufferSize, startBufferEvery));
 }
 
-export class BufferCountOperator<T, R> implements Operator<T, R> {
+class BufferCountOperator<T, R> implements Operator<T, R> {
 
   constructor(private bufferSize: number, private startBufferEvery: number) {
   }
@@ -21,7 +21,7 @@ export class BufferCountOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class BufferCountSubscriber<T> extends Subscriber<T> {
+class BufferCountSubscriber<T> extends Subscriber<T> {
   buffers: Array<T[]> = [[]];
   count: number = 0;
   

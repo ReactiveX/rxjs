@@ -9,7 +9,7 @@ import Scheduler from '../Scheduler';
 import $$observer from '../util/Symbol_observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
-import { ObserveOnSubscriber } from '../operators/observeOn';
+import { ObserveOnSubscriber } from '../operators/observeOn-support';
 
 export default class FromObservable<T> extends Observable<T> {
   constructor(private observablesque: any, private scheduler: Scheduler) {

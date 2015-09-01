@@ -10,7 +10,7 @@ export default function filter<T>(select: (x: T, ix?: number) => boolean, thisAr
   return this.lift(new FilterOperator(select, thisArg));
 }
 
-export class FilterOperator<T, R> implements Operator<T, R> {
+class FilterOperator<T, R> implements Operator<T, R> {
 
   select: (x: T, ix?: number) => boolean;
 
@@ -23,7 +23,7 @@ export class FilterOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class FilterSubscriber<T> extends Subscriber<T> {
+class FilterSubscriber<T> extends Subscriber<T> {
 
   count: number = 0;
   select: (x: T, ix?: number) => boolean;

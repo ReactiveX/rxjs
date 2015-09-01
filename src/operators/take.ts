@@ -6,7 +6,7 @@ export default function take(total) {
   return this.lift(new TakeOperator(total));
 }
 
-export class TakeOperator<T, R> implements Operator<T, R> {
+class TakeOperator<T, R> implements Operator<T, R> {
 
   total: number;
 
@@ -19,7 +19,7 @@ export class TakeOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class TakeSubscriber<T> extends Subscriber<T> {
+class TakeSubscriber<T> extends Subscriber<T> {
 
   total: number;
   count: number = 0;

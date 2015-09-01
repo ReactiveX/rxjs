@@ -1,16 +1,15 @@
 import Operator from '../Operator';
 import Observer from '../Observer';
-import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
-import {MergeSubscriber} from './merge';
+import { MergeSubscriber } from './merge-support';
 
-export default function switchAll() {
+export default function switchAll<T>(): Observable<T> {
   return this.lift(new SwitchOperator());
 }
 
-export class SwitchOperator<T, R> implements Operator<T, R> {
+class SwitchOperator<T, R> implements Operator<T, R> {
 
   constructor() {
   }
@@ -20,7 +19,7 @@ export class SwitchOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class SwitchSubscriber<T, R> extends MergeSubscriber<T, R> {
+class SwitchSubscriber<T, R> extends MergeSubscriber<T, R> {
 
   innerSubscription: Subscription<T>;
 

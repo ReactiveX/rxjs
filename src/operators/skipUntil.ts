@@ -7,7 +7,7 @@ export default function skipUntil(total) {
   return this.lift(new SkipUntilOperator(total));
 }
 
-export class SkipUntilOperator<T, R> implements Operator<T, R> {
+class SkipUntilOperator<T, R> implements Operator<T, R> {
   constructor(private notifier: Observable<any>) {
   }
 
@@ -16,7 +16,7 @@ export class SkipUntilOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class SkipUntilSubscriber<T> extends Subscriber<T> {
+class SkipUntilSubscriber<T> extends Subscriber<T> {
   private notificationSubscriber: NotificationSubscriber<any> = new NotificationSubscriber();
 
   constructor(destination: Observer<T>, private notifier: Observable<any>) {
@@ -31,7 +31,7 @@ export class SkipUntilSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class NotificationSubscriber<T> extends Subscriber<T> {
+class NotificationSubscriber<T> extends Subscriber<T> {
   hasNotified: boolean = false;
 
   constructor() {

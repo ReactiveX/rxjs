@@ -6,13 +6,13 @@ export default function toArray() {
   return this.lift(new ToArrayOperator());
 }
 
-export class ToArrayOperator<T, R> implements Operator<T, R> {
+class ToArrayOperator<T, R> implements Operator<T, R> {
   call(observer: Observer<T[]>): Observer<T> {
     return new ToArraySubscriber<T>(observer);
   }
 }
 
-export class ToArraySubscriber<T> extends Subscriber<T> {
+class ToArraySubscriber<T> extends Subscriber<T> {
 
   array: T [] = [];
 

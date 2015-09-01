@@ -11,7 +11,7 @@ export default function defaultIfEmpty<T,R>(defaultValue: R = null) : Observable
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
-export class DefaultIfEmptyOperator<T, R> implements Operator<T, R> {
+class DefaultIfEmptyOperator<T, R> implements Operator<T, R> {
 
   constructor(private defaultValue: R) {
   }
@@ -21,7 +21,7 @@ export class DefaultIfEmptyOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
+class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
 
   isEmpty: boolean = true;
 

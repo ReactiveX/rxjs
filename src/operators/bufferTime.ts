@@ -3,7 +3,8 @@ import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-import { default as Scheduler, Action } from '../Scheduler';
+import Scheduler from '../schedulers/Scheduler';
+import Action from '../schedulers/Action';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -13,7 +14,7 @@ export default function bufferTime<T>(bufferTimeSpan: number, bufferCreationInte
   return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
 }
 
-export class BufferTimeOperator<T, R> implements Operator<T, R> {
+class BufferTimeOperator<T, R> implements Operator<T, R> {
 
   constructor(private bufferTimeSpan: number, private bufferCreationInterval: number, private scheduler: Scheduler) {
   }
@@ -23,7 +24,7 @@ export class BufferTimeOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class BufferTimeSubscriber<T> extends Subscriber<T> {
+class BufferTimeSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
   
   constructor(destination: Observer<T>, private bufferTimeSpan: number, private bufferCreationInterval: number, private scheduler: Scheduler) {

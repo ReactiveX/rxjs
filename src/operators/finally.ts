@@ -13,7 +13,7 @@ export default function _finally<T>(finallySelector: () => void, thisArg?: any) 
     finallySelector));
 }
 
-export class FinallyOperator<T, R> implements Operator<T, R> {
+class FinallyOperator<T, R> implements Operator<T, R> {
 
   finallySelector: () => void;
 
@@ -26,7 +26,7 @@ export class FinallyOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class FinallySubscriber<T> extends Subscriber<T> {
+class FinallySubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<T>, finallySelector: () => void) {
     super(destination);
     this.add(new Subscription(finallySelector));

@@ -1,10 +1,9 @@
 import Subject from '../Subject';
-import {SubjectSubscription} from '../Subject';
+import SubjectSubscription from './SubjectSubscription';
 import Observer from '../Observer';
 import Subscription from '../Subscription';
 
 export default class BehaviorSubject<T> extends Subject<T> {
-
   constructor(public value:any) {
     super();
   }

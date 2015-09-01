@@ -14,7 +14,7 @@ export default function windowCount<T>(windowSize: number, startWindowEvery: num
   return this.lift(new WindowCountOperator(windowSize, startWindowEvery));
 }
 
-export class WindowCountOperator<T, R> implements Operator<T, R> {
+class WindowCountOperator<T, R> implements Operator<T, R> {
 
   constructor(private windowSize: number, private startWindowEvery: number) {
   }
@@ -24,7 +24,7 @@ export class WindowCountOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class WindowCountSubscriber<T> extends Subscriber<T> {
+class WindowCountSubscriber<T> extends Subscriber<T> {
   private windows: { count: number, window: Subject<T> } [] = [];
   private count: number = 0;
   

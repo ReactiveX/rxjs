@@ -3,14 +3,14 @@ import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
 
-import {FlatMapOperator, FlatMapSubscriber} from './flatMap';
+import { FlatMapOperator, FlatMapSubscriber } from './flatMap-support';
 
 export default function switchLatest<T, R>(project: (x: T, ix: number) => Observable<any>,
-                                           projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
+                                           projectResult?: (x: T, y: any, ix: number, iy: number) => R): Observable<R>{
   return this.lift(new SwitchLatestOperator(project, projectResult));
 }
 
-export class SwitchLatestOperator<T, R> extends FlatMapOperator<T, R> {
+class SwitchLatestOperator<T, R> extends FlatMapOperator<T, R> {
 
   constructor(project: (x: T, ix: number) => Observable<any>,
               projectResult?: (x: T, y: any, ix: number, iy: number) => R) {
@@ -22,7 +22,7 @@ export class SwitchLatestOperator<T, R> extends FlatMapOperator<T, R> {
   }
 }
 
-export class SwitchLatestSubscriber<T, R> extends FlatMapSubscriber<T, R> {
+class SwitchLatestSubscriber<T, R> extends FlatMapSubscriber<T, R> {
 
   innerSubscription: Subscription<T>;
 
