@@ -175,4 +175,6 @@ export default class Observable<T> {
   bufferCount: <T>(bufferSize: number, startBufferEvery: number) => Observable<T[]>;
   
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
+  timeout: <T>(due: number|Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
+  timeoutWith: <T>(due: number|Date, withObservable: Observable<any>, scheduler?: Scheduler) => Observable<T>;
  }

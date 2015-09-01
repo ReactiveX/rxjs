@@ -159,8 +159,12 @@ observableProto.retryWhen = retryWhen;
 observableProto.repeat = repeat;
 
 import _finally from './operators/finally';
+import timeout from './operators/timeout';
+import timeoutWith from './operators/timeoutWith';
 
 observableProto.finally = _finally;
+observableProto.timeout = timeout;
+observableProto.timeoutWith = timeoutWith;
 
 import groupBy from './operators/groupBy';
 import window from './operators/window';
