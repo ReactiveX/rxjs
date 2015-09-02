@@ -46,7 +46,7 @@ describe('Observable.prototype.multicast()', function () {
     var expected = [1, 2, 3, 4];
     var i = 0;
 
-    var source = Observable.fromArray([1, 2, 3, 4]).multicast(function () {
+    var source = Observable.from([1, 2, 3, 4]).multicast(function () {
       //NOTE: This is done for testing only, NEVER do this in prod code, LOL
       return subject;
     });

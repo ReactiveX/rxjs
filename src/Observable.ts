@@ -75,7 +75,6 @@ export default class Observable<T> {
 
   static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
   static from: <T>(iterable: any, scheduler?: Scheduler) => Observable<T>;
-  static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
   static fromEvent: <T>(element: any, eventName: string, selector: (...args:Array<any>) => T) => Observable<T>;
   static fromEventPattern: <T>(addHandler: (handler:Function)=>void, removeHandler: (handler:Function) => void, selector?: (...args:Array<any>) => T) => Observable<T>;
   static throw: <T>(error: T) => Observable<T>;
@@ -83,7 +82,6 @@ export default class Observable<T> {
   static never: <T>() => Observable<T>;
   static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
   static range: <T>(start: number, end: number, scheduler?: Scheduler) => Observable<number>;
-  static fromPromise: <T>(promise: Promise<T>) => Observable<T>;
   static timer: (delay: number) => Observable<number>;
   static interval: (interval: number) => Observable<number>;
   static forkJoin: (...observables: Observable<any>[]) => Observable<any[]>;

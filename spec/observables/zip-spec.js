@@ -8,8 +8,8 @@ describe('Observable.zip', function(){
     var i = 0;
 
     Observable.zip(
-      Observable.fromArray(['a','b','c']),
-      Observable.fromArray([1,2,3]),
+      Observable.from(['a','b','c']),
+      Observable.from([1,2,3]),
       function(a, b) {
         return a + b;
       }

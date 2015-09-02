@@ -6,7 +6,7 @@ describe('Observable.prototype.filter()', function () {
   it('should filter out values', function (done) {
     var expected = [1, 3];
     var i = 0;
-    Observable.fromArray([1, 2, 3]).filter(function (x) {
+    Observable.from([1, 2, 3]).filter(function (x) {
       return x % 2 === 1;
     })
     .subscribe(function (x) {
