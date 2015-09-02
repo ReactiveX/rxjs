@@ -1,5 +1,8 @@
 import Subject from './Subject';
-import Scheduler from './Scheduler';
+import ImmediateScheduler from './schedulers/ImmediateScheduler';
+import NextTickScheduler from './schedulers/NextTickScheduler';
+import immediate from './schedulers/immediate';
+import nextTick from './schedulers/nextTick';
 import Observable from './Observable';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
@@ -204,8 +207,12 @@ observableProto.bufferTime = bufferTime;
 observableProto.bufferToggle = bufferToggle;
 observableProto.bufferWhen = bufferWhen;
 
-export {
+var Scheduler = {
+  nextTick,
+  immediate
+};
 
+export {
     Subject,
     Scheduler,
     Observable,

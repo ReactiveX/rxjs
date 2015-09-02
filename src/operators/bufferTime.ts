@@ -3,14 +3,15 @@ import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
-import Scheduler from '../schedulers/Scheduler';
+import Scheduler from '../Scheduler';
 import Action from '../schedulers/Action';
+import nextTick from '../schedulers/nextTick';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number = null, scheduler: Scheduler = Scheduler.nextTick) : Observable<T[]> {
+export default function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number = null, scheduler: Scheduler = nextTick) : Observable<T[]> {
   return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
 }
 

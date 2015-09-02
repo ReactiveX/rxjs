@@ -1,9 +1,10 @@
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
+import nextTick from '../schedulers/nextTick';
 
 export default class SubscribeOnObservable<T> extends Observable<T> {
 
-  static create<T>(source: Observable<T>, delay: number = 0, scheduler: Scheduler = Scheduler.nextTick) {
+  static create<T>(source: Observable<T>, delay: number = 0, scheduler: Scheduler = nextTick) {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
@@ -14,7 +15,7 @@ export default class SubscribeOnObservable<T> extends Observable<T> {
   private delayTime: number;
   private scheduler: Scheduler;
 
-  constructor(source: Observable<T>, delay: number = 0, scheduler: Scheduler = Scheduler.nextTick) {
+  constructor(source: Observable<T>, delay: number = 0, scheduler: Scheduler = nextTick) {
     super();
     this.source = source;
     this.delayTime = delay;

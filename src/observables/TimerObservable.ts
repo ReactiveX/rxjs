@@ -1,6 +1,7 @@
 import isNumeric from '../util/isNumeric';
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
+import nextTick from '../schedulers/nextTick';
 
 export default class TimerObservable<T> extends Observable<T> {
 
@@ -42,7 +43,7 @@ export default class TimerObservable<T> extends Observable<T> {
       scheduler = <Scheduler> period;
     }
     if (!scheduler || typeof scheduler.schedule !== "function") {
-      scheduler = Scheduler.nextTick;
+      scheduler = nextTick;
     }
     this.scheduler = scheduler;
   }

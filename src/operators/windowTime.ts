@@ -6,12 +6,13 @@ import Subject from '../Subject';
 import Subscription from '../Subscription';
 import Scheduler from '../Scheduler';
 import Action from '../schedulers/Action';
+import nextTick from '../schedulers/nextTick';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number = null, scheduler: Scheduler = Scheduler.nextTick) : Observable<Observable<T>> {
+export default function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number = null, scheduler: Scheduler = nextTick) : Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
 }
 

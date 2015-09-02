@@ -3,8 +3,9 @@ import Observer from '../Observer';
 import Scheduler from '../Scheduler';
 import Subscriber from '../Subscriber';
 import Notification from '../Notification';
+import immediate from '../schedulers/immediate';
 
-export default function delay<T>(delay: number, scheduler: Scheduler = Scheduler.immediate) {
+export default function delay<T>(delay: number, scheduler: Scheduler = immediate) {
   return this.lift(new DelayOperator(delay, scheduler));
 }
 

@@ -3,6 +3,7 @@ import SubjectSubscription from '../subjects/SubjectSubscription';
 import Observer from '../Observer';
 import Scheduler from '../Scheduler';
 import Subscription from '../Subscription';
+import immediate from '../schedulers/immediate';
 
 export default class ReplaySubject<T> extends Subject<T> {
 
@@ -38,7 +39,7 @@ export default class ReplaySubject<T> extends Subject<T> {
   }
 
   private _getNow() {
-    return (this.scheduler || Scheduler.immediate).now();
+    return (this.scheduler || immediate).now();
   }
 
   private _getEvents(now) {

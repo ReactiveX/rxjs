@@ -2,10 +2,11 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Scheduler from '../Scheduler';
 import Subscription from '../Subscription';
+import immediate from '../schedulers/immediate';
 
 export default class PromiseObservable<T> extends Observable<T> {
 
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = Scheduler.immediate) {
+  static create<T>(promise: Promise<T>, scheduler: Scheduler = immediate) {
     return new PromiseObservable(promise, scheduler);
   }
 
@@ -17,7 +18,7 @@ export default class PromiseObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
     const promise = this.promise;
     
-    if (scheduler === Scheduler.immediate) {
+    if (scheduler === immediate) {
       promise.then(value => {
           subscriber.next(value);
           subscriber.complete();

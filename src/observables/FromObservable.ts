@@ -10,13 +10,14 @@ import $$observer from '../util/Symbol_observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import { ObserveOnSubscriber } from '../operators/observeOn-support';
+import immediate from '../schedulers/immediate';
 
 export default class FromObservable<T> extends Observable<T> {
   constructor(private observablesque: any, private scheduler: Scheduler) {
     super(null);
   }
   
-  static create<T>(observablesque: any, scheduler: Scheduler = Scheduler.immediate): Observable<T> {
+  static create<T>(observablesque: any, scheduler: Scheduler = immediate): Observable<T> {
     if (isArray(observablesque)) {
       return new ArrayObservable(observablesque, scheduler);
     } else if (isPromise(observablesque)) {
@@ -34,7 +35,7 @@ export default class FromObservable<T> extends Observable<T> {
   _subscribe(subscriber: Subscriber<T>) {
     const observablesque = this.observablesque;
     const scheduler = this.scheduler;
-    if(scheduler === Scheduler.immediate) {
+    if(scheduler === immediate) {
       return this.observablesque[$$observer](subscriber);
     } else {
       return this.observablesque[$$observer](new ObserveOnSubscriber(subscriber, scheduler, 0));

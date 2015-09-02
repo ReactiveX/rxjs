@@ -4,11 +4,15 @@ import Action from './Action';
 import Subscription from '../Subscription';
 import FutureAction from './FutureAction';
 
-export default class ImmediateScheduler extends Scheduler {
+export default class ImmediateScheduler implements Scheduler {
   actions: Action<any>[] = [];
   active: boolean = false;
   scheduled: boolean = false;
 
+  now() {
+    return Date.now();
+  }  
+  
   flush() {
     if (this.active || this.scheduled) {
       return;

@@ -4,12 +4,13 @@ import Subscriber from '../Subscriber';
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
+import nextTick from '../schedulers/nextTick';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function debounce<T>(dueTime: number, scheduler: Scheduler = Scheduler.nextTick): Observable<T> {
+export default function debounce<T>(dueTime: number, scheduler: Scheduler = nextTick): Observable<T> {
   return this.lift(new DebounceOperator(dueTime, scheduler));
 }
 
