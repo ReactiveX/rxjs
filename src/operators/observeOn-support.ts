@@ -1,7 +1,8 @@
+import Scheduler from '../Scheduler';
 import Operator from '../Operator';
 import Observer from '../Observer';
-import Scheduler from '../Scheduler';
 import Subscriber from '../Subscriber';
+import Notification from '../Notification';
 
 export class ObserveOnOperator<T, R> implements Operator<T, R> {
 
@@ -20,8 +21,8 @@ export class ObserveOnOperator<T, R> implements Operator<T, R> {
 
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
 
-  static dispatch({ type, value, destination }) {
-    destination[type](value);
+  static dispatch({ notification, destination }) {
+    notification.observe(destination);
   }
 
   delay: number;
@@ -35,33 +36,30 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 
   _next(x) {
     this.add(this.scheduler.schedule(this.delay,
-      new ScheduledNotification("next", x, this.destination),
+      new ObserveOnMessage(Notification.createNext(x), this.destination),
       ObserveOnSubscriber.dispatch)
     );
   }
 
   _error(e) {
     this.add(this.scheduler.schedule(this.delay,
-      new ScheduledNotification("error", e, this.destination),
+      new ObserveOnMessage(Notification.createError(e), this.destination),
       ObserveOnSubscriber.dispatch));
   }
 
   _complete() {
     this.add(this.scheduler.schedule(this.delay,
-      new ScheduledNotification("complete", void 0, this.destination),
+      new ObserveOnMessage(Notification.createComplete(), this.destination),
       ObserveOnSubscriber.dispatch));
   }
 }
 
-export class ScheduledNotification {
-
-  type: string;
-  value: any;
+class ObserveOnMessage {
+  notification: Notification<any>;
   destination: Observer<any>;
-
-  constructor(type: string, value: any, destination: Observer<any>) {
-    this.type = type;
-    this.value = value;
+  
+  constructor(notification: Notification<any>, destination:Observer<any>) {
+    this.notification = notification;
     this.destination = destination;
   }
 }
