@@ -1,7 +1,7 @@
 /* globals describe, it, expect */
 var Rx = require('../../dist/cjs/Rx')
-var ScalarObservable = require('../../dist/cjs/observables/ScalarObservable').default;
-var EmptyObservable = require('../../dist/cjs/observables/EmptyObservable').default;
+var ScalarObservable = require('../../dist/cjs/observables/ScalarObservable');
+var EmptyObservable = require('../../dist/cjs/observables/EmptyObservable');
 var Observable = Rx.Observable;
 
 describe('Observable.of', function () {

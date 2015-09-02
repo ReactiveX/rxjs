@@ -2,7 +2,7 @@
 var Rx = require('../../dist/cjs/Rx');
 var Promise = require('promise');
 var Observable = Rx.Observable;
-var $$iterator = require('../../dist/cjs/util/Symbol_iterator').default;
+var $$iterator = require('../../dist/cjs/util/Symbol_iterator');
 
 describe('Observable.from', function () {
   it('should enumerate an Array', function (done) {
@@ -49,7 +49,7 @@ describe('Observable.from', function () {
     ];
     var expected = ['one', 'two'];
     
-    expect(Symbol.iterator).toBe($$iterator);
+    expect($$iterator).toBe(Symbol.iterator);
     
     iterable[Symbol.iterator] = function () {
       return {
