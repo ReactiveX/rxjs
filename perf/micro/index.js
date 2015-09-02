@@ -11,6 +11,7 @@ Observable.from([
         require("./immediate-scheduler/observable/from-with-string"),
         require("./immediate-scheduler/observable/of"),
         require("./immediate-scheduler/observable/range"),
+        require("./immediate-scheduler/observable/throw"),
 
         require("./immediate-scheduler/operators/combine-latest"),
         require("./immediate-scheduler/operators/concat"),
@@ -40,6 +41,7 @@ Observable.from([
         require("./current-thread-scheduler/observable/from-with-string"),
         require("./current-thread-scheduler/observable/of"),
         require("./current-thread-scheduler/observable/range"),
+        require("./current-thread-scheduler/observable/throw"),
 
         require("./current-thread-scheduler/operators/combine-latest"),
         require("./current-thread-scheduler/operators/concat"),
