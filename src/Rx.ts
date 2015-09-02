@@ -15,7 +15,6 @@ import EmptyObservable from './observables/EmptyObservable';
 import ErrorObservable from './observables/ErrorObservable';
 import InfiniteObservable from './observables/InfiniteObservable';
 import IntervalObservable from './observables/IntervalObservable';
-import PromiseObservable from './observables/PromiseObservable';
 import RangeObservable from './observables/RangeObservable';
 import TimerObservable from './observables/TimerObservable';
 import FromEventPatternObservable from './observables/FromEventPatternObservable';
@@ -25,8 +24,6 @@ import FromObservable from './observables/FromObservable';
 
 Observable.defer = DeferObservable.create;
 Observable.from = FromObservable.create;
-Observable.fromArray = ArrayObservable.create;
-Observable.fromPromise = PromiseObservable.create;
 Observable.of = ArrayObservable.of;
 Observable.range = RangeObservable.create;
 Observable.fromEventPattern = FromEventPatternObservable.create;

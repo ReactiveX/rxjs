@@ -22,7 +22,7 @@ describe('Observable.prototype.partition()', function () {
 
     var values = [-3, -2, -1, 0, 1, 2];
 
-    var numberStream = Rx.Observable.fromArray(values);
+    var numberStream = Rx.Observable.from(values);
 
     var streams = numberStream.partition(function (value) {
       return value >= 0;
@@ -47,7 +47,7 @@ describe('Observable.prototype.partition()', function () {
   it('should pass errors to both returned observables', function (done) {
 
     var values = [-3, -2, -1, 0, 1, 2];
-    var numberStream = Rx.Observable.fromArray(values);
+    var numberStream = Rx.Observable.from(values);
     var errored = false;
 
     function rejecter() {

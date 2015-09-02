@@ -6,7 +6,7 @@ var Promise = require('promise');
 describe('Observable.fromPromise', function(){
   it('should emit one value from that promise', function(done) {
     var promise = Promise.resolve(42);
-    Observable.fromPromise(promise)
+    Observable.from(promise)
       .subscribe(function(x) {
         expect(x).toBe(42);
       }, null,
@@ -21,7 +21,7 @@ describe('Observable.fromPromise', function(){
     var throwSpy = jasmine.createSpy('throw');
     var completeSpy = jasmine.createSpy('complete');
     var promise = Promise.resolve(42);
-    var subscription = Observable.fromPromise(promise)
+    var subscription = Observable.from(promise)
       .subscribe(nextSpy, throwSpy, completeSpy);
     subscription.unsubscribe();
 

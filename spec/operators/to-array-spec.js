@@ -4,7 +4,7 @@ var Observable = Rx.Observable;
 
 describe('toArray', function () {
   it('should reduce the values of an observable into an array', function (done) {
-    Observable.fromArray([1, 2, 3])
+    Observable.from([1, 2, 3])
       .toArray()
       .subscribe(function (arr) {
           expect(arr).toEqual([1, 2, 3]);

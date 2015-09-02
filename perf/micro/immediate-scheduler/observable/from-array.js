@@ -8,7 +8,7 @@ module.exports = function fromArray(suite) {
     }
 
     var oldFromArrayWithImmediateScheduler = RxOld.Observable.fromArray(args, RxOld.Scheduler.immediate);
-    var newFromArrayWithImmediateScheduler = RxNew.Observable.fromArray(args);
+    var newFromArrayWithImmediateScheduler = RxNew.Observable.from(args);
 
     // add tests
     return suite

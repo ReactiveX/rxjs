@@ -6,7 +6,7 @@ describe('mergeAll', function () {
   it('should merge all obsevables in an obsevable', function (done) {
     var expected = [1, 2, 3];
     var i = 0;
-    Observable.fromArray([
+    Observable.from([
       Observable.of(1),
       Observable.of(2),
       Observable.of(3)
@@ -20,7 +20,7 @@ describe('mergeAll', function () {
   });
 
   it('should throw if any child observable throws', function (done) {
-    Observable.fromArray([
+    Observable.from([
       Observable.of(1),
       Observable.throw('bad'),
       Observable.of(3)

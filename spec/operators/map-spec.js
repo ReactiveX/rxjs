@@ -15,7 +15,7 @@ describe('Observable.prototype.map()', function () {
   it('should map multiple values', function (done) {
     var expected = ['1!', '2!', '3!'];
     var i = 0;
-    Observable.fromArray([1, 2, 3]).map(function (x) {
+    Observable.from([1, 2, 3]).map(function (x) {
       return x + '!';
     })
     .subscribe(function (x) {
