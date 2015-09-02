@@ -10,6 +10,11 @@ Reactive Extensions Library for JavaScript
 
 By contributing or commenting on issues in this repository, whether you've read them or not, you're agreeing to the [Contributor Code of Conduct](CODE_OF_CONDUCT.md). Much like traffic laws, ignorance doesn't grant you immunity.
 
+## Installation
+
+```sh
+npm install @ReactiveX/RxJS
+```
 
 ## Goals
 
