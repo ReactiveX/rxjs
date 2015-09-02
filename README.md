@@ -13,7 +13,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 ## Installation
 
 ```sh
-npm install @ReactiveX/RxJS
+npm install @reactivex/rxjs
 ```
 
 ## Goals
