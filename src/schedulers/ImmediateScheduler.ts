@@ -1,5 +1,5 @@
 import { Immediate } from '../util/Immediate';
-import Scheduler from './Scheduler';
+import Scheduler from '../Scheduler';
 import Action from './Action';
 import Subscription from '../Subscription';
 import FutureAction from './FutureAction';

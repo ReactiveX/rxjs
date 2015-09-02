@@ -2,10 +2,11 @@ import Operator from '../Operator';
 import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Scheduler from '../Scheduler';
+import immediate from '../schedulers/immediate';
 import Subscription from '../Subscription';
 import isDate from '../util/isDate';
 
-export default function timeout(due: number|Date, errorToSend: any = null, scheduler: Scheduler = Scheduler.immediate) {
+export default function timeout(due: number|Date, errorToSend: any = null, scheduler: Scheduler = immediate) {
   let waitFor = isDate(due) ? (+due - Date.now()) : <number>due;
   return this.lift(new TimeoutOperator(waitFor, errorToSend, scheduler));
 }

@@ -138,10 +138,10 @@ interface String {
     "_es6-shim iterator_"(): IterableIteratorShim<string>;
 }
 
-// interface ArrayLike<T> {
-//     length: number;
-//     [n: number]: T;
-// }
+interface ArrayLike<T> {
+    // length: number;
+    // [n: number]: T;
+}
 
 interface ArrayConstructor {
     /**
