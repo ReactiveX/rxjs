@@ -10,10 +10,21 @@ Reactive Extensions Library for JavaScript
 
 By contributing or commenting on issues in this repository, whether you've read them or not, you're agreeing to the [Contributor Code of Conduct](CODE_OF_CONDUCT.md). Much like traffic laws, ignorance doesn't grant you immunity.
 
-## Installation
+## Installation and Usage
+
+To install this library via [npm](https://www.npmjs.org), use the following command:
 
 ```sh
 npm install @reactivex/rxjs
+```
+
+#### Node.js Usage:
+
+```js
+var Rx = require('@reactivex/rxjs');
+
+Rx.Observable.of('hello world')
+  .subscribe(function(x) { console.log(x); });
 ```
 
 ## Goals
