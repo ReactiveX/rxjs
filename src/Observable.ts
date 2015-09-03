@@ -10,7 +10,8 @@ import GroupSubject from './subjects/GroupSubject';
 
 import $$observer from './util/Symbol_observer';
 
-export default class Observable<T> {
+
+export default class Observable<T>  {
 
   source: Observable<any>;
   operator: Operator<any, T>;
@@ -20,7 +21,13 @@ export default class Observable<T> {
       this._subscribe = subscribe;
     }
   }
-
+  
+  // HACK: Since TypeScript inherits static properties too, we have to 
+  // fight against TypeScript here so Subject can have a different static create signature.
+  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T> | Function | void) => {
+    return new Observable<T>(subscribe);
+  };
+  
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
     const observable = new Observable();
     observable.source = this;
@@ -174,4 +181,4 @@ export default class Observable<T> {
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
   timeout: <T>(due: number|Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
   timeoutWith: <T>(due: number|Date, withObservable: Observable<any>, scheduler?: Scheduler) => Observable<T>;
- }
+}

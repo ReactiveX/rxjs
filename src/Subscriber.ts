@@ -64,9 +64,9 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
     const subscription = this._subscription;
     if (subscription) {
       // route to the shared Subscription if it exists
-      subscription.isUnsubscribed = value;
+      subscription.isUnsubscribed = Boolean(value);
     } else {
-      this._isUnsubscribed = value;
+      this._isUnsubscribed = Boolean(value);
     }
   }
 
