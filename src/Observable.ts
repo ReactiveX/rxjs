@@ -178,6 +178,9 @@ export default class Observable<T>  {
   bufferTime: <T>(bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
   bufferCount: <T>(bufferSize: number, startBufferEvery: number) => Observable<T[]>;
   
+  sample: <T>(notifier: Observable<any>) => Observable<T>;
+  sampleTime: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;
+  
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
   timeout: <T>(due: number|Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
   timeoutWith: <T>(due: number|Date, withObservable: Observable<any>, scheduler?: Scheduler) => Observable<T>;

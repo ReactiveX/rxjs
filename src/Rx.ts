@@ -207,6 +207,12 @@ observableProto.bufferTime = bufferTime;
 observableProto.bufferToggle = bufferToggle;
 observableProto.bufferWhen = bufferWhen;
 
+import sample from './operators/sample';
+import sampleTime from './operators/sampleTime';
+
+observableProto.sample = sample;
+observableProto.sampleTime = sampleTime;
+
 var Scheduler = {
   nextTick,
   immediate
