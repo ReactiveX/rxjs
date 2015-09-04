@@ -8,6 +8,7 @@ export default class VirtualTimeScheduler implements Scheduler {
   scheduled: boolean = false;
   index: number = 0;
   sorted: boolean = false;
+  frame: number = -1;
   
   now() {
     return 0;
@@ -24,10 +25,12 @@ export default class VirtualTimeScheduler implements Scheduler {
   
   flush() {
     this.sortActions();
-    this.actions.forEach(action => {
+    this.actions.forEach((action, frame) => {
+      this.frame = frame;
       action.execute();
     });
     this.actions.length = 0;
+    this.frame = -1;
   }
 
   schedule<T>(work: (x?: any) => Subscription<T> | void, delay: number = 0, state?: any): Subscription<T> {

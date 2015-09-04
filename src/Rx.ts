@@ -2,6 +2,7 @@ import Subject from './Subject';
 import ImmediateScheduler from './schedulers/ImmediateScheduler';
 import NextTickScheduler from './schedulers/NextTickScheduler';
 import VirtualTimeScheduler from './schedulers/VirtualTimeScheduler';
+import TestScheduler from './schedulers/TestScheduler';
 import immediate from './schedulers/immediate';
 import nextTick from './schedulers/nextTick';
 import Observable from './Observable';
@@ -229,5 +230,6 @@ export {
     BehaviorSubject,
     ConnectableObservable,
     Notification,
-    VirtualTimeScheduler
+    VirtualTimeScheduler,
+    TestScheduler
 };
