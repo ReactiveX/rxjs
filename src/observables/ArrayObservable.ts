@@ -59,9 +59,9 @@ export default class ArrayObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(0, {
+      subscriber.add(scheduler.schedule(ArrayObservable.dispatch, 0, {
         array, index, count, subscriber
-      }, ArrayObservable.dispatch));
+      }));
     } else {
       do {
         if (index >= count) {

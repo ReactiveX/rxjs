@@ -32,10 +32,10 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     super(destination);
     let buffer = this.openBuffer();
     if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
-      this.add(scheduler.schedule(bufferTimeSpan, { subscriber: this, buffer }, dispatchBufferClose));
-      this.add(scheduler.schedule(bufferCreationInterval, { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler }, dispatchBufferCreation));
+      this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber: this, buffer }));
+      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler }));
     } else {
-      this.add(scheduler.schedule(bufferTimeSpan, { subscriber: this, buffer }, dispatchBufferTimeSpanOnly));
+      this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, { subscriber: this, buffer }));
     }
   }
   
@@ -89,7 +89,7 @@ function dispatchBufferCreation(state) {
   let { bufferTimeSpan, subscriber, scheduler } = state;
   let buffer = subscriber.openBuffer();
   var action = <Action<any>>this;
-  action.add(scheduler.schedule(bufferTimeSpan, { subscriber, buffer }, dispatchBufferClose));
+  action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
   action.schedule(state);
 }
 

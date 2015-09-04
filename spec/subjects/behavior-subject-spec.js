@@ -18,15 +18,9 @@ describe('BehaviorSubject', function() {
     
     subject.subscribe(function(x) {
       expect(x).toBe(expected[i++]);
-    }, null,
-    function(){
-      done();
-    });
-    
-    // HACK
-    Rx.Scheduler.nextTick.schedule(0, null, function(){
-      subject.next('bar');
-      subject.complete();
-    });
+    }, null, done);
+
+    subject.next('bar');
+    subject.complete();
   });
 });

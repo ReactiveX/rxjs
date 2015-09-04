@@ -87,9 +87,9 @@ class DelaySubscriber<T> extends Subscriber<T> {
 
   _schedule(scheduler) {
     this.active = true;
-    this.add(scheduler.schedule(this.delay, {
+    this.add(scheduler.schedule(DelaySubscriber.dispatch, this.delay, {
       source: this, destination: this.destination, scheduler: scheduler
-    }, DelaySubscriber.dispatch));
+    }));
   }
 }
 

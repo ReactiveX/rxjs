@@ -40,8 +40,8 @@ export default class IntervalObservable<T> extends Observable<T> {
     const period = this.period;
     const scheduler = this.scheduler;
 
-    subscriber.add(scheduler.schedule(period, {
+    subscriber.add(scheduler.schedule(IntervalObservable.dispatch, period, {
       index, subscriber
-    }, IntervalObservable.dispatch));
+    }));
   }
 }

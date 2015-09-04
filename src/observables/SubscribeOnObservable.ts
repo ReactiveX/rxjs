@@ -28,8 +28,8 @@ export default class SubscribeOnObservable<T> extends Observable<T> {
     const source = this.source;
     const scheduler = this.scheduler;
 
-    subscriber.add(scheduler.schedule(delay, {
+    subscriber.add(scheduler.schedule(SubscribeOnObservable.dispatch, delay, {
       source, subscriber
-    }, SubscribeOnObservable.dispatch));
+    }));
   }
 }

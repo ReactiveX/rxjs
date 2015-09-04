@@ -74,9 +74,9 @@ export default class IteratorObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(0, {
+      subscriber.add(scheduler.schedule(IteratorObservable.dispatch, 0, {
         index, thisArg, project, iterator, subscriber
-      }, IteratorObservable.dispatch));
+      }));
     } else {
       do {
         let result = iterator.next();

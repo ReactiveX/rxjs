@@ -26,7 +26,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<T>, private waitFor: number, private errorToSend: any, private scheduler: Scheduler) {
     super(destination);
     let delay = waitFor;
-    scheduler.schedule(delay, { subscriber: this }, dispatchTimeout);
+    scheduler.schedule(dispatchTimeout, delay, { subscriber: this });
   }
   
   sendTimeoutError() {

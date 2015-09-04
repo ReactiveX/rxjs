@@ -8,9 +8,9 @@ describe('Scheduler.immediate', function() {
     var call1 = false;
     var call2 = false;
     Scheduler.immediate.active = false;
-    Scheduler.immediate.schedule(0, null, function(){
+    Scheduler.immediate.schedule(function () {
       call1 = true;
-      Scheduler.immediate.schedule(0, null, function(){
+      Scheduler.immediate.schedule(function(){
         call2 = true;
       });
     });   
@@ -20,9 +20,9 @@ describe('Scheduler.immediate', function() {
   
   it('should schedule things in the future too', function (done) {
     var called = false;
-    Scheduler.immediate.schedule(500, null, function () {
+    Scheduler.immediate.schedule(function () {
       called = true;
-    });
+    }, 500);
     
     setTimeout(function () {
       expect(called).toBe(false);

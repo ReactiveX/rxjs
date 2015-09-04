@@ -47,9 +47,9 @@ export default class RangeObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(0, {
+      subscriber.add(scheduler.schedule(RangeObservable.dispatch, 0, {
         index, end, start, subscriber
-      }, RangeObservable.dispatch));
+      }));
     } else {
       do {
         if (index++ >= end) {

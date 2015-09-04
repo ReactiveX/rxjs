@@ -20,7 +20,7 @@ export default class EmptyObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(0, { subscriber }, EmptyObservable.dispatch));
+      subscriber.add(scheduler.schedule(EmptyObservable.dispatch, 0, { subscriber }));
     } else {
       subscriber.complete();
     }

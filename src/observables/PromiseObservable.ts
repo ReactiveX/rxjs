@@ -26,8 +26,8 @@ export default class PromiseObservable<T> extends Observable<T> {
         err => subscriber.error(err));
     } else {
       let subscription = new Subscription();
-      promise.then(value => subscription.add(scheduler.schedule(0, { value, subscriber }, dispatchNext)),
-      err => subscription.add(scheduler.schedule(0, { err, subscriber }, dispatchError)));
+      promise.then(value => subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber })),
+      err => subscription.add(scheduler.schedule(dispatchError, 0, { err, subscriber })));
       return subscription;
     }
   }

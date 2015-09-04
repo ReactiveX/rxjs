@@ -8,14 +8,10 @@ describe('Subject', function () {
   it('should pump values right on through itself', function (done) {
     var subject = new Subject();
     var expected = ['foo', 'bar'];
-    var i = 0;
 
     subject.subscribe(function (x) {
-      expect(x).toBe(expected[i++]);
-    }, null,
-      function () {
-        done();
-      });
+      expect(x).toBe(expected.shift());
+    }, null, done);
     
     subject.next('foo');
     subject.next('bar');
@@ -34,39 +30,25 @@ describe('Subject', function () {
 
     subject.subscribe(function (x) {
       expect(x).toBe(expected[j++]);
-    }, null,
-      function () {
-        done();
-      });
+    }, null, done);
     
-    // HACK
-    nextTick.schedule(0, null, function () {
-      expect(subject.observers.length).toBe(2);
-      subject.next('foo');
-      subject.next('bar');
-      subject.complete();
-    });
+    expect(subject.observers.length).toBe(2);
+    subject.next('foo');
+    subject.next('bar');
+    subject.complete();
   });
 
   it('should not allow values to be nexted after a return', function (done) {
     var subject = new Subject();
     var expected = ['foo'];
-    var i = 0;
 
     subject.subscribe(function (x) {
-      expect(x).toBe(expected[i++]);
-    }, null,
-      function () {
-        //HACK
-        nextTick.schedule(0, null, done);
-      });
-    
-    // HACK
-    nextTick.schedule(0, null, function () {
-      subject.next('foo');
-      subject.complete();
-      subject.next('bar');
-    });
+      expect(x).toBe(expected.shift());
+    }, null, done);
+  
+    subject.next('foo');
+    subject.complete();
+    subject.next('bar');
   });
 
   it('should clean out unsubscribed subscribers', function (done) {

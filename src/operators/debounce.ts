@@ -33,7 +33,7 @@ class DebounceSubscriber<T> extends Subscriber<T> {
 
   _next(value: T) {
     if (!this.debounced) {
-      this.add(this.debounced = this.scheduler.schedule(this.dueTime, { value, subscriber: this }, dispatchNext));
+      this.add(this.debounced = this.scheduler.schedule(dispatchNext, this.dueTime, { value, subscriber: this }));
     }
   }
 

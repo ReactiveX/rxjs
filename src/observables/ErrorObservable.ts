@@ -21,9 +21,9 @@ export default class ErrorObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(0, {
+      subscriber.add(scheduler.schedule(ErrorObservable.dispatch, 0, {
         error, subscriber
-      }, ErrorObservable.dispatch));
+      }));
     } else {
       subscriber.error(error);
     }

@@ -35,22 +35,18 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 
   _next(x) {
-    this.add(this.scheduler.schedule(this.delay,
-      new ObserveOnMessage(Notification.createNext(x), this.destination),
-      ObserveOnSubscriber.dispatch)
-    );
+    this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay,
+      new ObserveOnMessage(Notification.createNext(x), this.destination)));
   }
 
   _error(e) {
-    this.add(this.scheduler.schedule(this.delay,
-      new ObserveOnMessage(Notification.createError(e), this.destination),
-      ObserveOnSubscriber.dispatch));
+    this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay,
+      new ObserveOnMessage(Notification.createError(e), this.destination)));
   }
 
   _complete() {
-    this.add(this.scheduler.schedule(this.delay,
-      new ObserveOnMessage(Notification.createComplete(), this.destination),
-      ObserveOnSubscriber.dispatch));
+    this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay,
+      new ObserveOnMessage(Notification.createComplete(), this.destination)));
   }
 }
 

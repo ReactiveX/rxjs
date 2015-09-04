@@ -37,9 +37,9 @@ export default class ScalarObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(0, {
+      subscriber.add(scheduler.schedule(ScalarObservable.dispatch, 0, {
         done: false, value, subscriber
-      }, ScalarObservable.dispatch));
+      }));
     } else {
       subscriber.next(value);
       if (!subscriber.isUnsubscribed) {

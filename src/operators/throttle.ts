@@ -32,7 +32,7 @@ class ThrottleSubscriber<T, R> extends Subscriber<T> {
 
   _next(x) {
     this.clearThrottle();
-    this.add(this.throttled = this.scheduler.schedule(this.delay, { value: x, subscriber: this }, dispatchNext));
+    this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { value: x, subscriber: this }));
   }
 
   throttledNext(x) {
