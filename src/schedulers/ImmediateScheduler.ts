@@ -1,11 +1,12 @@
 import { Immediate } from '../util/Immediate';
 import Scheduler from '../Scheduler';
-import Action from './Action';
+import ImmediateAction from './ImmediateAction';
 import Subscription from '../Subscription';
 import FutureAction from './FutureAction';
+import Action from './Action';
 
 export default class ImmediateScheduler implements Scheduler {
-  actions: Action<any>[] = [];
+  actions: ImmediateAction<any>[] = [];
   active: boolean = false;
   scheduled: boolean = false;
 
@@ -31,11 +32,11 @@ export default class ImmediateScheduler implements Scheduler {
       this.scheduleLater(work, delay, state);
   }
 
-  scheduleNow<T>(work: (x?: any) => Subscription<T> | void, state?: any): Action<T> {
-    return new Action(this, work).schedule(state);
+  scheduleNow<T>(work: (x?: any) => Subscription<T> | void, state?: any): Action {
+    return new ImmediateAction(this, work).schedule(state);
   }
 
-  scheduleLater<T>(work: (x?: any) => Subscription<T> | void, delay: number, state?: any): Action<T> {
+  scheduleLater<T>(work: (x?: any) => Subscription<T> | void, delay: number, state?: any): Action {
     return new FutureAction(this, work, delay).schedule(state);
   }
 }

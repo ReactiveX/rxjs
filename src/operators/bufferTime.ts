@@ -88,7 +88,7 @@ function dispatchBufferTimeSpanOnly(state) {
 function dispatchBufferCreation(state) {
   let { bufferTimeSpan, subscriber, scheduler } = state;
   let buffer = subscriber.openBuffer();
-  var action = <Action<any>>this;
+  var action = <Action>this;
   action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
   action.schedule(state);
 }

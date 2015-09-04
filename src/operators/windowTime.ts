@@ -94,7 +94,7 @@ function dispatchWindowTimeSpanOnly(state) {
 function dispatchWindowCreation(state) {
   let { windowTimeSpan, subscriber, scheduler } = state;
   let window = subscriber.openWindow();
-  let action = <Action<any>>this;
+  let action = <Action>this;
   let context = { action, subscription: null };
   action.add(context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, { subscriber, window, context }));
   action.schedule(state);

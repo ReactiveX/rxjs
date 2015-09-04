@@ -1,12 +1,13 @@
 import {Immediate} from '../util/Immediate';
 import Subscription from '../Subscription';
+import ImmediateAction from './ImmediateAction';
 import Action from './Action';
 
-export default class NextTickAction<T> extends Action<T> {
+export default class NextTickAction<T> extends ImmediateAction<T> {
 
   id: number;
 
-  schedule(state?: any): Action<T> { 
+  schedule(state?: any): Action { 
     if (this.isUnsubscribed) {
       return this;
     }
