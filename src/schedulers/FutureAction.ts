@@ -1,10 +1,11 @@
 import Subscription from '../Subscription';
 import ImmediateScheduler from './ImmediateScheduler';
 import Action from './Action';
+import ImmediateAction from './ImmediateAction';
 
-export default class FutureAction<T> extends Action<T> {
+export default class FutureAction<T> extends ImmediateAction<T> {
 
-  id: number;
+  id: any;
 
   constructor(public scheduler: ImmediateScheduler,
               public work: (x?: any) => Subscription<T> | void,
@@ -12,7 +13,7 @@ export default class FutureAction<T> extends Action<T> {
     super(scheduler, work);
   }
 
-  schedule(state?:any): Action<T> {
+  schedule(state?:any): Action {
     if (this.isUnsubscribed) {
       return this;
     }
