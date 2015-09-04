@@ -64,4 +64,38 @@ describe('TestScheduler', function() {
       expect(expected.length).toBe(0);
     });
   });
+  
+  describe('jasmine helpers', function () {
+    describe('rxTestScheduler', function () {
+      it('should exist', function () {
+        expect(rxTestScheduler instanceof Rx.TestScheduler).toBe(true);
+      });
+    });
+    
+    describe('cold()', function () {
+      it('should exist', function () {
+        expect(typeof cold).toBe('function');
+      });
+    });
+    
+    describe('hot()', function () {
+      it('should exist', function () {
+        expect(typeof hot).toBe('function');
+      });
+    });
+    
+    describe('expectObservable()', function () {
+      it('should exist', function () {
+        expect(typeof expectObservable).toBe('function');
+      });
+    });
+    
+    describe('end-to-end helper tests', function () {
+      it('should be awesome', function () {
+        var values = { a: 1, b: 2 };
+        var myObservable = cold('---a---b--|', values);
+        expectObservable(myObservable).toBe('---a---b--|', values);
+      });
+    });
+  });
 });

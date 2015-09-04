@@ -4,6 +4,10 @@ import Notification from '../Notification';
 import Subject from '../Subject';
 
 export default class TestScheduler extends VirtualTimeScheduler {
+  constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
+    super();
+  }
+  
   createColdObservable(marbles: string, values?: any, error?: any) {
     if (marbles.indexOf('^') !== -1) {
       throw new Error('cold observable cannot have subscription offset "^"');
@@ -14,7 +18,7 @@ export default class TestScheduler extends VirtualTimeScheduler {
         this.schedule(() => {
           notification.observe(subscriber);
         }, frame);
-      });
+      }, this);
     });
   }
   
@@ -25,8 +29,43 @@ export default class TestScheduler extends VirtualTimeScheduler {
       this.schedule(() => {
         notification.observe(subject);
       }, frame);
-    });
+    }, this);
     return subject;
+  }
+  
+  flushTests: ({ observable: Observable<any>, marbles: string, actual?: any[], expected?: any[] })[] = [];
+  
+  expect(observable: Observable<any>): ({ toBe: (marbles: string, values?: any, errorValue?: any) => void }) {
+    let actual = [];
+    let subscription = observable.subscribe((value) => {
+      actual.push({ frame: this.frame, notification: Notification.createNext(value) });
+    }, (err) => {
+      actual.push({ frame: this.frame, notification: Notification.createError(err) });
+    }, () => {
+      actual.push({ frame: this.frame, notification: Notification.createComplete() });
+    });
+    
+    let flushTest: ({ observable: Observable<any>, marbles: string, actual?: any[], expected?: any[] }) = {
+      observable, actual, marbles: null
+    };
+    
+    this.flushTests.push(flushTest);
+    
+    return {
+      toBe(marbles: string, values?: any, errorValue?: any) {
+        flushTest.marbles = marbles;
+        flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue);
+      }
+    };
+  }
+  
+  flush() {    
+    super.flush();
+    const flushTests = this.flushTests
+    while (flushTests.length > 0) {
+      var test = flushTests.shift();
+      this.assertDeepEqual(test.actual, test.expected);
+    }
   }
   
   static parseMarbles(marbles: string, values?: any, errorValue?: any) : ({ notification: Notification<any>, frame: number })[] {
