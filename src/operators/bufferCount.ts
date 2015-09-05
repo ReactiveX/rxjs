@@ -33,7 +33,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
     const count = (this.count += 1);
     const destination = this.destination;
     const bufferSize = this.bufferSize;
-    const startBufferEvery = this.startBufferEvery;
+    const startBufferEvery = (this.startBufferEvery == null) ? bufferSize : this.startBufferEvery;
     const buffers = this.buffers;
     const len = buffers.length;
     let remove = -1;
@@ -64,7 +64,10 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
     const destination = this.destination;
     const buffers = this.buffers;
     while (buffers.length > 0) {
-      destination.next(buffers.shift());
+      var buffer = buffers.shift();
+      if (buffer.length > 0) {
+        destination.next(buffer);
+      }
     }
     destination.complete();
   }

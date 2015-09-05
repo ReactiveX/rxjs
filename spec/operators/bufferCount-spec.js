@@ -17,4 +17,17 @@ describe('Observable.prototype.bufferCount', function () {
         expect(w).toEqual(expected.shift())
       }, null, done);
   }, 2000);
+  
+  it('should emit buffers at buffersize of intervals if not specified', function (done) {
+    var expected = [
+      [0, 1],
+      [2, 3],
+      [4, 5]
+    ];
+    Observable.range(0, 6)
+      .bufferCount(2)
+      .subscribe(function (w) {
+        expect(w).toEqual(expected.shift())
+      }, null, done);
+  }, 2000);
 });
