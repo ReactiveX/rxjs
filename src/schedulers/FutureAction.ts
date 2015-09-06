@@ -6,20 +6,20 @@ import ImmediateAction from './ImmediateAction';
 export default class FutureAction<T> extends ImmediateAction<T> {
 
   id: any;
-
+  delay: number;
+  
   constructor(public scheduler: ImmediateScheduler,
-              public work: (x?: any) => Subscription<T> | void,
-              public delay: number) {
+              public work: (x?: any) => Subscription<T> | void) {
     super(scheduler, work);
   }
 
-  schedule(state?:any): Action {
+  schedule(state?:any, delay:number = 0): Action {
     if (this.isUnsubscribed) {
       return this;
     }
     
+    this.delay = delay;
     this.state = state;
-
     const id = this.id;
 
     if (id != null) {

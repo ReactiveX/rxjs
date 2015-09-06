@@ -25,7 +25,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   
   constructor(destination: Observer<T>, private delay: number, private scheduler: Scheduler) {
     super(destination);
-    this.add(scheduler.schedule(dispatchNotification, delay, { subscriber: this }));
+    this.add(scheduler.schedule(dispatchNotification, delay, { subscriber: this, delay }));
   }
   
   _next(value: T) {
@@ -40,7 +40,8 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNotification<T>(state: { subscriber: SampleTimeSubscriber<T> }) {
-  state.subscriber.notifyNext();
-  (<any>this).schedule(state);
+function dispatchNotification<T>(state) {
+  let { subscriber, delay } = state;
+  subscriber.notifyNext();
+  (<any>this).schedule(state, delay);
 }

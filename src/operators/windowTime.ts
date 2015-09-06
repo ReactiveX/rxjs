@@ -37,7 +37,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
       this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler }))
     } else {
       let window = this.openWindow();
-      this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, { subscriber: this, window }));
+      this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, { subscriber: this, window, windowTimeSpan }));
     }
   }
   
@@ -79,25 +79,22 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchWindowTimeSpanOnly(state) {
-  const subscriber: WindowTimeSubscriber<any> = state.subscriber;
-
-  const prevWindow: Subject<any> = state.window;
-  if (prevWindow) {
-    prevWindow.complete();
+function dispatchWindowTimeSpanOnly<T>(state: { window: Subject<any>, windowTimeSpan: number, subscriber: WindowTimeSubscriber<T>}) {
+  const { subscriber, windowTimeSpan, window } = state;
+  if (window) {
+    window.complete();
   }
-  
-  let window = subscriber.openWindow();
-  (<any>this).schedule({ subscriber, window });
+  state.window = subscriber.openWindow();
+  (<any>this).schedule(state, windowTimeSpan);
 }
 
 function dispatchWindowCreation(state) {
-  let { windowTimeSpan, subscriber, scheduler } = state;
+  let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
   let window = subscriber.openWindow();
   let action = <Action>this;
   let context = { action, subscription: null };
   action.add(context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, { subscriber, window, context }));
-  action.schedule(state);
+  action.schedule(state, windowCreationInterval);
 }
 
 function dispatchWindowClose({ subscriber, window, context }) {

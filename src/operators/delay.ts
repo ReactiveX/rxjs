@@ -41,8 +41,8 @@ class DelaySubscriber<T> extends Subscriber<T> {
       queue.shift().notification.observe(destination);
     }
     if (queue.length > 0) {
-      (<any> this).delay = Math.max(0, queue[0].time - scheduler.now());
-      (<any> this).schedule(state);
+      let delay = Math.max(0, queue[0].time - scheduler.now());
+      (<any> this).schedule(state, delay);
     } else {
       source.active = false;
     }

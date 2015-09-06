@@ -37,6 +37,6 @@ export default class ImmediateScheduler implements Scheduler {
   }
 
   scheduleLater<T>(work: (x?: any) => Subscription<T> | void, delay: number, state?: any): Action {
-    return new FutureAction(this, work, delay).schedule(state);
+    return new FutureAction(this, work).schedule(state, delay);
   }
 }
