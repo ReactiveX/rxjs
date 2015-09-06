@@ -18,4 +18,18 @@ describe('Observable.prototype.windowCount', function () {
         expect(w).toEqual(expected.shift())
       }, null, done);
   }, 2000);
+  
+  it('should emit buffers at buffersize of intervals if not specified', function (done) {
+    var expected = [
+      [0, 1],
+      [2, 3],
+      [4, 5]
+    ];
+    Observable.range(0, 6)
+      .windowCount(2)
+      .flatMap(function (x) { return x.toArray(); })
+      .subscribe(function (w) {
+        expect(w).toEqual(expected.shift())
+      }, null, done);
+  }, 2000);
 });
