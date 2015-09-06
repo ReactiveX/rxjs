@@ -25,29 +25,34 @@ class WindowCountOperator<T, R> implements Operator<T, R> {
 }
 
 class WindowCountSubscriber<T> extends Subscriber<T> {
-  private windows: { count: number, window: Subject<T> } [] = [];
+  private windows: { count: number, notified : boolean, window: Subject<T> } [] = [{ count: 0, notified : false, window : new Subject<T>() }];
   private count: number = 0;
   
   constructor(destination: Observer<T>, private windowSize: number, private startWindowEvery: number) {
-    super(destination); 
+    super(destination);
   }
   
   _next(value: T) {
     const count = (this.count += 1);
-    const startWindowEvery = this.startWindowEvery;
+    const startWindowEvery = (this.startWindowEvery > 0) ? this.startWindowEvery : this.windowSize;
     const windowSize = this.windowSize;
     const windows = this.windows;
+    const len = windows.length;
     
-    if (startWindowEvery && count % this.startWindowEvery === 0) {
+    if (count % startWindowEvery === 0) {
       let window = new Subject<T>();
-      windows.push({ count: 0, window });
-      this.destination.next(window);
+      windows.push({ count: 0, notified : false, window : window });
     }
     
-    const len = windows.length;
     for (let i = 0; i < len; i++) {
       let w = windows[i];
       const window = w.window;
+      
+      if (!w.notified) {
+        w.notified = true;
+        this.destination.next(window);
+      }
+      
       window.next(value);
       if (windowSize === (w.count += 1)) {
         window.complete();  
