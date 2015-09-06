@@ -8,7 +8,7 @@ export default class VirtualTimeScheduler implements Scheduler {
   scheduled: boolean = false;
   index: number = 0;
   sorted: boolean = false;
-  frame: number = -1;
+  frame: number = 0;
   
   now() {
     return 0;
@@ -25,38 +25,41 @@ export default class VirtualTimeScheduler implements Scheduler {
   
   flush() {
     this.sortActions();
-    this.actions.forEach((action, frame) => {
-      this.frame = frame;
+    const actions = this.actions;
+    while (actions.length > 0) {
+      let action = actions.shift();
+      this.frame = action.delay;
       action.execute();
-    });
-    this.actions.length = 0;
-    this.frame = -1;
+    }
+    this.frame = 0;
   }
 
   schedule<T>(work: (x?: any) => Subscription<T> | void, delay: number = 0, state?: any): Subscription<T> {
     this.sorted = false;
-    return new VirtualAction(this, work, delay, this.index++).schedule(state);
+    return new VirtualAction(this, work, this.index++).schedule(state, delay);
   }
 }
 
 class VirtualAction<T> extends Subscription<T> implements Action {
   state: any;
-
+  delay: number;
+  
   constructor(public scheduler: VirtualTimeScheduler,
     public work: (x?: any) => Subscription<T> | void,
-    public delay: number,
     public index: number) {
     super();
   }
 
-  schedule(state?: any): VirtualAction<T> {
+  schedule(state?: any, delay: number = 0): VirtualAction<T> {
     if (this.isUnsubscribed) {
       return this;
     }
-    
-    this.state = state;
     const scheduler = this.scheduler;
-    scheduler.actions.push(this);
+    var action = scheduler.frame === this.delay ? this :
+      new VirtualAction(scheduler, this.work, scheduler.index += 1);
+    action.state = state;
+    action.delay = scheduler.frame + delay;
+    scheduler.actions.push(action);
     return this;
   }
 

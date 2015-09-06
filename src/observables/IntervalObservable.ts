@@ -11,7 +11,7 @@ export default class IntervalObservable<T> extends Observable<T> {
 
   static dispatch(state) {
 
-    const { index, subscriber } = state;
+    const { index, subscriber, period } = state;
 
     subscriber.next(index);
 
@@ -19,9 +19,9 @@ export default class IntervalObservable<T> extends Observable<T> {
       return;
     }
 
-    state.index = index + 1;
+    state.index += 1;
 
-    (<any> this).schedule(state);
+    (<any> this).schedule(state, period);
   }
 
   constructor(private period: number = 0, private scheduler: Scheduler = nextTick) {
@@ -41,7 +41,7 @@ export default class IntervalObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     subscriber.add(scheduler.schedule(IntervalObservable.dispatch, period, {
-      index, subscriber
+      index, subscriber, period
     }));
   }
 }

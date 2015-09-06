@@ -29,7 +29,7 @@ export default class TimerObservable<T> extends Observable<T> {
       }));
     } else {
       state.index = index + 1;
-      action.schedule(state);
+      action.schedule(state, period);
     }
   }
 

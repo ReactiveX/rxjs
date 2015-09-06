@@ -24,8 +24,6 @@ describe('VirtualTimeScheduler', function() {
     expect(invoked).toEqual([1, 2, 3, 4, 5]);
   });
   
-  
-  
   it('should schedule things in order when flushed if each this is scheduled at random', function () {
     var v = new VirtualTimeScheduler();
     var invoked = [];
@@ -42,5 +40,20 @@ describe('VirtualTimeScheduler', function() {
     v.flush();
     
     expect(invoked).toEqual([1, 3, 5, 2, 6, 4]);
+  });
+  
+  it('should support recursive scheduling', function () {
+    var v = new VirtualTimeScheduler();
+    var count = 0;
+    var expected = [100, 200, 300];
+    
+    v.schedule(function (state) {
+      if (++count === 3) return;
+      expect(this.delay).toBe(expected.shift());
+      this.schedule(state, this.delay)
+    }, 100, 'test');
+    
+    v.flush();
+    expect(count).toBe(3);
   });
 });
