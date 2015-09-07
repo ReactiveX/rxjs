@@ -34,6 +34,7 @@ Observable.from([
         require("./immediate-scheduler/operators/start-with"),
         require("./immediate-scheduler/operators/take"),
         require("./immediate-scheduler/operators/to-array"),
+        require("./immediate-scheduler/operators/window-count"),
         require("./immediate-scheduler/operators/zip"),
 
         require("./current-thread-scheduler/observable/empty"),
@@ -65,6 +66,7 @@ Observable.from([
         require("./current-thread-scheduler/operators/start-with"),
         require("./current-thread-scheduler/operators/take"),
         require("./current-thread-scheduler/operators/to-array"),
+        require("./current-thread-scheduler/operators/window-count"),
         require("./current-thread-scheduler/operators/zip"),
 
     ])
