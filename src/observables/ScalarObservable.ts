@@ -27,6 +27,8 @@ export default class ScalarObservable<T> extends Observable<T> {
     (<any> this).schedule(state);
   }
 
+  _isScalar: boolean = true;
+  
   constructor(public value: T, private scheduler?: Scheduler) {
     super();
   }

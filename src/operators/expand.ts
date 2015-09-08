@@ -47,10 +47,10 @@ class ExpandSubscriber<T, R> extends MergeSubscriber<T, R> {
   }
 
   _subscribeInner(observable, value, index) {
-    if(observable instanceof ScalarObservable) {
+    if(observable._isScalar) {
       this.destination.next((<ScalarObservable<T>> observable).value);
       this._innerComplete();
-      this._next((<ScalarObservable<T>> observable).value);
+      this._next((<any>observable).value);
     } else if(observable instanceof EmptyObservable) {
       this._innerComplete();
     } else {

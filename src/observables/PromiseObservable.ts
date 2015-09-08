@@ -6,6 +6,9 @@ import immediate from '../schedulers/immediate';
 
 export default class PromiseObservable<T> extends Observable<T> {
 
+  _isScalar: boolean = false;
+  value: T;
+  
   static create<T>(promise: Promise<T>, scheduler: Scheduler = immediate) {
     return new PromiseObservable(promise, scheduler);
   }
@@ -19,15 +22,29 @@ export default class PromiseObservable<T> extends Observable<T> {
     const promise = this.promise;
     
     if (scheduler === immediate) {
-      promise.then(value => {
+      if (this._isScalar) {
+        subscriber.next(this.value);
+        subscriber.complete();
+      } else {
+        promise.then(value => {
+          this._isScalar = true;
+          this.value = value;
           subscriber.next(value);
           subscriber.complete();
-        },
-        err => subscriber.error(err));
+        }, err => subscriber.error(err));
+      }
     } else {
       let subscription = new Subscription();
-      promise.then(value => subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber })),
-      err => subscription.add(scheduler.schedule(dispatchError, 0, { err, subscriber })));
+      if (this._isScalar) {
+        const value = this.value;
+        subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }))
+      } else {
+        promise.then(value => {
+          this._isScalar = true;
+          this.value = value;
+          subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }))
+        }, err => subscription.add(scheduler.schedule(dispatchError, 0, { err, subscriber })));
+      }  
       return subscription;
     }
   }

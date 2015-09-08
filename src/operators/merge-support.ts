@@ -67,8 +67,8 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
   }
 
   _subscribeInner(observable, value, index) {
-    if(observable instanceof ScalarObservable) {
-      this.destination.next((<ScalarObservable<T>> observable).value);
+    if(observable._isScalar) {
+      this.destination.next((<any>observable).value);
       this._innerComplete();
     } else {
       return observable.subscribe(new MergeInnerSubscriber(this.destination, this));
