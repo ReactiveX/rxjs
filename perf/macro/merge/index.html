@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>RxJS 3 Perf Tests</title>
+  <script src="../../../dist/global/Rx.js"></script>
+  <script type="text/javascript">
+    window.RxNext = window.Rx;
+    window.Rx = void 0;
+  </script>
+  <script src="../../../node_modules/rx/dist/rx.all.js"></script>
+
+</head>
+<body>
+	<a href="../">perf index</a>
+  <label>
+    Number of Iterations
+    <input type="number" name="iteration">
+  </label>
+  <button id="rx-2-merge">Rx2 merge Test</button>
+  <button id="rx-3-merge">RxNext merge Test</button>
+  <script src="perf.js"></script>
+</body>
+</html>
