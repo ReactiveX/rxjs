@@ -8,7 +8,7 @@ import ConnectableObservable from './observables/ConnectableObservable';
 import GroupSubject from './subjects/GroupSubject';
 
 
-import $$observer from './util/Symbol_observer';
+import $$observable from './util/Symbol_observable';
 
 
 export default class Observable<T>  {
@@ -35,8 +35,8 @@ export default class Observable<T>  {
     return observable;
   }
 
-  [$$observer](observer: Observer<T>) {
-    return this.subscribe(observer);
+  [$$observable]() {
+    return this;
   }
 
   subscribe(observerOrNext?: Observer<T> | ((value: T) => void),
@@ -61,13 +61,9 @@ export default class Observable<T>  {
     return subscriber;
   }
 
-  forEach(nextHandler:Function) {
+  forEach(nextHandler:(value:T) => void) {
     return new Promise((resolve, reject) => {
-      this[$$observer]({
-        next: nextHandler,
-        error: reject,
-        complete: resolve
-      });
+      this.subscribe(nextHandler, reject, resolve);
     });
   }
 

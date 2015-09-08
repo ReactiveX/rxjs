@@ -2,43 +2,47 @@ import PromiseObservable from './PromiseObservable';
 import IteratorObservable from'./IteratorObservable';
 import ArrayObservable from './ArrayObservable';
 
-import isArray from '../util/isArray';
-import isPromise from '../util/isPromise';
-import isObservable from '../util/isObservable';
 import Scheduler from '../Scheduler';
-import $$observer from '../util/Symbol_observer';
+import $$observable from '../util/Symbol_observable';
+import $$iterator from '../util/Symbol_iterator';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import { ObserveOnSubscriber } from '../operators/observeOn-support';
 import immediate from '../schedulers/immediate';
 
+const isArray = Array.isArray;
+
 export default class FromObservable<T> extends Observable<T> {
-  constructor(private observablesque: any, private scheduler: Scheduler) {
+  constructor(private ish: any, private scheduler: Scheduler) {
     super(null);
   }
   
-  static create<T>(observablesque: any, scheduler: Scheduler = immediate): Observable<T> {
-    if (isArray(observablesque)) {
-      return new ArrayObservable(observablesque, scheduler);
-    } else if (isPromise(observablesque)) {
-      return new PromiseObservable(observablesque, scheduler);
-    } else if (isObservable(observablesque)) {
-      if(observablesque instanceof Observable) {
-        return observablesque;
+  static create<T>(ish: any, scheduler: Scheduler = immediate): Observable<T> {
+    if (ish) {
+      if (isArray(ish)) {
+        return new ArrayObservable(ish, scheduler);
+      } else if (typeof ish.then === 'function') {
+        return new PromiseObservable(ish, scheduler);
+      } else if (typeof ish[$$observable] === 'function') {
+        if (ish instanceof Observable) {
+          return ish;
+        }
+        return new FromObservable(ish, scheduler);
+      } else if(typeof ish[$$iterator] === 'function') {
+        return new IteratorObservable(ish, null, null, scheduler);
       }
-      return new FromObservable(observablesque, scheduler);
-    } else {
-      return new IteratorObservable(observablesque, null, null, scheduler);
     }
+    
+    throw new TypeError((typeof ish) + ' is not observable');
   }
   
   _subscribe(subscriber: Subscriber<T>) {
-    const observablesque = this.observablesque;
+    const ish = this.ish;
     const scheduler = this.scheduler;
     if(scheduler === immediate) {
-      return this.observablesque[$$observer](subscriber);
+      return this.ish[$$observable]().subscribe(subscriber);
     } else {
-      return this.observablesque[$$observer](new ObserveOnSubscriber(subscriber, scheduler, 0));
+      return this.ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
     }
   }
 }

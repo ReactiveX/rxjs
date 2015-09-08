@@ -23,9 +23,14 @@ describe('Observable.from', function () {
   
   it('should handle an "observableque" object', function (done) {
     var observablesque = {};
-    observablesque[Symbol.observer] = function (observer) {
-      observer.next('test');
-      observer.complete();
+    
+    observablesque[Symbol.observable] = function () {
+      return {
+        subscribe: function(observer) {
+          observer.next('test');
+          observer.complete();
+        }
+      };
     };
 
     Observable.from(observablesque).subscribe(function (x) {
