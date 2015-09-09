@@ -10,21 +10,8 @@ var numIterations = iterationInput.valueAsNumber || 1000;
 var RxNextFlatMap = document.querySelector('#rx-3-flatmap');
 var Rx2FlatMap = document.querySelector('#rx-2-flatmap');
 
-var RxNextTestObservable = new RxNext.Observable(function(observer) {
-  var index = -1;
-  while(++index < numIterations) {
-    observer.next(index);
-  }
-  observer.complete();
-});
-
-var Rx2TestObservable = Rx.Observable.create(function(observer) {
-  var index = -1;
-  while(++index < numIterations) {
-    observer.onNext(index);
-  }
-  observer.onCompleted();
-});
+var RxNextTestObservable = RxNext.Observable.range(0, numIterations);
+var Rx2TestObservable = Rx.Observable.range(0, numIterations);
 
 RxNextFlatMap.addEventListener('click', function() {
   RxNextTestObservable.flatMap(projectionRxNext).subscribe();

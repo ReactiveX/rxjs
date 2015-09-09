@@ -10,11 +10,11 @@ var numIterations = iterationInput.valueAsNumber || 1000;
 var Rx2Merge = document.querySelector('#rx-2-merge');
 var RxNextMerge = document.querySelector('#rx-3-merge');
 
-var Rx2TestObservable = Rx.Observable.create(generator);
-var RxNextTestObservable = new RxNext.Observable(generator);
+var Rx2TestObservable = Rx.Observable.range(0, numIterations);
+var RxNextTestObservable = RxNext.Observablerange(0, numIterations);
 
-var Rx2TestArgObservable = Rx.Observable.create(generator);
-var RxNextTestArgObservable = new RxNext.Observable(generator);
+var Rx2TestArgObservable = Rx.Observable.range(0, numIterations);
+var RxNextTestArgObservable = RxNext.Observable.range(0, numIterations);
 
 Rx2Merge.addEventListener('click', function() {
   Rx2TestObservable.merge(Rx2TestArgObservable).subscribe();
@@ -23,11 +23,3 @@ Rx2Merge.addEventListener('click', function() {
 RxNextMerge.addEventListener('click', function() {
   RxNextTestObservable.merge(RxNextTestArgObservable).subscribe();
 });
-
-function generator(observer) {
-  var index = -1;
-  while(++index < numIterations) {
-    observer.onNext(index);
-  }
-  observer.onCompleted();
-}
