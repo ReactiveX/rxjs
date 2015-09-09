@@ -3,8 +3,10 @@ var RxNew = require("../../../../index");
 
 module.exports = function (suite) {
 
-  var oldCatchWithCurrentThreadScheduler = RxOld.Observable.throw(new Error('error'), RxOld.Scheduler.currentThread).catch(RxOld.Observable.of(25, RxOld.Scheduler.currentThread));
-  var newCatchWithCurrentThreadScheduler = RxNew.Observable.throw(new Error('error'), RxNew.Scheduler.immediate).catch(RxNew.Observable.of(25, RxNew.Scheduler.immediate));
+  var oldCatchWithCurrentThreadScheduler = RxOld.Observable.throw(new Error('error'), RxOld.Scheduler.currentThread)
+    .catch(function() { return RxOld.Observable.of(25, RxOld.Scheduler.currentThread); });
+  var newCatchWithCurrentThreadScheduler = RxNew.Observable.throw(new Error('error'), RxNew.Scheduler.immediate)
+    .catch(function() { return RxNew.Observable.of(25, RxNew.Scheduler.immediate); });
 
   return suite
     .add('old catch with current thread scheduler', function () {
