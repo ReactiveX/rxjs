@@ -11,18 +11,45 @@ global.hot;
 global.expectObservable;
 
 
+global.hot = function () {
+  if (!global.rxTestScheduler) {
+    throw 'tried to use hot() in async test';
+  }
+  return global.rxTestScheduler.createHotObservable.apply(global.rxTestScheduler, arguments);
+};
+
+global.cold = function () {
+  if (!global.rxTestScheduler) {
+    throw 'tried to use cold() in async test';
+  }
+  return global.rxTestScheduler.createColdObservable.apply(global.rxTestScheduler, arguments);
+};
+
+global.expectObservable = function () {
+  if (!global.rxTestScheduler) {
+    throw 'tried to use expectObservable() in async test';
+  }
+  return global.rxTestScheduler.expect.apply(global.rxTestScheduler, arguments);
+};
+
+var glit = global.it;
+
+global.it = function (description, cb, timeout) {
+  if (cb.length === 0) {
+    glit(description, function () {
+      global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
+      cb();
+      global.rxTestScheduler.flush();
+    });
+  } else {
+    if (description === 'should work with never and empty') {
+      console.log("TEST");
+    }
+    glit.apply(this, arguments);
+  }
+};
+
 beforeEach(function () {
-  global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
-  global.hot = function () {
-    setupFlush();
-    return global.rxTestScheduler.createHotObservable.apply(global.rxTestScheduler, arguments);
-  };
-  global.cold = function () {
-    setupFlush();
-    return global.rxTestScheduler.createColdObservable.apply(global.rxTestScheduler, arguments);
-  };
-  global.expectObservable = global.rxTestScheduler.expect.bind(global.rxTestScheduler);
-  
   jasmine.addMatchers({
     toDeepEqual: function(util, customEqualityTesters) {
       return {
@@ -34,22 +61,10 @@ beforeEach(function () {
   });
 });
 
-var glit = global.it;
-var willFlush = false;
-
 afterEach(function () {
-  willFlush = false;
-  global.it = glit;
+  global.rxTestScheduler = null;
 });
 
 function assertDeepEqual(actual, expected) {
-  return expect(actual).toDeepEqual(actual);
-}
-
-function setupFlush() {
-  willFlush = true;
-  global.it = function () {
-    glit.apply(this, arguments);
-    global.rxTestScheduler.flush();
-  };
+  expect(actual).toDeepEqual(expected);
 }

@@ -33,26 +33,29 @@ export default class TestScheduler extends VirtualTimeScheduler {
     return subject;
   }
   
-  flushTests: ({ observable: Observable<any>, marbles: string, actual?: any[], expected?: any[] })[] = [];
+  flushTests: ({ observable: Observable<any>, marbles: string, actual?: any[], expected?: any[], ready: boolean })[] = [];
   
   expect(observable: Observable<any>): ({ toBe: (marbles: string, values?: any, errorValue?: any) => void }) {
     let actual = [];
-    let subscription = observable.subscribe((value) => {
-      actual.push({ frame: this.frame, notification: Notification.createNext(value) });
-    }, (err) => {
-      actual.push({ frame: this.frame, notification: Notification.createError(err) });
-    }, () => {
-      actual.push({ frame: this.frame, notification: Notification.createComplete() });
-    });
-    
-    let flushTest: ({ observable: Observable<any>, marbles: string, actual?: any[], expected?: any[] }) = {
-      observable, actual, marbles: null
+    let flushTest: ({ observable: Observable<any>, marbles: string, actual?: any[], expected?: any[], ready:boolean }) = {
+      observable, actual, marbles: null, ready: false
     };
+    
+    this.schedule(() => {
+      observable.subscribe((value) => {
+        actual.push({ frame: this.frame, notification: Notification.createNext(value) });
+      }, (err) => {
+        actual.push({ frame: this.frame, notification: Notification.createError(err) });
+      }, () => {
+        actual.push({ frame: this.frame, notification: Notification.createComplete() });
+      });
+    }, 0);
     
     this.flushTests.push(flushTest);
     
     return {
       toBe(marbles: string, values?: any, errorValue?: any) {
+        flushTest.ready = true;
         flushTest.marbles = marbles;
         flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue);
       }
@@ -61,7 +64,7 @@ export default class TestScheduler extends VirtualTimeScheduler {
   
   flush() {    
     super.flush();
-    const flushTests = this.flushTests
+    const flushTests = this.flushTests.filter(test => test.ready);
     while (flushTests.length > 0) {
       var test = flushTests.shift();
       this.assertDeepEqual(test.actual, test.expected);
