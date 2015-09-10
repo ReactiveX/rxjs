@@ -26,7 +26,7 @@ class BufferSubscriber<T> extends Subscriber<T> {
   
   constructor(destination: Observer<T>, closingNotifier: Observable<any>) {
     super(destination);
-    this.add(closingNotifier.subscribe(new BufferClosingNotifierSubscriber(this)));
+    this.add(closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this)));
   }
   
   _next(value: T) {

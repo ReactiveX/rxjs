@@ -51,15 +51,15 @@ export class FlatMapSubscriber<T, R> extends MergeSubscriber<T, R> {
     return observable;
   }
 
-  _subscribeInner(observable, value, index) {
+  _subscribeInner(observable:Observable<T>, value, index) {
     const projectResult = this.projectResult;
     if(projectResult) {
-      return observable.subscribe(new FlatMapInnerSubscriber(this.destination, this, value, index, projectResult));
+      return observable._subscribe(new FlatMapInnerSubscriber(this.destination, this, value, index, projectResult));
     } else if(observable._isScalar) {
       this.destination.next((<any> observable).value);
       this._innerComplete();
     } else {
-      return observable.subscribe(new MergeInnerSubscriber(this.destination, this));
+      return observable._subscribe(new MergeInnerSubscriber(this.destination, this));
     }
   }
 }

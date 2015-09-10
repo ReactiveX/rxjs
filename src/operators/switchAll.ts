@@ -34,13 +34,16 @@ class SwitchSubscriber<T, R> extends MergeSubscriber<T, R> {
       const inner = this.innerSubscription;
       if(inner) {
         inner.unsubscribe()
+        this.innerSubscription = null;
       }
     }
     this._next(value);
   }
 
   _subscribeInner(observable, value, index) {
-    return (this.innerSubscription = super._subscribeInner(observable, value, index));
+    this.innerSubscription = new Subscription();
+    this.innerSubscription.add(super._subscribeInner(observable, value, index));
+    return this.innerSubscription;
   }
 }
 

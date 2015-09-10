@@ -29,7 +29,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   
   constructor(destination: Observer<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
-    this.add(this.openings.subscribe(new BufferToggleOpeningsSubscriber(this)));
+    this.add(this.openings._subscribe(new BufferToggleOpeningsSubscriber(this)));
   }
 
   _next(value: T) {
@@ -66,10 +66,10 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
       let buffer = [];
       let context = {
         buffer,
-        subscription: null
+        subscription: new Subscription()
       };
       buffers.push(buffer);
-      this.add(context.subscription = closingNotifier.subscribe(new BufferClosingNotifierSubscriber(this, context)));
+      this.add(context.subscription.add(closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this, context))));
     }
   }
   

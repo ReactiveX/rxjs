@@ -24,7 +24,6 @@ class RetryWhenOperator<T, R> implements Operator<T, R> {
 class RetryWhenSubscriber<T> extends Subscriber<T> {
   errors: Subject<any>;
   retryNotifications: Observable<any>;
-  retryNotificationSubscription: Subscription<any>;
 
   constructor(destination: Observer<T>, public notifier: (errors: Observable<any>) => Observable<any>, public original: Observable<T>) {
     super(destination);
@@ -38,8 +37,7 @@ class RetryWhenSubscriber<T> extends Subscriber<T> {
         this.destination.error(errorObject.e);
       } else {
         this.retryNotifications = notifications;
-        this.retryNotificationSubscription = notifications.subscribe(new RetryNotificationSubscriber(this));
-        this.add(this.retryNotificationSubscription);
+        this.add(notifications._subscribe(new RetryNotificationSubscriber(this)));
       }
     }
     this.errors.next(err);

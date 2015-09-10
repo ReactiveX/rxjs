@@ -21,7 +21,8 @@ export default class Observable<T>  {
 
   source: Observable<any>;
   operator: Operator<any, T>;
-
+  _isScalar: boolean = false;
+  
   /**
    * @constructor
    * @param {Function} subscribe the function that is

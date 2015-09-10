@@ -24,7 +24,7 @@ class TakeUntilSubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<T>,
               observable: Observable<any>) {
     super(destination);
-    this.add(observable.subscribe(new TakeUntilInnerSubscriber(destination)));
+    this.add(observable._subscribe(new TakeUntilInnerSubscriber(destination)));
   }
 }
 

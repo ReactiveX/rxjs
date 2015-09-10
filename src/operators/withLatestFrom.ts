@@ -31,7 +31,7 @@ class WithLatestFromSubscriber<T, R> extends Subscriber<T> {
     this.values = new Array(len);
     this.toSet = len;
     for (let i = 0; i < len; i++) {
-      this.add(observables[i].subscribe(new WithLatestInnerSubscriber(this, i)))
+      this.add(observables[i]._subscribe(new WithLatestInnerSubscriber(this, i)))
     }
   }
   

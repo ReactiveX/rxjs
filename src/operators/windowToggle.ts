@@ -29,7 +29,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   
   constructor(destination: Observer<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
-    this.add(this.openings.subscribe(new WindowToggleOpeningsSubscriber(this)));
+    this.add(this.openings._subscribe(new WindowToggleOpeningsSubscriber(this)));
   }
 
   _next(value: T) {
@@ -62,7 +62,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
     this.destination.next(window);
     let windowContext = {
       window,
-      subscription: null
+      subscription: new Subscription()
     };
 
     const closingSelector = this.closingSelector;
@@ -70,7 +70,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
     if (closingNotifier === errorObject) {
       this.error(closingNotifier.e);
     } else {
-      this.add(windowContext.subscription = closingNotifier.subscribe(new WindowClosingNotifierSubscriber<T, O>(this, windowContext)));
+      this.add(windowContext.subscription.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber<T, O>(this, windowContext))));
     }
   }
   

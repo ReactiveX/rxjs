@@ -3,6 +3,7 @@ import Subscriber from '../Subscriber';
 import Observer from '../Observer';
 import Observable from '../Observable';
 import ScalarObservable from '../observables/ScalarObservable';
+import Subscription from '../Subscription';
 
 export class MergeOperator<T, R> implements Operator<T, R> {
 
@@ -66,12 +67,15 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
     this.buffer.push(value);
   }
 
-  _subscribeInner(observable, value, index) {
+  _subscribeInner(observable:Observable<any>, value, index): Subscription<any> {
+    const destination = this.destination;
     if(observable._isScalar) {
-      this.destination.next((<any>observable).value);
+      destination.next((<any>observable).value);
       this._innerComplete();
     } else {
-      return observable.subscribe(new MergeInnerSubscriber(this.destination, this));
+      const subscriber = new MergeInnerSubscriber(destination, this);
+      observable._subscribe(subscriber);
+      return subscriber;
     }
   }
 

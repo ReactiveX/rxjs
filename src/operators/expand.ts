@@ -54,7 +54,7 @@ class ExpandSubscriber<T, R> extends MergeSubscriber<T, R> {
     } else if(observable instanceof EmptyObservable) {
       this._innerComplete();
     } else {
-      return observable.subscribe(new ExpandInnerSubscriber(this.destination, this));
+      return observable._subscribe(new ExpandInnerSubscriber(this.destination, this));
     }
   }
 }

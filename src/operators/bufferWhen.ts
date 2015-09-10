@@ -67,7 +67,7 @@ class BufferWhenSubscriber<T> extends Subscriber<T> {
       this.buffer = null;
       this.destination.error(err);
     } else {
-      this.add(this.closingNotification = closingNotifier.subscribe(new BufferClosingNotifierSubscriber(this))); 
+      this.add(this.closingNotification = closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this))); 
     }
   }
 }

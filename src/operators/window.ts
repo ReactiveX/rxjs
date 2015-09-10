@@ -27,7 +27,7 @@ class WindowSubscriber<T> extends Subscriber<T> {
   
   constructor(destination: Observer<T>, private closingNotifier: Observable<any>) {
     super(destination);
-    this.add(closingNotifier.subscribe(new WindowClosingNotifierSubscriber(this)));
+    this.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this)));
     this.openWindow();
   }
 

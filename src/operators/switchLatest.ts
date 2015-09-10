@@ -45,6 +45,8 @@ class SwitchLatestSubscriber<T, R> extends FlatMapSubscriber<T, R> {
   }
 
   _subscribeInner(observable, value, index) {
-    return (this.innerSubscription = super._subscribeInner(observable, value, index));
+    this.innerSubscription = new Subscription();
+    this.innerSubscription.add(super._subscribeInner(observable, value, index));
+    return this.innerSubscription;
   }
 }

@@ -20,11 +20,10 @@ class SampleOperator<T, R> implements Operator<T, R> {
 class SampleSubscriber<T> extends Subscriber<T> {
   private lastValue: T;
   private hasValue: boolean = false;
-  private innerSubscription: Subscription<T>;
   
   constructor(destination: Observer<T>, private notifier: Observable<any>) {
     super(destination);
-    this.add(this.innerSubscription = notifier.subscribe(new SampleNoficationSubscriber(this)));
+    this.add(notifier._subscribe(new SampleNoficationSubscriber(this)));
   }
   
   _next(value: T) {
@@ -36,11 +35,6 @@ class SampleSubscriber<T> extends Subscriber<T> {
     if (this.hasValue) {
       this.destination.next(this.lastValue);
     }  
-  }
-  
-  notifyComplete() {
-    this.remove(this.innerSubscription);
-    this.innerSubscription.unsubscribe();
   }
 }
 
@@ -59,6 +53,6 @@ class SampleNoficationSubscriber<T> extends Subscriber<T> {
   }
   
   _complete() {
-    this.parent.notifyComplete();
+    //noop
   }
 }
