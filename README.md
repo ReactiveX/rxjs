@@ -46,6 +46,7 @@ The build and test structure is fairly primitive at the moment. There are variou
 - build_all: Performs all of the above in the proper order.
 - build_test: builds ES6, then CommonJS, then runs the tests with `jasmine`
 - build_perf: builds ES6, CommonJS, then global, then runs the performance tests with `protractor`
+- build_docs: generates API documentation from `dist/es6` to `dist/docs`
 - test: runs tests with `jasmine`, must have built prior to running.
 
 ### Example
@@ -60,6 +61,9 @@ npm run build_all
 First you'll need to host the root directory under a web server, the simplest way to do that is to install `http-server` with `npm i -g http-server`,
 then start it in the home directory. After that you can run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor` (which also
 needs to be globally installed)
+
+## Adding documentation
+RxNext uses [ESDoc](https://esdoc.org/) to generate API documentation. Refer to ESDoc's documentation for syntax. Run `npm run build_docs` to generate.
 
 ### Prerequisites
 Running the performance tests requires `protractor` globally installed and an http server of some sort. `http-server` the node module
