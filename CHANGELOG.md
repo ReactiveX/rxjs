@@ -1,3 +1,26 @@
+<a name="0.0.0-prealpha.3"></a>
+# 0.0.0-prealpha.3 (2015-09-11)
+
+
+### chore
+
+* chore(CHANGELOG): add updated changelog ([218f629](https://github.com/ReactiveX/RxJS/commit/218f629))
+* chore(docs): automate documentation generation and deployment ([145e02b](https://github.com/ReactiveX/RxJS/commit/145e02b))
+* chore(test): add macro performance tests for combineLatest ([f258fc1](https://github.com/ReactiveX/RxJS/commit/f258fc1))
+
+### fix
+
+* fix(root): use self as the root object when available ([0428a85](https://github.com/ReactiveX/RxJS/commit/0428a85))
+
+### refactor
+
+* refactor(operator): ensure build time parameter type safety for _subscribe, call ([88979a4](https://github.com/ReactiveX/RxJS/commit/88979a4))
+* refactor(test): let macro perf test use range to create observables ([ca42a32](https://github.com/ReactiveX/RxJS/commit/ca42a32))
+
+* 0.0.0-prealpha.3 ([651010f](https://github.com/ReactiveX/RxJS/commit/651010f))
+
+
+
 <a name="0.0.0-prealpha.2"></a>
 # 0.0.0-prealpha.2 (2015-09-11)
 
