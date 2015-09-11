@@ -20,8 +20,8 @@ class BufferTimeOperator<T, R> implements Operator<T, R> {
   constructor(private bufferTimeSpan: number, private bufferCreationInterval: number, private scheduler: Scheduler) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new BufferTimeSubscriber(observer, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler);
   }
 }
 

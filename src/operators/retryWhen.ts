@@ -16,8 +16,8 @@ class RetryWhenOperator<T, R> implements Operator<T, R> {
   constructor(protected notifier: (errors: Observable<any>) => Observable<any>, protected original:Observable<T>) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new RetryWhenSubscriber<T>(observer, this.notifier, this.original);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new RetryWhenSubscriber<T>(subscriber, this.notifier, this.original);
   }
 }
 

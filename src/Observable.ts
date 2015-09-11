@@ -118,7 +118,7 @@ export default class Observable<T>  {
     });
   }
 
-  _subscribe(subscriber: Observer<any>): Subscription<T> | Function | void {
+  _subscribe(subscriber: Subscriber<any>): Subscription<T> | Function | void {
     return this.source._subscribe(this.operator.call(subscriber));
   }
 

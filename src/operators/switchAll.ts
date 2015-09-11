@@ -14,8 +14,8 @@ class SwitchOperator<T, R> implements Operator<T, R> {
   constructor() {
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new SwitchSubscriber(observer);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new SwitchSubscriber(subscriber);
   }
 }
 

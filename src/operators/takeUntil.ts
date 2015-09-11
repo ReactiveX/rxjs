@@ -15,8 +15,8 @@ class TakeUntilOperator<T, R> implements Operator<T, R> {
     this.observable = observable;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new TakeUntilSubscriber(observer, this.observable);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new TakeUntilSubscriber(subscriber, this.observable);
   }
 }
 

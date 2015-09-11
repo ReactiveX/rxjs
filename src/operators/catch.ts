@@ -22,8 +22,8 @@ class CatchOperator<T, R> implements Operator<T, R> {
     this.selector = selector;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new CatchSubscriber(observer, this.selector, this.caught);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new CatchSubscriber(subscriber, this.selector, this.caught);
   }
 }
 

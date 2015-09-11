@@ -14,8 +14,8 @@ class SampleTimeOperator<T, R> implements Operator<T, R> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
   
-  call(observer: Observer<R>) {
-    return new SampleTimeSubscriber(observer, this.delay, this.scheduler);
+  call(subscriber: Subscriber<R>) {
+    return new SampleTimeSubscriber(subscriber, this.delay, this.scheduler);
   }
 }
 

@@ -17,8 +17,8 @@ class WindowOperator<T, R> implements Operator<T, R> {
   constructor(private closingNotifier: Observable<any>) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new WindowSubscriber(observer, this.closingNotifier);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new WindowSubscriber(subscriber, this.closingNotifier);
   }
 }
 

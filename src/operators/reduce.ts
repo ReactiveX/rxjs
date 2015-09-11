@@ -19,8 +19,8 @@ class ReduceOperator<T, R> implements Operator<T, R> {
     this.project = project;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new ReduceSubscriber(observer, this.project, this.acc);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new ReduceSubscriber(subscriber, this.project, this.acc);
   }
 }
 

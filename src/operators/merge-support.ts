@@ -13,8 +13,8 @@ export class MergeOperator<T, R> implements Operator<T, R> {
     this.concurrent = concurrent;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new MergeSubscriber(observer, this.concurrent);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new MergeSubscriber(subscriber, this.concurrent);
   }
 }
 

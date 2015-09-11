@@ -14,8 +14,8 @@ class SkipOperator<T, R> implements Operator<T, R> {
     this.total = total;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new SkipSubscriber(observer, this.total);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new SkipSubscriber(subscriber, this.total);
   }
 }
 

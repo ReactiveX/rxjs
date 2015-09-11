@@ -18,8 +18,8 @@ class WindowOperator<T, R> implements Operator<T, R> {
   constructor(private closingSelector: () => Observable<any>) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new WindowSubscriber(observer, this.closingSelector);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new WindowSubscriber(subscriber, this.closingSelector);
   }
 }
 

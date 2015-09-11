@@ -21,8 +21,8 @@ class FinallyOperator<T, R> implements Operator<T, R> {
     this.finallySelector = finallySelector;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new FinallySubscriber(observer, this.finallySelector);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new FinallySubscriber(subscriber, this.finallySelector);
   }
 }
 

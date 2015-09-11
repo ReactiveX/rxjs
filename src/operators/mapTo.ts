@@ -19,8 +19,8 @@ class MapToOperator<T, R> implements Operator<T, R> {
     this.value = value;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new MapToSubscriber(observer, this.value);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new MapToSubscriber(subscriber, this.value);
   }
 }
 

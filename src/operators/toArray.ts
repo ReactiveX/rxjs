@@ -7,8 +7,8 @@ export default function toArray() {
 }
 
 class ToArrayOperator<T, R> implements Operator<T, R> {
-  call(observer: Observer<T[]>): Observer<T> {
-    return new ToArraySubscriber<T>(observer);
+  call(subscriber: Subscriber<T[]>): Subscriber<T> {
+    return new ToArraySubscriber<T>(subscriber);
   }
 }
 

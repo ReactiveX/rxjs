@@ -18,8 +18,8 @@ class ThrottleOperator<T, R> implements Operator<T, R> {
   constructor(private delay:number, private scheduler:Scheduler) {
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new ThrottleSubscriber(observer, this.delay, this.scheduler);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new ThrottleSubscriber(subscriber, this.delay, this.scheduler);
   }
 }
 
