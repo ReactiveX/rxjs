@@ -64,7 +64,7 @@
     &apos;string&apos;: false,
     &apos;undefined&apos;: false
 };
-export var root = (objectTypes[typeof window] &amp;&amp; window) || this;
+export var root = (objectTypes[typeof self] &amp;&amp; self) || (objectTypes[typeof window] &amp;&amp; window);
 var freeExports = objectTypes[typeof exports] &amp;&amp; exports &amp;&amp; !exports.nodeType &amp;&amp; exports;
 var freeModule = objectTypes[typeof module] &amp;&amp; module &amp;&amp; !module.nodeType &amp;&amp; module;
 var freeGlobal = objectTypes[typeof global] &amp;&amp; global;

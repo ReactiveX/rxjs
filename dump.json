@@ -330,7 +330,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import Subscriber from './Subscriber';\nimport $$observable from './util/Symbol_observable';\n/**\n * A representation of any set of values over any amount of time. This the most basic building block\n * of RxJS.\n *\n * ## creation functions\n *\n * - combineLatest\n * - concat\n * - create\n * - defer\n * - empty\n * - forkJoin\n * - from\n * - fromArray\n * - fromEvent\n * - fromEventPattern\n * - fromPromise\n * - interval\n * - merge\n * - never\n * - of\n * - range\n * - throw\n * - timer\n * - zip\n *\n * ## operators\n *\n * - {@link buffer}\n * - bufferCount\n * - bufferTime\n * - bufferToggle\n * - bufferWhen\n * - catch\n * - combineAll\n * - combineLatest\n * - concat\n * - concatAll\n * - concatMap\n * - concatMapTo\n * - count\n * - debounce\n * - defaultIfEmpty\n * - delay\n * - distinctUntilChanged\n * - distinctUntilKeyChanged\n * - do\n * - expand\n * - {@link filter}\n * - finally\n * - flatMap\n * - flatMapTo\n * - groupBy\n * - lift\n * - {@link map}\n * - {@link mapTo}\n * - materialize\n * - merge\n * - mergeAll\n * - multicast\n * - observeOn\n * - partition\n * - publish\n * - publishBehavior\n * - publishReplay\n * - reduce\n * - repeat\n * - retry\n * - retryWhen\n * - sample\n * - sampleTime\n * - scan\n * - skip\n * - skipUntil\n * - startWith\n * - subscribeOn\n * - switchAll\n * - switchLatest\n * - switchLatestTo\n * - take\n * - takeUntil\n * - throttle\n * - timeout\n * - timeoutWith\n * - toArray\n * - toPromise\n * - window\n * - windowCount\n * - windowTime\n * - windowToggle\n * - windowWhen\n * - withLatestFrom\n * - zip\n * - zipAll\n *\n * @class Observable<T>\n */\nexport default class Observable {\n    /**\n     * @constructor\n     * @param {Function} subscribe the function that is\n     * called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values\n     * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify\n     * of a succesful completion.\n     */\n    constructor(subscribe) {\n        this._isScalar = false;\n        if (subscribe) {\n            this._subscribe = subscribe;\n        }\n    }\n    /**\n     * @method lift\n     * @param {Operator} the operator defining the operation to take on the observable\n     * @returns {Observable} a new observable with the Operator applied\n     * @description creates a new Observable, with this Observable as the source, and the passed\n     * operator defined as the new observable's operator.\n     */\n    lift(operator) {\n        const observable = new Observable();\n        observable.source = this;\n        observable.operator = operator;\n        return observable;\n    }\n    /**\n     * @method Symbol.observable\n     * @returns {Observable} this instance of the observable\n     * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable\n     */\n    [$$observable]() {\n        return this;\n    }\n    /**\n     * @method subscribe\n     * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called,\n     *  or the first of three possible handlers, which is the handler for each value emitted from the observable.\n     * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,\n     *  the error will be thrown as unhandled\n     * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.\n     * @returns {Subscription} a subscription reference to the registered handlers\n     * @description registers handlers for handling emitted values, error and completions from the observable, and\n     *  executes the observable's subscriber function, which will take action to set up the underlying data stream\n     */\n    subscribe(observerOrNext, error, complete) {\n        let subscriber;\n        if (observerOrNext && typeof observerOrNext === \"object\") {\n            if (observerOrNext instanceof Subscriber) {\n                subscriber = observerOrNext;\n            }\n            else {\n                subscriber = new Subscriber(observerOrNext);\n            }\n        }\n        else {\n            const next = observerOrNext;\n            subscriber = Subscriber.create(next, error, complete);\n        }\n        subscriber.add(this._subscribe(subscriber));\n        return subscriber;\n    }\n    /**\n     * @method forEach\n     * @param {Function} next a handler for each value emitted by the observable\n     * @returns {Promise} a promise that either resolves on observable completion or\n     *  rejects with the handled error\n     */\n    forEach(next) {\n        return new Promise((resolve, reject) => {\n            this.subscribe(next, reject, resolve);\n        });\n    }\n    _subscribe(subscriber) {\n        return this.source._subscribe(this.operator.call(subscriber));\n    }\n}\n// HACK: Since TypeScript inherits static properties too, we have to \n// fight against TypeScript here so Subject can have a different static create signature.\n/**\n * @static\n * @method create\n * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor\n * @returns {Observable} a new cold observable\n * @description creates a new cold Observable by calling the Observable constructor\n */\nObservable.create = (subscribe) => {\n    return new Observable(subscribe);\n};\n"
+    "content": "import Subscriber from './Subscriber';\nimport $$observable from './util/Symbol_observable';\n/**\n * A representation of any set of values over any amount of time. This the most basic building block\n * of RxJS.\n *\n * @class Observable<T>\n */\nexport default class Observable {\n    /**\n     * @constructor\n     * @param {Function} subscribe the function that is\n     * called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values\n     * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify\n     * of a succesful completion.\n     */\n    constructor(subscribe) {\n        this._isScalar = false;\n        if (subscribe) {\n            this._subscribe = subscribe;\n        }\n    }\n    /**\n     * @method lift\n     * @param {Operator} the operator defining the operation to take on the observable\n     * @returns {Observable} a new observable with the Operator applied\n     * @description creates a new Observable, with this Observable as the source, and the passed\n     * operator defined as the new observable's operator.\n     */\n    lift(operator) {\n        const observable = new Observable();\n        observable.source = this;\n        observable.operator = operator;\n        return observable;\n    }\n    /**\n     * @method Symbol.observable\n     * @returns {Observable} this instance of the observable\n     * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable\n     */\n    [$$observable]() {\n        return this;\n    }\n    /**\n     * @method subscribe\n     * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called,\n     *  or the first of three possible handlers, which is the handler for each value emitted from the observable.\n     * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,\n     *  the error will be thrown as unhandled\n     * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.\n     * @returns {Subscription} a subscription reference to the registered handlers\n     * @description registers handlers for handling emitted values, error and completions from the observable, and\n     *  executes the observable's subscriber function, which will take action to set up the underlying data stream\n     */\n    subscribe(observerOrNext, error, complete) {\n        let subscriber;\n        if (observerOrNext && typeof observerOrNext === \"object\") {\n            if (observerOrNext instanceof Subscriber) {\n                subscriber = observerOrNext;\n            }\n            else {\n                subscriber = new Subscriber(observerOrNext);\n            }\n        }\n        else {\n            const next = observerOrNext;\n            subscriber = Subscriber.create(next, error, complete);\n        }\n        subscriber.add(this._subscribe(subscriber));\n        return subscriber;\n    }\n    /**\n     * @method forEach\n     * @param {Function} next a handler for each value emitted by the observable\n     * @returns {Promise} a promise that either resolves on observable completion or\n     *  rejects with the handled error\n     */\n    forEach(next) {\n        return new Promise((resolve, reject) => {\n            this.subscribe(next, reject, resolve);\n        });\n    }\n    _subscribe(subscriber) {\n        return this.source._subscribe(this.operator.call(subscriber));\n    }\n}\n// HACK: Since TypeScript inherits static properties too, we have to \n// fight against TypeScript here so Subject can have a different static create signature.\n/**\n * @static\n * @method create\n * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor\n * @returns {Observable} a new cold observable\n * @description creates a new cold Observable by calling the Observable constructor\n */\nObservable.create = (subscribe) => {\n    return new Observable(subscribe);\n};\n"
   },
   {
     "kind": "class",
@@ -343,8 +343,8 @@
     "export": true,
     "importPath": "@reactivex/rxjs/es6/Observable.js",
     "importStyle": "Observable",
-    "description": "A representation of any set of values over any amount of time. This the most basic building block\nof RxJS.\n\n## creation functions\n\n- combineLatest\n- concat\n- create\n- defer\n- empty\n- forkJoin\n- from\n- fromArray\n- fromEvent\n- fromEventPattern\n- fromPromise\n- interval\n- merge\n- never\n- of\n- range\n- throw\n- timer\n- zip\n\n## operators\n\n- {@link buffer}\n- bufferCount\n- bufferTime\n- bufferToggle\n- bufferWhen\n- catch\n- combineAll\n- combineLatest\n- concat\n- concatAll\n- concatMap\n- concatMapTo\n- count\n- debounce\n- defaultIfEmpty\n- delay\n- distinctUntilChanged\n- distinctUntilKeyChanged\n- do\n- expand\n- {@link filter}\n- finally\n- flatMap\n- flatMapTo\n- groupBy\n- lift\n- {@link map}\n- {@link mapTo}\n- materialize\n- merge\n- mergeAll\n- multicast\n- observeOn\n- partition\n- publish\n- publishBehavior\n- publishReplay\n- reduce\n- repeat\n- retry\n- retryWhen\n- sample\n- sampleTime\n- scan\n- skip\n- skipUntil\n- startWith\n- subscribeOn\n- switchAll\n- switchLatest\n- switchLatestTo\n- take\n- takeUntil\n- throttle\n- timeout\n- timeoutWith\n- toArray\n- toPromise\n- window\n- windowCount\n- windowTime\n- windowToggle\n- windowWhen\n- withLatestFrom\n- zip\n- zipAll",
-    "lineNumber": 100,
+    "description": "A representation of any set of values over any amount of time. This the most basic building block\nof RxJS.",
+    "lineNumber": 9,
     "unknown": [
       {
         "tagName": "@class",
@@ -362,7 +362,7 @@
     "longname": "es6/Observable.js~Observable#constructor",
     "access": null,
     "description": null,
-    "lineNumber": 108,
+    "lineNumber": 17,
     "unknown": [
       {
         "tagName": "@constructor",
@@ -392,7 +392,7 @@
     "longname": "es6/Observable.js~Observable#_isScalar",
     "access": null,
     "description": null,
-    "lineNumber": 109,
+    "lineNumber": 18,
     "undocument": true,
     "type": {
       "types": [
@@ -409,7 +409,7 @@
     "longname": "es6/Observable.js~Observable#_subscribe",
     "access": null,
     "description": null,
-    "lineNumber": 111,
+    "lineNumber": 20,
     "undocument": true,
     "type": {
       "types": [
@@ -426,7 +426,7 @@
     "longname": "es6/Observable.js~Observable#lift",
     "access": null,
     "description": null,
-    "lineNumber": 121,
+    "lineNumber": 30,
     "unknown": [
       {
         "tagName": "@method",
@@ -472,7 +472,7 @@
     "longname": "es6/Observable.js~Observable#$$observable",
     "access": null,
     "description": null,
-    "lineNumber": 132,
+    "lineNumber": 41,
     "undocument": true,
     "params": [],
     "return": {
@@ -491,7 +491,7 @@
     "longname": "es6/Observable.js~Observable#subscribe",
     "access": null,
     "description": null,
-    "lineNumber": 146,
+    "lineNumber": 55,
     "unknown": [
       {
         "tagName": "@method",
@@ -558,7 +558,7 @@
     "longname": "es6/Observable.js~Observable#forEach",
     "access": null,
     "description": null,
-    "lineNumber": 169,
+    "lineNumber": 78,
     "unknown": [
       {
         "tagName": "@method",
@@ -600,7 +600,7 @@
     "longname": "es6/Observable.js~Observable#_subscribe",
     "access": null,
     "description": null,
-    "lineNumber": 174,
+    "lineNumber": 83,
     "undocument": true,
     "params": [
       {
@@ -27334,7 +27334,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "var objectTypes = {\n    'boolean': false,\n    'function': true,\n    'object': true,\n    'number': false,\n    'string': false,\n    'undefined': false\n};\nexport var root = (objectTypes[typeof window] && window) || this;\nvar freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;\nvar freeModule = objectTypes[typeof module] && module && !module.nodeType && module;\nvar freeGlobal = objectTypes[typeof global] && global;\nif (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {\n    root = freeGlobal;\n}\n"
+    "content": "var objectTypes = {\n    'boolean': false,\n    'function': true,\n    'object': true,\n    'number': false,\n    'string': false,\n    'undefined': false\n};\nexport var root = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);\nvar freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;\nvar freeModule = objectTypes[typeof module] && module && !module.nodeType && module;\nvar freeGlobal = objectTypes[typeof global] && global;\nif (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {\n    root = freeGlobal;\n}\n"
   },
   {
     "kind": "variable",

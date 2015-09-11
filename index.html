@@ -55,7 +55,98 @@
 
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p><a href="function/index.html#static-function-filter">filter</a></p>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="observable">Observable</h1>
+<h2 id="creation-functions">creation functions</h2>
+<ul>
+<li><a href="function/index.html#static-function-combineLatest">combineLatest</a></li>
+<li><a href="function/index.html#static-function-concat">concat</a></li>
+<li><a href="function/index.html#static-function-create">create</a></li>
+<li><a href="function/index.html#static-function-defer">defer</a></li>
+<li><a href="function/index.html#static-function-empty">empty</a></li>
+<li><a href="function/index.html#static-function-forkJoin">forkJoin</a></li>
+<li><a href="function/index.html#static-function-from">from</a></li>
+<li><a href="function/index.html#static-function-fromArray">fromArray</a></li>
+<li><a href="function/index.html#static-function-fromEvent">fromEvent</a></li>
+<li><a href="function/index.html#static-function-fromEventPattern">fromEventPattern</a></li>
+<li><a href="function/index.html#static-function-fromPromise">fromPromise</a></li>
+<li><a href="function/index.html#static-function-interval">interval</a></li>
+<li><a href="function/index.html#static-function-merge">merge</a></li>
+<li><a href="function/index.html#static-function-never">never</a></li>
+<li><a href="function/index.html#static-function-of">of</a></li>
+<li><a href="function/index.html#static-function-range">range</a></li>
+<li><a href="function/index.html#static-function-throw">throw</a></li>
+<li><a href="function/index.html#static-function-timer">timer</a></li>
+<li><a href="function/index.html#static-function-zip">zip</a></li>
+</ul>
+<h2 id="operators">operators</h2>
+<ul>
+<li><a href="function/index.html#static-function-buffer">buffer</a></li>
+<li><a href="function/index.html#static-function-bufferCount">bufferCount</a></li>
+<li><a href="function/index.html#static-function-bufferTime">bufferTime</a></li>
+<li><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></li>
+<li><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></li>
+<li><a href="function/index.html#static-function-catch">catch</a></li>
+<li><a href="function/index.html#static-function-combineAll">combineAll</a></li>
+<li><a href="function/index.html#static-function-combineLatest">combineLatest</a></li>
+<li><a href="function/index.html#static-function-concat">concat</a></li>
+<li><a href="function/index.html#static-function-concatAll">concatAll</a></li>
+<li><a href="function/index.html#static-function-concatMap">concatMap</a></li>
+<li><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></li>
+<li><a href="function/index.html#static-function-count">count</a></li>
+<li><a href="function/index.html#static-function-debounce">debounce</a></li>
+<li><a href="function/index.html#static-function-defaultIfEmpty">defaultIfEmpty</a></li>
+<li><a href="function/index.html#static-function-delay">delay</a></li>
+<li><a href="function/index.html#static-function-distinctUntilChanged">distinctUntilChanged</a></li>
+<li><a href="function/index.html#static-function-distinctUntilKeyChanged">distinctUntilKeyChanged</a></li>
+<li><a href="function/index.html#static-function-do">do</a></li>
+<li><a href="function/index.html#static-function-expand">expand</a></li>
+<li><a href="function/index.html#static-function-filter">filter</a></li>
+<li><a href="function/index.html#static-function-finally">finally</a></li>
+<li><a href="function/index.html#static-function-flatMap">flatMap</a></li>
+<li><a href="function/index.html#static-function-flatMapTo">flatMapTo</a></li>
+<li><a href="function/index.html#static-function-groupBy">groupBy</a></li>
+<li><a href="function/index.html#static-function-lift">lift</a></li>
+<li><a href="function/index.html#static-function-map">map</a></li>
+<li><a href="function/index.html#static-function-mapTo">mapTo</a></li>
+<li><a href="function/index.html#static-function-materialize">materialize</a></li>
+<li><a href="function/index.html#static-function-merge">merge</a></li>
+<li><a href="function/index.html#static-function-mergeAll">mergeAll</a></li>
+<li><a href="function/index.html#static-function-multicast">multicast</a></li>
+<li><a href="function/index.html#static-function-observeOn">observeOn</a></li>
+<li><a href="function/index.html#static-function-partition">partition</a></li>
+<li><a href="function/index.html#static-function-publish">publish</a></li>
+<li><a href="function/index.html#static-function-publishBehavior">publishBehavior</a></li>
+<li><a href="function/index.html#static-function-publishReplay">publishReplay</a></li>
+<li><a href="function/index.html#static-function-reduce">reduce</a></li>
+<li><a href="function/index.html#static-function-repeat">repeat</a></li>
+<li><a href="function/index.html#static-function-retry">retry</a></li>
+<li><a href="function/index.html#static-function-retryWhen">retryWhen</a></li>
+<li><a href="function/index.html#static-function-sample">sample</a></li>
+<li><a href="function/index.html#static-function-sampleTime">sampleTime</a></li>
+<li><a href="function/index.html#static-function-scan">scan</a></li>
+<li><a href="function/index.html#static-function-skip">skip</a></li>
+<li><a href="function/index.html#static-function-skipUntil">skipUntil</a></li>
+<li><a href="function/index.html#static-function-startWith">startWith</a></li>
+<li><a href="function/index.html#static-function-subscribeOn">subscribeOn</a></li>
+<li><a href="function/index.html#static-function-switchAll">switchAll</a></li>
+<li><a href="function/index.html#static-function-switchLatest">switchLatest</a></li>
+<li><a href="function/index.html#static-function-switchLatestTo">switchLatestTo</a></li>
+<li><a href="function/index.html#static-function-take">take</a></li>
+<li><a href="function/index.html#static-function-takeUntil">takeUntil</a></li>
+<li><a href="function/index.html#static-function-throttle">throttle</a></li>
+<li><a href="function/index.html#static-function-timeout">timeout</a></li>
+<li><a href="function/index.html#static-function-timeoutWith">timeoutWith</a></li>
+<li><a href="function/index.html#static-function-toArray">toArray</a></li>
+<li><a href="function/index.html#static-function-toPromise">toPromise</a></li>
+<li><a href="function/index.html#static-function-window">window</a></li>
+<li><a href="function/index.html#static-function-windowCount">windowCount</a></li>
+<li><a href="function/index.html#static-function-windowTime">windowTime</a></li>
+<li><a href="function/index.html#static-function-windowToggle">windowToggle</a></li>
+<li><a href="function/index.html#static-function-windowWhen">windowWhen</a></li>
+<li><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></li>
+<li><a href="function/index.html#static-function-zip">zip</a></li>
+<li><a href="function/index.html#static-function-zipAll">zipAll</a></li>
+</ul>
 </div>
 </div>
 
