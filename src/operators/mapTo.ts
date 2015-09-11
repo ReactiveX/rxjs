@@ -2,6 +2,11 @@ import Operator from '../Operator';
 import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 
+/**
+ * Maps every value to the same value every time.
+ * @param {any} value the value to map each incoming value to
+ * @returns {Observable} an observable of the passed value that emits everytime the source does
+ */
 export default function mapTo<T, R>(value: R) {
   return this.lift(new MapToOperator(value));
 }

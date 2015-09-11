@@ -14,7 +14,7 @@ import $$observable from './util/Symbol_observable';
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
- * 
+ *  
  * @class Observable<T>
  */
 export default class Observable<T>  {
