@@ -11,7 +11,7 @@
     "build_global": "rm -rf dist/global && mkdir dist/global && browserify src/Rx.global.js --outfile dist/global/Rx.js; ./node_modules/.bin/uglifyjs ./dist/global/Rx.js --source-map ./dist/global/Rx.min.js.map --screw-ie8 -o ./dist/global/Rx.min.js",
     "build_perf": "npm run build_es6 && npm run build_cjs && npm run build_global && npm run perf",
     "build_test": "rm -rf dist/ && npm run build_es6 && npm run build_cjs && jasmine",
-    "build_docs": "rm -rf dist/docs && ./node_modules/.bin/esdoc -c esdoc.json",
+    "build_docs": "./docgen.sh",
     "test": "jasmine",
     "perf": "protractor protractor.conf.js",
     "prepublish": "npm run build_all"
