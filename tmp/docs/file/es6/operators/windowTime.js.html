@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/operators/windowTime.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/operators/windowTime.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
+import Subject from &apos;../Subject&apos;;
+import nextTick from &apos;../schedulers/nextTick&apos;;
+export default function windowTime(windowTimeSpan, windowCreationInterval = null, scheduler = nextTick) {
+    return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
+}
+class WindowTimeOperator {
+    constructor(windowTimeSpan, windowCreationInterval, scheduler) {
+        this.windowTimeSpan = windowTimeSpan;
+        this.windowCreationInterval = windowCreationInterval;
+        this.scheduler = scheduler;
+    }
+    call(observer) {
+        return new WindowTimeSubscriber(observer, this.windowTimeSpan, this.windowCreationInterval, this.scheduler);
+    }
+}
+class WindowTimeSubscriber extends Subscriber {
+    constructor(destination, windowTimeSpan, windowCreationInterval, scheduler) {
+        super(destination);
+        this.windowTimeSpan = windowTimeSpan;
+        this.windowCreationInterval = windowCreationInterval;
+        this.scheduler = scheduler;
+        this.windows = [];
+        if (windowCreationInterval !== null &amp;&amp; windowCreationInterval &gt;= 0) {
+            let window = this.openWindow();
+            this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, { subscriber: this, window, context: null }));
+            this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler }));
+        }
+        else {
+            let window = this.openWindow();
+            this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, { subscriber: this, window, windowTimeSpan }));
+        }
+    }
+    _next(value) {
+        const windows = this.windows;
+        const len = windows.length;
+        for (let i = 0; i &lt; len; i++) {
+            windows[i].next(value);
+        }
+    }
+    _error(err) {
+        const windows = this.windows;
+        while (windows.length &gt; 0) {
+            windows.shift().error(err);
+        }
+        this.destination.error(err);
+    }
+    _complete() {
+        const windows = this.windows;
+        while (windows.length &gt; 0) {
+            windows.shift().complete();
+        }
+        this.destination.complete();
+    }
+    openWindow() {
+        let window = new Subject();
+        this.windows.push(window);
+        this.destination.next(window);
+        return window;
+    }
+    closeWindow(window) {
+        window.complete();
+        const windows = this.windows;
+        windows.splice(windows.indexOf(window), 1);
+    }
+}
+function dispatchWindowTimeSpanOnly(state) {
+    const { subscriber, windowTimeSpan, window } = state;
+    if (window) {
+        window.complete();
+    }
+    state.window = subscriber.openWindow();
+    this.schedule(state, windowTimeSpan);
+}
+function dispatchWindowCreation(state) {
+    let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
+    let window = subscriber.openWindow();
+    let action = this;
+    let context = { action, subscription: null };
+    action.add(context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, { subscriber, window, context }));
+    action.schedule(state, windowCreationInterval);
+}
+function dispatchWindowClose({ subscriber, window, context }) {
+    if (context &amp;&amp; context.action &amp;&amp; context.subscription) {
+        context.action.remove(context.subscription);
+    }
+    subscriber.closeWindow(window);
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

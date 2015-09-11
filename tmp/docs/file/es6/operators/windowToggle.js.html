@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/operators/windowToggle.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/operators/windowToggle.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
+import Subject from &apos;../Subject&apos;;
+import Subscription from &apos;../Subscription&apos;;
+import tryCatch from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+export default function windowToggle(openings, closingSelector) {
+    return this.lift(new WindowToggleOperator(openings, closingSelector));
+}
+class WindowToggleOperator {
+    constructor(openings, closingSelector) {
+        this.openings = openings;
+        this.closingSelector = closingSelector;
+    }
+    call(observer) {
+        return new WindowToggleSubscriber(observer, this.openings, this.closingSelector);
+    }
+}
+class WindowToggleSubscriber extends Subscriber {
+    constructor(destination, openings, closingSelector) {
+        super(destination);
+        this.openings = openings;
+        this.closingSelector = closingSelector;
+        this.windows = [];
+        this.add(this.openings._subscribe(new WindowToggleOpeningsSubscriber(this)));
+    }
+    _next(value) {
+        const windows = this.windows;
+        const len = windows.length;
+        for (let i = 0; i &lt; len; i++) {
+            windows[i].next(value);
+        }
+    }
+    _error(err) {
+        const windows = this.windows;
+        while (windows.length &gt; 0) {
+            windows.shift().error(err);
+        }
+        this.destination.error(err);
+    }
+    _complete() {
+        const windows = this.windows;
+        while (windows.length &gt; 0) {
+            windows.shift().complete();
+        }
+        this.destination.complete();
+    }
+    openWindow(value) {
+        const window = new Subject();
+        this.windows.push(window);
+        this.destination.next(window);
+        let windowContext = {
+            window,
+            subscription: new Subscription()
+        };
+        const closingSelector = this.closingSelector;
+        let closingNotifier = tryCatch(closingSelector)(value);
+        if (closingNotifier === errorObject) {
+            this.error(closingNotifier.e);
+        }
+        else {
+            this.add(windowContext.subscription.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this, windowContext))));
+        }
+    }
+    closeWindow(windowContext) {
+        const { window, subscription } = windowContext;
+        const windows = this.windows;
+        windows.splice(windows.indexOf(window), 1);
+        window.complete();
+        this.remove(subscription);
+    }
+}
+class WindowClosingNotifierSubscriber extends Subscriber {
+    constructor(parent, windowContext) {
+        super(null);
+        this.parent = parent;
+        this.windowContext = windowContext;
+    }
+    _next() {
+        this.parent.closeWindow(this.windowContext);
+    }
+    _error(err) {
+        this.parent.error(err);
+    }
+    _complete() {
+        // noop
+    }
+}
+class WindowToggleOpeningsSubscriber extends Subscriber {
+    constructor(parent) {
+        super();
+        this.parent = parent;
+    }
+    _next(value) {
+        this.parent.openWindow(value);
+    }
+    _error(err) {
+        this.parent.error(err);
+    }
+    _complete() {
+        // noop
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

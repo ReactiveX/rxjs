@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">Observable | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Observable from &apos;<span><a href="file/es6/Observable.js.html#lineNumber100">@reactivex/rxjs/es6/Observable.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/es6/Observable.js.html#lineNumber100">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">Observable</h1>
+
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>A representation of any set of values over any amount of time. This the most basic building block
+of RxJS.</p>
+<h2 id="creation-functions">creation functions</h2>
+<ul>
+<li>combineLatest</li>
+<li>concat</li>
+<li>create</li>
+<li>defer</li>
+<li>empty</li>
+<li>forkJoin</li>
+<li>from</li>
+<li>fromArray</li>
+<li>fromEvent</li>
+<li>fromEventPattern</li>
+<li>fromPromise</li>
+<li>interval</li>
+<li>merge</li>
+<li>never</li>
+<li>of</li>
+<li>range</li>
+<li>throw</li>
+<li>timer</li>
+<li>zip</li>
+</ul>
+<h2 id="operators">operators</h2>
+<ul>
+<li><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li>bufferCount</li>
+<li>bufferTime</li>
+<li>bufferToggle</li>
+<li>bufferWhen</li>
+<li>catch</li>
+<li>combineAll</li>
+<li>combineLatest</li>
+<li>concat</li>
+<li>concatAll</li>
+<li>concatMap</li>
+<li>concatMapTo</li>
+<li>count</li>
+<li>debounce</li>
+<li>defaultIfEmpty</li>
+<li>delay</li>
+<li>distinctUntilChanged</li>
+<li>distinctUntilKeyChanged</li>
+<li>do</li>
+<li>expand</li>
+<li><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li>finally</li>
+<li>flatMap</li>
+<li>flatMapTo</li>
+<li>groupBy</li>
+<li>lift</li>
+<li><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+<li>materialize</li>
+<li>merge</li>
+<li>mergeAll</li>
+<li>multicast</li>
+<li>observeOn</li>
+<li>partition</li>
+<li>publish</li>
+<li>publishBehavior</li>
+<li>publishReplay</li>
+<li>reduce</li>
+<li>repeat</li>
+<li>retry</li>
+<li>retryWhen</li>
+<li>sample</li>
+<li>sampleTime</li>
+<li>scan</li>
+<li>skip</li>
+<li>skipUntil</li>
+<li>startWith</li>
+<li>subscribeOn</li>
+<li>switchAll</li>
+<li>switchLatest</li>
+<li>switchLatestTo</li>
+<li>take</li>
+<li>takeUntil</li>
+<li>throttle</li>
+<li>timeout</li>
+<li>timeoutWith</li>
+<li>toArray</li>
+<li>toPromise</li>
+<li>window</li>
+<li>windowCount</li>
+<li>windowTime</li>
+<li>windowToggle</li>
+<li>windowWhen</li>
+<li>withLatestFrom</li>
+<li>zip</li>
+<li>zipAll</li>
+</ul>
+</div>
+
+  
+
+  
+
+  
+
+  
+</div>
+
+
+
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(subscribe: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-forEach">forEach</a></span></span><span data-ice="signature">(next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-lift">lift</a></span></span><span data-ice="signature">(the: <span>Operator</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-subscribe">subscribe</a></span></span><span data-ice="signature">(observerOrNext: <span>Observer</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>Subscription</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">constructor</span><span data-ice="signature">(subscribe: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber108">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">subscribe</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>the function that is
+called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values
+can be <code>next</code>ed, or an <code>error</code> method can be called to raise an error, or <code>complete</code> can be called to notify
+of a succesful completion.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-forEach">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">forEach</span><span data-ice="signature">(next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber169">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">next</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>a handler for each value emitted by the observable</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>a promise that either resolves on observable completion or
+ rejects with the handled error</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-lift">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">lift</span><span data-ice="signature">(the: <span>Operator</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber121">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">the</td>
+      <td data-ice="type"><span>Operator</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>operator defining the operation to take on the observable</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>a new observable with the Operator applied</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-subscribe">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">subscribe</span><span data-ice="signature">(observerOrNext: <span>Observer</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>Subscription</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber146">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">observerOrNext</td>
+      <td data-ice="type"><span>Observer</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>(optional) either an observer defining all functions to be called,
+ or the first of three possible handlers, which is the handler for each value emitted from the observable.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">error</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>(optional) a handler for a terminal event resulting from an error. If no error handler is provided,
+ the error will be thrown as unhandled</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">complete</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>(optional) a handler for a terminal event resulting from successful completion.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span>Subscription</span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>a subscription reference to the registered handlers</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

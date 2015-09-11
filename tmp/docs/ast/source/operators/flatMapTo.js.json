@@ -1,0 +1,423 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "FlatMapToOperator",
+            "range": [
+              9,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 26
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "FlatMapToOperator",
+            "range": [
+              9,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            9,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 26
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./flatMapTo-support",
+        "raw": "'./flatMapTo-support'",
+        "range": [
+          34,
+          55
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 34
+          },
+          "end": {
+            "line": 1,
+            "column": 55
+          }
+        }
+      },
+      "range": [
+        0,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "flatMapTo",
+          "range": [
+            81,
+            90
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 24
+            },
+            "end": {
+              "line": 2,
+              "column": 33
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "observable",
+            "range": [
+              91,
+              101
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 34
+              },
+              "end": {
+                "line": 2,
+                "column": 44
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "projectResult",
+            "range": [
+              103,
+              116
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 46
+              },
+              "end": {
+                "line": 2,
+                "column": 59
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "concurrent",
+            "range": [
+              118,
+              128
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 61
+              },
+              "end": {
+                "line": 2,
+                "column": 71
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "ThisExpression",
+                    "range": [
+                      143,
+                      147
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "lift",
+                    "range": [
+                      148,
+                      152
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "range": [
+                    143,
+                    152
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 20
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "FlatMapToOperator",
+                      "range": [
+                        157,
+                        174
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 25
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 42
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "observable",
+                        "range": [
+                          175,
+                          185
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 43
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 53
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "projectResult",
+                        "range": [
+                          187,
+                          200
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 55
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 68
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "concurrent",
+                        "range": [
+                          202,
+                          212
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 70
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 80
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      153,
+                      213
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 81
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  143,
+                  214
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 82
+                  }
+                }
+              },
+              "range": [
+                136,
+                215
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 83
+                }
+              }
+            }
+          ],
+          "range": [
+            130,
+            217
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 73
+            },
+            "end": {
+              "line": 4,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          72,
+          217
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 15
+          },
+          "end": {
+            "line": 4,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        57,
+        217
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    217
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1
+    }
+  },
+  "comments": []
+}

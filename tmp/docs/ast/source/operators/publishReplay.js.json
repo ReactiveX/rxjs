@@ -1,0 +1,659 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "ReplaySubject",
+            "range": [
+              7,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            7,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../subjects/ReplaySubject",
+        "raw": "'../subjects/ReplaySubject'",
+        "range": [
+          26,
+          53
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 26
+          },
+          "end": {
+            "line": 1,
+            "column": 53
+          }
+        }
+      },
+      "range": [
+        0,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "multicast",
+            "range": [
+              62,
+              71
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            62,
+            71
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./multicast",
+        "raw": "'./multicast'",
+        "range": [
+          77,
+          90
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 22
+          },
+          "end": {
+            "line": 2,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        55,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "publishReplay",
+          "range": [
+            116,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 24
+            },
+            "end": {
+              "line": 3,
+              "column": 37
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "bufferSize",
+              "range": [
+                130,
+                140
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 38
+                },
+                "end": {
+                  "line": 3,
+                  "column": 48
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  143,
+                  149
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 51
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 57
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  150,
+                  167
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 58
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 75
+                  }
+                }
+              },
+              "range": [
+                143,
+                167
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 51
+                },
+                "end": {
+                  "line": 3,
+                  "column": 75
+                }
+              }
+            },
+            "range": [
+              130,
+              167
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 38
+              },
+              "end": {
+                "line": 3,
+                "column": 75
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "windowTime",
+              "range": [
+                169,
+                179
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 77
+                },
+                "end": {
+                  "line": 3,
+                  "column": 87
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  182,
+                  188
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 90
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 96
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  189,
+                  206
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 97
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 114
+                  }
+                }
+              },
+              "range": [
+                182,
+                206
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 90
+                },
+                "end": {
+                  "line": 3,
+                  "column": 114
+                }
+              }
+            },
+            "range": [
+              169,
+              206
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 77
+              },
+              "end": {
+                "line": 3,
+                "column": 114
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "scheduler",
+            "range": [
+              208,
+              217
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 116
+              },
+              "end": {
+                "line": 3,
+                "column": 125
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "multicast",
+                    "range": [
+                      232,
+                      241
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "call",
+                    "range": [
+                      242,
+                      246
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 25
+                      }
+                    }
+                  },
+                  "range": [
+                    232,
+                    246
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 25
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      247,
+                      251
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 26
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 30
+                      }
+                    }
+                  },
+                  {
+                    "type": "ArrowFunctionExpression",
+                    "id": null,
+                    "params": [],
+                    "body": {
+                      "type": "NewExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "ReplaySubject",
+                        "range": [
+                          263,
+                          276
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 4,
+                            "column": 42
+                          },
+                          "end": {
+                            "line": 4,
+                            "column": 55
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "bufferSize",
+                          "range": [
+                            277,
+                            287
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 4,
+                              "column": 56
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 66
+                            }
+                          }
+                        },
+                        {
+                          "type": "Identifier",
+                          "name": "windowTime",
+                          "range": [
+                            289,
+                            299
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 4,
+                              "column": 68
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 78
+                            }
+                          }
+                        },
+                        {
+                          "type": "Identifier",
+                          "name": "scheduler",
+                          "range": [
+                            301,
+                            310
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 4,
+                              "column": 80
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 89
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        259,
+                        311
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 38
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 90
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": true,
+                    "range": [
+                      253,
+                      311
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 32
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 90
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  232,
+                  312
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 91
+                  }
+                }
+              },
+              "range": [
+                225,
+                313
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 92
+                }
+              }
+            }
+          ],
+          "range": [
+            219,
+            315
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 127
+            },
+            "end": {
+              "line": 5,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          107,
+          315
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 15
+          },
+          "end": {
+            "line": 5,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        92,
+        315
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    315
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 1
+    }
+  },
+  "comments": []
+}

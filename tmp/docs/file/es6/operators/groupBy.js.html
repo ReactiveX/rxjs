@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/operators/groupBy.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/operators/groupBy.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
+import Map from &apos;../util/Map&apos;;
+import FastMap from &apos;../util/FastMap&apos;;
+import GroupSubject from &apos;../subjects/GroupSubject&apos;;
+import tryCatch from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+export default function groupBy(keySelector, elementSelector, durationSelector) {
+    return this.lift(new GroupByOperator(keySelector, durationSelector, elementSelector));
+}
+class GroupByOperator {
+    constructor(keySelector, durationSelector, elementSelector) {
+        this.keySelector = keySelector;
+        this.durationSelector = durationSelector;
+        this.elementSelector = elementSelector;
+    }
+    call(observer) {
+        return new GroupBySubscriber(observer, this.keySelector, this.durationSelector, this.elementSelector);
+    }
+}
+class GroupBySubscriber extends Subscriber {
+    constructor(destination, keySelector, durationSelector, elementSelector) {
+        super(destination);
+        this.keySelector = keySelector;
+        this.durationSelector = durationSelector;
+        this.elementSelector = elementSelector;
+        this.groups = null;
+    }
+    _next(x) {
+        let key = tryCatch(this.keySelector)(x);
+        if (key === errorObject) {
+            this.error(key.e);
+        }
+        else {
+            let groups = this.groups;
+            const elementSelector = this.elementSelector;
+            const durationSelector = this.durationSelector;
+            if (!groups) {
+                groups = this.groups = typeof key === &apos;string&apos; ? new FastMap() : new Map();
+            }
+            let group = groups.get(key);
+            if (!group) {
+                groups.set(key, group = new GroupSubject(key));
+                if (durationSelector) {
+                    let duration = tryCatch(durationSelector)(group);
+                    if (duration === errorObject) {
+                        this.error(duration.e);
+                    }
+                    else {
+                        this.add(duration._subscribe(new GroupDurationSubscriber(group, this)));
+                    }
+                }
+                this.destination.next(group);
+            }
+            if (elementSelector) {
+                let value = tryCatch(elementSelector)(x);
+                if (value === errorObject) {
+                    group.error(value.e);
+                }
+                else {
+                    group.next(value);
+                }
+            }
+            else {
+                group.next(x);
+            }
+        }
+    }
+    _error(err) {
+        const groups = this.groups;
+        if (groups) {
+            groups.forEach((group, key) =&gt; {
+                group.error(err);
+                this.removeGroup(key);
+            });
+        }
+        this.destination.error(err);
+    }
+    _complete() {
+        const groups = this.groups;
+        if (groups) {
+            groups.forEach((group, key) =&gt; {
+                group.complete();
+                this.removeGroup(group);
+            });
+        }
+        this.destination.complete();
+    }
+    removeGroup(key) {
+        this.groups[key] = null;
+    }
+}
+class GroupDurationSubscriber extends Subscriber {
+    constructor(group, parent) {
+        super(null);
+        this.group = group;
+        this.parent = parent;
+    }
+    _next(value) {
+        const group = this.group;
+        group.complete();
+        this.parent.removeGroup(group.key);
+    }
+    _error(err) {
+        const group = this.group;
+        group.error(err);
+        this.parent.removeGroup(group.key);
+    }
+    _complete() {
+        const group = this.group;
+        group.complete();
+        this.parent.removeGroup(group.key);
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

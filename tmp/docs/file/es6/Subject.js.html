@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">es6/Subject.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/Subject.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Observable from &apos;./Observable&apos;;
+import Subscriber from &apos;./Subscriber&apos;;
+import Subscription from &apos;./Subscription&apos;;
+import SubjectSubscription from &apos;./subjects/SubjectSubscription&apos;;
+const subscriptionAdd = Subscription.prototype.add;
+const subscriptionRemove = Subscription.prototype.remove;
+const subscriptionUnsubscribe = Subscription.prototype.unsubscribe;
+const subscriberNext = Subscriber.prototype.next;
+const subscriberError = Subscriber.prototype.error;
+const subscriberComplete = Subscriber.prototype.complete;
+const _subscriberNext = Subscriber.prototype._next;
+const _subscriberError = Subscriber.prototype._error;
+const _subscriberComplete = Subscriber.prototype._complete;
+const _observableSubscribe = Observable.prototype._subscribe;
+export default class Subject extends Observable {
+    constructor(...args) {
+        super(...args);
+        this.observers = [];
+        this.isUnsubscribed = false;
+        this.dispatching = false;
+        this.errorSignal = false;
+        this.completeSignal = false;
+    }
+    static create(source, destination) {
+        return new BidirectionalSubject(source, destination);
+    }
+    lift(operator) {
+        const subject = new BidirectionalSubject(this, this.destination || this);
+        subject.operator = operator;
+        return subject;
+    }
+    _subscribe(subscriber) {
+        if (subscriber.isUnsubscribed) {
+            return;
+        }
+        else if (this.errorSignal) {
+            subscriber.error(this.errorInstance);
+            return;
+        }
+        else if (this.completeSignal) {
+            subscriber.complete();
+            return;
+        }
+        else if (this.isUnsubscribed) {
+            throw new Error(&quot;Cannot subscribe to a disposed Subject.&quot;);
+        }
+        this.observers.push(subscriber);
+        return new SubjectSubscription(this, subscriber);
+    }
+    add(subscription) {
+        subscriptionAdd.call(this, subscription);
+    }
+    remove(subscription) {
+        subscriptionRemove.call(this, subscription);
+    }
+    unsubscribe() {
+        this.observers = void 0;
+        subscriptionUnsubscribe.call(this);
+    }
+    next(value) {
+        if (this.isUnsubscribed) {
+            return;
+        }
+        this.dispatching = true;
+        this._next(value);
+        this.dispatching = false;
+        if (this.errorSignal) {
+            this.error(this.errorInstance);
+        }
+        else if (this.completeSignal) {
+            this.complete();
+        }
+    }
+    error(error) {
+        if (this.isUnsubscribed || this.completeSignal) {
+            return;
+        }
+        this.errorSignal = true;
+        this.errorInstance = error;
+        if (this.dispatching) {
+            return;
+        }
+        this._error(error);
+        this.unsubscribe();
+    }
+    complete() {
+        if (this.isUnsubscribed || this.errorSignal) {
+            return;
+        }
+        this.completeSignal = true;
+        if (this.dispatching) {
+            return;
+        }
+        this._complete();
+        this.unsubscribe();
+    }
+    _next(value) {
+        let index = -1;
+        const observers = this.observers.slice(0);
+        const len = observers.length;
+        while (++index &lt; len) {
+            observers[index].next(value);
+        }
+    }
+    _error(error) {
+        let index = -1;
+        const observers = this.observers;
+        const len = observers.length;
+        // optimization -- block next, complete, and unsubscribe while dispatching
+        this.observers = void 0;
+        this.isUnsubscribed = true;
+        while (++index &lt; len) {
+            observers[index].error(error);
+        }
+        this.isUnsubscribed = false;
+    }
+    _complete() {
+        let index = -1;
+        const observers = this.observers;
+        const len = observers.length;
+        // optimization -- block next, complete, and unsubscribe while dispatching
+        this.observers = void 0; // optimization
+        this.isUnsubscribed = true;
+        while (++index &lt; len) {
+            observers[index].complete();
+        }
+        this.isUnsubscribed = false;
+    }
+}
+class BidirectionalSubject extends Subject {
+    constructor(source, destination) {
+        super();
+        this.source = source;
+        this.destination = destination;
+    }
+    _subscribe(subscriber) {
+        return _observableSubscribe.call(this, subscriber);
+    }
+    next(x) {
+        subscriberNext.call(this, x);
+    }
+    error(e) {
+        subscriberError.call(this, e);
+    }
+    complete() {
+        subscriberComplete.call(this);
+    }
+    _next(x) {
+        _subscriberNext.call(this, x);
+    }
+    _error(e) {
+        _subscriberError.call(this, e);
+    }
+    _complete() {
+        _subscriberComplete.call(this);
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

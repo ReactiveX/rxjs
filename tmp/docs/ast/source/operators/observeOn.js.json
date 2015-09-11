@@ -1,0 +1,423 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "ObserveOnOperator",
+            "range": [
+              9,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 26
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "ObserveOnOperator",
+            "range": [
+              9,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            9,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 26
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./observeOn-support",
+        "raw": "'./observeOn-support'",
+        "range": [
+          34,
+          55
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 34
+          },
+          "end": {
+            "line": 1,
+            "column": 55
+          }
+        }
+      },
+      "range": [
+        0,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "observeOn",
+          "range": [
+            81,
+            90
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 24
+            },
+            "end": {
+              "line": 2,
+              "column": 33
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "scheduler",
+            "range": [
+              91,
+              100
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 34
+              },
+              "end": {
+                "line": 2,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "delay",
+              "range": [
+                102,
+                107
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 45
+                },
+                "end": {
+                  "line": 2,
+                  "column": 50
+                }
+              }
+            },
+            "right": {
+              "type": "Literal",
+              "value": 0,
+              "raw": "0",
+              "range": [
+                110,
+                111
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 53
+                },
+                "end": {
+                  "line": 2,
+                  "column": 54
+                }
+              }
+            },
+            "range": [
+              102,
+              111
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 45
+              },
+              "end": {
+                "line": 2,
+                "column": 54
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "ThisExpression",
+                    "range": [
+                      126,
+                      130
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "lift",
+                    "range": [
+                      131,
+                      135
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "range": [
+                    126,
+                    135
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 20
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "ObserveOnOperator",
+                      "range": [
+                        140,
+                        157
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 25
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 42
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "scheduler",
+                        "range": [
+                          158,
+                          167
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 43
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 52
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "delay",
+                        "range": [
+                          169,
+                          174
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 54
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 59
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      136,
+                      175
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 60
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  126,
+                  176
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 61
+                  }
+                }
+              },
+              "range": [
+                119,
+                177
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 62
+                }
+              }
+            }
+          ],
+          "range": [
+            113,
+            179
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 56
+            },
+            "end": {
+              "line": 4,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          72,
+          179
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 15
+          },
+          "end": {
+            "line": 4,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        57,
+        179
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    179
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1
+    }
+  },
+  "comments": []
+}

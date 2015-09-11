@@ -1,0 +1,388 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "ScalarObservable",
+            "range": [
+              7,
+              23
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 23
+              }
+            }
+          },
+          "range": [
+            7,
+            23
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 23
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../observables/ScalarObservable",
+        "raw": "'../observables/ScalarObservable'",
+        "range": [
+          29,
+          62
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 29
+          },
+          "end": {
+            "line": 1,
+            "column": 62
+          }
+        }
+      },
+      "range": [
+        0,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "concat",
+            "range": [
+              71,
+              77
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            71,
+            77
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./concat-static",
+        "raw": "'./concat-static'",
+        "range": [
+          83,
+          100
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 19
+          },
+          "end": {
+            "line": 2,
+            "column": 36
+          }
+        }
+      },
+      "range": [
+        64,
+        101
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "startWith",
+          "range": [
+            126,
+            135
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 24
+            },
+            "end": {
+              "line": 3,
+              "column": 33
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "x",
+            "range": [
+              136,
+              137
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 34
+              },
+              "end": {
+                "line": 3,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "concat",
+                  "range": [
+                    152,
+                    158
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 17
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "ScalarObservable",
+                      "range": [
+                        163,
+                        179
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 22
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 38
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "x",
+                        "range": [
+                          180,
+                          181
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 4,
+                            "column": 39
+                          },
+                          "end": {
+                            "line": 4,
+                            "column": 40
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      159,
+                      182
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 18
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 41
+                      }
+                    }
+                  },
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      184,
+                      188
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 43
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 47
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  152,
+                  189
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 48
+                  }
+                }
+              },
+              "range": [
+                145,
+                190
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 49
+                }
+              }
+            }
+          ],
+          "range": [
+            139,
+            192
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 37
+            },
+            "end": {
+              "line": 5,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          117,
+          192
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 15
+          },
+          "end": {
+            "line": 5,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        102,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    192
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 1
+    }
+  },
+  "comments": []
+}

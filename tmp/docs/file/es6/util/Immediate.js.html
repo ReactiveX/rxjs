@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/util/Immediate.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/util/Immediate.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+All credit for this helper goes to http://github.com/YuzuJS/setImmediate
+*/
+import { root as JSGlobal } from &apos;./root&apos;;
+export var Immediate = {
+    setImmediate: (x) =&gt; { return 0; },
+    clearImmediate: (id) =&gt; { }
+};
+if (JSGlobal &amp;&amp; JSGlobal.setImmediate) {
+    Immediate.setImmediate = JSGlobal.setImmediate;
+    Immediate.clearImmediate = JSGlobal.clearImmediate;
+}
+else {
+    Immediate = (function (global, Immediate) {
+        var nextHandle = 1, // Spec says greater than zero
+        tasksByHandle = {}, currentlyRunningATask = false, doc = global.document, setImmediate;
+        // Don&apos;t get fooled by e.g. browserify environments.
+        if ({}.toString.call(global.process) === &quot;[object process]&quot;) {
+            // For Node.js before 0.9
+            setImmediate = installNextTickImplementation();
+        }
+        else if (canUsePostMessage()) {
+            // For non-IE10 modern browsers
+            setImmediate = installPostMessageImplementation();
+        }
+        else if (global.MessageChannel) {
+            // For web workers, where supported
+            setImmediate = installMessageChannelImplementation();
+        }
+        else if (doc &amp;&amp; &quot;onreadystatechange&quot; in doc.createElement(&quot;script&quot;)) {
+            // For IE 6&#x2013;8
+            setImmediate = installReadyStateChangeImplementation();
+        }
+        else {
+            // For older browsers
+            setImmediate = installSetTimeoutImplementation();
+        }
+        Immediate.setImmediate = setImmediate;
+        Immediate.clearImmediate = clearImmediate;
+        return Immediate;
+        function clearImmediate(handle) {
+            delete tasksByHandle[handle];
+        }
+        function addFromSetImmediateArguments(args) {
+            tasksByHandle[nextHandle] = partiallyApplied.apply(undefined, args);
+            return nextHandle++;
+        }
+        // This function accepts the same arguments as setImmediate, but
+        // returns a function that requires no arguments.
+        function partiallyApplied(handler, ...args) {
+            return function () {
+                if (typeof handler === &quot;function&quot;) {
+                    handler.apply(undefined, args);
+                }
+                else {
+                    (new Function(&quot;&quot; + handler))();
+                }
+            };
+        }
+        function runIfPresent(handle) {
+            // From the spec: &quot;Wait until any invocations of this algorithm started before this one have completed.&quot;
+            // So if we&apos;re currently running a task, we&apos;ll need to delay this invocation.
+            if (currentlyRunningATask) {
+                // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+                // &quot;too much recursion&quot; error.
+                setTimeout(partiallyApplied(runIfPresent, handle), 0);
+            }
+            else {
+                var task = tasksByHandle[handle];
+                if (task) {
+                    currentlyRunningATask = true;
+                    try {
+                        task();
+                    }
+                    finally {
+                        clearImmediate(handle);
+                        currentlyRunningATask = false;
+                    }
+                }
+            }
+        }
+        function installNextTickImplementation() {
+            return function setImmediate() {
+                var handle = addFromSetImmediateArguments(arguments);
+                global.process.nextTick(partiallyApplied(runIfPresent, handle));
+                return handle;
+            };
+        }
+        function canUsePostMessage() {
+            // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+            // where `global.postMessage` means something completely different and can&apos;t be used for this purpose.
+            if (global.postMessage &amp;&amp; !global.importScripts) {
+                var postMessageIsAsynchronous = true;
+                var oldOnMessage = global.onmessage;
+                global.onmessage = function () {
+                    postMessageIsAsynchronous = false;
+                };
+                global.postMessage(&quot;&quot;, &quot;*&quot;);
+                global.onmessage = oldOnMessage;
+                return postMessageIsAsynchronous;
+            }
+        }
+        function installPostMessageImplementation() {
+            // Installs an event handler on `global` for the `message` event: see
+            // * https://developer.mozilla.org/en/DOM/window.postMessage
+            // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+            var messagePrefix = &quot;setImmediate$&quot; + Math.random() + &quot;$&quot;;
+            var onGlobalMessage = function (event) {
+                if (event.source === global &amp;&amp;
+                    typeof event.data === &quot;string&quot; &amp;&amp;
+                    event.data.indexOf(messagePrefix) === 0) {
+                    runIfPresent(+event.data.slice(messagePrefix.length));
+                }
+            };
+            if (global.addEventListener) {
+                global.addEventListener(&quot;message&quot;, onGlobalMessage, false);
+            }
+            else {
+                global.attachEvent(&quot;onmessage&quot;, onGlobalMessage);
+            }
+            return function setImmediate() {
+                var handle = addFromSetImmediateArguments(arguments);
+                global.postMessage(messagePrefix + handle, &quot;*&quot;);
+                return handle;
+            };
+        }
+        function installMessageChannelImplementation() {
+            var channel = new MessageChannel();
+            channel.port1.onmessage = function (event) {
+                var handle = event.data;
+                runIfPresent(handle);
+            };
+            return function setImmediate() {
+                var handle = addFromSetImmediateArguments(arguments);
+                channel.port2.postMessage(handle);
+                return handle;
+            };
+        }
+        function installReadyStateChangeImplementation() {
+            var html = doc.documentElement;
+            return function setImmediate() {
+                var handle = addFromSetImmediateArguments(arguments);
+                // Create a &lt;script&gt; element; its readystatechange event will be fired asynchronously once it is inserted
+                // into the document. Do so, thus queuing up the task. Remember to clean up once it&apos;s been called.
+                var script = doc.createElement(&quot;script&quot;);
+                script.onreadystatechange = function () {
+                    runIfPresent(handle);
+                    script.onreadystatechange = null;
+                    html.removeChild(script);
+                    script = null;
+                };
+                html.appendChild(script);
+                return handle;
+            };
+        }
+        function installSetTimeoutImplementation() {
+            return function setImmediate() {
+                var handle = addFromSetImmediateArguments(arguments);
+                setTimeout(partiallyApplied(runIfPresent, handle), 0);
+                return handle;
+            };
+        }
+    }(JSGlobal, Immediate));
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
