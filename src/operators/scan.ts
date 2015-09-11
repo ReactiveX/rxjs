@@ -19,8 +19,8 @@ class ScanOperator<T, R> implements Operator<T, R> {
     this.project = project;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new ScanSubscriber(observer, this.project, this.acc);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new ScanSubscriber(subscriber, this.project, this.acc);
   }
 }
 

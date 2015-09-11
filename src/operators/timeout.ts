@@ -15,8 +15,8 @@ class TimeoutOperator<T, R> implements Operator<T, R> {
   constructor(private waitFor: number, private errorToSend: any, private scheduler: Scheduler) { 
   }
   
-  call(observer: Observer<R>) {
-    return new TimeoutSubscriber(observer, this.waitFor, this.errorToSend, this.scheduler);
+  call(subscriber: Subscriber<R>) {
+    return new TimeoutSubscriber(subscriber, this.waitFor, this.errorToSend, this.scheduler);
   }
 }
 

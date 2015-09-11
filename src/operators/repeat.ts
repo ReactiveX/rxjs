@@ -16,8 +16,8 @@ class RepeatOperator<T, R> implements Operator<T, R> {
   constructor(protected count: number, protected original:Observable<T>) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new RepeatSubscriber<T>(observer, this.count, this.original);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new RepeatSubscriber<T>(subscriber, this.count, this.original);
   }
 }
 

@@ -23,8 +23,8 @@ class DoOperator<T, R> implements Operator<T, R> {
     this.complete = complete;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new DoSubscriber(observer, this.next, this.error, this.complete);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new DoSubscriber(subscriber, this.next, this.error, this.complete);
   }
 }
 

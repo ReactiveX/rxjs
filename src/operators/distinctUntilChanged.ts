@@ -20,8 +20,8 @@ class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
     this.compare = compare;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new DistinctUntilChangedSubscriber(observer, this.compare);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new DistinctUntilChangedSubscriber(subscriber, this.compare);
   }
 }
 

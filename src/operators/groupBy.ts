@@ -24,8 +24,8 @@ class GroupByOperator<T, R> implements Operator<T, R> {
     private elementSelector?: (value: T) => R) {
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new GroupBySubscriber<T, R>(observer, this.keySelector, this.durationSelector, this.elementSelector);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new GroupBySubscriber<T, R>(subscriber, this.keySelector, this.durationSelector, this.elementSelector);
   }
 }
 

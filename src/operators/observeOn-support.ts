@@ -14,8 +14,8 @@ export class ObserveOnOperator<T, R> implements Operator<T, R> {
     this.scheduler = scheduler;
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new ObserveOnSubscriber(observer, this.scheduler, this.delay);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new ObserveOnSubscriber(subscriber, this.scheduler, this.delay);
   }
 }
 

@@ -18,8 +18,8 @@ class FilterOperator<T, R> implements Operator<T, R> {
     this.select = <(x: T, ix?: number) => boolean>bindCallback(select, thisArg, 2);
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new FilterSubscriber(observer, this.select);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new FilterSubscriber(subscriber, this.select);
   }
 }
 

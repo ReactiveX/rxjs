@@ -23,8 +23,8 @@ export class FlatMapOperator<T, R> implements Operator<T, R> {
     this.concurrent = concurrent;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new FlatMapSubscriber(observer, this.concurrent, this.project, this.projectResult);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new FlatMapSubscriber(subscriber, this.concurrent, this.project, this.projectResult);
   }
 }
 

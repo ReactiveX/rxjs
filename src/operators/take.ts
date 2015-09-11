@@ -14,8 +14,8 @@ class TakeOperator<T, R> implements Operator<T, R> {
     this.total = total;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new TakeSubscriber(observer, this.total);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new TakeSubscriber(subscriber, this.total);
   }
 }
 

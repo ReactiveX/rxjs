@@ -17,8 +17,8 @@ export class ZipOperator<T, R> implements Operator<T, R> {
     this.project = project;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new ZipSubscriber<T, R>(observer, this.project);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new ZipSubscriber<T, R>(subscriber, this.project);
   }
 }
 

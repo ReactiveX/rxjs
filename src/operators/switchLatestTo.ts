@@ -1,6 +1,7 @@
 import Operator from '../Operator';
 import Observer from '../Observer';
 import Observable from '../Observable';
+import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 
 import { FlatMapToOperator, FlatMapToSubscriber } from './flatMapTo-support';
@@ -17,8 +18,8 @@ class SwitchLatestToOperator<T, R> extends FlatMapToOperator<T, R> {
     super(observable, projectResult, 1);
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new SwitchLatestToSubscriber(observer, this.observable, this.projectResult);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new SwitchLatestToSubscriber(subscriber, this.observable, this.projectResult);
   }
 }
 

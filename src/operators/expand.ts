@@ -22,8 +22,8 @@ class ExpandOperator<T, R> implements Operator<T, R> {
     this.project = project;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new ExpandSubscriber(observer, this.project);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new ExpandSubscriber(subscriber, this.project);
   }
 }
 

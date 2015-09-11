@@ -35,8 +35,8 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
     this.project = project;
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new CombineLatestSubscriber<T, R>(observer, this.project);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new CombineLatestSubscriber<T, R>(subscriber, this.project);
   }
 }
 

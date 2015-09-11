@@ -11,8 +11,8 @@ class SkipUntilOperator<T, R> implements Operator<T, R> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(observer: Observer<R>): Observer<T> {
-    return new SkipUntilSubscriber(observer, this.notifier);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new SkipUntilSubscriber(subscriber, this.notifier);
   }
 }
 

@@ -7,8 +7,8 @@ export default function count() {
 }
 
 class CountOperator<T, R> implements Operator<T, R> {
-  call(observer: Observer<number>): Observer<T> {
-    return new CountSubscriber<T>(observer);
+  call(subscriber: Subscriber<number>): Subscriber<T> {
+    return new CountSubscriber<T>(subscriber);
   }
 }
 

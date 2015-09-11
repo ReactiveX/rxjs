@@ -17,8 +17,8 @@ class MapOperator<T, R> implements Operator<T, R> {
   constructor(project: (x: T, ix?: number) => R, thisArg?: any) {
     this.project = <(x: T, ix?: number) => R>bindCallback(project, thisArg, 2);
   }
-  call(observer: Observer<R>): Observer<T> {
-    return new MapSubscriber(observer, this.project);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new MapSubscriber(subscriber, this.project);
   }
 }
 

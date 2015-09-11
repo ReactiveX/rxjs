@@ -16,8 +16,8 @@ class BufferCountOperator<T, R> implements Operator<T, R> {
   constructor(private bufferSize: number, private startBufferEvery: number) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new BufferCountSubscriber(observer, this.bufferSize, this.startBufferEvery);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery);
   }
 }
 

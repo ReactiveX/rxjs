@@ -21,8 +21,8 @@ class WindowTimeOperator<T, R> implements Operator<T, R> {
   constructor(private windowTimeSpan: number, private windowCreationInterval: number, private scheduler: Scheduler) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new WindowTimeSubscriber(observer, this.windowTimeSpan, this.windowCreationInterval, this.scheduler);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler);
   }
 }
 

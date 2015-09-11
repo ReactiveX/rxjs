@@ -18,8 +18,8 @@ class WindowToggleOperator<T, R, O> implements Operator<T, R> {
   constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new WindowToggleSubscriber<T, O>(observer, this.openings, this.closingSelector);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new WindowToggleSubscriber<T, O>(subscriber, this.openings, this.closingSelector);
   }
 }
 

@@ -19,8 +19,8 @@ class WindowCountOperator<T, R> implements Operator<T, R> {
   constructor(private windowSize: number, private startWindowEvery: number) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new WindowCountSubscriber(observer, this.windowSize, this.startWindowEvery);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery);
   }
 }
 

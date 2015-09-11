@@ -11,8 +11,8 @@ class RetryOperator<T, R> implements Operator<T, R> {
   constructor(private count: number, protected original:Observable<T>) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new RetrySubscriber<T>(observer, this.count, this.original);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new RetrySubscriber<T>(subscriber, this.count, this.original);
   }
 }
 

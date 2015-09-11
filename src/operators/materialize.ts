@@ -8,8 +8,8 @@ export default function materialize<T>() {
 }
 
 class MaterializeOperator<T, R> implements Operator<T, R> {
-  call(observer: Observer<T>): Observer<T> {
-    return new MaterializeSubscriber(observer);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new MaterializeSubscriber(subscriber);
   }
 }
 

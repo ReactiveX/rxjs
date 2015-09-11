@@ -16,8 +16,8 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, R> {
   constructor(private defaultValue: R) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new DefaultIfEmptySubscriber(observer, this.defaultValue);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new DefaultIfEmptySubscriber(subscriber, this.defaultValue);
   }
 }
 

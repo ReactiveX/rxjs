@@ -19,8 +19,8 @@ class DebounceOperator<T, R> implements Operator<T, R> {
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
 
-  call(observer: Observer<T>): Observer<T> {
-    return new DebounceSubscriber(observer, this.dueTime, this.scheduler);
+  call(subscriber: Subscriber<T>): Subscriber<T> {
+    return new DebounceSubscriber(subscriber, this.dueTime, this.scheduler);
   }
 }
 
