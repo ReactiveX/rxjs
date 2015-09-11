@@ -18,7 +18,7 @@ declare module NodeJS {
   }
 }
 
-export var root = (objectTypes[typeof window] && window) || this;
+export var root:any = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);
 
 var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
 var freeModule = objectTypes[typeof module] && module && !module.nodeType && module;
