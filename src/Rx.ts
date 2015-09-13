@@ -9,6 +9,7 @@ import Observable from './Observable';
 import Subscriber from './Subscriber';
 import Subscription from './Subscription';
 import Notification from './Notification';
+import EmptyError from './util/EmptyError';
 
 import ReplaySubject from './subjects/ReplaySubject';
 import BehaviorSubject from './subjects/BehaviorSubject';
@@ -215,6 +216,10 @@ import sampleTime from './operators/sampleTime';
 observableProto.sample = sample;
 observableProto.sampleTime = sampleTime;
 
+import last from './operators/last';
+
+observableProto.last = last;
+
 var Scheduler = {
   nextTick,
   immediate
@@ -231,5 +236,6 @@ export {
     ConnectableObservable,
     Notification,
     VirtualTimeScheduler,
-    TestScheduler
+    TestScheduler,
+    EmptyError
 };

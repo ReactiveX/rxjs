@@ -76,6 +76,8 @@ export default class TestScheduler extends VirtualTimeScheduler {
     let results: ({ notification: Notification<any>, frame: number })[] = [];
     let subIndex = marbles.indexOf('^');
     let frameOffset = subIndex === -1 ? 0 : (subIndex * -10);
+    let getValue = typeof values !== 'object' ? (x) => x : (x) => values[x];
+    let groupStart = -1;
     
     for (let i = 0; i < len; i++) {
       let frame = i * 10;
@@ -83,6 +85,12 @@ export default class TestScheduler extends VirtualTimeScheduler {
       let c = marbles[i];
       switch (c) {
         case '-':
+          break;
+        case '(':
+          groupStart = frame;
+          break;
+        case ')':
+          groupStart = -1;
           break;
         case '|':
           notification = Notification.createComplete();
@@ -93,14 +101,15 @@ export default class TestScheduler extends VirtualTimeScheduler {
           notification = Notification.createError(errorValue || 'error');
           break;
         default:
-          notification = Notification.createNext(values[c]);
+          notification = Notification.createNext(getValue(c));
           break;
       }
+      
       
       frame += frameOffset;
       
       if (notification) {
-        results.push({ notification, frame });
+        results.push({ notification, frame: groupStart > -1 ? groupStart : frame });
       }
     }
     return results;
