@@ -10,6 +10,7 @@ import Subscriber from './Subscriber';
 import Subscription from './Subscription';
 import Notification from './Notification';
 import EmptyError from './util/EmptyError';
+import ArgumentOutOfRangeError from './util/ArgumentOutOfRangeError';
 
 import ReplaySubject from './subjects/ReplaySubject';
 import BehaviorSubject from './subjects/BehaviorSubject';
@@ -102,6 +103,7 @@ import take from './operators/take';
 import skip from './operators/skip';
 import skipUntil from './operators/skipUntil';
 import takeUntil from './operators/takeUntil';
+import elementAt from './operators/elementAt';
 import filter from './operators/filter';
 import distinctUntilChanged from './operators/distinctUntilChanged';
 import distinctUntilKeyChanged from './operators/distinctUntilKeyChanged';
@@ -110,6 +112,7 @@ observableProto.take = take;
 observableProto.skip = skip;
 observableProto.takeUntil = takeUntil;
 observableProto.skipUntil = skipUntil;
+observableProto.elementAt = elementAt;
 observableProto.filter = filter;
 observableProto.distinctUntilChanged = distinctUntilChanged;
 observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
@@ -237,5 +240,6 @@ export {
     Notification,
     VirtualTimeScheduler,
     TestScheduler,
-    EmptyError
+    EmptyError,
+    ArgumentOutOfRangeError
 };
