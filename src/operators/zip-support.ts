@@ -30,7 +30,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   project: (...values: Array<any>) => R;
   limit: number = Number.POSITIVE_INFINITY;
 
-  constructor(destination: Observer<R>,
+  constructor(destination: Subscriber<R>,
               project?: (...values: Array<any>) => R,
               values: any = Object.create(null)) {
     super(destination);

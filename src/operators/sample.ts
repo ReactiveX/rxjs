@@ -21,7 +21,7 @@ class SampleSubscriber<T> extends Subscriber<T> {
   private lastValue: T;
   private hasValue: boolean = false;
   
-  constructor(destination: Observer<T>, private notifier: Observable<any>) {
+  constructor(destination: Subscriber<T>, private notifier: Observable<any>) {
     super(destination);
     this.add(notifier._subscribe(new SampleNoficationSubscriber(this)));
   }

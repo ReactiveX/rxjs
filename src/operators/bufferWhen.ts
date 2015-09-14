@@ -27,7 +27,7 @@ class BufferWhenSubscriber<T> extends Subscriber<T> {
   private buffer: T[];
   private closingNotification: Subscription<any>;
   
-  constructor(destination: Observer<T>, private closingSelector: () => Observable<any>) {
+  constructor(destination: Subscriber<T>, private closingSelector: () => Observable<any>) {
     super(destination);
     this.openBuffer();
   }

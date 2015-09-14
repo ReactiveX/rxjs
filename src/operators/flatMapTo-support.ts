@@ -28,7 +28,7 @@ export class FlatMapToSubscriber<T, R> extends FlatMapSubscriber<T, R> {
 
   observable: Observable<T>;
 
-  constructor(destination: Observer<R>,
+  constructor(destination: Subscriber<R>,
               concurrent: number,
               observable: Observable<T>,
               projectResult?: (x: T, y: any, ix: number, iy: number) => R) {

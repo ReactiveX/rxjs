@@ -18,7 +18,7 @@ class RetryOperator<T, R> implements Operator<T, R> {
 
 class RetrySubscriber<T> extends Subscriber<T> {
   private retries: number = 0;
-  constructor(destination: Observer<T>, private count: number, private original: Observable<T>) {
+  constructor(destination: Subscriber<T>, private count: number, private original: Observable<T>) {
     super(destination);
   }
   

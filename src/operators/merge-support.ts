@@ -26,7 +26,7 @@ export class MergeSubscriber<T, R> extends Subscriber<T> {
   buffer: Observable<any>[] = [];
   concurrent: number;
 
-  constructor(destination: Observer<R>, concurrent: number) {
+  constructor(destination: Subscriber<R>, concurrent: number) {
     super(destination);
     this.concurrent = concurrent;
   }

@@ -27,7 +27,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
   private closingNotification: Subscription<any>;
   
-  constructor(destination: Observer<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
+  constructor(destination: Subscriber<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
     this.add(this.openings._subscribe(new WindowToggleOpeningsSubscriber(this)));
   }

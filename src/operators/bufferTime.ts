@@ -28,7 +28,7 @@ class BufferTimeOperator<T, R> implements Operator<T, R> {
 class BufferTimeSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
   
-  constructor(destination: Observer<T>, private bufferTimeSpan: number, private bufferCreationInterval: number, private scheduler: Scheduler) {
+  constructor(destination: Subscriber<T>, private bufferTimeSpan: number, private bufferCreationInterval: number, private scheduler: Scheduler) {
     super(destination);
     let buffer = this.openBuffer();
     if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {

@@ -48,7 +48,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }
   }
 
-  constructor(destination: Observer<T>, delay: number, scheduler: Scheduler) {
+  constructor(destination: Subscriber<T>, delay: number, scheduler: Scheduler) {
     super(destination);
     this.delay = delay;
     this.scheduler = scheduler;

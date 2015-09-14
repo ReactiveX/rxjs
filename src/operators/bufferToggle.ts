@@ -27,7 +27,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
   private closingNotification: Subscription<any>;
   
-  constructor(destination: Observer<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
+  constructor(destination: Subscriber<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
     this.add(this.openings._subscribe(new BufferToggleOpeningsSubscriber(this)));
   }

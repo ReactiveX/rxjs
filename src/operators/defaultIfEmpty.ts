@@ -25,7 +25,7 @@ class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
 
   isEmpty: boolean = true;
 
-  constructor(destination: Observer<T>, private defaultValue: R) {
+  constructor(destination: Subscriber<T>, private defaultValue: R) {
     super(destination);
   }
 

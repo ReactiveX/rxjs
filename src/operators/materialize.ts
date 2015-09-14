@@ -14,7 +14,7 @@ class MaterializeOperator<T, R> implements Operator<T, R> {
 }
 
 class MaterializeSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>) {
+  constructor(destination: Subscriber<T>) {
     super(destination);
   }
 

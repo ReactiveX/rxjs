@@ -28,7 +28,7 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   delay: number;
   scheduler: Scheduler;
 
-  constructor(destination: Observer<T>, scheduler: Scheduler, delay: number = 0) {
+  constructor(destination: Subscriber<T>, scheduler: Scheduler, delay: number = 0) {
     super(destination);
     this.delay = delay;
     this.scheduler = scheduler;

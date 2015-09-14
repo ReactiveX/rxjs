@@ -33,7 +33,7 @@ export class FlatMapSubscriber<T, R> extends MergeSubscriber<T, R> {
   project: (x: T, ix: number) => Observable<any>;
   projectResult: (x: T, y: any, ix: number, iy: number) => R;
 
-  constructor(destination: Observer<R>,
+  constructor(destination: Subscriber<R>,
               concurrent: number,
               project: (x: T, ix: number) => Observable<any>,
               projectResult?: (x: T, y: any, ix: number, iy: number) => R) {

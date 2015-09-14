@@ -31,7 +31,7 @@ class CatchSubscriber<T> extends Subscriber<T> {
   selector: (err:any, caught:Observable<any>) => Observable<any>;
   caught: Observable<any>;
 
-  constructor(destination: Observer<T>, selector: (err:any, caught:Observable<any>) => Observable<any>, caught: Observable<any>) {
+  constructor(destination: Subscriber<T>, selector: (err:any, caught:Observable<any>) => Observable<any>, caught: Observable<any>) {
     super(destination);
     this.selector = selector;
     this.caught = caught;

@@ -28,7 +28,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
   private windows: { count: number, notified : boolean, window: Subject<T> } [] = [{ count: 0, notified : false, window : new Subject<T>() }];
   private count: number = 0;
   
-  constructor(destination: Observer<T>, private windowSize: number, private startWindowEvery: number) {
+  constructor(destination: Subscriber<T>, private windowSize: number, private startWindowEvery: number) {
     super(destination);
   }
   

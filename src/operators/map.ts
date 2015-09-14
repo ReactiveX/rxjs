@@ -36,7 +36,7 @@ class MapSubscriber<T, R> extends Subscriber<T> {
   count: number = 0;
   project: (x: T, ix?: number) => R;
 
-  constructor(destination: Observer<R>,
+  constructor(destination: Subscriber<R>,
               project: (x: T, ix?: number) => R) {
     super(destination);
     this.project = project;
