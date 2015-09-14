@@ -7,6 +7,8 @@ Contents
 - [Pull Requests](#pull-requests)
   - [Coding Style](#code)
   - [Commit Messages](#commit)
+- [Unit Tests](#unit-tests)
+  - [Writing Marble Tests](doc/writing-marble-tests.md)
 - [Performance Tests](#performance-tests)
   - [Macro](#macro)
   - [Micro](#micro)
@@ -94,6 +96,30 @@ from the main (upstream) repository:
 - favor readability over terseness
 
 (TBD): For now try to follow the style that exists elsewhere in the source, and use your best judgment.
+
+
+### <a id="unit-tests"></a>Unit Tests
+
+Unit tests are located under the [specs directory](/specs). Unit tests over synchronous operators and operations 
+can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any 
+asynchronous operator should be written in [Marble Test Style outlined in detail here](docs/writing-marble-tests.md). 
+
+Each operator under test must be in its own file to cover the following cases:
+
+- Never
+- Empty
+- Single/Multiple Values
+- Error in the sequence
+- Never ending sequences
+- Early disposal in sequences
+
+If the operator accepts a function as an argument from the user/developer (for example `filter(fn)` or `zip(a, fn)`), 
+then it must cover the following cases:
+
+- Success with all values in the callback
+- Success with the context, if any allowed in the operator signature
+- If an error is thrown
+
 
 ### <a id="performance-tests"></a>Performance Tests
 
