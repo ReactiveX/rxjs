@@ -25,7 +25,7 @@ class WindowOperator<T, R> implements Operator<T, R> {
 class WindowSubscriber<T> extends Subscriber<T> {
   private window: Subject<T> = new Subject<T>();
   
-  constructor(destination: Observer<T>, private closingNotifier: Observable<any>) {
+  constructor(destination: Subscriber<T>, private closingNotifier: Observable<any>) {
     super(destination);
     this.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this)));
     this.openWindow();

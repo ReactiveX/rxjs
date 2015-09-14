@@ -32,7 +32,7 @@ class GroupByOperator<T, R> implements Operator<T, R> {
 class GroupBySubscriber<T, R> extends Subscriber<T> {
   private groups = null;
 
-  constructor(destination: Observer<R>, private keySelector: (value: T) => string,
+  constructor(destination: Subscriber<R>, private keySelector: (value: T) => string,
     private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
     private elementSelector?: (value: T) => R) {
     super(destination);

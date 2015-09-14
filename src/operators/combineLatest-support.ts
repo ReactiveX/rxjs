@@ -45,7 +45,7 @@ export class CombineLatestSubscriber<T, R> extends ZipSubscriber<T, R> {
   project: (...values: Array<any>) => R;
   limit: number = 0;
 
-  constructor(destination: Observer<R>, project?: (...values: Array<any>) => R) {
+  constructor(destination: Subscriber<R>, project?: (...values: Array<any>) => R) {
     super(destination, project, []);
   }
 

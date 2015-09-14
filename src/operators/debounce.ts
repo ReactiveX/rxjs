@@ -27,7 +27,7 @@ class DebounceOperator<T, R> implements Operator<T, R> {
 class DebounceSubscriber<T> extends Subscriber<T> {
   private debounced: Subscription<any>;
 
-  constructor(destination: Observer < T >, private dueTime: number, private scheduler: Scheduler) {
+  constructor(destination: Subscriber < T >, private dueTime: number, private scheduler: Scheduler) {
     super(destination);
   }
 

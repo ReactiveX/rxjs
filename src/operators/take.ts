@@ -24,7 +24,7 @@ class TakeSubscriber<T> extends Subscriber<T> {
   total: number;
   count: number = 0;
 
-  constructor(destination: Observer<T>, total: number) {
+  constructor(destination: Subscriber<T>, total: number) {
     super(destination);
     this.total = total;
   }

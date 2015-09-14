@@ -31,7 +31,7 @@ class ReduceSubscriber<T, R> extends Subscriber<T> {
   hasValue: boolean = false;
   project: (acc: R, x: T) => R;
 
-  constructor(destination: Observer<T>, project: (acc: R, x: T) => R, acc?: R) {
+  constructor(destination: Subscriber<T>, project: (acc: R, x: T) => R, acc?: R) {
     super(destination);
     this.acc = acc;
     this.project = project;

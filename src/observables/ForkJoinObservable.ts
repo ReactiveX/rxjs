@@ -11,7 +11,7 @@ export default class ForkJoinObservable<T> extends Observable<T> {
     return new ForkJoinObservable(observables);
   }
   
-  _subscribe(subscriber: Observer<any>) {
+  _subscribe(subscriber: Subscriber<any>) {
     const observables = this.observables;
     const len = observables.length;
     let context = { complete: 0, total: len, values: emptyArray(len) };
@@ -24,7 +24,7 @@ export default class ForkJoinObservable<T> extends Observable<T> {
 class AllSubscriber<T> extends Subscriber<T> {
   private _value: T;
   
-  constructor(destination: Observer<T>, private parent: ForkJoinObservable<T>, private index: number,
+  constructor(destination: Subscriber<T>, private parent: ForkJoinObservable<T>, private index: number,
     private context: { complete: number, total: number, values: any[] }) {
     super(destination);
   }

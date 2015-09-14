@@ -23,7 +23,7 @@ class RepeatOperator<T, R> implements Operator<T, R> {
 
 class RepeatSubscriber<T> extends Subscriber<T> {
   private repeated: number = 0;
-  constructor(destination: Observer<T>, public count: number, public original: Observable<T>) {
+  constructor(destination: Subscriber<T>, public count: number, public original: Observable<T>) {
     super(destination);
   }
 

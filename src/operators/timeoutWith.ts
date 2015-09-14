@@ -24,7 +24,7 @@ class TimeoutWithOperator<T, R> implements Operator<T, R> {
 class TimeoutWithSubscriber<T> extends Subscriber<T> {
   timeoutSubscription: Subscription<any>;
   
-  constructor(destination: Observer<T>, private waitFor: number, private withObservable: Observable<any>, private scheduler: Scheduler) {
+  constructor(destination: Subscriber<T>, private waitFor: number, private withObservable: Observable<any>, private scheduler: Scheduler) {
     super(destination);
     let delay = waitFor;
     scheduler.schedule(dispatchTimeout, delay, { subscriber: this });

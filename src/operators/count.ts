@@ -16,7 +16,7 @@ class CountSubscriber<T> extends Subscriber<T> {
 
   count: number = 0;
 
-  constructor(destination: Observer<number>) {
+  constructor(destination: Subscriber<number>) {
     super(destination);
   }
 
