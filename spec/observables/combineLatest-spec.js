@@ -1,24 +1,17 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.combineLatest', function () {
-  it('should combineLatest the provided observables', function (done) {
-    var expected = ['00', '01', '11', '12', '22', '23'];
-    var i = 0;
-
-    Observable.combineLatest(
-      Observable.interval(50).take(3),
-      Observable.interval(45).take(4),
-      function (a, b) {
+  it('should combineLatest the provided observables', function () {
+    var firstSource =  hot('----a----b----c----|');
+    var secondSource = hot('--d--e--f--g--|');
+    var expected =         '----uv--wx-y--z----|';
+    
+    var combined = Observable.combineLatest(firstSource, secondSource, function (a, b) {
         return '' + a + b;
-      }
-    )
-    .subscribe(function (x) {
-        expect(x).toBe(expected[i++])
-      }, null,
-      function () {
-        done();
-      });
-  }, 300);
+      })
+      
+    expectObservable(combined).toBe(expected, {u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg'});
+  });
 });
