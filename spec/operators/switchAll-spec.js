@@ -1,4 +1,4 @@
-/* expect, it, describe */
+/* expect, it, describe, expectObserable, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 
 var Observable = Rx.Observable;
@@ -25,5 +25,13 @@ describe('Observable.prototype.switchAll()', function(){
     Observable.of(a, b).switchAll().subscribe(function (x) {
       expect(x).toBe(r[i++]);
     }, null, done);
+  });
+  
+  it('should handle a hot observable of observables', function() {
+    var x = cold(        '--a---b---c--|');
+    var y = cold(                '---d--e---f---|');
+    var e1 = hot(  '------x-------y------|', { x: x, y: y });
+    var expected = '--------a---b----d--e---f---|';
+    expectObservable(e1.switchAll()).toBe(expected);
   });
 });
