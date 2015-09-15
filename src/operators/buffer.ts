@@ -53,7 +53,10 @@ class BufferSubscriber<T> extends Subscriber<T> {
   flushBuffer() {
     const buffer = this.buffer;
     this.buffer = [];
-    this.destination.next(buffer);
+    
+    if (buffer.length > 0) {
+      this.destination.next(buffer);
+    }
   }
 }
 
