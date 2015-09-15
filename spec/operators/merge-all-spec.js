@@ -33,4 +33,12 @@ describe('mergeAll', function () {
       done();
     });
   });
+  
+  it('should handle merging a hot observable of observables', function (){
+    var x = cold(     'a---b---c---|');
+    var y = cold(        'd---e---f---|');
+    var e1 =    hot('--x--y--|', { x: x, y: y });
+    var expected =  '--a--db--ec--f---|';
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
 });
