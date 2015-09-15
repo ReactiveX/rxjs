@@ -27,10 +27,8 @@ export class MergeAllSubscriber<T> extends Subscriber<T> {
       if(observable._isScalar) {
         this.destination.next(observable.value);
       } else {
-        const innerSub = new Subscription();
-        this.add(innerSub);
         this.active++;
-        innerSub.add(observable.subscribe(new MergeAllInnerSubscriber(this.destination, this, innerSub)));
+        this.add(observable.subscribe(new MergeAllInnerSubscriber(this.destination, this)))
       }
     } else {
       this.buffer.push(observable);
@@ -57,12 +55,11 @@ export class MergeAllSubscriber<T> extends Subscriber<T> {
 }
 
 export class MergeAllInnerSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>, private parent: MergeAllSubscriber<T>, 
-    private innerSub: Subscription<T> ) {
+  constructor(destination: Observer<T>, private parent: MergeAllSubscriber<T>) {
     super(destination);
   }
   
   _complete() {
-    this.parent.notifyComplete(this.innerSub);
+    this.parent.notifyComplete(this);
   }
 }

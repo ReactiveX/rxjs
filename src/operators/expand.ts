@@ -51,10 +51,8 @@ class ExpandSubscriber<T, R> extends Subscriber<T> {
         if(result._isScalar) {
           this._next(result.value);
         } else {
-          let innerSub = new Subscription();
           this.active++;
-          innerSub.add(result.subscribe(new ExpandInnerSubscriber(this.destination, this, innerSub)));
-          this.add(innerSub);
+          this.add(result.subscribe(new ExpandInnerSubscriber(this.destination, this)));
         }
       }
     } else {
@@ -83,7 +81,7 @@ class ExpandSubscriber<T, R> extends Subscriber<T> {
 }
 
 class ExpandInnerSubscriber<T, R> extends Subscriber<T> {
-  constructor(destination: Observer<T>, private parent: ExpandSubscriber<T, R>, private innerSub: Subscription<T>) {
+  constructor(destination: Observer<T>, private parent: ExpandSubscriber<T, R>) {
     super(destination);
   }
   
@@ -92,6 +90,6 @@ class ExpandInnerSubscriber<T, R> extends Subscriber<T> {
   }
   
   _complete() {
-    this.parent.notifyComplete(this.innerSub);
+    this.parent.notifyComplete(this);
   }
 }

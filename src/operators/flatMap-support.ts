@@ -65,10 +65,8 @@ export class FlatMapSubscriber<T, R, R2> extends Subscriber<T> {
         this.destination.next(observable.value);
       }
     } else {
-      const innerSub = new Subscription();
-      this.add(innerSub);
       this.active++;
-      innerSub.add(observable.subscribe(new FlatMapInnerSubscriber(this.destination, this, innerSub, value, index, resultSelector)));
+      this.add(observable.subscribe(new FlatMapInnerSubscriber(this.destination, this, value, index, resultSelector)));
     }
   }
   
@@ -95,7 +93,6 @@ export class FlatMapInnerSubscriber<T, R, R2> extends Subscriber<R> {
   index: number = 0;
   
   constructor(destination: Observer<R>, private parent: FlatMapSubscriber<any, R, R2>, 
-    private innerSub: Subscription<R>,
     private outerValue: T,
     private outerIndex: number,
     private resultSelector?: (innerValue: T, outerValue: R, innerIndex: number, outerIndex: number) => R2) {
@@ -118,6 +115,6 @@ export class FlatMapInnerSubscriber<T, R, R2> extends Subscriber<R> {
   }
   
   _complete() {
-    this.parent.notifyComplete(this.innerSub);
+    this.parent.notifyComplete(this);
   }
 }
