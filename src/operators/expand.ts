@@ -2,69 +2,96 @@ import Operator from '../Operator';
 import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
+import Subscription from '../Subscription';
 
-import { MergeSubscriber, MergeInnerSubscriber } from './merge-support';
+// import { MergeAllSubscriber, MergeAllInnerSubscriber } from './mergeAll-support';
 import EmptyObservable from '../observables/EmptyObservable';
 import ScalarObservable from '../observables/ScalarObservable';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function expand<T>(project: (x: T, ix: number) => Observable<any>): Observable<any> {
-  return this.lift(new ExpandOperator(project));
+export default function expand<T, R>(project: (value: T, index: number) => Observable<R>, 
+  concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+  return this.lift(new ExpandOperator(project, concurrent));
 }
 
 class ExpandOperator<T, R> implements Operator<T, R> {
-
-  project: (x: T, ix: number) => Observable<any>;
-
-  constructor(project: (x: T, ix: number) => Observable<any>) {
-    this.project = project;
+  constructor(private project: (value: T, index: number) => Observable<any>, 
+    private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new ExpandSubscriber(subscriber, this.project);
+    return new ExpandSubscriber(subscriber, this.project, this.concurrent);
   }
 }
 
-class ExpandSubscriber<T, R> extends MergeSubscriber<T, R> {
-
-  project: (x: T, ix: number) => Observable<any>;
-
-  constructor(destination: Observer<R>,
-              project: (x: T, ix: number) => Observable<any>) {
-    super(destination, Number.POSITIVE_INFINITY);
-    this.project = project;
-  }
-
-  _project(value, index) {
-    const observable = tryCatch(this.project).call(this, value, index);
-    if (observable === errorObject) {
-      this.error(errorObject.e);
-      return null;
-    }
-    return observable;
-  }
-
-  _subscribeInner(observable, value, index) {
-    if(observable._isScalar) {
-      this.destination.next((<ScalarObservable<T>> observable).value);
-      this._innerComplete();
-      this._next((<any>observable).value);
-    } else if(observable instanceof EmptyObservable) {
-      this._innerComplete();
-    } else {
-      return observable._subscribe(new ExpandInnerSubscriber(this.destination, this));
+class ExpandSubscriber<T, R> extends Subscriber<T> {
+  private index: number = 0;
+  private active: number = 0;
+  private hasCompleted: boolean = true;
+  private buffer: T[];
+  
+  constructor(destination: Observer<T>, private project: (value: T, index: number) => Observable<R>, 
+    private concurrent: number = Number.POSITIVE_INFINITY) {
+    super(destination);
+    if(concurrent < Number.POSITIVE_INFINITY) {
+      this.buffer = [];
     }
   }
-}
-
-class ExpandInnerSubscriber<T, R> extends MergeInnerSubscriber<T, R> {
-  constructor(destination: Observer<T>, parent: ExpandSubscriber<T, R>) {
-    super(destination, parent);
-  }
-  _next(value) {
+  
+  _next(value: T) {
+    const index = this.index++;
     this.destination.next(value);
-    this.parent.next(value);
+    if(this.active < this.concurrent) {
+      let result = tryCatch(this.project)(value, index);
+      if(result === errorObject) {
+        this.destination.error(result.e);
+      } else {
+        if(result._isScalar) {
+          this._next(result.value);
+        } else {
+          let innerSub = new Subscription();
+          this.active++;
+          innerSub.add(result.subscribe(new ExpandInnerSubscriber(this.destination, this, innerSub)));
+          this.add(innerSub);
+        }
+      }
+    } else {
+      this.buffer.push(value);
+    }
+  }
+  
+  _complete() {
+    this.hasCompleted = true;
+    if(this.hasCompleted && this.active === 0) {
+      this.destination.complete();
+    }
+  }
+  
+  notifyComplete(innerSub: Subscription<T>) {
+    const buffer = this.buffer;
+    this.remove(innerSub);
+    this.active--;
+    if(buffer && buffer.length > 0) {
+      this._next(buffer.shift());
+    }
+    if(this.hasCompleted && this.active === 0) {
+      this.destination.complete();
+    }
+  }
+}
+
+class ExpandInnerSubscriber<T, R> extends Subscriber<T> {
+  constructor(destination: Observer<T>, private parent: ExpandSubscriber<T, R>, private innerSub: Subscription<T>) {
+    super(destination);
+  }
+  
+  _next(value) {
+    this.parent._next(value);
+  }
+  
+  _complete() {
+    this.parent.notifyComplete(this.innerSub);
   }
 }
