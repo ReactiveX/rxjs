@@ -3,7 +3,6 @@ import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
-import { MergeSubscriber } from './merge-support';
 
 export default function switchAll<T>(): Observable<T> {
   return this.lift(new SwitchOperator());
