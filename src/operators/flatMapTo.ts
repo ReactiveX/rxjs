@@ -1,12 +1,8 @@
-import Operator from '../Operator';
-import Observer from '../Observer';
 import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-
 import { FlatMapToOperator } from './flatMapTo-support';
 
-export default function flatMapTo<T, R>(observable: Observable<any>,
-                                        projectResult?: (x: T, y: any, ix: number, iy: number) => R,
-                                        concurrent?: number) {
-  return this.lift(new FlatMapToOperator(observable, projectResult, concurrent));
+export default function flatMapTo<T, R, R2>(observable: Observable<R>,
+                                        resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
+                                        concurrent: number = Number.POSITIVE_INFINITY) : Observable<R2> {
+  return this.lift(new FlatMapToOperator(observable, resultSelector, concurrent));
 }
