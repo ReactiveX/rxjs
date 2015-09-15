@@ -19,4 +19,15 @@ describe('Observable.prototype.last()', function(){
     var expected = '----';
     expectObservable(e2.last()).toBe(expected);
   });
+  
+  it('Should return last element matches with predicate', function() {
+    var e1 =    hot('--a--b--a--b--|');
+    var expected =  '--------------(b|)';
+    
+    var predicate = function (value) { 
+      return value === 'b'; 
+    }
+    
+    expectObservable(e1.last(predicate)).toBe(expected);
+  });
 });
