@@ -42,9 +42,6 @@ global.it = function (description, cb, timeout) {
       global.rxTestScheduler.flush();
     });
   } else {
-    if (description === 'should work with never and empty') {
-      console.log("TEST");
-    }
     glit.apply(this, arguments);
   }
 };
