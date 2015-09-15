@@ -31,7 +31,7 @@ class ExpandSubscriber<T, R> extends MergeSubscriber<T, R> {
 
   project: (x: T, ix: number) => Observable<any>;
 
-  constructor(destination: Observer<R>,
+  constructor(destination: Subscriber<R>,
               project: (x: T, ix: number) => Observable<any>) {
     super(destination, Number.POSITIVE_INFINITY);
     this.project = project;

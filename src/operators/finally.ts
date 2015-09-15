@@ -27,7 +27,7 @@ class FinallyOperator<T, R> implements Operator<T, R> {
 }
 
 class FinallySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>, finallySelector: () => void) {
+  constructor(destination: Subscriber<T>, finallySelector: () => void) {
     super(destination);
     this.add(new Subscription(finallySelector));
   }

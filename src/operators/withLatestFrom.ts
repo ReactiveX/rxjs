@@ -25,7 +25,7 @@ class WithLatestFromSubscriber<T, R> extends Subscriber<T> {
   private values: any[];
   private toSet: number;
   
-  constructor(destination: Observer<T>, private observables: Observable<any>[], private project: (...values: any[]) => Observable<R>) {
+  constructor(destination: Subscriber<T>, private observables: Observable<any>[], private project: (...values: any[]) => Observable<R>) {
     super(destination);
     const len = observables.length;
     this.values = new Array(len);

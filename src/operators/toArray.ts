@@ -16,7 +16,7 @@ class ToArraySubscriber<T> extends Subscriber<T> {
 
   array: T [] = [];
 
-  constructor(destination: Observer<T[]>) {
+  constructor(destination: Subscriber<T[]>) {
     super(destination);
   }
 

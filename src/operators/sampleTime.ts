@@ -23,7 +23,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   lastValue: T;
   hasValue: boolean = false;
   
-  constructor(destination: Observer<T>, private delay: number, private scheduler: Scheduler) {
+  constructor(destination: Subscriber<T>, private delay: number, private scheduler: Scheduler) {
     super(destination);
     this.add(scheduler.schedule(dispatchNotification, delay, { subscriber: this, delay }));
   }

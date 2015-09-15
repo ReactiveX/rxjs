@@ -37,7 +37,7 @@ class FilterSubscriber<T> extends Subscriber<T> {
   count: number = 0;
   select: (x: T, ix?: number) => boolean;
 
-  constructor(destination: Observer<T>, select: (x: T, ix?: number) => boolean) {
+  constructor(destination: Subscriber<T>, select: (x: T, ix?: number) => boolean) {
     super(destination);
     this.select = select;
   }

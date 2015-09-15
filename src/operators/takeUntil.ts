@@ -21,7 +21,7 @@ class TakeUntilOperator<T, R> implements Operator<T, R> {
 }
 
 class TakeUntilSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<T>,
               observable: Observable<any>) {
     super(destination);
     this.add(observable._subscribe(new TakeUntilInnerSubscriber(destination)));
@@ -29,7 +29,7 @@ class TakeUntilSubscriber<T> extends Subscriber<T> {
 }
 
 class TakeUntilInnerSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>) {
+  constructor(destination: Subscriber<T>) {
     super(destination);
   }
   _next() {

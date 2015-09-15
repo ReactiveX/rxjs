@@ -32,7 +32,7 @@ class BufferOperator<T, R> implements Operator<T, R> {
 class BufferSubscriber<T> extends Subscriber<T> {
   buffer: T[] = [];
   
-  constructor(destination: Observer<T>, closingNotifier: Observable<any>) {
+  constructor(destination: Subscriber<T>, closingNotifier: Observable<any>) {
     super(destination);
     this.add(closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this)));
   }

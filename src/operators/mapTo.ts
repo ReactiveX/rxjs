@@ -28,7 +28,7 @@ class MapToSubscriber<T, R> extends Subscriber<T> {
 
   value: R;
 
-  constructor(destination: Observer<R>, value: R) {
+  constructor(destination: Subscriber<R>, value: R) {
     super(destination);
     this.value = value;
   }

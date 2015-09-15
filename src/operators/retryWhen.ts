@@ -25,7 +25,7 @@ class RetryWhenSubscriber<T> extends Subscriber<T> {
   errors: Subject<any>;
   retryNotifications: Observable<any>;
 
-  constructor(destination: Observer<T>, public notifier: (errors: Observable<any>) => Observable<any>, public original: Observable<T>) {
+  constructor(destination: Subscriber<T>, public notifier: (errors: Observable<any>) => Observable<any>, public original: Observable<T>) {
     super(destination);
   }
 

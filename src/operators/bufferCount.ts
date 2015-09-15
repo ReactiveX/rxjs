@@ -25,7 +25,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
   buffers: Array<T[]> = [[]];
   count: number = 0;
   
-  constructor(destination: Observer<T>, private bufferSize: number, private startBufferEvery: number) {
+  constructor(destination: Subscriber<T>, private bufferSize: number, private startBufferEvery: number) {
     super(destination);
   }
   

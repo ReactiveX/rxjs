@@ -30,7 +30,7 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
   value: T;
   hasValue: boolean = false;
 
-  constructor(destination: Observer<T>, compare?: (x: T, y: T) => boolean) {
+  constructor(destination: Subscriber<T>, compare?: (x: T, y: T) => boolean) {
     super(destination);
     if (typeof compare === "function") {
       this.compare = compare;
