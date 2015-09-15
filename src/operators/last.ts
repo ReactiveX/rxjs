@@ -47,7 +47,7 @@ class LastSubscriber<T> extends Subscriber<T> {
       if(result === errorObject) {
         this.destination.error(result.e);
       } else if (result) {
-        this.lastValue = result;
+        this.lastValue = value;
         this.hasValue = true;
       }
     } else {
