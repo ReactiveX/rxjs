@@ -15,9 +15,9 @@ export default class TestScheduler extends VirtualTimeScheduler {
     let messages = TestScheduler.parseMarbles(marbles, values, error);
     return Observable.create(subscriber => {
       messages.forEach(({ notification, frame }) => {
-        this.schedule(() => {
+        subscriber.add(this.schedule(() => {
           notification.observe(subscriber);
-        }, frame);
+        }, frame));
       }, this);
     });
   }
@@ -67,6 +67,7 @@ export default class TestScheduler extends VirtualTimeScheduler {
     const flushTests = this.flushTests.filter(test => test.ready);
     while (flushTests.length > 0) {
       var test = flushTests.shift();
+      test.actual.sort((a, b) => a.frame === b.frame ? 0 : (a.frame > b.frame ? 1 : -1));
       this.assertDeepEqual(test.actual, test.expected);
     }
   }

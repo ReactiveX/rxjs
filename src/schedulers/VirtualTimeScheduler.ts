@@ -14,17 +14,7 @@ export default class VirtualTimeScheduler implements Scheduler {
     return 0;
   }
   
-  sortActions() {
-    if (!this.sorted) {
-      (<VirtualAction<any>[]>this.actions).sort((a, b) => {
-        return a.delay === b.delay ? (a.index > b.index ? 1 : -1) : (a.delay > b.delay ? 1 : -1);
-      });
-      this.sorted = true;
-    }  
-  }
-  
   flush() {
-    this.sortActions();
     const actions = this.actions;
     while (actions.length > 0) {
       let action = actions.shift();
@@ -32,6 +22,20 @@ export default class VirtualTimeScheduler implements Scheduler {
       action.execute();
     }
     this.frame = 0;
+  }
+  
+  addAction<T>(action: Action) {
+    const findDelay = action.delay;
+    const actions = this.actions;
+    const len = actions.length;
+    const vaction = <VirtualAction<T>>action;
+    
+    
+    actions.push(action);
+    
+    actions.sort((a:VirtualAction<T>, b:VirtualAction<T>) => {
+      return (a.delay === b.delay) ? (a.index === b.index ? 0 : (a.index > b.index ? 1 : -1)) : (a.delay > b.delay ? 1 : -1);
+    });
   }
 
   schedule<T>(work: (x?: any) => Subscription<T> | void, delay: number = 0, state?: any): Subscription<T> {
@@ -59,7 +63,7 @@ class VirtualAction<T> extends Subscription<T> implements Action {
       new VirtualAction(scheduler, this.work, scheduler.index += 1);
     action.state = state;
     action.delay = scheduler.frame + delay;
-    scheduler.actions.push(action);
+    scheduler.addAction(action);
     return this;
   }
 
