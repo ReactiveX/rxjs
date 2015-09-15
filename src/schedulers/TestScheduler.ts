@@ -4,6 +4,8 @@ import Notification from '../Notification';
 import Subject from '../Subject';
 
 export default class TestScheduler extends VirtualTimeScheduler {
+  private hotObservables: { setup: (scheduler: TestScheduler) => void, subject: Subject<any> }[] = [];
+  
   constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
     super();
   }
@@ -22,14 +24,19 @@ export default class TestScheduler extends VirtualTimeScheduler {
     });
   }
   
-  createHotObservable(marbles: string, values?: any, error?: any) {
+  createHotObservable<T>(marbles: string, values?: any, error?: any): Subject<T> {
     let messages = TestScheduler.parseMarbles(marbles, values, error);
     let subject = new Subject();
-    messages.forEach(({ notification, frame }) => {
-      this.schedule(() => {
-        notification.observe(subject);
-      }, frame);
-    }, this);
+    this.hotObservables.push({
+      setup(scheduler) {
+        messages.forEach(({ notification, frame }) => {
+          scheduler.schedule(() => {
+            notification.observe(subject);
+          }, frame);
+        });
+      },
+      subject
+    });
     return subject;
   }
   
@@ -62,7 +69,12 @@ export default class TestScheduler extends VirtualTimeScheduler {
     };
   }
   
-  flush() {    
+  flush() {
+    const hotObservables = this.hotObservables;
+    while(hotObservables.length > 0) {
+      hotObservables.shift().setup(this);
+    }
+    
     super.flush();
     const flushTests = this.flushTests.filter(test => test.ready);
     while (flushTests.length > 0) {
