@@ -54,7 +54,20 @@ beforeEach(function () {
     toDeepEqual: function(util, customEqualityTesters) {
       return {
         compare: function(actual, expected) {
-          return { pass: _.isEqual(actual, expected) };
+          var result = { pass: _.isEqual(actual, expected) };
+          
+          if (!result.pass && Array.isArray(actual) && Array.isArray(expected)) {
+            result.message = 'Expected \n';
+            actual.forEach(function(x) {
+              result.message += JSON.stringify(x) + '\n';
+            });
+            result.message += '\nto deep equal \n';
+            expected.forEach(function(x) {
+              result.message += JSON.stringify(x) + '\n';
+            });
+          }
+          
+          return result;
         }
       };
     }
