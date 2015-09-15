@@ -1,5 +1,5 @@
-import { MergeOperator } from './merge-support';
+import { MergeAllOperator } from './mergeAll-support';
 
 export default function concatAll() {
-  return this.lift(new MergeOperator(1));
+  return this.lift(new MergeAllOperator(1));
 }
