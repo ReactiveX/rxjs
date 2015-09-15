@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, hot, cold, expectObservable, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
@@ -22,6 +22,14 @@ describe("Observable.prototype.merge", function () {
     a.merge(b, immediateScheduler).subscribe(function (val) {
       expect(val).toBe(r[i++]);
     }, null, done);
+  });
+  
+  
+  it('should handle merging two hot observables', function (){
+    var e1 =    hot('--a-----b-----c----|');
+    var e2 =    hot('-----d-----e-----f---|');
+    var expected =  '--a--d--b--e--c--f---|';
+    expectObservable(e1.merge(e2, rxTestScheduler)).toBe(expected);
   });
 });
 

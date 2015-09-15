@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 

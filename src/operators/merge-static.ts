@@ -1,7 +1,7 @@
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import ArrayObservable from '../observables/ArrayObservable';
-import { MergeOperator } from './merge-support';
+import { MergeAllOperator } from './mergeAll-support';
 import immediate from '../schedulers/immediate';
 
 export default function merge<R>(...observables: (Observable<any>|Scheduler|number)[]): Observable<R> {
@@ -20,6 +20,6 @@ export default function merge<R>(...observables: (Observable<any>|Scheduler|numb
   if(observables.length === 1) {
     return <Observable<R>>observables[0];
   }
-
-  return new ArrayObservable(observables, scheduler).lift(new MergeOperator(concurrent));
+  
+  return new ArrayObservable(observables, scheduler).lift(new MergeAllOperator(concurrent));
 }
