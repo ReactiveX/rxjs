@@ -11,7 +11,7 @@ var Rx2Merge = document.querySelector('#rx-2-merge');
 var RxNextMerge = document.querySelector('#rx-3-merge');
 
 var Rx2TestObservable = Rx.Observable.range(0, numIterations);
-var RxNextTestObservable = RxNext.Observablerange(0, numIterations);
+var RxNextTestObservable = RxNext.Observable.range(0, numIterations);
 
 var Rx2TestArgObservable = Rx.Observable.range(0, numIterations);
 var RxNextTestArgObservable = RxNext.Observable.range(0, numIterations);
