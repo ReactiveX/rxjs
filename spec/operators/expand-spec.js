@@ -11,7 +11,7 @@ describe('Observable.prototype.expand()', function () {
       d: 4 + 4, // c + c,
       e: 8 + 8, // d + d
     }
-    var e1 = hot('a', values);
+    var e1 = hot('(a|)', values);
     /*
       expectation explanation: (conjunction junction?) ...
       
@@ -44,7 +44,7 @@ describe('Observable.prototype.expand()', function () {
       d: 4 + 4, // c + c,
       e: 8 + 8, // d + d
     }
-    var e1 = hot('a', values);
+    var e1 = hot('(a|)', values);
     var expected = '(abcde|)';
     
     expectObservable(e1.expand(function(x) {
