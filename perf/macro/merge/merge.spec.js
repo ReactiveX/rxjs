@@ -3,7 +3,7 @@ var builder = require('../specbuilder');
 var preset = new builder.Preset();
 var runner = preset.runner;
 
-describe('zip comparison', function () {
+describe('merge comparison', function () {
   var testUrlIdentifier = 'merge';
   
   preset.iteration.forEach(function (val) {
