@@ -100,7 +100,7 @@ from the main (upstream) repository:
 
 ### <a id="unit-tests"></a>Unit Tests
 
-Unit tests are located under the [specs directory](/specs). Unit tests over synchronous operators and operations 
+Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations 
 can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any 
 asynchronous operator should be written in [Marble Test Style outlined in detail here](docs/writing-marble-tests.md). 
 
