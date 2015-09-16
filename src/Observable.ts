@@ -204,6 +204,7 @@ export default class Observable<T>  {
   
   elementAt: (index: number, defaultValue?: any) => Observable<T>;
   last: (predicate?: (value: T, index:number) => boolean, thisArg?: any, defaultValue?: any) => Observable<T>;
+  single: (predicate?: (value: T, index:number) => boolean, thisArg?: any) => Observable<T>;
   
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   distinctUntilChanged: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;

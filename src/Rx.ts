@@ -222,8 +222,9 @@ observableProto.sample = sample;
 observableProto.sampleTime = sampleTime;
 
 import last from './operators/last';
-
+import single from './operators/single';
 observableProto.last = last;
+observableProto.single = single
 
 var Scheduler = {
   nextTick,
