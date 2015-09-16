@@ -29,7 +29,7 @@ class ExpandOperator<T, R> implements Operator<T, R> {
 class ExpandSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
   private active: number = 0;
-  private hasCompleted: boolean = true;
+  private hasCompleted: boolean = false;
   private buffer: T[];
   
   constructor(destination: Observer<T>, private project: (value: T, index: number) => Observable<R>, 
