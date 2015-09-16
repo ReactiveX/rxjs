@@ -64,6 +64,22 @@ export class FlatMapSubscriber<T, R, R2> extends Subscriber<T> {
       } else {
         this.destination.next(observable.value);
       }
+    } else if (Array.isArray(observable)) {
+      let arrIndex = -1;
+      const arrLen = observable.length;
+      while (++arrIndex < arrLen) {
+        const arrValue = observable[arrIndex];
+        if(resultSelector) {
+          let result = tryCatch(resultSelector)(arrValue, value, arrIndex, index);
+          if(result === errorObject) {
+            this.destination.error(result.e);
+          } else {
+            this.destination.next(result);
+          }
+        } else {
+          this.destination.next(arrValue);
+        }
+      }
     } else {
       this.active++;
       this.add(observable.subscribe(new FlatMapInnerSubscriber(this.destination, this, value, index, resultSelector)));
