@@ -1,16 +1,13 @@
-/* globals describe, it, expect, jasmine */
+/* globals describe, it, expect, expectObservable, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.skipUntil()', function () {
-  it('should skip values until another observable notifies', function (done) {
-    var expected = [5];
+  it('should skip values until another observable notifies', function () {
+    var source = hot('--a--b--c--d--e--|');
+    var skip =   hot('-------------x--|');
+    var expected =  ('--------------e--|');
     
-    Observable.timer(0, 100)
-      .skipUntil(Observable.timer(450))
-      .take(1)
-      .subscribe(function (x) {
-        expect(x).toBe(expected.shift());
-      }, null, done);
+    expectObservable(source.skipUntil(skip)).toBe(expected);
   });
 });
