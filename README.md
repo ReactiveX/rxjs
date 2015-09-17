@@ -9,8 +9,8 @@ Reactive Extensions Library for JavaScript
 
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Contribution Guidelines](CONTRIBUTION.md)
-- [Maintainer Guidelines](docs/maintainer-guidelines-md)
-- [Creating Operators](docs/operator-creation.md)
+- [Maintainer Guidelines](doc/maintainer-guidelines-md)
+- [Creating Operators](doc/operator-creation.md)
 
 ## Important
 
