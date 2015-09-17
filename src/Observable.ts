@@ -6,7 +6,7 @@ import Subscriber from './Subscriber';
 import Subscription from './Subscription';
 import ConnectableObservable from './observables/ConnectableObservable';
 import GroupSubject from './subjects/GroupSubject';
-
+import {root} from './util/root';
 
 import $$observable from './util/Symbol_observable';
 
@@ -112,8 +112,20 @@ export default class Observable<T>  {
    * @returns {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next:(value:T) => void) {
-    return new Promise((resolve, reject) => {
+  forEach(next:(value:T) => void, PromiseCtor?: PromiseConstructor): Promise<void> {
+    if(!PromiseCtor) {
+      if(root.Rx && root.Rx.config && root.Rx.config.Promise) {
+        PromiseCtor = root.Rx.config.Promise;
+      } else if (root.Promise) {
+        PromiseCtor = root.Promise;
+      }
+    }
+    
+    if(!PromiseCtor) {
+      throw new Error('no Promise impl found');
+    }
+    
+    return new PromiseCtor<void>((resolve, reject) => {
       this.subscribe(next, reject, resolve);
     });
   }

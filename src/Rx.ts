@@ -241,5 +241,5 @@ export {
     VirtualTimeScheduler,
     TestScheduler,
     EmptyError,
-    ArgumentOutOfRangeError
+    ArgumentOutOfRangeError,
 };

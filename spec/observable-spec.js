@@ -1,6 +1,6 @@
 /* globals describe, it, expect */
 var Rx = require('../dist/cjs/Rx');
-
+var Promise = require('promise');
 var Observable = Rx.Observable;
 
 describe('Observable', function () {
@@ -12,6 +12,47 @@ describe('Observable', function () {
     });
 
     source.subscribe(function (x) { expect(x).toBe(1); }, null, done);
+  });
+  
+  describe('forEach', function(){
+    it('should iterate and return a Promise', function (done){
+      var expected = [1,2,3];
+      var result = Observable.of(1,2,3).forEach(function(x) {
+        expect(x).toBe(expected.shift());
+      }, Promise)
+      .then(done);
+      
+      expect(typeof result.then).toBe('function');
+    });
+    
+    it('should reject promise when in error', function(done){
+      Observable.throw('bad').forEach(function(x) {
+        throw 'should not be called';
+      }).then(function() {
+        throw 'should not complete';
+      }, function(err) {
+        expect(err).toBe('bad');
+        done();
+      }, Promise);
+    });
+    
+    it('should allow Promise to be globally configured', function (done) {
+      var wasCalled = false;
+      __root__.Rx = {};
+      __root__.Rx.config = {};
+      __root__.Rx.config.Promise = function MyPromise(callback) {
+        wasCalled = true;
+        return new Promise(callback);
+      };
+      
+      
+      Observable.of(42).forEach(function(x) {
+        expect(x).toBe(42);
+      }).then(function(){
+        expect(wasCalled).toBe(true);
+        done();
+      });
+    });
   });
   
   describe('subscribe', function () {
