@@ -7,26 +7,17 @@ module.exports = function (suite) {
       return value === 20;
     };
     
-    var testThis = {};
-
     var oldLastPredicate = RxOld.Observable.range(0, 50, RxOld.Scheduler.immediate).last(predicate);
     var newLastPredicate = RxNew.Observable.range(0, 50).last(predicate);
     
     return suite
-        .add('old last() with immediate scheduler', function () {
+        .add('old last(predicate) with immediate scheduler', function () {
             oldLastPredicate.subscribe(_next, _error, _complete);
         })
-        .add('new last() with immediate scheduler', function () {
+        .add('new last(predicate) with immediate scheduler', function () {
             newLastPredicate.subscribe(_next, _error, _complete);
         });
 
-    function square(x) {
-        return x * x;
-    }
-
-    function double(x) {
-        return x + x;
-    }
     function _next(x) { }
     function _error(e){ }
     function _complete(){ }
