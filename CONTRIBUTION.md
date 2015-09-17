@@ -7,6 +7,7 @@ Contents
 - [Pull Requests](#pull-requests)
   - [Coding Style](#code)
   - [Commit Messages](#commit)
+- [Creating Operators](doc/operator-creation.md)
 - [Unit Tests](#unit-tests)
   - [Writing Marble Tests](doc/writing-marble-tests.md)
 - [Performance Tests](#performance-tests)
