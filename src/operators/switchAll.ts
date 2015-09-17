@@ -30,7 +30,7 @@ class SwitchSubscriber<T> extends Subscriber<T> {
   _next(value: any) {
     this.active++;
     this.unsubscribeInner();
-    this.add(this.innerSubscription = value.subscribe(new InnerSwitchSubscriber(this.destination, this))); 
+    this.add(this.innerSubscription = value.subscribe(new InnerSwitchSubscriber(this))); 
   }
   
   _complete() {
@@ -49,6 +49,14 @@ class SwitchSubscriber<T> extends Subscriber<T> {
     }
   }
   
+  notifyNext(value: T) {
+    this.destination.next(value);
+  }
+  
+  notifyError(err: any) {
+    this.destination.error(err);
+  }
+  
   notifyComplete() {
     this.unsubscribeInner();
     if(this.hasCompleted && this.active === 0) {
@@ -58,13 +66,18 @@ class SwitchSubscriber<T> extends Subscriber<T> {
 }
 
 class InnerSwitchSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<any>, private parent: SwitchSubscriber<T>) {
-    super(destination);
+  constructor(private parent: SwitchSubscriber<T>) {
+    super();
   }
   
   _next(value: T) {
-    super._next(value);
+    this.parent.notifyNext(value);
   }
+  
+  _error(err: any) {
+    this.parent.notifyError(err);
+  }
+  
   _complete() {
     this.parent.notifyComplete();
   }

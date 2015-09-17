@@ -17,6 +17,23 @@ describe('Observable.prototype.switchAll()', function(){
       }, null, done);
   });
   
+  it('should unsub inner observables', function() {
+    var unsubbed = [];
+    
+    Observable.of('a', 'b').map(function(x) {
+      return Observable.create(function(subscriber) {
+        subscriber.complete();
+        return function() {
+          unsubbed.push(x);
+        };
+      });
+    })
+    .mergeAll()
+    .subscribe();
+    
+    expect(unsubbed).toEqual(['a', 'b']);
+  });
+  
   it("should switch to each inner Observable", function (done) {
     var a = Observable.of(1, 2, 3);
     var b = Observable.of(4, 5, 6);

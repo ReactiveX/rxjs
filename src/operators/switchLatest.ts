@@ -45,7 +45,7 @@ class SwitchLatestSubscriber<T, R, R2> extends Subscriber<T> {
       if(innerSubscription) {
         innerSubscription.unsubscribe();
       }
-      this.add(this.innerSubscription = result.subscribe(new InnerSwitchLatestSubscriber(destination, this, this.resultSelector, index, value)))
+      this.add(this.innerSubscription = result.subscribe(new InnerSwitchLatestSubscriber(this, this.resultSelector, index, value)))
     }
   }
   
@@ -64,32 +64,44 @@ class SwitchLatestSubscriber<T, R, R2> extends Subscriber<T> {
       this.destination.complete();
     }
   }
+  
+  notifyError(err: any) {
+    this.destination.error(err);
+  }
+  
+  notifyNext(value: T) {
+    this.destination.next(value);
+  }
 }
 
 class InnerSwitchLatestSubscriber<T, R, R2> extends Subscriber<T> {
   private index: number = 0;
   
-  constructor(destination: Observer<T>, private parent: SwitchLatestSubscriber<T, R, R2>, 
+  constructor(private parent: SwitchLatestSubscriber<T, R, R2>, 
     private resultSelector: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
     private outerIndex: number,
     private outerValue: any) {
-    super(destination);
+    super();
   }
   
   _next(value: T) {
-    const destination = this.destination;
+    const parent = this.parent;
     const index = this.index++;
     const resultSelector = this.resultSelector;
     if(resultSelector) {
       let result = tryCatch(resultSelector)(value, this.outerValue, index, this.outerIndex);
       if(result === errorObject) {
-        destination.error(result.e);
+        parent.notifyError(result.e);
       } else {
-        destination.next(result);
+        parent.notifyNext(result);
       }
     } else {
-      destination.next(value);
+      parent.notifyNext(value);
     }
+  }
+  
+  _error(err: T) {
+    this.parent.notifyError(err);
   }
   
   _complete() {

@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
 
-fdescribe('Observable.prototype.switchLatest()', function () {
+describe('Observable.prototype.switchLatest()', function () {
   it("should switch with a selector function", function (done) {
     var a = Observable.of(1, 2, 3);
     var expected = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2', 'a3', 'b3', 'c3'];
@@ -12,6 +12,21 @@ fdescribe('Observable.prototype.switchLatest()', function () {
     }).subscribe(function (x) {
       expect(x).toBe(expected.shift());
     }, null, done);
+  });
+  
+  it('should unsub inner observables', function(){
+    var unsubbed = [];
+    
+    Observable.of('a', 'b').switchLatest(function(x) {
+      return Observable.create(function(subscriber) {
+        subscriber.complete();
+        return function() {
+          unsubbed.push(x);
+        };
+      });
+    }).subscribe();
+    
+    expect(unsubbed).toEqual(['a', 'b']);
   });
 
   it('should switch inner cold observables', function (){
