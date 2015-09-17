@@ -20,13 +20,6 @@ module.exports = function (suite) {
             newLastPredicateThisArg.subscribe(_next, _error, _complete);
         });
 
-    function square(x) {
-        return x * x;
-    }
-
-    function double(x) {
-        return x + x;
-    }
     function _next(x) { }
     function _error(e){ }
     function _complete(){ }
