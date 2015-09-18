@@ -72,7 +72,7 @@
 - [skipUntil](function/index.html#static-function-skipUntil)
 - [startWith](function/index.html#static-function-startWith)
 - [subscribeOn](function/index.html#static-function-subscribeOn)
-- [switchAll](function/index.html#static-function-switchAll)
+- [switch](function/index.html#static-function-switch)
 - [switchLatest](function/index.html#static-function-switchLatest)
 - [switchLatestTo](function/index.html#static-function-switchLatestTo)
 - [take](function/index.html#static-function-take)

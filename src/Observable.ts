@@ -172,7 +172,7 @@ export default class Observable<T>  {
   expand: (project: (x: T, ix: number) => Observable<any>) => Observable<any>;
   delay: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;
 
-  switchAll: <R>() => Observable<R>;
+  switch: <R>() => Observable<R>;
   switchLatest: <R>(project: ((x: T, ix: number) => Observable<any>),
                     projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   switchLatestTo: <R>(observable: Observable<any>,

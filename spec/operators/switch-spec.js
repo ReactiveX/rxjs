@@ -4,14 +4,14 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
 
-describe('Observable.prototype.switchAll()', function(){
+describe('Observable.prototype.switch()', function(){
   it("should switch to each immediately-scheduled inner Observable", function (done) {
     var a = Observable.of(1, 2, 3, immediateScheduler);
     var b = Observable.of(4, 5, 6, immediateScheduler);
     var r = [1, 4, 5, 6];
     var i = 0;
     Observable.of(a, b, immediateScheduler)
-      .switchAll()
+      .switch()
       .subscribe(function (x) {
         expect(x).toBe(r[i++]);
       }, null, done);
@@ -39,7 +39,7 @@ describe('Observable.prototype.switchAll()', function(){
     var b = Observable.of(4, 5, 6);
     var r = [1, 2, 3, 4, 5, 6];
     var i = 0;
-    Observable.of(a, b).switchAll().subscribe(function (x) {
+    Observable.of(a, b).switch().subscribe(function (x) {
       expect(x).toBe(r[i++]);
     }, null, done);
   });
@@ -49,6 +49,6 @@ describe('Observable.prototype.switchAll()', function(){
     var y = cold(                '---d--e---f---|');
     var e1 = hot(  '------x-------y------|', { x: x, y: y });
     var expected = '--------a---b----d--e---f---|';
-    expectObservable(e1.switchAll()).toBe(expected);
+    expectObservable(e1.switch()).toBe(expected);
   });
 });
