@@ -82,15 +82,19 @@ function dispatchBufferTimeSpanOnly(state) {
   }
   
   state.buffer = subscriber.openBuffer();
-  (<any>this).schedule(state, state.bufferTimeSpan);
+  if(!subscriber.isUnsubscribed) {
+    (<any>this).schedule(state, state.bufferTimeSpan);
+  }
 }
 
 function dispatchBufferCreation(state) {
   let {  bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   let buffer = subscriber.openBuffer();
   var action = <Action>this;
-  action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
-  action.schedule(state, bufferCreationInterval);
+  if(!subscriber.isUnsubscribed) {
+    action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
+    action.schedule(state, bufferCreationInterval);
+  }
 }
 
 function dispatchBufferClose({ subscriber, buffer }) {
