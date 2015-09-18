@@ -203,6 +203,7 @@ export default class Observable<T>  {
   startWith: <T>(x: T) => Observable<T>;
   debounce: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
   
+  isEmpty: () => Observable<boolean>;
   elementAt: (index: number, defaultValue?: any) => Observable<T>;
   last: (predicate?: (value: T, index:number) => boolean, thisArg?: any, defaultValue?: any) => Observable<T>;
   single: (predicate?: (value: T, index:number) => boolean, thisArg?: any) => Observable<T>;
