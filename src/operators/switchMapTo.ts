@@ -6,22 +6,22 @@ import Subscription from '../Subscription';
 
 import { FlatMapToSubscriber } from './flatMapTo-support';
 
-export default function switchLatestTo<T, R, R2>(observable: Observable<R>,
+export default function switchMapTo<T, R, R2>(observable: Observable<R>,
                                              projectResult?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2): Observable<R2> {
-  return this.lift(new SwitchLatestToOperator(observable, projectResult));
+  return this.lift(new SwitchMapToOperator(observable, projectResult));
 }
 
-class SwitchLatestToOperator<T, R, R2> implements Operator<T, R> {
+class SwitchMapToOperator<T, R, R2> implements Operator<T, R> {
   constructor(private observable: Observable<R>,
               private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new SwitchLatestToSubscriber(subscriber, this.observable, this.resultSelector);
+    return new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector);
   }
 }
 
-class SwitchLatestToSubscriber<T, R, R2> extends FlatMapToSubscriber<T, R, R2> {
+class SwitchMapToSubscriber<T, R, R2> extends FlatMapToSubscriber<T, R, R2> {
 
   innerSubscription: Subscription<T>;
 
