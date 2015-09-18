@@ -13,7 +13,7 @@ describe('Observable.prototype.windowCount', function () {
     Observable.range(0, 4)
       .windowCount(2, 1)
       .take(3)
-      .flatMap(function (x) { return x.toArray(); })
+      .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
         expect(w).toEqual(expected.shift())
       }, null, done);
@@ -27,7 +27,7 @@ describe('Observable.prototype.windowCount', function () {
     ];
     Observable.range(0, 6)
       .windowCount(2)
-      .flatMap(function (x) { return x.toArray(); })
+      .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
         expect(w).toEqual(expected.shift())
       }, null, done);

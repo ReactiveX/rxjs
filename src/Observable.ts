@@ -168,6 +168,12 @@ export default class Observable<T>  {
   flatMapTo: <R>(observable: Observable<any>,
                  projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                  concurrent?: number) => Observable<R>;
+  mergeMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+               projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+               concurrent?: number) => Observable<R>;
+  mergeMapTo: <R>(observable: Observable<any>,
+                 projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+                 concurrent?: number) => Observable<R>;
 
   expand: (project: (x: T, ix: number) => Observable<any>) => Observable<any>;
   delay: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;

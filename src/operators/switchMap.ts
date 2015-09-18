@@ -5,7 +5,7 @@ import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
-import { FlatMapSubscriber } from './flatMap-support';
+import { MergeMapSubscriber } from './mergeMap-support';
 
 export default function switchMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
                                            resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2): Observable<R>{

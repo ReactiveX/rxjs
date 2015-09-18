@@ -9,7 +9,7 @@ describe('Observable.prototype.windowToggle', function () {
         expect(n).toBe('test');
         return Observable.timer(320);
       })
-      .flatMap(function (w) { return w.toArray(); })
+      .mergeMap(function (w) { return w.toArray(); })
       .subscribe(function (w) {
         expect(w).toEqual([3, 4, 5])
       }, null, done);

@@ -1,9 +1,9 @@
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
-describe('Observable.prototype.flatMap()', function () {
+describe('Observable.prototype.mergeMap()', function () {
   it('should map and flatten', function (done) {
-    var source = Observable.of(1, 2, 3, 4).flatMap(function (x) {
+    var source = Observable.of(1, 2, 3, 4).mergeMap(function (x) {
       return Observable.of(x + '!');
     });
 
@@ -15,7 +15,7 @@ describe('Observable.prototype.flatMap()', function () {
     }, null, done);
   });
   it('should map and flatten an Array', function (done) {
-    var source = Observable.of(1, 2, 3, 4).flatMap(function (x) {
+    var source = Observable.of(1, 2, 3, 4).mergeMap(function (x) {
       return [x + '!'];
     });
 

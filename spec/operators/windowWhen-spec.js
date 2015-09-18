@@ -12,7 +12,7 @@ describe('Observable.prototype.windowWhen', function () {
     Observable.interval(100)
       .windowWhen(function () { return Observable.timer(320); })
       .take(3)
-      .flatMap(function (x) { return x.toArray(); })
+      .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
         expect(w).toEqual(expected.shift())
       }, null, done);

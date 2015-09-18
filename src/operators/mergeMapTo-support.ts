@@ -2,9 +2,9 @@ import Operator from '../Operator';
 import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
-import { FlatMapSubscriber } from './flatMap-support';
+import { MergeMapSubscriber } from './mergeMap-support';
 
-export class FlatMapToOperator<T, R, R2> implements Operator<T,R> {
+export class MergeMapToOperator<T, R, R2> implements Operator<T,R> {
   constructor(private observable: Observable<R>,
     private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
     private concurrent: number = Number.POSITIVE_INFINITY) {
@@ -12,11 +12,11 @@ export class FlatMapToOperator<T, R, R2> implements Operator<T,R> {
     }
   
   call(observer: Subscriber<R>): Subscriber<T> {
-    return new FlatMapToSubscriber(observer, this.observable, this.resultSelector, this.concurrent);
+    return new MergeMapToSubscriber(observer, this.observable, this.resultSelector, this.concurrent);
   }
 }
 
-export class FlatMapToSubscriber<T, R, R2> extends FlatMapSubscriber<T, R, R2> {
+export class MergeMapToSubscriber<T, R, R2> extends MergeMapSubscriber<T, R, R2> {
   constructor(destination: Observer<T>, private observable: Observable<R>,
     resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
     concurrent: number = Number.POSITIVE_INFINITY) {

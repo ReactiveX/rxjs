@@ -7,18 +7,18 @@ if (match) {
 
 var numIterations = iterationInput.valueAsNumber || 1000;
 
-var RxNextFlatMap = document.querySelector('#rx-3-flatmap');
-var Rx2FlatMap = document.querySelector('#rx-2-flatmap');
+var RxNextMergeMap = document.querySelector('#rx-3-mergeMap');
+var Rx2MergeMap = document.querySelector('#rx-2-mergeMap');
 
 var RxNextTestObservable = RxNext.Observable.range(0, numIterations);
 var Rx2TestObservable = Rx.Observable.range(0, numIterations);
 
-RxNextFlatMap.addEventListener('click', function() {
-  RxNextTestObservable.flatMap(projectionRxNext).subscribe();
+RxNextMergeMap.addEventListener('click', function() {
+  RxNextTestObservable.mergeMap(projectionRxNext).subscribe();
 });
 
-Rx2FlatMap.addEventListener('click', function() {
-  Rx2TestObservable.flatMap(projectionRx2).subscribe();
+Rx2MergeMap.addEventListener('click', function() {
+  Rx2TestObservable.mergeMap(projectionRx2).subscribe();
 });
 
 var RxNextObservable = RxNext.Observable;

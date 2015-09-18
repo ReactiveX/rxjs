@@ -12,7 +12,7 @@ describe('Observable.prototype.windowTime', function () {
     Observable.interval(100)
       .windowTime(320)
       .take(3)
-      .flatMap(function (x) { return x.toArray(); })
+      .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
         expect(w).toEqual(expected.shift())
       }, null, done);
@@ -28,7 +28,7 @@ describe('Observable.prototype.windowTime', function () {
     Observable.interval(100)
       .windowTime(520, 220)
       .take(3)
-      .flatMap(function (x) { return x.toArray(); })
+      .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
         expect(w).toEqual(expected.shift())
       }, null, done);

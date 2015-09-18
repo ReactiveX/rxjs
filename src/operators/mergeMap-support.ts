@@ -6,24 +6,24 @@ import Observer from '../Observer';
 import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
 
-export default function flatMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
+export default function mergeMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
                                       resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R,
                                       concurrent: number = Number.POSITIVE_INFINITY) {
-  return this.lift(new FlatMapOperator(project, resultSelector, concurrent));
+  return this.lift(new MergeMapOperator(project, resultSelector, concurrent));
 }
 
-export class FlatMapOperator<T, R, R2> implements Operator<T, R> {
+export class MergeMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
     private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
     private concurrent: number = Number.POSITIVE_INFINITY) {
   }
   
   call(observer: Subscriber<R>): Subscriber<T> {
-    return new FlatMapSubscriber(observer, this.project, this.resultSelector, this.concurrent);
+    return new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent);
   }
 }
 
-export class FlatMapSubscriber<T, R, R2> extends Subscriber<T> {
+export class MergeMapSubscriber<T, R, R2> extends Subscriber<T> {
   private hasCompleted: boolean = false;
   private buffer: Observable<any>[] = [];
   private active: number = 0;
@@ -82,7 +82,7 @@ export class FlatMapSubscriber<T, R, R2> extends Subscriber<T> {
       }
     } else {
       this.active++;
-      this.add(observable.subscribe(new FlatMapInnerSubscriber(this.destination, this, value, index, resultSelector)));
+      this.add(observable.subscribe(new MergeMapInnerSubscriber(this.destination, this, value, index, resultSelector)));
     }
   }
   
@@ -105,10 +105,10 @@ export class FlatMapSubscriber<T, R, R2> extends Subscriber<T> {
   }
 }
 
-export class FlatMapInnerSubscriber<T, R, R2> extends Subscriber<R> {
+export class MergeMapInnerSubscriber<T, R, R2> extends Subscriber<R> {
   index: number = 0;
   
-  constructor(destination: Observer<R>, private parent: FlatMapSubscriber<any, R, R2>, 
+  constructor(destination: Observer<R>, private parent: MergeMapSubscriber<any, R, R2>, 
     private outerValue: T,
     private outerIndex: number,
     private resultSelector?: (innerValue: T, outerValue: R, innerIndex: number, outerIndex: number) => R2) {

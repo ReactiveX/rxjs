@@ -1,8 +1,8 @@
 import Observable from '../Observable';
-import { FlatMapToOperator } from './flatMapTo-support';
+import { MergeMapToOperator } from './mergeMapTo-support';
 
-export default function flatMapTo<T, R, R2>(observable: Observable<R>,
+export default function mergeMapTo<T, R, R2>(observable: Observable<R>,
                                         resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
                                         concurrent: number = Number.POSITIVE_INFINITY) : Observable<R2> {
-  return this.lift(new FlatMapToOperator(observable, resultSelector, concurrent));
+  return this.lift(new MergeMapToOperator(observable, resultSelector, concurrent));
 }

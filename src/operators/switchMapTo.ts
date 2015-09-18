@@ -4,7 +4,7 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 
-import { FlatMapToSubscriber } from './flatMapTo-support';
+import { MergeMapToSubscriber } from './mergeMapTo-support';
 
 export default function switchMapTo<T, R, R2>(observable: Observable<R>,
                                              projectResult?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2): Observable<R2> {
@@ -21,7 +21,7 @@ class SwitchMapToOperator<T, R, R2> implements Operator<T, R> {
   }
 }
 
-class SwitchMapToSubscriber<T, R, R2> extends FlatMapToSubscriber<T, R, R2> {
+class SwitchMapToSubscriber<T, R, R2> extends MergeMapToSubscriber<T, R, R2> {
 
   innerSubscription: Subscription<T>;
 
