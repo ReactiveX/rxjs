@@ -67,8 +67,8 @@ import mergeAll from './operators/mergeAll';
 import flatMap from './operators/flatMap';
 import flatMapTo from './operators/flatMapTo';
 import _switch from './operators/switch';
-import switchLatest from './operators/switchLatest';
-import switchLatestTo from './operators/switchLatestTo';
+import switchMap from './operators/switchMap';
+import switchMapTo from './operators/switchMapTo';
 import expand from './operators/expand';
 
 Observable.merge = merge;
@@ -77,8 +77,8 @@ observableProto.mergeAll = mergeAll;
 observableProto.flatMap = flatMap;
 observableProto.flatMapTo = flatMapTo;
 observableProto.switch = _switch;
-observableProto.switchLatest = switchLatest;
-observableProto.switchLatestTo = switchLatestTo;
+observableProto.switchMap = switchMap;
+observableProto.switchMapTo = switchMapTo;
 observableProto.expand = expand;
 
 import _do from './operators/do';

@@ -7,22 +7,22 @@ import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
 import { FlatMapSubscriber } from './flatMap-support';
 
-export default function switchLatest<T, R, R2>(project: (value: T, index: number) => Observable<R>,
+export default function switchMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
                                            resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2): Observable<R>{
-  return this.lift(new SwitchLatestOperator(project, resultSelector));
+  return this.lift(new SwitchMapOperator(project, resultSelector));
 }
 
-class SwitchLatestOperator<T, R, R2> implements Operator<T, R> {
+class SwitchMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
               private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new SwitchLatestSubscriber(subscriber, this.project, this.resultSelector);
+    return new SwitchMapSubscriber(subscriber, this.project, this.resultSelector);
   }
 }
 
-class SwitchLatestSubscriber<T, R, R2> extends Subscriber<T> {
+class SwitchMapSubscriber<T, R, R2> extends Subscriber<T> {
 
   private innerSubscription: Subscription<T>;
   private hasCompleted = false;
@@ -45,7 +45,7 @@ class SwitchLatestSubscriber<T, R, R2> extends Subscriber<T> {
       if(innerSubscription) {
         innerSubscription.unsubscribe();
       }
-      this.add(this.innerSubscription = result.subscribe(new InnerSwitchLatestSubscriber(this, this.resultSelector, index, value)))
+      this.add(this.innerSubscription = result.subscribe(new InnerSwitchMapSubscriber(this, this.resultSelector, index, value)))
     }
   }
   
@@ -74,10 +74,10 @@ class SwitchLatestSubscriber<T, R, R2> extends Subscriber<T> {
   }
 }
 
-class InnerSwitchLatestSubscriber<T, R, R2> extends Subscriber<T> {
+class InnerSwitchMapSubscriber<T, R, R2> extends Subscriber<T> {
   private index: number = 0;
   
-  constructor(private parent: SwitchLatestSubscriber<T, R, R2>, 
+  constructor(private parent: SwitchMapSubscriber<T, R, R2>, 
     private resultSelector: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
     private outerIndex: number,
     private outerValue: any) {

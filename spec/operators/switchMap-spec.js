@@ -3,11 +3,11 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
 
-describe('Observable.prototype.switchLatest()', function () {
+describe('Observable.prototype.switchMap()', function () {
   it("should switch with a selector function", function (done) {
     var a = Observable.of(1, 2, 3);
     var expected = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2', 'a3', 'b3', 'c3'];
-    a.switchLatest(function(x) {
+    a.switchMap(function(x) {
       return Observable.of('a' + x, 'b' + x, 'c' + x);
     }).subscribe(function (x) {
       expect(x).toBe(expected.shift());
@@ -17,7 +17,7 @@ describe('Observable.prototype.switchLatest()', function () {
   it('should unsub inner observables', function(){
     var unsubbed = [];
     
-    Observable.of('a', 'b').switchLatest(function(x) {
+    Observable.of('a', 'b').switchMap(function(x) {
       return Observable.create(function(subscriber) {
         subscriber.complete();
         return function() {
@@ -37,7 +37,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x, y: y };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected);    
   });
@@ -50,7 +50,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x, y: y };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected);    
   });
@@ -63,7 +63,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x, y: y };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected);    
   });
@@ -76,7 +76,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x, y: y };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected);    
   });
@@ -89,7 +89,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x, y: y };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected);    
   });
@@ -102,7 +102,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x, y: y };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected, undefined, new Error('sad'));    
   });
@@ -115,7 +115,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x, y: y };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected, undefined, new Error('sad'));    
   });
@@ -123,7 +123,7 @@ describe('Observable.prototype.switchLatest()', function () {
   it('should handle outer empty', function (){
     var e1 = Observable.empty();
     var expected = '|';
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return Observable.of(value);
     })).toBe(expected);
   });
@@ -131,7 +131,7 @@ describe('Observable.prototype.switchLatest()', function () {
   it('should handle outer never', function (){
     var e1 = Observable.never();
     var expected = '----';
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return Observable.of(value);
     })).toBe(expected);
   });
@@ -139,7 +139,7 @@ describe('Observable.prototype.switchLatest()', function () {
   it('should handle outer throw', function (){
     var e1 = Observable.throw(new Error('wah'));
     var expected = '#';
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return Observable.of(value);
     })).toBe(expected, undefined, new Error('wah'));
   });
@@ -151,7 +151,7 @@ describe('Observable.prototype.switchLatest()', function () {
     
     var observableLookup = { x: x };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     })).toBe(expected, undefined, new Error('boo-hoo'));    
   });
@@ -174,7 +174,7 @@ describe('Observable.prototype.switchLatest()', function () {
       i: ['i', 'y', 3, 1]
     };
     
-    expectObservable(e1.switchLatest(function(value) {
+    expectObservable(e1.switchMap(function(value) {
       return observableLookup[value];
     }, function(innerValue, outerValue, innerIndex, outerIndex) {
       return [innerValue, outerValue, innerIndex, outerIndex];

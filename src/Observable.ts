@@ -173,9 +173,9 @@ export default class Observable<T>  {
   delay: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;
 
   switch: <R>() => Observable<R>;
-  switchLatest: <R>(project: ((x: T, ix: number) => Observable<any>),
+  switchMap: <R>(project: ((x: T, ix: number) => Observable<any>),
                     projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  switchLatestTo: <R>(observable: Observable<any>,
+  switchMapTo: <R>(observable: Observable<any>,
                       projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
 
   static combineLatest: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
