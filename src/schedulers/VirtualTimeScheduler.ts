@@ -9,6 +9,7 @@ export default class VirtualTimeScheduler implements Scheduler {
   index: number = 0;
   sorted: boolean = false;
   frame: number = 0;
+  maxFrames: number = 750;
   
   now() {
     return 0;
@@ -16,11 +17,17 @@ export default class VirtualTimeScheduler implements Scheduler {
   
   flush() {
     const actions = this.actions;
+    const maxFrames = this.maxFrames;
     while (actions.length > 0) {
       let action = actions.shift();
       this.frame = action.delay;
-      action.execute();
+      if(this.frame <= maxFrames) {
+        action.execute();
+      } else {
+        break;
+      }
     }
+    actions.length = 0;
     this.frame = 0;
   }
   
