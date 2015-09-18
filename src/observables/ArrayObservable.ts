@@ -46,9 +46,16 @@ export default class ArrayObservable<T> extends Observable<T> {
 
     (<any> this).schedule(state);
   }
+  
+  // value used if Array has one value and _isScalar
+  value: any;
 
   constructor(private array: T[], private scheduler?: Scheduler) {
     super();
+    if(!scheduler && array.length === 1) {
+      this._isScalar = true;
+      this.value = array[0];
+    }
   }
 
   _subscribe(subscriber) {
@@ -63,16 +70,10 @@ export default class ArrayObservable<T> extends Observable<T> {
         array, index, count, subscriber
       }));
     } else {
-      do {
-        if (index >= count) {
-          subscriber.complete();
-          break;
-        }
-        subscriber.next(array[index++]);
-        if (subscriber.isUnsubscribed) {
-          break;
-        }
-      } while (true);
+      for(let i = 0; i < count && !subscriber.isUnsubscribed; i++) {
+        subscriber.next(array[i]);
+      }
+      subscriber.complete();
     }
   }
 }
