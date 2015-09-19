@@ -11,8 +11,10 @@ export default class VirtualTimeScheduler implements Scheduler {
   frame: number = 0;
   maxFrames: number = 750;
   
+  protected static frameTimeFactor: number = 10;
+  
   now() {
-    return 0;
+    return this.frame * VirtualTimeScheduler.frameTimeFactor;
   }
   
   flush() {
