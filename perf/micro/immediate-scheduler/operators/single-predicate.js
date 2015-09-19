@@ -11,10 +11,10 @@ module.exports = function (suite) {
     var newSinglePredicate = RxNew.Observable.range(0, 50).single(predicate);
     
     return suite
-        .add('old single() with immediate scheduler', function () {
+        .add('old single(predicate) with immediate scheduler', function () {
             oldSinglePredicate.subscribe(_next, _error, _complete);
         })
-        .add('new single() with immediate scheduler', function () {
+        .add('new single(predicate) with immediate scheduler', function () {
             newSinglePredicate.subscribe(_next, _error, _complete);
         });
         
