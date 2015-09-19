@@ -6,6 +6,8 @@ import Subscription from '../Subscription';
 import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
 import { MergeMapSubscriber } from './mergeMap-support';
+import OuterSubscriber from '../OuterSubscriber';
+import subscribeToResult from '../util/subscribeToResult';
 
 export default function switchMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
                                            resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2): Observable<R>{
@@ -22,7 +24,7 @@ class SwitchMapOperator<T, R, R2> implements Operator<T, R> {
   }
 }
 
-class SwitchMapSubscriber<T, R, R2> extends Subscriber<T> {
+class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   private innerSubscription: Subscription<T>;
   private hasCompleted = false;
@@ -45,7 +47,7 @@ class SwitchMapSubscriber<T, R, R2> extends Subscriber<T> {
       if(innerSubscription) {
         innerSubscription.unsubscribe();
       }
-      this.add(this.innerSubscription = result.subscribe(new InnerSwitchMapSubscriber(this, this.resultSelector, index, value)))
+      this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
     }
   }
   
@@ -59,7 +61,12 @@ class SwitchMapSubscriber<T, R, R2> extends Subscriber<T> {
   
   notifyComplete(innerSub: Subscription<R>) {
     this.remove(innerSub);
+    const prevSubscription = this.innerSubscription;
+    if(prevSubscription) {
+      prevSubscription.unsubscribe();
+    }
     this.innerSubscription = null;
+    
     if(this.hasCompleted) {
       this.destination.complete();
     }
@@ -69,42 +76,17 @@ class SwitchMapSubscriber<T, R, R2> extends Subscriber<T> {
     this.destination.error(err);
   }
   
-  notifyNext(value: T) {
-    this.destination.next(value);
-  }
-}
-
-class InnerSwitchMapSubscriber<T, R, R2> extends Subscriber<T> {
-  private index: number = 0;
-  
-  constructor(private parent: SwitchMapSubscriber<T, R, R2>, 
-    private resultSelector: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
-    private outerIndex: number,
-    private outerValue: any) {
-    super();
-  }
-  
-  _next(value: T) {
-    const parent = this.parent;
-    const index = this.index++;
-    const resultSelector = this.resultSelector;
+  notifyNext(innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) {
+    const { resultSelector, destination } = this;
     if(resultSelector) {
-      let result = tryCatch(resultSelector)(value, this.outerValue, index, this.outerIndex);
+      const result = tryCatch(resultSelector)(innerValue, outerValue, innerIndex, outerIndex);
       if(result === errorObject) {
-        parent.notifyError(result.e);
+        destination.error(errorObject.e);
       } else {
-        parent.notifyNext(result);
+        destination.next(result);
       }
     } else {
-      parent.notifyNext(value);
+      destination.next(innerValue);
     }
-  }
-  
-  _error(err: T) {
-    this.parent.notifyError(err);
-  }
-  
-  _complete() {
-    this.parent.notifyComplete(this);
   }
 }

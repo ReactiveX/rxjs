@@ -179,5 +179,5 @@ describe('Observable.prototype.switchMap()', function () {
     }, function(innerValue, outerValue, innerIndex, outerIndex) {
       return [innerValue, outerValue, innerIndex, outerIndex];
     })).toBe(expected, expectedValues);    
-  })
+  });
 });
