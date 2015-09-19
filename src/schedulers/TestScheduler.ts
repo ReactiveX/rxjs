@@ -88,12 +88,12 @@ export default class TestScheduler extends VirtualTimeScheduler {
     let len = marbles.length;
     let results: ({ frame: number, notification: Notification<any> })[] = [];
     let subIndex = marbles.indexOf('^');
-    let frameOffset = subIndex === -1 ? 0 : (subIndex * -10);
+    let frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
     let getValue = typeof values !== 'object' ? (x) => x : (x) => values[x];
     let groupStart = -1;
     
     for (let i = 0; i < len; i++) {
-      let frame = i * 10;
+      let frame = i * this.frameTimeFactor;
       let notification;
       let c = marbles[i];
       switch (c) {
