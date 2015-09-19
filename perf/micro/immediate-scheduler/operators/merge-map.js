@@ -3,7 +3,7 @@ var RxNew = require("../../../../index");
 
 module.exports = function (suite) {
     
-    var oldMergeMapWithImmediateScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate).mergeMap(function (x) { return RxOld.Observable.range(x, 25, RxOld.Scheduler.immediate); });
+    var oldMergeMapWithImmediateScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate).flatMap(function (x) { return RxOld.Observable.range(x, 25, RxOld.Scheduler.immediate); });
     var newMergeMapWithImmediateScheduler = RxNew.Observable.range(0, 25).mergeMap(function (x) { return RxNew.Observable.range(x, 25); });
 
     return suite

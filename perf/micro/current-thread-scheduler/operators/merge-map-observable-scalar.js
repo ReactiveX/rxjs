@@ -3,7 +3,7 @@ var RxNew = require("../../../../index");
 
 module.exports = function (suite) {
 
-    var oldMergeMapWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).mergeMap(RxOld.Observable.return(0, RxOld.Scheduler.currentThread));
+    var oldMergeMapWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).flatMap(RxOld.Observable.return(0, RxOld.Scheduler.currentThread));
     var newMergeMapWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate).mergeMapTo(RxNew.Observable.of(0, RxNew.Scheduler.immediate));
 
     return suite
