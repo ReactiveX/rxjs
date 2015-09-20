@@ -52,7 +52,7 @@ export default class Observable<T>  {
   
   /**
    * @method lift
-   * @param {Operator} the operator defining the operation to take on the observable
+   * @param {Operator} operator the operator defining the operation to take on the observable
    * @returns {Observable} a new observable with the Operator applied
    * @description creates a new Observable, with this Observable as the source, and the passed 
    * operator defined as the new observable's operator.
@@ -109,6 +109,7 @@ export default class Observable<T>  {
   /**
    * @method forEach
    * @param {Function} next a handler for each value emitted by the observable
+   * @param {PromiseConstructor} PromiseCtor? a constructor function used to instantiate the Promise
    * @returns {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
