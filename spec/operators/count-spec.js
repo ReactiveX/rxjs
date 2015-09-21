@@ -1,13 +1,12 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('count', function () {
-  it('should count the values of an observable', function (done) {
-    Observable.fromArray([1, 2, 3])
-      .count()
-      .subscribe(function (total) {
-          expect(total).toEqual(3);
-        }, null, done);
+  it('should count the values of an observable', function () {
+    var source = hot('--a--b--c--|');
+    var expected =   '-----------(x|)';
+    
+    expectObservable(source.count()).toBe(expected, {x: 3});
   });
 });
