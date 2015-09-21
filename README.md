@@ -63,20 +63,7 @@ npm run build_all
 
 ## Performance Tests
 
-First you'll need to host the root directory under a web server, the simplest way to do that is to install `http-server` with `npm i -g http-server`,
-then start it in the home directory. After that you can run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor` (which also
-needs to be globally installed)
+Run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor`.
 
 ## Adding documentation
 RxNext uses [ESDoc](https://esdoc.org/) to generate API documentation. Refer to ESDoc's documentation for syntax. Run `npm run build_docs` to generate.
-
-### Prerequisites
-Running the performance tests requires `protractor` globally installed and an http server of some sort. `http-server` the node module
-will work:
-
-```sh
-npm i -g protractor http-server
-```
-
-
-
