@@ -14,6 +14,7 @@ export default function switchMap<T, R, R2>(project: (value: T, index: number) =
   return this.lift(new SwitchMapOperator(project, resultSelector));
 }
 
+
 class SwitchMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
               private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2) {

@@ -39,10 +39,11 @@ export default function subscribeToResult<T, R, R2>(outerSubscriber: OuterSubscr
     } else if (typeof result.then === 'function') {
       result.then(x => {
         if(!destination.isUnsubscribed) {
-          destination.next(result);
+          destination.next(x);
           destination.complete();
         }
       }, err => destination.error(err));
+      return destination;
     } else if (typeof result[$$iterator] === 'function') {
       for(let item of result) {
         destination.next(item);

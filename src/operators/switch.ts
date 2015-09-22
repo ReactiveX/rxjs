@@ -3,6 +3,8 @@ import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
+import OuterSubscriber from '../OuterSubscriber';
+import subscribeToResult from '../util/subscribeToResult';
 
 export default function _switch<T>(): Observable<T> {
   return this.lift(new SwitchOperator());
@@ -18,7 +20,7 @@ class SwitchOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class SwitchSubscriber<T> extends Subscriber<T> {
+class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private hasCompleted: boolean = false;
   innerSubscription: Subscription<T>;
@@ -28,9 +30,9 @@ class SwitchSubscriber<T> extends Subscriber<T> {
   }
   
   _next(value: any) {
-    this.active++;
     this.unsubscribeInner();
-    this.add(this.innerSubscription = value.subscribe(new InnerSwitchSubscriber(this))); 
+    this.active++;
+    this.add(this.innerSubscription = subscribeToResult(this, value)); 
   }
   
   _complete() {
@@ -41,15 +43,15 @@ class SwitchSubscriber<T> extends Subscriber<T> {
   }
   
   unsubscribeInner() {
+    this.active = this.active > 0 ? this.active - 1 : 0;
     const innerSubscription = this.innerSubscription;
     if(innerSubscription) {
-      this.active--;
       innerSubscription.unsubscribe();
       this.remove(innerSubscription);
     }
   }
   
-  notifyNext(value: T) {
+  notifyNext(value: any) {
     this.destination.next(value);
   }
   
@@ -62,24 +64,6 @@ class SwitchSubscriber<T> extends Subscriber<T> {
     if(this.hasCompleted && this.active === 0) {
       this.destination.complete();
     }
-  }
-}
-
-class InnerSwitchSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: SwitchSubscriber<T>) {
-    super();
-  }
-  
-  _next(value: T) {
-    this.parent.notifyNext(value);
-  }
-  
-  _error(err: any) {
-    this.parent.notifyError(err);
-  }
-  
-  _complete() {
-    this.parent.notifyComplete();
   }
 }
 
