@@ -9,11 +9,12 @@ exports.config = {
       //Important for benchpress to get timeline data from the browser
       'args': ['--js-flags=--expose-gc'],
       'perfLoggingPrefs': {
-        'traceCategories': 'blink.console,disabled-by-default-devtools.timeline'
+        'traceCategories': 'v8,blink.console,disabled-by-default-devtools.timeline'
       }
     },
     loggingPrefs: {
-      performance: 'ALL'
+      performance: 'ALL',
+      browser: 'ALL'
     }
   },
 
