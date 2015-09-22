@@ -5,7 +5,7 @@ var Promise = require('promise');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
 
-fdescribe('Observable.prototype.switch()', function(){
+describe('Observable.prototype.switch()', function(){
   it("should switch to each immediately-scheduled inner Observable", function (done) {
     var a = Observable.of(1, 2, 3, immediateScheduler);
     var b = Observable.of(4, 5, 6, immediateScheduler);

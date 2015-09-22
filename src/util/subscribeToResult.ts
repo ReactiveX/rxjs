@@ -11,7 +11,7 @@ import OuterSubscriber from '../OuterSubscriber';
 
 const isArray = Array.isArray;
 
-export default function subscribeToResult<T, R, R2>(outerSubscriber: OuterSubscriber<T, R>, 
+export default function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>, 
   result: any, outerValue?: T, outerIndex?: number): Subscription<T> {
     let destination: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
     

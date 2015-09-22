@@ -1,6 +1,7 @@
 /* globals describe, it, expect, expectObservable, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+var Promise = require('promise');
 
 describe('Observable.prototype.expand()', function () {
   it('should map and recursively flatten', function() {
@@ -53,5 +54,66 @@ describe('Observable.prototype.expand()', function () {
       }
       return Observable.of(x + x); // scalar
     })).toBe(expected, values);
+  });
+  
+  it('should recursively flatten promises', function(done) {
+    var expected = [1, 2, 4, 8, 16];
+    Observable.of(1)
+      .expand(function(x) {
+        if(x === 16) {
+          return Observable.empty();
+        }
+        return Promise.resolve(x + x);
+      })
+      .subscribe(function(x) {
+        expect(x).toBe(expected.shift());
+      }, null, function(){
+        expect(expected.length).toBe(0);
+        done();
+      });
+  });
+  
+  it('should recursively flatten Arrays', function(done) {
+    var expected = [1, 2, 4, 8, 16];
+    Observable.of(1)
+      .expand(function(x) {
+        if(x === 16) {
+          return Observable.empty();
+        }
+        return [x + x];
+      })
+      .subscribe(function(x) {
+        expect(x).toBe(expected.shift());
+      }, null, function(){
+        expect(expected.length).toBe(0);
+        done();
+      });
+  });
+  
+  it('should recursively flatten lowercase-o observables', function(done) {
+    var expected = [1, 2, 4, 8, 16];
+    
+    Observable.of(1)
+      .expand(function(x) {
+        if(x === 16) {
+          return Observable.empty();
+        }
+        
+        var ish = {
+          subscribe: function(observer){
+            observer.next(x + x);
+            observer.complete();
+          }
+        };
+        
+        ish[Symbol.observable] = function(){ return this; };
+        return ish;
+      })
+      .subscribe(function(x) {
+        expect(x).toBe(expected.shift());
+      }, null, function(){
+        expect(expected.length).toBe(0);
+        done();
+      });
   });
 });

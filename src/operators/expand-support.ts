@@ -9,6 +9,8 @@ import ScalarObservable from '../observables/ScalarObservable';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import OuterSubscriber from '../OuterSubscriber';
+import subscribeToResult from '../util/subscribeToResult';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<any>, 
@@ -20,11 +22,11 @@ export class ExpandOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class ExpandSubscriber<T, R> extends Subscriber<T> {
+export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private index: number = 0;
   private active: number = 0;
   private hasCompleted: boolean = false;
-  private buffer: T[];
+  private buffer: any[];
   
   constructor(destination: Observer<T>, private project: (value: T, index: number) => Observable<R>, 
     private concurrent: number = Number.POSITIVE_INFINITY) {
@@ -34,7 +36,7 @@ export class ExpandSubscriber<T, R> extends Subscriber<T> {
     }
   }
   
-  _next(value: T) {
+  _next(value: any) {
     const index = this.index++;
     this.destination.next(value);
     if(this.active < this.concurrent) {
@@ -46,7 +48,7 @@ export class ExpandSubscriber<T, R> extends Subscriber<T> {
           this._next(result.value);
         } else {
           this.active++;
-          this.add(result.subscribe(new ExpandInnerSubscriber(this.destination, this)));
+          this.add(subscribeToResult<T, R>(this, result, value, index));
         }
       }
     } else {
@@ -72,18 +74,8 @@ export class ExpandSubscriber<T, R> extends Subscriber<T> {
       this.destination.complete();
     }
   }
-}
-
-export class ExpandInnerSubscriber<T, R> extends Subscriber<T> {
-  constructor(destination: Observer<T>, private parent: ExpandSubscriber<T, R>) {
-    super(destination);
-  }
   
-  _next(value) {
-    this.parent._next(value);
-  }
-  
-  _complete() {
-    this.parent.notifyComplete(this);
+  notifyNext(innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) {
+    this._next(innerValue);
   }
 }

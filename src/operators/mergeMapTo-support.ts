@@ -51,7 +51,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
   
   _innerSub(ish: any, destination: Observer<R>, resultSelector: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2, value: T, index: number) {
-    this.add(subscribeToResult<T,R,R2>(this, ish, value, index));
+    this.add(subscribeToResult<T, R>(this, ish, value, index));
   }
   
   _complete() {
