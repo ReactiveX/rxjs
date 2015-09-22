@@ -3,6 +3,8 @@ import Operator from '../Operator';
 import Subscriber from '../Subscriber';
 import Observer from '../Observer';
 import Subscription from '../Subscription';
+import OuterSubscriber from '../OuterSubscriber';
+import subscribeToResult from '../util/subscribeToResult';
 
 export class MergeAllOperator<T, R> implements Operator<T, R> {
   constructor(private concurrent: number) {
@@ -14,10 +16,11 @@ export class MergeAllOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class MergeAllSubscriber<T> extends Subscriber<T> {
+export class MergeAllSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: Observable<any>[] = [];
   private active: number = 0;
+  
   constructor(destination: Observer<T>, private concurrent:number) {
     super(destination);
   }
@@ -28,7 +31,7 @@ export class MergeAllSubscriber<T> extends Subscriber<T> {
         this.destination.next(observable.value);
       } else {
         this.active++;
-        this.add(observable.subscribe(new MergeAllInnerSubscriber(this.destination, this)))
+        this.add(subscribeToResult<T, R>(this, observable));
       }
     } else {
       this.buffer.push(observable);
@@ -51,15 +54,5 @@ export class MergeAllSubscriber<T> extends Subscriber<T> {
     } else if (this.active === 0 && this.hasCompleted) {
       this.destination.complete();
     }
-  }
-}
-
-export class MergeAllInnerSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>, private parent: MergeAllSubscriber<T>) {
-    super(destination);
-  }
-  
-  _complete() {
-    this.parent.notifyComplete(this);
   }
 }
