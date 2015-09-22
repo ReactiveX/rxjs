@@ -28,7 +28,7 @@ export default class Observable<T>  {
    * @param {Function} subscribe the function that is
    * called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values
    * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
-   * of a succesful completion.
+   * of a successful completion.
    */
   constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T>|Function|void) {
     if (subscribe) {
