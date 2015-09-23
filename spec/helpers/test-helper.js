@@ -104,3 +104,24 @@ function assertDeepEqual(actual, expected) {
   
   global.__root__ = _root;
 }());
+
+
+
+global.lowerCaseO = function lowerCaseO() {
+  var values = [].slice.apply(arguments);
+  
+  var o = {
+    subscribe: function(observer) {
+      values.forEach(function(v) {
+        observer.next(v);
+      });
+      observer.complete();
+    }
+  };
+  
+  o[Symbol.observable] = function (){
+    return this;
+  }
+  
+  return o;
+}
