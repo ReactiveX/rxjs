@@ -8,10 +8,10 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "MergeOperator",
+            "name": "MergeAllOperator",
             "range": [
               9,
-              22
+              25
             ],
             "loc": {
               "start": {
@@ -20,16 +20,16 @@
               },
               "end": {
                 "line": 1,
-                "column": 22
+                "column": 25
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "MergeOperator",
+            "name": "MergeAllOperator",
             "range": [
               9,
-              22
+              25
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 22
+                "column": 25
               }
             }
           },
           "range": [
             9,
-            22
+            25
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 22
+              "column": 25
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./merge-support",
-        "raw": "'./merge-support'",
+        "value": "./mergeAll-support",
+        "raw": "'./mergeAll-support'",
         "range": [
-          30,
-          47
+          33,
+          53
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 30
+            "column": 33
           },
           "end": {
             "line": 1,
-            "column": 47
+            "column": 53
           }
         }
       },
       "range": [
         0,
-        48
+        54
       ],
       "loc": {
         "start": {
@@ -88,7 +88,7 @@
         },
         "end": {
           "line": 1,
-          "column": 48
+          "column": 54
         }
       }
     },
@@ -100,8 +100,8 @@
           "type": "Identifier",
           "name": "mergeAll",
           "range": [
-            73,
-            81
+            79,
+            87
           ],
           "loc": {
             "start": {
@@ -116,11 +116,82 @@
         },
         "params": [
           {
-            "type": "Identifier",
-            "name": "concurrent",
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "concurrent",
+              "range": [
+                88,
+                98
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 33
+                },
+                "end": {
+                  "line": 2,
+                  "column": 43
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  101,
+                  107
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 46
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 52
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  108,
+                  125
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 53
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 70
+                  }
+                }
+              },
+              "range": [
+                101,
+                125
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 46
+                },
+                "end": {
+                  "line": 2,
+                  "column": 70
+                }
+              }
+            },
             "range": [
-              82,
-              92
+              88,
+              125
             ],
             "loc": {
               "start": {
@@ -129,7 +200,7 @@
               },
               "end": {
                 "line": 2,
-                "column": 43
+                "column": 70
               }
             }
           }
@@ -147,8 +218,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      107,
-                      111
+                      140,
+                      144
                     ],
                     "loc": {
                       "start": {
@@ -165,8 +236,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      112,
-                      116
+                      145,
+                      149
                     ],
                     "loc": {
                       "start": {
@@ -180,8 +251,8 @@
                     }
                   },
                   "range": [
-                    107,
-                    116
+                    140,
+                    149
                   ],
                   "loc": {
                     "start": {
@@ -199,10 +270,10 @@
                     "type": "NewExpression",
                     "callee": {
                       "type": "Identifier",
-                      "name": "MergeOperator",
+                      "name": "MergeAllOperator",
                       "range": [
-                        121,
-                        134
+                        154,
+                        170
                       ],
                       "loc": {
                         "start": {
@@ -211,7 +282,7 @@
                         },
                         "end": {
                           "line": 3,
-                          "column": 38
+                          "column": 41
                         }
                       }
                     },
@@ -220,24 +291,24 @@
                         "type": "Identifier",
                         "name": "concurrent",
                         "range": [
-                          135,
-                          145
+                          171,
+                          181
                         ],
                         "loc": {
                           "start": {
                             "line": 3,
-                            "column": 39
+                            "column": 42
                           },
                           "end": {
                             "line": 3,
-                            "column": 49
+                            "column": 52
                           }
                         }
                       }
                     ],
                     "range": [
-                      117,
-                      146
+                      150,
+                      182
                     ],
                     "loc": {
                       "start": {
@@ -246,14 +317,14 @@
                       },
                       "end": {
                         "line": 3,
-                        "column": 50
+                        "column": 53
                       }
                     }
                   }
                 ],
                 "range": [
-                  107,
-                  147
+                  140,
+                  183
                 ],
                 "loc": {
                   "start": {
@@ -262,13 +333,13 @@
                   },
                   "end": {
                     "line": 3,
-                    "column": 51
+                    "column": 54
                   }
                 }
               },
               "range": [
-                100,
-                148
+                133,
+                184
               ],
               "loc": {
                 "start": {
@@ -277,19 +348,19 @@
                 },
                 "end": {
                   "line": 3,
-                  "column": 52
+                  "column": 55
                 }
               }
             }
           ],
           "range": [
-            94,
-            150
+            127,
+            186
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 45
+              "column": 72
             },
             "end": {
               "line": 4,
@@ -300,8 +371,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          64,
-          150
+          70,
+          186
         ],
         "loc": {
           "start": {
@@ -317,8 +388,8 @@
         "trailingComments": []
       },
       "range": [
-        49,
-        150
+        55,
+        186
       ],
       "loc": {
         "start": {
@@ -335,7 +406,7 @@
   "sourceType": "module",
   "range": [
     0,
-    150
+    186
   ],
   "loc": {
     "start": {

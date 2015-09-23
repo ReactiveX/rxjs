@@ -45,6 +45,7 @@
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></li>
 </ul>
 </div>
 
@@ -56,13 +57,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Observable from &apos;<span><a href="file/es6/Observable.js.html#lineNumber9">@reactivex/rxjs/es6/Observable.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Observable from &apos;<span><a href="file/es6/Observable.js.html#lineNumber10">@reactivex/rxjs/es6/Observable.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/es6/Observable.js.html#lineNumber9">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/es6/Observable.js.html#lineNumber10">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -145,7 +146,7 @@ of RxJS.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-forEach">forEach</a></span></span><span data-ice="signature">(next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-[$$observable]">[$$observable]</a></span></span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
@@ -170,7 +171,32 @@ of RxJS.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-lift">lift</a></span></span><span data-ice="signature">(the: <span>Operator</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-forEach">forEach</a></span></span><span data-ice="signature">(next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, PromiseCtor?: <span>PromiseConstructor</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-lift">lift</a></span></span><span data-ice="signature">(operator: <span>Operator</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
@@ -230,7 +256,7 @@ of RxJS.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber17">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber18">source</a></span></span>
     </span>
   </h3>
 
@@ -256,7 +282,7 @@ of RxJS.</p>
       <td data-ice="description"><p>the function that is
 called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values
 can be <code>next</code>ed, or an <code>error</code> method can be called to raise an error, or <code>complete</code> can be called to notify
-of a succesful completion.</p>
+of a successful completion.</p>
 </td>
     </tr>
 </tbody>
@@ -284,17 +310,68 @@ of a succesful completion.</p>
 <div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-[$$observable]">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">[$$observable]</span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber42">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>this instance of the observable</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-forEach">
     <span class="access" data-ice="access">public</span>
     
     
     
     
-    <span data-ice="name">forEach</span><span data-ice="signature">(next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+    <span data-ice="name">forEach</span><span data-ice="signature">(next: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, PromiseCtor?: <span>PromiseConstructor</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber78">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber80">source</a></span></span>
     </span>
   </h3>
 
@@ -318,6 +395,13 @@ of a succesful completion.</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a handler for each value emitted by the observable</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">PromiseCtor?</td>
+      <td data-ice="type"><span>PromiseConstructor</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>a constructor function used to instantiate the Promise</p>
 </td>
     </tr>
 </tbody>
@@ -359,11 +443,11 @@ of a succesful completion.</p>
     
     
     
-    <span data-ice="name">lift</span><span data-ice="signature">(the: <span>Operator</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span data-ice="name">lift</span><span data-ice="signature">(operator: <span>Operator</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber30">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber31">source</a></span></span>
     </span>
   </h3>
 
@@ -383,10 +467,10 @@ of a succesful completion.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">the</td>
+      <td data-ice="name" data-depth="0">operator</td>
       <td data-ice="type"><span>Operator</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>operator defining the operation to take on the observable</p>
+      <td data-ice="description"><p>the operator defining the operation to take on the observable</p>
 </td>
     </tr>
 </tbody>
@@ -431,7 +515,7 @@ of a succesful completion.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber55">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber56">source</a></span></span>
     </span>
   </h3>
 
@@ -508,7 +592,7 @@ of a succesful completion.</p>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

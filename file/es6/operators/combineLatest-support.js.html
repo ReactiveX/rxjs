@@ -45,6 +45,7 @@
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></li>
 </ul>
 </div>
 
@@ -56,66 +57,76 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/combineLatest-support.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import ArrayObservable from &apos;../observables/ArrayObservable&apos;;
-import { ZipSubscriber, ZipInnerSubscriber } from &apos;./zip-support&apos;;
-export function combineLatest(...observables) {
-    const project = observables[observables.length - 1];
-    if (typeof project === &quot;function&quot;) {
-        observables.pop();
-    }
-    return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
-}
-export function combineLatestProto(...observables) {
-    const project = observables[observables.length - 1];
-    if (typeof project === &quot;function&quot;) {
-        observables.pop();
-    }
-    observables.unshift(this);
-    return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
-}
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import tryCatch from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+import OuterSubscriber from &apos;../OuterSubscriber&apos;;
+import subscribeToResult from &apos;../util/subscribeToResult&apos;;
 export class CombineLatestOperator {
     constructor(project) {
         this.project = project;
     }
-    call(observer) {
-        return new CombineLatestSubscriber(observer, this.project);
+    call(subscriber) {
+        return new CombineLatestSubscriber(subscriber, this.project);
     }
 }
-export class CombineLatestSubscriber extends ZipSubscriber {
+export class CombineLatestSubscriber extends OuterSubscriber {
     constructor(destination, project) {
-        super(destination, project, []);
-        this.limit = 0;
+        super(destination);
+        this.project = project;
+        this.active = 0;
+        this.values = [];
+        this.observables = [];
+        this.toRespond = [];
     }
-    _subscribeInner(observable, values, index, total) {
-        return observable._subscribe(new CombineLatestInnerSubscriber(this.destination, this, values, index, total));
+    _next(observable) {
+        const toRespond = this.toRespond;
+        toRespond.push(toRespond.length);
+        this.observables.push(observable);
     }
-    _innerComplete(innerSubscriber) {
+    _complete() {
+        const observables = this.observables;
+        const len = observables.length;
+        if (len === 0) {
+            this.destination.complete();
+        }
+        else {
+            this.active = len;
+            for (let i = 0; i &lt; len; i++) {
+                let observable = observables[i];
+                this.add(subscribeToResult(this, observable, observable, i));
+            }
+        }
+    }
+    notifyComplete(innerSubscriber) {
         if ((this.active -= 1) === 0) {
             this.destination.complete();
         }
     }
-}
-export class CombineLatestInnerSubscriber extends ZipInnerSubscriber {
-    constructor(destination, parent, values, index, total) {
-        super(destination, parent, values, index, total);
-    }
-    _next(x) {
-        const index = this.index;
-        const total = this.total;
-        const parent = this.parent;
+    notifyNext(value, observable, innerIndex, outerIndex) {
         const values = this.values;
-        const valueBox = values[index];
-        let limit;
-        if (valueBox) {
-            valueBox[0] = x;
-            limit = parent.limit;
+        values[outerIndex] = value;
+        const toRespond = this.toRespond;
+        if (toRespond.length &gt; 0) {
+            const found = toRespond.indexOf(outerIndex);
+            if (found !== -1) {
+                toRespond.splice(found, 1);
+            }
         }
-        else {
-            limit = parent.limit += 1;
-            values[index] = [x];
-        }
-        if (limit &gt;= total) {
-            this._projectNext(values, parent.project);
+        if (toRespond.length === 0) {
+            const project = this.project;
+            const destination = this.destination;
+            if (project) {
+                let result = tryCatch(project).apply(this, values);
+                if (result === errorObject) {
+                    destination.error(errorObject.e);
+                }
+                else {
+                    destination.next(result);
+                }
+            }
+            else {
+                destination.next(values);
+            }
         }
     }
 }
@@ -124,7 +135,7 @@ export class CombineLatestInnerSubscriber extends ZipInnerSubscriber {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

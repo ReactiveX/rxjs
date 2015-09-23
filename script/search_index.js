@@ -30,6 +30,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "@reactivex/rxjs/es6/operators/withlatestfrom.js~withlatestfrom",
+    "function/index.html#static-function-withLatestFrom",
+    "<span>withLatestFrom</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/withLatestFrom.js</span>",
+    "function"
+  ],
+  [
     "builtinexternal/ecmascriptexternal.js~array",
     "external/index.html",
     "BuiltinExternal/ECMAScriptExternal.js~Array",
@@ -354,6 +360,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "es6/innersubscriber.js",
+    "file/es6/InnerSubscriber.js.html",
+    "es6/InnerSubscriber.js",
+    "file"
+  ],
+  [
     "es6/notification.js",
     "file/es6/Notification.js.html",
     "es6/Notification.js",
@@ -364,6 +376,12 @@ window.esdocSearchIndex = [
     "file/es6/Observable.js.html",
     "es6/Observable.js",
     "file"
+  ],
+  [
+    "es6/observable.js~observable#[$$observable]",
+    "class/es6/Observable.js~Observable.html#instance-method-[$$observable]",
+    "es6/Observable.js~Observable#[$$observable]",
+    "method"
   ],
   [
     "es6/observable.js~observable#constructor",
@@ -399,6 +417,12 @@ window.esdocSearchIndex = [
     "es6/operator.js",
     "file/es6/Operator.js.html",
     "es6/Operator.js",
+    "file"
+  ],
+  [
+    "es6/outersubscriber.js",
+    "file/es6/OuterSubscriber.js.html",
+    "es6/OuterSubscriber.js",
     "file"
   ],
   [
@@ -666,6 +690,18 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operators/elementat.js",
+    "file/es6/operators/elementAt.js.html",
+    "es6/operators/elementAt.js",
+    "file"
+  ],
+  [
+    "es6/operators/expand-support.js",
+    "file/es6/operators/expand-support.js.html",
+    "es6/operators/expand-support.js",
+    "file"
+  ],
+  [
     "es6/operators/expand.js",
     "file/es6/operators/expand.js.html",
     "es6/operators/expand.js",
@@ -684,33 +720,21 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/operators/flatmap-support.js",
-    "file/es6/operators/flatMap-support.js.html",
-    "es6/operators/flatMap-support.js",
-    "file"
-  ],
-  [
-    "es6/operators/flatmap.js",
-    "file/es6/operators/flatMap.js.html",
-    "es6/operators/flatMap.js",
-    "file"
-  ],
-  [
-    "es6/operators/flatmapto-support.js",
-    "file/es6/operators/flatMapTo-support.js.html",
-    "es6/operators/flatMapTo-support.js",
-    "file"
-  ],
-  [
-    "es6/operators/flatmapto.js",
-    "file/es6/operators/flatMapTo.js.html",
-    "es6/operators/flatMapTo.js",
-    "file"
-  ],
-  [
     "es6/operators/groupby.js",
     "file/es6/operators/groupBy.js.html",
     "es6/operators/groupBy.js",
+    "file"
+  ],
+  [
+    "es6/operators/isempty.js",
+    "file/es6/operators/isEmpty.js.html",
+    "es6/operators/isEmpty.js",
+    "file"
+  ],
+  [
+    "es6/operators/last.js",
+    "file/es6/operators/last.js.html",
+    "es6/operators/last.js",
     "file"
   ],
   [
@@ -738,21 +762,45 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/operators/merge-support.js",
-    "file/es6/operators/merge-support.js.html",
-    "es6/operators/merge-support.js",
-    "file"
-  ],
-  [
     "es6/operators/merge.js",
     "file/es6/operators/merge.js.html",
     "es6/operators/merge.js",
     "file"
   ],
   [
+    "es6/operators/mergeall-support.js",
+    "file/es6/operators/mergeAll-support.js.html",
+    "es6/operators/mergeAll-support.js",
+    "file"
+  ],
+  [
     "es6/operators/mergeall.js",
     "file/es6/operators/mergeAll.js.html",
     "es6/operators/mergeAll.js",
+    "file"
+  ],
+  [
+    "es6/operators/mergemap-support.js",
+    "file/es6/operators/mergeMap-support.js.html",
+    "es6/operators/mergeMap-support.js",
+    "file"
+  ],
+  [
+    "es6/operators/mergemap.js",
+    "file/es6/operators/mergeMap.js.html",
+    "es6/operators/mergeMap.js",
+    "file"
+  ],
+  [
+    "es6/operators/mergemapto-support.js",
+    "file/es6/operators/mergeMapTo-support.js.html",
+    "es6/operators/mergeMapTo-support.js",
+    "file"
+  ],
+  [
+    "es6/operators/mergemapto.js",
+    "file/es6/operators/mergeMapTo.js.html",
+    "es6/operators/mergeMapTo.js",
     "file"
   ],
   [
@@ -840,6 +888,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operators/single.js",
+    "file/es6/operators/single.js.html",
+    "es6/operators/single.js",
+    "file"
+  ],
+  [
     "es6/operators/skip.js",
     "file/es6/operators/skip.js.html",
     "es6/operators/skip.js",
@@ -864,21 +918,21 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/operators/switchall.js",
-    "file/es6/operators/switchAll.js.html",
-    "es6/operators/switchAll.js",
+    "es6/operators/switch.js",
+    "file/es6/operators/switch.js.html",
+    "es6/operators/switch.js",
     "file"
   ],
   [
-    "es6/operators/switchlatest.js",
-    "file/es6/operators/switchLatest.js.html",
-    "es6/operators/switchLatest.js",
+    "es6/operators/switchmap.js",
+    "file/es6/operators/switchMap.js.html",
+    "es6/operators/switchMap.js",
     "file"
   ],
   [
-    "es6/operators/switchlatestto.js",
-    "file/es6/operators/switchLatestTo.js.html",
-    "es6/operators/switchLatestTo.js",
+    "es6/operators/switchmapto.js",
+    "file/es6/operators/switchMapTo.js.html",
+    "es6/operators/switchMapTo.js",
     "file"
   ],
   [
@@ -1068,6 +1122,18 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/util/argumentoutofrangeerror.js",
+    "file/es6/util/ArgumentOutOfRangeError.js.html",
+    "es6/util/ArgumentOutOfRangeError.js",
+    "file"
+  ],
+  [
+    "es6/util/emptyerror.js",
+    "file/es6/util/EmptyError.js.html",
+    "es6/util/EmptyError.js",
+    "file"
+  ],
+  [
     "es6/util/fastmap.js",
     "file/es6/util/FastMap.js.html",
     "es6/util/FastMap.js",
@@ -1137,6 +1203,12 @@ window.esdocSearchIndex = [
     "es6/util/root.js",
     "file/es6/util/root.js.html",
     "es6/util/root.js",
+    "file"
+  ],
+  [
+    "es6/util/subscribetoresult.js",
+    "file/es6/util/subscribeToResult.js.html",
+    "es6/util/subscribeToResult.js",
     "file"
   ],
   [

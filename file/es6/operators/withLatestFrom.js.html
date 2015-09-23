@@ -45,6 +45,7 @@
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></li>
 </ul>
 </div>
 
@@ -56,11 +57,33 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/withLatestFrom.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
-import tryCatch from &apos;../util/tryCatch&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import tryCatch from &apos;../util/tryCatch&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
+import OuterSubscriber from &apos;../OuterSubscriber&apos;;
+import subscribeToResult from &apos;../util/subscribeToResult&apos;;
+/**
+ * @param {Observable} observables the observables to get the latest values from.
+ * @param {Function} [project] optional projection function for merging values together. Receives all values in order
+ *  of observables passed. (e.g. `a.withLatestFrom(b, c, (a1, b1, c1) =&gt; a1 + b1 + c1)`). If this is not passed, arrays
+ *  will be returned.
+ * @description merges each value from an observable with the latest values from the other passed observables.
+ * All observables must emit at least one value before the resulting observable will emit
+ *
+ * #### example
+ * ```
+ * A.withLatestFrom(B, C)
+ *
+ *  A:     ----a-----------------b---------------c-----------|
+ *  B:     ---d----------------e--------------f---------|
+ *  C:     --x----------------y-------------z-------------|
+ * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
+ * ```
+ */
 export default function withLatestFrom(...args) {
-    const project = args.pop();
+    let project;
+    if (typeof args[args.length - 1] === &apos;function&apos;) {
+        project = args.pop();
+    }
     const observables = args;
     return this.lift(new WithLatestFromOperator(observables, project));
 }
@@ -69,53 +92,58 @@ class WithLatestFromOperator {
         this.observables = observables;
         this.project = project;
     }
-    call(observer) {
-        return new WithLatestFromSubscriber(observer, this.observables, this.project);
+    call(subscriber) {
+        return new WithLatestFromSubscriber(subscriber, this.observables, this.project);
     }
 }
-class WithLatestFromSubscriber extends Subscriber {
+class WithLatestFromSubscriber extends OuterSubscriber {
     constructor(destination, observables, project) {
         super(destination);
         this.observables = observables;
         this.project = project;
+        this.toRespond = [];
         const len = observables.length;
         this.values = new Array(len);
-        this.toSet = len;
         for (let i = 0; i &lt; len; i++) {
-            this.add(observables[i]._subscribe(new WithLatestInnerSubscriber(this, i)));
+            this.toRespond.push(i);
+        }
+        for (let i = 0; i &lt; len; i++) {
+            let observable = observables[i];
+            this.add(subscribeToResult(this, observable, observable, i));
         }
     }
-    notifyValue(index, value) {
-        this.values[index] = value;
-        this.toSet--;
+    notifyNext(value, observable, index, observableIndex) {
+        this.values[observableIndex] = value;
+        const toRespond = this.toRespond;
+        if (toRespond.length &gt; 0) {
+            const found = toRespond.indexOf(observableIndex);
+            if (found !== -1) {
+                toRespond.splice(found, 1);
+            }
+        }
+    }
+    notifyComplete() {
+        // noop
     }
     _next(value) {
-        if (this.toSet === 0) {
+        if (this.toRespond.length === 0) {
             const values = this.values;
-            let result = tryCatch(this.project)([value, ...values]);
-            if (result === errorObject) {
-                this.destination.error(result.e);
+            const destination = this.destination;
+            const project = this.project;
+            const args = [value, ...values];
+            if (project) {
+                let result = tryCatch(this.project).apply(this, args);
+                if (result === errorObject) {
+                    destination.error(result.e);
+                }
+                else {
+                    destination.next(result);
+                }
             }
             else {
-                this.destination.next(result);
+                destination.next(args);
             }
         }
-    }
-}
-class WithLatestInnerSubscriber extends Subscriber {
-    constructor(parent, valueIndex) {
-        super(null);
-        this.parent = parent;
-        this.valueIndex = valueIndex;
-    }
-    _next(value) {
-        this.parent.notifyValue(this.valueIndex, value);
-    }
-    _error(err) {
-        this.parent.error(err);
-    }
-    _complete() {
-        // noop
     }
 }
 </code></pre>
@@ -123,7 +151,7 @@ class WithLatestInnerSubscriber extends Subscriber {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

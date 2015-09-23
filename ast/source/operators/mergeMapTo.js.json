@@ -1,0 +1,494 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "MergeMapToOperator",
+            "range": [
+              9,
+              27
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 27
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "MergeMapToOperator",
+            "range": [
+              9,
+              27
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 27
+              }
+            }
+          },
+          "range": [
+            9,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 27
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./mergeMapTo-support",
+        "raw": "'./mergeMapTo-support'",
+        "range": [
+          35,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 35
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        }
+      },
+      "range": [
+        0,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "mergeMapTo",
+          "range": [
+            83,
+            93
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 24
+            },
+            "end": {
+              "line": 2,
+              "column": 34
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "observable",
+            "range": [
+              94,
+              104
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 35
+              },
+              "end": {
+                "line": 2,
+                "column": 45
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "resultSelector",
+            "range": [
+              106,
+              120
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 47
+              },
+              "end": {
+                "line": 2,
+                "column": 61
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "concurrent",
+              "range": [
+                122,
+                132
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 63
+                },
+                "end": {
+                  "line": 2,
+                  "column": 73
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  135,
+                  141
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 76
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 82
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  142,
+                  159
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 83
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 100
+                  }
+                }
+              },
+              "range": [
+                135,
+                159
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 76
+                },
+                "end": {
+                  "line": 2,
+                  "column": 100
+                }
+              }
+            },
+            "range": [
+              122,
+              159
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 63
+              },
+              "end": {
+                "line": 2,
+                "column": 100
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "ThisExpression",
+                    "range": [
+                      174,
+                      178
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "lift",
+                    "range": [
+                      179,
+                      183
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "range": [
+                    174,
+                    183
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 20
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "MergeMapToOperator",
+                      "range": [
+                        188,
+                        206
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 25
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 43
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "observable",
+                        "range": [
+                          207,
+                          217
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 44
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 54
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "resultSelector",
+                        "range": [
+                          219,
+                          233
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 56
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 70
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "concurrent",
+                        "range": [
+                          235,
+                          245
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 72
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 82
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      184,
+                      246
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 83
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  174,
+                  247
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 84
+                  }
+                }
+              },
+              "range": [
+                167,
+                248
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 85
+                }
+              }
+            }
+          ],
+          "range": [
+            161,
+            250
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 102
+            },
+            "end": {
+              "line": 4,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          74,
+          250
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 15
+          },
+          "end": {
+            "line": 4,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        59,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    250
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1
+    }
+  },
+  "comments": []
+}

@@ -45,6 +45,7 @@
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></li>
 </ul>
 </div>
 
@@ -56,27 +57,29 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/zip-support.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
-import tryCatch from &apos;../util/tryCatch&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import tryCatch from &apos;../util/tryCatch&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
+import OuterSubscriber from &apos;../OuterSubscriber&apos;;
+import subscribeToResult from &apos;../util/subscribeToResult&apos;;
 export class ZipOperator {
     constructor(project) {
         this.project = project;
     }
-    call(observer) {
-        return new ZipSubscriber(observer, this.project);
+    call(subscriber) {
+        return new ZipSubscriber(subscriber, this.project);
     }
 }
-export class ZipSubscriber extends Subscriber {
+export class ZipSubscriber extends OuterSubscriber {
     constructor(destination, project, values = Object.create(null)) {
         super(destination);
         this.active = 0;
         this.observables = [];
-        this.limit = Number.POSITIVE_INFINITY;
+        this.buffers = [];
         this.project = (typeof project === &quot;function&quot;) ? project : null;
         this.values = values;
     }
     _next(observable) {
+        this.buffers.push([]);
         this.observables.push(observable);
     }
     _complete() {
@@ -86,83 +89,50 @@ export class ZipSubscriber extends Subscriber {
         const len = observables.length;
         this.active = len;
         while (++index &lt; len) {
-            this.add(this._subscribeInner(observables[index], values, index, len));
+            const observable = observables[index];
+            this.add(subscribeToResult(this, observable, observable, index));
         }
     }
-    _subscribeInner(observable, values, index, total) {
-        return observable._subscribe(new ZipInnerSubscriber(this.destination, this, values, index, total));
+    notifyNext(value, observable, index, observableIndex) {
+        const buffers = this.buffers;
+        buffers[observableIndex].push(value);
+        const len = buffers.length;
+        for (let i = 0; i &lt; len; i++) {
+            if (buffers[i].length === 0) {
+                return;
+            }
+        }
+        const args = [];
+        const destination = this.destination;
+        const project = this.project;
+        for (let i = 0; i &lt; len; i++) {
+            args.push(buffers[i].shift());
+        }
+        if (project) {
+            let result = tryCatch(project).apply(this, args);
+            if (result === errorObject) {
+                destination.error(errorObject.e);
+            }
+            else {
+                destination.next(result);
+            }
+        }
+        else {
+            destination.next(args);
+        }
     }
-    _innerComplete(innerSubscriber) {
+    notifyComplete() {
         if ((this.active -= 1) === 0) {
             this.destination.complete();
         }
-        else {
-            this.limit = innerSubscriber.events;
-        }
     }
 }
-function arrayInitialize(length) {
-    var arr = Array(length);
-    for (let i = 0; i &lt; length; i++) {
-        arr[i] = null;
-    }
-    return arr;
-}
-export class ZipInnerSubscriber extends Subscriber {
-    constructor(destination, parent, values, index, total) {
-        super(destination);
-        this.events = 0;
-        this.parent = parent;
-        this.values = values;
-        this.index = index;
-        this.total = total;
-    }
-    _next(x) {
-        const parent = this.parent;
-        const events = this.events;
-        const total = this.total;
-        const limit = parent.limit;
-        if (events &gt;= limit) {
-            this.destination.complete();
-            return;
-        }
-        const index = this.index;
-        const values = this.values;
-        const zipped = values[events] || (values[events] = arrayInitialize(total));
-        zipped[index] = [x];
-        if (zipped.every(hasValue)) {
-            this._projectNext(zipped, parent.project);
-            values[events] = undefined;
-        }
-        this.events = events + 1;
-    }
-    _projectNext(values, project) {
-        if (project &amp;&amp; typeof project === &quot;function&quot;) {
-            const result = tryCatch(project).apply(null, values.map(mapValue));
-            if (result === errorObject) {
-                this.destination.error(errorObject.e);
-                return;
-            }
-            else {
-                this.destination.next(result);
-            }
-        }
-        else {
-            this.destination.next(values.map(mapValue));
-        }
-    }
-    _complete() {
-        this.parent._innerComplete(this);
-    }
-}
-export function mapValue(xs) { return xs[0]; }
-export function hasValue(xs) { return xs &amp;&amp; xs.length === 1; }
 </code></pre>
 
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.5)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>
