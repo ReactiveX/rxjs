@@ -4,54 +4,14 @@ var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
 
 describe('Observable.prototype.combineLatest', function () {
-  it("should combine two observables", function (done) {
-    var a = Observable.of(1, 2, 3);
-    var b = Observable.of(4, 5, 6, 7, 8);
-    var r = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
-    var i = 0;
-    Observable.of(a, b).combineAll().subscribe(function (vals) {
-      expect(vals).toDeepEqual(r[i++]);
-    }, null, function() {
-      expect(i).toEqual(r.length);
-      done();
-    });
-  });
-  
   it("should combine a source with a second", function (done) {
     var a = Observable.of(1, 2, 3);
     var b = Observable.of(4, 5, 6, 7, 8);
-    var r = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
-    var i = 0;
+    var expected = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
     a.combineLatest(b).subscribe(function (vals) {
-      expect(vals).toDeepEqual(r[i++]);
+      expect(vals).toEqual(expected.shift());
     }, null, function() {
-      expect(i).toEqual(r.length);
-      done();
-    });
-  });
-  
-  it("should combine two immediately-scheduled observables", function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
-    var r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
-    var i = 0;
-    Observable.of(a, b, immediateScheduler).combineAll().subscribe(function (vals) {
-      expect(vals).toDeepEqual(r[i++]);
-    }, null, function() {
-      expect(i).toEqual(r.length);
-      done();
-    });
-  });
-  
-  it("should combine an immediately-scheduled source with an immediately-scheduled second", function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
-    var r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
-    var i = 0;
-    a.combineLatest(b).subscribe(function (vals) {
-      expect(vals).toDeepEqual(r[i++]);
-    }, null, function() {
-      expect(i).toEqual(r.length);
+      expect(expected.length).toEqual(0);
       done();
     });
   });

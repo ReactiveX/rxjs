@@ -8,6 +8,8 @@ import ArrayObservable from '../observables/ArrayObservable';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import OuterSubscriber from '../OuterSubscriber';
+import subscribeToResult from '../util/subscribeToResult';
 
 export class ZipOperator<T, R> implements Operator<T, R> {
 
@@ -22,14 +24,15 @@ export class ZipOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class ZipSubscriber<T, R> extends Subscriber<T> {
+export class ZipSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   values: any;
   active: number = 0;
   observables: Observable<any>[] = [];
   project: (...values: Array<any>) => R;
   limit: number = Number.POSITIVE_INFINITY;
-
+  buffers: any[][] = [];
+  
   constructor(destination: Subscriber<R>,
               project?: (...values: Array<any>) => R,
               values: any = Object.create(null)) {
@@ -39,11 +42,11 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   }
 
   _next(observable) {
+    this.buffers.push([]);
     this.observables.push(observable);
   }
 
   _complete() {
-
     const values = this.values;
     const observables = this.observables;
 
@@ -53,15 +56,44 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     this.active = len;
 
     while(++index < len) {
-      this.add(this._subscribeInner(observables[index], values, index, len));
+      const observable = observables[index];
+      this.add(subscribeToResult(this, observable, observable, index));
     }
   }
 
-  _subscribeInner(observable, values, index, total) {
-    return observable._subscribe(new ZipInnerSubscriber(this.destination, this, values, index, total));
+  notifyNext(value: R, observable: T, index: number, observableIndex: number) {
+    const buffers = this.buffers;
+    buffers[observableIndex].push(value);
+    
+    const len = buffers.length;
+    for (let i = 0; i < len; i++) {
+      let buffer = buffers[i];
+      if(buffer.length === 0) {
+        return;
+      }
+    }
+    
+    const outbound = [];
+    const destination = this.destination;
+    const project = this.project;
+    
+    for(let i = 0; i < len; i++) {
+      outbound.push(buffers[i].shift());
+    }
+    
+    if(project) {
+      let result = tryCatch(project)(outbound);
+      if(result === errorObject){
+        destination.error(errorObject.e);
+      } else {
+        destination.next(result);
+      }
+    } else {
+      destination.next(outbound);
+    }
   }
 
-  _innerComplete(innerSubscriber) {
+  notifyComplete(innerSubscriber) {
     if((this.active -= 1) === 0) {
       this.destination.complete();
     } else {
@@ -77,67 +109,3 @@ function arrayInitialize(length) {
   }
   return arr;
 }
-
-export class ZipInnerSubscriber<T, R> extends Subscriber<T> {
-
-  parent: ZipSubscriber<T, R>;
-  values: any;
-  index: number;
-  total: number;
-  events: number = 0;
-
-  constructor(destination: Observer<T>, parent: ZipSubscriber<T, R>, values: any, index : number, total : number) {
-    super(destination);
-    this.parent = parent;
-    this.values = values;
-    this.index = index;
-    this.total = total;
-  }
-
-  _next(x) {
-
-    const parent = this.parent;
-    const events = this.events;
-    const total = this.total;
-    const limit = parent.limit;
-
-    if (events >= limit) {
-      this.destination.complete();
-      return;
-    }
-
-    const index = this.index;
-    const values = this.values;
-    const zipped = values[events] || (values[events] = arrayInitialize(total));
-
-    zipped[index] = [x];
-
-    if (zipped.every(hasValue)) {
-      this._projectNext(zipped, parent.project);
-      values[events] = undefined;
-    }
-
-    this.events = events + 1;
-  }
-
-  _projectNext(values: Array<any>, project?: (...xs: Array<any>) => R) {
-    if(project && typeof project === "function") {
-      const result = tryCatch(project).apply(null, values.map(mapValue));
-      if(result === errorObject) {
-        this.destination.error(errorObject.e);
-        return;
-      } else {
-        this.destination.next(result);
-      }
-    } else {
-      this.destination.next(values.map(mapValue));
-    }
-  }
-
-  _complete() {
-    this.parent._innerComplete(this);
-  }
-}
-
-export function mapValue(xs) { return xs[0]; }
-export function hasValue(xs) { return xs && xs.length === 1; }
