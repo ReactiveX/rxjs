@@ -42,7 +42,11 @@ export default function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber
           destination.next(x);
           destination.complete();
         }
-      }, err => destination.error(err));
+      }, err => destination.error(err))
+      .then(null, err => {
+        // Escaping the Promise trap: globally throw unhandled errors
+        setTimeout(() => { throw err; }); 
+      });
       return destination;
     } else if (typeof result[$$iterator] === 'function') {
       for(let item of result) {

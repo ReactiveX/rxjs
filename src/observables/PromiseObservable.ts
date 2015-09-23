@@ -31,7 +31,11 @@ export default class PromiseObservable<T> extends Observable<T> {
           this.value = value;
           subscriber.next(value);
           subscriber.complete();
-        }, err => subscriber.error(err));
+        }, err => subscriber.error(err))
+        .then(null, err => {
+          // escape the promise trap, throw unhandled errors
+          setTimeout(() => { throw err; })
+        });
       }
     } else {
       let subscription = new Subscription();
@@ -43,7 +47,11 @@ export default class PromiseObservable<T> extends Observable<T> {
           this._isScalar = true;
           this.value = value;
           subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }))
-        }, err => subscription.add(scheduler.schedule(dispatchError, 0, { err, subscriber })));
+        }, err => subscription.add(scheduler.schedule(dispatchError, 0, { err, subscriber })))
+        .then(null, err => {
+          // escape the promise trap, throw unhandled errors
+          scheduler.schedule(() => { throw err; })
+        });;
       }  
       return subscription;
     }
