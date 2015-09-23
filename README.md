@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/ReactiveX/RxJS.svg?branch=master)](https://travis-ci.org/ReactiveX/RxJS)
 [![npm version](https://badge.fury.io/js/%40reactivex%2Frxjs.svg)](http://badge.fury.io/js/%40reactivex%2Frxjs)
 
-# RxJS Next (pre-alpha)
+# RxJS 5 (alpha)
 
 Reactive Extensions Library for JavaScript
 
