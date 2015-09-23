@@ -53,8 +53,14 @@ export default class Notification<T> {
     }
   }
   
+  private static completeNotification: Notification<any> = new Notification('C');
+  private static undefinedValueNotification: Notification<any> = new Notification('N', undefined);
+  
   static createNext<T>(value: T): Notification<T> {
-    return new Notification('N', value);
+    if (typeof value !== 'undefined') {
+      return new Notification('N', value);
+    }
+    return this.undefinedValueNotification;
   }
   
   static createError<T>(err: any): Notification<T> {
@@ -62,6 +68,6 @@ export default class Notification<T> {
   }
   
   static createComplete(): Notification<any> {
-    return new Notification('C');
+    return this.completeNotification;
   }
 }
