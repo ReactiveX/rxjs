@@ -30,7 +30,6 @@ export class ZipSubscriber<T, R> extends OuterSubscriber<T, R> {
   active: number = 0;
   observables: Observable<any>[] = [];
   project: (...values: Array<any>) => R;
-  limit: number = Number.POSITIVE_INFINITY;
   buffers: any[][] = [];
   
   constructor(destination: Subscriber<R>,
@@ -61,51 +60,41 @@ export class ZipSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
+
   notifyNext(value: R, observable: T, index: number, observableIndex: number) {
     const buffers = this.buffers;
     buffers[observableIndex].push(value);
     
     const len = buffers.length;
     for (let i = 0; i < len; i++) {
-      let buffer = buffers[i];
-      if(buffer.length === 0) {
+      if(buffers[i].length === 0) {
         return;
       }
     }
     
-    const outbound = [];
+    const args = [];
     const destination = this.destination;
     const project = this.project;
     
     for(let i = 0; i < len; i++) {
-      outbound.push(buffers[i].shift());
+      args.push(buffers[i].shift());
     }
     
     if(project) {
-      let result = tryCatch(project)(outbound);
+      let result = tryCatch(project).apply(this, args);
       if(result === errorObject){
         destination.error(errorObject.e);
       } else {
         destination.next(result);
       }
     } else {
-      destination.next(outbound);
+      destination.next(args);
     }
   }
 
-  notifyComplete(innerSubscriber) {
+  notifyComplete() {
     if((this.active -= 1) === 0) {
       this.destination.complete();
-    } else {
-      this.limit = innerSubscriber.events;
     }
   }
-}
-
-function arrayInitialize(length) {
-  var arr = Array(length);
-  for (let i = 0; i < length; i++) {
-    arr[i] = null;
-  }
-  return arr;
 }

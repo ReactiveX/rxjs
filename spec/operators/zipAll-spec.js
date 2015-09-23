@@ -2,14 +2,14 @@
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
-describe('zipAll', function () {
+describe('Observable.prototype.zipAll', function () {
   it('should take all observables from the source and zip them', function (done) {
     var expected = ['a1', 'b2', 'c3'];
     var i = 0;
-    Observable.fromArray([
-      Observable.fromArray(['a', 'b', 'c']),
-      Observable.fromArray([1, 2, 3])
-    ])
+    Observable.of(
+      Observable.of('a','b','c'),
+      Observable.of(1,2,3)
+    )
     .zipAll(function (a, b) {
       return a + b;
     })
@@ -21,10 +21,10 @@ describe('zipAll', function () {
   it('should zip until one child terminates', function (done) {
     var expected = ['a1', 'b2'];
     var i = 0;
-    Observable.fromArray([
-      Observable.fromArray(['a', 'b']),
-      Observable.fromArray([1, 2, 3])
-    ])
+    Observable.of(
+      Observable.of('a','b','c'),
+      Observable.of(1,2)
+    )
     .zipAll(function (a, b) {
       return a + b;
     })
