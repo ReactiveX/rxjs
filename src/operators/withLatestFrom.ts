@@ -5,15 +5,38 @@ import Observable from '../Observable';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import OuterSubscriber from '../OuterSubscriber';
+import subscribeToResult from '../util/subscribeToResult';
 
+/**
+ * @param {Observable} observables the observables to get the latest values from. 
+ * @param {Function} [project] optional projection function for merging values together. Receives all values in order
+ *  of observables passed. (e.g. `a.withLatestFrom(b, c, (a1, b1, c1) => a1 + b1 + c1)`). If this is not passed, arrays
+ *  will be returned.
+ * @description merges each value from an observable with the latest values from the other passed observables.
+ * All observables must emit at least one value before the resulting observable will emit
+ * 
+ * #### example
+ * ```
+ * A.withLatestFrom(B, C)
+ * 
+ *  A:     ----a-----------------b---------------c-----------|
+ *  B:     ---d----------------e--------------f---------|
+ *  C:     --x----------------y-------------z-------------|
+ * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
+ * ```
+ */
 export default function withLatestFrom<R>(...args: (Observable<any>|((...values: any[]) => Observable<R>))[]): Observable<R> {
-  const project = <((...values: any[]) => Observable<R>)>args.pop();
+  let project;
+  if(typeof args[args.length - 1] === 'function') {
+    project = args.pop();
+  }
   const observables = <Observable<any>[]>args;
   return this.lift(new WithLatestFromOperator(observables, project));
 }
 
 class WithLatestFromOperator<T, R> implements Operator<T, R> {
-  constructor(private observables: Observable<any>[], private project: (...values: any[]) => Observable<R>) {
+  constructor(private observables: Observable<any>[], private project?: (...values: any[]) => Observable<R>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -21,52 +44,56 @@ class WithLatestFromOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class WithLatestFromSubscriber<T, R> extends Subscriber<T> {
+class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
   private values: any[];
-  private toSet: number;
+  private toRespond: number[] = [];
   
-  constructor(destination: Subscriber<T>, private observables: Observable<any>[], private project: (...values: any[]) => Observable<R>) {
+  constructor(destination: Subscriber<T>, private observables: Observable<any>[], private project?: (...values: any[]) => Observable<R>) {
     super(destination);
     const len = observables.length;
     this.values = new Array(len);
-    this.toSet = len;
+    
     for (let i = 0; i < len; i++) {
-      this.add(observables[i]._subscribe(new WithLatestInnerSubscriber(this, i)))
+      this.toRespond.push(i);
+    }
+    
+    for (let i = 0; i < len; i++) {
+      let observable = observables[i];
+      this.add(subscribeToResult<T, R>(this, observable, <any>observable, i));
     }
   }
   
-  notifyValue(index, value) {
-    this.values[index] = value;
-    this.toSet--;
-  }
-  
-  _next(value: T) {
-    if (this.toSet === 0) {
-      const values = this.values;
-      let result = tryCatch(this.project)([value, ...values]);
-      if (result === errorObject) {
-        this.destination.error(result.e);
-      } else {
-        this.destination.next(result);
+  notifyNext(value, observable, index, observableIndex) {
+    this.values[observableIndex] = value;
+    const toRespond = this.toRespond;
+    if(toRespond.length > 0) {
+      const found = toRespond.indexOf(observableIndex);
+      if(found !== -1) {
+        toRespond.splice(found, 1);
       }
     }
   }
-}
-
-class WithLatestInnerSubscriber<T, R> extends Subscriber<T> {
-  constructor(private parent: WithLatestFromSubscriber<T, R>, private valueIndex: number) {
-    super(null)
+  
+  notifyComplete() {
+    // noop
   }
   
   _next(value: T) {
-    this.parent.notifyValue(this.valueIndex, value);
-  }
-  
-  _error(err: any) {
-    this.parent.error(err);
-  }
-  
-  _complete() {
-    // noop
+    if (this.toRespond.length === 0) {
+      const values = this.values;
+      const destination = this.destination;
+      const project = this.project;
+      const args = [value, ...values];
+      if(project) {
+        let result = tryCatch(this.project).apply(this, args);
+        if (result === errorObject) {
+          destination.error(result.e);
+        } else {
+          destination.next(result);
+        }
+      } else {
+        destination.next(args);
+      }
+    }
   }
 }
