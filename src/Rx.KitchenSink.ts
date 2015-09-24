@@ -5,6 +5,8 @@ import { CoreOperators } from './CoreOperators';
 interface KitchenSinkOperators<T> extends CoreOperators<T> {
   elementAt?: (index: number, defaultValue?: any) => Observable<T>;
   distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
+  find?: (predicate: (value: T, index: number, source:Observable<T>) => boolean, thisArg?: any) => Observable<T>;
+  findIndex?: (predicate: (value: T, index: number, source:Observable<T>) => boolean, thisArg?: any) => Observable<number>;
 }
 
 // operators
@@ -131,6 +133,12 @@ observableProto.expand = expand;
 
 import filter from './operators/filter';
 observableProto.filter = filter;
+
+import find from './operators/extended/find';
+observableProto.find = find;
+
+import findIndex from './operators/extended/findIndex';
+observableProto.findIndex = findIndex;
 
 import _finally from './operators/finally';
 observableProto.finally = _finally;
