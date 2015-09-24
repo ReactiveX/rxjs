@@ -211,6 +211,7 @@ export default class Observable<T>  {
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   distinctUntilChanged: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;
   distinctUntilKeyChanged: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
+  ignoreElements: () => Observable<T>;
   skip: (count: number) => Observable<T>;
   skipUntil: (notifier: Observable<any>) => Observable<T>;
   take: (count: number) => Observable<T>;

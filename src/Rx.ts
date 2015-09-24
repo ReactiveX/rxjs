@@ -109,6 +109,7 @@ import elementAt from './operators/elementAt';
 import filter from './operators/filter';
 import distinctUntilChanged from './operators/distinctUntilChanged';
 import distinctUntilKeyChanged from './operators/distinctUntilKeyChanged';
+import ignoreElements from './operators/ignoreElements';
 
 observableProto.take = take;
 observableProto.skip = skip;
@@ -118,6 +119,7 @@ observableProto.elementAt = elementAt;
 observableProto.filter = filter;
 observableProto.distinctUntilChanged = distinctUntilChanged;
 observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
+observableProto.ignoreElements = ignoreElements;
 
 import combineLatestProto from './operators/combineLatest';
 import combineLatest from './operators/combineLatest-static';
