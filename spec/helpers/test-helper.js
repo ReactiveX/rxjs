@@ -3,7 +3,7 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
 var _ = require("lodash");
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 
 global.rxTestScheduler = null;
 global.cold;

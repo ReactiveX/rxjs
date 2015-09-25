@@ -1,5 +1,5 @@
 /* globals describe, it, expect */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var VirtualTimeScheduler = Rx.VirtualTimeScheduler;
 
 describe('VirtualTimeScheduler', function() {

@@ -1,5 +1,5 @@
 /* globals describe, it, expect */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var TestScheduler = Rx.TestScheduler;
 var Notification = Rx.Notification;
 

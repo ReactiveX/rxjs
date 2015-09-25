@@ -1,4 +1,11 @@
 import Observable from './Observable';
+import Operator from './Operator';
+import { CoreOperators } from './CoreOperators';
+
+interface KitchenSinkOperators<T> extends CoreOperators<T> {
+  elementAt?: (index: number, defaultValue?: any) => Observable<T>;
+  distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
+}
 
 // operators
 import combineLatestStatic from './operators/combineLatest-static';
@@ -57,8 +64,7 @@ Observable.zip = zipStatic
 
 
 // Operators 
-import { CoreOperators } from './CoreOperators';
-const observableProto = (<CoreOperators<any>>Observable.prototype);
+const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
 import buffer from './operators/buffer';
 observableProto.buffer = buffer;
@@ -110,17 +116,21 @@ observableProto.delay = delay;
 
 import distinctUntilChanged from './operators/distinctUntilChanged';
 observableProto.distinctUntilChanged = distinctUntilChanged;
-import ignoreElements from './operators/ignoreElements';
+
+import distinctUntilKeyChanged from './operators/extended/distinctUntilKeyChanged';
+observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
 import _do from './operators/do';
 observableProto.do = _do;
+
+import elementAt from './operators/extended/elementAt';
+observableProto.elementAt = elementAt;
 
 import expand from './operators/expand';
 observableProto.expand = expand;
 
 import filter from './operators/filter';
 observableProto.filter = filter;
-observableProto.ignoreElements = ignoreElements;
 
 import _finally from './operators/finally';
 observableProto.finally = _finally;
@@ -278,6 +288,8 @@ import nextTick from './schedulers/nextTick';
 import immediate from './schedulers/immediate';
 import NextTickScheduler from './schedulers/NextTickScheduler';
 import ImmediateScheduler from './schedulers/ImmediateScheduler';
+import TestScheduler from './schedulers/TestScheduler';
+import VirtualTimeScheduler from './schedulers/VirtualTimeScheduler';
 
 var Scheduler = {
   nextTick,
@@ -296,4 +308,6 @@ export {
     Notification,
     EmptyError,
     ArgumentOutOfRangeError,
+    TestScheduler,
+    VirtualTimeScheduler
 };

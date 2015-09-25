@@ -1,7 +1,7 @@
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Subscriber from '../Subscriber';
-import ArgumentOutOfRangeError from '../util/ArgumentOutOfRangeError';
+import Operator from '../../Operator';
+import Observer from '../../Observer';
+import Subscriber from '../../Subscriber';
+import ArgumentOutOfRangeError from '../../util/ArgumentOutOfRangeError';
 
 export default function elementAt(index: number, defaultValue?: any) {
   return this.lift(new ElementAtOperator(index, defaultValue));
