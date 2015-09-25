@@ -7,7 +7,7 @@ import { errorObject } from './util/errorObject';
 export default class InnerSubscriber<T, R> extends Subscriber<R> {
   index: number = 0;
   
-  constructor(private parent: OuterSubscriber<T, R>, private outerValue: T, private outerIndex: number) {
+  constructor(private parent: OuterSubscriber<T, R>, private outerValue: T, public outerIndex: number) {
     super();
   }
   

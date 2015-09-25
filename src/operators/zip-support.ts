@@ -3,9 +3,8 @@ import Observer from '../Observer';
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
-
+import InnerSubscriber from '../InnerSubscriber';
 import ArrayObservable from '../observables/ArrayObservable';
-
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import OuterSubscriber from '../OuterSubscriber';
@@ -31,6 +30,7 @@ export class ZipSubscriber<T, R> extends OuterSubscriber<T, R> {
   observables: Observable<any>[] = [];
   project: (...values: Array<any>) => R;
   buffers: any[][] = [];
+  completed: boolean[] = [];
   
   constructor(destination: Subscriber<R>,
               project?: (...values: Array<any>) => R,
@@ -42,6 +42,7 @@ export class ZipSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   _next(observable) {
     this.buffers.push([]);
+    this.completed.push(false);
     this.observables.push(observable);
   }
 
@@ -64,20 +65,28 @@ export class ZipSubscriber<T, R> extends OuterSubscriber<T, R> {
   notifyNext(value: R, observable: T, index: number, observableIndex: number) {
     const buffers = this.buffers;
     buffers[observableIndex].push(value);
-    
     const len = buffers.length;
+    const destination = this.destination;
+    const completed = this.completed;
+    
     for (let i = 0; i < len; i++) {
       if(buffers[i].length === 0) {
+        if(completed[i]) {
+          destination.complete();
+        }
         return;
       }
     }
     
     const args = [];
-    const destination = this.destination;
     const project = this.project;
+    let shouldComplete = false;
     
     for(let i = 0; i < len; i++) {
       args.push(buffers[i].shift());
+      if(buffers[i].length === 0 && completed[i]) {
+        shouldComplete = true;
+      }
     }
     
     if(project) {
@@ -90,9 +99,14 @@ export class ZipSubscriber<T, R> extends OuterSubscriber<T, R> {
     } else {
       destination.next(args);
     }
+    
+    if(shouldComplete) {
+      destination.complete();
+    }
   }
 
-  notifyComplete() {
+  notifyComplete(innerSubscriber: InnerSubscriber<T, R>) {
+    this.completed[innerSubscriber.outerIndex] = true;
     if((this.active -= 1) === 0) {
       this.destination.complete();
     }
