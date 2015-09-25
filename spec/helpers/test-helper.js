@@ -90,6 +90,20 @@ function assertDeepEqual(actual, expected) {
       'undefined': false
   };
   
+  Object.defineProperty(Error.prototype, 'toJSON', {
+      value: function () {
+          var alt = {};
+  
+          Object.getOwnPropertyNames(this).forEach(function (key) {
+            if (key !== 'stack') {
+              alt[key] = this[key];
+            }
+          }, this);
+          return alt;
+      },
+      configurable: true
+  });
+    
   var _root = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);
   
   var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
