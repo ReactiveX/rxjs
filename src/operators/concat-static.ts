@@ -1,4 +1,4 @@
-import merge from './merge-static';
+import mergeAll from './mergeAll';
 import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import immediate from '../schedulers/immediate';
@@ -11,5 +11,5 @@ export default function concat<R>(...observables: (Observable<any>|Scheduler)[])
     scheduler = args.pop();
     args.push(1, scheduler);
   }
-  return merge.apply(this, observables);
+  return Observable.fromArray(observables).mergeAll(1);
 }
