@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/Rx');
+module.exports = require('./dist/cjs/Rx.KitchenSink');

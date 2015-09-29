@@ -1,5 +1,5 @@
 /* globals describe, it, expect, hot, cold, expectObservable */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.elementAt', function() {
