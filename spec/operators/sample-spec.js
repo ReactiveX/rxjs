@@ -4,9 +4,17 @@ var Observable = Rx.Observable;
 
 describe('Observable.prototype.sample', function () {
   it('should get samples when the notifier emits', function () {
-    var e1 =   hot('----a----b----c----d----e----f----|');
-    var e2 =   hot('-----------x----------x----------x----------|');
-    var expected = '-----------b----------d----------f|';
+    var e1 =   hot('----a-^--b----c----d----e----f----|');
+    var e2 =   hot(      '-----x----------x----------x----------|');
+    var expected =       '-----b----------d----------f|';
+    
+    expectObservable(e1.sample(e2)).toBe(expected);
+  });
+  
+  it('should sample nothing if source has not nexted yet', function (){
+    var e1 =   hot('----a-^-------b----|');
+    var e2 =   hot(      '-----x-------|');
+    var expected =       '-------------|';
     
     expectObservable(e1.sample(e2)).toBe(expected);
   });
@@ -20,9 +28,9 @@ describe('Observable.prototype.sample', function () {
   });
   
   it('should raise error if source raises error', function() {
-    var e1 =   hot('----a----b----c----d----#');
-    var e2 =   hot('-----------x----------x----------x----------|');
-    var expected = '-----------b----------d-#';
+    var e1 =   hot('----a-^--b----c----d----#');
+    var e2 =   hot(      '-----x----------x----------x----------|');
+    var expected =       '-----b----------d-#';
     
     expectObservable(e1.sample(e2)).toBe(expected);
   });
