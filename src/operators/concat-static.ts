@@ -2,6 +2,7 @@ import mergeAll from './mergeAll';
 import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import immediate from '../schedulers/immediate';
+import { CoreOperators } from '../CoreOperators';
 
 export default function concat<R>(...observables: (Observable<any>|Scheduler)[]) : Observable<R> {
   let scheduler:Scheduler = immediate;
@@ -11,5 +12,5 @@ export default function concat<R>(...observables: (Observable<any>|Scheduler)[])
     scheduler = args.pop();
     args.push(1, scheduler);
   }
-  return Observable.fromArray(observables).mergeAll(1);
+  return (<CoreOperators<any>>Observable.fromArray(observables)).mergeAll(1);
 }
