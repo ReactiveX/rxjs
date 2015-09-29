@@ -14,7 +14,7 @@ import $$observable from './util/Symbol_observable';
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
- *  
+ *
  * @class Observable<T>
  */
 export default class Observable<T>  {
@@ -22,7 +22,7 @@ export default class Observable<T>  {
   source: Observable<any>;
   operator: Operator<any, T>;
   _isScalar: boolean = false;
-  
+
   /**
    * @constructor
    * @param {Function} subscribe the function that is
@@ -35,26 +35,26 @@ export default class Observable<T>  {
       this._subscribe = subscribe;
     }
   }
-  
-  // HACK: Since TypeScript inherits static properties too, we have to 
+
+  // HACK: Since TypeScript inherits static properties too, we have to
   // fight against TypeScript here so Subject can have a different static create signature.
-  
+
   /**
    * @static
    * @method create
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
    * @returns {Observable} a new cold observable
-   * @description creates a new cold Observable by calling the Observable constructor 
+   * @description creates a new cold Observable by calling the Observable constructor
    */
   static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T>|Function|void) => {
     return new Observable<T>(subscribe);
   };
-  
+
   /**
    * @method lift
    * @param {Operator} operator the operator defining the operation to take on the observable
    * @returns {Observable} a new observable with the Operator applied
-   * @description creates a new Observable, with this Observable as the source, and the passed 
+   * @description creates a new Observable, with this Observable as the source, and the passed
    * operator defined as the new observable's operator.
    */
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
@@ -75,7 +75,7 @@ export default class Observable<T>  {
 
   /**
    * @method subscribe
-   * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called, 
+   * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called,
    *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
    * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
    *  the error will be thrown as unhandled
@@ -121,11 +121,11 @@ export default class Observable<T>  {
         PromiseCtor = root.Promise;
       }
     }
-    
+
     if(!PromiseCtor) {
       throw new Error('no Promise impl found');
     }
-    
+
     return new PromiseCtor<void>((resolve, reject) => {
       this.subscribe(next, reject, resolve);
     });
@@ -151,7 +151,7 @@ export default class Observable<T>  {
   static timer: (delay: number) => Observable<number>;
   static interval: (interval: number) => Observable<number>;
   static forkJoin: (...observables: Observable<any>[]) => Observable<any[]>;
-  
+
   static concat: (...observables: any[]) => Observable<any>;
   concat: (...observables: any[]) => Observable<any>;
   concatAll: () => Observable<any>;
@@ -202,12 +202,13 @@ export default class Observable<T>  {
   reduce: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   startWith: <T>(x: T) => Observable<T>;
   debounce: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
-  
+
   isEmpty: () => Observable<boolean>;
   elementAt: (index: number, defaultValue?: any) => Observable<T>;
+  first: (predicate?: (value: T, index:number) => boolean, thisArg?: any, defaultValue?: any) => Observable<T>;
   last: (predicate?: (value: T, index:number) => boolean, thisArg?: any, defaultValue?: any) => Observable<T>;
   single: (predicate?: (value: T, index:number) => boolean, thisArg?: any) => Observable<T>;
-  
+
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   distinctUntilChanged: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;
   distinctUntilKeyChanged: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
@@ -235,23 +236,23 @@ export default class Observable<T>  {
   retry: <T>(count: number) => Observable<T>;
   retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
   repeat: <T>(count: number) => Observable<T>;
-  
+
   groupBy: <T, R>(keySelector: (value:T) => string, durationSelector?: (group:GroupSubject<R>) => Observable<any>, elementSelector?: (value:T) => R) => Observable<R>;
   window: <T>(closingNotifier: Observable<any>) => Observable<Observable<T>>;
   windowWhen: <T>(closingSelector: () => Observable<any>) => Observable<Observable<T>>;
   windowToggle: <T, O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>
   windowTime: <T>(windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
   windowCount: <T>(windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
-  
+
   buffer: <T>(closingNotifier: Observable<any>) => Observable<T[]>;
   bufferWhen: <T>(closingSelector: () => Observable<any>) => Observable<T[]>;
   bufferToggle: <T, O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>
   bufferTime: <T>(bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
   bufferCount: <T>(bufferSize: number, startBufferEvery: number) => Observable<T[]>;
-  
+
   sample: <T>(notifier: Observable<any>) => Observable<T>;
   sampleTime: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;
-  
+
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
   timeout: <T>(due: number|Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
   timeoutWith: <T>(due: number|Date, withObservable: Observable<any>, scheduler?: Scheduler) => Observable<T>;
