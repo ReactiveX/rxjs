@@ -110,7 +110,6 @@ observableProto.delay = delay;
 
 import distinctUntilChanged from './operators/distinctUntilChanged';
 observableProto.distinctUntilChanged = distinctUntilChanged;
-import ignoreElements from './operators/ignoreElements';
 
 import _do from './operators/do';
 observableProto.do = _do;
@@ -120,13 +119,18 @@ observableProto.expand = expand;
 
 import filter from './operators/filter';
 observableProto.filter = filter;
-observableProto.ignoreElements = ignoreElements;
 
 import _finally from './operators/finally';
 observableProto.finally = _finally;
 
+import first from './operators/first';
+observableProto.first = first;
+
 import groupBy from './operators/groupBy';
 observableProto.groupBy = groupBy;
+
+import ignoreElements from './operators/ignoreElements';
+observableProto.ignoreElements = ignoreElements;
 
 import isEmpty from './operators/isEmpty';
 observableProto.isEmpty = isEmpty;
