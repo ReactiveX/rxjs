@@ -222,10 +222,12 @@ observableProto.sample = sample;
 observableProto.sampleTime = sampleTime;
 
 import isEmpty from './operators/isEmpty';
+import first from './operators/first';
 import last from './operators/last';
 import single from './operators/single';
 
 observableProto.isEmpty = isEmpty;
+observableProto.first = first;
 observableProto.last = last;
 observableProto.single = single
 
