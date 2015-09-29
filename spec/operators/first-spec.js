@@ -23,7 +23,7 @@ describe('Observable.prototype.first()', function() {
   it('should return the default value if source observable was empty', function() {
     var e1 = hot('-----^----|');
     var expected =    '-----(a|)';
-    expectObservable(e1.first(null, null, 'a')).toBe(expected);
+    expectObservable(e1.first(null, null, null, 'a')).toBe(expected);
   });
 
   it('should propagate error from the source observable', function() {
@@ -63,7 +63,7 @@ describe('Observable.prototype.first()', function() {
       expect(this).toEqual(42);
       return value % 2 === 1;
     };
-    expectObservable(e1.first(predicate, 42)).toBe(expected, {c: 3});
+    expectObservable(e1.first(predicate, null, 42)).toBe(expected, {c: 3});
   });
 
   it('should error when no value matches the predicate', function() {
@@ -81,7 +81,7 @@ describe('Observable.prototype.first()', function() {
     var predicate = function (value) {
       return value === 's';
     };
-    expectObservable(e1.first(predicate, null, 'd')).toBe(expected);
+    expectObservable(e1.first(predicate, null, null, 'd')).toBe(expected);
   });
 
   it('should propagate error when no value matches the predicate', function() {
@@ -113,5 +113,17 @@ describe('Observable.prototype.first()', function() {
       }
     };
     expectObservable(e1.first(predicate)).toBe(expected, null, 'error');
+  });
+  
+  it('should support a result selector argument', function() {
+    var e1 = hot('--a--^---b---c---d---e--|');
+    var expected =    '--------(x|)';
+    var predicate = function (x){ return x === 'c'; };
+    var resultSelector = function(x, i) {
+      expect(i).toBe(1);
+      expect(x).toBe('c');
+      return 'x';
+    };
+    expectObservable(e1.first(predicate, resultSelector)).toBe(expected);
   });
 });

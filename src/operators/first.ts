@@ -8,27 +8,27 @@ import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 import EmptyError from '../util/EmptyError';
 
-export default function first<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+export default function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                                 resultSelector?: (value: T, index: number) => R,
                                  thisArg?: any,
-                                 defaultValue?: any): Observable<T> {
-  return this.lift(new FirstOperator(predicate, thisArg, defaultValue, this));
+                                 defaultValue?: any): Observable<R> {
+  return this.lift(new FirstOperator(predicate, thisArg, resultSelector, defaultValue, this));
 }
 
 class FirstOperator<T, R> implements Operator<T, R> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg?: any,
+              private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
               private source?: Observable<T>) {
   }
 
   call(observer: Subscriber<R>): Subscriber<T> {
-    return new FirstSubscriber(
-      observer, this.predicate, this.thisArg, this.defaultValue, this.source
-    );
+    return new FirstSubscriber(observer, this.predicate, this.thisArg, this.resultSelector, this.defaultValue, this.source);
   }
 }
 
-class FirstSubscriber<T> extends Subscriber<T> {
+class FirstSubscriber<T, R> extends Subscriber<T> {
   private predicate: Function;
   private index: number = 0;
   private hasCompleted: boolean = false;
@@ -36,6 +36,7 @@ class FirstSubscriber<T> extends Subscriber<T> {
   constructor(destination: Observer<T>,
               predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg?: any,
+              private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);
@@ -44,18 +45,25 @@ class FirstSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
-    const destination = this.destination;
-    const predicate = this.predicate;
+  _next(value: any) {
+    const { destination, predicate, resultSelector } = this;
+    const index = this.index++;
     let passed: any = true;
     if (predicate) {
-      passed = tryCatch(predicate)(value, this.index++, this.source);
+      passed = tryCatch(predicate)(value,index, this.source);
       if (passed === errorObject) {
-        destination.error(passed.e);
+        destination.error(errorObject.e);
         return;
       }
     }
     if (passed) {
+      if(resultSelector) {
+        value = tryCatch(resultSelector)(value, index);
+        if(value === errorObject) {
+          destination.error(errorObject.e);
+          return;
+        } 
+      }
       destination.next(value);
       destination.complete();
       this.hasCompleted = true;

@@ -26,7 +26,7 @@ export interface CoreOperators<T> {
   expand?: (project: (x: T, ix: number) => Observable<any>) => Observable<any>;
   filter?: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   finally?: (ensure: () => void, thisArg?: any) => Observable<T>;
-  first?: (predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any, defaultValue?: any) => Observable<T>;
+  first?: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value:T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<R>;
   flatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   flatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   groupBy?: <T, R>(keySelector: (value:T) => string, durationSelector?: (group:GroupSubject<R>) => Observable<any>, elementSelector?: (value:T) => R) => Observable<R>;
