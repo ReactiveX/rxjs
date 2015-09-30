@@ -32,7 +32,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   private project: (...values: Array<any>) => R;
   private iterators = [];
   private active = 0;
-  
+
   constructor(destination: Subscriber<R>,
               project?: (...values: Array<any>) => R,
               values: any = Object.create(null)) {
@@ -67,19 +67,19 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
       }
     }
   }
-  
+
   notifyInactive() {
     this.active--;
     if(this.active === 0) {
       this.destination.complete();
     }
   }
-  
+
   checkIterators() {
     const iterators = this.iterators;
     const len = iterators.length;
     const destination = this.destination;
-    
+
     // abort if not all of them have values
     for(let i = 0; i < len; i++) {
       let iterator = iterators[i];
@@ -87,27 +87,27 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
         return;
       }
     }
-    
+
     let shouldComplete = false;
     const args = [];
     for(let i = 0; i < len; i++) {
       let iterator = iterators[i];
       let result = iterator.next();
-      
+
       // check to see if it's completed now that you've gotten
       // the next value.
       if(iterator.hasCompleted()) {
         shouldComplete = true;
       }
-      
+
       if(result.done) {
         destination.complete();
         return;
       }
-      
+
       args.push(result.value);
     }
-    
+
     const project = this.project;
     if(project) {
       let result = tryCatch(project).apply(this, args);
@@ -119,7 +119,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     } else {
       destination.next(args);
     }
-    
+
     if(shouldComplete) {
       destination.complete();
     }
@@ -133,21 +133,21 @@ interface LookAheadIterator<T> extends Iterator<T> {
 
 class StaticIterator<T> implements LookAheadIterator<T> {
   private nextResult: IteratorResult<T>;
-  
+
   constructor(private iterator: Iterator<T>) {
-    this.nextResult = iterator.next();  
+    this.nextResult = iterator.next();
   }
-  
+
   hasValue() {
     return true;
   }
-  
+
   next(): IteratorResult<T> {
     const result = this.nextResult;
     this.nextResult = this.iterator.next();
     return result;
   }
-  
+
   hasCompleted() {
     const nextResult = this.nextResult;
     return nextResult && nextResult.done;
@@ -157,25 +157,25 @@ class StaticIterator<T> implements LookAheadIterator<T> {
 class StaticArrayIterator<T> implements LookAheadIterator<T> {
   private index = 0;
   private length = 0;
-  
+
   constructor(private array: T[]) {
     this.length = array.length;
   }
-  
+
   [$$iterator]() {
     return this;
   }
-  
+
   next(value?: any): IteratorResult<T> {
     const i = this.index++;
     const array = this.array;
     return i < this.length ? { value: array[i], done: false } : { done: true };
   }
-  
+
   hasValue() {
     return this.array.length > this.index;
   }
-  
+
   hasCompleted() {
     return this.array.length === this.index;
   }
@@ -185,15 +185,15 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
   stillUnsubscribed = true;
   buffer: T[] = [];
   isComplete = false;
-  
+
   constructor(destination: Observer<T>, private parent: ZipSubscriber<T, R>, private observable: Observable<T>, private index: number) {
     super(destination);
   }
-  
+
   [$$iterator]() {
     return this;
   }
-  
+
   // NOTE: there is actually a name collision here with Subscriber.next and Iterator.next
   //    this is legit because `next()` will never be called by a subscription in this case.
   next(): IteratorResult<T> {
@@ -204,15 +204,15 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
       return { value: buffer.shift(), done: false };
     }
   }
-  
+
   hasValue() {
     return this.buffer.length > 0;
   }
-  
+
   hasCompleted() {
     return this.buffer.length === 0 && this.isComplete;
   }
-  
+
   notifyComplete() {
     if(this.buffer.length > 0) {
       this.isComplete = true;
@@ -221,13 +221,13 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
       this.destination.complete();
     }
   }
-  
-  notifyNext(innerValue, outerValue, innerIndex, outerIndex) {
+
+  notifyNext(outerValue, innerValue, outerIndex, innerIndex) {
     this.buffer.push(innerValue);
     this.parent.checkIterators();
   }
-  
+
   subscribe(value: any, index: number) {
     this.add(subscribeToResult<any, any>(this, this.observable, this, index));
-  } 
+  }
 }

@@ -6,11 +6,11 @@ export default class OuterSubscriber<T, R> extends Subscriber<T> {
   notifyComplete(inner?: InnerSubscriber<T, R>) {
     this.destination.complete();
   }
-  
-  notifyNext(innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) {
+
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
     this.destination.next(innerValue);
   }
-  
+
   notifyError(error?: any, inner?: InnerSubscriber<T, R>) {
     this.destination.error(error);
   }
