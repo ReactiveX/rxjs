@@ -1,3 +1,21 @@
+<a name="5.0.0-alpha.2"></a>
+# [5.0.0-alpha.2](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.1...v5.0.0-alpha.2) (2015-09-30)
+
+
+### Bug Fixes
+
+* **concat:** let observable concat instead of merge ([c17e832](https://github.com/ReactiveX/RxJS/commit/c17e832))
+* **zip:** zip now completes the returned observable properly([a5684ba](https://github.com/ReactiveX/RxJS/commit/a5684ba))
+
+### Features
+
+* **operator:** add find, findIndex operator ([7c6cc9d](https://github.com/ReactiveX/RxJS/commit/7c6cc9d))
+* **operator:** add first operator ([274c233](https://github.com/ReactiveX/RxJS/commit/274c233))
+* **operator:** add ignoreElements operator ([fe1a952](https://github.com/ReactiveX/RxJS/commit/fe1a952))
+* **zip:** zip now supports never-ending iterables ([a5684ba](https://github.com/ReactiveX/RxJS/commit/a5684ba)), closes [#397](https://github.com/ReactiveX/RxJS/issues/397)
+
+
+
 <a name="5.0.0-alpha.1"></a>
 # [5.0.0-alpha.1](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.1...v5.0.0-alpha.1) (2015-09-23)
 
