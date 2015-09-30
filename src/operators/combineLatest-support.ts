@@ -29,7 +29,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private values: any[] = [];
   private observables: any[] = [];
   private toRespond: number[] = [];
-  
+
   constructor(destination: Subscriber<R>, private project?: (...values: Array<any>) => R) {
     super(destination);
   }
@@ -39,7 +39,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     toRespond.push(toRespond.length);
     this.observables.push(observable);
   }
-  
+
   _complete() {
     const observables = this.observables;
     const len = observables.length;
@@ -59,23 +59,23 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.destination.complete();
     }
   }
-  
-  notifyNext(value: R, observable: any, innerIndex: number, outerIndex: number) {
+
+  notifyNext(observable: any, value: R, outerIndex: number, innerIndex: number) {
     const values = this.values;
     values[outerIndex] = value;
     const toRespond = this.toRespond;
-    
+
     if(toRespond.length > 0) {
       const found = toRespond.indexOf(outerIndex);
       if(found !== -1) {
         toRespond.splice(found, 1);
       }
     }
-    
+
     if(toRespond.length === 0) {
       const project = this.project;
       const destination = this.destination;
-      
+
       if(project) {
         let result = tryCatch(project).apply(this, values);
         if(result === errorObject) {

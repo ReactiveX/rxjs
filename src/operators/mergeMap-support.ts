@@ -11,7 +11,7 @@ import InnerSubscriber from '../InnerSubscriber';
 
 export class MergeMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
+              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
@@ -30,7 +30,7 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   constructor(destination: Observer<T>,
               private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2,
+              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
   }
@@ -63,12 +63,10 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
     const { destination, resultSelector } = this;
     if (resultSelector) {
-      const result = tryCatch(resultSelector)(
-        innerValue, outerValue, innerIndex, outerIndex
-      );
+      const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
       if (result === errorObject) {
         destination.error(errorObject.e);
       } else {
