@@ -7,7 +7,7 @@ describe('TestScheduler', function() {
   it('should exist', function () {
     expect(typeof TestScheduler).toBe('function');
   });
-  
+
   describe('parseMarbles()', function () {
     it('should parse a marble string into a series of notifications and types', function () {
       var result = TestScheduler.parseMarbles('-------a---b---|', { a: 'A', b: 'B' });
@@ -17,7 +17,7 @@ describe('TestScheduler', function() {
         { frame: 150, notification: Notification.createComplete() }
       ]);
     });
-    
+
     it('should parse a marble string with a subscription point', function () {
       var result = TestScheduler.parseMarbles('---^---a---b---|', { a: 'A', b: 'B' });
       expect(result).toDeepEqual([
@@ -26,7 +26,7 @@ describe('TestScheduler', function() {
         { frame: 120, notification: Notification.createComplete() }
       ]);
     });
-    
+
     it('should parse a marble string with an error', function () {
       var result = TestScheduler.parseMarbles('-------a---b---#', { a: 'A', b: 'B' }, 'omg error!');
       expect(result).toDeepEqual([
@@ -35,7 +35,7 @@ describe('TestScheduler', function() {
         { frame: 150, notification: Notification.createError('omg error!') }
       ]);
     });
-    
+
     it('should default in the letter for the value if no value hash was passed', function(){
       var result = TestScheduler.parseMarbles('--a--b--c--');
       expect(result).toDeepEqual([
@@ -44,7 +44,7 @@ describe('TestScheduler', function() {
         { frame: 80, notification: Notification.createNext('c') },
       ])
     });
-    
+
     it('should handle grouped values', function() {
       var result = TestScheduler.parseMarbles('---(abc)---');
       expect(result).toDeepEqual([
@@ -53,9 +53,9 @@ describe('TestScheduler', function() {
         { frame: 30, notification: Notification.createNext('c') }
       ]);
     });
-    
-  }); 
-  
+
+  });
+
   describe('createColdObservable()', function () {
     it('should create a cold observable', function () {
       var expected = ['A', 'B'];
@@ -69,7 +69,7 @@ describe('TestScheduler', function() {
       expect(expected.length).toBe(0);
     });
   });
-  
+
   describe('createHotObservable()', function () {
     it('should create a cold observable', function () {
       var expected = ['A', 'B'];
@@ -83,19 +83,19 @@ describe('TestScheduler', function() {
       expect(expected.length).toBe(0);
     });
   });
-  
+
   describe('jasmine helpers', function () {
     describe('rxTestScheduler', function () {
       it('should exist', function () {
         expect(rxTestScheduler instanceof Rx.TestScheduler).toBe(true);
       });
     });
-    
+
     describe('cold()', function () {
       it('should exist', function () {
         expect(typeof cold).toBe('function');
       });
-      
+
       it('should create a cold observable', function () {
         var expected = [1, 2];
         var source = cold('-a-b-|', { a: 1, b: 2 });
@@ -107,43 +107,50 @@ describe('TestScheduler', function() {
         expectObservable(source).toBe('-a-b-|', { a: 1, b: 2 });
       });
     });
-    
+
     describe('hot()', function () {
       it('should exist', function () {
         expect(typeof hot).toBe('function');
       });
-      
+
       it('should create a hot observable', function () {
         var source = hot('---^-a-b-|', { a: 1, b: 2 });
         expect(source instanceof Rx.Subject).toBe(true);
         expectObservable(source).toBe('--a-b-|', { a: 1, b: 2 });
       });
     });
-    
+
     describe('expectObservable()', function () {
       it('should exist', function () {
         expect(typeof expectObservable).toBe('function');
       });
-      
+
       it('should return an object with a toBe function', function () {
         expect(typeof (expectObservable(Rx.Observable.of(1)).toBe)).toBe('function');
       });
-      
+
       it('should append to flushTests array', function () {
         expectObservable(Rx.Observable.empty());
         expect(rxTestScheduler.flushTests.length).toBe(1);
       });
-      
+
       it('should handle empty', function () {
         expectObservable(Rx.Observable.empty()).toBe('|', {});
       });
-      
+
       it('should handle never', function () {
         expectObservable(Rx.Observable.never()).toBe('-', {});
         expectObservable(Rx.Observable.never()).toBe('---', {});
       });
+
+      it('should accept an unsubscription marble diagram', function () {
+        var source = hot('---^-a-b-|');
+        var unsubscribe  =  '---!';
+        var expected =      '--a';
+        expectObservable(source, unsubscribe).toBe(expected);
+      });
     });
-    
+
     describe('end-to-end helper tests', function () {
       it('should be awesome', function () {
         var values = { a: 1, b: 2 };
