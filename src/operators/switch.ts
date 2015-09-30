@@ -28,20 +28,20 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   constructor(destination: Observer<T>) {
     super(destination);
   }
-  
+
   _next(value: any) {
     this.unsubscribeInner();
     this.active++;
-    this.add(this.innerSubscription = subscribeToResult(this, value)); 
+    this.add(this.innerSubscription = subscribeToResult(this, value));
   }
-  
+
   _complete() {
     this.hasCompleted = true;
     if(this.active === 0) {
       this.destination.complete();
     }
   }
-  
+
   unsubscribeInner() {
     this.active = this.active > 0 ? this.active - 1 : 0;
     const innerSubscription = this.innerSubscription;
@@ -50,15 +50,15 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.remove(innerSubscription);
     }
   }
-  
-  notifyNext(value: any) {
-    this.destination.next(value);
+
+  notifyNext(outerValue: T, innerValue: any) {
+    this.destination.next(innerValue);
   }
-  
+
   notifyError(err: any) {
     this.destination.error(err);
   }
-  
+
   notifyComplete() {
     this.unsubscribeInner();
     if(this.hasCompleted && this.active === 0) {

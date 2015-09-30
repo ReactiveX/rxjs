@@ -10,14 +10,14 @@ import OuterSubscriber from '../OuterSubscriber';
 import subscribeToResult from '../util/subscribeToResult';
 
 export default function switchMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
-                                           resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2): Observable<R>{
+                                            resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2): Observable<R> {
   return this.lift(new SwitchMapOperator(project, resultSelector));
 }
 
 
 class SwitchMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2) {
+              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -30,16 +30,16 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private innerSubscription: Subscription<T>;
   private hasCompleted = false;
   index: number = 0;
-  
+
   constructor(destination: Observer<T>,
               private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) => R2) {
+              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
     super(destination);
   }
-  
+
   _next(value: any) {
     const index = this.index++;
-    const destination = this.destination; 
+    const destination = this.destination;
     let result = tryCatch(this.project)(value, index);
     if(result === errorObject) {
       destination.error(result.e);
@@ -51,7 +51,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
       this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
     }
   }
-  
+
   _complete() {
     const innerSubscription = this.innerSubscription;
     this.hasCompleted = true;
@@ -59,7 +59,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
       this.destination.complete();
     }
   }
-  
+
   notifyComplete(innerSub: Subscription<R>) {
     this.remove(innerSub);
     const prevSubscription = this.innerSubscription;
@@ -67,20 +67,20 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
       prevSubscription.unsubscribe();
     }
     this.innerSubscription = null;
-    
+
     if(this.hasCompleted) {
       this.destination.complete();
     }
   }
-  
+
   notifyError(err: any) {
     this.destination.error(err);
   }
-  
-  notifyNext(innerValue: R, outerValue: T, innerIndex: number, outerIndex: number) {
+
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
     const { resultSelector, destination } = this;
     if(resultSelector) {
-      const result = tryCatch(resultSelector)(innerValue, outerValue, innerIndex, outerIndex);
+      const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
       if(result === errorObject) {
         destination.error(errorObject.e);
       } else {
