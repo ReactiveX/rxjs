@@ -19,7 +19,7 @@ describe('count', function () {
 
   it('should be never when source doesn\'t complete', function () {
     var e1 = hot('--x--^--y--');
-    var expected = '-';
+    var expected =    '------';
 
     expectObservable(e1.count()).toBe(expected);
   });
@@ -43,6 +43,43 @@ describe('count', function () {
     var expected =   '-----------(x|)';
 
     expectObservable(source.count()).toBe(expected, {x: 3});
+  });
+
+  it('should count the values of an ongoing hot observable', function () {
+    var source = hot('--a-^-b--c--d--|');
+    var expected =       '-----------(x|)';
+
+    expectObservable(source.count()).toBe(expected, {x: 3});
+  });
+
+  it('should count a range() source observable', function (done) {
+    Rx.Observable.range(1, 10).count().subscribe(
+      function (value) {
+        expect(value).toEqual(10);
+      },
+      done.fail,
+      done
+    );
+  });
+
+  it('should count a range().skip(1) source observable', function (done) {
+    Rx.Observable.range(1, 10).skip(1).count().subscribe(
+      function (value) {
+        expect(value).toEqual(9);
+      },
+      done.fail,
+      done
+    );
+  });
+
+  it('should count a range().take(1) source observable', function (done) {
+    Rx.Observable.range(1, 10).take(1).count().subscribe(
+      function (value) {
+        expect(value).toEqual(1);
+      },
+      done.fail,
+      done
+    );
   });
 
   it('should work with error', function () {
