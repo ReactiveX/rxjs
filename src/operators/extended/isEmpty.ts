@@ -1,6 +1,6 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
+import Operator from '../../Operator';
+import Observable from '../../Observable';
+import Subscriber from '../../Subscriber';
 
 export default function isEmpty() {
   return this.lift(new IsEmptyOperator());
