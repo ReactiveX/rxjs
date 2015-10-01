@@ -41,13 +41,13 @@ describe('Observable.prototype.last()', function(){
   it('should return a default value if no element found', function() {
     var e1 = Observable.empty();
     var expected = '(a|)';
-    expectObservable(e1.last(null, null, null, 'a')).toBe(expected);
+    expectObservable(e1.last(null, null, 'a')).toBe(expected);
   });
   
   it('should not return default value if an element is found', function (){
     var e1 = hot('--a---^---b---c---d---|');
     var expected =     '----------------(d|)';
-    expectObservable(e1.last(null, null, null, 'x')).toBe(expected);
+    expectObservable(e1.last(null, null, 'x')).toBe(expected);
   });
   
   it('should support a result selector argument', function() {
