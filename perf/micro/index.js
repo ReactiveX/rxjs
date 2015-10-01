@@ -65,4 +65,10 @@ Observable.create(function (observer) {
     return cycles.merge(complete).take(tests.length + 1);
   });
 })
-.subscribe(console.log.bind(console));
+.subscribe(console.log.bind(console), function(err) {
+    if (err.stack === undefined) {
+      console.log(err);
+    } else {
+      console.log(err.stack); 
+    }
+  });
