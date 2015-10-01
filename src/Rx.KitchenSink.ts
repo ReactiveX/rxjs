@@ -155,6 +155,9 @@ observableProto.ignoreElements = ignoreElements;
 import isEmpty from './operators/isEmpty';
 observableProto.isEmpty = isEmpty;
 
+import every from './operators/every';
+observableProto.every = every;
+
 import last from './operators/last';
 observableProto.last = last;
 
