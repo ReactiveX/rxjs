@@ -29,7 +29,7 @@ Observable.create(function(observer) {
 })
 .filter(function(filePath) {
   var argv = process.argv;
-  if(argv && argv.length > 2) {    
+  if(argv && argv.length > 2) {   
     return argv.slice(2).some(function(val) {
       return path.parse(filePath).name === val;
     });

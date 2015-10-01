@@ -203,6 +203,9 @@ observableProto.sampleTime = sampleTime;
 import scan from './operators/scan';
 observableProto.scan = scan;
 
+import share from './operators/share';
+observableProto.share = share;
+
 import single from './operators/single';
 observableProto.single = single;
 
