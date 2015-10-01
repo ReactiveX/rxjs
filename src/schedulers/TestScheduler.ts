@@ -12,13 +12,13 @@ interface FlushableTest {
 }
 export default FlushableTest;
 
-interface SetupableTestSubject {
+interface SetupableHotObservable {
   setup: (scheduler: TestScheduler) => void;
   subject: Subject<any>;
 }
 
 export default class TestScheduler extends VirtualTimeScheduler {
-  private setupableTestSubjects: SetupableTestSubject[] = [];
+  private setupableHotObservables: SetupableHotObservable[] = [];
   private flushTests: FlushableTest[] = [];
 
   constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
@@ -48,7 +48,7 @@ export default class TestScheduler extends VirtualTimeScheduler {
     }
     let messages = TestScheduler.parseMarbles(marbles, values, error);
     let subject = new Subject();
-    this.setupableTestSubjects.push({
+    this.setupableHotObservables.push({
       subject,
       setup(scheduler) {
         messages.forEach(({ notification, frame }) => {
@@ -94,9 +94,9 @@ export default class TestScheduler extends VirtualTimeScheduler {
   }
 
   flush() {
-    const setupableTestSubjects = this.setupableTestSubjects;
-    while (setupableTestSubjects.length > 0) {
-      setupableTestSubjects.shift().setup(this);
+    const setupableHotObservables = this.setupableHotObservables;
+    while (setupableHotObservables.length > 0) {
+      setupableHotObservables.shift().setup(this);
     }
 
     super.flush();
