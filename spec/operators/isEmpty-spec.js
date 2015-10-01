@@ -1,5 +1,5 @@
 /* globals describe, it, expect, expectObservable, hot */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 
 describe('Observable.prototype.isEmpty()', function(){
   it('should return true if source is empty', function () {

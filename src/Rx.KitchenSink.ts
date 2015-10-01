@@ -3,6 +3,7 @@ import Operator from './Operator';
 import { CoreOperators } from './CoreOperators';
 
 interface KitchenSinkOperators<T> extends CoreOperators<T> {
+  isEmpty?: () => Observable<boolean>;
   elementAt?: (index: number, defaultValue?: any) => Observable<T>;
   distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
   find?: (predicate: (value: T, index: number, source:Observable<T>) => boolean, thisArg?: any) => Observable<T>;
@@ -152,7 +153,7 @@ observableProto.groupBy = groupBy;
 import ignoreElements from './operators/ignoreElements';
 observableProto.ignoreElements = ignoreElements;
 
-import isEmpty from './operators/isEmpty';
+import isEmpty from './operators/extended/isEmpty';
 observableProto.isEmpty = isEmpty;
 
 import every from './operators/every';

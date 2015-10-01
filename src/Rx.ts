@@ -132,9 +132,6 @@ observableProto.groupBy = groupBy;
 import ignoreElements from './operators/ignoreElements';
 observableProto.ignoreElements = ignoreElements;
 
-import isEmpty from './operators/isEmpty';
-observableProto.isEmpty = isEmpty;
-
 import every from './operators/every';
 observableProto.every = every;
 
