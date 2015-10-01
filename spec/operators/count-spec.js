@@ -58,4 +58,107 @@ describe('count', function () {
 
     expectObservable(e1.count()).toBe(expected, null, new Error('too bad'));
   });
+
+  it('should handle an always-true predicate on an empty hot observable', function () {
+    var e1 = hot('-x-^---|');
+    var expected =  '----(w|)';
+    var predicate = function () {
+      return true;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected, { w: 0 });
+  });
+
+  it('should handle an always-false predicate on an empty hot observable', function () {
+    var e1 = hot('-x-^---|');
+    var expected =  '----(w|)';
+    var predicate = function () {
+      return false;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected, { w: 0 });
+  });
+
+  it('should handle an always-true predicate on a simple hot observable', function () {
+    var e1 = hot('-x-^-a-|');
+    var expected =  '----(w|)';
+    var predicate = function () {
+      return true;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected, { w: 1 });
+  });
+
+  it('should handle an always-false predicate on a simple hot observable', function () {
+    var e1 = hot('-x-^-a-|');
+    var expected =  '----(w|)';
+    var predicate = function () {
+      return false;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected, { w: 0 });
+  });
+
+  it('should handle a match-all predicate on observable with many values', function () {
+    var e1 = hot('-1-^-2--3--4-|');
+    var expected =  '----------(w|)';
+    var predicate = function (value) {
+      return parseInt(value) < 10;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected, { w: 3 });
+  });
+
+  it('should handle a match-none predicate on observable with many values', function () {
+    var e1 = hot('-1-^-2--3--4-|');
+    var expected =  '----------(w|)';
+    var predicate = function (value) {
+      return parseInt(value) > 10;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected, { w: 0 });
+  });
+
+  it('should handle an always-true predicate on observable that throws', function () {
+    var e1 = hot('-1-^---#');
+    var expected =  '----#';
+    var predicate = function () {
+      return true;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected);
+  });
+
+  it('should handle an always-false predicate on observable that throws', function () {
+    var e1 = hot('-1-^---#');
+    var expected =  '----#';
+    var predicate = function () {
+      return false;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected);
+  });
+
+  it('should handle an always-true predicate on a hot never-observable', function () {
+    var e1 = hot('-x-^----');
+    var expected =  '-----';
+    var predicate = function () {
+      return true;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected);
+  });
+
+  it('should handle a predicate that throws, on observable with many values', function () {
+    var e1 = hot('-1-^-2--3--|');
+    var expected =  '-----#';
+    var predicate = function (value) {
+      if (value === '3') {
+        throw 'error';
+      }
+      return true;
+    };
+
+    expectObservable(e1.count(predicate)).toBe(expected);
+  });
 });
