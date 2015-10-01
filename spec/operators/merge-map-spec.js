@@ -83,14 +83,22 @@ describe('Observable.prototype.mergeMap()', function () {
 
   it('should mergeMap values to resolved promises with resultSelector', function (done) {
     var source = Rx.Observable.from([4,3,2,1]);
+    var resultSelectorCalledWith = [];
     var project = function (value, index) {
-      return Observable.from(Promise.resolve(value + index));
+      return Observable.from(Promise.resolve([value, index]));
     };
-    var resultSelector = function (innerVal, outerVal, innerIndex, outerIndex) {
-      return innerVal + outerVal + outerIndex;
+    var resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
+      resultSelectorCalledWith.push([].slice.call(arguments));
+      return 8;
     };
 
     var results = [];
+    var expectedCalls = [
+      [4, [4,0], 0, 0],
+      [3, [3,1], 1, 0],
+      [2, [2,2], 2, 0],
+      [1, [1,3], 3, 0],
+    ];
     source.mergeMap(project, resultSelector).subscribe(
       function next(x) {
         results.push(x);
@@ -100,6 +108,7 @@ describe('Observable.prototype.mergeMap()', function () {
       },
       function complete() {
         expect(results).toEqual([8,8,8,8]);
+        expect(resultSelectorCalledWith).toDeepEqual(expectedCalls)
         done();
       });
   });
@@ -109,11 +118,10 @@ describe('Observable.prototype.mergeMap()', function () {
     var project = function (value, index) {
       return Observable.from(Promise.reject('' + value + '-' + index));
     };
-    var resultSelector = function (innerVal, outerVal, innerIndex, outerIndex) {
-      return innerVal + outerVal + outerIndex;
+    var resultSelector = function () {
+      throw 'this should not be called';
     };
 
-    var results = [];
     source.mergeMap(project, resultSelector).subscribe(
       function next(x) {
         done.fail('Subscriber next handler not supposed to be called.');
