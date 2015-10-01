@@ -32,6 +32,7 @@ export interface CoreOperators<T> {
   groupBy?: <T, R>(keySelector: (value:T) => string, durationSelector?: (group:GroupSubject<R>) => Observable<any>, elementSelector?: (value:T) => R) => Observable<R>;
   ignoreElements?: () => Observable<T>;
   isEmpty?: () => Observable<boolean>;
+  every?: (predicate: (value: T, index:number) => boolean, thisArg?: any) => Observable<T>;
   last?: (predicate?: (value: T, index:number) => boolean, thisArg?: any, defaultValue?: any) => Observable<T>;
   map?: <T, R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo?: <R>(value: R) => Observable<R>;
