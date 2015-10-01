@@ -10,39 +10,32 @@ import EmptyError from '../util/EmptyError';
 
 export default function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
                                  resultSelector?: (value: T, index: number) => R,
-                                 thisArg?: any,
                                  defaultValue?: any): Observable<R> {
-  return this.lift(new FirstOperator(predicate, thisArg, resultSelector, defaultValue, this));
+  return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
 class FirstOperator<T, R> implements Operator<T, R> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
               private source?: Observable<T>) {
   }
 
   call(observer: Subscriber<R>): Subscriber<T> {
-    return new FirstSubscriber(observer, this.predicate, this.thisArg, this.resultSelector, this.defaultValue, this.source);
+    return new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source);
   }
 }
 
 class FirstSubscriber<T, R> extends Subscriber<T> {
-  private predicate: Function;
   private index: number = 0;
   private hasCompleted: boolean = false;
 
   constructor(destination: Observer<T>,
-              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
+              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);
-    if (typeof predicate === 'function') {
-      this.predicate = bindCallback(predicate, thisArg, 3);
-    }
   }
 
   _next(value: any) {
@@ -50,7 +43,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     const index = this.index++;
     let passed: any = true;
     if (predicate) {
-      passed = tryCatch(predicate)(value,index, this.source);
+      passed = tryCatch(predicate)(value, index, this.source);
       if (passed === errorObject) {
         destination.error(errorObject.e);
         return;
