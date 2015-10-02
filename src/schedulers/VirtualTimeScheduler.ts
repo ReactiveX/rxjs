@@ -34,14 +34,11 @@ export default class VirtualTimeScheduler implements Scheduler {
   }
   
   addAction<T>(action: Action) {
-    const findDelay = action.delay;
+    if (action.delay < 0) {
+      return;
+    }
     const actions = this.actions;
-    const len = actions.length;
-    const vaction = <VirtualAction<T>>action;
-    
-    
     actions.push(action);
-    
     actions.sort((a:VirtualAction<T>, b:VirtualAction<T>) => {
       return (a.delay === b.delay) ? (a.index === b.index ? 0 : (a.index > b.index ? 1 : -1)) : (a.delay > b.delay ? 1 : -1);
     });
