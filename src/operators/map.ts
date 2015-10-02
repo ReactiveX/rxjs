@@ -19,7 +19,16 @@ import bindCallback from '../util/bindCallback';
  */
 export default function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
   const source = this;
-  if(source._isScalar) {
+  if(source instanceof ArrayObservable) {
+    const array = source.array;
+    let result = tryCatch((array, project, thisArg) => array.map(project, thisArg))(array, project, thisArg);
+    if(result === errorObject) {
+      return new ErrorObservable(result.e, source.scheduler);
+    } else {
+      return new ArrayObservable(result, source.scheduler);
+    }
+  }
+  else if(source._isScalar) {
     let result = tryCatch(bindCallback(project, thisArg, 2))(source.value, 0);
     if(result === errorObject) {
       return new ErrorObservable(result.e, source.scheduler);
