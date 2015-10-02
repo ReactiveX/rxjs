@@ -5,6 +5,7 @@ module.exports = function (suite) {
   function add(acc, x) {
     return x + x;
   }
+
   var oldScanWithImmediateScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate).scan(add);
   var newScanWithImmediateScheduler = RxNew.Observable.range(0, 25).scan(add);
 
