@@ -13,11 +13,8 @@ export default function timeoutWith(due: number|Date,
                                     withObservable: Observable<any>,
                                     scheduler: Scheduler = immediate) {
   let absoluteTimeout = isDate(due);
-  let waitFor = absoluteTimeout ? (+due - Date.now()) : <number>due;
-
-  return this.lift(
-    new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler)
-  );
+  let waitFor = absoluteTimeout ? (+due - scheduler.now()) : <number>due;
+  return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
 }
 
 class TimeoutWithOperator<T, R> implements Operator<T, R> {
@@ -59,8 +56,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   private static dispatchTimeout(state: any): void {
     const source = state.subscriber;
     const currentIndex = state.index;
-
-    if (!source.completed && source.previousIndex === currentIndex) {
+    if (!source.hasCompleted && source.previousIndex === currentIndex) {
       source.handleTimeout();
     }
   }
