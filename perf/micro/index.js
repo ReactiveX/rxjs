@@ -6,6 +6,11 @@ var suite = new Benchmark.Suite;
 var glob = require('glob');
 var path = require('path');
 
+var oldRxPackage = JSON.parse(require('fs').readFileSync('node_modules/rx/package.json'));
+var oldVersion = oldRxPackage.version;
+
+console.log('Testing against RxJS v ' + oldVersion);
+
 Observable.create(function(observer) {
   ["perf/micro/immediate-scheduler/**/*.js", "perf/micro/current-thread-scheduler/**/*.js"]
   .forEach(function(pattern) { 
@@ -49,9 +54,9 @@ Observable.create(function(observer) {
 
             // percent change formula: ((V2 - V1) / |V1|) * 100
             if(fastestName.substr(0, 3) === "new") {
-                complete.onNext("\t" + (Math.round((fastestTime - slowestTime) / slowestTime * 10000) / 100) + "% " + "faster".green +" than Rx2\n");
+                complete.onNext("\t" + (Math.round((fastestTime - slowestTime) / slowestTime * 10000) / 100) + "% " + "faster".green +" than Rx v " + oldVersion + "\n");
             } else {
-                complete.onNext("\t" + (Math.round((slowestTime - fastestTime) / fastestTime * 10000) / 100) + "% " + "slower".red + " than Rx2\n");
+                complete.onNext("\t" + (Math.round((slowestTime - fastestTime) / fastestTime * 10000) / 100) + "% " + "slower".red + " than Rx v " + oldVersion + "\n");
             }
         }).run({ "async": true });
 
