@@ -10,8 +10,7 @@ export default function timeout(due: number|Date,
                                 errorToSend: any = null,
                                 scheduler: Scheduler = immediate) {
   let absoluteTimeout = isDate(due);
-  let waitFor = absoluteTimeout ? (+due - Date.now()) : <number>due;
-
+  let waitFor = absoluteTimeout ? (+due - scheduler.now()) : <number>due;
   return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
 }
 
@@ -52,8 +51,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
   private static dispatchTimeout(state: any): void {
     const source = state.subscriber;
     const currentIndex = state.index;
-
-    if (!source.completed && source.previousIndex === currentIndex) {
+    if (!source.hasCompleted && source.previousIndex === currentIndex) {
       source.notifyTimeout();
     }
   }
