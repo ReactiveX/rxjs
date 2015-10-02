@@ -24,7 +24,6 @@ export default class ReplaySubject<T> extends Subject<T> {
   _next(value?) {
     const now = this._getNow();
     this.events.push(new ReplayEvent(now, value));
-    this._getEvents(now);
     super._next(value);
   }
 
