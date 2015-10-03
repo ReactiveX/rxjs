@@ -2,7 +2,9 @@ import Operator from '../Operator';
 import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
-
+import ScalarObservable from '../observables/ScalarObservable';
+import ArrayObservable from '../observables/ArrayObservable';
+import ErrorObservable from '../observables/ErrorObservable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
@@ -16,7 +18,25 @@ import bindCallback from '../util/bindCallback';
  * @returns {Observable} a observable of projected values
  */
 export default function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
-  return this.lift(new MapOperator(project, thisArg));
+  const source = this;
+  if(source instanceof ArrayObservable) {
+    const array = source.array;
+    let result = tryCatch((array, project, thisArg) => array.map(project, thisArg))(array, project, thisArg);
+    if(result === errorObject) {
+      return new ErrorObservable(result.e, source.scheduler);
+    } else {
+      return new ArrayObservable(result, source.scheduler);
+    }
+  }
+  else if(source._isScalar) {
+    let result = tryCatch(bindCallback(project, thisArg, 2))(source.value, 0);
+    if(result === errorObject) {
+      return new ErrorObservable(result.e, source.scheduler);
+    } else {
+      return new ScalarObservable(result, source.scheduler);
+    }
+  }
+  return source.lift(new MapOperator(project, thisArg));
 }
 
 class MapOperator<T, R> implements Operator<T, R> {

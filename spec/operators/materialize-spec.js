@@ -12,7 +12,12 @@ describe('Observable.prototype.materialize()', function () {
       Notification.createComplete()
     ];
     
-    Observable.of(1, 2, 3)
+    Observable.create(function(observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
       .materialize()
       .subscribe(function (n) {
         expect(n instanceof Notification).toBe(true);
@@ -28,7 +33,13 @@ describe('Observable.prototype.materialize()', function () {
       Notification.createError('booooo')
     ];
     
-    Observable.of(1, 2, 3, 4)
+    Observable.create(function(observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.next(4);
+      observer.complete();
+    })
       .map(function (x) {
         if (x === 4) {
           throw 'booooo';

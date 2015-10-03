@@ -18,7 +18,12 @@ describe('Observable.prototype.catch()', function () {
   
   it('should catch the error and allow the return of a new observable to use', function (done) {
     var expected = [1, 2, 'foo'];
-    Observable.of(1, 2, 3)
+    Observable.create(function(observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
       .map(function (n) {
         if (n === 3) {
           throw 'bad';
@@ -40,7 +45,12 @@ describe('Observable.prototype.catch()', function () {
   it('should catch and allow the observable to be repeated with the third (caught) argument', function (done) {
     var expected = [1, 2, 1, 2, 1, 2];
     var retries = 0;
-    Observable.of(1, 2, 3)
+    Observable.create(function(observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
       .map(function (n) {
         if (n === 3) {
           throw 'bad';
@@ -65,7 +75,12 @@ describe('Observable.prototype.catch()', function () {
   
   it('should complete if you return Observable.empty()', function (done) {
     var expected = [1, 2];
-    Observable.of(1, 2, 3)
+    Observable.create(function(observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
       .map(function (n) {
         if (n === 3) {
           throw 'bad';
@@ -87,7 +102,12 @@ describe('Observable.prototype.catch()', function () {
   
   it('should error if you return Observable.throw()', function (done) {
     var expected = [1, 2];
-    Observable.of(1, 2, 3)
+    Observable.create(function(observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
       .map(function (n) {
         if (n === 3) {
           throw 'bad';
