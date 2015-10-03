@@ -19,7 +19,7 @@ export default class DeferObservable<T> extends Observable<T> {
 
   _subscribe(subscriber) {
     const result = tryCatch(this.observableFactory)();
-    if(result === errorObject) {
+    if (result === errorObject) {
       subscriber.error(errorObject.e);
     } else {
       result.subscribe(subscriber);

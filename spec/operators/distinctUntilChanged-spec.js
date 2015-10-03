@@ -8,7 +8,7 @@ describe('Observable.prototype.distinctUntilChanged()', function () {
     Observable
       .of(1, 1, 1, 2, 2, 1)
       .distinctUntilChanged()
-      .subscribe(function(x) {
+      .subscribe(function (x) {
         expect(x).toBe(expected.shift());
       }, null, done);
   });

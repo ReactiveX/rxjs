@@ -3,20 +3,20 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var Promise = require('promise');
 
-describe('Observable.fromPromise', function(){
-  it('should emit one value from that promise', function(done) {
+describe('Observable.fromPromise', function () {
+  it('should emit one value from that promise', function (done) {
     var promise = Promise.resolve(42);
     Observable.fromPromise(promise)
-      .subscribe(function(x) {
+      .subscribe(function (x) {
         expect(x).toBe(42);
       }, null,
-      function(x) {
+      function (x) {
         expect(x).toBe(undefined);
         done();
       });
   });
 
-  it('should not emit, throw or complete if immediately unsubscribed', function(done){
+  it('should not emit, throw or complete if immediately unsubscribed', function (done) {
     var nextSpy = jasmine.createSpy('next');
     var throwSpy = jasmine.createSpy('throw');
     var completeSpy = jasmine.createSpy('complete');
@@ -25,7 +25,7 @@ describe('Observable.fromPromise', function(){
       .subscribe(nextSpy, throwSpy, completeSpy);
     subscription.unsubscribe();
 
-    setTimeout(function() {
+    setTimeout(function () {
       expect(nextSpy).not.toHaveBeenCalled();
       expect(throwSpy).not.toHaveBeenCalled();
       expect(completeSpy).not.toHaveBeenCalled();

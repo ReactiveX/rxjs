@@ -8,7 +8,7 @@ export default class PromiseObservable<T> extends Observable<T> {
 
   _isScalar: boolean = false;
   value: T;
-  
+
   static create<T>(promise: Promise<T>, scheduler: Scheduler = immediate) {
     return new PromiseObservable(promise, scheduler);
   }
@@ -20,7 +20,7 @@ export default class PromiseObservable<T> extends Observable<T> {
   _subscribe(subscriber: Subscriber<T>) {
     const scheduler = this.scheduler;
     const promise = this.promise;
-    
+
     if (scheduler === immediate) {
       if (this._isScalar) {
         subscriber.next(this.value);
@@ -34,25 +34,25 @@ export default class PromiseObservable<T> extends Observable<T> {
         }, err => subscriber.error(err))
         .then(null, err => {
           // escape the promise trap, throw unhandled errors
-          setTimeout(() => { throw err; })
+          setTimeout(() => { throw err; });
         });
       }
     } else {
       let subscription = new Subscription();
       if (this._isScalar) {
         const value = this.value;
-        subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }))
+        subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
       } else {
         promise.then(value => {
           this._isScalar = true;
           this.value = value;
-          subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }))
+          subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
         }, err => subscription.add(scheduler.schedule(dispatchError, 0, { err, subscriber })))
         .then(null, err => {
           // escape the promise trap, throw unhandled errors
-          scheduler.schedule(() => { throw err; })
-        });;
-      }  
+          scheduler.schedule(() => { throw err; });
+        });
+      }
       return subscription;
     }
   }

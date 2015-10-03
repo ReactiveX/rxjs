@@ -6,7 +6,7 @@ describe('Observable.prototype.buffer', function () {
     var e1 =       hot('-a-b-c-d-e-f-g-h-i-|');
     var expected =     '-----x-----y-----z-|';
     var interval = hot('-----1-----2-----3-|');
-    
+
     expectObservable(e1.buffer(interval)).toBe(expected, {x: ['a','b','c'], y: ['d','e','f'], z: ['g','h','i']});
   });
 });

@@ -13,7 +13,7 @@ describe('Observable.prototype.bufferWhen', function () {
       .bufferWhen(function () { return Observable.timer(320); })
       .take(3)
       .subscribe(function (w) {
-        expect(w).toEqual(expected.shift())
+        expect(w).toEqual(expected.shift());
       }, null, done);
   }, 2000);
 });

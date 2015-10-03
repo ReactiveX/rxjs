@@ -7,7 +7,7 @@ describe('Observable.prototype.skipUntil()', function () {
     var source = hot('--a--b--c--d--e--|');
     var skip =   hot('-------------x--|');
     var expected =  ('--------------e--|');
-    
+
     expectObservable(source.skipUntil(skip)).toBe(expected);
   });
 });

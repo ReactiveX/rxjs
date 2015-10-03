@@ -13,7 +13,7 @@ export default function repeat<T>(count: number): Observable<T> {
 }
 
 class RepeatOperator<T, R> implements Operator<T, R> {
-  constructor(protected count: number, protected original:Observable<T>) {
+  constructor(protected count: number, protected original: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -27,10 +27,10 @@ class RepeatSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _complete(){
-    if (this.count === (this.repeated+=1)){
+  _complete() {
+    if (this.count === (this.repeated += 1)) {
       this.destination.complete();
-    }else{
+    } else {
       this.resubscribe();
     }
   }

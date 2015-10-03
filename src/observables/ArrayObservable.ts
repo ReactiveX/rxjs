@@ -9,14 +9,14 @@ export default class ArrayObservable<T> extends Observable<T> {
     return new ArrayObservable(array, scheduler);
   }
 
-  static of<T>(...array: (T | Scheduler)[]) : Observable<T> {
+  static of<T>(...array: (T | Scheduler)[]): Observable<T> {
     let scheduler = <Scheduler>array[array.length - 1];
-    if (scheduler && typeof scheduler.schedule === "function") {
+    if (scheduler && typeof scheduler.schedule === 'function') {
       array.pop();
     } else {
       scheduler = void 0;
     }
-    
+
     const len = array.length;
     if (len > 1) {
       return new ArrayObservable(array, scheduler);
@@ -46,13 +46,13 @@ export default class ArrayObservable<T> extends Observable<T> {
 
     (<any> this).schedule(state);
   }
-  
+
   // value used if Array has one value and _isScalar
   value: any;
 
   constructor(public array: T[], public scheduler?: Scheduler) {
     super();
-    if(!scheduler && array.length === 1) {
+    if (!scheduler && array.length === 1) {
       this._isScalar = true;
       this.value = array[0];
     }
@@ -70,7 +70,7 @@ export default class ArrayObservable<T> extends Observable<T> {
         array, index, count, subscriber
       }));
     } else {
-      for(let i = 0; i < count && !subscriber.isUnsubscribed; i++) {
+      for (let i = 0; i < count && !subscriber.isUnsubscribed; i++) {
         subscriber.next(array[i]);
       }
       subscriber.complete();

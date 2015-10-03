@@ -10,20 +10,20 @@ export default class VirtualTimeScheduler implements Scheduler {
   sorted: boolean = false;
   frame: number = 0;
   maxFrames: number = 750;
-  
+
   protected static frameTimeFactor: number = 10;
-  
+
   now() {
     return this.frame * VirtualTimeScheduler.frameTimeFactor;
   }
-  
+
   flush() {
     const actions = this.actions;
     const maxFrames = this.maxFrames;
     while (actions.length > 0) {
       let action = actions.shift();
       this.frame = action.delay;
-      if(this.frame <= maxFrames) {
+      if (this.frame <= maxFrames) {
         action.execute();
       } else {
         break;
@@ -32,18 +32,29 @@ export default class VirtualTimeScheduler implements Scheduler {
     actions.length = 0;
     this.frame = 0;
   }
-  
+
   addAction<T>(action: Action) {
     const findDelay = action.delay;
     const actions = this.actions;
     const len = actions.length;
     const vaction = <VirtualAction<T>>action;
-    
-    
+
     actions.push(action);
-    
-    actions.sort((a:VirtualAction<T>, b:VirtualAction<T>) => {
-      return (a.delay === b.delay) ? (a.index === b.index ? 0 : (a.index > b.index ? 1 : -1)) : (a.delay > b.delay ? 1 : -1);
+
+    actions.sort((a: VirtualAction<T>, b: VirtualAction<T>) => {
+      if (a.delay === b.delay) {
+        if (a.index === b.index) {
+          return 0;
+        } else if (a.index > b.index) {
+          return 1;
+        } else {
+          return -1;
+        }
+      } else if (a.delay > b.delay) {
+        return 1;
+      } else {
+        return -1;
+      }
     });
   }
 
@@ -56,10 +67,10 @@ export default class VirtualTimeScheduler implements Scheduler {
 class VirtualAction<T> extends Subscription<T> implements Action {
   state: any;
   delay: number;
-  
+
   constructor(public scheduler: VirtualTimeScheduler,
-    public work: (x?: any) => Subscription<T> | void,
-    public index: number) {
+              public work: (x?: any) => Subscription<T> | void,
+              public index: number) {
     super();
   }
 
@@ -68,7 +79,7 @@ class VirtualAction<T> extends Subscription<T> implements Action {
       return this;
     }
     const scheduler = this.scheduler;
-    var action = scheduler.frame === this.delay ? this :
+    let action = scheduler.frame === this.delay ? this :
       new VirtualAction(scheduler, this.work, scheduler.index += 1);
     action.state = state;
     action.delay = scheduler.frame + delay;
@@ -78,14 +89,13 @@ class VirtualAction<T> extends Subscription<T> implements Action {
 
   execute() {
     if (this.isUnsubscribed) {
-      throw new Error("How did did we execute a canceled Action?");
+      throw new Error('How did did we execute a canceled Action?');
     }
     this.work(this.state);
   }
 
   unsubscribe() {
-    const scheduler = this.scheduler;
-    const actions = scheduler.actions;
+    const actions = this.scheduler.actions;
     const index = actions.indexOf(this);
 
     this.work = void 0;

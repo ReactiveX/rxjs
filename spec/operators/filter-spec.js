@@ -14,28 +14,28 @@ describe('Observable.prototype.filter()', function () {
     expectObservable(source.filter(oddFilter)).toBe(expected);
   });
 
-  it('should propagate errors from the source', function() {
+  it('should propagate errors from the source', function () {
     var source = hot('--0--1--2--3--4--#');
     var expected =   '-----1-----3-----#';
 
     expectObservable(source.filter(oddFilter)).toBe(expected);
   });
 
-  it('should support Observable.empty', function() {
+  it('should support Observable.empty', function () {
     var source = Observable.empty();
-    var expected = "|";
+    var expected = '|';
 
     expectObservable(source.filter(oddFilter)).toBe(expected);
   });
 
-  it('should support Observable.never', function() {
+  it('should support Observable.never', function () {
     var source = Observable.never();
-    var expected = "-";
+    var expected = '-';
 
     expectObservable(source.filter(oddFilter)).toBe(expected);
   });
 
-  it('should support Observable.throw', function() {
+  it('should support Observable.throw', function () {
     var source = Observable.throw(new Error('oops'));
     var expected = '#';
 

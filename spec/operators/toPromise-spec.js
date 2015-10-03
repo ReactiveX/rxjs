@@ -10,7 +10,7 @@ describe('Observable.prototype.toPromise()', function () {
       done();
     });
   });
-  
+
   it('should handle errors properly', function (done) {
     Observable.throw('bad').toPromise(Promise).then(function () {
       throw 'should not be called';
@@ -19,8 +19,8 @@ describe('Observable.prototype.toPromise()', function () {
       done();
     });
   });
-  
-  it('should allow for global config via Rx.config.Promise', function(done){
+
+  it('should allow for global config via Rx.config.Promise', function (done) {
     var wasCalled = false;
     __root__.Rx = {};
     __root__.Rx.config = {};
@@ -28,8 +28,8 @@ describe('Observable.prototype.toPromise()', function () {
       wasCalled = true;
       return new Promise(callback);
     };
-    
-    Observable.of(42).toPromise().then(function(x) {
+
+    Observable.of(42).toPromise().then(function (x) {
       expect(wasCalled).toBe(true);
       expect(x).toBe(42);
       done();

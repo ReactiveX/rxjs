@@ -16,7 +16,7 @@ export default class FromObservable<T> extends Observable<T> {
   constructor(private ish: any, private scheduler: Scheduler) {
     super(null);
   }
-  
+
   static create<T>(ish: any, scheduler: Scheduler = immediate): Observable<T> {
     if (ish) {
       if (isArray(ish)) {
@@ -28,18 +28,18 @@ export default class FromObservable<T> extends Observable<T> {
           return ish;
         }
         return new FromObservable(ish, scheduler);
-      } else if(typeof ish[$$iterator] === 'function') {
+      } else if (typeof ish[$$iterator] === 'function') {
         return new IteratorObservable(ish, null, null, scheduler);
       }
     }
-    
+
     throw new TypeError((typeof ish) + ' is not observable');
   }
-  
+
   _subscribe(subscriber: Subscriber<T>) {
     const ish = this.ish;
     const scheduler = this.scheduler;
-    if(scheduler === immediate) {
+    if (scheduler === immediate) {
       return this.ish[$$observable]().subscribe(subscriber);
     } else {
       return this.ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));

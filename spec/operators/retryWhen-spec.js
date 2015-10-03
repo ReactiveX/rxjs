@@ -30,9 +30,9 @@ describe('Observable.prototype.retryWhen()', function () {
       function (err) {
         expect(err).toBe('done');
         done();
-      })
+      });
   });
-  
+
   it('should retry when notified and complete on returned completion', function (done) {
     var expected = [1, 2, 1, 2];
     Observable.of(1, 2, 3)

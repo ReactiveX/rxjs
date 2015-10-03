@@ -2,8 +2,8 @@
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
-describe('Observable.prototype.bufferTime', function () {  
-  it('should emit buffers at intervals', function (){
+describe('Observable.prototype.bufferTime', function () {
+  it('should emit buffers at intervals', function () {
     var values = {
       w: ['a','b'],
       x: ['c','d','e'],
@@ -12,18 +12,18 @@ describe('Observable.prototype.bufferTime', function () {
     };
     var e1 =   hot('---a---b---c---d---e---f---g---|');
     var expected = '----------w---------x---------y(z|)';
-    
+
     expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, values);
   });
-  
-  it('should emit buffers at intervals test 2', function() {
-    var e1 =   hot('---------a---------b---------c---------d---------e---------g--------|')
+
+  it('should emit buffers at intervals test 2', function () {
+    var e1 =   hot('---------a---------b---------c---------d---------e---------g--------|');
     var expected = '--------------------------------x-------------------------------y---(z|)';
-    
+
     expectObservable(e1.bufferTime(320, null, rxTestScheduler)).toBe(expected, { x: ['a','b','c'], y: ['d', 'e', 'g'], z: []});
   });
-  
-  it('should emit buffers that have been created at intervals and close after the specified delay', function (){
+
+  it('should emit buffers that have been created at intervals and close after the specified delay', function () {
     var e1 =   hot('---a---b---c----d----e----f----g----h----i----(k|)');
                  // --------------------*--------------------*----  start interval
                  // ---------------------|                          timespans
@@ -37,35 +37,35 @@ describe('Observable.prototype.bufferTime', function () {
     };
     expectObservable(e1.bufferTime(210, 200, rxTestScheduler)).toBe(expected, values);
   });
-  
-  it('should handle empty', function (){
+
+  it('should handle empty', function () {
     var e1 = Observable.empty();
     expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe('(a|)', { a: [] });
   });
-  
+
   it('should handle never', function () {
     var e1 = Observable.never();
     var expected = '----------a---------a---------a---------a---------a---------a---------a-----'; // 750 frame limit
     expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, { a: [] });
   });
-  
-  it('should handle throw', function (){
+
+  it('should handle throw', function () {
     var e1 = Observable.throw(new Error('haha'));
     var expected = '#';
     expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, undefined, new Error('haha'));
   });
-  
+
   it('should handle errors', function () {
     var values = {
       w: ['a','b']
     };
     var e1 =   hot('---a---b---c---#---e---f---g---|');
     var expected = '----------w----#';
-    
+
     expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, values);
   });
-  
-    it('should emit buffers that have been created at intervals and close after the specified delay with errors', function (){
+
+  it('should emit buffers that have been created at intervals and close after the specified delay with errors', function () {
     var e1 =   hot('---a---b---c----d----e----f----g----h----i--#');
                  // --------------------*--------------------*----  start interval
                  // ---------------------|                          timespans

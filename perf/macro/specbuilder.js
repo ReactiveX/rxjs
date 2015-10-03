@@ -1,23 +1,23 @@
 var benchpress = require('benchpress');
 
-var Preset = (function() {
+exports.Preset = (function () {
   function Preset() {
     this.iteration = arguments.length ? Array.prototype.slice.call(arguments) : [1000, 10000];
     this.runner = new benchpress.Runner([
-	    benchpress.SeleniumWebDriverAdapter.PROTRACTOR_BINDINGS,
-	    benchpress.Validator.bindTo(benchpress.RegressionSlopeValidator),
-	    benchpress.bind(benchpress.RegressionSlopeValidator.SAMPLE_SIZE).toValue(20),
-	    benchpress.bind(benchpress.RegressionSlopeValidator.METRIC).toValue('scriptTime'),
-	    benchpress.bind(benchpress.Options.FORCE_GC).toValue(false)
-	  ]);
-  };
-	
-  Preset.prototype.initBrowser = function(browser, url, value) {
+      benchpress.SeleniumWebDriverAdapter.PROTRACTOR_BINDINGS,
+      benchpress.Validator.bindTo(benchpress.RegressionSlopeValidator),
+      benchpress.bind(benchpress.RegressionSlopeValidator.SAMPLE_SIZE).toValue(20),
+      benchpress.bind(benchpress.RegressionSlopeValidator.METRIC).toValue('scriptTime'),
+      benchpress.bind(benchpress.Options.FORCE_GC).toValue(false)
+    ]);
+  }
+
+  Preset.prototype.initBrowser = function (browser, url, value) {
     browser.ignoreSynchronization = true;
-    browser.get('http://localhost:8080/perf/macro/'+ url + '/index.html?iterations=' + value);
+    browser.get('http://localhost:8080/perf/macro/' + url + '/index.html?iterations=' + value);
   };
-  
-  Preset.prototype.sampleParameter = function(sampleId, documentId, value) {
+
+  Preset.prototype.sampleParameter = function (sampleId, documentId, value) {
     return {
       id: sampleId,
       execute: function () {
@@ -29,8 +29,6 @@ var Preset = (function() {
         })
       ]};
   };
-    
+
   return Preset;
 })();
-
-exports.Preset = Preset;

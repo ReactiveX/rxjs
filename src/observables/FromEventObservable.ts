@@ -7,38 +7,35 @@ import Subscriber from '../Subscriber';
 
 export default class FromEventObservable<T, R> extends Observable<T> {
 
-  static create<T>(sourceObj:any, eventName:string, selector?:(...args:Array<any>)=>T) {
+  static create<T>(sourceObj: any, eventName: string, selector?: (...args: Array<any>) => T) {
     return new FromEventObservable(sourceObj, eventName, selector);
   }
 
-  constructor(private sourceObj: any, private eventName: string, private selector?: (...args:Array<any>) => T) {
+  constructor(private sourceObj: any, private eventName: string, private selector?: (...args: Array<any>) => T) {
     super();
   }
 
-  private static setupSubscription<T>(sourceObj:any, eventName:string, handler:Function, subscriber:Subscriber<T>) {
+  private static setupSubscription<T>(sourceObj: any, eventName: string, handler: Function, subscriber: Subscriber<T>) {
     let unsubscribe;
     let tag = sourceObj.toString();
     if (tag === '[object NodeList]' || tag === '[object HTMLCollection]') {
       for (let i = 0, len = sourceObj.length; i < len; i++) {
         FromEventObservable.setupSubscription(sourceObj[i], eventName, handler, subscriber);
       }
-    }
-    else if (typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function') {
+    } else if (typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function') {
       sourceObj.addEventListener(eventName, handler);
       unsubscribe = () => sourceObj.removeEventListener(eventName, handler);
-    }
-    else if (typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function') {
+    } else if (typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function') {
       sourceObj.on(eventName, handler);
       unsubscribe = () => sourceObj.off(eventName, handler);
-    }
-    else if (typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function') {
+    } else if (typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function') {
       sourceObj.addListener(eventName, handler);
       unsubscribe = () => sourceObj.removeListener(eventName, handler);
     }
-    
+
     subscriber.add(new Subscription(unsubscribe));
-  }  
-  
+  }
+
   _subscribe(subscriber) {
     const sourceObj = this.sourceObj;
     const eventName = this.eventName;
@@ -51,7 +48,7 @@ export default class FromEventObservable<T, R> extends Observable<T> {
         subscriber.next(result);
       }
     } : (e) => subscriber.next(e);
-    
+
     FromEventObservable.setupSubscription(sourceObj, eventName, handler, subscriber);
   }
 }

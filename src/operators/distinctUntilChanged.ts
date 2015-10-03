@@ -32,7 +32,7 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>, compare?: (x: T, y: T) => boolean) {
     super(destination);
-    if (typeof compare === "function") {
+    if (typeof compare === 'function') {
       this.compare = compare;
     }
   }
@@ -45,7 +45,7 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
 
     let result: any = false;
 
-    if(this.hasValue) {
+    if (this.hasValue) {
       result = tryCatch(this.compare)(this.value, x);
       if (result === errorObject) {
         this.destination.error(errorObject.e);

@@ -32,7 +32,7 @@ export default class ReplaySubject<T> extends Subject<T> {
     const events = this._getEvents(this._getNow());
     let index = -1;
     const len = events.length;
-    while(!subscriber.isUnsubscribed && ++index < len) {
+    while (!subscriber.isUnsubscribed && ++index < len) {
       subscriber.next(events[index].value);
     }
     return super._subscribe(subscriber);
@@ -54,18 +54,18 @@ export default class ReplaySubject<T> extends Subject<T> {
     // Trim events that fall out of the time window.
     // Start at the front of the list. Break early once
     // we encounter an event that falls within the window.
-    while(spliceCount < eventsCount) {
-      if((now - events[spliceCount].time) < _windowTime) {
+    while (spliceCount < eventsCount) {
+      if ((now - events[spliceCount].time) < _windowTime) {
         break;
       }
       spliceCount += 1;
     }
 
-    if(eventsCount > bufferSize) {
+    if (eventsCount > bufferSize) {
       spliceCount = Math.max(spliceCount, eventsCount - bufferSize);
     }
 
-    if(spliceCount > 0) {
+    if (spliceCount > 0) {
       events.splice(0, spliceCount);
     }
 

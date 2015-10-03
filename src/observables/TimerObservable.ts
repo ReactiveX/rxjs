@@ -16,7 +16,7 @@ export default class TimerObservable<T> extends Observable<T> {
 
     subscriber.next(index);
 
-    if (typeof period === "undefined") {
+    if (typeof period === 'undefined') {
       subscriber.complete();
       return;
     } else if (subscriber.isUnsubscribed) {
@@ -39,10 +39,10 @@ export default class TimerObservable<T> extends Observable<T> {
     super();
     if (isNumeric(period)) {
       this._period = Number(period) < 1 && 1 || Number(period);
-    } else if (period && typeof (<Scheduler> period).schedule === "function") {
+    } else if (period && typeof (<Scheduler> period).schedule === 'function') {
       scheduler = <Scheduler> period;
     }
-    if (!scheduler || typeof scheduler.schedule !== "function") {
+    if (!scheduler || typeof scheduler.schedule !== 'function') {
       scheduler = nextTick;
     }
     this.scheduler = scheduler;

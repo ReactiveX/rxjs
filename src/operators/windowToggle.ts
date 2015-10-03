@@ -9,25 +9,31 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function windowToggle<T, O>(openings: Observable<O>, closingSelector: (openValue: O) => Observable<any>) : Observable<Observable<T>> {
+export default function windowToggle<T, O>(openings: Observable<O>,
+                                           closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowToggleOperator<T, T, O>(openings, closingSelector));
 }
 
 class WindowToggleOperator<T, R, O> implements Operator<T, R> {
 
-  constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
+  constructor(private openings: Observable<O>,
+              private closingSelector: (openValue: O) => Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new WindowToggleSubscriber<T, O>(subscriber, this.openings, this.closingSelector);
+    return new WindowToggleSubscriber<T, O>(
+      subscriber, this.openings, this.closingSelector
+    );
   }
 }
 
 class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
   private closingNotification: Subscription<any>;
-  
-  constructor(destination: Subscriber<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
+
+  constructor(destination: Subscriber<T>,
+              private openings: Observable<O>,
+              private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
     this.add(this.openings._subscribe(new WindowToggleOpeningsSubscriber(this)));
   }
@@ -39,7 +45,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
       windows[i].next(value);
     }
   }
-  
+
   _error(err: any) {
     const windows = this.windows;
     while (windows.length > 0) {
@@ -47,7 +53,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
     }
     this.destination.error(err);
   }
-  
+
   _complete() {
     const windows = this.windows;
     while (windows.length > 0) {
@@ -55,7 +61,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
     }
     this.destination.complete();
   }
-  
+
   openWindow(value: O) {
     const window = new Subject<T>();
     this.windows.push(window);
@@ -70,10 +76,12 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
     if (closingNotifier === errorObject) {
       this.error(closingNotifier.e);
     } else {
-      this.add(windowContext.subscription.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber<T, O>(this, windowContext))));
+      const subscriber = new WindowClosingNotifierSubscriber<T, O>(this, windowContext);
+      const subscription = closingNotifier._subscribe(subscriber);
+      this.add(windowContext.subscription.add(subscription));
     }
   }
-  
+
   closeWindow(windowContext: { subscription: Subscription<T>, window: Subject<T> }) {
     const { window, subscription } = windowContext;
     const windows = this.windows;
@@ -84,18 +92,19 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
 }
 
 class WindowClosingNotifierSubscriber<T, O> extends Subscriber<T> {
-  constructor(private parent: WindowToggleSubscriber<T, O>, private windowContext: { window: Subject<T>, subscription: Subscription<T> }) {
+  constructor(private parent: WindowToggleSubscriber<T, O>,
+              private windowContext: { window: Subject<T>, subscription: Subscription<T> }) {
     super(null);
   }
-  
+
   _next() {
     this.parent.closeWindow(this.windowContext);
   }
-  
+
   _error(err) {
     this.parent.error(err);
   }
-  
+
   _complete() {
     // noop
   }
@@ -105,15 +114,15 @@ class WindowToggleOpeningsSubscriber<T> extends Subscriber<T> {
   constructor(private parent: WindowToggleSubscriber<any, T>) {
     super();
   }
-  
+
   _next(value: T) {
     this.parent.openWindow(value);
   }
-  
+
   _error(err) {
     this.parent.error(err);
   }
-  
+
   _complete() {
     // noop
   }

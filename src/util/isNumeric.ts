@@ -1,4 +1,4 @@
-var is_array = Array.isArray;
+const is_array = Array.isArray;
 
 export default function isNumeric(val) {
   // parseFloat NaNs numeric-cast false positives (null|true|false|"")

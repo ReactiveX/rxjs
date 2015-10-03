@@ -10,12 +10,17 @@ interface FlushableTest {
   actual?: any[];
   expected?: any[];
 }
-export default FlushableTest;
 
 interface SetupableHotObservable {
   setup: (scheduler: TestScheduler) => void;
   subject: Subject<any>;
 }
+
+interface TestMessage {
+  frame: number;
+  notification: Notification<any>;
+}
+export default TestMessage;
 
 export default class TestScheduler extends VirtualTimeScheduler {
   private setupableHotObservables: SetupableHotObservable[] = [];
@@ -102,7 +107,7 @@ export default class TestScheduler extends VirtualTimeScheduler {
     super.flush();
     const readyFlushTests = this.flushTests.filter(test => test.ready);
     while (readyFlushTests.length > 0) {
-      var test = readyFlushTests.shift();
+      let test = readyFlushTests.shift();
       test.actual.sort((a, b) => a.frame === b.frame ? 0 : (a.frame > b.frame ? 1 : -1));
       this.assertDeepEqual(test.actual, test.expected);
     }
@@ -115,13 +120,13 @@ export default class TestScheduler extends VirtualTimeScheduler {
     return marbles.indexOf('!') * this.frameTimeFactor;
   }
 
-  static parseMarbles(marbles: string, values?: any, errorValue?: any) : ({ frame: number, notification: Notification<any> })[] {
+  static parseMarbles(marbles: string, values?: any, errorValue?: any): TestMessage[] {
     if (marbles.indexOf('!') !== -1) {
       throw new Error('Conventional marble diagrams cannot have the ' +
         'unsubscription marker "!"');
     }
     let len = marbles.length;
-    let results: ({ frame: number, notification: Notification<any> })[] = [];
+    let testMessages: TestMessage[] = [];
     let subIndex = marbles.indexOf('^');
     let frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
     let getValue = typeof values !== 'object' ? (x) => x : (x) => values[x];
@@ -156,9 +161,9 @@ export default class TestScheduler extends VirtualTimeScheduler {
       frame += frameOffset;
 
       if (notification) {
-        results.push({ frame: groupStart > -1 ? groupStart : frame, notification });
+        testMessages.push({ frame: groupStart > -1 ? groupStart : frame, notification });
       }
     }
-    return results;
+    return testMessages;
   }
 }

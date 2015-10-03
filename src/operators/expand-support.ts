@@ -14,7 +14,7 @@ import subscribeToResult from '../util/subscribeToResult';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<any>,
-    private concurrent: number = Number.POSITIVE_INFINITY) {
+              private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -28,10 +28,11 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: any[];
 
-  constructor(destination: Observer<T>, private project: (value: T, index: number) => Observable<R>,
-    private concurrent: number = Number.POSITIVE_INFINITY) {
+  constructor(destination: Observer<T>,
+              private project: (value: T, index: number) => Observable<R>,
+              private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
-    if(concurrent < Number.POSITIVE_INFINITY) {
+    if (concurrent < Number.POSITIVE_INFINITY) {
       this.buffer = [];
     }
   }
@@ -39,12 +40,12 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   _next(value: any) {
     const index = this.index++;
     this.destination.next(value);
-    if(this.active < this.concurrent) {
+    if (this.active < this.concurrent) {
       let result = tryCatch(this.project)(value, index);
-      if(result === errorObject) {
+      if (result === errorObject) {
         this.destination.error(result.e);
       } else {
-        if(result._isScalar) {
+        if (result._isScalar) {
           this._next(result.value);
         } else {
           this.active++;
@@ -58,7 +59,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   _complete() {
     this.hasCompleted = true;
-    if(this.hasCompleted && this.active === 0) {
+    if (this.hasCompleted && this.active === 0) {
       this.destination.complete();
     }
   }
@@ -67,10 +68,10 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;
-    if(buffer && buffer.length > 0) {
+    if (buffer && buffer.length > 0) {
       this._next(buffer.shift());
     }
-    if(this.hasCompleted && this.active === 0) {
+    if (this.hasCompleted && this.active === 0) {
       this.destination.complete();
     }
   }

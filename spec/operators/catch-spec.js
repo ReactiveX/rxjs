@@ -15,7 +15,7 @@ describe('Observable.prototype.catch()', function () {
         },
         done);
   });
-  
+
   it('should catch the error and allow the return of a new observable to use', function (done) {
     var expected = [1, 2, 'foo'];
     Observable.of(1, 2, 3)
@@ -36,7 +36,7 @@ describe('Observable.prototype.catch()', function () {
         done();
       });
   });
-  
+
   it('should catch and allow the observable to be repeated with the third (caught) argument', function (done) {
     var expected = [1, 2, 1, 2, 1, 2];
     var retries = 0;
@@ -48,7 +48,7 @@ describe('Observable.prototype.catch()', function () {
         return n;
       })
       .catch(function (err, caught) {
-        if (retries++ == 2) {
+        if (retries++ === 2) {
           throw 'done';
         }
         return caught;
@@ -60,9 +60,9 @@ describe('Observable.prototype.catch()', function () {
         done();
       }, function () {
         expect('this was called').not.toBeTruthy();
-      })
+      });
   });
-  
+
   it('should complete if you return Observable.empty()', function (done) {
     var expected = [1, 2];
     Observable.of(1, 2, 3)
@@ -83,8 +83,7 @@ describe('Observable.prototype.catch()', function () {
         done();
       });
   });
-  
-  
+
   it('should error if you return Observable.throw()', function (done) {
     var expected = [1, 2];
     Observable.of(1, 2, 3)

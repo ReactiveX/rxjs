@@ -10,23 +10,24 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<T>{
+export default function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
+                                 thisArg?: any): Observable<T> {
   const source = this;
   let result;
-  
-  if(source._isScalar) {
+
+  if (source._isScalar) {
     result = tryCatch(predicate)(source.value, 0, source);
-    if(result === errorObject) {
+    if (result === errorObject) {
       return new ErrorObservable(errorObject.e, source.scheduler);
     } else {
       return new ScalarObservable(result, source.scheduler);
     }
   }
-  
-  if(source instanceof ArrayObservable) {
+
+  if (source instanceof ArrayObservable) {
     const array = (<ArrayObservable<T>>source).array;
     let result = tryCatch((array, predicate) => array.every(<any>predicate))(array, predicate);
-    if(result === errorObject) {
+    if (result === errorObject) {
       return new ErrorObservable(errorObject.e, source.scheduler);
     } else {
       return new ScalarObservable(result, source.scheduler);
@@ -36,11 +37,11 @@ export default function every<T>(predicate: (value: T, index: number, source: Ob
 }
 
 class EveryOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean, 
-    private thisArg?: any, private source?: Observable<T>) {
-    
+  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private thisArg?: any,
+              private source?: Observable<T>) {
   }
-  
+
   call(observer: Subscriber<R>): Subscriber<T> {
     return new EverySubscriber(observer, this.predicate, this.thisArg, this.source);
   }
@@ -49,28 +50,30 @@ class EveryOperator<T, R> implements Operator<T, R> {
 class EverySubscriber<T> extends Subscriber<T> {
   private predicate: Function = undefined;
   private index: number = 0;
-  
-  constructor(destination: Observer<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean, 
-    private thisArg?: any, private source?: Observable<T>) {
+
+  constructor(destination: Observer<T>,
+              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private thisArg?: any,
+              private source?: Observable<T>) {
     super(destination);
-    
-    if(typeof predicate === 'function') {
+
+    if (typeof predicate === 'function') {
       this.predicate = bindCallback(predicate, thisArg, 3);
     }
   }
-  
+
   private notifyComplete(everyValueMatch: boolean): void {
     this.destination.next(everyValueMatch);
     this.destination.complete();
   }
-  
+
   _next(value: T) {
     const predicate = this.predicate;
-    
+
     if (predicate === undefined) {
       this.destination.error(new TypeError('predicate must be a function'));
     }
-    
+
     let result = tryCatch(predicate)(value, this.index++, this.source);
     if (result === errorObject) {
       this.destination.error(result.e);
@@ -78,7 +81,7 @@ class EverySubscriber<T> extends Subscriber<T> {
       this.notifyComplete(false);
     }
   }
-  
+
   _complete() {
     this.notifyComplete(true);
   }

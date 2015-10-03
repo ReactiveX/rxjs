@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var TestScheduler = Rx.TestScheduler;
 var Notification = Rx.Notification;
 
-describe('TestScheduler', function() {
+describe('TestScheduler', function () {
   it('should exist', function () {
     expect(typeof TestScheduler).toBe('function');
   });
@@ -36,16 +36,16 @@ describe('TestScheduler', function() {
       ]);
     });
 
-    it('should default in the letter for the value if no value hash was passed', function(){
+    it('should default in the letter for the value if no value hash was passed', function () {
       var result = TestScheduler.parseMarbles('--a--b--c--');
       expect(result).toDeepEqual([
         { frame: 20, notification: Notification.createNext('a') },
         { frame: 50, notification: Notification.createNext('b') },
         { frame: 80, notification: Notification.createNext('c') },
-      ])
+      ]);
     });
 
-    it('should handle grouped values', function() {
+    it('should handle grouped values', function () {
       var result = TestScheduler.parseMarbles('---(abc)---');
       expect(result).toDeepEqual([
         { frame: 30, notification: Notification.createNext('a') },
@@ -53,7 +53,6 @@ describe('TestScheduler', function() {
         { frame: 30, notification: Notification.createNext('c') }
       ]);
     });
-
   });
 
   describe('createColdObservable()', function () {

@@ -4,7 +4,7 @@ var Observable = Rx.Observable;
 
 describe('Observable.prototype.startWith()', function () {
   it('should start an observable with given value', function (done) {
-    var source = 'source'
+    var source = 'source';
     var init = 'init';
     var expected = [init, source];
 

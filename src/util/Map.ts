@@ -8,8 +8,8 @@ export default root.Map || (function() {
     }
 
     Map.prototype['delete'] = function (key) {
-      var i = this._keys.indexOf(key);
-      if (i === -1) { return false }
+      let i = this._keys.indexOf(key);
+      if (i === -1) { return false; }
       this._values.splice(i, 1);
       this._keys.splice(i, 1);
       this.size--;
@@ -17,12 +17,12 @@ export default root.Map || (function() {
     };
 
     Map.prototype.get = function (key) {
-      var i = this._keys.indexOf(key);
+      let i = this._keys.indexOf(key);
       return i === -1 ? undefined : this._values[i];
     };
 
     Map.prototype.set = function (key, value) {
-      var i = this._keys.indexOf(key);
+      let i = this._keys.indexOf(key);
       if (i === -1) {
         this._keys.push(key);
         this._values.push(value);
@@ -34,7 +34,7 @@ export default root.Map || (function() {
     };
 
     Map.prototype.forEach = function (cb, thisArg) {
-      for (var i = 0; i < this.size; i++) {
+      for (let i = 0; i < this.size; i++) {
         cb.call(thisArg, this._values[i], this._keys[i]);
       }
     };

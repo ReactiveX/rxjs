@@ -1,29 +1,29 @@
-var objectTypes = {
-    'boolean': false,
-    'function': true,
-    'object': true,
-    'number': false,
-    'string': false,
-    'undefined': false
+let objectTypes = {
+  'boolean': false,
+  'function': true,
+  'object': true,
+  'number': false,
+  'string': false,
+  'undefined': false
 };
 
-declare var global:NodeJS.Global;
-declare var module:any;
-declare var exports:any;
+declare let global: NodeJS.Global;
+declare let module: any;
+declare let exports: any;
 
 declare module NodeJS {
   interface Global {
-    window:any
-    global:any
+    window: any;
+    global: any;
   }
 }
 
-export var root:any = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);
+export let root: any = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);
 
-var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
-var freeModule = objectTypes[typeof module] && module && !module.nodeType && module;
-var freeGlobal = objectTypes[typeof global] && global;
+let freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
+let freeModule = objectTypes[typeof module] && module && !module.nodeType && module;
+let freeGlobal = objectTypes[typeof global] && global;
 
 if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
-    root = freeGlobal;
+  root = freeGlobal;
 }

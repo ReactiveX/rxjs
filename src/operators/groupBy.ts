@@ -12,35 +12,37 @@ import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
 export default function groupBy<T, R>(keySelector: (value: T) => string,
-    elementSelector?: (value: T) => R,
-    durationSelector?: (grouped: GroupSubject<R>) => Observable<any>): Observable<GroupSubject<R>>
-{
+                                      elementSelector?: (value: T) => R,
+                                      durationSelector?: (grouped: GroupSubject<R>) => Observable<any>): Observable<GroupSubject<R>> {
   return this.lift(new GroupByOperator<T, R>(keySelector, durationSelector, elementSelector));
 }
 
 class GroupByOperator<T, R> implements Operator<T, R> {
   constructor(private keySelector: (value: T) => string,
-    private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
-    private elementSelector?: (value: T) => R) {
+              private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
+              private elementSelector?: (value: T) => R) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new GroupBySubscriber<T, R>(subscriber, this.keySelector, this.durationSelector, this.elementSelector);
+    return new GroupBySubscriber<T, R>(
+      subscriber, this.keySelector, this.durationSelector, this.elementSelector
+    );
   }
 }
 
 class GroupBySubscriber<T, R> extends Subscriber<T> {
   private groups = null;
 
-  constructor(destination: Subscriber<R>, private keySelector: (value: T) => string,
-    private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
-    private elementSelector?: (value: T) => R) {
+  constructor(destination: Subscriber<R>,
+              private keySelector: (value: T) => string,
+              private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
+              private elementSelector?: (value: T) => R) {
     super(destination);
   }
 
   _next(x: T) {
     let key = tryCatch(this.keySelector)(x);
-    if(key === errorObject) {
+    if (key === errorObject) {
       this.error(key.e);
     } else {
       let groups = this.groups;
@@ -69,8 +71,8 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
       }
 
       if (elementSelector) {
-        let value = tryCatch(elementSelector)(x)
-        if(value === errorObject) {
+        let value = tryCatch(elementSelector)(x);
+        if (value === errorObject) {
           group.error(value.e);
         } else {
           group.next(value);
@@ -94,7 +96,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
 
   _complete() {
     const groups = this.groups;
-    if(groups) {
+    if (groups) {
       groups.forEach((group, key) => {
         group.complete();
         this.removeGroup(group);
@@ -109,7 +111,8 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
 }
 
 class GroupDurationSubscriber<T> extends Subscriber<T> {
-  constructor(private group: GroupSubject<T>, private parent:GroupBySubscriber<any, T>) {
+  constructor(private group: GroupSubject<T>,
+              private parent: GroupBySubscriber<any, T>) {
     super(null);
   }
 

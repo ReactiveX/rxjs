@@ -7,11 +7,11 @@ export default class NextTickAction<T> extends ImmediateAction<T> {
 
   id: number;
 
-  schedule(state?: any): Action { 
+  schedule(state?: any): Action {
     if (this.isUnsubscribed) {
       return this;
     }
-    
+
     this.state = state;
 
     const scheduler = this.scheduler;

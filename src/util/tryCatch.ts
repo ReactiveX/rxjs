@@ -1,8 +1,8 @@
 import {errorObject} from './errorObject';
 
-var tryCatchTarget;
+let tryCatchTarget;
 
-function tryCatcher():any {
+function tryCatcher(): any {
   try {
     return tryCatchTarget.apply(this, arguments);
   } catch (e) {
@@ -11,7 +11,7 @@ function tryCatcher():any {
   }
 }
 
-export default function tryCatch(fn:Function):Function {
+export default function tryCatch(fn: Function): Function {
   tryCatchTarget = fn;
   return tryCatcher;
 };

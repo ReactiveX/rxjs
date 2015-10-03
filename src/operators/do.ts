@@ -34,7 +34,6 @@ class DoSubscriber<T> extends Subscriber<T> {
   __error: (e: any) => void;
   __complete: () => void;
 
-
   constructor(destination: Subscriber<T>, next: (x: T) => void, error: (e: any) => void, complete: () => void) {
     super(destination);
     this.__next = next;

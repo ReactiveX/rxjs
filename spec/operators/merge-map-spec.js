@@ -12,7 +12,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var results = [];
     source.mergeMap(project).subscribe(
       function next(x) {
-        results.push(x)
+        results.push(x);
       },
       function error(err) {
         done.fail('Subscriber error handler not supposed to be called.');
@@ -108,7 +108,7 @@ describe('Observable.prototype.mergeMap()', function () {
       },
       function complete() {
         expect(results).toEqual([8,8,8,8]);
-        expect(resultSelectorCalledWith).toDeepEqual(expectedCalls)
+        expect(resultSelectorCalledWith).toDeepEqual(expectedCalls);
         done();
       });
   });
@@ -141,7 +141,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var inner = cold('----i---j---k---l---|', values);
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l---|';
 
-    expectObservable(e1.mergeMap(function(value) { return inner; }))
+    expectObservable(e1.mergeMap(function (value) { return inner; }))
       .toBe(expected, values);
   });
 
@@ -151,7 +151,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var inner = cold('----i---j---k---l---|', values);
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l-------|';
 
-    expectObservable(e1.mergeMap(function(value) { return inner; }))
+    expectObservable(e1.mergeMap(function (value) { return inner; }))
       .toBe(expected, values);
   });
 
@@ -162,7 +162,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var unsub =     '-------------------------------------------------------!';
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)(ki)(lj)k---l---i-';
 
-    var source = e1.mergeMap(function(value) { return inner; });
+    var source = e1.mergeMap(function (value) { return inner; });
     expectObservable(source, unsub).toBe(expected, values);
   });
 
@@ -172,7 +172,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var inner = cold('----i---j---k---l-', values);
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l-';
 
-    expectObservable(e1.mergeMap(function(value) { return inner; }))
+    expectObservable(e1.mergeMap(function (value) { return inner; }))
       .toBe(expected, values);
   });
 
@@ -182,7 +182,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var inner = cold('----i---j---k---l-------#', values);
     var expected =  '-----i---j---(ki)(lj)(ki)#';
 
-    expectObservable(e1.mergeMap(function(value) { return inner; }))
+    expectObservable(e1.mergeMap(function (value) { return inner; }))
       .toBe(expected, values);
   });
 
@@ -192,7 +192,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var inner = cold('----i---j---k---l---|', values);
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)#';
 
-    expectObservable(e1.mergeMap(function(value) { return inner; }))
+    expectObservable(e1.mergeMap(function (value) { return inner; }))
       .toBe(expected, values);
   });
 
@@ -202,7 +202,7 @@ describe('Observable.prototype.mergeMap()', function () {
     var inner = cold('----i---j---k---l---#', values);
     var expected =  '-----i---j---(ki)(lj)#';
 
-    expectObservable(e1.mergeMap(function(value) { return inner; }))
+    expectObservable(e1.mergeMap(function (value) { return inner; }))
       .toBe(expected, values);
   });
 
@@ -219,7 +219,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function(value) {
+    expectObservable(e1.mergeMap(function (value) {
       return observableLookup[value];
     })).toBe(expected);
   });
@@ -237,7 +237,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function(value) {
+    expectObservable(e1.mergeMap(function (value) {
       return observableLookup[value];
     })).toBe(expected);
   });
@@ -255,7 +255,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function(value) {
+    expectObservable(e1.mergeMap(function (value) {
       return observableLookup[value];
     })).toBe(expected);
   });
@@ -273,7 +273,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function(value) {
+    expectObservable(e1.mergeMap(function (value) {
       return observableLookup[value];
     })).toBe(expected);
   });
@@ -291,7 +291,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function(value) {
+    expectObservable(e1.mergeMap(function (value) {
       return observableLookup[value];
     })).toBe(expected);
   });
@@ -342,7 +342,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
   function arrayRepeat(value, times) {
     var results = [];
-    for(var i = 0; i < times; i++) {
+    for (var i = 0; i < times; i++) {
       results.push(value);
     }
     return results;
@@ -472,7 +472,7 @@ describe('Observable.prototype.mergeMap()', function () {
     expectObservable(source).toBe(expected);
   });
 
-  it('should map and flatten', function (){
+  it('should map and flatten', function () {
     var source = Observable.of(1, 2, 3, 4).mergeMap(function (x) {
       return Observable.of(x + '!');
     });
@@ -482,7 +482,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
     var sub = source.subscribe(function (x) {
       expect(x).toBe(expected.shift());
-    }, null, function(){
+    }, null, function () {
       expect(expected.length).toBe(0);
       completed = true;
     });
@@ -500,7 +500,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
     var sub = source.subscribe(function (x) {
       expect(x).toBe(expected.shift());
-    }, null, function(){
+    }, null, function () {
       expect(expected.length).toBe(0);
       completed = true;
     });

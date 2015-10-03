@@ -19,7 +19,7 @@ export default class ConnectableObservable<T> extends Observable<T> {
 
   _getSubject() {
     const subject = this.subject;
-    if(subject && !subject.isUnsubscribed) {
+    if (subject && !subject.isUnsubscribed) {
       return subject;
     }
     return (this.subject = this.subjectFactory());
@@ -28,7 +28,7 @@ export default class ConnectableObservable<T> extends Observable<T> {
   connect() {
     const source = this.source;
     let subscription = this.subscription;
-    if(subscription && !subscription.isUnsubscribed) {
+    if (subscription && !subscription.isUnsubscribed) {
       return subscription;
     }
     subscription = source.subscribe(this._getSubject());
@@ -64,7 +64,7 @@ class RefCountObservable<T> extends Observable<T> {
   _subscribe(subscriber) {
     const connectable = this.connectable;
     const subscription = connectable.subscribe(subscriber);
-    if(++this.refCount === 1) {
+    if (++this.refCount === 1) {
       this.connection = connectable.connect();
     }
     subscription.add(new RefCountSubscription(this));
@@ -80,7 +80,7 @@ class RefCountSubscription<T> extends Subscription<T> {
 
   _unsubscribe() {
     const observable = this.refCountObservable;
-    if(--observable.refCount === 0) {
+    if (--observable.refCount === 0) {
       observable.connection.unsubscribe();
       observable.connection = void 0;
     }

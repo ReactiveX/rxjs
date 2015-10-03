@@ -8,7 +8,7 @@ export default function retry<T>(count: number = 0): Observable<T> {
 }
 
 class RetryOperator<T, R> implements Operator<T, R> {
-  constructor(private count: number, protected original:Observable<T>) {
+  constructor(private count: number, protected original: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -21,16 +21,16 @@ class RetrySubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>, private count: number, private original: Observable<T>) {
     super(destination);
   }
-  
+
   _error(err: any) {
     const count = this.count;
-    if (count && count === (this.retries+=1)){
+    if (count && count === (this.retries += 1)) {
       this.destination.error(err);
-    } else { 
+    } else {
       this.resubscribe();
-    } 
+    }
   }
-  
+
   resubscribe() {
     this.original.subscribe(this);
   }

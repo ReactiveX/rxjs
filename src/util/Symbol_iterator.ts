@@ -7,9 +7,8 @@ if (!root.Symbol) {
 if (!root.Symbol.iterator) {
   if (typeof root.Symbol.for === 'function') {
     root.Symbol.iterator = root.Symbol.for('iterator');
-  }
-  // Bug for mozilla version
-  else if(root.Set && typeof new root.Set()['@@iterator'] === 'function') {
+  } else if (root.Set && typeof new root.Set()['@@iterator'] === 'function') {
+    // Bug for mozilla version
     root.Symbol.iterator = '@@iterator';
   } else {
     root.Symbol.iterator = '_es6shim_iterator_';

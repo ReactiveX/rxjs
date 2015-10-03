@@ -70,17 +70,17 @@ describe('Observable.prototype.multicast()', function () {
     });
 
     source.subscribe(function (x) {
+      expect(x).toBe(expected[i++]);
+    }, null,
+    function () {
+      i = 0;
+
+      source.subscribe(function (x) {
         expect(x).toBe(expected[i++]);
-      }, null,
-      function () {
-        i = 0;
+      }, null, done);
 
-        source.subscribe(function (x) {
-          expect(x).toBe(expected[i++]);
-        }, null, done);
-
-        source.connect();
-      });
+      source.connect();
+    });
 
     source.connect();
   });

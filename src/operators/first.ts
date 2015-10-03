@@ -9,8 +9,8 @@ import bindCallback from '../util/bindCallback';
 import EmptyError from '../util/EmptyError';
 
 export default function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                                 resultSelector?: (value: T, index: number) => R,
-                                 defaultValue?: any): Observable<R> {
+                                    resultSelector?: (value: T, index: number) => R,
+                                    defaultValue?: any): Observable<R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
@@ -50,12 +50,12 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
       }
     }
     if (passed) {
-      if(resultSelector) {
+      if (resultSelector) {
         value = tryCatch(resultSelector)(value, index);
-        if(value === errorObject) {
+        if (value === errorObject) {
           destination.error(errorObject.e);
           return;
-        } 
+        }
       }
       destination.next(value);
       destination.complete();

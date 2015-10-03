@@ -8,12 +8,13 @@ import Subscription from '../Subscription';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function retryWhen<T>(notifier: (errors:Observable<any>) => Observable<any>) {
+export default function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>) {
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
 class RetryWhenOperator<T, R> implements Operator<T, R> {
-  constructor(protected notifier: (errors: Observable<any>) => Observable<any>, protected original:Observable<T>) {
+  constructor(protected notifier: (errors: Observable<any>) => Observable<any>,
+              protected original: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -25,7 +26,9 @@ class RetryWhenSubscriber<T> extends Subscriber<T> {
   errors: Subject<any>;
   retryNotifications: Observable<any>;
 
-  constructor(destination: Subscriber<T>, public notifier: (errors: Observable<any>) => Observable<any>, public original: Observable<T>) {
+  constructor(destination: Subscriber<T>,
+              public notifier: (errors: Observable<any>) => Observable<any>,
+              public original: Observable<T>) {
     super(destination);
   }
 

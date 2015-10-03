@@ -12,15 +12,15 @@ export default class ImmediateScheduler implements Scheduler {
 
   now() {
     return Date.now();
-  }  
-  
+  }
+
   flush() {
     if (this.active || this.scheduled) {
       return;
     }
     this.active = true;
     const actions = this.actions;
-    for (let action; action = actions.shift();) {
+    for (let action; action = actions.shift(); ) {
       action.execute();
     }
     this.active = false;

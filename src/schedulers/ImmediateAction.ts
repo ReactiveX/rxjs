@@ -15,7 +15,7 @@ export default class ImmediateAction<T> extends Subscription<T> implements Actio
     if (this.isUnsubscribed) {
       return this;
     }
-    
+
     this.state = state;
     const scheduler = this.scheduler;
     scheduler.actions.push(this);
@@ -25,7 +25,7 @@ export default class ImmediateAction<T> extends Subscription<T> implements Actio
 
   execute() {
     if (this.isUnsubscribed) {
-      throw new Error("How did did we execute a canceled Action?");
+      throw new Error('How did did we execute a canceled Action?');
     }
     this.work(this.state);
   }

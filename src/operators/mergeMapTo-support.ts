@@ -8,7 +8,7 @@ import OuterSubscriber from '../OuterSubscriber';
 import subscribeToResult from '../util/subscribeToResult';
 import InnerSubscriber from '../InnerSubscriber';
 
-export class MergeMapToOperator<T, R, R2> implements Operator<T,R> {
+export class MergeMapToOperator<T, R, R2> implements Operator<T, R> {
   constructor(private ish: any,
               private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
               private concurrent: number = Number.POSITIVE_INFINITY) {
@@ -33,12 +33,12 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
 
   _next(value: any) {
-    if(this.active < this.concurrent) {
+    if (this.active < this.concurrent) {
       const resultSelector = this.resultSelector;
       const index = this.index++;
       const ish = this.ish;
       const destination = this.destination;
-      if(ish === errorObject) {
+      if (ish === errorObject) {
         destination.error(ish.e);
       } else {
         this.active--;
@@ -51,22 +51,24 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   _innerSub(ish: any,
             destination: Observer<R>,
-            resultSelector: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2, value: T, index: number) {
+            resultSelector: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+            value: T,
+            index: number) {
     this.add(subscribeToResult<T, R>(this, ish, value, index));
   }
 
   _complete() {
     this.hasCompleted = true;
-    if(this.active === 0 && this.buffer.length === 0) {
+    if (this.active === 0 && this.buffer.length === 0) {
       this.destination.complete();
     }
   }
 
   notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
     const { resultSelector, destination } = this;
-    if(resultSelector) {
+    if (resultSelector) {
       const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
-      if(result === errorObject) {
+      if (result === errorObject) {
         destination.error(errorObject.e);
       } else {
         destination.next(result);
@@ -84,7 +86,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;
-    if(buffer.length > 0) {
+    if (buffer.length > 0) {
       this._next(buffer.shift());
     } else if (this.active === 0 && this.hasCompleted) {
       this.destination.complete();

@@ -27,7 +27,7 @@ class DelayOperator<T, R> implements Operator<T, R> {
 class DelaySubscriber<T> extends Subscriber<T> {
 
   protected delay: number;
-  protected queue: Array<any>=[];
+  protected queue: Array<any> = [];
   protected scheduler: Scheduler;
   protected active: boolean = false;
   protected errored: boolean = false;

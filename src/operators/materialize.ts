@@ -18,7 +18,7 @@ class MaterializeSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value:T) {
+  _next(value: T) {
     this.destination.next(Notification.createNext(value));
   }
 

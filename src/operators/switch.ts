@@ -37,7 +37,7 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   _complete() {
     this.hasCompleted = true;
-    if(this.active === 0) {
+    if (this.active === 0) {
       this.destination.complete();
     }
   }
@@ -45,7 +45,7 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   unsubscribeInner() {
     this.active = this.active > 0 ? this.active - 1 : 0;
     const innerSubscription = this.innerSubscription;
-    if(innerSubscription) {
+    if (innerSubscription) {
       innerSubscription.unsubscribe();
       this.remove(innerSubscription);
     }
@@ -61,7 +61,7 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   notifyComplete() {
     this.unsubscribeInner();
-    if(this.hasCompleted && this.active === 0) {
+    if (this.hasCompleted && this.active === 0) {
       this.destination.complete();
     }
   }

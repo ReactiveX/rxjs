@@ -16,18 +16,19 @@ var RxNextObservableReturn = RxNext.Observable.of;
 var RxNextTestObservable = RxNext.Observable.range(0, numIterations);
 var Rx2TestObservable = Rx.Observable.range(0, numIterations);
 
-Rx2MergeMapRange.addEventListener('click', function() {
-  Rx2TestObservable.mergeMap(projectionRx2).subscribe();
-});
-
-RxNextMergeMapRange.addEventListener('click', function() {
-  RxNextTestObservable.mergeMap(projectionRxNext).subscribe();
-});
-
 function projectionRxNext(x) {
   return RxNextObservableReturn(x + '!!!');
-};
+}
 
 function projectionRx2(x) {
   return Rx2ObservableReturn(x + '!!!');
-};
+}
+
+Rx2MergeMapRange.addEventListener('click', function () {
+  Rx2TestObservable.mergeMap(projectionRx2).subscribe();
+});
+
+RxNextMergeMapRange.addEventListener('click', function () {
+  RxNextTestObservable.mergeMap(projectionRxNext).subscribe();
+});
+

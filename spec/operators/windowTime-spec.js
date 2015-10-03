@@ -14,11 +14,10 @@ describe('Observable.prototype.windowTime', function () {
       .take(3)
       .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
-        expect(w).toEqual(expected.shift())
+        expect(w).toEqual(expected.shift());
       }, null, done);
   }, 2000);
-  
-  
+
   it('should emit windows that have been created at intervals and close after the specified delay', function (done) {
     var expected = [
       [0, 1, 2, 3, 4],
@@ -30,7 +29,7 @@ describe('Observable.prototype.windowTime', function () {
       .take(3)
       .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
-        expect(w).toEqual(expected.shift())
+        expect(w).toEqual(expected.shift());
       }, null, done);
   }, 2000);
 });

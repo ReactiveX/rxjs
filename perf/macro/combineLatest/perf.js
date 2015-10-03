@@ -16,10 +16,10 @@ var RxNextTestObservable = RxNext.Observable.range(0, numIterations);
 var Rx2TestArgObservable = Rx.Observable.range(0, numIterations);
 var RxNextTestArgObservable = RxNext.Observable.range(0, numIterations);
 
-Rx2CombineLatest.addEventListener('click', function() {
+Rx2CombineLatest.addEventListener('click', function () {
   Rx2TestObservable.combineLatest(Rx2TestArgObservable).subscribe();
 });
 
-RxNextCombineLatest.addEventListener('click', function() {
+RxNextCombineLatest.addEventListener('click', function () {
   RxNextTestObservable.combineLatest(RxNextTestArgObservable).subscribe();
 });

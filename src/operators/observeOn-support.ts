@@ -53,8 +53,8 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 class ObserveOnMessage {
   notification: Notification<any>;
   destination: Observer<any>;
-  
-  constructor(notification: Notification<any>, destination:Observer<any>) {
+
+  constructor(notification: Notification<any>, destination: Observer<any>) {
     this.notification = notification;
     this.destination = destination;
   }

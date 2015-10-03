@@ -9,14 +9,14 @@ import {errorObject} from '../util/errorObject';
 export default class IteratorObservable<T> extends Observable<T> {
 
   static create<T>(iterator: any,
-                   project?: (x?:any, i?:number) => T,
+                   project?: (x?: any, i?: number) => T,
                    thisArg?: any,
                    scheduler?: Scheduler) {
     if (iterator == null) {
-        throw new Error('iterator cannot be null.');
+      throw new Error('iterator cannot be null.');
     }
-    if (project && typeof project !== "function") {
-        throw new Error('When provided, `project` must be a function.');
+    if (project && typeof project !== 'function') {
+      throw new Error('When provided, `project` must be a function.');
     }
     return new IteratorObservable(iterator, project, thisArg, scheduler);
   }
@@ -59,7 +59,7 @@ export default class IteratorObservable<T> extends Observable<T> {
   }
 
   constructor(private iterator: any,
-              private project?: (x?:any, i?:number) => T,
+              private project?: (x?: any, i?: number) => T,
               private thisArg?: any,
               private scheduler?: Scheduler) {
     super();
@@ -152,7 +152,7 @@ function getIterator(o) {
 }
 
 function toLength(o) {
-  var len = +o.length;
+  let len = +o.length;
   if (isNaN(len)) {
       return 0;
   }
@@ -178,7 +178,7 @@ function isNan(n) {
 }
 
 function sign(value) {
-  var valueAsNumber = +value;
+  let valueAsNumber = +value;
   if (valueAsNumber === 0) {
     return valueAsNumber;
   }

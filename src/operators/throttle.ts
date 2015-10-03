@@ -15,7 +15,7 @@ export default function throttle<T>(delay: number, scheduler: Scheduler = nextTi
 }
 
 class ThrottleOperator<T, R> implements Operator<T, R> {
-  constructor(private delay:number, private scheduler:Scheduler) {
+  constructor(private delay: number, private scheduler: Scheduler) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -26,7 +26,9 @@ class ThrottleOperator<T, R> implements Operator<T, R> {
 class ThrottleSubscriber<T, R> extends Subscriber<T> {
   private throttled: Subscription<any>;
 
-  constructor(destination:Observer<T>, private delay:number, private scheduler:Scheduler) {
+  constructor(destination: Observer<T>,
+              private delay: number,
+              private scheduler: Scheduler) {
     super(destination);
   }
 

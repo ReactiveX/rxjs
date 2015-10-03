@@ -9,7 +9,7 @@ if (!root.Symbol.dispose) {
     root.Symbol.dispose = root.Symbol.for('dispose');
   } else {
     root.Symbol.dispose = '@@dispose';
-  }  
+  }
 }
 
 export default root.Symbol.dispose;

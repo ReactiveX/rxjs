@@ -10,13 +10,15 @@ var numIterations = iterationInput.valueAsNumber || 1000;
 var Rx2MergeAll = document.querySelector('#rx-2-mergeAll');
 var RxNextMergeAll = document.querySelector('#rx-3-mergeAll');
 
-var Rx2TestObservable = Rx.Observable.range(0, numIterations).map(function(x) { return Rx.Observable.range(0, numIterations)});
-var RxNextTestObservable = RxNext.Observable.range(0, numIterations).map(function(x) { return RxNext.Observable.range(0, numIterations) });
+var Rx2TestObservable = Rx.Observable.range(0, numIterations)
+  .map(function (x) { return Rx.Observable.range(0, numIterations); });
+var RxNextTestObservable = RxNext.Observable.range(0, numIterations)
+  .map(function (x) { return RxNext.Observable.range(0, numIterations); });
 
-Rx2Merge.addEventListener('click', function() {
+Rx2Merge.addEventListener('click', function () {
   Rx2TestObservable.mergeAll().subscribe();
 });
 
-RxNextMerge.addEventListener('click', function() {
+RxNextMerge.addEventListener('click', function () {
   RxNextTestObservable.mergeAll().subscribe();
 });

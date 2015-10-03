@@ -1,5 +1,5 @@
 export default function not(pred: Function, thisArg: any): Function {
-  function notPred():any {
+  function notPred(): any {
     return !((<any> notPred).pred.apply((<any> notPred).thisArg, arguments));
   }
   (<any> notPred).pred = pred;

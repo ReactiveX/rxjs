@@ -43,11 +43,11 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   _complete() {
     const observables = this.observables;
     const len = observables.length;
-    if(len === 0) {
+    if (len === 0) {
       this.destination.complete();
     } else {
       this.active = len;
-      for(let i = 0; i < len; i++) {
+      for (let i = 0; i < len; i++) {
         let observable = observables[i];
         this.add(subscribeToResult(this, observable, observable, i));
       }
@@ -55,7 +55,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   notifyComplete(innerSubscriber) {
-    if((this.active -= 1) === 0) {
+    if ((this.active -= 1) === 0) {
       this.destination.complete();
     }
   }
@@ -65,20 +65,20 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     values[outerIndex] = value;
     const toRespond = this.toRespond;
 
-    if(toRespond.length > 0) {
+    if (toRespond.length > 0) {
       const found = toRespond.indexOf(outerIndex);
-      if(found !== -1) {
+      if (found !== -1) {
         toRespond.splice(found, 1);
       }
     }
 
-    if(toRespond.length === 0) {
+    if (toRespond.length === 0) {
       const project = this.project;
       const destination = this.destination;
 
-      if(project) {
+      if (project) {
         let result = tryCatch(project).apply(this, values);
-        if(result === errorObject) {
+        if (result === errorObject) {
           destination.error(errorObject.e);
         } else {
           destination.next(result);

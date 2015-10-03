@@ -15,7 +15,7 @@ const isArray = Array.isArray;
 
 export class ZipOperator<T, R> implements Operator<T, R> {
 
-  project: (...values: Array<any>) => R
+  project: (...values: Array<any>) => R;
 
   constructor(project?: (...values: Array<any>) => R) {
     this.project = project;
@@ -37,14 +37,14 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
               project?: (...values: Array<any>) => R,
               values: any = Object.create(null)) {
     super(destination);
-    this.project = (typeof project === "function") ? project : null;
+    this.project = (typeof project === 'function') ? project : null;
     this.values = values;
   }
 
   _next(value) {
     const iterators = this.iterators;
     const index = this.index++;
-    if(isArray(value)) {
+    if (isArray(value)) {
       iterators.push(new StaticArrayIterator(value));
     } else if (typeof value[$$iterator] === 'function') {
       iterators.push(new StaticIterator(value[$$iterator]()));
@@ -58,9 +58,9 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     const iterators = this.iterators;
     const len = iterators.length;
     this.active = len;
-    for(let i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       let iterator = iterators[i];
-      if(iterator.stillUnsubscribed) {
+      if (iterator.stillUnsubscribed) {
         iterator.subscribe(iterator, i);
       } else {
         this.active--; // not an observable
@@ -70,7 +70,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
 
   notifyInactive() {
     this.active--;
-    if(this.active === 0) {
+    if (this.active === 0) {
       this.destination.complete();
     }
   }
@@ -81,26 +81,26 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     const destination = this.destination;
 
     // abort if not all of them have values
-    for(let i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       let iterator = iterators[i];
-      if(typeof iterator.hasValue === 'function' && !iterator.hasValue()) {
+      if (typeof iterator.hasValue === 'function' && !iterator.hasValue()) {
         return;
       }
     }
 
     let shouldComplete = false;
     const args = [];
-    for(let i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       let iterator = iterators[i];
       let result = iterator.next();
 
       // check to see if it's completed now that you've gotten
       // the next value.
-      if(iterator.hasCompleted()) {
+      if (iterator.hasCompleted()) {
         shouldComplete = true;
       }
 
-      if(result.done) {
+      if (result.done) {
         destination.complete();
         return;
       }
@@ -109,9 +109,9 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     }
 
     const project = this.project;
-    if(project) {
+    if (project) {
       let result = tryCatch(project).apply(this, args);
-      if(result === errorObject) {
+      if (result === errorObject) {
         destination.error(errorObject.e);
       } else {
         destination.next(result);
@@ -120,7 +120,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
       destination.next(args);
     }
 
-    if(shouldComplete) {
+    if (shouldComplete) {
       destination.complete();
     }
   }
@@ -186,7 +186,10 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
   buffer: T[] = [];
   isComplete = false;
 
-  constructor(destination: Observer<T>, private parent: ZipSubscriber<T, R>, private observable: Observable<T>, private index: number) {
+  constructor(destination: Observer<T>,
+              private parent: ZipSubscriber<T, R>,
+              private observable: Observable<T>,
+              private index: number) {
     super(destination);
   }
 
@@ -198,7 +201,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
   //    this is legit because `next()` will never be called by a subscription in this case.
   next(): IteratorResult<T> {
     const buffer = this.buffer;
-    if(buffer.length === 0 && this.isComplete) {
+    if (buffer.length === 0 && this.isComplete) {
       return { done: true };
     } else {
       return { value: buffer.shift(), done: false };
@@ -214,7 +217,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
   }
 
   notifyComplete() {
-    if(this.buffer.length > 0) {
+    if (this.buffer.length > 0) {
       this.isComplete = true;
       this.parent.notifyInactive();
     } else {

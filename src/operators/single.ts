@@ -8,15 +8,19 @@ import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 import EmptyError from '../util/EmptyError';
 
-export default function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) : Observable<T> {
+export default function single<T>(predicate?: (value: T,
+                                               index: number,
+                                               source: Observable<T>) => boolean,
+                                  thisArg?: any): Observable<T> {
   return this.lift(new SingleOperator(predicate, thisArg, this));
 }
 
 class SingleOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean, private thisArg?: any, private source?: Observable<T>) {
-    
+  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private thisArg?: any,
+              private source?: Observable<T>) {
   }
-  
+
   call(subscriber: Subscriber<R>): Subscriber<T> {
     return new SingleSubscriber(subscriber, this.predicate, this.thisArg, this.source);
   }
@@ -27,15 +31,18 @@ class SingleSubscriber<T> extends Subscriber<T> {
   private seenValue: boolean = false;
   private singleValue: T;
   private index: number = 0;
-  
-  constructor(destination : Observer<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean, private thisArg?: any, private source?: Observable<T>) {
+
+  constructor(destination: Observer<T>,
+              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private thisArg?: any,
+              private source?: Observable<T>) {
     super(destination);
-    
+
     if (typeof predicate === 'function') {
       this.predicate = bindCallback(predicate, thisArg, 3);
     }
   }
-  
+
   private applySingleValue(value): void {
     if (this.seenValue) {
       this.destination.error('Sequence contains more than one element');
@@ -44,11 +51,11 @@ class SingleSubscriber<T> extends Subscriber<T> {
       this.singleValue = value;
     }
   }
-  
+
   _next(value: T) {
     const predicate = this.predicate;
     const currentIndex = this.index++;
-    
+
     if (predicate) {
       let result = tryCatch(predicate)(value, currentIndex, this.source);
       if (result === errorObject) {
@@ -60,10 +67,10 @@ class SingleSubscriber<T> extends Subscriber<T> {
       this.applySingleValue(value);
     }
   }
-  
+
   _complete() {
     const destination = this.destination;
-    
+
     if (this.index > 0) {
       destination.next(this.seenValue ? this.singleValue : undefined);
       destination.complete();

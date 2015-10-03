@@ -35,11 +35,11 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
     super(destination);
     this.acc = acc;
     this.project = project;
-    this.hasSeed = typeof acc !== "undefined";
+    this.hasSeed = typeof acc !== 'undefined';
   }
 
   _next(x) {
-    if(this.hasValue || (this.hasValue = this.hasSeed)) {
+    if (this.hasValue || (this.hasValue = this.hasSeed)) {
       const result = tryCatch(this.project).call(this, this.acc, x);
       if (result === errorObject) {
         this.destination.error(errorObject.e);
@@ -52,7 +52,7 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
   }
 
   _complete() {
-    if(!this.hasValue && this.hasSeed) {
+    if (!this.hasValue && this.hasSeed) {
       this.destination.next(this.acc);
     }
     this.destination.complete();

@@ -7,7 +7,7 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function defaultIfEmpty<T,R>(defaultValue: R = null) : Observable<T>|Observable<R> {
+export default function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T> | Observable<R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
@@ -35,7 +35,7 @@ class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
   }
 
   _complete() {
-    if(this.isEmpty) {
+    if (this.isEmpty) {
       this.destination.next(this.defaultValue);
     }
     this.destination.complete();

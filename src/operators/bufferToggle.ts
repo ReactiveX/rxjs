@@ -9,13 +9,15 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function bufferToggle<T, O>(openings: Observable<O>, closingSelector: (openValue: O) => Observable<any>) : Observable<T[]> {
+export default function bufferToggle<T, O>(openings: Observable<O>,
+                                           closingSelector: (openValue: O) => Observable<any>): Observable<T[]> {
   return this.lift(new BufferToggleOperator<T, T, O>(openings, closingSelector));
 }
 
 class BufferToggleOperator<T, R, O> implements Operator<T, R> {
 
-  constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
+  constructor(private openings: Observable<O>,
+              private closingSelector: (openValue: O) => Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -26,8 +28,10 @@ class BufferToggleOperator<T, R, O> implements Operator<T, R> {
 class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
   private closingNotification: Subscription<any>;
-  
-  constructor(destination: Subscriber<T>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
+
+  constructor(destination: Subscriber<T>,
+              private openings: Observable<O>,
+              private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
     this.add(this.openings._subscribe(new BufferToggleOpeningsSubscriber(this)));
   }
@@ -39,12 +43,12 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
       buffers[i].push(value);
     }
   }
-  
+
   _error(err: any) {
     this.buffers = null;
     this.destination.error(err);
   }
-  
+
   _complete() {
     const buffers = this.buffers;
     while (buffers.length > 0) {
@@ -52,11 +56,11 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
     }
     this.destination.complete();
   }
-  
+
   openBuffer(value: O) {
     const closingSelector = this.closingSelector;
     const buffers = this.buffers;
-    
+
     let closingNotifier = tryCatch(closingSelector)(value);
     if (closingNotifier === errorObject) {
       const err = closingNotifier.e;
@@ -69,10 +73,12 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
         subscription: new Subscription()
       };
       buffers.push(buffer);
-      this.add(context.subscription.add(closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this, context))));
+      const subscriber = new BufferClosingNotifierSubscriber(this, context);
+      const subscription = closingNotifier._subscribe(subscriber);
+      this.add(context.subscription.add(subscription));
     }
   }
-  
+
   closeBuffer(context: { subscription: any, buffer: T[] }) {
     const { buffer, subscription } = context;
     const buffers = this.buffers;
@@ -87,15 +93,15 @@ class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
   constructor(private parent: BufferToggleSubscriber<any, T>, private context: { subscription: any, buffer: T[] }) {
     super(null);
   }
-  
+
   _next() {
     this.parent.closeBuffer(this.context);
   }
-  
+
   _error(err) {
     this.parent.error(err);
   }
-  
+
   _complete() {
     // noop
   }
@@ -105,15 +111,15 @@ class BufferToggleOpeningsSubscriber<T> extends Subscriber<T> {
   constructor(private parent: BufferToggleSubscriber<any, T>) {
     super(null);
   }
-  
+
   _next(value: T) {
     this.parent.openBuffer(value);
   }
-  
+
   _error(err) {
     this.parent.error(err);
   }
-  
+
   _complete() {
     // noop
   }

@@ -11,34 +11,46 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number = null, scheduler: Scheduler = nextTick) : Observable<T[]> {
+export default function bufferTime<T>(bufferTimeSpan: number,
+                                      bufferCreationInterval: number = null,
+                                      scheduler: Scheduler = nextTick): Observable<T[]> {
   return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
 }
 
 class BufferTimeOperator<T, R> implements Operator<T, R> {
 
-  constructor(private bufferTimeSpan: number, private bufferCreationInterval: number, private scheduler: Scheduler) {
+  constructor(private bufferTimeSpan: number,
+              private bufferCreationInterval: number,
+              private scheduler: Scheduler) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler);
+    return new BufferTimeSubscriber(
+      subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler
+    );
   }
 }
 
 class BufferTimeSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
-  
-  constructor(destination: Subscriber<T>, private bufferTimeSpan: number, private bufferCreationInterval: number, private scheduler: Scheduler) {
+
+  constructor(destination: Subscriber<T>,
+              private bufferTimeSpan: number,
+              private bufferCreationInterval: number,
+              private scheduler: Scheduler) {
     super(destination);
     let buffer = this.openBuffer();
     if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
-      this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber: this, buffer }));
-      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler }));
+      const closeState = { subscriber: this, buffer };
+      const creationState = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+      this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
+      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
     } else {
-      this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, { subscriber: this, buffer, bufferTimeSpan }));
+      const timeSpanOnlyState = { subscriber: this, buffer, bufferTimeSpan };
+      this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
     }
   }
-  
+
   _next(value: T) {
     const buffers = this.buffers;
     const len = buffers.length;
@@ -46,12 +58,12 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
       buffers[i].push(value);
     }
   }
-  
+
   _error(err) {
     this.buffers.length = 0;
     this.destination.error(err);
   }
-  
+
   _complete() {
     const buffers = this.buffers;
     while (buffers.length > 0) {
@@ -59,13 +71,13 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     }
     this.destination.complete();
   }
-  
+
   openBuffer(): T[] {
     let buffer = [];
     this.buffers.push(buffer);
     return buffer;
   }
-  
+
   closeBuffer(buffer: T[]) {
     this.destination.next(buffer);
     const buffers = this.buffers;
@@ -80,18 +92,18 @@ function dispatchBufferTimeSpanOnly(state) {
   if (prevBuffer) {
     subscriber.closeBuffer(prevBuffer);
   }
-  
+
   state.buffer = subscriber.openBuffer();
-  if(!subscriber.isUnsubscribed) {
+  if (!subscriber.isUnsubscribed) {
     (<any>this).schedule(state, state.bufferTimeSpan);
   }
 }
 
 function dispatchBufferCreation(state) {
-  let {  bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
+  let { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   let buffer = subscriber.openBuffer();
-  var action = <Action>this;
-  if(!subscriber.isUnsubscribed) {
+  let action = <Action>this;
+  if (!subscriber.isUnsubscribed) {
     action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
     action.schedule(state, bufferCreationInterval);
   }

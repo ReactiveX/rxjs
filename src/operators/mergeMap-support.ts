@@ -36,7 +36,7 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
 
   _next(value: any) {
-    if(this.active < this.concurrent) {
+    if (this.active < this.concurrent) {
       const resultSelector = this.resultSelector;
       const index = this.index++;
       const ish = tryCatch(this.project)(value, index);

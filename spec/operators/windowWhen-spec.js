@@ -14,7 +14,7 @@ describe('Observable.prototype.windowWhen', function () {
       .take(3)
       .mergeMap(function (x) { return x.toArray(); })
       .subscribe(function (w) {
-        expect(w).toEqual(expected.shift())
+        expect(w).toEqual(expected.shift());
       }, null, done);
   }, 2000);
 });

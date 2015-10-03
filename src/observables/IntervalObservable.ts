@@ -29,7 +29,7 @@ export default class IntervalObservable<T> extends Observable<T> {
     if (!isNumeric(period) || period < 0) {
       this.period = 0;
     }
-    if (!scheduler || typeof scheduler.schedule !== "function") {
+    if (!scheduler || typeof scheduler.schedule !== 'function') {
       this.scheduler = nextTick;
     }
   }

@@ -1,11 +1,13 @@
-var RxOld = require("rx");
-var RxNew = require("../../../../index");
+var RxOld = require('rx');
+var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
-
   var oldBufferCountWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).bufferWithCount(5);
   var newBufferCountWithCurrentThreadScheduler = RxNew.Observable.range(0, 25).bufferCount(5);
 
+  function _next(x) { }
+  function _error(e) { }
+  function _complete() { }
   return suite
     .add('old bufferCount with current thread scheduler', function () {
       oldBufferCountWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
@@ -13,8 +15,4 @@ module.exports = function (suite) {
     .add('new bufferCount with current thread scheduler', function () {
       newBufferCountWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
     });
-
-  function _next(x) { }
-  function _error(e){ }
-  function _complete(){ }
 };

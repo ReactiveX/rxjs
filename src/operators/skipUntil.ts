@@ -21,7 +21,7 @@ class SkipUntilSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>, private notifier: Observable<any>) {
     super(destination);
-    this.add(this.notifier.subscribe(this.notificationSubscriber))
+    this.add(this.notifier.subscribe(this.notificationSubscriber));
   }
 
   _next(x) {

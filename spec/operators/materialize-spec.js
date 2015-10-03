@@ -11,7 +11,7 @@ describe('Observable.prototype.materialize()', function () {
       Notification.createNext(3),
       Notification.createComplete()
     ];
-    
+
     Observable.of(1, 2, 3)
       .materialize()
       .subscribe(function (n) {
@@ -19,7 +19,7 @@ describe('Observable.prototype.materialize()', function () {
         expect(n).toEqual(expected.shift());
       });
   });
-  
+
   it('should materialize a sad stream', function () {
     var expected = [
       Notification.createNext(1),
@@ -27,7 +27,7 @@ describe('Observable.prototype.materialize()', function () {
       Notification.createNext(3),
       Notification.createError('booooo')
     ];
-    
+
     Observable.of(1, 2, 3, 4)
       .map(function (x) {
         if (x === 4) {

@@ -6,19 +6,19 @@ import Observable from '../Observable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function _catch<T>(selector: (err:any, caught:Observable<any>) => Observable<any>) {
-  var catchOperator = new CatchOperator(selector);
-  var caught = this.lift(catchOperator);
+export default function _catch<T>(selector: (err: any, caught: Observable<any>) => Observable<any>) {
+  let catchOperator = new CatchOperator(selector);
+  let caught = this.lift(catchOperator);
   catchOperator.caught = caught;
   return caught;
 }
 
 class CatchOperator<T, R> implements Operator<T, R> {
-  selector: (err:any, caught:Observable<any>) => Observable<any>;
+  selector: (err: any, caught: Observable<any>) => Observable<any>;
   caught: Observable<any>;
   source: Observable<T>;
 
-  constructor(selector: (err:any, caught:Observable<any>) => Observable<any>) {
+  constructor(selector: (err: any, caught: Observable<any>) => Observable<any>) {
     this.selector = selector;
   }
 
@@ -28,10 +28,12 @@ class CatchOperator<T, R> implements Operator<T, R> {
 }
 
 class CatchSubscriber<T> extends Subscriber<T> {
-  selector: (err:any, caught:Observable<any>) => Observable<any>;
+  selector: (err: any, caught: Observable<any>) => Observable<any>;
   caught: Observable<any>;
 
-  constructor(destination: Subscriber<T>, selector: (err:any, caught:Observable<any>) => Observable<any>, caught: Observable<any>) {
+  constructor(destination: Subscriber<T>,
+              selector: (err: any, caught: Observable<any>) => Observable<any>,
+              caught: Observable<any>) {
     super(destination);
     this.selector = selector;
     this.caught = caught;

@@ -1,4 +1,4 @@
 export default class EmptyError implements Error {
-  name = 'EmptyError'
+  name = 'EmptyError';
   message = 'no elements in sequence';
 }
