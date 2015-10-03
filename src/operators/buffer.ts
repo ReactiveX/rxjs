@@ -46,17 +46,13 @@ class BufferSubscriber<T> extends Subscriber<T> {
   }
   
   _complete() {
-    this.flushBuffer();
     this.destination.complete();
   }
   
   flushBuffer() {
     const buffer = this.buffer;
     this.buffer = [];
-    
-    if (buffer.length > 0) {
-      this.destination.next(buffer);
-    }
+    this.destination.next(buffer);
   }
 }
 
@@ -74,6 +70,6 @@ class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
   }
   
   _complete() {
-    // noop
+    this.parent.complete();
   }
 }
