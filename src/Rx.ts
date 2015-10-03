@@ -35,7 +35,7 @@ import IntervalObservable from './observables/IntervalObservable';
 Observable.interval = IntervalObservable.create;
 
 import mergeStatic from './operators/merge-static';
-Observable.merge = mergeStatic
+Observable.merge = mergeStatic;
 
 import InfiniteObservable from './observables/InfiniteObservable';
 Observable.never = InfiniteObservable.create;
@@ -52,9 +52,7 @@ import TimerObservable from './observables/TimerObservable';
 Observable.timer = TimerObservable.create;
 
 import zipStatic from './operators/zip-static';
-Observable.zip = zipStatic
-
-
+Observable.zip = zipStatic;
 
 // Operators
 import { CoreOperators } from './CoreOperators';
@@ -305,5 +303,5 @@ export {
     ConnectableObservable,
     Notification,
     EmptyError,
-    ArgumentOutOfRangeError,
+    ArgumentOutOfRangeError
 };

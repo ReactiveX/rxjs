@@ -1,13 +1,15 @@
 import Observable from './Observable';
 import Operator from './Operator';
 import { CoreOperators } from './CoreOperators';
+import { default as IScheduler } from './Scheduler';
 
 interface KitchenSinkOperators<T> extends CoreOperators<T> {
   isEmpty?: () => Observable<boolean>;
   elementAt?: (index: number, defaultValue?: any) => Observable<T>;
   distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
-  find?: (predicate: (value: T, index: number, source:Observable<T>) => boolean, thisArg?: any) => Observable<T>;
-  findIndex?: (predicate: (value: T, index: number, source:Observable<T>) => boolean, thisArg?: any) => Observable<number>;
+  find?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<T>;
+  findIndex?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
+  timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
 }
 
 // operators
@@ -45,7 +47,7 @@ import IntervalObservable from './observables/IntervalObservable';
 Observable.interval = IntervalObservable.create;
 
 import mergeStatic from './operators/merge-static';
-Observable.merge = mergeStatic
+Observable.merge = mergeStatic;
 
 import InfiniteObservable from './observables/InfiniteObservable';
 Observable.never = InfiniteObservable.create;
@@ -62,9 +64,7 @@ import TimerObservable from './observables/TimerObservable';
 Observable.timer = TimerObservable.create;
 
 import zipStatic from './operators/zip-static';
-Observable.zip = zipStatic
-
-
+Observable.zip = zipStatic;
 
 // Operators
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
@@ -263,6 +263,9 @@ observableProto.takeUntil = takeUntil;
 import throttle from './operators/throttle';
 observableProto.throttle = throttle;
 
+import timeInterval from './operators/extended/timeInterval';
+observableProto.timeInterval = timeInterval;
+
 import timeout from './operators/timeout';
 observableProto.timeout = timeout;
 
@@ -312,7 +315,8 @@ import nextTick from './schedulers/nextTick';
 import immediate from './schedulers/immediate';
 import NextTickScheduler from './schedulers/NextTickScheduler';
 import ImmediateScheduler from './schedulers/ImmediateScheduler';
-import {TestScheduler} from './testing/TestScheduler';
+import { TimeInterval } from './operators/extended/timeInterval';
+import { TestScheduler } from './testing/TestScheduler';
 import VirtualTimeScheduler from './schedulers/VirtualTimeScheduler';
 
 var Scheduler = {
@@ -333,5 +337,6 @@ export {
     EmptyError,
     ArgumentOutOfRangeError,
     TestScheduler,
-    VirtualTimeScheduler
+    VirtualTimeScheduler,
+    TimeInterval
 };
