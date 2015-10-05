@@ -11,10 +11,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-    .add('old skip with immediate scheduler', function () {
+    .add('old skipUntil with immediate scheduler', function () {
       oldSkipUntilWithImmediateScheduler.subscribe(_next, _error, _complete);
     })
-    .add('new skip with immediate scheduler', function () {
+    .add('new skipUntil with immediate scheduler', function () {
       newSkipUntilWithImmediateScheduler.subscribe(_next, _error, _complete);
     });
 };
