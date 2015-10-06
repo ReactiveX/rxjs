@@ -22,6 +22,7 @@ The unit tests have helper methods that have been added to make creating tests e
   the test begins.
 - `expectObservable(actual: Observable<T>).toBe(marbles: string, values?: object, error?: any)` - schedules an assertion
   for when the TestScheduler flushes. The TestScheduler will automatically flush at the end of your jasmine `it` block.
+- `expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]).toBe(subscriptionMarbles: string)` - like `expectObservable` schedules an assertion for when the testScheduler flushes. Both `cold()` and `hot()` return an observable with a property `subscriptions` of type `SubscriptionLog[]`. Give `subscriptions` as parameter to `expectSubscriptions` to assert whether it matches the `subscriptionsMarbles` marble diagram given in `toBe()`. Subscription marble diagrams are slightly different than Observable marble diagrams. Read more below.
 
 ### Ergonomic defaults for `hot` and `cold`
 
@@ -53,8 +54,8 @@ always represents the "zero frame". A "frame" is somewhat analogous to a virtual
   initial `(` determines the time at which its values are emitted.
 - `"^"` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed
   to the hot observable. This is the "zero frame" for that observable, every frame before the `^` will be negative.
-  
-### examples
+
+### Examples
 
 `'-'` or `'------'`: Equivalent to `Observable.never()`, or an observable that never emits or completes
 
@@ -74,6 +75,23 @@ always represents the "zero frame". A "frame" is somewhat analogous to a virtual
 
 `'-----(a|)'`: on frame 50, emit `a` and `complete`.
 
+## Subscription Marble Syntax
+
+The subscription marble syntax is slightly different to conventional marble syntax. It represents the **subscription** and an **unsubscription** points happening over time. There should be no other type of event represented in such diagram.
+
+- `"-"` time: 10 "frames" of the passage.
+- `"^"` subscription point: shows the point in time at which a subscription happen.
+- `"!"` unsubscription point: shows the point in time at which a subscription is unsubscribed.
+
+There should be **at most one** `^` point in a subscription marble diagram, and **at most one** `!` point. Other than that, the `-` character is the only one allowed in a subscription marble diagram.
+
+### Examples
+
+`'-'` or `'------'`: no subscription ever happened.
+
+`'--^--'`: a subscription happened after 20 "frames" of time passed, and the subscription was not unsubscribed.
+
+`'--^--!-`: on frame 20 a subscription happened, and on frame 50 was unsubscribed.
 
 ## Anatomy of a Test
 
@@ -117,3 +135,24 @@ expectObservable(e1.zip(e2, function(x, y) { return x + y; }))
 - Make the result values as obvious as possible as to what they represent, these are *tests* afterall, we want
   clarity more than efficiency, so `x: 1 + 3, // a + c` is better than just `x: 4`. The former conveys *why* it's 4,
   the latter does not.
+
+A test example with subscription assertions:
+
+```js
+var x = cold(        '--a---b---c--|');
+var xsubs =    '------^-------!';
+var y = cold(                '---d--e---f---|');
+var ysubs =    '--------------^-------------!';
+var e1 = hot(  '------x-------y------|', { x: x, y: y });
+var expected = '--------a---b----d--e---f---|';
+
+expectObservable(e1.switch()).toBe(expected);
+expectSubscriptions(x.subscriptions).toBe(xsubs);
+expectSubscriptions(y.subscriptions).toBe(ysubs);
+```
+
+- Align the start of `xsubs` and `ysubs` diagrams with `expected` diagram.
+- Notice how the `x` cold observable is unsubscribed at the same time `e1` emits `y`.
+
+In most tests it will be unnecessary to test subscription and unsubscription points, be either obvious or can be implied from the `expected` diagram. In those cases do not write subscription assertions. In test cases that have inner subscriptions or cold observables with multiple subscribers, these subscription assertions can be useful.
+
