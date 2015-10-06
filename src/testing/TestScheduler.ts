@@ -113,8 +113,44 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   static parseMarblesAsSubscriptions(marbles: string): SubscriptionLog {
-    let subscriptionFrame = marbles.indexOf('^') * this.frameTimeFactor;
-    let unsubscriptionFrame = marbles.indexOf('!') * this.frameTimeFactor;
+    let len = marbles.length;
+    let groupStart = -1;
+    let subscriptionFrame = -1;
+    let unsubscriptionFrame = -1;
+
+    for (let i = 0; i < len; i++) {
+      let frame = i * this.frameTimeFactor;
+      let c = marbles[i];
+      switch (c) {
+        case '-':
+        case ' ':
+          break;
+        case '(':
+          groupStart = frame;
+          break;
+        case ')':
+          groupStart = -1;
+          break;
+        case '^':
+          if (subscriptionFrame !== -1) {
+            throw new Error('Found a second subscription point \'^\' in a ' +
+              'subscription marble diagram. There can only be one.');
+          }
+          subscriptionFrame = groupStart > -1 ? groupStart : frame;
+          break;
+        case '!':
+          if (unsubscriptionFrame !== -1) {
+            throw new Error('Found a second subscription point \'^\' in a ' +
+              'subscription marble diagram. There can only be one.');
+          }
+          unsubscriptionFrame = groupStart > -1 ? groupStart : frame;
+          break;
+        default:
+          throw new Error('There can only be \'^\' and \'!\' markers in a ' +
+            'subscription marble diagram. Found instead \'' + c + '\'.');
+      }
+    }
+
     if (unsubscriptionFrame < 0) {
       return new SubscriptionLog(subscriptionFrame);
     } else {
