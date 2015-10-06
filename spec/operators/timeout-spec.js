@@ -66,7 +66,8 @@ describe('Observable.prototype.timeout()', function () {
     var e1 =   hot('--a--b--c--d--e--|');
     var expected = '--a--b--c-#';
 
-    expectObservable(e1.timeout(new Date(rxTestScheduler.now() + 100), null, rxTestScheduler)).toBe(expected, {a: 'a', b: 'b', c: 'c'}, defaultTimeoutError);
+    expectObservable(e1.timeout(new Date(rxTestScheduler.now() + 100), null, rxTestScheduler))
+      .toBe(expected, {a: 'a', b: 'b', c: 'c'}, defaultTimeoutError);
   });
 
   it('should timeout specified Date with passed error while source emits', function () {
@@ -74,6 +75,7 @@ describe('Observable.prototype.timeout()', function () {
     var e1 =   hot('--a--b--c--d--e--|');
     var expected = '--a--b--c-#';
 
-    expectObservable(e1.timeout(new Date(rxTestScheduler.now() + 100), value, rxTestScheduler)).toBe(expected, {a: 'a', b: 'b', c: 'c'}, value);
+    expectObservable(e1.timeout(new Date(rxTestScheduler.now() + 100), value, rxTestScheduler))
+      .toBe(expected, {a: 'a', b: 'b', c: 'c'}, value);
   });
 });
