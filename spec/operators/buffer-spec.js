@@ -59,20 +59,20 @@ describe('Observable.prototype.buffer', function () {
   });
   it('should work with error', function () {
     var a = hot('---^-------#', null, new Error('too bad'));
-    var b = hot('---^--------')
+    var b = hot('---^--------');
     var expected = '--------#';
     expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
   });
   it('should work with error and non-empty selector', function () {
     var a = hot('---^-------#', null, new Error('too bad'));
-    var b = hot('---^---a----')
+    var b = hot('---^---a----');
     var expected = '----a---#';
     expectObservable(a.buffer(b)).toBe(expected, { a: [] }, new Error('too bad'));
   });
   it('should work with selector', function () {
     // Buffer Boundaries Simple (RxJS 4)
     var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
-    var b = hot('--------^--a-------b---cd---------e---f---|')
+    var b = hot('--------^--a-------b---cd---------e---f---|');
     var expected =      '---a-------b---cd---------e---f-|';
     expectObservable(a.buffer(b)).toBe(expected,
       { a: ['3'], b: ['4', '5'], c: ['6'], d: [], e: ['7', '8', '9'], f: ['0'] });
@@ -80,7 +80,7 @@ describe('Observable.prototype.buffer', function () {
   it('should work with selector completed', function () {
     // Buffer Boundaries onCompletedBoundaries (RxJS 4)
     var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
-    var b = hot('--------^--a-------b---cd|')
+    var b = hot('--------^--a-------b---cd|');
     var expected =      '---a-------b---cd|';
     expectObservable(a.buffer(b)).toBe(expected,
       { a: ['3'], b: ['4', '5'], c: ['6'], d: [] });
@@ -88,7 +88,7 @@ describe('Observable.prototype.buffer', function () {
   it('should work with non-empty and selector error', function () {
     // Buffer Boundaries onErrorSource (RxJS 4)
     var a = hot('--1--2--^--3-----#', {'3': 3}, new Error('too bad'));
-    var b = hot('--------^--a--b---')
+    var b = hot('--------^--a--b---');
     var expected =      '---a--b--#';
     expectObservable(a.buffer(b)).toBe(expected,
       { a: [3], b: [] }, new Error('too bad'));
@@ -96,7 +96,7 @@ describe('Observable.prototype.buffer', function () {
   it('should work with non-empty and empty selector error', function () {
     var obj = { a: true, b: true, c: true };
     var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
-    var b = hot('--------^----------------#', null, new Error('too bad'))
+    var b = hot('--------^----------------#', null, new Error('too bad'));
     var expected =      '-----------------#';
     expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
   });
@@ -104,7 +104,7 @@ describe('Observable.prototype.buffer', function () {
     // Buffer Boundaries onErrorBoundaries (RxJS 4)
     var obj = { a: true, b: true, c: true };
     var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
-    var b = hot('--------^--a-------b---c-#', obj, new Error('too bad'))
+    var b = hot('--------^--a-------b---c-#', obj, new Error('too bad'));
     var expected =      '---a-------b---c-#';
     expectObservable(a.buffer(b)).toBe(expected,
       { a: ['3'], b: ['4', '5'], c: ['6'] }, new Error('too bad'));
