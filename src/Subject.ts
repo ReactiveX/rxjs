@@ -42,7 +42,7 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     return subject;
   }
 
-  _subscribe(subscriber: Observer<any>) : Subscription<T> {
+  _subscribe(subscriber: Subscriber<any>) : Subscription<T> {
 
     if (subscriber.isUnsubscribed) {
       return;

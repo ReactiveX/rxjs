@@ -312,7 +312,7 @@ import nextTick from './schedulers/nextTick';
 import immediate from './schedulers/immediate';
 import NextTickScheduler from './schedulers/NextTickScheduler';
 import ImmediateScheduler from './schedulers/ImmediateScheduler';
-import TestScheduler from './schedulers/TestScheduler';
+import {TestScheduler} from './testing/TestScheduler';
 import VirtualTimeScheduler from './schedulers/VirtualTimeScheduler';
 
 var Scheduler = {

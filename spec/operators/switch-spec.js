@@ -47,10 +47,14 @@ describe('Observable.prototype.switch()', function () {
 
   it('should handle a hot observable of observables', function () {
     var x = cold(        '--a---b---c--|');
+    var xsubs =    '------^-------!';
     var y = cold(                '---d--e---f---|');
+    var ysubs =    '--------------^-------------!';
     var e1 = hot(  '------x-------y------|', { x: x, y: y });
     var expected = '--------a---b----d--e---f---|';
     expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
   });
 
   it('should handle an observable of promises', function (done) {

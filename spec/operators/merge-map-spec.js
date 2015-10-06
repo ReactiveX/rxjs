@@ -137,12 +137,17 @@ describe('Observable.prototype.mergeMap()', function () {
 
   it('should mergeMap many outer values to many inner values', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    var e1 =    hot('-a-------b-------c-------d-------|');
-    var inner = cold('----i---j---k---l---|', values);
-    var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l---|';
+    var e1 =     hot('-a-------b-------c-------d-------|');
+    var inner =  cold('----i---j---k---l---|', values);
+    var innersubs = ['-^-------------------!',
+                     '---------^-------------------!',
+                     '-----------------^-------------------!',
+                     '-------------------------^-------------------!'];
+    var expected =   '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l---|';
 
     expectObservable(e1.mergeMap(function (value) { return inner; }))
       .toBe(expected, values);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
   });
 
   it('should mergeMap many outer to many inner, complete late', function () {
