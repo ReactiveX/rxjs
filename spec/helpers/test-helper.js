@@ -32,7 +32,14 @@ global.expectObservable = function () {
   if (!global.rxTestScheduler) {
     throw 'tried to use expectObservable() in async test';
   }
-  return global.rxTestScheduler.expect.apply(global.rxTestScheduler, arguments);
+  return global.rxTestScheduler.expectObservable.apply(global.rxTestScheduler, arguments);
+};
+
+global.expectSubscriptions = function () {
+  if (!global.rxTestScheduler) {
+    throw 'tried to use expectSubscriptions() in async test';
+  }
+  return global.rxTestScheduler.expectSubscriptions.apply(global.rxTestScheduler, arguments);
 };
 
 var glit = global.it;

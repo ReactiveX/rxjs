@@ -59,7 +59,7 @@ describe('Observable.prototype.bufferTime', function () {
     var values = {
       w: ['a','b']
     };
-    var e1 =   hot('---a---b---c---#---e---f---g---|');
+    var e1 =   hot('---a---b---c---#');
     var expected = '----------w----#';
 
     expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, values);

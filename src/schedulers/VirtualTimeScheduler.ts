@@ -14,7 +14,7 @@ export default class VirtualTimeScheduler implements Scheduler {
   protected static frameTimeFactor: number = 10;
 
   now() {
-    return this.frame * VirtualTimeScheduler.frameTimeFactor;
+    return this.frame;
   }
 
   flush() {

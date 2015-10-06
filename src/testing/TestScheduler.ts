@@ -1,29 +1,23 @@
 import Observable from '../Observable';
-import VirtualTimeScheduler from './VirtualTimeScheduler';
+import VirtualTimeScheduler from '../schedulers/VirtualTimeScheduler';
 import Notification from '../Notification';
 import Subject from '../Subject';
+import ColdObservable from './ColdObservable';
+import HotObservable from './HotObservable';
+import TestMessage from './TestMessage';
+import SubscriptionLog from './SubscriptionLog';
 
 interface FlushableTest {
-  observable: Observable<any>;
-  marbles: string;
   ready: boolean;
   actual?: any[];
   expected?: any[];
 }
 
-interface SetupableHotObservable {
-  setup: (scheduler: TestScheduler) => void;
-  subject: Subject<any>;
-}
+export type observableToBeFn = (marbles: string, values?: any, errorValue?: any) => void;
+export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
-interface TestMessage {
-  frame: number;
-  notification: Notification<any>;
-}
-export default TestMessage;
-
-export default class TestScheduler extends VirtualTimeScheduler {
-  private setupableHotObservables: SetupableHotObservable[] = [];
+export class TestScheduler extends VirtualTimeScheduler {
+  private hotObservables: HotObservable<any>[] = [];
   private flushTests: FlushableTest[] = [];
 
   constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
@@ -38,13 +32,7 @@ export default class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Cold observable cannot have unsubscription marker "!"');
     }
     let messages = TestScheduler.parseMarbles(marbles, values, error);
-    return Observable.create(subscriber => {
-      messages.forEach(({ notification, frame }) => {
-        subscriber.add(this.schedule(() => {
-          notification.observe(subscriber);
-        }, frame));
-      }, this);
-    });
+    return new ColdObservable(messages, this);
   }
 
   createHotObservable<T>(marbles: string, values?: any, error?: any): Subject<T> {
@@ -52,24 +40,15 @@ export default class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Hot observable cannot have unsubscription marker "!"');
     }
     let messages = TestScheduler.parseMarbles(marbles, values, error);
-    let subject = new Subject();
-    this.setupableHotObservables.push({
-      subject,
-      setup(scheduler) {
-        messages.forEach(({ notification, frame }) => {
-          scheduler.schedule(() => {
-            notification.observe(subject);
-          }, frame);
-        });
-      }
-    });
+    const subject = new HotObservable(messages, this);
+    this.hotObservables.push(subject);
     return subject;
   }
 
-  expect(observable: Observable<any>,
-         unsubscriptionMarbles: string = null): ({ toBe: (marbles: string, values?: any, errorValue?: any) => void }) {
-    let actual = [];
-    let flushTest: FlushableTest = { observable, actual, marbles: null, ready: false };
+  expectObservable(observable: Observable<any>,
+                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+    let actual: TestMessage[] = [];
+    let flushTest: FlushableTest = { actual, ready: false };
     let unsubscriptionFrame = TestScheduler.getUnsubscriptionFrame(unsubscriptionMarbles);
     let subscription;
 
@@ -92,16 +71,29 @@ export default class TestScheduler extends VirtualTimeScheduler {
     return {
       toBe(marbles: string, values?: any, errorValue?: any) {
         flushTest.ready = true;
-        flushTest.marbles = marbles;
         flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue);
       }
     };
   }
 
+  expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn }) {
+    const flushTest: FlushableTest = { actual: actualSubscriptionLogs, ready: false };
+    this.flushTests.push(flushTest);
+    return {
+      toBe(marbles: string | string[]) {
+        const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
+        flushTest.ready = true;
+        flushTest.expected = marblesArray.map(marbles =>
+          TestScheduler.parseMarblesAsSubscriptions(marbles)
+        );
+      }
+    };
+  }
+
   flush() {
-    const setupableHotObservables = this.setupableHotObservables;
-    while (setupableHotObservables.length > 0) {
-      setupableHotObservables.shift().setup(this);
+    const hotObservables = this.hotObservables;
+    while (hotObservables.length > 0) {
+      hotObservables.shift().setup();
     }
 
     super.flush();
@@ -118,6 +110,16 @@ export default class TestScheduler extends VirtualTimeScheduler {
       return Number.POSITIVE_INFINITY;
     }
     return marbles.indexOf('!') * this.frameTimeFactor;
+  }
+
+  static parseMarblesAsSubscriptions(marbles: string): SubscriptionLog {
+    let subscriptionFrame = marbles.indexOf('^') * this.frameTimeFactor;
+    let unsubscriptionFrame = marbles.indexOf('!') * this.frameTimeFactor;
+    if (unsubscriptionFrame < 0) {
+      return new SubscriptionLog(subscriptionFrame);
+    } else {
+      return new SubscriptionLog(subscriptionFrame, unsubscriptionFrame);
+    }
   }
 
   static parseMarbles(marbles: string, values?: any, errorValue?: any): TestMessage[] {
