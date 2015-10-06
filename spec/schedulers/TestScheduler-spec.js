@@ -55,6 +55,26 @@ describe('TestScheduler', function () {
     });
   });
 
+  describe('parseMarblesAsSubscriptions()', function () {
+    it('should parse a subscription marble string into a subscriptionLog', function () {
+      var result = TestScheduler.parseMarblesAsSubscriptions('---^---!-');
+      expect(result.subscribedFrame).toEqual(30);
+      expect(result.unsubscribedFrame).toEqual(70);
+    });
+
+    it('should parse a subscription marble string with an unsubscription', function () {
+      var result = TestScheduler.parseMarblesAsSubscriptions('---^-');
+      expect(result.subscribedFrame).toEqual(30);
+      expect(result.unsubscribedFrame).toEqual(Number.POSITIVE_INFINITY);
+    });
+
+    it('should parse a subscription marble string with a synchronous unsubscription', function () {
+      var result = TestScheduler.parseMarblesAsSubscriptions('---(^!)-');
+      expect(result.subscribedFrame).toEqual(30);
+      expect(result.unsubscribedFrame).toEqual(30);
+    });
+  });
+
   describe('createColdObservable()', function () {
     it('should create a cold observable', function () {
       var expected = ['A', 'B'];
@@ -150,11 +170,35 @@ describe('TestScheduler', function () {
       });
     });
 
+    describe('expectSubscriptions()', function () {
+      it('should exist', function () {
+        expect(typeof expectSubscriptions).toBe('function');
+      });
+
+      it('should return an object with a toBe function', function () {
+        expect(typeof (expectSubscriptions([]).toBe)).toBe('function');
+      });
+
+      it('should append to flushTests array', function () {
+        expectSubscriptions([]);
+        expect(rxTestScheduler.flushTests.length).toBe(1);
+      });
+
+      it('should assert subscriptions of a cold observable', function () {
+        var source = cold('---a---b-|');
+        var subs =        '^--------!';
+        expectSubscriptions(source.subscriptions).toBe(subs);
+        source.subscribe();
+      });
+    });
+
     describe('end-to-end helper tests', function () {
       it('should be awesome', function () {
         var values = { a: 1, b: 2 };
         var myObservable = cold('---a---b--|', values);
+        var subs =              '^---------!';
         expectObservable(myObservable).toBe('---a---b--|', values);
+        expectSubscriptions(myObservable.subscriptions).toBe(subs);
       });
     });
   });
