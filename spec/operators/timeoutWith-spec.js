@@ -11,22 +11,13 @@ describe('Observable.prototype.timeoutWith()', function () {
     expectObservable(e1.timeoutWith(50, e2, rxTestScheduler)).toBe(expected);
   });
 
-  it('should timeout at a specified date then subscribe to the passed observable', function (done) {
-    var expected = ['x', 'y', 'z'];
+  it('should timeout at a specified date then subscribe to the passed observable', function () {
     var e1 = Observable.never();
-    var e2 = Observable.fromArray(expected);
+    var e2 = cold('--x--y--z--|');
+    var expected = '------------x--y--z--|';
 
-    var res = [];
-    e1.timeoutWith(new Date(Date.now() + 100), e2)
-      .subscribe(function (x) {
-        res.push(x);
-      }, function (x) {
-        throw 'should not be called';
-      }, function () {
-        expect(res).toEqual(expected);
-        done();
-      });
-  }, 2000);
+    expectObservable(e1.timeoutWith(new Date(rxTestScheduler.now() + 100), e2, rxTestScheduler)).toBe(expected);
+  });
 
   it('should timeout after a specified period between emit then subscribe to the passed observable when source emits', function () {
     var e1 =     hot('---a---b------c---|');
@@ -92,21 +83,13 @@ describe('Observable.prototype.timeoutWith()', function () {
     expectObservable(e1.timeoutWith(50, e2, rxTestScheduler)).toBe(expected);
   });
 
-  it('should timeout after specified Date then subscribe to the passed observable', function (done) {
-    var e1 = Observable.interval(40).take(5);
-    var e2 = Observable.of(100);
+  it('should timeout after specified Date then subscribe to the passed observable', function () {
+    var e1 =   hot('--a--b--c--d--e--|');
+    var e2 =  cold('--z--|');
+    var expected = '--a--b---z--|';
 
-    var res = [];
-    e1.timeoutWith(new Date(Date.now() + 100), e2)
-      .subscribe(function (x) {
-        res.push(x);
-      }, function (x) {
-        throw 'should not be called';
-      }, function () {
-        expect(res).toEqual([0, 1, 100]);
-        done();
-      });
-  }, 2000);
+    expectObservable(e1.timeoutWith(new Date(rxTestScheduler.now() + 70), e2, rxTestScheduler)).toBe(expected);
+  });
 
   it('should not timeout if source completes within specified Date', function () {
     var e1 =   hot('--a--b--c--d--e--|');
@@ -126,11 +109,11 @@ describe('Observable.prototype.timeoutWith()', function () {
     expectObservable(e1.timeoutWith(new Date(Date.now() + 100), e2, rxTestScheduler)).toBe(expected);
   });
 
-  it('should timeout specified Date  after specified Date then never completes if other source does not complete', function () {
+  it('should timeout specified Date after specified Date then never completes if other source does not complete', function () {
     var e1 =   hot('---a---b---c---d---e---|');
     var e2 =  cold('-');
     var expected = '---a---b--';
 
-    expectObservable(e1.timeoutWith(new Date(Date.now() + 100), e2, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.timeoutWith(new Date(rxTestScheduler.now() + 100), e2, rxTestScheduler)).toBe(expected);
   });
 });
