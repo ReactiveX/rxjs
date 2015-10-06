@@ -56,7 +56,7 @@ Observable.zip = zipStatic
 
 
 
-// Operators 
+// Operators
 import { CoreOperators } from './CoreOperators';
 const observableProto = (<CoreOperators<any>>Observable.prototype);
 
@@ -202,6 +202,9 @@ observableProto.scan = scan;
 
 import share from './operators/share';
 observableProto.share = share;
+
+import shareReplay from './operators/shareReplay';
+observableProto.shareReplay = shareReplay;
 
 import single from './operators/single';
 observableProto.single = single;

@@ -66,7 +66,7 @@ Observable.zip = zipStatic
 
 
 
-// Operators 
+// Operators
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
 import buffer from './operators/buffer';
@@ -226,6 +226,9 @@ observableProto.scan = scan;
 
 import share from './operators/share';
 observableProto.share = share;
+
+import shareReplay from './operators/shareReplay';
+observableProto.shareReplay = shareReplay;
 
 import single from './operators/single';
 observableProto.single = single;
