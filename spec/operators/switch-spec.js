@@ -47,14 +47,96 @@ describe('Observable.prototype.switch()', function () {
 
   it('should handle a hot observable of observables', function () {
     var x = cold(        '--a---b---c--|');
-    var xsubs =    '------^-------!';
+    var xsubs =    '      ^       !';
     var y = cold(                '---d--e---f---|');
-    var ysubs =    '--------------^-------------!';
+    var ysubs =    '              ^             !';
     var e1 = hot(  '------x-------y------|', { x: x, y: y });
     var expected = '--------a---b----d--e---f---|';
     expectObservable(e1.switch()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+  });
+
+  it('should handle a hot observable of observables, outer is unsubscribed early', function () {
+    var x = cold(        '--a---b---c--|');
+    var xsubs =    '      ^       !';
+    var y = cold(                '---d--e---f---|');
+    var ysubs =    '              ^ !';
+    var e1 = hot(  '------x-------y------|', { x: x, y: y });
+    var unsub =    '                !';
+    var expected = '--------a---b---';
+    expectObservable(e1.switch(), unsub).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+  });
+
+  it('should handle a hot observable of observables, inner never completes', function () {
+    var x = cold(        '--a---b---c--|');
+    var xsubs =    '      ^       !';
+    var y = cold(                '---d--e---f-----');
+    var ysubs =    '              ^               ';
+    var e1 = hot(  '------x-------y------|', { x: x, y: y });
+    var expected = '--------a---b----d--e---f-----';
+    expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+  });
+
+  it('should handle a synchronous switch to the second inner observable', function () {
+    var x = cold(        '--a---b---c--|');
+    var xsubs =    '      (^!)';
+    var y = cold(        '---d--e---f---|');
+    var ysubs =    '      ^             !';
+    var e1 = hot(  '------(xy)------------|', { x: x, y: y });
+    var expected = '---------d--e---f-----|';
+    expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+  });
+
+  it('should handle a hot observable of observables, one inner throws', function () {
+    var x = cold(        '--a---#');
+    var xsubs =    '      ^     !';
+    var y = cold(                '---d--e---f---|');
+    var ysubs = [];
+    var e1 = hot(  '------x-------y------|', { x: x, y: y });
+    var expected = '--------a---#';
+    expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+  });
+
+  it('should handle a hot observable of observables, outer throws', function () {
+    var x = cold(        '--a---b---c--|');
+    var xsubs =    '      ^       !';
+    var y = cold(                '---d--e---f---|');
+    var ysubs =    '              ^       !';
+    var e1 = hot(  '------x-------y-------#', { x: x, y: y });
+    var expected = '--------a---b----d--e-#';
+    expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+  });
+
+  it('should handle an empty hot observable', function () {
+    var e1 = hot(  '------|');
+    var expected = '------|';
+    expectObservable(e1.switch()).toBe(expected);
+  });
+
+  it('should handle a never hot observable', function () {
+    var e1 = hot('-');
+    var expected = '-';
+    expectObservable(e1.switch()).toBe(expected);
+  });
+
+  it('should complete not before the outer completes', function () {
+    var x = cold(        '--a---b---c--|');
+    var xsubs =    '      ^            !';
+    var e1 = hot(  '------x---------------|', { x: x });
+    var expected = '--------a---b---c-----|';
+    expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
   });
 
   it('should handle an observable of promises', function (done) {
@@ -66,6 +148,18 @@ describe('Observable.prototype.switch()', function () {
         expect(x).toBe(expected.shift());
       }, null, function () {
         expect(expected.length).toBe(0);
+        done();
+      });
+  });
+
+  it('should handle an observable of promises, where one rejects', function (done) {
+    Observable.of(Promise.resolve(1), Promise.reject(2), Promise.resolve(3))
+      .switch()
+      .subscribe(function (x) {
+        expect(x).toBe(3);
+      }, function (err) {
+        expect(err).toBe(2);
+      }, function () {
         done();
       });
   });
