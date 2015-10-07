@@ -7,7 +7,15 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function _do<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) {
+export default function _do<T>(nextOrObserver?: Observer<T>|((x: T) => void), error?: (e: any) => void, complete?: () => void) {
+  let next;
+  if (nextOrObserver && typeof nextOrObserver === 'object') {
+    next = (<Observer<T>>nextOrObserver).next;
+    error = (<Observer<T>>nextOrObserver).error;
+    complete = (<Observer<T>>nextOrObserver).complete;
+  } else {
+    next = <(x: T) => void>nextOrObserver;
+  }
   return this.lift(new DoOperator(next || noop, error || noop, complete || noop));
 }
 
