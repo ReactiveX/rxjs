@@ -12,7 +12,7 @@ export default class ColdObservable<T> extends Observable<T> implements Subscrip
   logSubscribedFrame: () => number;
   logUnsubscribedFrame: (index: number) => void;
 
-  constructor(private messages: TestMessage[],
+  constructor(public messages: TestMessage[],
               scheduler: Scheduler) {
     super(function (subscriber) {
       const observable: ColdObservable<T> = this;
