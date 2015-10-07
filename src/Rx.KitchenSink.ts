@@ -108,6 +108,9 @@ observableProto.concatMapTo = concatMapTo;
 import count from './operators/count';
 observableProto.count = count;
 
+import dematerialize from './operators/dematerialize';
+observableProto.dematerialize = dematerialize;
+
 import debounce from './operators/debounce';
 observableProto.debounce = debounce;
 
