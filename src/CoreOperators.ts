@@ -18,6 +18,7 @@ export interface CoreOperators<T> {
   concatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   concatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   count?: () => Observable<number>;
+  dematerialize?: () => Observable<any>;
   debounce?: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
   defaultIfEmpty?: <T, R>(defaultValue: R) => Observable<T>|Observable<R>;
   delay?: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;
