@@ -67,6 +67,7 @@ export default class VirtualTimeScheduler implements Scheduler {
 class VirtualAction<T> extends Subscription<T> implements Action {
   state: any;
   delay: number;
+  calls = 0;
 
   constructor(public scheduler: VirtualTimeScheduler,
               public work: (x?: any) => Subscription<T> | void,
@@ -79,8 +80,16 @@ class VirtualAction<T> extends Subscription<T> implements Action {
       return this;
     }
     const scheduler = this.scheduler;
-    let action = scheduler.frame === this.delay ? this :
-      new VirtualAction(scheduler, this.work, scheduler.index += 1);
+    let action;
+    if (this.calls++ === 0) {
+      // the action is not being rescheduled.
+      action = this;
+    } else {
+      // the action is being rescheduled, and we can't mutate the one in the actions list
+      // in the scheduler, so we'll create a new one.
+      action = new VirtualAction(scheduler, this.work, scheduler.index += 1);
+      this.add(action);
+    }
     action.state = state;
     action.delay = scheduler.frame + delay;
     scheduler.addAction(action);

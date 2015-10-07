@@ -1,8 +1,25 @@
+/* globals expectObservable, cold, hot, describe, it, expect */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var Promise = require('promise');
 
 describe('Observable.prototype.mergeMap()', function () {
+  it('should mergeMap many regular interval inners', function () {
+    var a =   cold('----a---a---a---(a|)'                    );
+    var b =   cold(    '----b---b---(b|)'                    );
+    var c =   cold(                '----c---c---c---c---(c|)');
+    var d =   cold(                        '----(d|)'        );
+    var e1 =   hot('a---b-----------c-------d-------|'       );
+    var expected = '----a---(ab)(ab)(ab)c---c---(cd)c---(c|)';
+
+    var observableLookup = { a: a, b: b, c: c, d: d };
+    var source = e1.mergeMap(function (value) {
+      return observableLookup[value];
+    });
+
+    expectObservable(source).toBe(expected);
+  });
+
   it('should map values to constant resolved promises and merge', function (done) {
     var source = Rx.Observable.from([4,3,2,1]);
     var project = function (value) {

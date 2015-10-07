@@ -29,12 +29,11 @@ export default class ColdObservable<T> extends Observable<T> implements Subscrip
   scheduleMessages(subscriber) {
     const messagesLength = this.messages.length;
     for (let i = 0; i < messagesLength; i++) {
-      const message = this.messages[i];
+      let message = this.messages[i];
       subscriber.add(
-        this.scheduler.schedule(
-          () => { message.notification.observe(subscriber); },
-          message.frame
-        )
+        this.scheduler.schedule(({message, subscriber}) => { message.notification.observe(subscriber); },
+          message.frame,
+          {message, subscriber})
       );
     }
   }

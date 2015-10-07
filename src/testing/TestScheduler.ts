@@ -100,7 +100,6 @@ export class TestScheduler extends VirtualTimeScheduler {
     const readyFlushTests = this.flushTests.filter(test => test.ready);
     while (readyFlushTests.length > 0) {
       let test = readyFlushTests.shift();
-      test.actual.sort((a, b) => a.frame === b.frame ? 0 : (a.frame > b.frame ? 1 : -1));
       this.assertDeepEqual(test.actual, test.expected);
     }
   }
