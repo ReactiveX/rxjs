@@ -45,6 +45,19 @@ export class TestScheduler extends VirtualTimeScheduler {
     return subject;
   }
 
+  private materializeInnerObservable(observable: Observable<any>,
+                                     outerFrame: number): TestMessage[] {
+    let messages: TestMessage[] = [];
+    observable.subscribe((value) => {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
+    }, (err) => {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(err) });
+    }, () => {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+    });
+    return messages;
+  }
+
   expectObservable(observable: Observable<any>,
                    unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
     let actual: TestMessage[] = [];
@@ -53,7 +66,12 @@ export class TestScheduler extends VirtualTimeScheduler {
     let subscription;
 
     this.schedule(() => {
-      subscription = observable.subscribe((value) => {
+      subscription = observable.subscribe(x => {
+        let value = x;
+        // Support Observable-of-Observables
+        if (x instanceof Observable) {
+          value = this.materializeInnerObservable(value, this.frame);
+        }
         actual.push({ frame: this.frame, notification: Notification.createNext(value) });
       }, (err) => {
         actual.push({ frame: this.frame, notification: Notification.createError(err) });
@@ -71,7 +89,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return {
       toBe(marbles: string, values?: any, errorValue?: any) {
         flushTest.ready = true;
-        flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue);
+        flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
       }
     };
   }
@@ -157,7 +175,10 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
   }
 
-  static parseMarbles(marbles: string, values?: any, errorValue?: any): TestMessage[] {
+  static parseMarbles(marbles: string,
+                      values?: any,
+                      errorValue?: any,
+                      materializeInnerObservables: boolean = false): TestMessage[] {
     if (marbles.indexOf('!') !== -1) {
       throw new Error('Conventional marble diagrams cannot have the ' +
         'unsubscription marker "!"');
@@ -166,7 +187,15 @@ export class TestScheduler extends VirtualTimeScheduler {
     let testMessages: TestMessage[] = [];
     let subIndex = marbles.indexOf('^');
     let frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
-    let getValue = typeof values !== 'object' ? (x) => x : (x) => values[x];
+    let getValue = typeof values !== 'object' ?
+      (x) => x :
+      (x) => {
+        // Support Observable-of-Observables
+        if (materializeInnerObservables && values[x] instanceof ColdObservable) {
+          return values[x].messages;
+        }
+        return values[x];
+      };
     let groupStart = -1;
 
     for (let i = 0; i < len; i++) {

@@ -13,7 +13,7 @@ export default class HotObservable<T> extends Subject<T> implements Subscription
   logSubscribedFrame: () => number;
   logUnsubscribedFrame: (index: number) => void;
 
-  constructor(private messages: TestMessage[],
+  constructor(public messages: TestMessage[],
               scheduler: Scheduler) {
     super();
     this.scheduler = scheduler;

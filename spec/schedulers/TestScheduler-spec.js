@@ -200,6 +200,16 @@ describe('TestScheduler', function () {
         expectObservable(myObservable).toBe('---a---b--|', values);
         expectSubscriptions(myObservable.subscriptions).toBe(subs);
       });
+
+      it('should support testing metastreams', function () {
+        var x = cold('-a-b|');
+        var y = cold('-c-d|');
+        var myObservable = hot('---x---y----|', { x: x, y: y });
+        var expected =         '---x---y----|';
+        var expectedx = cold('-a-b|');
+        var expectedy = cold('-c-d|');
+        expectObservable(myObservable).toBe(expected, { x: expectedx, y: expectedy });
+      });
     });
   });
 });
