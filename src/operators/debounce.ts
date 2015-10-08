@@ -15,7 +15,6 @@ export default function debounce<T>(dueTime: number, scheduler: Scheduler = next
 }
 
 class DebounceOperator<T, R> implements Operator<T, R> {
-
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
 
@@ -27,30 +26,32 @@ class DebounceOperator<T, R> implements Operator<T, R> {
 class DebounceSubscriber<T> extends Subscriber<T> {
   private debounced: Subscription<any>;
 
-  constructor(destination: Subscriber < T >, private dueTime: number, private scheduler: Scheduler) {
+  constructor(destination: Subscriber<T>,
+              private dueTime: number,
+              private scheduler: Scheduler) {
     super(destination);
   }
 
   _next(value: T) {
-    if (!this.debounced) {
-      this.add(this.debounced = this.scheduler.schedule(dispatchNext, this.dueTime, { value, subscriber: this }));
-    }
-  }
-
-  clearDebounce() {
-    const debounced = this.debounced;
-    if (debounced) {
-      debounced.unsubscribe();
-      this.remove(debounced);
-    }
+    this.clearDebounce();
+    this.add(this.debounced = this.scheduler.schedule(dispatchNext, this.dueTime, { value, subscriber: this }));
   }
 
   debouncedNext(value: T) {
     this.clearDebounce();
     this.destination.next(value);
   }
+
+  clearDebounce() {
+    const debounced = this.debounced;
+    if (debounced) {
+      this.remove(debounced);
+      debounced.unsubscribe();
+      this.debounced = null;
+    }
+  }
 }
 
-function dispatchNext<T>({ value, subscriber }) {
+function dispatchNext({ value, subscriber }) {
   subscriber.debouncedNext(value);
 }
