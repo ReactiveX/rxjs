@@ -11,14 +11,14 @@ import $$observable from './util/Symbol_observable';
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
- *  
+ *
  * @class Observable<T>
  */
 export default class Observable<T> implements CoreOperators<T>  {
   source: Observable<any>;
   operator: Operator<any, T>;
   _isScalar: boolean = false;
-  
+
   /**
    * @constructor
    * @param {Function} subscribe the function that is
@@ -31,25 +31,25 @@ export default class Observable<T> implements CoreOperators<T>  {
       this._subscribe = subscribe;
     }
   }
-  
-  // HACK: Since TypeScript inherits static properties too, we have to 
+
+  // HACK: Since TypeScript inherits static properties too, we have to
   // fight against TypeScript here so Subject can have a different static create signature
   /**
    * @static
    * @method create
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
    * @returns {Observable} a new cold observable
-   * @description creates a new cold Observable by calling the Observable constructor 
+   * @description creates a new cold Observable by calling the Observable constructor
    */
   static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T>|Function|void) => {
     return new Observable<T>(subscribe);
   };
-  
+
   /**
    * @method lift
    * @param {Operator} operator the operator defining the operation to take on the observable
    * @returns {Observable} a new observable with the Operator applied
-   * @description creates a new Observable, with this Observable as the source, and the passed 
+   * @description creates a new Observable, with this Observable as the source, and the passed
    * operator defined as the new observable's operator.
    */
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
@@ -70,7 +70,7 @@ export default class Observable<T> implements CoreOperators<T>  {
 
   /**
    * @method subscribe
-   * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called, 
+   * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called,
    *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
    * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
    *  the error will be thrown as unhandled
@@ -116,11 +116,11 @@ export default class Observable<T> implements CoreOperators<T>  {
         PromiseCtor = root.Promise;
       }
     }
-    
+
     if(!PromiseCtor) {
       throw new Error('no Promise impl found');
     }
-    
+
     return new PromiseCtor<void>((resolve, reject) => {
       this.subscribe(next, reject, resolve);
     });

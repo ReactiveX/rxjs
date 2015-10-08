@@ -16,12 +16,11 @@ const _subscriberNext = Subscriber.prototype._next;
 const _subscriberError = Subscriber.prototype._error;
 const _subscriberComplete = Subscriber.prototype._complete;
 
-const _observableSubscribe = Observable.prototype._subscribe;
 
 export default class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
   _subscriptions: Subscription<T>[];
   _unsubscribe: () => void;
-  
+
   static create<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
     return new BidirectionalSubject(source, destination);
   }
@@ -177,7 +176,8 @@ class BidirectionalSubject<T> extends Subject<T> {
   }
 
   _subscribe(subscriber: Subscriber<T>) {
-    return _observableSubscribe.call(this, subscriber);
+    const operator = this.operator;
+    return this.source._subscribe.call(this.source, operator ? operator.call(subscriber) : subscriber);
   }
 
   next(x) {
