@@ -18,40 +18,40 @@ class ThrottleOperator<T, R> implements Operator<T, R> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new ThrottleSubscriber(subscriber, this.delay, this.scheduler);
   }
 }
 
-class ThrottleSubscriber<T, R> extends Subscriber<T> {
+class ThrottleSubscriber<T> extends Subscriber<T> {
   private throttled: Subscription<any>;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<T>,
               private delay: number,
               private scheduler: Scheduler) {
     super(destination);
   }
 
-  _next(x) {
-    this.clearThrottle();
-    this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { value: x, subscriber: this }));
+  _next(value: T) {
+    if (!this.throttled) {
+      this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { value, subscriber: this }));
+    }
   }
 
-  throttledNext(x) {
+  throttledNext(value: T) {
     this.clearThrottle();
-    this.destination.next(x);
+    this.destination.next(value);
   }
 
   clearThrottle() {
     const throttled = this.throttled;
     if (throttled) {
-      this.remove(throttled);
       throttled.unsubscribe();
-      this.throttled = null;
+      this.remove(throttled);
     }
   }
 }
 
-function dispatchNext({ value, subscriber }) {
+function dispatchNext<T>({ value, subscriber }) {
   subscriber.throttledNext(value);
 }
