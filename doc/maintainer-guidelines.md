@@ -10,7 +10,7 @@ much the same (but suggestions are always welcome).
  
  * __[Code of Conduct](../CODE_OF_CONDUCT.md)__. We should be setting a good example and be welcoming to all. We should be listening
  to all feedback from everyone in our community and respect their viewpoints and opinions.
- * __Be sure PRs meet [Contribution Guidelines](../CONTRIBUTION.md)__. It's important we keep our code base 
+ * __Be sure PRs meet [Contribution Guidelines](../CONTRIBUTING.md)__. It's important we keep our code base 
  and repository consistent. The best way to do this is to know and enforce the contribution guidelines.
  * __Clean, flat commit history__. We never click the green merge button on PRs, but instead we pull down 
  the PR branch and rebase it against master then replace master with the PR branch. See 
