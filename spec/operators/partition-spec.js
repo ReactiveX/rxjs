@@ -1,78 +1,159 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.partition()', function () {
-  it('should partition an observable into two using a predicate', function (done) {
-    var expectedPositive = [0, 1, 2];
-    var expectedNegative = [-3, -2, -1];
-    var completed = false;
-    var positiveValues;
-    var negativeValues;
-
-    function completer() {
-      if (completed) {
-        expect(positiveValues).toEqual(expectedPositive);
-        expect(negativeValues).toEqual(expectedNegative);
-        done();
-      } else {
-        completed = true;
-      }
+  function expectObservableArray(result, expected) {
+    for (var idx = 0; idx < result.length; idx++ ) {
+      expectObservable(result[idx]).toBe(expected[idx]);
     }
+  }
 
-    var values = [-3, -2, -1, 0, 1, 2];
+  it('should partition an observable into two using a predicate', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var e1 =    hot('--a-b---a------d--a---c--|');
+    var expected = ['--a-----a---------a------|',
+                    '----b----------d------c--|'];
 
-    var numberStream = Rx.Observable.fromArray(values);
-
-    var streams = numberStream.partition(function (value) {
-      return value >= 0;
-    });
-
-    var positiveStream = streams[0];
-    var negativeStream = streams[1];
-
-    positiveValues = [];
-    negativeValues = [];
-
-    positiveStream.subscribe(function (value) {
-      positiveValues.push(value);
-    }, null, completer);
-
-    negativeStream.subscribe(function (value) {
-      negativeValues.push(value);
-    }, null, completer);
+    expectObservableArray(e1.partition(predicate), expected);
   });
 
-  it('should pass errors to both returned observables', function (done) {
-    var values = [-3, -2, -1, 0, 1, 2];
-    var numberStream = Rx.Observable.fromArray(values);
-    var errored = false;
-
-    function rejecter() {
-      expect(true).toBe(false);
+  it('should pass errors to both returned observables', function () {
+    function predicate(x) {
+      return x === 'a';
     }
+    var e1 =    hot('--a-b---#');
+    var expected = ['--a-----#',
+                    '----b---#'];
 
-    function completer(error) {
-      if (!errored) {
-        errored = error;
-      } else {
-        expect(errored).toBe(error);
-        done();
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should pass errors to both returned observables if source throws', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var error = 'error';
+    var e1 = Observable.throw(error);
+    var expected = ['#',
+                    '#'];
+
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should pass errors to both returned observables if predicate throws', function () {
+    var index = 0;
+    var error = 'error';
+    function predicate(x) {
+      var match = x === 'a';
+      if (match && index++ > 1) {
+        throw error;
       }
+      return match;
     }
+    var e1 =    hot('--a-b--a--|');
+    var expected = ['--a----#',
+                    '----b--#'];
 
-    var streams = numberStream
-      .map(function (value) {
-        throw 'error';
-      })
-      .partition(function (value) {
-        return value >= 0;
-      });
+    expectObservableArray(e1.partition(predicate), expected);
+  });
 
-    var positiveStream = streams[0];
-    var negativeStream = streams[1];
+  it('should partition empty observable if source does not emits', function () {
+    function predicate(x) {
+      return x === 'x';
+    }
+    var e1 =    hot('----|');
+    var expected = ['----|',
+                    '----|'];
 
-    positiveStream.subscribe(rejecter, completer, rejecter);
-    negativeStream.subscribe(rejecter, completer, rejecter);
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should partition empty observable if source is empty', function () {
+    function predicate(x) {
+      return x === 'x';
+    }
+    var e1 = Observable.empty();
+    var expected = ['|',
+                    '|'];
+
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should partition if source emits single elements', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var e1 =    hot('--a--|');
+    var expected = ['--a--|',
+                    '-----|'];
+
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should partition if predicate matches all of source elements', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var e1 =    hot('--a--a--a--a--a--a--a--|');
+    var expected = ['--a--a--a--a--a--a--a--|',
+                    '-----------------------|'];
+
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should partition if predicate does not match all of source elements', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var e1 =    hot('--b--b--b--b--b--b--b--|');
+    var expected = ['-----------------------|',
+                    '--b--b--b--b--b--b--b--|'];
+
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should partition to infinite observable if source does not completes', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var e1 =    hot('--a-b---a------d----');
+    var expected = ['--a-----a-',
+                    '----b----------d-'];
+
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should partition to infinite observable if source never completes', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var e1 = Observable.never();
+    var expected = ['-',
+                    '-'];
+
+    expectObservableArray(e1.partition(predicate), expected);
+  });
+
+  it('should partition into two observable with early unsubscription', function () {
+    function predicate(x) {
+      return x === 'a';
+    }
+    var e1 =    hot('--a-b---a------d-|');
+    var unsub =     '-------!';
+    var expected = ['--a-',
+                    '----b-'];
+    var result = e1.partition(predicate);
+
+    for (var idx = 0; idx < result.length; idx++ ) {
+      expectObservable(result[idx], unsub).toBe(expected[idx]);
+    }
+  });
+
+  it('should throw without predicate', function () {
+    var e1 = hot('--a-b---a------d----');
+    expect(e1.partition).toThrow();
   });
 });
