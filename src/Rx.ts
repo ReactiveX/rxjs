@@ -127,7 +127,7 @@ observableProto.finally = _finally;
 import first from './operators/first';
 observableProto.first = first;
 
-import groupBy from './operators/groupBy';
+import {groupBy} from './operators/groupBy';
 observableProto.groupBy = groupBy;
 
 import ignoreElements from './operators/ignoreElements';

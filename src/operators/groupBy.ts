@@ -1,32 +1,38 @@
 import Operator from '../Operator';
 import Observer from '../Observer';
+import Subscription from '../Subscription';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import Subject from '../Subject';
 import Map from '../util/Map';
 import FastMap from '../util/FastMap';
-import GroupSubject from '../subjects/GroupSubject';
+import {RefCountSubscription, GroupedObservable, InnerRefCountSubscription} from './groupBy-support';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function groupBy<T, R>(keySelector: (value: T) => string,
-                                      elementSelector?: (value: T) => R,
-                                      durationSelector?: (grouped: GroupSubject<R>) => Observable<any>): Observable<GroupSubject<R>> {
-  return this.lift(new GroupByOperator<T, R>(keySelector, durationSelector, elementSelector));
+export function groupBy<T, R>(keySelector: (value: T) => string,
+                              elementSelector?: (value: T) => R,
+                              durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>): GroupByObservable<T, R> {
+  return new GroupByObservable<T, R>(this, keySelector, elementSelector, durationSelector);
 }
 
-class GroupByOperator<T, R> implements Operator<T, R> {
-  constructor(private keySelector: (value: T) => string,
-              private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
-              private elementSelector?: (value: T) => R) {
+export class GroupByObservable<T, R> extends Observable<GroupedObservable<R>> {
+  constructor(public source: Observable<T>,
+              private keySelector: (value: T) => string,
+              private elementSelector?: (value: T) => R,
+              private durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>) {
+    super();
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new GroupBySubscriber<T, R>(
-      subscriber, this.keySelector, this.durationSelector, this.elementSelector
+  _subscribe(subscriber) {
+    const refCountSubscription = new RefCountSubscription();
+    const groupBySubscriber = new GroupBySubscriber(
+      subscriber, refCountSubscription, this.keySelector, this.elementSelector, this.durationSelector
     );
+    refCountSubscription.setPrimary(this.source.subscribe(groupBySubscriber));
+    return refCountSubscription;
   }
 }
 
@@ -34,10 +40,13 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
   private groups = null;
 
   constructor(destination: Subscriber<R>,
+              private refCountSubscription: RefCountSubscription<T>,
               private keySelector: (value: T) => string,
-              private durationSelector?: (grouped: GroupSubject<R>) => Observable<any>,
-              private elementSelector?: (value: T) => R) {
-    super(destination);
+              private elementSelector?: (value: T) => R,
+              private durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>) {
+    super();
+    this.destination = destination;
+    this.add(destination);
   }
 
   _next(x: T) {
@@ -53,27 +62,28 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
         groups = this.groups = typeof key === 'string' ? new FastMap() : new Map();
       }
 
-      let group: GroupSubject<R> = groups.get(key);
+      let group: Subject<R> = groups.get(key);
 
       if (!group) {
-        groups.set(key, group = new GroupSubject(key));
+        groups.set(key, group = new Subject());
+        let groupedObservable = new GroupedObservable<R>(key, group, this.refCountSubscription);
 
         if (durationSelector) {
-          let duration = tryCatch(durationSelector)(group);
+          let duration = tryCatch(durationSelector)(groupedObservable);
           if (duration === errorObject) {
             this.error(duration.e);
           } else {
-            this.add(duration._subscribe(new GroupDurationSubscriber(group, this)));
+            this.add(duration._subscribe(new GroupDurationSubscriber(key, group, this)));
           }
         }
 
-        this.destination.next(group);
+        this.destination.next(groupedObservable);
       }
 
       if (elementSelector) {
         let value = tryCatch(elementSelector)(x);
         if (value === errorObject) {
-          group.error(value.e);
+          this.error(value.e);
         } else {
           group.next(value);
         }
@@ -111,26 +121,24 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
 }
 
 class GroupDurationSubscriber<T> extends Subscriber<T> {
-  constructor(private group: GroupSubject<T>,
+  constructor(private key: string,
+              private group: Subject<T>,
               private parent: GroupBySubscriber<any, T>) {
     super(null);
   }
 
   _next(value: T) {
-    const group = this.group;
-    group.complete();
-    this.parent.removeGroup(group.key);
+    this.group.complete();
+    this.parent.removeGroup(this.key);
   }
 
   _error(err: any) {
-    const group = this.group;
-    group.error(err);
-    this.parent.removeGroup(group.key);
+    this.group.error(err);
+    this.parent.removeGroup(this.key);
   }
 
   _complete() {
-    const group = this.group;
-    group.complete();
-    this.parent.removeGroup(group.key);
+    this.group.complete();
+    this.parent.removeGroup(this.key);
   }
 }
