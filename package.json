@@ -11,13 +11,14 @@
     "build_closure": "java -jar ./node_modules/google-closure-compiler/compiler.jar ./dist/global/Rx.js --create_source_map ./dist/global/Rx.min.js.map --js_output_file ./dist/global/Rx.min.js",
     "build_global": "rm -rf dist/global && mkdir \"dist/global\" && browserify src/Rx.global.js --outfile dist/global/Rx.js && npm run build_closure",
     "build_perf": "npm run build_es6 && npm run build_cjs && npm run build_global && webdriver-manager update && npm run perf",
-    "build_test": "rm -rf dist/ && npm run build_es6 && npm run build_cjs && jasmine && npm run lint",
+    "build_test": "rm -rf dist/ && npm run lint && npm run build_es6 && npm run build_cjs && jasmine",
     "build_docs": "./docgen.sh",
     "lint_perf": "eslint perf/",
     "lint_spec": "eslint spec/**/*.js",
     "lint_src": "tslint -c .tslintrc src/**/*.ts",
     "lint": "npm run lint_src && npm run lint_spec && npm run lint_perf",
     "test": "jasmine",
+    "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15",
     "perf": "protractor protractor.conf.js",
     "prepublish": "npm run build_all"
   },
@@ -81,7 +82,8 @@
     "protractor": "2.2.0",
     "rx": "^4.0.0",
     "tslint": "^2.5.0",
-    "typescript": "^1.7.0-dev.20150901"
+    "typescript": "^1.7.0-dev.20150901",
+    "watch": "^0.16.0"
   },
   "engines": {
     "npm": "~2.0.0"
