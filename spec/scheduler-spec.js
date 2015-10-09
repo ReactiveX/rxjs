@@ -13,24 +13,24 @@ describe('Scheduler.immediate', function() {
       Scheduler.immediate.schedule(function(){
         call2 = true;
       });
-    });   
+    });
     expect(call1).toBe(true);
     expect(call2).toBe(true);
   });
-  
+
   it('should schedule things in the future too', function (done) {
     var called = false;
     Scheduler.immediate.schedule(function () {
       called = true;
-    }, 500);
-    
+    }, 50);
+
     setTimeout(function () {
       expect(called).toBe(false);
-    }, 400);
-    
+    }, 40);
+
     setTimeout(function() {
       expect(called).toBe(true);
       done();
-    }, 700);
-  })
+    }, 70);
+  });
 });
