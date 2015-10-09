@@ -5,11 +5,65 @@ var Benchmark = require('benchmark');
 var suite = new Benchmark.Suite();
 var glob = require('glob');
 var path = require('path');
+var fs = require('fs');
 
 var oldRxPackage = JSON.parse(require('fs').readFileSync('node_modules/rx/package.json'));
 var oldVersion = oldRxPackage.version;
+var newRxPackage = JSON.parse(require('fs').readFileSync('package.json'));
+var newVersion = newRxPackage.version;
 
+function line() {
+  return [].slice.call(arguments)
+    .map(function (n) {
+      return Array(n + 2).join('-');
+    }).join('---');
+}
+
+function row() {
+  var columnWidths = [].slice.call(arguments);
+
+  return function () {
+    var data = [].slice.call(arguments);
+    return data.map(function (d, i) {
+      var text = String(d);
+      var w = columnWidths[i];
+
+      if (w < text.length) {
+        text = text.substring(0, w);
+      }
+
+      while (text.length < w) {
+        text = ' ' + text;
+      }
+
+      return text;
+    }).join(' | ');
+  };
+}
+
+function formatNumber(n, fix) {
+  var f = fix;
+  var num = n;
+  if (typeof fix !== 'number' || !isFinite(fix)) {
+    f = (n < 100 ? 2 : 0);
+  }
+  num = n.toFixed(f);
+  var text = String(n).split('.');
+  return text[0].replace(/(?=(?:\d{3})+$)(?!\b)/g, ',') +
+    (text[1] ? '.' + text[1] : '');
+}
+
+console.log();
+console.log();
+console.log();
 console.log('Testing against RxJS v ' + oldVersion);
+console.log('for csv output, use:  --csv filename.csv');
+console.log();
+console.log(row(40, 30, 30, 15, 15)('', 'RxJS ' + oldVersion, 'RxJS ' + newVersion, 'factor', '% improved'));
+console.log(line(40, 30, 30, 15, 15));
+
+var output = [];
+output.push(['name', 'old ops/sec', 'old error margin', 'new ops/sec', 'new error margin', 'factor', 'percent improved']);
 
 Observable.create(function (observer) {
   ['perf/micro/immediate-scheduler/**/*.js', 'perf/micro/current-thread-scheduler/**/*.js']
@@ -36,39 +90,62 @@ Observable.create(function (observer) {
   }
   return true;
 })
-.map(require)
-.concatMap(function (test) {
-  var tests = test(new Benchmark.Suite());
-  return Observable.defer(function () {
-    var cycles = new Rx.ReplaySubject();
-    var complete = new Rx.ReplaySubject();
+.map(function (filePath) {
+  var info = path.parse(filePath);
+  return {
+    name: info.name + (info.dir.indexOf('immediate') !== -1 ? ' - immediate' : ''),
+    test: require(filePath)
+  };
+})
+.concatMap(function (x) {
+  var test = x.test;
+  var name = x.name;
+  var tests = test(new Benchmark.Suite(name));
 
-    tests.on('cycle', function (e) {
-      cycles.onNext(String(e.target));
-    }).on('complete', function () {
-      var fastest = this.filter('fastest');
-      var fastestName = String(fastest.pluck('name'));
-      var fastestTime = parseFloat(this.filter('fastest').pluck('hz'));
-      var slowestTime = parseFloat(this.filter('slowest').pluck('hz'));
-      var speedRatio;
+  return Observable.create(function (observer) {
+    tests.on('complete', function () {
+      var _old = this[0];
+      var _new = this[1];
 
-      // percent change formula: ((V2 - V1) / |V1|) * 100
-      if (fastestName.substr(0, 3) === 'new') {
-        speedRatio = (Math.round((fastestTime - slowestTime) / slowestTime * 10000) / 100);
-        complete.onNext('\t' + speedRatio + '% ' + 'faster'.green + ' than Rx v ' + oldVersion + '\n');
-      } else {
-        speedRatio = (Math.round((fastestTime - slowestTime) / slowestTime * 10000) / 100);
-        complete.onNext('\t' + speedRatio + '% ' + 'slower'.red + ' than Rx v ' + oldVersion + '\n');
-      }
-    }).run({ 'async': true });
+      observer.onNext({
+        old: _old,
+        new: _new,
+        name: name
+      });
 
-    return cycles.merge(complete).take(tests.length + 1);
+      observer.onCompleted();
+    }).run({ async: true });
   });
+})
+.do(function (d) {
+  var r = d.new.hz / d.old.hz;
+  var p = (d.new.hz - d.old.hz) / d.old.hz;
+  output.push([d.name, d.old.hz, d.old.stats.rme, d.new.hz, d.new.stats.rme, r, p]);
+})
+.map(function (d) {
+  var oldHz = d.old.hz;
+  var newHz = d.new.hz;
+  var r = newHz / oldHz;
+  var p = 100 * ((newHz - oldHz) / oldHz);
+  var oldRme = ' (\xb1' + d.old.stats.rme.toFixed(2) + '%)';
+  var newRme = ' (\xb1' + d.new.stats.rme.toFixed(2) + '%)';
+  return row(40, 30, 30, 15, 15)(d.name, formatNumber(oldHz) + oldRme,
+    formatNumber(newHz) + newRme, formatNumber(r) + 'x', formatNumber(p, 1) + '%');
 })
 .subscribe(console.log.bind(console), function (err) {
   if (err.stack === undefined) {
     console.log(err);
   } else {
     console.log(err.stack);
+  }
+}, function () {
+  var csv = process.argv.indexOf('--csv');
+  if (csv !== -1) {
+    var filename = process.argv[csv + 1];
+    fs.writeFileSync(filename, output.map(function (o) {
+      return o.map(function (v) {
+        return JSON.stringify(v);
+      }).join(',');
+    }).join('\n'), { encoding: 'utf8' });
   }
 });
