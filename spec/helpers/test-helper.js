@@ -155,3 +155,15 @@ global.lowerCaseO = function lowerCaseO() {
 
   return o;
 };
+
+var ___start;
+beforeEach(function () {
+  ___start = Date.now();
+});
+
+afterEach(function () {
+  var elapsed = Date.now() - ___start;
+  if (elapsed > 500) {
+    throw 'slow test!';
+  }
+});
