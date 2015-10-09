@@ -7,8 +7,8 @@ from many teachings and documents by people such as @jhusain, @headinthebox, @ma
 
 #### links
 
-- [Contribution](../CONTRIBUTION.md)
-- [Code of Conduct](../CODE_OF_CONDUNCT.md)
+- [Contribution](../CONTRIBUTING.md)
+- [Code of Conduct](../CODE_OF_CONDUCT.md)
 
 ## Basic methods
 
