@@ -56,6 +56,21 @@ global.it = function (description, cb, timeout) {
   }
 };
 
+function stringify(x) {
+  return JSON.stringify(x, function (key, value) {
+    if (Array.isArray(value)) {
+      return '[' + value
+        .map(function (i) {
+          return '\n\t' + stringify(i);
+        }) + '\n]';
+    }
+    return value;
+  })
+  .replace(/\\"/g, '"')
+  .replace(/\\t/g, '\t')
+  .replace(/\\n/g, '\n');
+}
+
 beforeEach(function () {
   jasmine.addMatchers({
     toDeepEqual: function (util, customEqualityTesters) {
@@ -66,11 +81,11 @@ beforeEach(function () {
           if (!result.pass && Array.isArray(actual) && Array.isArray(expected)) {
             result.message = 'Expected \n';
             actual.forEach(function (x) {
-              result.message += JSON.stringify(x) + '\n';
+              result.message += stringify(x) + '\n';
             });
             result.message += '\nto deep equal \n';
             expected.forEach(function (x) {
-              result.message += JSON.stringify(x) + '\n';
+              result.message += stringify(x) + '\n';
             });
           }
 
