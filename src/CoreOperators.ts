@@ -2,7 +2,7 @@ import Observable from './Observable';
 import Scheduler from './Scheduler';
 import ConnectableObservable from './observables/ConnectableObservable';
 import Subject from './Subject'
-import GroupSubject from './subjects/GroupSubject';
+import {GroupedObservable} from './operators/groupBy-support';
 
 export interface CoreOperators<T> {
   buffer?: <T>(closingNotifier: Observable<any>) => Observable<T[]>;
@@ -29,7 +29,7 @@ export interface CoreOperators<T> {
   first?: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value:T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<R>;
   flatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   flatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy?: <T, R>(keySelector: (value:T) => string, durationSelector?: (group:GroupSubject<R>) => Observable<any>, elementSelector?: (value:T) => R) => Observable<R>;
+  groupBy?: <T, R>(keySelector: (value:T) => string, elementSelector?: (value:T) => R, durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
   ignoreElements?: () => Observable<T>;
   last?: <R>(predicate?: (value: T, index:number) => boolean, resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T>;
   every?: (predicate: (value: T, index:number) => boolean, thisArg?: any) => Observable<T>;
