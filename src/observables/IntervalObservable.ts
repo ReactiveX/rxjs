@@ -5,7 +5,7 @@ import nextTick from '../schedulers/nextTick';
 
 export default class IntervalObservable<T> extends Observable<T> {
 
-  static create(period: number = 0, scheduler: Scheduler = nextTick) {
+  static create(period: number = 0, scheduler: Scheduler = nextTick): Observable<number> {
     return new IntervalObservable(period, scheduler);
   }
 
