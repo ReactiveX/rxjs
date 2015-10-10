@@ -5,7 +5,7 @@ import nextTick from '../schedulers/nextTick';
 
 export default class TimerObservable<T> extends Observable<T> {
 
-  static create(dueTime: number = 0, period?: number | Scheduler, scheduler?: Scheduler) {
+  static create(dueTime: number = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
     return new TimerObservable(dueTime, period, scheduler);
   }
 

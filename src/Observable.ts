@@ -147,7 +147,7 @@ export default class Observable<T> implements CoreOperators<T>  {
   static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
   static range: <T>(start: number, end: number, scheduler?: Scheduler) => Observable<number>;
   static throw: <T>(error: T) => Observable<T>;
-  static timer: (delay: number) => Observable<number>;
+  static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
   static zip: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
   ignoreElements: () => Observable<T>;
 }
