@@ -3,7 +3,7 @@ import ArrayObservable from '../observables/ArrayObservable';
 import { CombineLatestOperator } from './combineLatest-support';
 import Scheduler from '../Scheduler';
 
-export default function combineLatest<T, R>(...observables: (Observable<any> | ((...values: Array<any>) => R) | Scheduler)[]): Observable<R> {
+export default function combineLatest<R>(...observables: (Observable<any> | ((...values: Array<any>) => R) | Scheduler)[]): Observable<R> {
   let project, scheduler;
 
   if (typeof (<any>observables[observables.length - 1]).schedule === 'function') {
