@@ -42,13 +42,12 @@ function row() {
 }
 
 function formatNumber(n, fix) {
-  var f = fix;
-  var num = n;
+  var f = Number(fix);
   if (typeof fix !== 'number' || !isFinite(fix)) {
-    f = (n < 100 ? 2 : 0);
+    f = n < 100 ? 2 : 0;
   }
-  num = n.toFixed(f);
-  var text = String(n).split('.');
+  var num = n.toFixed(Number(f));
+  var text = String(num).split('.');
   return text[0].replace(/(?=(?:\d{3})+$)(?!\b)/g, ',') +
     (text[1] ? '.' + text[1] : '');
 }
