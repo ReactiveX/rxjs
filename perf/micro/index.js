@@ -52,6 +52,15 @@ function formatNumber(n, fix) {
     (text[1] ? '.' + text[1] : '');
 }
 
+function parseCommandLine() {
+  var argument;
+  var argv = process.argv;
+  if (argv && argv.length > 2) {
+    argument = argv.slice(2);
+  }
+  return argument;
+}
+
 console.log();
 console.log();
 console.log();
@@ -61,6 +70,7 @@ console.log();
 console.log(row(40, 30, 30, 15, 15)('', 'RxJS ' + oldVersion, 'RxJS ' + newVersion, 'factor', '% improved'));
 console.log(line(40, 30, 30, 15, 15));
 
+var testArgument = parseCommandLine();
 var output = [];
 output.push(['name', 'old ops/sec', 'old error margin', 'new ops/sec', 'new error margin', 'factor', 'percent improved']);
 
@@ -81,13 +91,12 @@ Observable.create(function (observer) {
   return './' + path.relative(__dirname, filename);
 })
 .filter(function (filePath) {
-  var argv = process.argv.slice();
-  var csvIndex = argv.indexOf('--csv');
-  if (csvIndex !== -1) {
-    argv.splice(csvIndex, 2);
-  }
-  if (argv && argv.length > 2) {
-    return argv.slice(2).some(function (val) {
+  if (testArgument !== undefined) {
+    return testArgument.some(function (val) {
+      if (val.slice(-1) === '*') {
+        var match = path.parse(filePath).name.match(val);
+        return match !== null && val.indexOf(match[0]) !== -1;
+      }
       return path.parse(filePath).name === val;
     });
   }
@@ -142,13 +151,17 @@ Observable.create(function (observer) {
     console.log(err.stack);
   }
 }, function () {
-  var csv = process.argv.indexOf('--csv');
+  var csv = testArgument.indexOf('--csv');
   if (csv !== -1) {
-    var filename = process.argv[csv + 1];
+    var filename = testArgument[csv + 1];
     fs.writeFileSync(filename, output.map(function (o) {
       return o.map(function (v) {
         return JSON.stringify(v);
       }).join(',');
     }).join('\n'), { encoding: 'utf8' });
+  }
+
+  if (output.length === 1 && testArgument !== undefined) {
+    console.log('could not execute specified test, check parameter : ' + testArgument);
   }
 });
