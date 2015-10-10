@@ -145,7 +145,7 @@ export default class Observable<T> implements CoreOperators<T>  {
   static merge: (...observables:any[]) => Observable<any>;
   static never: <T>() => Observable<T>;
   static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
-  static range: <T>(start: number, end: number, scheduler?: Scheduler) => Observable<number>;
+  static range: (start: number, end: number, scheduler?: Scheduler) => Observable<number>;
   static throw: <T>(error: T) => Observable<T>;
   static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
   static zip: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
