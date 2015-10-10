@@ -3,7 +3,7 @@ import Observable from '../Observable';
 
 export default class EmptyObservable<T> extends Observable<T> {
 
-  static create<T>(scheduler?: Scheduler) {
+  static create<T>(scheduler?: Scheduler): Observable<T> {
     return new EmptyObservable(scheduler);
   }
 

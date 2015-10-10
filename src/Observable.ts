@@ -134,7 +134,7 @@ export default class Observable<T> implements CoreOperators<T>  {
   static combineLatest: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
   static concat: (...observables: any[]) => Observable<any>;
   static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
-  static empty: <T>() => Observable<T>;
+  static empty: <T>(scheduler?: Scheduler) => Observable<T>;
   static forkJoin: (...observables: Observable<any>[]) => Observable<any[]>;
   static from: <T>(iterable: any, scheduler?: Scheduler) => Observable<T>;
   static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
