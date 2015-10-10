@@ -141,7 +141,7 @@ export default class Observable<T> implements CoreOperators<T>  {
   static fromEvent: <T>(element: any, eventName: string, selector: (...args:Array<any>) => T) => Observable<T>;
   static fromEventPattern: <T>(addHandler: (handler:Function)=>void, removeHandler: (handler:Function) => void, selector?: (...args:Array<any>) => T) => Observable<T>;
   static fromPromise: <T>(promise: Promise<T>, scheduler?: Scheduler) => Observable<T>;
-  static interval: (interval: number) => Observable<number>;
+  static interval: (interval: number, scheduler?: Scheduler) => Observable<number>;
   static merge: (...observables:any[]) => Observable<any>;
   static never: <T>() => Observable<T>;
   static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
