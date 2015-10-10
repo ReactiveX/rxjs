@@ -9,7 +9,7 @@ export default class PromiseObservable<T> extends Observable<T> {
   _isScalar: boolean = false;
   value: T;
 
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = immediate) {
+  static create<T>(promise: Promise<T>, scheduler: Scheduler = immediate): Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
