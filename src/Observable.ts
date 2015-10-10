@@ -132,17 +132,17 @@ export default class Observable<T> implements CoreOperators<T>  {
 
   // static method stubs
   static combineLatest: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T) | Scheduler)[]) => Observable<T>;
-  static concat: (...observables: any[]) => Observable<any>;
+  static concat: <T>(...observables: (Observable<any> | Scheduler)[]) => Observable<T>;
   static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
   static empty: <T>(scheduler?: Scheduler) => Observable<T>;
-  static forkJoin: (...observables: Observable<any>[]) => Observable<any[]>;
+  static forkJoin: <T>(...observables: Observable<any>[]) => Observable<T>;
   static from: <T>(iterable: any, scheduler?: Scheduler) => Observable<T>;
   static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
   static fromEvent: <T>(element: any, eventName: string, selector: (...args:Array<any>) => T) => Observable<T>;
   static fromEventPattern: <T>(addHandler: (handler:Function)=>void, removeHandler: (handler:Function) => void, selector?: (...args:Array<any>) => T) => Observable<T>;
   static fromPromise: <T>(promise: Promise<T>, scheduler?: Scheduler) => Observable<T>;
   static interval: (interval: number, scheduler?: Scheduler) => Observable<number>;
-  static merge: (...observables:any[]) => Observable<any>;
+  static merge: <T>(...observables: (Observable<any> | Scheduler | number)[]) => Observable<T>;
   static never: <T>() => Observable<T>;
   static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
   static range: (start: number, end: number, scheduler?: Scheduler) => Observable<number>;
