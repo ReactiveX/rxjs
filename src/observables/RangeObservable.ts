@@ -3,7 +3,7 @@ import Observable from '../Observable';
 
 export default class RangeObservable<T> extends Observable<T> {
 
-  static create(start: number = 0, end: number = 0, scheduler?: Scheduler) {
+  static create(start: number = 0, end: number = 0, scheduler?: Scheduler): Observable<number> {
     return new RangeObservable(start, end, scheduler);
   }
 
