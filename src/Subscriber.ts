@@ -13,8 +13,8 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
 
   private _isUnsubscribed: boolean = false;
   
-  static create<T>(next    ?: (x?) => void,
-                   error   ?: (e?) => void,
+  static create<T>(next    ?: (x?:any) => void,
+                   error   ?: (e?:any) => void,
                    complete?: () => void): Subscriber<T> {
     const subscriber = new Subscriber<T>();
     subscriber._next = (typeof next === "function") && tryOrOnError(next) || noop;
