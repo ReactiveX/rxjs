@@ -360,7 +360,9 @@ describe('Observable.prototype.groupBy()', function () {
       z: Rx.TestScheduler.parseMarbles(z, values)
     };
 
-    var fooUnsubscriptionFrame = Rx.TestScheduler.getUnsubscriptionFrame(unsubw);
+    var fooUnsubscriptionFrame = Rx.TestScheduler
+      .parseMarblesAsSubscriptions(unsubw)
+      .unsubscribedFrame;
 
     var source = e1
       .groupBy(function (val) {
@@ -423,10 +425,10 @@ describe('Observable.prototype.groupBy()', function () {
     };
 
     var unsubscriptionFrames = {
-      foo: Rx.TestScheduler.getUnsubscriptionFrame(unsubw),
-      bar: Rx.TestScheduler.getUnsubscriptionFrame(unsubx),
-      baz: Rx.TestScheduler.getUnsubscriptionFrame(unsuby),
-      qux: Rx.TestScheduler.getUnsubscriptionFrame(unsubz)
+      foo: Rx.TestScheduler.parseMarblesAsSubscriptions(unsubw).unsubscribedFrame,
+      bar: Rx.TestScheduler.parseMarblesAsSubscriptions(unsubx).unsubscribedFrame,
+      baz: Rx.TestScheduler.parseMarblesAsSubscriptions(unsuby).unsubscribedFrame,
+      qux: Rx.TestScheduler.parseMarblesAsSubscriptions(unsubz).unsubscribedFrame
     };
 
     var source = e1
