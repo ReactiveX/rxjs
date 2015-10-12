@@ -30,13 +30,13 @@ export class RefCountSubscription<T> extends Subscription<T> {
 export class GroupedObservable<T> extends Observable<T> {
   constructor(public key: string,
               private groupSubject: Subject<T>,
-              private refCountSubscription: RefCountSubscription<T>) {
+              private refCountSubscription?: RefCountSubscription<T>) {
     super();
   }
 
   _subscribe(subscriber: Subscriber<T>) {
     const subscription = new Subscription();
-    if (!this.refCountSubscription.isUnsubscribed) {
+    if (this.refCountSubscription && !this.refCountSubscription.isUnsubscribed) {
       subscription.add(new InnerRefCountSubscription(this.refCountSubscription));
     }
     subscription.add(this.groupSubject.subscribe(subscriber));

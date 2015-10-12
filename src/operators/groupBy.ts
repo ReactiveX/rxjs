@@ -69,7 +69,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
         let groupedObservable = new GroupedObservable<R>(key, group, this.refCountSubscription);
 
         if (durationSelector) {
-          let duration = tryCatch(durationSelector)(groupedObservable);
+          let duration = tryCatch(durationSelector)(new GroupedObservable<R>(key, group));
           if (duration === errorObject) {
             this.error(duration.e);
           } else {
