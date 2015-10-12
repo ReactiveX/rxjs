@@ -19,7 +19,7 @@ export default class FastMap {
   forEach(cb, thisArg) {
     const values = this._values;
     for (let key in values) {
-      if (values.hasOwnProperty(key)) {
+      if (values.hasOwnProperty(key) && values[key] !== null) {
         cb.call(thisArg, values[key], key);
       }
     }

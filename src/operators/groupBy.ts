@@ -116,7 +116,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
   }
 
   removeGroup(key: string) {
-    this.groups[key] = null;
+    this.groups.delete(key);
   }
 }
 
