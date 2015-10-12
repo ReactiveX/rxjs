@@ -77,6 +77,45 @@ describe('Observable.prototype.groupBy()', function () {
       }, null, done);
   });
 
+  it('should handle an empty Observable', function () {
+    var e1 = cold('|');
+    var expected = '|';
+
+    var source = e1
+      .groupBy(function (val) { return val.toLowerCase().trim(); });
+    expectObservable(source).toBe(expected);
+  });
+
+  it('should handle a never Observable', function () {
+    var e1 = cold('-');
+    var expected = '-';
+
+    var source = e1
+      .groupBy(function (val) { return val.toLowerCase().trim(); });
+    expectObservable(source).toBe(expected);
+  });
+
+  it('should handle a just-throw Observable', function () {
+    var e1 = cold('#');
+    var expected = '#';
+
+    var source = e1
+      .groupBy(function (val) { return val.toLowerCase().trim(); });
+    expectObservable(source).toBe(expected);
+  });
+
+  it('should handle an Observable with a single value', function () {
+    var values = { a: '  foo' };
+    var e1 =   hot('^--a--|', values);
+    var expected = '---g--|';
+    var g = cold(     'a--|', values);
+    var expectedValues = { g: g };
+
+    var source = e1
+      .groupBy(function (val) { return val.toLowerCase().trim(); });
+    expectObservable(source).toBe(expected, expectedValues);
+  });
+
   it('should group values with a key comparer', function () {
     var values = {
       a: '  foo',
