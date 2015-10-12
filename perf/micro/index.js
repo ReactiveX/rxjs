@@ -92,7 +92,12 @@ Observable.create(function (observer) {
 })
 .filter(function (filePath) {
   if (testArgument !== undefined) {
-    return testArgument.some(function (val) {
+    var fileArgs = testArgument.slice();
+    var csvIndex = fileArgs.indexOf('--csv');
+    if(csvIndex !== -1) {
+      fileArgs.splice(csvIndex, 2);
+    }
+    return fileArgs.some(function (val) {
       if (val.slice(-1) === '*') {
         var match = path.parse(filePath).name.match(val);
         return match !== null && val.indexOf(match[0]) !== -1;
