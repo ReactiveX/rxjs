@@ -81,7 +81,11 @@ Observable.create(function (observer) {
   return './' + path.relative(__dirname, filename);
 })
 .filter(function (filePath) {
-  var argv = process.argv;
+  var argv = process.argv.slice();
+  var csvIndex = argv.indexOf('--csv');
+  if (csvIndex !== -1) {
+    argv.splice(csvIndex, 2);
+  }
   if (argv && argv.length > 2) {
     return argv.slice(2).some(function (val) {
       return path.parse(filePath).name === val;
