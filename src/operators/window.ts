@@ -62,4 +62,12 @@ class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
   _next() {
     this.parent.openWindow();
   }
+
+  _error(err: any) {
+    this.parent._error(err);
+  }
+
+  _complete() {
+    this.parent._complete();
+  }
 }
