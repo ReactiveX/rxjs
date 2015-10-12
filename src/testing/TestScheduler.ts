@@ -62,7 +62,8 @@ export class TestScheduler extends VirtualTimeScheduler {
                    unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
     let actual: TestMessage[] = [];
     let flushTest: FlushableTest = { actual, ready: false };
-    let unsubscriptionFrame = TestScheduler.getUnsubscriptionFrame(unsubscriptionMarbles);
+    let unsubscriptionFrame = TestScheduler
+      .parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
     let subscription;
 
     this.schedule(() => {
@@ -122,18 +123,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
   }
 
-  static getUnsubscriptionFrame(marbles?: string) {
-    if (typeof marbles !== 'string' || marbles.indexOf('!') === -1) {
-      return Number.POSITIVE_INFINITY;
-    }
-    return marbles.indexOf('!') * this.frameTimeFactor;
-  }
-
   static parseMarblesAsSubscriptions(marbles: string): SubscriptionLog {
+    if (typeof marbles !== 'string') {
+      return new SubscriptionLog(Number.POSITIVE_INFINITY);
+    }
     let len = marbles.length;
     let groupStart = -1;
-    let subscriptionFrame = -1;
-    let unsubscriptionFrame = -1;
+    let subscriptionFrame = Number.POSITIVE_INFINITY;
+    let unsubscriptionFrame = Number.POSITIVE_INFINITY;
 
     for (let i = 0; i < len; i++) {
       let frame = i * this.frameTimeFactor;
@@ -149,14 +146,14 @@ export class TestScheduler extends VirtualTimeScheduler {
           groupStart = -1;
           break;
         case '^':
-          if (subscriptionFrame !== -1) {
+          if (subscriptionFrame !== Number.POSITIVE_INFINITY) {
             throw new Error('Found a second subscription point \'^\' in a ' +
               'subscription marble diagram. There can only be one.');
           }
           subscriptionFrame = groupStart > -1 ? groupStart : frame;
           break;
         case '!':
-          if (unsubscriptionFrame !== -1) {
+          if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
             throw new Error('Found a second subscription point \'^\' in a ' +
               'subscription marble diagram. There can only be one.');
           }
