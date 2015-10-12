@@ -116,7 +116,7 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source).toBe(expected, expectedValues);
   });
 
-  it('should group values with a key comparer', function () {
+  it('should group values with a keySelector', function () {
     var values = {
       a: '  foo',
       b: ' FoO ',
@@ -163,7 +163,7 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source).toBe(expected, expectedValues);
   });
 
-  it('should group values with a key comparer, assert GroupSubject key', function () {
+  it('should group values with a keySelector, assert GroupSubject key', function () {
     var values = {
       a: '  foo',
       b: ' FoO ',
@@ -188,7 +188,7 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source).toBe(expected, expectedValues);
   });
 
-  it('should group values with a key comparer, but outer throws', function () {
+  it('should group values with a keySelector, but outer throws', function () {
     var values = {
       a: '  foo',
       b: ' FoO ',
@@ -213,7 +213,7 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source).toBe(expected, expectedValues);
   });
 
-  it('should group values with a key comparer, inners propagate error from outer', function () {
+  it('should group values with a keySelector, inners propagate error from outer', function () {
     var values = {
       a: '  foo',
       b: ' FoO ',
@@ -267,7 +267,7 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source, unsub).toBe(expected, expectedValues);
   });
 
-  it('should group values with a key comparer, but comparer throws', function () {
+  it('should group values with a keySelector which eventually throws', function () {
     var values = {
       a: '  foo',
       b: ' FoO ',
@@ -302,7 +302,7 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source).toBe(expected, expectedValues);
   });
 
-  it('should group values with a key comparer and elementSelector, ' +
+  it('should group values with a keySelector and elementSelector, ' +
     'but elementSelector throws',
   function () {
     var values = {
