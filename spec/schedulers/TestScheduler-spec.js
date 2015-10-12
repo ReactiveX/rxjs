@@ -18,6 +18,15 @@ describe('TestScheduler', function () {
       ]);
     });
 
+    it('should parse a marble string, allowing spaces too', function () {
+      var result = TestScheduler.parseMarbles('--a--b--|   ', { a: 'A', b: 'B' });
+      expect(result).toDeepEqual([
+        { frame: 20, notification: Notification.createNext('A') },
+        { frame: 50, notification: Notification.createNext('B') },
+        { frame: 80, notification: Notification.createComplete() }
+      ]);
+    });
+
     it('should parse a marble string with a subscription point', function () {
       var result = TestScheduler.parseMarbles('---^---a---b---|', { a: 'A', b: 'B' });
       expect(result).toDeepEqual([

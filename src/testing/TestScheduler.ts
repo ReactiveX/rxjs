@@ -204,6 +204,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       let c = marbles[i];
       switch (c) {
         case '-':
+        case ' ':
           break;
         case '(':
           groupStart = frame;
