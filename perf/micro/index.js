@@ -94,7 +94,7 @@ Observable.create(function (observer) {
   if (testArgument !== undefined) {
     var fileArgs = testArgument.slice();
     var csvIndex = fileArgs.indexOf('--csv');
-    if(csvIndex !== -1) {
+    if (csvIndex !== -1) {
       fileArgs.splice(csvIndex, 2);
     }
     return fileArgs.some(function (val) {
