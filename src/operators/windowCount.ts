@@ -10,13 +10,15 @@ import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
-export default function windowCount<T>(windowSize: number, startWindowEvery: number = 0): Observable<Observable<T>> {
+export default function windowCount<T>(windowSize: number,
+                                       startWindowEvery: number = 0): Observable<Observable<T>> {
   return this.lift(new WindowCountOperator(windowSize, startWindowEvery));
 }
 
 class WindowCountOperator<T, R> implements Operator<T, R> {
 
-  constructor(private windowSize: number, private startWindowEvery: number) {
+  constructor(private windowSize: number,
+              private startWindowEvery: number) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -24,54 +26,41 @@ class WindowCountOperator<T, R> implements Operator<T, R> {
   }
 }
 
-interface WindowObject<T> {
-  count: number;
-  notified: boolean;
-  window: Subject<T>;
-}
-
 class WindowCountSubscriber<T> extends Subscriber<T> {
-  private windows: WindowObject<T>[] = [
-    { count: 0, notified : false, window : new Subject<T>() }
-  ];
+  private windows: Subject<T>[] = [ new Subject<T>() ];
   private count: number = 0;
 
-  constructor(destination: Subscriber<T>, private windowSize: number, private startWindowEvery: number) {
+  constructor(destination: Subscriber<T>,
+              private windowSize: number,
+              private startWindowEvery: number) {
     super(destination);
+    destination.next(this.windows[0]);
   }
 
   _next(value: T) {
-    const count = (this.count += 1);
     const startWindowEvery = (this.startWindowEvery > 0) ? this.startWindowEvery : this.windowSize;
     const windowSize = this.windowSize;
     const windows = this.windows;
     const len = windows.length;
 
-    if (count % startWindowEvery === 0) {
-      let window = new Subject<T>();
-      windows.push({ count: 0, notified : false, window : window });
-    }
-
     for (let i = 0; i < len; i++) {
-      let w = windows[i];
-      const window = w.window;
-
-      if (!w.notified) {
-        w.notified = true;
-        this.destination.next(window);
-      }
-
-      window.next(value);
-      if (windowSize === (w.count += 1)) {
-        window.complete();
-      }
+      windows[i].next(value);
+    }
+    const c = this.count - windowSize + 1;
+    if (c >= 0 && c % startWindowEvery === 0) {
+      windows.shift().complete();
+    }
+    if (++this.count % startWindowEvery === 0) {
+      let window = new Subject<T>();
+      windows.push(window);
+      this.destination.next(window);
     }
   }
 
   _error(err: any) {
     const windows = this.windows;
     while (windows.length > 0) {
-      windows.shift().window.error(err);
+      windows.shift().error(err);
     }
     this.destination.error(err);
   }
@@ -79,7 +68,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
   _complete() {
     const windows = this.windows;
     while (windows.length > 0) {
-      windows.shift().window.complete();
+      windows.shift().complete();
     }
     this.destination.complete();
   }
