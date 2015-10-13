@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/operators/filter-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/operators/filter-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">97.69% <small>(127 / 130)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">87.5% <small>(7 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">95.35% <small>(41 / 43)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">98.39% <small>(122 / 124)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/operators/</a> &#187; filter-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">44</span>
+<span class="cline-any cline-yes">44</span>
+<span class="cline-any cline-yes">44</span>
+<span class="cline-any cline-yes">64</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect, expectObservable, hot */
+var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
+&nbsp;
+describe('Observable.prototype.filter()', function () {
+  function oddFilter(x) {
+    return (+x) % 2 === 1;
+  }
+&nbsp;
+  function isPrime(i) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (+i &lt;= 1) { <span class="cstat-no" title="statement not covered" >return false; </span>}
+    var max = Math.floor(Math.sqrt(+i));
+    for (var j = 2; j &lt;= max; ++j) {
+      if (+i % j === 0) { return false; }
+    }
+    return true;
+  }
+&nbsp;
+  it('should filter out even values', function () {
+    var source = hot('--0--1--2--3--4--|');
+    var expected =   '-----1-----3-----|';
+&nbsp;
+    expectObservable(source.filter(oddFilter)).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--3---5----7-------|';
+&nbsp;
+    expectObservable(source.filter(isPrime)).toBe(expected);
+  });
+&nbsp;
+  it('should filter with an always-true predicate', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--3-4-5-6--7-8--9--|';
+    var predicate = function () { return true; };
+&nbsp;
+    expectObservable(source.filter(predicate)).toBe(expected);
+  });
+&nbsp;
+  it('should filter with an always-false predicate', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '-------------------|';
+    var predicate = function () { return false; };
+&nbsp;
+    expectObservable(source.filter(predicate)).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers, source unsubscribes early', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var unsub =             '------------!';
+    var expected =          '--3---5----7-';
+&nbsp;
+    expectObservable(source.filter(isPrime), unsub).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers, source throws', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--#');
+    var expected =          '--3---5----7-------#';
+&nbsp;
+    expectObservable(source.filter(isPrime)).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers, but predicate throws', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--3---5-#';
+&nbsp;
+    var invoked = 0;
+    var predicate = function (x) {
+      invoked++;
+      if (invoked === 4) {
+        throw 'error';
+      }
+      return isPrime(x);
+    };
+&nbsp;
+    expectObservable(source.filter(predicate)).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers, predicate with index', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--3--------7-------|';
+&nbsp;
+    var predicate = function (x, i) {
+      return isPrime((+x) + i * 10);
+    };
+&nbsp;
+    expectObservable(source.filter(predicate)).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers, predicate with index, ' +
+    'source unsubscribes early',
+  function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var unsub =             '------------!';
+    var expected =          '--3--------7-';
+&nbsp;
+    var predicate = function (x, i) {
+      return isPrime((+x) + i * 10);
+    };
+&nbsp;
+    expectObservable(source.filter(predicate), unsub).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers, predicate with index, source throws', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--#');
+    var expected =          '--3--------7-------#';
+&nbsp;
+    var predicate = function (x, i) {
+      return isPrime((+x) + i * 10);
+    };
+&nbsp;
+    expectObservable(source.filter(predicate)).toBe(expected);
+  });
+&nbsp;
+  it('should filter in only prime numbers, predicate with index and throws', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--3-----#';
+&nbsp;
+    var invoked = 0;
+    var predicate = function (x, i) {
+      invoked++;
+      if (invoked === 4) {
+        throw 'error';
+      }
+      return isPrime((+x) + i * 10);
+    };
+&nbsp;
+    expectObservable(source.filter(predicate)).toBe(expected);
+  });
+&nbsp;
+  it('should compose with another filter to allow multiples of six', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--------6----------|';
+&nbsp;
+    expectObservable(
+      source
+        .filter(function (x) { return x % 2 === 0; })
+        .filter(function (x) { return x % 3 === 0; })
+    ).toBe(expected);
+  });
+&nbsp;
+  it('should be able to accept and use a thisArg', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--------6----------|';
+&nbsp;
+    function Filterer() {
+      this.filter1 = function (x) { return x % 2 === 0; };
+      this.filter2 = function (x) { return x % 3 === 0; };
+    }
+&nbsp;
+    var filterer = new Filterer();
+&nbsp;
+    expectObservable(
+      source
+        .filter(function (x) { return this.filter1(x); }, filterer)
+        .filter(function (x) { return this.filter2(x); }, filterer)
+        .filter(function (x) { return this.filter1(x); }, filterer)
+    ).toBe(expected);
+  });
+&nbsp;
+  it('should be able to use filter and map composed', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '----a---b----c-----|';
+    var values = { a: 16, b: 36, c: 64 };
+&nbsp;
+    expectObservable(
+      source
+        .filter(function (x) { return x % 2 === 0; })
+        .map(function (x) { return x * x; })
+    ).toBe(expected, values);
+  });
+&nbsp;
+  it('should propagate errors from the source', function () {
+    var source = hot('--0--1--2--3--4--#');
+    var expected =   '-----1-----3-----#';
+&nbsp;
+    expectObservable(source.filter(oddFilter)).toBe(expected);
+  });
+&nbsp;
+  it('should support Observable.empty', function () {
+    var source = Observable.empty();
+    var expected = '|';
+&nbsp;
+    expectObservable(source.filter(oddFilter)).toBe(expected);
+  });
+&nbsp;
+  it('should support Observable.never', function () {
+    var source = Observable.never();
+    var expected = '-';
+&nbsp;
+    expectObservable(source.filter(oddFilter)).toBe(expected);
+  });
+&nbsp;
+  it('should support Observable.throw', function () {
+    var source = Observable.throw(new Error('oops'));
+    var expected = '#';
+&nbsp;
+    expectObservable(source.filter(oddFilter)).toBe(expected, undefined, new Error('oops'));
+  });
+&nbsp;
+  it('should send errors down the error path', function (done) {
+    Observable.of(42).filter(function (x) {
+      throw 'bad';
+    })
+      .subscribe(<span class="fstat-no" title="function not covered" >function (x) {</span>
+<span class="cstat-no" title="statement not covered" >        expect(true).toBe(false);</span>
+      }, function (err) {
+        expect(err).toBe('bad');
+        done();
+      }, <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        expect(true).toBe(false);</span>
+      });
+  });
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 12 2015 18:06:13 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

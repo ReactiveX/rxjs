@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/operators/zip-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/operators/zip-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(235 / 235)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(4 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(53 / 53)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(231 / 231)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/operators/</a> &#187; zip-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect, expectObservable, hot */
+var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
+var immediateScheduler = Rx.Scheduler.immediate;
+&nbsp;
+describe('zip', function () {
+  it('should work with two nevers', function () {
+    var a = Observable.never();
+    var b = Observable.never();
+    var expected = '-';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with never and empty', function () {
+    var a = Observable.never();
+    var b = Observable.empty();
+    var expected = '|';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with empty and never', function () {
+    var a = Observable.empty();
+    var b = Observable.never();
+    var expected = '|';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with empty and empty', function () {
+    var a = Observable.empty();
+    var b = Observable.empty();
+    var expected = '|';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with empty and non-empty', function () {
+    var a = Observable.empty();
+    var b = hot('---1--|');
+    var expected = '|';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+  it('should work with non-empty and empty', function () {
+    var a = hot('---1--|');
+    var b = Observable.empty();
+    var expected = '|';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+  it('should work with never and non-empty', function () {
+    var a = Observable.never();
+    var b = hot('---1--|');
+    var expected = '-';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+  it('should work with non-empty and never', function () {
+    var a = hot('---1--|');
+    var b = Observable.never();
+    var expected = '-';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+&nbsp;
+  it('should combine two observables', function () {
+    var a =    hot('---1---2---3---');
+    var b =    hot('--4--5--6--7--8--');
+    var expected = '---x---y---z';
+    expectObservable(Observable.of(a, b).zipAll())
+      .toBe(expected, { x: ['1', '4'], y: ['2', '5'], z: ['3', '6'] });
+  });
+&nbsp;
+  it('should combine two observables and selector', function () {
+    var a =    hot('---1---2---3---');
+    var b =    hot('--4--5--6--7--8--');
+    var expected = '---x---y---z';
+    expectObservable(Observable.zip(a,b, function (e1,e2) { return e1 + e2; }))
+      .toBe(expected, { x: '14', y: '25', z: '36' });
+  });
+&nbsp;
+  it('should combine a source with a second', function () {
+    var a =    hot('---1---2---3---');
+    var b =    hot('--4--5--6--7--8--');
+    var expected = '---x---y---z';
+    expectObservable(a.zip(b))
+      .toBe(expected, { x: ['1', '4'], y: ['2', '5'], z: ['3', '6'] });
+  });
+&nbsp;
+  it('should combine two immediately-scheduled observables', function (done) {
+    var a = Observable.of(1, 2, 3, immediateScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
+    var r = [[1, 4], [2, 5], [3, 6]];
+    var i = 0;
+    Observable.of(a, b, immediateScheduler).zipAll().subscribe(function (vals) {
+      expect(vals).toDeepEqual(r[i++]);
+    }, null, done);
+  });
+&nbsp;
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', function (done) {
+    var a = Observable.of(1, 2, 3, immediateScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
+    var r = [[1, 4], [2, 5], [3, 6]];
+    var i = 0;
+    a.zip(b).subscribe(function (vals) {
+      expect(vals).toDeepEqual(r[i++]);
+    }, null, done);
+  });
+&nbsp;
+  it('should combine a source with an immediately-scheduled source', function (done) {
+    var a = Observable.of(1, 2, 3, immediateScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8);
+    var r = [[1, 4], [2, 5], [3, 6]];
+    var i = 0;
+    Observable.of(a, b, immediateScheduler).zipAll().subscribe(function (vals) {
+      expect(vals).toDeepEqual(r[i++]);
+    }, null, done);
+  });
+&nbsp;
+  it('should work with empty and error', function () {
+    var a = Observable.empty();
+    var b = hot('------#', null, 'too bad');
+    var expected = '|';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with error and empty', function () {
+    var a = hot('------#', null, 'too bad');
+    var b = Observable.empty();
+    var expected = '|';
+    expectObservable(a.zip(b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with error', function () {
+    var a =    hot('----------|');
+    var b =    hot('------#', null, 'too bad');
+    var expected = '------#';
+    expectObservable(a.zip(b)).toBe(expected, null, 'too bad');
+  });
+&nbsp;
+  it('should work with never and error', function () {
+    var a = Observable.never();
+    var b =    hot('------#', null, 'too bad');
+    var expected = '------#';
+    expectObservable(a.zip(b)).toBe(expected, null, 'too bad');
+  });
+&nbsp;
+  it('should work with error and never', function () {
+    var a =    hot('------#', null, 'too bad');
+    var b = Observable.never();
+    var expected = '------#';
+    expectObservable(a.zip(b)).toBe(expected, null, 'too bad');
+  });
+&nbsp;
+  it('should work with error and error', function () {
+    var a =    hot('------#', null, 'too bad');
+    var b =    hot('----------#', null, 'too bad 2');
+    var expected = '------#';
+    expectObservable(a.zip(b)).toBe(expected, null, 'too bad');
+  });
+&nbsp;
+  it('should work with some error', function () {
+    var a =    hot('--w-----#----', { w: 1 }, 'too bad');
+    var b =    hot('-----z-----#-', { z: 2 }, 'too bad 2');
+    var expected = '-----x--#';
+    expectObservable(a.zip(b)).toBe(expected, { x: [1, 2] }, 'too bad');
+  });
+&nbsp;
+  it('should work with error some', function () {
+    var a =    hot('-----z-----#-', { z: 2 }, 'too bad 2');
+    var b =    hot('--w-----#----', { w: 1 }, 'too bad');
+    var expected = '-----x--#';
+    expectObservable(a.zip(b)).toBe(expected, { x: [2, 1] }, 'too bad');
+  });
+&nbsp;
+  it('should work with throw', function () {
+    var a = Observable.throw(new Error('too bad'));
+    var b = hot('--1--2--3--');
+    var expected = '#';
+    expectObservable(a.zip(b)).toBe(expected, null, new Error('too bad'));
+  });
+&nbsp;
+  it('should work with n-ary symmetric', function () {
+    var a = hot('---1-^-1----4----|');
+    var b = hot('---1-^--2--5----|');
+    var c = hot('---1-^---3---6-|');
+    var expected =   '----x---y-|';
+    expectObservable(Observable.zip(a,b,c)).toBe(expected,
+      { x: ['1','2','3'], y: ['4','5','6'] });
+  });
+&nbsp;
+  it('should work with n-ary symmetric selector', function () {
+    var a = hot('---1-^-1----4----|');
+    var b = hot('---1-^--2--5----|');
+    var c = hot('---1-^---3---6-|');
+    var expected =   '----x---y-|';
+    var observable = Observable.zip(a,b,c,
+      function (r0, r1, r2) { return [r0, r1, r2]; });
+    expectObservable(observable).toBe(expected,
+      { x: ['1','2','3'], y: ['4','5','6'] });
+  });
+&nbsp;
+  it('should work with n-ary symmetric array selector', function () {
+    var a = hot('---1-^-1----4----|');
+    var b = hot('---1-^--2--5----|');
+    var c = hot('---1-^---3---6-|');
+    var expected =   '----x---y-|';
+    var observable = Observable.zip(a,b,c,
+      function (r0, r1, r2) { return [r0, r1, r2]; });
+    expectObservable(observable).toBe(expected,
+      { x: ['1','2','3'], y: ['4','5','6'] });
+  });
+&nbsp;
+  it('should work with some data asymmetric 1', function () {
+    var a = hot('---1-^-1-3-5-7-9-x-y-z-w-u-|');
+    var b = hot('---1-^--2--4--6--8--0--|');
+    var expected =   '---a--b--c--d--e--|';
+    expectObservable(Observable.zip(a,b, function (r1,r2) { return r1 + r2; }))
+      .toBe(expected, { a: '12', b: '34', c: '56', d: '78', e: '90' });
+  });
+&nbsp;
+  it('should work with some data asymmetric 2', function () {
+    var a = hot('---1-^--2--4--6--8--0--|');
+    var b = hot('---1-^-1-3-5-7-9-x-y-z-w-u-|');
+    var expected =   '---a--b--c--d--e--|';
+    expectObservable(Observable.zip(a,b, function (r1,r2) { return r1 + r2; }))
+      .toBe(expected, { a: '21', b: '43', c: '65', d: '87', e: '09' });
+  });
+&nbsp;
+  it('should work with some data symmetric', function () {
+    var a = hot('---1-^-1-3-5-7-9------|');
+    var b = hot('---1-^--2--4--6--8--0--|');
+    var expected =   '---a--b--c--d--e-|';
+    expectObservable(Observable.zip(a,b, function (r1,r2) { return r1 + r2; }))
+      .toBe(expected, { a: '12', b: '34', c: '56', d: '78', e: '90' });
+  });
+&nbsp;
+  it('should work with selector throws', function () {
+    var a = hot('---1-^-2---4----|');
+    var b = hot('---1-^--3----5----|');
+    var expected =   '---x----#';
+    var selector = function (x, y) {
+      if (y === '5') {
+        throw new Error('too bad');
+      } else {
+        return x + y;
+      }};
+    var observable = Observable.zip(a,b,selector);
+    expectObservable(observable).toBe(expected,
+      { x: '23' }, new Error('too bad'));
+  });
+&nbsp;
+  it('should work with right completes first', function () {
+    var a = hot('---1-^-2-----|');
+    var b = hot('---1-^--3--|');
+    var expected =   '---x--|';
+    expectObservable(Observable.zip(a,b)).toBe(expected, { x: ['2', '3'] });
+  });
+&nbsp;
+  it('should work with with iterable never empty', function () {
+    var a = Observable.never();
+    var b = [];
+    var expected = '-';
+    expectObservable(Observable.zip(a,b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with with iterable empty empty', function () {
+    var a = Observable.empty();
+    var b = [];
+    var expected = '|';
+    expectObservable(Observable.zip(a,b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with with iterable empty non-empty', function () {
+    var a = Observable.empty();
+    var b = [1];
+    var expected = '|';
+    expectObservable(Observable.zip(a,b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with with iterable non-empty empty', function () {
+    var a = hot('---^----a--|');
+    var b = [];
+    var expected = '--------|';
+    expectObservable(Observable.zip(a,b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with with iterable never non-empty', function () {
+    var a = Observable.never();
+    var b = [1];
+    var expected = '-';
+    expectObservable(Observable.zip(a,b)).toBe(expected);
+  });
+&nbsp;
+  it('should work with with iterable non-empty non-empty', function () {
+    var a = hot('---^----1--|');
+    var b = [2];
+    var expected = '-----(x|)';
+    expectObservable(Observable.zip(a,b)).toBe(expected, { x: ['1', 2] });
+  });
+&nbsp;
+  it('should work with with iterable error empty', function () {
+    var a = hot('---^----#--|', null, new Error('too bad'));
+    var b = [];
+    var expected = '-----#';
+    expectObservable(Observable.zip(a,b)).toBe(expected, null, new Error('too bad'));
+  });
+&nbsp;
+  it('should work with with iterable error some', function () {
+    var a = hot('---^----#--|', null, new Error('too bad'));
+    var b = [1];
+    var expected = '-----#';
+    expectObservable(Observable.zip(a,b)).toBe(expected, null, new Error('too bad'));
+  });
+&nbsp;
+  it('should work with with iterable some data both sides', function () {
+    var a = hot('---^--1--2--3--|');
+    var b = [4, 5, 6];
+    var expected = '---x--y--(z|)';
+    expectObservable(Observable.zip(a,b)).toBe(expected,
+      { x: ['1', 4], y: ['2', 5], z: ['3', 6] });
+  });
+&nbsp;
+  it('should work with with iterable selector throws', function () {
+    var a = hot('---^--1--2--3--|');
+    var b = [4, 5, 6];
+    var expected = '---x--#';
+    var selector = function (x, y) {
+      if (y === 5) {
+        throw new Error('too bad');
+      } else {
+        return x + y;
+      }};
+    expectObservable(Observable.zip(a,b,selector)).toBe(expected,
+      { x: '14' }, new Error('too bad'));
+  });
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 12 2015 18:06:13 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
