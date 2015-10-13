@@ -62,4 +62,15 @@ export default class ScalarObservable<T> extends Observable<T> {
       return new ScalarObservable(project.call(thisArg || this, this.value, 0));
     }
   }
+
+  filter(select: (x: T, ix?: number) => boolean, thisArg?: any): Observable<T> {
+    let result = tryCatch(select).call(thisArg || this, this.value, 0);
+    if (result === errorObject) {
+      return new ErrorObservable(errorObject.e);
+    } else if (result) {
+      return this;
+    } else {
+      return new EmptyObservable();
+    }
+  }
 }
