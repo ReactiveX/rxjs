@@ -93,4 +93,11 @@ export default class ScalarObservable<T> extends Observable<T> {
   count(): Observable<number> {
     return new ScalarObservable(1);
   }
+
+  skip(count: number): Observable<T> {
+    if (count > 0) {
+      return new EmptyObservable();
+    }
+    return this;
+  }
 }
