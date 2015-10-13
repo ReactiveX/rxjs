@@ -6,17 +6,17 @@ module.exports = function (suite) {
     return x + x;
   }
 
-  var oldScanScalarWithImmediateScheduler = RxOld.Observable.of(25, RxOld.Scheduler.immediate).scan(add, 0);
-  var newScanScalarWithImmediateScheduler = RxNew.Observable.of(25).scan(add, 0);
+  var oldScanScalarWithImmediateScheduler = RxOld.Observable.of(25, RxOld.Scheduler.immediate).scan(add);
+  var newScanScalarWithImmediateScheduler = RxNew.Observable.of(25).scan(add);
 
   function _next(x) { }
   function _error(e) { }
   function _complete() { }
   return suite
-    .add('old scalar observable scan with immediate scheduler', function () {
+    .add('old scalar observable scan with immediate scheduler with no seed', function () {
       oldScanScalarWithImmediateScheduler.subscribe(_next, _error, _complete);
     })
-    .add('new scalar observable scan with immediate scheduler', function () {
+    .add('new scalar observable scan with immediate scheduler with no seed', function () {
       newScanScalarWithImmediateScheduler.subscribe(_next, _error, _complete);
     });
 };
