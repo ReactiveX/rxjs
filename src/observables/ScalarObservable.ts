@@ -100,4 +100,11 @@ export default class ScalarObservable<T> extends Observable<T> {
     }
     return this;
   }
+
+  take(count: number): Observable<T> {
+    if (count > 0) {
+      return this;
+    }
+    return new EmptyObservable();
+  }
 }
