@@ -1,5 +1,9 @@
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
+import tryCatch from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
+import ErrorObservable from './ErrorObservable';
+import EmptyObservable from './EmptyObservable';
 
 export default class ScalarObservable<T> extends Observable<T> {
 
@@ -47,6 +51,15 @@ export default class ScalarObservable<T> extends Observable<T> {
       if (!subscriber.isUnsubscribed) {
         subscriber.complete();
       }
+    }
+  }
+
+  map<R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
+    let result = tryCatch(project).call(thisArg || this, this.value, 0);
+    if (result === errorObject) {
+      return new ErrorObservable(errorObject.e);
+    } else {
+      return new ScalarObservable(project.call(thisArg || this, this.value, 0));
     }
   }
 }
