@@ -89,4 +89,8 @@ export default class ScalarObservable<T> extends Observable<T> {
   scan<R>(project: (acc: R, x: T) => R, acc?: R): Observable<R> {
     return this.reduce(project, acc);
   }
+
+  count(): Observable<number> {
+    return new ScalarObservable(1);
+  }
 }
