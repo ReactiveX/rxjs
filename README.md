@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ReactiveX/RxJS.svg?branch=master)](https://travis-ci.org/ReactiveX/RxJS)
+[![Coverage Status](https://coveralls.io/repos/ReactiveX/RxJS/badge.svg?branch=master&service=github)](https://coveralls.io/github/ReactiveX/RxJS?branch=master)
 [![npm version](https://badge.fury.io/js/%40reactivex%2Frxjs.svg)](http://badge.fury.io/js/%40reactivex%2Frxjs)
 
 # RxJS 5 (alpha)

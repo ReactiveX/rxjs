@@ -1,7 +1,7 @@
 language: node_js
 sudo: false
 node_js:
-- '0.12'
+  - '0.12'
 
 cache:
   directories:
@@ -17,4 +17,7 @@ install:
   - npm install
 
 script:
-  - npm run build_test
+  - npm run build_cover
+
+after_script:
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

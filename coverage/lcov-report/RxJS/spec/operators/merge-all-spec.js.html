@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/operators/merge-all-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/operators/merge-all-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">96.61% <small>(57 / 59)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">91.3% <small>(21 / 23)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">96.61% <small>(57 / 59)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/operators/</a> &#187; merge-all-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect, expectObservable, hot, cold */
+var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
+&nbsp;
+describe('Observable.prototype.mergeAll()', function () {
+  it('should merge all observables in an observable', function () {
+    var e1 = Observable.fromArray([
+      Observable.of('a'),
+      Observable.of('b'),
+      Observable.of('c')
+    ]);
+    var expected = '(abc|)';
+&nbsp;
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
+&nbsp;
+  it('should throw if any child observable throws', function () {
+    var e1 = Observable.fromArray([
+      Observable.of('a'),
+      Observable.throw('error'),
+      Observable.of('c')
+    ]);
+    var expected = '(a#)';
+&nbsp;
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
+&nbsp;
+  it('should handle merging a hot observable of observables', function () {
+    var x = cold(     'a---b---c---|');
+    var y = cold(        'd---e---f---|');
+    var e1 =    hot('--x--y--|', { x: x, y: y });
+    var expected =  '--a--db--ec--f---|';
+&nbsp;
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
+&nbsp;
+  it('should handle merging a hot observable of non-overlapped observables', function () {
+    var values = {
+      x: cold(       'a-b---------|'),
+      y: cold(                 'c-d-e-f-|'),
+      z: cold(                          'g-h-i-j-k-|')
+    };
+    var e1 =   hot('--x---------y--------z--------|', values);
+    var expected = '--a-b-------c-d-e-f--g-h-i-j-k-|';
+&nbsp;
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
+&nbsp;
+  it('should raise error if inner observable raises error', function () {
+    var values = {
+      x: cold(       'a-b---------|'),
+      y: cold(                 'c-d-e-f-#'),
+      z: cold(                          'g-h-i-j-k-|')
+    };
+    var e1 =   hot('--x---------y--------z--------|', values);
+    var expected = '--a-b-------c-d-e-f-#';
+&nbsp;
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
+&nbsp;
+  it('should raise error if outer observable raises error', function () {
+    var values = {
+      y: cold(       'a-b---------|'),
+      z: cold(                 'c-d-e-f-|'),
+    };
+    var e1 =   hot('--y---------z---#-------------|', values);
+    var expected = '--a-b-------c-d-#';
+&nbsp;
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
+&nbsp;
+  it('should merge all promises in an observable', function (done) {
+    var e1 = Rx.Observable.fromArray([
+      new Promise(function (res) { res('a'); }),
+      new Promise(function (res) { res('b'); }),
+      new Promise(function (res) { res('c'); }),
+      new Promise(function (res) { res('d'); }),
+    ]);
+    var expected = ['a', 'b', 'c', 'd'];
+&nbsp;
+    var res = [];
+    e1.mergeAll().subscribe(
+      function (x) { res.push(x); },
+<span class="fstat-no" title="function not covered" >      function (err) {</span> <span class="cstat-no" title="statement not covered" >throw 'should not be called'; </span>},
+      function () {
+        expect(res).toEqual(expected);
+        done();
+      });
+  });
+&nbsp;
+  it('should raise error when promise rejects', function (done) {
+    var error = 'error';
+    var e1 = Rx.Observable.fromArray([
+      new Promise(function (res) { res('a'); }),
+      new Promise(function (res, rej) { rej(error); }),
+      new Promise(function (res) { res('c'); }),
+      new Promise(function (res) { res('d'); }),
+    ]);
+&nbsp;
+    var res = [];
+    e1.mergeAll().subscribe(
+      function (x) { res.push(x); },
+      function (err) {
+        expect(res.length).toEqual(1);
+        expect(err).toBe(error);
+        done();
+      },
+<span class="fstat-no" title="function not covered" >      function () {</span> <span class="cstat-no" title="statement not covered" >throw 'should not be called'; </span>});
+  });
+});</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 12 2015 18:06:13 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
