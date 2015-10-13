@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -94,8 +107,8 @@ class SwitchSubscriber extends OuterSubscriber {
             this.remove(innerSubscription);
         }
     }
-    notifyNext(value) {
-        this.destination.next(value);
+    notifyNext(outerValue, innerValue) {
+        this.destination.next(innerValue);
     }
     notifyError(err) {
         this.destination.error(err);

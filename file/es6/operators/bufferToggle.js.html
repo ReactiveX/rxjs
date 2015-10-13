@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -61,6 +74,14 @@
 import Subscription from &apos;../Subscription&apos;;
 import tryCatch from &apos;../util/tryCatch&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
+/**
+ * buffers values from the source by opening the buffer via signals from an observable provided to `openings`, and closing
+ * and sending the buffers when an observable returned by the `closingSelector` emits.
+ * @param {Observable&lt;O&gt;} openings An observable of notifications to start new buffers
+ * @param {Function} an function, that takes the value emitted by the `openings` observable and returns an Observable, which,
+ *  when it emits, signals that the associated buffer should be emitted and cleared.
+ * @returns {Observable&lt;T[]&gt;} an observable of arrays of buffered values.
+ */
 export default function bufferToggle(openings, closingSelector) {
     return this.lift(new BufferToggleOperator(openings, closingSelector));
 }
@@ -115,7 +136,9 @@ class BufferToggleSubscriber extends Subscriber {
                 subscription: new Subscription()
             };
             buffers.push(buffer);
-            this.add(context.subscription.add(closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this, context))));
+            const subscriber = new BufferClosingNotifierSubscriber(this, context);
+            const subscription = closingNotifier._subscribe(subscriber);
+            this.add(context.subscription.add(subscription));
         }
     }
     closeBuffer(context) {

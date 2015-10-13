@@ -1,0 +1,493 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "ClassDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "SubscriptionLog",
+          "range": [
+            21,
+            36
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 21
+            },
+            "end": {
+              "line": 1,
+              "column": 36
+            }
+          }
+        },
+        "superClass": null,
+        "body": {
+          "type": "ClassBody",
+          "body": [
+            {
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "constructor",
+                "range": [
+                  43,
+                  54
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 15
+                  }
+                }
+              },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [
+                  {
+                    "type": "Identifier",
+                    "name": "subscribedFrame",
+                    "range": [
+                      55,
+                      70
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 31
+                      }
+                    }
+                  },
+                  {
+                    "type": "AssignmentPattern",
+                    "left": {
+                      "type": "Identifier",
+                      "name": "unsubscribedFrame",
+                      "range": [
+                        72,
+                        89
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 33
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 50
+                        }
+                      }
+                    },
+                    "right": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "Number",
+                        "range": [
+                          92,
+                          98
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 2,
+                            "column": 53
+                          },
+                          "end": {
+                            "line": 2,
+                            "column": 59
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "POSITIVE_INFINITY",
+                        "range": [
+                          99,
+                          116
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 2,
+                            "column": 60
+                          },
+                          "end": {
+                            "line": 2,
+                            "column": 77
+                          }
+                        }
+                      },
+                      "range": [
+                        92,
+                        116
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 53
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 77
+                        }
+                      }
+                    },
+                    "range": [
+                      72,
+                      116
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 77
+                      }
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              128,
+                              132
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 3,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 3,
+                                "column": 12
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "subscribedFrame",
+                            "range": [
+                              133,
+                              148
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 3,
+                                "column": 13
+                              },
+                              "end": {
+                                "line": 3,
+                                "column": 28
+                              }
+                            }
+                          },
+                          "range": [
+                            128,
+                            148
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 3,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "subscribedFrame",
+                          "range": [
+                            151,
+                            166
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 3,
+                              "column": 31
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 46
+                            }
+                          }
+                        },
+                        "range": [
+                          128,
+                          166
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 46
+                          }
+                        }
+                      },
+                      "range": [
+                        128,
+                        167
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 47
+                        }
+                      }
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              176,
+                              180
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 4,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 4,
+                                "column": 12
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "unsubscribedFrame",
+                            "range": [
+                              181,
+                              198
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 4,
+                                "column": 13
+                              },
+                              "end": {
+                                "line": 4,
+                                "column": 30
+                              }
+                            }
+                          },
+                          "range": [
+                            176,
+                            198
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 4,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 30
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "unsubscribedFrame",
+                          "range": [
+                            201,
+                            218
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 4,
+                              "column": 33
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 50
+                            }
+                          }
+                        },
+                        "range": [
+                          176,
+                          218
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 4,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 4,
+                            "column": 50
+                          }
+                        }
+                      },
+                      "range": [
+                        176,
+                        219
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 51
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    118,
+                    225
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 79
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 5
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  54,
+                  225
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 15
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 5
+                  }
+                }
+              },
+              "kind": "constructor",
+              "computed": false,
+              "range": [
+                43,
+                225
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 4
+                },
+                "end": {
+                  "line": 5,
+                  "column": 5
+                }
+              },
+              "static": false
+            }
+          ],
+          "range": [
+            37,
+            227
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 37
+            },
+            "end": {
+              "line": 6,
+              "column": 1
+            }
+          }
+        },
+        "range": [
+          15,
+          227
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 15
+          },
+          "end": {
+            "line": 6,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        0,
+        227
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    227
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 1
+    }
+  },
+  "comments": []
+}

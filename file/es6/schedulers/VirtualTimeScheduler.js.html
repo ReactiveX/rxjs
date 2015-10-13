@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -69,7 +82,7 @@ export default class VirtualTimeScheduler {
         this.maxFrames = 750;
     }
     now() {
-        return this.frame * VirtualTimeScheduler.frameTimeFactor;
+        return this.frame;
     }
     flush() {
         const actions = this.actions;
@@ -94,7 +107,23 @@ export default class VirtualTimeScheduler {
         const vaction = action;
         actions.push(action);
         actions.sort((a, b) =&gt; {
-            return (a.delay === b.delay) ? (a.index === b.index ? 0 : (a.index &gt; b.index ? 1 : -1)) : (a.delay &gt; b.delay ? 1 : -1);
+            if (a.delay === b.delay) {
+                if (a.index === b.index) {
+                    return 0;
+                }
+                else if (a.index &gt; b.index) {
+                    return 1;
+                }
+                else {
+                    return -1;
+                }
+            }
+            else if (a.delay &gt; b.delay) {
+                return 1;
+            }
+            else {
+                return -1;
+            }
         });
     }
     schedule(work, delay = 0, state) {
@@ -109,14 +138,24 @@ class VirtualAction extends Subscription {
         this.scheduler = scheduler;
         this.work = work;
         this.index = index;
+        this.calls = 0;
     }
     schedule(state, delay = 0) {
         if (this.isUnsubscribed) {
             return this;
         }
         const scheduler = this.scheduler;
-        var action = scheduler.frame === this.delay ? this :
-            new VirtualAction(scheduler, this.work, scheduler.index += 1);
+        let action;
+        if (this.calls++ === 0) {
+            // the action is not being rescheduled.
+            action = this;
+        }
+        else {
+            // the action is being rescheduled, and we can&apos;t mutate the one in the actions list
+            // in the scheduler, so we&apos;ll create a new one.
+            action = new VirtualAction(scheduler, this.work, scheduler.index += 1);
+            this.add(action);
+        }
         action.state = state;
         action.delay = scheduler.frame + delay;
         scheduler.addAction(action);
@@ -124,13 +163,12 @@ class VirtualAction extends Subscription {
     }
     execute() {
         if (this.isUnsubscribed) {
-            throw new Error(&quot;How did did we execute a canceled Action?&quot;);
+            throw new Error(&apos;How did did we execute a canceled Action?&apos;);
         }
         this.work(this.state);
     }
     unsubscribe() {
-        const scheduler = this.scheduler;
-        const actions = scheduler.actions;
+        const actions = this.scheduler.actions;
         const index = actions.indexOf(this);
         this.work = void 0;
         this.state = void 0;

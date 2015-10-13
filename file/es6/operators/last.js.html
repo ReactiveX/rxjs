@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -60,26 +73,26 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
 import tryCatch from &apos;../util/tryCatch&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
-import bindCallback from &apos;../util/bindCallback&apos;;
 import EmptyError from &apos;../util/EmptyError&apos;;
-export default function last(predicate, thisArg, defaultValue) {
-    return this.lift(new LastOperator(predicate, thisArg, defaultValue, this));
+export default function last(predicate, resultSelector, defaultValue) {
+    return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 class LastOperator {
-    constructor(predicate, thisArg, defaultValue, source) {
+    constructor(predicate, resultSelector, defaultValue, source) {
         this.predicate = predicate;
-        this.thisArg = thisArg;
+        this.resultSelector = resultSelector;
         this.defaultValue = defaultValue;
         this.source = source;
     }
     call(observer) {
-        return new LastSubscriber(observer, this.predicate, this.thisArg, this.defaultValue, this.source);
+        return new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source);
     }
 }
 class LastSubscriber extends Subscriber {
-    constructor(destination, predicate, thisArg, defaultValue, source) {
+    constructor(destination, predicate, resultSelector, defaultValue, source) {
         super(destination);
-        this.thisArg = thisArg;
+        this.predicate = predicate;
+        this.resultSelector = resultSelector;
         this.defaultValue = defaultValue;
         this.source = source;
         this.hasValue = false;
@@ -88,18 +101,24 @@ class LastSubscriber extends Subscriber {
             this.lastValue = defaultValue;
             this.hasValue = true;
         }
-        if (typeof predicate === &apos;function&apos;) {
-            this.predicate = bindCallback(predicate, thisArg, 3);
-        }
     }
     _next(value) {
-        const predicate = this.predicate;
+        const { predicate, resultSelector, destination } = this;
+        const index = this.index++;
         if (predicate) {
-            let result = tryCatch(predicate)(value, this.index++, this.source);
-            if (result === errorObject) {
-                this.destination.error(result.e);
+            let found = tryCatch(predicate)(value, index, this.source);
+            if (found === errorObject) {
+                destination.error(errorObject.e);
+                return;
             }
-            else if (result) {
+            if (found) {
+                if (resultSelector) {
+                    value = tryCatch(resultSelector)(value, index);
+                    if (value === errorObject) {
+                        destination.error(errorObject.e);
+                        return;
+                    }
+                }
                 this.lastValue = value;
                 this.hasValue = true;
             }

@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/observables/zip-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/observables/zip-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(42 / 42)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(13 / 13)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(40 / 40)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/observables/</a> &#187; zip-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect, expectObservable, hot, cold */
+var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
+&nbsp;
+describe('Observable.zip', function () {
+  it('should zip the provided observables', function (done) {
+    var expected = ['a1', 'b2', 'c3'];
+    var i = 0;
+&nbsp;
+    Observable.zip(
+      Observable.fromArray(['a','b','c']),
+      Observable.fromArray([1,2,3]),
+      function (a, b) {
+        return a + b;
+      }
+    )
+    .subscribe(function (x) {
+      expect(x).toBe(expected[i++]);
+    }, null, done);
+  });
+&nbsp;
+  it('should end once one observable completes and its buffer is empty', function () {
+    var e1 =   hot('---a--b--c--|');
+    var e2 =   hot('------d----e----f--------|');
+    var e3 =   hot('--------h----i----j-------------'); // doesn't complete
+    var expected = '--------x----y----(z|)'; // e1 complete and buffer empty
+    var values = {
+      x: ['a','d','h'],
+      y: ['b','e','i'],
+      z: ['c','f','j']
+    };
+    expectObservable(Observable.zip(e1,e2,e3)).toBe(expected, values);
+  });
+&nbsp;
+  it('should end once one observable nexts and zips value from completed other observable whose buffer is empty', function () {
+    var e1 =   hot('---a--b--c--|');
+    var e2 =   hot('------d----e----f|');
+    var e3 =   hot('--------h----i----j-------------'); // doesn't complete
+    var expected = '--------x----y----(z|)'; // e2 buffer empty and signaled complete
+    var values = {
+      x: ['a','d','h'],
+      y: ['b','e','i'],
+      z: ['c','f','j']
+    };
+    expectObservable(Observable.zip(e1,e2,e3)).toBe(expected, values);
+  });
+&nbsp;
+  describe('with iterables', function () {
+    it('should zip them with values', function () {
+      var myIterator = {
+        count: 0,
+        next: function () {
+          return { value: this.count++, done: false };
+        }
+      };
+      myIterator[Symbol.iterator] = function () { return this; };
+&nbsp;
+      var e1 =   hot('---a---b---c---d---|');
+      var expected = '---w---x---y---z---|';
+&nbsp;
+      var values = {
+        w: ['a', 0],
+        x: ['b', 1],
+        y: ['c', 2],
+        z: ['d', 3]
+      };
+&nbsp;
+      expectObservable(Observable.zip(e1, myIterator)).toBe(expected, values);
+    });
+&nbsp;
+    it('should only call `next` as needed', function () {
+      var nextCalled = 0;
+      var myIterator = {
+        count: 0,
+        next: function () {
+          nextCalled++;
+          return { value: this.count++, done: false };
+        }
+      };
+      myIterator[Symbol.iterator] = function () { return this; };
+&nbsp;
+      Observable.zip(Observable.of(1,2,3), myIterator)
+        .subscribe();
+&nbsp;
+      // since zip will call `next()` in advance, total calls when
+      // zipped with 3 other values should be 4.
+      expect(nextCalled).toBe(4);
+    });
+  });
+});</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 13 2015 12:39:49 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

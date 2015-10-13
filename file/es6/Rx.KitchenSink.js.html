@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">es6/Rx.KitchenSink.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/Rx.KitchenSink.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Observable from &apos;./Observable&apos;;
+import combineLatestStatic from &apos;./operators/combineLatest-static&apos;;
+Observable.combineLatest = combineLatestStatic;
+import concatStatic from &apos;./operators/concat-static&apos;;
+Observable.concat = concatStatic;
+import DeferObservable from &apos;./observables/DeferObservable&apos;;
+Observable.defer = DeferObservable.create;
+import EmptyObservable from &apos;./observables/EmptyObservable&apos;;
+Observable.empty = EmptyObservable.create;
+import ForkJoinObservable from &apos;./observables/ForkJoinObservable&apos;;
+Observable.forkJoin = ForkJoinObservable.create;
+import FromObservable from &apos;./observables/FromObservable&apos;;
+Observable.from = FromObservable.create;
+import ArrayObservable from &apos;./observables/ArrayObservable&apos;;
+Observable.fromArray = ArrayObservable.create;
+import FromEventObservable from &apos;./observables/FromEventObservable&apos;;
+Observable.fromEvent = FromEventObservable.create;
+import FromEventPatternObservable from &apos;./observables/FromEventPatternObservable&apos;;
+Observable.fromEventPattern = FromEventPatternObservable.create;
+import PromiseObservable from &apos;./observables/PromiseObservable&apos;;
+Observable.fromPromise = PromiseObservable.create;
+import IntervalObservable from &apos;./observables/IntervalObservable&apos;;
+Observable.interval = IntervalObservable.create;
+import mergeStatic from &apos;./operators/merge-static&apos;;
+Observable.merge = mergeStatic;
+import InfiniteObservable from &apos;./observables/InfiniteObservable&apos;;
+Observable.never = InfiniteObservable.create;
+Observable.of = ArrayObservable.of;
+import RangeObservable from &apos;./observables/RangeObservable&apos;;
+Observable.range = RangeObservable.create;
+import ErrorObservable from &apos;./observables/ErrorObservable&apos;;
+Observable.throw = ErrorObservable.create;
+import TimerObservable from &apos;./observables/TimerObservable&apos;;
+Observable.timer = TimerObservable.create;
+import zipStatic from &apos;./operators/zip-static&apos;;
+Observable.zip = zipStatic;
+// Operators
+const observableProto = Observable.prototype;
+import buffer from &apos;./operators/buffer&apos;;
+observableProto.buffer = buffer;
+import bufferCount from &apos;./operators/bufferCount&apos;;
+observableProto.bufferCount = bufferCount;
+import bufferTime from &apos;./operators/bufferTime&apos;;
+observableProto.bufferTime = bufferTime;
+import bufferToggle from &apos;./operators/bufferToggle&apos;;
+observableProto.bufferToggle = bufferToggle;
+import bufferWhen from &apos;./operators/bufferWhen&apos;;
+observableProto.bufferWhen = bufferWhen;
+import _catch from &apos;./operators/catch&apos;;
+observableProto.catch = _catch;
+import combineAll from &apos;./operators/combineAll&apos;;
+observableProto.combineAll = combineAll;
+import combineLatest from &apos;./operators/combineLatest&apos;;
+observableProto.combineLatest = combineLatest;
+import concat from &apos;./operators/concat&apos;;
+observableProto.concat = concat;
+import concatAll from &apos;./operators/concatAll&apos;;
+observableProto.concatAll = concatAll;
+import concatMap from &apos;./operators/concatMap&apos;;
+observableProto.concatMap = concatMap;
+import concatMapTo from &apos;./operators/concatMapTo&apos;;
+observableProto.concatMapTo = concatMapTo;
+import count from &apos;./operators/count&apos;;
+observableProto.count = count;
+import dematerialize from &apos;./operators/dematerialize&apos;;
+observableProto.dematerialize = dematerialize;
+import debounce from &apos;./operators/debounce&apos;;
+observableProto.debounce = debounce;
+import debounceTime from &apos;./operators/debounceTime&apos;;
+observableProto.debounceTime = debounceTime;
+import defaultIfEmpty from &apos;./operators/defaultIfEmpty&apos;;
+observableProto.defaultIfEmpty = defaultIfEmpty;
+import delay from &apos;./operators/delay&apos;;
+observableProto.delay = delay;
+import distinctUntilChanged from &apos;./operators/distinctUntilChanged&apos;;
+observableProto.distinctUntilChanged = distinctUntilChanged;
+import distinctUntilKeyChanged from &apos;./operators/extended/distinctUntilKeyChanged&apos;;
+observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
+import _do from &apos;./operators/do&apos;;
+observableProto.do = _do;
+import elementAt from &apos;./operators/extended/elementAt&apos;;
+observableProto.elementAt = elementAt;
+import expand from &apos;./operators/expand&apos;;
+observableProto.expand = expand;
+import filter from &apos;./operators/filter&apos;;
+observableProto.filter = filter;
+import find from &apos;./operators/extended/find&apos;;
+observableProto.find = find;
+import findIndex from &apos;./operators/extended/findIndex&apos;;
+observableProto.findIndex = findIndex;
+import _finally from &apos;./operators/finally&apos;;
+observableProto.finally = _finally;
+import first from &apos;./operators/first&apos;;
+observableProto.first = first;
+import { groupBy } from &apos;./operators/groupBy&apos;;
+observableProto.groupBy = groupBy;
+import ignoreElements from &apos;./operators/ignoreElements&apos;;
+observableProto.ignoreElements = ignoreElements;
+import isEmpty from &apos;./operators/extended/isEmpty&apos;;
+observableProto.isEmpty = isEmpty;
+import every from &apos;./operators/every&apos;;
+observableProto.every = every;
+import last from &apos;./operators/last&apos;;
+observableProto.last = last;
+import map from &apos;./operators/map&apos;;
+observableProto.map = map;
+import mapTo from &apos;./operators/mapTo&apos;;
+observableProto.mapTo = mapTo;
+import materialize from &apos;./operators/materialize&apos;;
+observableProto.materialize = materialize;
+import merge from &apos;./operators/merge&apos;;
+observableProto.merge = merge;
+import mergeAll from &apos;./operators/mergeAll&apos;;
+observableProto.mergeAll = mergeAll;
+import mergeMap from &apos;./operators/mergeMap&apos;;
+observableProto.mergeMap = mergeMap;
+observableProto.flatMap = mergeMap;
+import mergeMapTo from &apos;./operators/mergeMapTo&apos;;
+observableProto.mergeMapTo = mergeMapTo;
+observableProto.flatMapTo = mergeMapTo;
+import multicast from &apos;./operators/multicast&apos;;
+observableProto.multicast = multicast;
+import observeOn from &apos;./operators/observeOn&apos;;
+observableProto.observeOn = observeOn;
+import partition from &apos;./operators/partition&apos;;
+observableProto.partition = partition;
+import publish from &apos;./operators/publish&apos;;
+observableProto.publish = publish;
+import publishBehavior from &apos;./operators/publishBehavior&apos;;
+observableProto.publishBehavior = publishBehavior;
+import publishReplay from &apos;./operators/publishReplay&apos;;
+observableProto.publishReplay = publishReplay;
+import reduce from &apos;./operators/reduce&apos;;
+observableProto.reduce = reduce;
+import repeat from &apos;./operators/repeat&apos;;
+observableProto.repeat = repeat;
+import retry from &apos;./operators/retry&apos;;
+observableProto.retry = retry;
+import retryWhen from &apos;./operators/retryWhen&apos;;
+observableProto.retryWhen = retryWhen;
+import sample from &apos;./operators/sample&apos;;
+observableProto.sample = sample;
+import sampleTime from &apos;./operators/sampleTime&apos;;
+observableProto.sampleTime = sampleTime;
+import scan from &apos;./operators/scan&apos;;
+observableProto.scan = scan;
+import share from &apos;./operators/share&apos;;
+observableProto.share = share;
+import shareReplay from &apos;./operators/shareReplay&apos;;
+observableProto.shareReplay = shareReplay;
+import single from &apos;./operators/single&apos;;
+observableProto.single = single;
+import skip from &apos;./operators/skip&apos;;
+observableProto.skip = skip;
+import skipUntil from &apos;./operators/skipUntil&apos;;
+observableProto.skipUntil = skipUntil;
+import startWith from &apos;./operators/startWith&apos;;
+observableProto.startWith = startWith;
+import subscribeOn from &apos;./operators/subscribeOn&apos;;
+observableProto.subscribeOn = subscribeOn;
+import _switch from &apos;./operators/switch&apos;;
+observableProto.switch = _switch;
+import switchMap from &apos;./operators/switchMap&apos;;
+observableProto.switchMap = switchMap;
+import switchMapTo from &apos;./operators/switchMapTo&apos;;
+observableProto.switchMapTo = switchMapTo;
+import take from &apos;./operators/take&apos;;
+observableProto.take = take;
+import takeUntil from &apos;./operators/takeUntil&apos;;
+observableProto.takeUntil = takeUntil;
+import throttle from &apos;./operators/throttle&apos;;
+observableProto.throttle = throttle;
+import timeInterval from &apos;./operators/extended/timeInterval&apos;;
+observableProto.timeInterval = timeInterval;
+import timeout from &apos;./operators/timeout&apos;;
+observableProto.timeout = timeout;
+import timeoutWith from &apos;./operators/timeoutWith&apos;;
+observableProto.timeoutWith = timeoutWith;
+import toArray from &apos;./operators/toArray&apos;;
+observableProto.toArray = toArray;
+import toPromise from &apos;./operators/toPromise&apos;;
+observableProto.toPromise = toPromise;
+import window from &apos;./operators/window&apos;;
+observableProto.window = window;
+import windowCount from &apos;./operators/windowCount&apos;;
+observableProto.windowCount = windowCount;
+import windowTime from &apos;./operators/windowTime&apos;;
+observableProto.windowTime = windowTime;
+import windowToggle from &apos;./operators/windowToggle&apos;;
+observableProto.windowToggle = windowToggle;
+import windowWhen from &apos;./operators/windowWhen&apos;;
+observableProto.windowWhen = windowWhen;
+import withLatestFrom from &apos;./operators/withLatestFrom&apos;;
+observableProto.withLatestFrom = withLatestFrom;
+import zip from &apos;./operators/zip&apos;;
+observableProto.zip = zip;
+import zipAll from &apos;./operators/zipAll&apos;;
+observableProto.zipAll = zipAll;
+import Subject from &apos;./Subject&apos;;
+import Subscription from &apos;./Subscription&apos;;
+import Subscriber from &apos;./Subscriber&apos;;
+import ReplaySubject from &apos;./subjects/ReplaySubject&apos;;
+import BehaviorSubject from &apos;./subjects/BehaviorSubject&apos;;
+import ConnectableObservable from &apos;./observables/ConnectableObservable&apos;;
+import Notification from &apos;./Notification&apos;;
+import EmptyError from &apos;./util/EmptyError&apos;;
+import ArgumentOutOfRangeError from &apos;./util/ArgumentOutOfRangeError&apos;;
+import nextTick from &apos;./schedulers/nextTick&apos;;
+import immediate from &apos;./schedulers/immediate&apos;;
+import { TimeInterval } from &apos;./operators/extended/timeInterval&apos;;
+import { TestScheduler } from &apos;./testing/TestScheduler&apos;;
+import VirtualTimeScheduler from &apos;./schedulers/VirtualTimeScheduler&apos;;
+var Scheduler = {
+    nextTick,
+    immediate
+};
+export { Subject, Scheduler, Observable, Subscriber, Subscription, ReplaySubject, BehaviorSubject, ConnectableObservable, Notification, EmptyError, ArgumentOutOfRangeError, TestScheduler, VirtualTimeScheduler, TimeInterval };
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -61,7 +74,7 @@
 All credit for this helper goes to http://github.com/YuzuJS/setImmediate
 */
 import { root as JSGlobal } from &apos;./root&apos;;
-export var Immediate = {
+export let Immediate = {
     setImmediate: (x) =&gt; { return 0; },
     clearImmediate: (id) =&gt; { }
 };
@@ -71,10 +84,10 @@ if (JSGlobal &amp;&amp; JSGlobal.setImmediate) {
 }
 else {
     Immediate = (function (global, Immediate) {
-        var nextHandle = 1, // Spec says greater than zero
+        let nextHandle = 1, // Spec says greater than zero
         tasksByHandle = {}, currentlyRunningATask = false, doc = global.document, setImmediate;
         // Don&apos;t get fooled by e.g. browserify environments.
-        if ({}.toString.call(global.process) === &quot;[object process]&quot;) {
+        if ({}.toString.call(global.process) === &apos;[object process]&apos;) {
             // For Node.js before 0.9
             setImmediate = installNextTickImplementation();
         }
@@ -86,7 +99,7 @@ else {
             // For web workers, where supported
             setImmediate = installMessageChannelImplementation();
         }
-        else if (doc &amp;&amp; &quot;onreadystatechange&quot; in doc.createElement(&quot;script&quot;)) {
+        else if (doc &amp;&amp; &apos;onreadystatechange&apos; in doc.createElement(&apos;script&apos;)) {
             // For IE 6&#x2013;8
             setImmediate = installReadyStateChangeImplementation();
         }
@@ -108,24 +121,24 @@ else {
         // returns a function that requires no arguments.
         function partiallyApplied(handler, ...args) {
             return function () {
-                if (typeof handler === &quot;function&quot;) {
+                if (typeof handler === &apos;function&apos;) {
                     handler.apply(undefined, args);
                 }
                 else {
-                    (new Function(&quot;&quot; + handler))();
+                    (new Function(&apos;&apos; + handler))();
                 }
             };
         }
         function runIfPresent(handle) {
-            // From the spec: &quot;Wait until any invocations of this algorithm started before this one have completed.&quot;
+            // From the spec: &apos;Wait until any invocations of this algorithm started before this one have completed.&apos;
             // So if we&apos;re currently running a task, we&apos;ll need to delay this invocation.
             if (currentlyRunningATask) {
                 // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-                // &quot;too much recursion&quot; error.
+                // &apos;too much recursion&apos; error.
                 setTimeout(partiallyApplied(runIfPresent, handle), 0);
             }
             else {
-                var task = tasksByHandle[handle];
+                let task = tasksByHandle[handle];
                 if (task) {
                     currentlyRunningATask = true;
                     try {
@@ -140,7 +153,7 @@ else {
         }
         function installNextTickImplementation() {
             return function setImmediate() {
-                var handle = addFromSetImmediateArguments(arguments);
+                let handle = addFromSetImmediateArguments(arguments);
                 global.process.nextTick(partiallyApplied(runIfPresent, handle));
                 return handle;
             };
@@ -149,12 +162,12 @@ else {
             // The test against `importScripts` prevents this implementation from being installed inside a web worker,
             // where `global.postMessage` means something completely different and can&apos;t be used for this purpose.
             if (global.postMessage &amp;&amp; !global.importScripts) {
-                var postMessageIsAsynchronous = true;
-                var oldOnMessage = global.onmessage;
+                let postMessageIsAsynchronous = true;
+                let oldOnMessage = global.onmessage;
                 global.onmessage = function () {
                     postMessageIsAsynchronous = false;
                 };
-                global.postMessage(&quot;&quot;, &quot;*&quot;);
+                global.postMessage(&apos;&apos;, &apos;*&apos;);
                 global.onmessage = oldOnMessage;
                 return postMessageIsAsynchronous;
             }
@@ -163,45 +176,45 @@ else {
             // Installs an event handler on `global` for the `message` event: see
             // * https://developer.mozilla.org/en/DOM/window.postMessage
             // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-            var messagePrefix = &quot;setImmediate$&quot; + Math.random() + &quot;$&quot;;
-            var onGlobalMessage = function (event) {
+            let messagePrefix = &apos;setImmediate$&apos; + Math.random() + &apos;$&apos;;
+            let onGlobalMessage = function (event) {
                 if (event.source === global &amp;&amp;
-                    typeof event.data === &quot;string&quot; &amp;&amp;
+                    typeof event.data === &apos;string&apos; &amp;&amp;
                     event.data.indexOf(messagePrefix) === 0) {
                     runIfPresent(+event.data.slice(messagePrefix.length));
                 }
             };
             if (global.addEventListener) {
-                global.addEventListener(&quot;message&quot;, onGlobalMessage, false);
+                global.addEventListener(&apos;message&apos;, onGlobalMessage, false);
             }
             else {
-                global.attachEvent(&quot;onmessage&quot;, onGlobalMessage);
+                global.attachEvent(&apos;onmessage&apos;, onGlobalMessage);
             }
             return function setImmediate() {
-                var handle = addFromSetImmediateArguments(arguments);
-                global.postMessage(messagePrefix + handle, &quot;*&quot;);
+                let handle = addFromSetImmediateArguments(arguments);
+                global.postMessage(messagePrefix + handle, &apos;*&apos;);
                 return handle;
             };
         }
         function installMessageChannelImplementation() {
-            var channel = new MessageChannel();
+            let channel = new MessageChannel();
             channel.port1.onmessage = function (event) {
-                var handle = event.data;
+                let handle = event.data;
                 runIfPresent(handle);
             };
             return function setImmediate() {
-                var handle = addFromSetImmediateArguments(arguments);
+                let handle = addFromSetImmediateArguments(arguments);
                 channel.port2.postMessage(handle);
                 return handle;
             };
         }
         function installReadyStateChangeImplementation() {
-            var html = doc.documentElement;
+            let html = doc.documentElement;
             return function setImmediate() {
-                var handle = addFromSetImmediateArguments(arguments);
+                let handle = addFromSetImmediateArguments(arguments);
                 // Create a &lt;script&gt; element; its readystatechange event will be fired asynchronously once it is inserted
                 // into the document. Do so, thus queuing up the task. Remember to clean up once it&apos;s been called.
-                var script = doc.createElement(&quot;script&quot;);
+                let script = doc.createElement(&apos;script&apos;);
                 script.onreadystatechange = function () {
                     runIfPresent(handle);
                     script.onreadystatechange = null;
@@ -214,7 +227,7 @@ else {
         }
         function installSetTimeoutImplementation() {
             return function setImmediate() {
-                var handle = addFromSetImmediateArguments(arguments);
+                let handle = addFromSetImmediateArguments(arguments);
                 setTimeout(partiallyApplied(runIfPresent, handle), 0);
                 return handle;
             };

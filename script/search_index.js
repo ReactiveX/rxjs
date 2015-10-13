@@ -12,6 +12,84 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "@reactivex/rxjs/es6/operators/buffercount.js~buffercount",
+    "function/index.html#static-function-bufferCount",
+    "<span>bufferCount</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferCount.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/buffertime.js~buffertime",
+    "function/index.html#static-function-bufferTime",
+    "<span>bufferTime</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferTime.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/buffertoggle.js~buffertoggle",
+    "function/index.html#static-function-bufferToggle",
+    "<span>bufferToggle</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferToggle.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/bufferwhen.js~bufferwhen",
+    "function/index.html#static-function-bufferWhen",
+    "<span>bufferWhen</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferWhen.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/combineall.js~combineall",
+    "function/index.html#static-function-combineAll",
+    "<span>combineAll</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/combineAll.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/combinelatest-static.js~combinelatest",
+    "function/index.html#static-function-combineLatest",
+    "<span>combineLatest</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/combineLatest-static.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/combinelatest.js~combinelatest",
+    "function/index.html#static-function-combineLatest",
+    "<span>combineLatest</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/combineLatest.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/concat-static.js~concat",
+    "function/index.html#static-function-concat",
+    "<span>concat</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concat-static.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/concat.js~concat",
+    "function/index.html#static-function-concat",
+    "<span>concat</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concat.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/concatall.js~concatall",
+    "function/index.html#static-function-concatAll",
+    "<span>concatAll</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concatAll.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/concatmap.js~concatmap",
+    "function/index.html#static-function-concatMap",
+    "<span>concatMap</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concatMap.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/concatmapto.js~concatmapto",
+    "function/index.html#static-function-concatMapTo",
+    "<span>concatMapTo</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concatMapTo.js</span>",
+    "function"
+  ],
+  [
+    "@reactivex/rxjs/es6/operators/count.js~count",
+    "function/index.html#static-function-count",
+    "<span>count</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/count.js</span>",
+    "function"
+  ],
+  [
     "@reactivex/rxjs/es6/operators/filter.js~filter",
     "function/index.html#static-function-filter",
     "<span>filter</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/filter.js</span>",
@@ -360,6 +438,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "es6/coreoperators.js",
+    "file/es6/CoreOperators.js.html",
+    "es6/CoreOperators.js",
+    "file"
+  ],
+  [
     "es6/innersubscriber.js",
     "file/es6/InnerSubscriber.js.html",
     "es6/InnerSubscriber.js",
@@ -423,6 +507,12 @@ window.esdocSearchIndex = [
     "es6/outersubscriber.js",
     "file/es6/OuterSubscriber.js.html",
     "es6/OuterSubscriber.js",
+    "file"
+  ],
+  [
+    "es6/rx.kitchensink.js",
+    "file/es6/Rx.KitchenSink.js.html",
+    "es6/Rx.KitchenSink.js",
     "file"
   ],
   [
@@ -660,6 +750,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operators/debouncetime.js",
+    "file/es6/operators/debounceTime.js.html",
+    "es6/operators/debounceTime.js",
+    "file"
+  ],
+  [
     "es6/operators/defaultifempty.js",
     "file/es6/operators/defaultIfEmpty.js.html",
     "es6/operators/defaultIfEmpty.js",
@@ -672,15 +768,15 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/operators/distinctuntilchanged.js",
-    "file/es6/operators/distinctUntilChanged.js.html",
-    "es6/operators/distinctUntilChanged.js",
+    "es6/operators/dematerialize.js",
+    "file/es6/operators/dematerialize.js.html",
+    "es6/operators/dematerialize.js",
     "file"
   ],
   [
-    "es6/operators/distinctuntilkeychanged.js",
-    "file/es6/operators/distinctUntilKeyChanged.js.html",
-    "es6/operators/distinctUntilKeyChanged.js",
+    "es6/operators/distinctuntilchanged.js",
+    "file/es6/operators/distinctUntilChanged.js.html",
+    "es6/operators/distinctUntilChanged.js",
     "file"
   ],
   [
@@ -690,9 +786,9 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/operators/elementat.js",
-    "file/es6/operators/elementAt.js.html",
-    "es6/operators/elementAt.js",
+    "es6/operators/every.js",
+    "file/es6/operators/every.js.html",
+    "es6/operators/every.js",
     "file"
   ],
   [
@@ -708,6 +804,48 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operators/extended/distinctuntilkeychanged.js",
+    "file/es6/operators/extended/distinctUntilKeyChanged.js.html",
+    "es6/operators/extended/distinctUntilKeyChanged.js",
+    "file"
+  ],
+  [
+    "es6/operators/extended/elementat.js",
+    "file/es6/operators/extended/elementAt.js.html",
+    "es6/operators/extended/elementAt.js",
+    "file"
+  ],
+  [
+    "es6/operators/extended/find-support.js",
+    "file/es6/operators/extended/find-support.js.html",
+    "es6/operators/extended/find-support.js",
+    "file"
+  ],
+  [
+    "es6/operators/extended/find.js",
+    "file/es6/operators/extended/find.js.html",
+    "es6/operators/extended/find.js",
+    "file"
+  ],
+  [
+    "es6/operators/extended/findindex.js",
+    "file/es6/operators/extended/findIndex.js.html",
+    "es6/operators/extended/findIndex.js",
+    "file"
+  ],
+  [
+    "es6/operators/extended/isempty.js",
+    "file/es6/operators/extended/isEmpty.js.html",
+    "es6/operators/extended/isEmpty.js",
+    "file"
+  ],
+  [
+    "es6/operators/extended/timeinterval.js",
+    "file/es6/operators/extended/timeInterval.js.html",
+    "es6/operators/extended/timeInterval.js",
+    "file"
+  ],
+  [
     "es6/operators/filter.js",
     "file/es6/operators/filter.js.html",
     "es6/operators/filter.js",
@@ -720,15 +858,27 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operators/first.js",
+    "file/es6/operators/first.js.html",
+    "es6/operators/first.js",
+    "file"
+  ],
+  [
+    "es6/operators/groupby-support.js",
+    "file/es6/operators/groupBy-support.js.html",
+    "es6/operators/groupBy-support.js",
+    "file"
+  ],
+  [
     "es6/operators/groupby.js",
     "file/es6/operators/groupBy.js.html",
     "es6/operators/groupBy.js",
     "file"
   ],
   [
-    "es6/operators/isempty.js",
-    "file/es6/operators/isEmpty.js.html",
-    "es6/operators/isEmpty.js",
+    "es6/operators/ignoreelements.js",
+    "file/es6/operators/ignoreElements.js.html",
+    "es6/operators/ignoreElements.js",
     "file"
   ],
   [
@@ -885,6 +1035,18 @@ window.esdocSearchIndex = [
     "es6/operators/scan.js",
     "file/es6/operators/scan.js.html",
     "es6/operators/scan.js",
+    "file"
+  ],
+  [
+    "es6/operators/share.js",
+    "file/es6/operators/share.js.html",
+    "es6/operators/share.js",
+    "file"
+  ],
+  [
+    "es6/operators/sharereplay.js",
+    "file/es6/operators/shareReplay.js.html",
+    "es6/operators/shareReplay.js",
     "file"
   ],
   [
@@ -1074,12 +1236,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/schedulers/testscheduler.js",
-    "file/es6/schedulers/TestScheduler.js.html",
-    "es6/schedulers/TestScheduler.js",
-    "file"
-  ],
-  [
     "es6/schedulers/virtualtimescheduler.js",
     "file/es6/schedulers/VirtualTimeScheduler.js.html",
     "es6/schedulers/VirtualTimeScheduler.js",
@@ -1104,12 +1260,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/subjects/groupsubject.js",
-    "file/es6/subjects/GroupSubject.js.html",
-    "es6/subjects/GroupSubject.js",
-    "file"
-  ],
-  [
     "es6/subjects/replaysubject.js",
     "file/es6/subjects/ReplaySubject.js.html",
     "es6/subjects/ReplaySubject.js",
@@ -1119,6 +1269,42 @@ window.esdocSearchIndex = [
     "es6/subjects/subjectsubscription.js",
     "file/es6/subjects/SubjectSubscription.js.html",
     "es6/subjects/SubjectSubscription.js",
+    "file"
+  ],
+  [
+    "es6/testing/coldobservable.js",
+    "file/es6/testing/ColdObservable.js.html",
+    "es6/testing/ColdObservable.js",
+    "file"
+  ],
+  [
+    "es6/testing/hotobservable.js",
+    "file/es6/testing/HotObservable.js.html",
+    "es6/testing/HotObservable.js",
+    "file"
+  ],
+  [
+    "es6/testing/subscriptionlog.js",
+    "file/es6/testing/SubscriptionLog.js.html",
+    "es6/testing/SubscriptionLog.js",
+    "file"
+  ],
+  [
+    "es6/testing/subscriptionloggable.js",
+    "file/es6/testing/SubscriptionLoggable.js.html",
+    "es6/testing/SubscriptionLoggable.js",
+    "file"
+  ],
+  [
+    "es6/testing/testmessage.js",
+    "file/es6/testing/TestMessage.js.html",
+    "es6/testing/TestMessage.js",
+    "file"
+  ],
+  [
+    "es6/testing/testscheduler.js",
+    "file/es6/testing/TestScheduler.js.html",
+    "es6/testing/TestScheduler.js",
     "file"
   ],
   [
@@ -1161,6 +1347,12 @@ window.esdocSearchIndex = [
     "es6/util/symbol_observable.js",
     "file/es6/util/Symbol_observable.js.html",
     "es6/util/Symbol_observable.js",
+    "file"
+  ],
+  [
+    "es6/util/applymixins.js",
+    "file/es6/util/applyMixins.js.html",
+    "es6/util/applyMixins.js",
     "file"
   ],
   [

@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/operators/bufferTime-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/operators/bufferTime-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(38 / 38)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(9 / 9)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(38 / 38)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/operators/</a> &#187; bufferTime-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect, hot, cold, rxTestScheduler, expectObservable */
+var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
+&nbsp;
+describe('Observable.prototype.bufferTime', function () {
+  it('should emit buffers at intervals', function () {
+    var values = {
+      w: ['a','b'],
+      x: ['c','d','e'],
+      y: ['f', 'g'],
+      z: []
+    };
+    var e1 =   hot('---a---b---c---d---e---f---g---|');
+    var expected = '----------w---------x---------y(z|)';
+&nbsp;
+    expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, values);
+  });
+&nbsp;
+  it('should emit buffers at intervals test 2', function () {
+    var e1 =   hot('---------a---------b---------c---------d---------e---------g--------|');
+    var expected = '--------------------------------x-------------------------------y---(z|)';
+&nbsp;
+    expectObservable(e1.bufferTime(320, null, rxTestScheduler)).toBe(expected, { x: ['a','b','c'], y: ['d', 'e', 'g'], z: []});
+  });
+&nbsp;
+  it('should emit buffers that have been created at intervals and close after the specified delay', function () {
+    var e1 =   hot('---a---b---c----d----e----f----g----h----i----(k|)');
+                 // --------------------*--------------------*----  start interval
+                 // ---------------------|                          timespans
+                 //                     ---------------------|
+                 //                                          -----|
+    var expected = '---------------------x-------------------y----(z|)';
+    var values = {
+      x: ['a', 'b', 'c', 'd', 'e'],
+      y: ['e', 'f', 'g', 'h', 'i'],
+      z: ['i', 'k']
+    };
+    expectObservable(e1.bufferTime(210, 200, rxTestScheduler)).toBe(expected, values);
+  });
+&nbsp;
+  it('should handle empty', function () {
+    var e1 = Observable.empty();
+    expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe('(a|)', { a: [] });
+  });
+&nbsp;
+  it('should handle never', function () {
+    var e1 = Observable.never();
+    var expected = '----------a---------a---------a---------a---------a---------a---------a-----'; // 750 frame limit
+    expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, { a: [] });
+  });
+&nbsp;
+  it('should handle throw', function () {
+    var e1 = Observable.throw(new Error('haha'));
+    var expected = '#';
+    expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, undefined, new Error('haha'));
+  });
+&nbsp;
+  it('should handle errors', function () {
+    var values = {
+      w: ['a','b']
+    };
+    var e1 =   hot('---a---b---c---#');
+    var expected = '----------w----#';
+&nbsp;
+    expectObservable(e1.bufferTime(100, null, rxTestScheduler)).toBe(expected, values);
+  });
+&nbsp;
+  it('should emit buffers that have been created at intervals and close after the specified delay with errors', function () {
+    var e1 =   hot('---a---b---c----d----e----f----g----h----i--#');
+                 // --------------------*--------------------*----  start interval
+                 // ---------------------|                          timespans
+                 //                     ---------------------|
+                 //                                          -----|
+    var expected = '---------------------x-------------------y--#';
+    var values = {
+      x: ['a', 'b', 'c', 'd', 'e'],
+      y: ['e', 'f', 'g', 'h', 'i']
+    };
+    expectObservable(e1.bufferTime(210, 200, rxTestScheduler)).toBe(expected, values);
+  });
+});</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 13 2015 12:39:49 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/operators/buffer-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/operators/buffer-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(85 / 85)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(17 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(85 / 85)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/operators/</a> &#187; buffer-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect, expectObservable, hot */
+var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
+&nbsp;
+describe('Observable.prototype.buffer', function () {
+  it('should work with empty and empty selector', function () {
+    var a = Observable.empty();
+    var b = Observable.empty();
+    var expected = '|';
+    expectObservable(a.buffer(b)).toBe(expected);
+  });
+  it('should work with empty and non-empty selector', function () {
+    var a = Observable.empty();
+    var b = hot('-----a-----');
+    var expected = '|';
+    expectObservable(a.buffer(b)).toBe(expected);
+  });
+  it('should work with non-empty and empty selector', function () {
+    var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var b = Observable.empty();
+    var expected = '|';
+    expectObservable(a.buffer(b)).toBe(expected);
+  });
+  it('should work with never and never selector', function () {
+    var a = Observable.never();
+    var b = Observable.never();
+    var expected = '-';
+    expectObservable(a.buffer(b)).toBe(expected);
+  });
+  it('should work with never and empty selector', function () {
+    var a = Observable.never();
+    var b = Observable.empty();
+    var expected = '|';
+    expectObservable(a.buffer(b)).toBe(expected);
+  });
+  it('should work with empty and never selector', function () {
+    var a = Observable.empty();
+    var b = Observable.never();
+    var expected = '|';
+    expectObservable(a.buffer(b)).toBe(expected);
+  });
+  it('should emit buffers that close and reopen', function () {
+    var a =    hot('-a-b-c-d-e-f-g-h-i-|');
+    var b =    hot('-----1-----2-----3-|');
+    var expected = '-----x-----y-----z-|';
+    expectObservable(a.buffer(b)).toBe(expected, {x: ['a','b','c'], y: ['d','e','f'], z: ['g','h','i']});
+  });
+  it('should work with non-empty and throw selector', function () {
+    var a = hot('---^--a--');
+    var b = Observable.throw(new Error('too bad'));
+    var expected = '#';
+    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+  });
+  it('should work with throw and non-empty selector', function () {
+    var a = Observable.throw(new Error('too bad'));
+    var b = hot('---^--a--');
+    var expected = '#';
+    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+  });
+  it('should work with error', function () {
+    var a = hot('---^-------#', null, new Error('too bad'));
+    var b = hot('---^--------');
+    var expected = '--------#';
+    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+  });
+  it('should work with error and non-empty selector', function () {
+    var a = hot('---^-------#', null, new Error('too bad'));
+    var b = hot('---^---a----');
+    var expected = '----a---#';
+    expectObservable(a.buffer(b)).toBe(expected, { a: [] }, new Error('too bad'));
+  });
+  it('should work with selector', function () {
+    // Buffer Boundaries Simple (RxJS 4)
+    var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var b = hot('--------^--a-------b---cd---------e---f---|');
+    var expected =      '---a-------b---cd---------e---f-|';
+    expectObservable(a.buffer(b)).toBe(expected,
+      { a: ['3'], b: ['4', '5'], c: ['6'], d: [], e: ['7', '8', '9'], f: ['0'] });
+  });
+  it('should work with selector completed', function () {
+    // Buffer Boundaries onCompletedBoundaries (RxJS 4)
+    var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var b = hot('--------^--a-------b---cd|');
+    var expected =      '---a-------b---cd|';
+    expectObservable(a.buffer(b)).toBe(expected,
+      { a: ['3'], b: ['4', '5'], c: ['6'], d: [] });
+  });
+  it('should work with non-empty and selector error', function () {
+    // Buffer Boundaries onErrorSource (RxJS 4)
+    var a = hot('--1--2--^--3-----#', {'3': 3}, new Error('too bad'));
+    var b = hot('--------^--a--b---');
+    var expected =      '---a--b--#';
+    expectObservable(a.buffer(b)).toBe(expected,
+      { a: [3], b: [] }, new Error('too bad'));
+  });
+  it('should work with non-empty and empty selector error', function () {
+    var obj = { a: true, b: true, c: true };
+    var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var b = hot('--------^----------------#', null, new Error('too bad'));
+    var expected =      '-----------------#';
+    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+  });
+  it('should work with non-empty and selector error', function () {
+    // Buffer Boundaries onErrorBoundaries (RxJS 4)
+    var obj = { a: true, b: true, c: true };
+    var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var b = hot('--------^--a-------b---c-#', obj, new Error('too bad'));
+    var expected =      '---a-------b---c-#';
+    expectObservable(a.buffer(b)).toBe(expected,
+      { a: ['3'], b: ['4', '5'], c: ['6'] }, new Error('too bad'));
+  });
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 13 2015 12:39:49 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -59,6 +72,14 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/bufferTime.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
 import nextTick from &apos;../schedulers/nextTick&apos;;
+/**
+ * buffers values from the source for a specific time period. Optionally allows new buffers to be set up at an interval.
+ * @param {number} the amount of time to fill each buffer for before emitting them and clearing them.
+ * @param {number} [bufferCreationInterval] the interval at which to start new buffers.
+ * @param {Scheduler} [scheduler] (optional, defaults to `nextTick` scheduler) The scheduler on which to schedule the
+ *  intervals that determine buffer boundaries.
+ * @returns {Observable&lt;T[]&gt;} an observable of arrays of buffered values.
+ */
 export default function bufferTime(bufferTimeSpan, bufferCreationInterval = null, scheduler = nextTick) {
     return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
 }
@@ -81,11 +102,14 @@ class BufferTimeSubscriber extends Subscriber {
         this.buffers = [];
         let buffer = this.openBuffer();
         if (bufferCreationInterval !== null &amp;&amp; bufferCreationInterval &gt;= 0) {
-            this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber: this, buffer }));
-            this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler }));
+            const closeState = { subscriber: this, buffer };
+            const creationState = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+            this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
+            this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
         }
         else {
-            this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, { subscriber: this, buffer, bufferTimeSpan }));
+            const timeSpanOnlyState = { subscriber: this, buffer, bufferTimeSpan };
+            this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
         }
     }
     _next(value) {
@@ -131,7 +155,7 @@ function dispatchBufferTimeSpanOnly(state) {
 function dispatchBufferCreation(state) {
     let { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
     let buffer = subscriber.openBuffer();
-    var action = this;
+    let action = this;
     if (!subscriber.isUnsubscribed) {
         action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
         action.schedule(state, bufferCreationInterval);

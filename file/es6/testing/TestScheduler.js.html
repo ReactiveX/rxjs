@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/testing/TestScheduler.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></li>
+</ul>
+</div>
+
+
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/testing/TestScheduler.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Observable from &apos;../Observable&apos;;
+import VirtualTimeScheduler from &apos;../schedulers/VirtualTimeScheduler&apos;;
+import Notification from &apos;../Notification&apos;;
+import ColdObservable from &apos;./ColdObservable&apos;;
+import HotObservable from &apos;./HotObservable&apos;;
+import SubscriptionLog from &apos;./SubscriptionLog&apos;;
+export class TestScheduler extends VirtualTimeScheduler {
+    constructor(assertDeepEqual) {
+        super();
+        this.assertDeepEqual = assertDeepEqual;
+        this.hotObservables = [];
+        this.flushTests = [];
+    }
+    createColdObservable(marbles, values, error) {
+        if (marbles.indexOf(&apos;^&apos;) !== -1) {
+            throw new Error(&apos;Cold observable cannot have subscription offset &quot;^&quot;&apos;);
+        }
+        if (marbles.indexOf(&apos;!&apos;) !== -1) {
+            throw new Error(&apos;Cold observable cannot have unsubscription marker &quot;!&quot;&apos;);
+        }
+        let messages = TestScheduler.parseMarbles(marbles, values, error);
+        return new ColdObservable(messages, this);
+    }
+    createHotObservable(marbles, values, error) {
+        if (marbles.indexOf(&apos;!&apos;) !== -1) {
+            throw new Error(&apos;Hot observable cannot have unsubscription marker &quot;!&quot;&apos;);
+        }
+        let messages = TestScheduler.parseMarbles(marbles, values, error);
+        const subject = new HotObservable(messages, this);
+        this.hotObservables.push(subject);
+        return subject;
+    }
+    materializeInnerObservable(observable, outerFrame) {
+        let messages = [];
+        observable.subscribe((value) =&gt; {
+            messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
+        }, (err) =&gt; {
+            messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(err) });
+        }, () =&gt; {
+            messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+        });
+        return messages;
+    }
+    expectObservable(observable, unsubscriptionMarbles = null) {
+        let actual = [];
+        let flushTest = { actual, ready: false };
+        let unsubscriptionFrame = TestScheduler
+            .parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
+        let subscription;
+        this.schedule(() =&gt; {
+            subscription = observable.subscribe(x =&gt; {
+                let value = x;
+                // Support Observable-of-Observables
+                if (x instanceof Observable) {
+                    value = this.materializeInnerObservable(value, this.frame);
+                }
+                actual.push({ frame: this.frame, notification: Notification.createNext(value) });
+            }, (err) =&gt; {
+                actual.push({ frame: this.frame, notification: Notification.createError(err) });
+            }, () =&gt; {
+                actual.push({ frame: this.frame, notification: Notification.createComplete() });
+            });
+        }, 0);
+        if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
+            this.schedule(() =&gt; subscription.unsubscribe(), unsubscriptionFrame);
+        }
+        this.flushTests.push(flushTest);
+        return {
+            toBe(marbles, values, errorValue) {
+                flushTest.ready = true;
+                flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
+            }
+        };
+    }
+    expectSubscriptions(actualSubscriptionLogs) {
+        const flushTest = { actual: actualSubscriptionLogs, ready: false };
+        this.flushTests.push(flushTest);
+        return {
+            toBe(marbles) {
+                const marblesArray = (typeof marbles === &apos;string&apos;) ? [marbles] : marbles;
+                flushTest.ready = true;
+                flushTest.expected = marblesArray.map(marbles =&gt; TestScheduler.parseMarblesAsSubscriptions(marbles));
+            }
+        };
+    }
+    flush() {
+        const hotObservables = this.hotObservables;
+        while (hotObservables.length &gt; 0) {
+            hotObservables.shift().setup();
+        }
+        super.flush();
+        const readyFlushTests = this.flushTests.filter(test =&gt; test.ready);
+        while (readyFlushTests.length &gt; 0) {
+            let test = readyFlushTests.shift();
+            this.assertDeepEqual(test.actual, test.expected);
+        }
+    }
+    static parseMarblesAsSubscriptions(marbles) {
+        if (typeof marbles !== &apos;string&apos;) {
+            return new SubscriptionLog(Number.POSITIVE_INFINITY);
+        }
+        let len = marbles.length;
+        let groupStart = -1;
+        let subscriptionFrame = Number.POSITIVE_INFINITY;
+        let unsubscriptionFrame = Number.POSITIVE_INFINITY;
+        for (let i = 0; i &lt; len; i++) {
+            let frame = i * this.frameTimeFactor;
+            let c = marbles[i];
+            switch (c) {
+                case &apos;-&apos;:
+                case &apos; &apos;:
+                    break;
+                case &apos;(&apos;:
+                    groupStart = frame;
+                    break;
+                case &apos;)&apos;:
+                    groupStart = -1;
+                    break;
+                case &apos;^&apos;:
+                    if (subscriptionFrame !== Number.POSITIVE_INFINITY) {
+                        throw new Error(&apos;Found a second subscription point \&apos;^\&apos; in a &apos; +
+                            &apos;subscription marble diagram. There can only be one.&apos;);
+                    }
+                    subscriptionFrame = groupStart &gt; -1 ? groupStart : frame;
+                    break;
+                case &apos;!&apos;:
+                    if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
+                        throw new Error(&apos;Found a second subscription point \&apos;^\&apos; in a &apos; +
+                            &apos;subscription marble diagram. There can only be one.&apos;);
+                    }
+                    unsubscriptionFrame = groupStart &gt; -1 ? groupStart : frame;
+                    break;
+                default:
+                    throw new Error(&apos;There can only be \&apos;^\&apos; and \&apos;!\&apos; markers in a &apos; +
+                        &apos;subscription marble diagram. Found instead \&apos;&apos; + c + &apos;\&apos;.&apos;);
+            }
+        }
+        if (unsubscriptionFrame &lt; 0) {
+            return new SubscriptionLog(subscriptionFrame);
+        }
+        else {
+            return new SubscriptionLog(subscriptionFrame, unsubscriptionFrame);
+        }
+    }
+    static parseMarbles(marbles, values, errorValue, materializeInnerObservables = false) {
+        if (marbles.indexOf(&apos;!&apos;) !== -1) {
+            throw new Error(&apos;Conventional marble diagrams cannot have the &apos; +
+                &apos;unsubscription marker &quot;!&quot;&apos;);
+        }
+        let len = marbles.length;
+        let testMessages = [];
+        let subIndex = marbles.indexOf(&apos;^&apos;);
+        let frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
+        let getValue = typeof values !== &apos;object&apos; ?
+                (x) =&gt; x :
+                (x) =&gt; {
+                // Support Observable-of-Observables
+                if (materializeInnerObservables &amp;&amp; values[x] instanceof ColdObservable) {
+                    return values[x].messages;
+                }
+                return values[x];
+            };
+        let groupStart = -1;
+        for (let i = 0; i &lt; len; i++) {
+            let frame = i * this.frameTimeFactor;
+            let notification;
+            let c = marbles[i];
+            switch (c) {
+                case &apos;-&apos;:
+                case &apos; &apos;:
+                    break;
+                case &apos;(&apos;:
+                    groupStart = frame;
+                    break;
+                case &apos;)&apos;:
+                    groupStart = -1;
+                    break;
+                case &apos;|&apos;:
+                    notification = Notification.createComplete();
+                    break;
+                case &apos;^&apos;:
+                    break;
+                case &apos;#&apos;:
+                    notification = Notification.createError(errorValue || &apos;error&apos;);
+                    break;
+                default:
+                    notification = Notification.createNext(getValue(c));
+                    break;
+            }
+            frame += frameOffset;
+            if (notification) {
+                testMessages.push({ frame: groupStart &gt; -1 ? groupStart : frame, notification });
+            }
+        }
+        return testMessages;
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

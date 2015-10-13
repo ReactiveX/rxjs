@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/operators/every-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/operators/every-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">98.11% <small>(52 / 53)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">93.33% <small>(14 / 15)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">98.11% <small>(52 / 53)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/operators/</a> &#187; every-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect, expectObservable, hot */
+var Rx = require('../../dist/cjs/Rx');
+&nbsp;
+describe('Observable.prototype.every()', function () {
+<span class="fstat-no" title="function not covered" >  function truePredicate(x) {</span>
+<span class="cstat-no" title="statement not covered" >    return true;</span>
+  }
+&nbsp;
+  function predicate(x) {
+    return x % 5 === 0;
+  }
+&nbsp;
+  it('should emit true if source is empty', function () {
+    var source = hot('-----|');
+    var expected =   '-----(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: true});
+  });
+&nbsp;
+  it('should emit false if single source of element does not match with predicate', function () {
+    var source = hot('--a--|');
+    var expected =   '--(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: false});
+  });
+&nbsp;
+  it('should emit false if none of element does not match with predicate', function () {
+    var source = hot('--a--b--c--d--e--|');
+    var expected =   '--(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: false});
+  });
+&nbsp;
+  it('should return false if only some of element matches with predicate', function () {
+    var source = hot('--a--b--c--d--e--|', {a: 5, b: 10, c: 15});
+    var expected =   '-----------(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: false});
+  });
+&nbsp;
+  it('should emit true if single source element match with predicate', function () {
+    var source = hot('--a--|', {a: 5});
+    var expected =   '-----(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: true});
+  });
+&nbsp;
+  it('should emit true if all source element matches with predicate', function () {
+    var source = hot('--a--b--c--d--e--|', {a: 5, b: 10, c: 15, d: 20, e: 25});
+    var expected =   '-----------------(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: true});
+  });
+&nbsp;
+  it('should raise error if source raises error', function () {
+    var source = hot('--#');
+    var expected =   '--#';
+&nbsp;
+    expectObservable(source.every(truePredicate)).toBe(expected);
+  });
+&nbsp;
+  it('should not completes if source never emits', function () {
+    var expected = '-';
+&nbsp;
+    expectObservable(Rx.Observable.never().every(truePredicate)).toBe(expected);
+  });
+&nbsp;
+  it('should emit true if source element matches with predicate after subscription', function () {
+    var source = hot('--z--^--a--b--c--d--e--|', {a: 5, b: 10, c: 15, d: 20, e: 25});
+    var expected =        '------------------(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: true});
+  });
+&nbsp;
+  it('should emit false if source element does not match with predicate after subscription', function () {
+    var source = hot('--z--^--b--c--z--d--|', {a: 5, b: 10, c: 15, d: 20});
+    var expected =        '---------(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: false});
+  });
+&nbsp;
+  it('should raise error if source raises error after subscription', function () {
+    var source = hot('--z--^--#');
+    var expected =        '---#';
+&nbsp;
+    expectObservable(source.every(truePredicate)).toBe(expected);
+  });
+&nbsp;
+  it('should emit true if source does not emit after subscription', function () {
+    var source = hot('--z--^-----|');
+    var expected =        '------(x|)';
+&nbsp;
+    expectObservable(source.every(predicate)).toBe(expected, {x: true});
+  });
+});</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 13 2015 12:39:49 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

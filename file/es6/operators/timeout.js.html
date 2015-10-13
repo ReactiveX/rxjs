@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -61,35 +74,69 @@
 import immediate from &apos;../schedulers/immediate&apos;;
 import isDate from &apos;../util/isDate&apos;;
 export default function timeout(due, errorToSend = null, scheduler = immediate) {
-    let waitFor = isDate(due) ? (+due - Date.now()) : due;
-    return this.lift(new TimeoutOperator(waitFor, errorToSend, scheduler));
+    let absoluteTimeout = isDate(due);
+    let waitFor = absoluteTimeout ? (+due - scheduler.now()) : due;
+    return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
 }
 class TimeoutOperator {
-    constructor(waitFor, errorToSend, scheduler) {
+    constructor(waitFor, absoluteTimeout, errorToSend, scheduler) {
         this.waitFor = waitFor;
+        this.absoluteTimeout = absoluteTimeout;
         this.errorToSend = errorToSend;
         this.scheduler = scheduler;
     }
     call(subscriber) {
-        return new TimeoutSubscriber(subscriber, this.waitFor, this.errorToSend, this.scheduler);
+        return new TimeoutSubscriber(subscriber, this.absoluteTimeout, this.waitFor, this.errorToSend, this.scheduler);
     }
 }
 class TimeoutSubscriber extends Subscriber {
-    constructor(destination, waitFor, errorToSend, scheduler) {
+    constructor(destination, absoluteTimeout, waitFor, errorToSend, scheduler) {
         super(destination);
+        this.absoluteTimeout = absoluteTimeout;
         this.waitFor = waitFor;
         this.errorToSend = errorToSend;
         this.scheduler = scheduler;
-        let delay = waitFor;
-        scheduler.schedule(dispatchTimeout, delay, { subscriber: this });
+        this.index = 0;
+        this._previousIndex = 0;
+        this._hasCompleted = false;
+        this.scheduleTimeout();
     }
-    sendTimeoutError() {
+    get previousIndex() {
+        return this._previousIndex;
+    }
+    get hasCompleted() {
+        return this._hasCompleted;
+    }
+    static dispatchTimeout(state) {
+        const source = state.subscriber;
+        const currentIndex = state.index;
+        if (!source.hasCompleted &amp;&amp; source.previousIndex === currentIndex) {
+            source.notifyTimeout();
+        }
+    }
+    scheduleTimeout() {
+        let currentIndex = this.index;
+        this.scheduler.schedule(TimeoutSubscriber.dispatchTimeout, this.waitFor, { subscriber: this, index: currentIndex });
+        this.index++;
+        this._previousIndex = currentIndex;
+    }
+    _next(value) {
+        this.destination.next(value);
+        if (!this.absoluteTimeout) {
+            this.scheduleTimeout();
+        }
+    }
+    _error(err) {
+        this.destination.error(err);
+        this._hasCompleted = true;
+    }
+    _complete() {
+        this.destination.complete();
+        this._hasCompleted = true;
+    }
+    notifyTimeout() {
         this.error(this.errorToSend || new Error(&apos;timeout&apos;));
     }
-}
-function dispatchTimeout(state) {
-    const subscriber = state.subscriber;
-    subscriber.sendTimeoutError();
 }
 </code></pre>
 

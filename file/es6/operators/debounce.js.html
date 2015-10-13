@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -57,45 +70,91 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/debounce.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
-import nextTick from &apos;../schedulers/nextTick&apos;;
-export default function debounce(dueTime, scheduler = nextTick) {
-    return this.lift(new DebounceOperator(dueTime, scheduler));
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import PromiseObservable from &apos;../observables/PromiseObservable&apos;;
+import Subscriber from &apos;../Subscriber&apos;;
+import tryCatch from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+export default function debounce(durationSelector) {
+    return this.lift(new DebounceOperator(durationSelector));
 }
 class DebounceOperator {
-    constructor(dueTime, scheduler) {
-        this.dueTime = dueTime;
-        this.scheduler = scheduler;
+    constructor(durationSelector) {
+        this.durationSelector = durationSelector;
     }
-    call(subscriber) {
-        return new DebounceSubscriber(subscriber, this.dueTime, this.scheduler);
+    call(observer) {
+        return new DebounceSubscriber(observer, this.durationSelector);
     }
 }
 class DebounceSubscriber extends Subscriber {
-    constructor(destination, dueTime, scheduler) {
+    constructor(destination, durationSelector) {
         super(destination);
-        this.dueTime = dueTime;
-        this.scheduler = scheduler;
+        this.durationSelector = durationSelector;
+        this.debouncedSubscription = null;
+        this.lastValue = null;
+        this._index = 0;
+    }
+    get index() {
+        return this._index;
     }
     _next(value) {
-        if (!this.debounced) {
-            this.add(this.debounced = this.scheduler.schedule(dispatchNext, this.dueTime, { value, subscriber: this }));
+        const destination = this.destination;
+        const currentIndex = ++this._index;
+        let debounce = tryCatch(this.durationSelector)(value);
+        if (debounce === errorObject) {
+            destination.error(errorObject.e);
+        }
+        else {
+            if (typeof debounce.subscribe !== &apos;function&apos;
+                &amp;&amp; typeof debounce.then === &apos;function&apos;) {
+                debounce = PromiseObservable.create(debounce);
+            }
+            this.lastValue = value;
+            this.add(this.debouncedSubscription = debounce._subscribe(new DurationSelectorSubscriber(this, currentIndex)));
+        }
+    }
+    _complete() {
+        this.debouncedNext();
+        this.destination.complete();
+    }
+    debouncedNext() {
+        this.clearDebounce();
+        if (this.lastValue != null) {
+            this.destination.next(this.lastValue);
+            this.lastValue = null;
         }
     }
     clearDebounce() {
-        const debounced = this.debounced;
-        if (debounced) {
-            debounced.unsubscribe();
-            this.remove(debounced);
+        const debouncedSubscription = this.debouncedSubscription;
+        if (debouncedSubscription !== null) {
+            this.remove(debouncedSubscription);
+            this.debouncedSubscription = null;
         }
     }
-    debouncedNext(value) {
-        this.clearDebounce();
-        this.destination.next(value);
-    }
 }
-function dispatchNext({ value, subscriber }) {
-    subscriber.debouncedNext(value);
+class DurationSelectorSubscriber extends Subscriber {
+    constructor(parent, currentIndex) {
+        super(null);
+        this.parent = parent;
+        this.currentIndex = currentIndex;
+    }
+    debounceNext() {
+        const parent = this.parent;
+        if (this.currentIndex === parent.index) {
+            parent.debouncedNext();
+            if (!this.isUnsubscribed) {
+                this.unsubscribe();
+            }
+        }
+    }
+    _next(unused) {
+        this.debounceNext();
+    }
+    _error(err) {
+        this.parent.error(err);
+    }
+    _complete() {
+        this.debounceNext();
+    }
 }
 </code></pre>
 

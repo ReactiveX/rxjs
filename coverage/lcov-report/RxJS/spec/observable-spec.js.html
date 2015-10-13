@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/observable-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/observable-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">97.62% <small>(82 / 84)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">83.87% <small>(26 / 31)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">97.59% <small>(81 / 83)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/</a> &#187; observable-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect */
+var Rx = require('../dist/cjs/Rx');
+var Promise = require('promise');
+var Observable = Rx.Observable;
+&nbsp;
+describe('Observable', function () {
+  it('should be constructed with a subscriber function', function (done) {
+    var source = new Observable(function (observer) {
+      expectFullObserver(observer);
+      observer.next(1);
+      observer.complete();
+    });
+&nbsp;
+    source.subscribe(function (x) { expect(x).toBe(1); }, null, done);
+  });
+  
+  describe('forEach', function(){
+    it('should iterate and return a Promise', function (done){
+      var expected = [1,2,3];
+      var result = Observable.of(1,2,3).forEach(function(x) {
+        expect(x).toBe(expected.shift());
+      }, Promise)
+      .then(done);
+      
+      expect(typeof result.then).toBe('function');
+    });
+    
+    it('should reject promise when in error', function(done){
+      Observable.throw('bad').forEach(<span class="fstat-no" title="function not covered" >function(x) {</span>
+<span class="cstat-no" title="statement not covered" >        throw 'should not be called';</span>
+      }).then(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >        throw 'should not complete';</span>
+      }, function(err) {
+        expect(err).toBe('bad');
+        done();
+      }, Promise);
+    });
+    
+    it('should allow Promise to be globally configured', function (done) {
+      var wasCalled = false;
+      __root__.Rx = {};
+      __root__.Rx.config = {};
+      __root__.Rx.config.Promise = function MyPromise(callback) {
+        wasCalled = true;
+        return new Promise(callback);
+      };
+      
+      
+      Observable.of(42).forEach(function(x) {
+        expect(x).toBe(42);
+      }).then(function(){
+        expect(wasCalled).toBe(true);
+        done();
+      });
+    });
+  });
+  
+  describe('subscribe', function () {
+    it('should be synchronous', function () {
+      var subscribed = false;
+      var nexted, completed;
+      var source = new Observable(function (observer) {
+        subscribed = true;
+        observer.next('wee');
+        expect(nexted).toBe('wee');
+        observer.complete();
+        expect(completed).toBe(true);
+      });
+      expect(subscribed).toBe(false);
+      
+      var mutatedByNext = false;
+      var mutatedByComplete = false;
+      
+      source.subscribe(function (x) {
+        nexted = x;
+        mutatedByNext = true;
+      }, null, function () {
+        completed = true;
+        mutatedByComplete = true;
+      });
+      
+      expect(mutatedByNext).toBe(true);
+      expect(mutatedByComplete).toBe(true);
+    });
+    
+    it('should return a Subscription that calls the unsubscribe function returned by the subscriber', function () {
+      var unsubscribeCalled = false;
+      
+      var source = new Observable(function () {
+        return function () {
+          unsubscribeCalled = true;
+        };
+      });
+      
+      var sub = source.subscribe(<span class="fstat-no" title="function not covered" >function () {</span> });
+      expect(sub instanceof Rx.Subscription).toBe(true);
+      expect(unsubscribeCalled).toBe(false);
+      expect(typeof sub.unsubscribe).toBe('function');
+      
+      sub.unsubscribe();
+      expect(unsubscribeCalled).toBe(true);
+    });
+  });
+});
+&nbsp;
+describe('Observable.create', function () {
+  it('should create an Observable', function () {
+    var result = Observable.create(<span class="fstat-no" title="function not covered" >function () {</span> });
+    expect(result instanceof Observable).toBe(true);
+  });
+  
+  it('should provide an observer to the function', function () {
+    var called = false;
+    var result = Observable.create(function (observer) {
+      called = true;
+      expectFullObserver(observer);
+      observer.complete();
+    });
+    
+    expect(called).toBe(false);
+    result.subscribe(<span class="fstat-no" title="function not covered" >function () {</span> });
+    expect(called).toBe(true);
+  });
+});
+&nbsp;
+function expectFullObserver(val) {
+  expect(typeof val).toBe('object');
+  expect(typeof val.next).toBe('function');
+  expect(typeof val.error).toBe('function');
+  expect(typeof val.complete).toBe('function');
+  expect(typeof val.isUnsubscribed).toBe('boolean');
+}</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 13 2015 12:39:49 GMT-0700 (PDT)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

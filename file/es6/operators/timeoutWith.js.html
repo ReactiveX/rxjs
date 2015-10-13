@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -57,40 +70,85 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/timeoutWith.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
-import immediate from &apos;../schedulers/immediate&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import immediate from &apos;../schedulers/immediate&apos;;
 import isDate from &apos;../util/isDate&apos;;
+import OuterSubscriber from &apos;../OuterSubscriber&apos;;
+import subscribeToResult from &apos;../util/subscribeToResult&apos;;
 export default function timeoutWith(due, withObservable, scheduler = immediate) {
-    let waitFor = isDate(due) ? (+due - Date.now()) : due;
-    return this.lift(new TimeoutWithOperator(waitFor, withObservable, scheduler));
+    let absoluteTimeout = isDate(due);
+    let waitFor = absoluteTimeout ? (+due - scheduler.now()) : due;
+    return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
 }
 class TimeoutWithOperator {
-    constructor(waitFor, withObservable, scheduler) {
+    constructor(waitFor, absoluteTimeout, withObservable, scheduler) {
         this.waitFor = waitFor;
+        this.absoluteTimeout = absoluteTimeout;
         this.withObservable = withObservable;
         this.scheduler = scheduler;
     }
     call(subscriber) {
-        return new TimeoutWithSubscriber(subscriber, this.waitFor, this.withObservable, this.scheduler);
+        return new TimeoutWithSubscriber(subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler);
     }
 }
-class TimeoutWithSubscriber extends Subscriber {
-    constructor(destination, waitFor, withObservable, scheduler) {
+class TimeoutWithSubscriber extends OuterSubscriber {
+    constructor(destination, absoluteTimeout, waitFor, withObservable, scheduler) {
         super(destination);
+        this.absoluteTimeout = absoluteTimeout;
         this.waitFor = waitFor;
         this.withObservable = withObservable;
         this.scheduler = scheduler;
-        let delay = waitFor;
-        scheduler.schedule(dispatchTimeout, delay, { subscriber: this });
+        this.timeoutSubscription = undefined;
+        this.timedOut = false;
+        this.index = 0;
+        this._previousIndex = 0;
+        this._hasCompleted = false;
+        this.scheduleTimeout();
+    }
+    get previousIndex() {
+        return this._previousIndex;
+    }
+    get hasCompleted() {
+        return this._hasCompleted;
+    }
+    static dispatchTimeout(state) {
+        const source = state.subscriber;
+        const currentIndex = state.index;
+        if (!source.hasCompleted &amp;&amp; source.previousIndex === currentIndex) {
+            source.handleTimeout();
+        }
+    }
+    scheduleTimeout() {
+        let currentIndex = this.index;
+        const timeoutState = { subscriber: this, index: currentIndex };
+        this.scheduler.schedule(TimeoutWithSubscriber.dispatchTimeout, this.waitFor, timeoutState);
+        this.index++;
+        this._previousIndex = currentIndex;
+    }
+    _next(value) {
+        if (!this.timedOut) {
+            this.destination.next(value);
+            if (!this.absoluteTimeout) {
+                this.scheduleTimeout();
+            }
+        }
+    }
+    _error(err) {
+        if (!this.timedOut) {
+            this.destination.error(err);
+            this._hasCompleted = true;
+        }
+    }
+    _complete() {
+        if (!this.timedOut) {
+            this.destination.complete();
+            this._hasCompleted = true;
+        }
     }
     handleTimeout() {
         const withObservable = this.withObservable;
-        this.add(withObservable.subscribe(this));
+        this.timedOut = true;
+        this.add(this.timeoutSubscription = subscribeToResult(this, withObservable));
     }
-}
-function dispatchTimeout(state) {
-    const subscriber = state.subscriber;
-    subscriber.handleTimeout();
 }
 </code></pre>
 

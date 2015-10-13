@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for RxJS/spec/operators/map-spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">RxJS/spec/operators/map-spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">96.64% <small>(115 / 119)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">92.11% <small>(35 / 38)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">97.3% <small>(108 / 111)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">RxJS/spec/operators/</a> &#187; map-spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* globals describe, it, expect */
+var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
+&nbsp;
+// function shortcuts
+var addDrama = function (x) { return x + '!'; };
+var identity = function (x) { return x; };
+var throwError = function () { throw new Error(); };
+&nbsp;
+describe('Observable.prototype.map()', function () {
+  it('should map one value', function () {
+    var a =   cold('--x--|', {x: 42});
+    var expected = '--y--|';
+&nbsp;
+    var r = a.map(addDrama);
+    expectObservable(r).toBe(expected, {y: '42!'});
+  });
+&nbsp;
+  it('should map multiple values', function () {
+    var a =   cold('--1--2--3--|');
+    var expected = '--x--y--z--|';
+&nbsp;
+    var r = a.map(addDrama);
+    expectObservable(r).toBe(expected, {x: '1!', y: '2!', z: '3!'});
+  });
+&nbsp;
+  it('should propagate errors from map function', function () {
+    var a =   cold('--x--|', {x: 42});
+    var expected = '--#';
+&nbsp;
+    var r = a.map(function (x) {
+      throw 'too bad';
+    });
+    expectObservable(r).toBe(expected, null, 'too bad');
+  });
+&nbsp;
+  it('should propagate errors from observable that emits only errors', function () {
+    var a =   cold('--#--', null, 'too bad');
+    var expected = '--#';
+&nbsp;
+    var r = a.map(identity);
+    expectObservable(r).toBe(expected, null, 'too bad');
+  });
+&nbsp;
+  it('should propagate errors from observable that emit values', function () {
+    var a =   cold('--a--b--#--', {a: 1, b: 2}, 'too bad');
+    var expected = '--x--y--#';
+&nbsp;
+    var r = a.map(addDrama);
+    expectObservable(r).toBe(expected, {x: '1!', y: '2!'}, 'too bad');
+  });
+&nbsp;
+  it('should propagate errors from subscribe', function () {
+    var r = function () {
+      Observable.of(1)
+        .map(identity)
+        .subscribe(throwError);
+    };
+&nbsp;
+    expect(r).toThrow();
+  });
+&nbsp;
+  it('should not map an empty observable', function () {
+    var a = Observable.empty();
+    var expected = '|';
+&nbsp;
+    var invoked = 0;
+    var r = a
+      .map(<span class="fstat-no" title="function not covered" >function (x) {</span> <span class="cstat-no" title="statement not covered" >invoked++; <span class="cstat-no" title="statement not covered" ></span>return x; </span>})
+      .do(null, null, function () {
+        expect(invoked).toBe(0);
+      });
+&nbsp;
+    expectObservable(r).toBe(expected);
+  });
+&nbsp;
+  it('should map with index', function () {
+    var a = hot('-5-^-4--3---2----1');
+    var expected = '--a--b---c----d';
+    var values = {a: 5, b: 14, c: 23, d: 32};
+&nbsp;
+    var invoked = 0;
+    var r = a.map(function (x, index) {
+      invoked++;
+      return (parseInt(x) + 1) + (index * 10);
+    }).do(null, null, <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >      expect(invoked).toBe(4);</span>
+    });
+&nbsp;
+    expectObservable(r).toBe(expected, values);
+  });
+&nbsp;
+  it('should map with index until completed', function () {
+    var a = hot('-5-^-4--3---2----1--|--8--|--#');
+    var expected = '--a--b---c----d--|';
+    var values = {a: 5, b: 14, c: 23, d: 32};
+&nbsp;
+    var invoked = 0;
+    var r = a.map(function (x, index) {
+      invoked++;
+      return (parseInt(x) + 1) + (index * 10);
+    }).do(null, null, function () {
+      expect(invoked).toBe(4);
+    });
+&nbsp;
+    expectObservable(r).toBe(expected, values);
+  });
+&nbsp;
+  it('should map with index until an error occurs', function () {
+    var a = hot('-5-^-4--3---2----1--#--8--|', undefined, 'too bad');
+    var expected = '--a--b---c----d--#';
+    var values = {a: 5, b: 14, c: 23, d: 32};
+&nbsp;
+    var invoked = 0;
+    var r = a.map(function (x, index) {
+      invoked++;
+      return (parseInt(x) + 1) + (index * 10);
+    }).do(null, null, <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >      expect(invoked).toBe(4);</span>
+    });
+&nbsp;
+    expectObservable(r).toBe(expected, values, 'too bad');
+  });
+&nbsp;
+  it('should map using a custom thisArg', function () {
+    var a = hot('-5-^-4--3---2----1--|--8--|--#');
+    var expected = '--a--b---c----d--|';
+    var values = {a: 5, b: 14, c: 23, d: 32};
+&nbsp;
+    var invoked = 0;
+    var foo = 42;
+    var r = a
+      .map(function (x, index) {
+        invoked++;
+        expect(this).toEqual(foo);
+        return (parseInt(x) + 1) + (index * 10);
+      }, 42)
+      .do(null, null, function () {
+        expect(invoked).toBe(4);
+      });
+&nbsp;
+    expectObservable(r).toBe(expected, values);
+  });
+&nbsp;
+  it('should map twice', function () {
+    var a = hot('-0----1-^-2---3--4-5--6--7-8-|--9-#-|');
+    var expected =      '--a---b--c-d--e--f-g-|';
+    var values = {a: 2, b: 3, c: 4, d: 5, e: 6, f: 7, g: 8};
+&nbsp;
+    var invoked1 = 0;
+    var invoked2 = 0;
+    var r = a
+      .map(function (x) { invoked1++; return parseInt(x) * 2; })
+      .map(function (x) { invoked2++; return x / 2; })
+      .do(null, null, function () {
+        expect(invoked1).toBe(7);
+        expect(invoked2).toBe(7);
+      });
+&nbsp;
+    expectObservable(r).toBe(expected, values);
+  });
+&nbsp;
+  it('should do multiple maps using a custom thisArg', function () {
+    var a =    hot('--1--2--3--4--|');
+    var expected = '--a--b--c--d--|';
+    var values = {a: 11, b: 14, c: 17, d: 20};
+&nbsp;
+    function Filterer() {
+      this.selector1 = function (x) { return parseInt(x) + 2; };
+      this.selector2 = function (x) { return parseInt(x) * 3; };
+    }
+    var filterer = new Filterer();
+&nbsp;
+    var r = a
+      .map(function (x) { return this.selector1(x);}, filterer)
+      .map(function (x) { return this.selector2(x);}, filterer)
+      .map(function (x) { return this.selector1(x);}, filterer);
+&nbsp;
+    expectObservable(r).toBe(expected, values);
+  });
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 13 2015 12:39:49 GMT-0700 (PDT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

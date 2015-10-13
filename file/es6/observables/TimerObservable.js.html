@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -69,10 +82,10 @@ export default class TimerObservable extends Observable {
         if (isNumeric(period)) {
             this._period = Number(period) &lt; 1 &amp;&amp; 1 || Number(period);
         }
-        else if (period &amp;&amp; typeof period.schedule === &quot;function&quot;) {
+        else if (period &amp;&amp; typeof period.schedule === &apos;function&apos;) {
             scheduler = period;
         }
-        if (!scheduler || typeof scheduler.schedule !== &quot;function&quot;) {
+        if (!scheduler || typeof scheduler.schedule !== &apos;function&apos;) {
             scheduler = nextTick;
         }
         this.scheduler = scheduler;
@@ -84,7 +97,7 @@ export default class TimerObservable extends Observable {
         const { index, period, subscriber } = state;
         const action = this;
         subscriber.next(index);
-        if (typeof period === &quot;undefined&quot;) {
+        if (typeof period === &apos;undefined&apos;) {
             subscriber.complete();
             return;
         }

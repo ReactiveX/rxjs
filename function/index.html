@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -79,6 +92,338 @@
         
         
         <div data-ice="description"><p>buffers the incoming observable values until the passed <code>closingNotifier</code> emits a value, at which point
+</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span><span data-ice="signature">(bufferSize: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, startBufferEvery: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>buffers a number of values from the source observable by <code>bufferSize</code> then emits the buffer and clears it, and starts a
+</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span><span data-ice="signature">(the: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, bufferCreationInterval: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span>Scheduler</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>buffers values from the source for a specific time period.</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span><span data-ice="signature">(openings: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>O</span>&gt;, an: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>buffers values from the source by opening the buffer via signals from an observable provided to <code>openings</code>, and closing
+</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span><span data-ice="signature">(a: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Opens a buffer immediately, then closes the buffer when the observable returned by calling <code>closingSelector</code> emits a value.</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span><span data-ice="signature">(project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Takes an Observable of Observables, and collects all observables from it.</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span><span data-ice="signature">(observables: ...<span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Combines the values from observables passed as arguments.</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span><span data-ice="signature">(observables: ...<span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Combines the values from this observable with values from observables passed as arguments.</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span><span data-ice="signature">(observables: ...<span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Joins multiple observables together by subscribing to them one at a time and merging their results
+</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span><span data-ice="signature">(observables: ...<span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Joins this observable with multiple other observables by subscribing to them one at a time, starting with the source,
+</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Joins every Observable emitted by the source (an Observable of Observables), in a serial
+</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span><span data-ice="signature">(project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, projectResult: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Maps values from the source observable into new Observables, then merges them in a serialized fashion,
+</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span><span data-ice="signature">(observable: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, projectResult: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Maps values from the source to a specific observable, and merges them together in a serialized fashion.</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span><span data-ice="signature">(predicate: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, thisArg: <span>any</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Returns an observable of a single number that represents the number of items that either:
 </p></div>
       </div>
     </td>
@@ -245,6 +590,1012 @@ next time <code>closingNotifier</code> emits</p>
       <tr>
         <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</td>
         <td class="return-desc" data-ice="returnDescription"><p>an observable of buffers, which are arrays of values</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-bufferCount">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">bufferCount</span><span data-ice="signature">(bufferSize: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, startBufferEvery: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/bufferCount.js.html#lineNumber11">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import bufferCount from &apos;<span><a href="file/es6/operators/bufferCount.js.html#lineNumber11">@reactivex/rxjs/es6/operators/bufferCount.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>buffers a number of values from the source observable by <code>bufferSize</code> then emits the buffer and clears it, and starts a
+new buffer each <code>startBufferEvery</code> values. If <code>startBufferEvery</code> is not provided or is <code>null</code>, then new buffers are
+started immediately at the start of the source and when each buffer closes and is emitted.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">bufferSize</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>the maximum size of the buffer emitted.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">startBufferEvery</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>optional interval at which to start a new buffer. (e.g. if <code>startBufferEvery</code> is <code>2</code>,asdf then a
+  new buffer will be started on every other value from the source.) A new buffer is started at the beginning of the source by default.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of arrays of buffered values.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-bufferTime">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">bufferTime</span><span data-ice="signature">(the: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, bufferCreationInterval: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span>Scheduler</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/bufferTime.js.html#lineNumber11">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import bufferTime from &apos;<span><a href="file/es6/operators/bufferTime.js.html#lineNumber11">@reactivex/rxjs/es6/operators/bufferTime.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>buffers values from the source for a specific time period. Optionally allows new buffers to be set up at an interval.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">the</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>amount of time to fill each buffer for before emitting them and clearing them.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">bufferCreationInterval</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>the interval at which to start new buffers.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">scheduler</td>
+      <td data-ice="type"><span>Scheduler</span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>(optional, defaults to <code>nextTick</code> scheduler) The scheduler on which to schedule the
+ intervals that determine buffer boundaries.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of arrays of buffered values.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-bufferToggle">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">bufferToggle</span><span data-ice="signature">(openings: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>O</span>&gt;, an: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/bufferToggle.js.html#lineNumber13">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import bufferToggle from &apos;<span><a href="file/es6/operators/bufferToggle.js.html#lineNumber13">@reactivex/rxjs/es6/operators/bufferToggle.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>buffers values from the source by opening the buffer via signals from an observable provided to <code>openings</code>, and closing
+and sending the buffers when an observable returned by the <code>closingSelector</code> emits.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">openings</td>
+      <td data-ice="type"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>O</span>&gt;</td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>An observable of notifications to start new buffers</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">an</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>function, that takes the value emitted by the <code>openings</code> observable and returns an Observable, which,
+ when it emits, signals that the associated buffer should be emitted and cleared.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of arrays of buffered values.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-bufferWhen">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">bufferWhen</span><span data-ice="signature">(a: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/bufferWhen.js.html#lineNumber10">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import bufferWhen from &apos;<span><a href="file/es6/operators/bufferWhen.js.html#lineNumber10">@reactivex/rxjs/es6/operators/bufferWhen.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Opens a buffer immediately, then closes the buffer when the observable returned by calling <code>closingSelector</code> emits a value.
+It that immediately opens a new buffer and repeats the process</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">a</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>function that takes no arguments and returns an Observable that signals buffer closure</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of arrays of buffered values.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-combineAll">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">combineAll</span><span data-ice="signature">(project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/combineAll.js.html#lineNumber14">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import combineAll from &apos;<span><a href="file/es6/operators/combineAll.js.html#lineNumber14">@reactivex/rxjs/es6/operators/combineAll.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Takes an Observable of Observables, and collects all observables from it. Once the outer observable
+completes, it subscribes to all collected observables and &quot;combines&quot; their values, such that:</p>
+<ul>
+<li>every time an observable emits, the returned observable emits</li>
+<li>when the returned observable emits, it emits all of the most recent values by:<ul>
+<li>if a <code>project</code> function is provided, it is called with each recent value from each observable in whatever order they arrived,
+and the result of the <code>project</code> function is what is emitted by the returned observable</li>
+<li>if there is no <code>project</code> function, an array of all of the most recent values is emitted by the returned observable.</li>
+</ul>
+</li>
+</ul>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">project</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>an optional function to map the most recent values from each observable into a new result. Takes each of the
+  most recent values from each collected observable as arguments, in order.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of projected results or arrays of recent values.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-combineLatest">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">combineLatest</span><span data-ice="signature">(observables: ...<span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/combineLatest-static.js.html#lineNumber13">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import combineLatest from &apos;<span><a href="file/es6/operators/combineLatest-static.js.html#lineNumber13">@reactivex/rxjs/es6/operators/combineLatest-static.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Combines the values from observables passed as arguments. This is done by subscribing
+to each observable, in order, and collecting an array of each of the most recent values any time any of the observables
+emits, then either taking that array and passing it as arguments to an option <code>project</code> function and emitting the return
+value of that, or just emitting the array of recent values directly if there is no <code>project</code> function.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">observables</td>
+      <td data-ice="type">...<span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>the observables to combine</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">project</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>an optional function to project the values from the combined recent values into a new value for emission.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of other projected values from the most recent values from each observable, or an array of each of
+the most recent values from each observable.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-combineLatest">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">combineLatest</span><span data-ice="signature">(observables: ...<span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/combineLatest.js.html#lineNumber13">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import combineLatest from &apos;<span><a href="file/es6/operators/combineLatest.js.html#lineNumber13">@reactivex/rxjs/es6/operators/combineLatest.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Combines the values from this observable with values from observables passed as arguments. This is done by subscribing
+to each observable, in order, and collecting an array of each of the most recent values any time any of the observables
+emits, then either taking that array and passing it as arguments to an option <code>project</code> function and emitting the return
+value of that, or just emitting the array of recent values directly if there is no <code>project</code> function.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">observables</td>
+      <td data-ice="type">...<span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>the observables to combine the source with</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">project</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>an optional function to project the values from the combined recent values into a new value for emission.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of other projected values from the most recent values from each observable, or an array of each of
+the most recent values from each observable.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-concat">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">concat</span><span data-ice="signature">(observables: ...<span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/concat-static.js.html#lineNumber10">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import concat from &apos;<span><a href="file/es6/operators/concat-static.js.html#lineNumber10">@reactivex/rxjs/es6/operators/concat-static.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Joins multiple observables together by subscribing to them one at a time and merging their results
+into the returned observable. Will wait for each observable to complete before moving on to the next.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">observables</td>
+      <td data-ice="type">...<span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>All values of each passed observable merged into a single observable, in order, in serial fashion.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-concat">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">concat</span><span data-ice="signature">(observables: ...<span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/concat.js.html#lineNumber10">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import concat from &apos;<span><a href="file/es6/operators/concat.js.html#lineNumber10">@reactivex/rxjs/es6/operators/concat.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Joins this observable with multiple other observables by subscribing to them one at a time, starting with the source,
+and merging their results into the returned observable. Will wait for each observable to complete before moving
+on to the next.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">observables</td>
+      <td data-ice="type">...<span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>All values of each passed observable merged into a single observable, in order, in serial fashion.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-concatAll">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">concatAll</span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/concatAll.js.html#lineNumber13">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import concatAll from &apos;<span><a href="file/es6/operators/concatAll.js.html#lineNumber13">@reactivex/rxjs/es6/operators/concatAll.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Joins every Observable emitted by the source (an Observable of Observables), in a serial
+fashion. Subscribing to each one only when the previous one has completed, and merging
+all of their values into the returned observable.</p>
+<p><strong>Warning:</strong> If the source Observable emits Observables quickly and endlessly, and the
+Observables it emits generally complete slower than the source emits, you can run into
+memory issues as the incoming observables collect in an unbounded buffer.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of values merged from the incoming observables.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-concatMap">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">concatMap</span><span data-ice="signature">(project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, projectResult: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/concatMap.js.html#lineNumber21">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import concatMap from &apos;<span><a href="file/es6/operators/concatMap.js.html#lineNumber21">@reactivex/rxjs/es6/operators/concatMap.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Maps values from the source observable into new Observables, then merges them in a serialized fashion,
+waiting for each one to complete before merging the next.</p>
+<p><strong>Warning:</strong> if incoming values arrive endlessly and faster than the observables they&apos;re being mapped
+to can complete, it will result in memory issues as created observables amass in an unbounded buffer
+waiting for their turn to be subscribed to.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">project</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>a function to map incoming values into Observables to be concatenated. accepts
+the <code>value</code> and the <code>index</code> as arguments.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">projectResult</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>an optional result selector that is applied to values before they&apos;re
+merged into the returned observable. The arguments passed to this function are:</p>
+<ul>
+<li><code>outerValue</code>: the value that came from the source</li>
+<li><code>innerValue</code>: the value that came from the projected Observable</li>
+<li><code>outerIndex</code>: the &quot;index&quot; of the value that came from the source</li>
+<li><code>innerIndex</code>: the &quot;index&quot; of the value from the projected Observable</li>
+</ul>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of values merged from the projected Observables as they were subscribed to,
+one at a time. Optionally, these values may have been projected from a passed <code>projectResult</code> argument.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-concatMapTo">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">concatMapTo</span><span data-ice="signature">(observable: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, projectResult: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/concatMapTo.js.html#lineNumber15">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import concatMapTo from &apos;<span><a href="file/es6/operators/concatMapTo.js.html#lineNumber15">@reactivex/rxjs/es6/operators/concatMapTo.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Maps values from the source to a specific observable, and merges them together in a serialized fashion.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">observable</td>
+      <td data-ice="type"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>the observable to map each source value to</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">projectResult</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>an optional result selector that is applied to values before they&apos;re
+merged into the returned observable. The arguments passed to this function are:</p>
+<ul>
+<li><code>outerValue</code>: the value that came from the source</li>
+<li><code>innerValue</code>: the value that came from the projected Observable</li>
+<li><code>outerIndex</code>: the &quot;index&quot; of the value that came from the source</li>
+<li><code>innerIndex</code>: the &quot;index&quot; of the value from the projected Observable</li>
+</ul>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of values merged together by joining the passed observable
+with itself, one after the other, for each value emitted from the source.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-count">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">count</span><span data-ice="signature">(predicate: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, thisArg: <span>any</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operators/count.js.html#lineNumber19">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import count from &apos;<span><a href="file/es6/operators/count.js.html#lineNumber19">@reactivex/rxjs/es6/operators/count.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Returns an observable of a single number that represents the number of items that either:
+Match a provided predicate function, <em>or</em> if a predicate is not provided, the number
+represents the total count of all items in the source observable. The count is emitted
+by the returned observable when the source observable completes.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">predicate</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>a boolean function to select what values are to be counted.
+it is provided with arguments of:</p>
+<ul>
+<li><code>value</code>: the value from the source observable</li>
+<li><code>index</code>: the &quot;index&quot; of the value from the source observable</li>
+<li><code>source</code>: the source observable instance itself.</li>
+</ul>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">thisArg</td>
+      <td data-ice="type"><span>any</span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>the optional <code>this</code> context to use in the <code>predicate</code> function</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>an observable of one number that represents the count as described
+above</p>
 </td>
       </tr>
     </table>

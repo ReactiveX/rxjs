@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -74,7 +87,7 @@ export default class IteratorObservable extends Observable {
         if (iterator == null) {
             throw new Error(&apos;iterator cannot be null.&apos;);
         }
-        if (project &amp;&amp; typeof project !== &quot;function&quot;) {
+        if (project &amp;&amp; typeof project !== &apos;function&apos;) {
             throw new Error(&apos;When provided, `project` must be a function.&apos;);
         }
         return new IteratorObservable(iterator, project, thisArg, scheduler);
@@ -195,7 +208,7 @@ function getIterator(o) {
     return o[$$iterator]();
 }
 function toLength(o) {
-    var len = +o.length;
+    let len = +o.length;
     if (isNaN(len)) {
         return 0;
     }
@@ -218,7 +231,7 @@ function isNan(n) {
     return n !== n;
 }
 function sign(value) {
-    var valueAsNumber = +value;
+    let valueAsNumber = +value;
     if (valueAsNumber === 0) {
         return valueAsNumber;
     }

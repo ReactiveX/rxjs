@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -58,21 +71,60 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/count.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
-export default function count() {
-    return this.lift(new CountOperator());
+import tryCatch from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+import bindCallback from &apos;../util/bindCallback&apos;;
+/**
+ * Returns an observable of a single number that represents the number of items that either:
+ * Match a provided predicate function, _or_ if a predicate is not provided, the number
+ * represents the total count of all items in the source observable. The count is emitted
+ * by the returned observable when the source observable completes.
+ * @param {function} [predicate] a boolean function to select what values are to be counted.
+ * it is provided with arguments of:
+ *   - `value`: the value from the source observable
+ *   - `index`: the &quot;index&quot; of the value from the source observable
+ *   - `source`: the source observable instance itself.
+ * @param {any} [thisArg] the optional `this` context to use in the `predicate` function
+ * @returns {Observable} an observable of one number that represents the count as described
+ * above
+ */
+export default function count(predicate, thisArg) {
+    return this.lift(new CountOperator(predicate, thisArg, this));
 }
 class CountOperator {
+    constructor(predicate, thisArg, source) {
+        this.predicate = predicate;
+        this.thisArg = thisArg;
+        this.source = source;
+    }
     call(subscriber) {
-        return new CountSubscriber(subscriber);
+        return new CountSubscriber(subscriber, this.predicate, this.thisArg, this.source);
     }
 }
 class CountSubscriber extends Subscriber {
-    constructor(destination) {
+    constructor(destination, predicate, thisArg, source) {
         super(destination);
+        this.thisArg = thisArg;
+        this.source = source;
         this.count = 0;
+        this.index = 0;
+        if (typeof predicate === &apos;function&apos;) {
+            this.predicate = bindCallback(predicate, thisArg, 3);
+        }
     }
-    _next(x) {
-        this.count += 1;
+    _next(value) {
+        const predicate = this.predicate;
+        let passed = true;
+        if (predicate) {
+            passed = tryCatch(predicate)(value, this.index++, this.source);
+            if (passed === errorObject) {
+                this.destination.error(passed.e);
+                return;
+            }
+        }
+        if (passed) {
+            this.count += 1;
+        }
     }
     _complete() {
         this.destination.next(this.count);

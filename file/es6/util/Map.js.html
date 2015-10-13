@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -65,7 +78,7 @@ export default root.Map || (function () {
         this._keys = [];
     }
     Map.prototype[&apos;delete&apos;] = function (key) {
-        var i = this._keys.indexOf(key);
+        let i = this._keys.indexOf(key);
         if (i === -1) {
             return false;
         }
@@ -75,11 +88,11 @@ export default root.Map || (function () {
         return true;
     };
     Map.prototype.get = function (key) {
-        var i = this._keys.indexOf(key);
+        let i = this._keys.indexOf(key);
         return i === -1 ? undefined : this._values[i];
     };
     Map.prototype.set = function (key, value) {
-        var i = this._keys.indexOf(key);
+        let i = this._keys.indexOf(key);
         if (i === -1) {
             this._keys.push(key);
             this._values.push(value);
@@ -91,7 +104,7 @@ export default root.Map || (function () {
         return this;
     };
     Map.prototype.forEach = function (cb, thisArg) {
-        for (var i = 0; i &lt; this.size; i++) {
+        for (let i = 0; i &lt; this.size; i++) {
             cb.call(thisArg, this._values[i], this._keys[i]);
         }
     };

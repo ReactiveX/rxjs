@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -58,31 +71,41 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/groupBy.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Subscriber from &apos;../Subscriber&apos;;
+import Observable from &apos;../Observable&apos;;
+import Subject from &apos;../Subject&apos;;
 import Map from &apos;../util/Map&apos;;
 import FastMap from &apos;../util/FastMap&apos;;
-import GroupSubject from &apos;../subjects/GroupSubject&apos;;
+import { RefCountSubscription, GroupedObservable } from &apos;./groupBy-support&apos;;
 import tryCatch from &apos;../util/tryCatch&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
-export default function groupBy(keySelector, elementSelector, durationSelector) {
-    return this.lift(new GroupByOperator(keySelector, durationSelector, elementSelector));
+export function groupBy(keySelector, elementSelector, durationSelector) {
+    return new GroupByObservable(this, keySelector, elementSelector, durationSelector);
 }
-class GroupByOperator {
-    constructor(keySelector, durationSelector, elementSelector) {
+export class GroupByObservable extends Observable {
+    constructor(source, keySelector, elementSelector, durationSelector) {
+        super();
+        this.source = source;
         this.keySelector = keySelector;
-        this.durationSelector = durationSelector;
         this.elementSelector = elementSelector;
+        this.durationSelector = durationSelector;
     }
-    call(subscriber) {
-        return new GroupBySubscriber(subscriber, this.keySelector, this.durationSelector, this.elementSelector);
+    _subscribe(subscriber) {
+        const refCountSubscription = new RefCountSubscription();
+        const groupBySubscriber = new GroupBySubscriber(subscriber, refCountSubscription, this.keySelector, this.elementSelector, this.durationSelector);
+        refCountSubscription.setPrimary(this.source.subscribe(groupBySubscriber));
+        return refCountSubscription;
     }
 }
 class GroupBySubscriber extends Subscriber {
-    constructor(destination, keySelector, durationSelector, elementSelector) {
-        super(destination);
+    constructor(destination, refCountSubscription, keySelector, elementSelector, durationSelector) {
+        super();
+        this.refCountSubscription = refCountSubscription;
         this.keySelector = keySelector;
-        this.durationSelector = durationSelector;
         this.elementSelector = elementSelector;
+        this.durationSelector = durationSelector;
         this.groups = null;
+        this.destination = destination;
+        this.add(destination);
     }
     _next(x) {
         let key = tryCatch(this.keySelector)(x);
@@ -98,22 +121,23 @@ class GroupBySubscriber extends Subscriber {
             }
             let group = groups.get(key);
             if (!group) {
-                groups.set(key, group = new GroupSubject(key));
+                groups.set(key, group = new Subject());
+                let groupedObservable = new GroupedObservable(key, group, this.refCountSubscription);
                 if (durationSelector) {
-                    let duration = tryCatch(durationSelector)(group);
+                    let duration = tryCatch(durationSelector)(new GroupedObservable(key, group));
                     if (duration === errorObject) {
                         this.error(duration.e);
                     }
                     else {
-                        this.add(duration._subscribe(new GroupDurationSubscriber(group, this)));
+                        this.add(duration._subscribe(new GroupDurationSubscriber(key, group, this)));
                     }
                 }
-                this.destination.next(group);
+                this.destination.next(groupedObservable);
             }
             if (elementSelector) {
                 let value = tryCatch(elementSelector)(x);
                 if (value === errorObject) {
-                    group.error(value.e);
+                    this.error(value.e);
                 }
                 else {
                     group.next(value);
@@ -145,29 +169,27 @@ class GroupBySubscriber extends Subscriber {
         this.destination.complete();
     }
     removeGroup(key) {
-        this.groups[key] = null;
+        this.groups.delete(key);
     }
 }
 class GroupDurationSubscriber extends Subscriber {
-    constructor(group, parent) {
+    constructor(key, group, parent) {
         super(null);
+        this.key = key;
         this.group = group;
         this.parent = parent;
     }
     _next(value) {
-        const group = this.group;
-        group.complete();
-        this.parent.removeGroup(group.key);
+        this.group.complete();
+        this.parent.removeGroup(this.key);
     }
     _error(err) {
-        const group = this.group;
-        group.error(err);
-        this.parent.removeGroup(group.key);
+        this.group.error(err);
+        this.parent.removeGroup(this.key);
     }
     _complete() {
-        const group = this.group;
-        group.complete();
-        this.parent.removeGroup(group.key);
+        this.group.complete();
+        this.parent.removeGroup(this.key);
     }
 }
 </code></pre>

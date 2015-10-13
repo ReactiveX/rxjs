@@ -90,7 +90,27 @@
           "line": 1,
           "column": 54
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Joins every Observable emitted by the source (an Observable of Observables), in a serial\n * fashion. Subscribing to each one only when the previous one has completed, and merging\n * all of their values into the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and endlessly, and the\n * Observables it emits generally complete slower than the source emits, you can run into\n * memory issues as the incoming observables collect in an unbounded buffer.\n *\n * @returns {Observable} an observable of values merged from the incoming observables.\n ",
+          "range": [
+            55,
+            647
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "ExportDefaultDeclaration",
@@ -100,16 +120,16 @@
           "type": "Identifier",
           "name": "concatAll",
           "range": [
-            79,
-            88
+            672,
+            681
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 13,
               "column": 24
             },
             "end": {
-              "line": 2,
+              "line": 13,
               "column": 33
             }
           }
@@ -128,16 +148,16 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      104,
-                      108
+                      697,
+                      701
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 14,
                         "column": 11
                       },
                       "end": {
-                        "line": 3,
+                        "line": 14,
                         "column": 15
                       }
                     }
@@ -146,31 +166,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      109,
-                      113
+                      702,
+                      706
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 14,
                         "column": 16
                       },
                       "end": {
-                        "line": 3,
+                        "line": 14,
                         "column": 20
                       }
                     }
                   },
                   "range": [
-                    104,
-                    113
+                    697,
+                    706
                   ],
                   "loc": {
                     "start": {
-                      "line": 3,
+                      "line": 14,
                       "column": 11
                     },
                     "end": {
-                      "line": 3,
+                      "line": 14,
                       "column": 20
                     }
                   }
@@ -182,16 +202,16 @@
                       "type": "Identifier",
                       "name": "MergeAllOperator",
                       "range": [
-                        118,
-                        134
+                        711,
+                        727
                       ],
                       "loc": {
                         "start": {
-                          "line": 3,
+                          "line": 14,
                           "column": 25
                         },
                         "end": {
-                          "line": 3,
+                          "line": 14,
                           "column": 41
                         }
                       }
@@ -202,79 +222,79 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          135,
-                          136
+                          728,
+                          729
                         ],
                         "loc": {
                           "start": {
-                            "line": 3,
+                            "line": 14,
                             "column": 42
                           },
                           "end": {
-                            "line": 3,
+                            "line": 14,
                             "column": 43
                           }
                         }
                       }
                     ],
                     "range": [
-                      114,
-                      137
+                      707,
+                      730
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 14,
                         "column": 21
                       },
                       "end": {
-                        "line": 3,
+                        "line": 14,
                         "column": 44
                       }
                     }
                   }
                 ],
                 "range": [
-                  104,
-                  138
+                  697,
+                  731
                 ],
                 "loc": {
                   "start": {
-                    "line": 3,
+                    "line": 14,
                     "column": 11
                   },
                   "end": {
-                    "line": 3,
+                    "line": 14,
                     "column": 45
                   }
                 }
               },
               "range": [
-                97,
-                139
+                690,
+                732
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 14,
                   "column": 4
                 },
                 "end": {
-                  "line": 3,
+                  "line": 14,
                   "column": 46
                 }
               }
             }
           ],
           "range": [
-            91,
-            141
+            684,
+            734
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 13,
               "column": 36
             },
             "end": {
-              "line": 4,
+              "line": 15,
               "column": 1
             }
           }
@@ -282,42 +302,81 @@
         "generator": false,
         "expression": false,
         "range": [
-          70,
-          141
+          663,
+          734
         ],
         "loc": {
           "start": {
-            "line": 2,
+            "line": 13,
             "column": 15
           },
           "end": {
-            "line": 4,
+            "line": 15,
             "column": 1
           }
         },
-        "leadingComments": [],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Joins every Observable emitted by the source (an Observable of Observables), in a serial\n * fashion. Subscribing to each one only when the previous one has completed, and merging\n * all of their values into the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and endlessly, and the\n * Observables it emits generally complete slower than the source emits, you can run into\n * memory issues as the incoming observables collect in an unbounded buffer.\n *\n * @returns {Observable} an observable of values merged from the incoming observables.\n ",
+            "range": [
+              55,
+              647
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 12,
+                "column": 3
+              }
+            }
+          }
+        ],
         "trailingComments": []
       },
       "range": [
-        55,
-        141
+        648,
+        734
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 13,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 15,
           "column": 1
         }
-      }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Joins every Observable emitted by the source (an Observable of Observables), in a serial\n * fashion. Subscribing to each one only when the previous one has completed, and merging\n * all of their values into the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and endlessly, and the\n * Observables it emits generally complete slower than the source emits, you can run into\n * memory issues as the incoming observables collect in an unbounded buffer.\n *\n * @returns {Observable} an observable of values merged from the incoming observables.\n ",
+          "range": [
+            55,
+            647
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ]
     }
   ],
   "sourceType": "module",
   "range": [
     0,
-    141
+    734
   ],
   "loc": {
     "start": {
@@ -325,9 +384,28 @@
       "column": 0
     },
     "end": {
-      "line": 4,
+      "line": 15,
       "column": 1
     }
   },
-  "comments": []
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Joins every Observable emitted by the source (an Observable of Observables), in a serial\n * fashion. Subscribing to each one only when the previous one has completed, and merging\n * all of their values into the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and endlessly, and the\n * Observables it emits generally complete slower than the source emits, you can run into\n * memory issues as the incoming observables collect in an unbounded buffer.\n *\n * @returns {Observable} an observable of values merged from the incoming observables.\n ",
+      "range": [
+        55,
+        647
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 3
+        }
+      }
+    }
+  ]
 }

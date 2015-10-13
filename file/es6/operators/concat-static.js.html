@@ -42,6 +42,19 @@
   <ul>
     
   <li data-ice="functionDoc"><span><a href="function/index.html#static-function-buffer">buffer</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concat">concat</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-count">count</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-filter">filter</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-map">map</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></li>
@@ -57,8 +70,15 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operators/concat-static.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import merge from &apos;./merge-static&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Observable from &apos;../Observable&apos;;
 import immediate from &apos;../schedulers/immediate&apos;;
+/**
+ * Joins multiple observables together by subscribing to them one at a time and merging their results
+ * into the returned observable. Will wait for each observable to complete before moving on to the next.
+ * @params {...Observable} the observables to concatenate
+ * @params {Scheduler} [scheduler] an optional scheduler to schedule each observable subscription on.
+ * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
+ */
 export default function concat(...observables) {
     let scheduler = immediate;
     let args = observables;
@@ -67,7 +87,7 @@ export default function concat(...observables) {
         scheduler = args.pop();
         args.push(1, scheduler);
     }
-    return merge.apply(this, observables);
+    return Observable.fromArray(observables).mergeAll(1);
 }
 </code></pre>
 
