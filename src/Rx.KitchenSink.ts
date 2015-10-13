@@ -114,6 +114,9 @@ observableProto.dematerialize = dematerialize;
 import debounce from './operators/debounce';
 observableProto.debounce = debounce;
 
+import debounceTime from './operators/debounceTime';
+observableProto.debounceTime = debounceTime;
+
 import defaultIfEmpty from './operators/defaultIfEmpty';
 observableProto.defaultIfEmpty = defaultIfEmpty;
 
