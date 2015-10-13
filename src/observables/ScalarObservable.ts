@@ -73,4 +73,16 @@ export default class ScalarObservable<T> extends Observable<T> {
       return new EmptyObservable();
     }
   }
+
+  reduce<R>(project: (acc: R, x: T) => R, acc?: R): Observable<R> {
+    if (typeof acc === 'undefined') {
+      return <any>this;
+    }
+    let result = tryCatch(project)(acc, this.value);
+    if (result === errorObject) {
+      return new ErrorObservable(errorObject.e);
+    } else {
+      return new ScalarObservable(result);
+    }
+  }
 }
