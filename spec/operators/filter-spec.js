@@ -88,6 +88,25 @@ describe('Observable.prototype.filter()', function () {
     expectObservable(source.filter(predicate)).toBe(expected);
   });
 
+  it('should invoke predicate once for each checked value', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var expected =          '--3---5----7-------|';
+
+    var invoked = 0;
+    var predicate = function (x) {
+      invoked++;
+      return isPrime(x);
+    };
+
+    var r = source
+      .filter(predicate)
+      .do(null, null, function () {
+        expect(invoked).toEqual(7);
+      });
+
+    expectObservable(r).toBe(expected);
+  });
+
   it('should filter in only prime numbers, predicate with index, ' +
     'source unsubscribes early',
   function () {
