@@ -6,7 +6,7 @@ import immediate from '../schedulers/immediate';
 
 export default class PromiseObservable<T> extends Observable<T> {
 
-  _isScalar: boolean = false;
+  protected _isScalar: boolean = false;
   value: T;
 
   static create<T>(promise: Promise<T>, scheduler: Scheduler = immediate): Observable<T> {
