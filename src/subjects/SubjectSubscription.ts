@@ -1,6 +1,7 @@
 import Subject from '../Subject';
 import Subscription from '../Subscription';
 import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 
 export default class SubjectSubscription<T> extends Subscription<T> {
   isUnsubscribed: boolean = false;
@@ -25,6 +26,9 @@ export default class SubjectSubscription<T> extends Subscription<T> {
       return;
     }
 
+    if (this.observer instanceof Subscriber) {
+      (<Subscriber<T>> this.observer).unsubscribe();
+    }
     const subscriberIndex = observers.indexOf(this.observer);
 
     if (subscriberIndex !== -1) {
