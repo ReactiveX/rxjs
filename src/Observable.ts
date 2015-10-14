@@ -17,7 +17,7 @@ import $$observable from './util/Symbol_observable';
 export default class Observable<T> implements CoreOperators<T>  {
   source: Observable<any>;
   operator: Operator<any, T>;
-  _isScalar: boolean = false;
+  protected _isScalar: boolean = false;
 
   /**
    * @constructor
