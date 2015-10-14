@@ -9,7 +9,7 @@ Reactive Extensions Library for JavaScript
 [Apache 2.0 License](LICENSE.txt)
 
 - [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Contribution Guidelines](CONTRIBUTION.md)
+- [Contribution Guidelines](CONTRIBUTING.md)
 - [Maintainer Guidelines](doc/maintainer-guidelines.md)
 - [Creating Operators](doc/operator-creation.md)
 
