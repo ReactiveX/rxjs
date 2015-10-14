@@ -86,6 +86,6 @@ class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
   }
 
   _complete() {
-    // noop
+    this.parent.openBuffer();
   }
 }
