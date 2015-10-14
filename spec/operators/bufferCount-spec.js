@@ -43,6 +43,20 @@ describe('Observable.prototype.bufferCount', function () {
     expectObservable(e1.bufferCount(3)).toBe(expected, {y: ['b', 'c', 'd'], z: ['e']});
   });
 
+  it('should emit buffers at intervals, but stop when result is unsubscribed early', function () {
+    var values = {
+      v: ['a', 'b', 'c'],
+      w: ['c', 'd', 'e']
+    };
+    var e1 =   hot('--a--b--c--d--e--f--g--h--i--|');
+    var unsub =    '                  !           ';
+    var subs =     '^                 !           ';
+    var expected = '--------v-----w----           ';
+
+    expectObservable(e1.bufferCount(3, 2), unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
   it('should raise error if source raise error before reaching specified buffer count', function () {
     var e1 =   hot('--a--b--c--d--#');
     var expected = '--------------#';
