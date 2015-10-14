@@ -11,35 +11,52 @@ class SkipUntilOperator<T, R> implements Operator<T, R> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new SkipUntilSubscriber(subscriber, this.notifier);
   }
 }
 
 class SkipUntilSubscriber<T> extends Subscriber<T> {
-  private notificationSubscriber: NotificationSubscriber<any> = new NotificationSubscriber();
+  private notificationSubscriber: NotificationSubscriber<any> = null;
 
   constructor(destination: Subscriber<T>, private notifier: Observable<any>) {
     super(destination);
+    this.notificationSubscriber = new NotificationSubscriber(this);
     this.add(this.notifier.subscribe(this.notificationSubscriber));
   }
 
-  _next(x) {
-    if (this.notificationSubscriber.hasNotified) {
-      this.destination.next(x);
+  _next(value: T) {
+    if (this.notificationSubscriber.hasValue) {
+      this.destination.next(value);
     }
+  }
+
+  _complete() {
+    if (this.notificationSubscriber.hasCompleted) {
+      this.destination.complete();
+    }
+    this.notificationSubscriber.unsubscribe();
   }
 }
 
 class NotificationSubscriber<T> extends Subscriber<T> {
-  hasNotified: boolean = false;
+  hasValue: boolean = false;
+  hasCompleted: boolean = false;
 
-  constructor() {
+  constructor(private parent: SkipUntilSubscriber<any>) {
     super(null);
   }
 
-  _next() {
-    this.hasNotified = true;
-    this.unsubscribe();
+  _next(unused: T) {
+    this.hasValue = true;
+  }
+
+  _error(err) {
+    this.parent.error(err);
+    this.hasValue = true;
+  }
+
+  _complete() {
+    this.hasCompleted = true;
   }
 }
