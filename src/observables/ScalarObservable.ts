@@ -90,8 +90,17 @@ export default class ScalarObservable<T> extends Observable<T> {
     return this.reduce(project, acc);
   }
 
-  count(): Observable<number> {
-    return new ScalarObservable(1);
+  count(predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number> {
+    if (!predicate) {
+      return new ScalarObservable(1);
+    } else {
+      let result = tryCatch(predicate).call(thisArg || this, this.value, 0, this);
+      if (result === errorObject) {
+        return new ErrorObservable(errorObject.e);
+      } else {
+        return new ScalarObservable(result ? 1 : 0);
+      }
+    }
   }
 
   skip(count: number): Observable<T> {
