@@ -11,6 +11,14 @@ describe('Observable.prototype.skipUntil()', function () {
     expectObservable(e1.skipUntil(skip)).toBe(expected);
   });
 
+  it('should emit element only after another observable emits', function () {
+    var e1 =     hot('--a--b--c--d--e--|');
+    var skip =   hot('-----------x----|');
+    var expected =  ('--------------e--|');
+
+    expectObservable(e1.skipUntil(skip)).toBe(expected);
+  });
+
   it('should skip value and raises error until another observable raises error', function () {
     var e1 =   hot('--a--b--c--d--e--|');
     var skip = hot('-------------#');
