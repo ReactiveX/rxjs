@@ -153,10 +153,10 @@ Observable.create(function (observer) {
     formatNumber(newHz) + newRme, formatNumber(r) + 'x', formatNumber(p, 1) + '%');
 })
 .do(console.log.bind(console))
-.concat(Observable.defer(function() {
+.concat(Observable.defer(function () {
   var csv = testArgument && testArgument.indexOf('--csv');
   // If no command line arguments provided, no need to do anthing after running perf tests.
-  if (testArgument == null) {
+  if (testArgument === null) {
     return Observable.empty();
   }
   // If command line args were provided, but no tests run, throw an error.
@@ -166,8 +166,8 @@ Observable.create(function (observer) {
   // If we specified a CSV file, write it.
   else if (csv !== -1) {
     var fileName = testArgument[csv + 1];
-    return Observable.create(function(obs) {
-      var fileData = output.map(function(o) {
+    return Observable.create(function (obs) {
+      var fileData = output.map(function (o) {
         return o.map(JSON.stringify.bind(JSON)).join(',');
       }).join('\n');
       fs.writeFile(fileName, fileData, { encoding: 'utf8' }, function (err, res) {
@@ -184,7 +184,7 @@ Observable.create(function (observer) {
   return Observable.empty();
 }))
 .subscribe(
-  function() {},
+  function () {},
   function (err) {
     if (err.stack === undefined) {
       (console.error || console.log)(err);
