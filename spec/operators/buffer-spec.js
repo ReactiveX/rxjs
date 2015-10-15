@@ -1,8 +1,8 @@
-/* globals describe, it, expect, expectObservable, hot */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
-describe('Observable.prototype.buffer', function () {
+describe('Observable.prototype.buffer()', function () {
   it('should work with empty and empty selector', function () {
     var a = Observable.empty();
     var b = Observable.empty();
@@ -166,5 +166,22 @@ describe('Observable.prototype.buffer', function () {
     };
     expectObservable(a.buffer(b)).toBe(expected, expectedValues, new Error('too bad'));
     expectSubscriptions(a.subscriptions).toBe(subs);
+  });
+
+  it('should unsubscribe notifier when source unsubscribed', function () {
+    var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var unsub =         '              !                  ';
+    var subs =          '^             !                  ';
+    var b = hot('--------^--a-------b---cd|               ');
+    var bsubs =         '^             !                  ';
+    var expected =      '---a-------b---                  ';
+    var expectedValues = {
+      a: ['3'],
+      b: ['4', '5']
+    };
+
+    expectObservable(a.buffer(b), unsub).toBe(expected, expectedValues);
+    expectSubscriptions(a.subscriptions).toBe(subs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 });

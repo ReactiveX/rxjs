@@ -30,11 +30,13 @@ class BufferOperator<T, R> implements Operator<T, R> {
 }
 
 class BufferSubscriber<T> extends Subscriber<T> {
-  buffer: T[] = [];
+  private buffer: T[] = [];
+  private notifierSubscriber: BufferClosingNotifierSubscriber<any> = null;
 
   constructor(destination: Subscriber<T>, closingNotifier: Observable<any>) {
     super(destination);
-    this.add(closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this)));
+    this.notifierSubscriber = new BufferClosingNotifierSubscriber(this);
+    this.add(closingNotifier._subscribe(this.notifierSubscriber));
   }
 
   _next(value: T) {
@@ -53,6 +55,10 @@ class BufferSubscriber<T> extends Subscriber<T> {
     const buffer = this.buffer;
     this.buffer = [];
     this.destination.next(buffer);
+
+    if (this.isUnsubscribed) {
+      this.notifierSubscriber.unsubscribe();
+    }
   }
 }
 
