@@ -6,7 +6,7 @@ module.exports = function (suite) {
     .map(RxOld.Observable.range(0, 25), RxOld.Scheduler.immediate)
     .mergeAll();
   var newMergeAllWithImmediateScheduler = RxNew.Observable.range(0, 25)
-    .map(RxNew.Observable.range(0, 25))
+    .mapTo(RxNew.Observable.range(0, 25))
     .mergeAll();
 
   function _next(x) { }
