@@ -92,6 +92,9 @@ Observable.create(function (observer) {
 })
 .filter(function (filePath) {
   if (testArgument !== undefined) {
+    if (testArgument.length === 2 && testArgument.indexOf('--csv') !== -1) {
+      return true;
+    }
     var fileArgs = testArgument.slice();
     var csvIndex = fileArgs.indexOf('--csv');
     if (csvIndex !== -1) {
@@ -149,24 +152,45 @@ Observable.create(function (observer) {
   return row(40, 30, 30, 15, 15)(d.name, formatNumber(oldHz) + oldRme,
     formatNumber(newHz) + newRme, formatNumber(r) + 'x', formatNumber(p, 1) + '%');
 })
-.subscribe(console.log.bind(console), function (err) {
-  if (err.stack === undefined) {
-    console.log(err);
-  } else {
-    console.log(err.stack);
+.do(console.log.bind(console))
+.concat(Observable.defer(function() {
+  var csv = testArgument && testArgument.indexOf('--csv');
+  // If no command line arguments provided, no need to do anthing after running perf tests.
+  if (testArgument == null) {
+    return Observable.empty();
   }
-}, function () {
-  var csv = testArgument.indexOf('--csv');
-  if (csv !== -1) {
-    var filename = testArgument[csv + 1];
-    fs.writeFileSync(filename, output.map(function (o) {
-      return o.map(function (v) {
-        return JSON.stringify(v);
-      }).join(',');
-    }).join('\n'), { encoding: 'utf8' });
+  // If command line args were provided, but no tests run, throw an error.
+  else if (output.length === 1) {
+    return Observable.throw(new Error('could not execute specified test, check parameter : ' + testArgument));
   }
-
-  if (output.length === 1 && testArgument !== undefined) {
-    console.log('could not execute specified test, check parameter : ' + testArgument);
+  // If we specified a CSV file, write it.
+  else if (csv !== -1) {
+    var fileName = testArgument[csv + 1];
+    return Observable.create(function(obs) {
+      var fileData = output.map(function(o) {
+        return o.map(JSON.stringify.bind(JSON)).join(',');
+      }).join('\n');
+      fs.writeFile(fileName, fileData, { encoding: 'utf8' }, function (err, res) {
+        if (err) {
+          obs.onError(err);
+        } else {
+          obs.onNext(res);
+          obs.onCompleted();
+        }
+      });
+    });
   }
-});
+  // All other cases, just complete.
+  return Observable.empty();
+}))
+.subscribe(
+  function() {},
+  function (err) {
+    if (err.stack === undefined) {
+      (console.error || console.log)(err);
+    } else {
+      (console.error || console.log)(err.stack);
+    }
+  },
+  function () {}
+);
