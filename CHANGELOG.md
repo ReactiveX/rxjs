@@ -1,82 +1,50 @@
+<a name="5.0.0-alpha.5"></a>
+# [5.0.0-alpha.5](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.4...v5.0.0-alpha.5) (2015-10-16)
+
+
+### Bug Fixes
+
+* **bufferToggle:** fix bugs in order to pass tests ([949fa31](https://github.com/ReactiveX/RxJS/commit/949fa31))
+* **mergeAll:** fix mergeAll micro performance tests to use mapTo instead of map. ([616e86e](https://github.com/ReactiveX/RxJS/commit/616e86e))
+* **package:** correct typings path ([a501b06](https://github.com/ReactiveX/RxJS/commit/a501b06))
+* **repeat:** add additional resubscription behavior ([4f9f33b](https://github.com/ReactiveX/RxJS/commit/4f9f33b)), closes [#516](https://github.com/ReactiveX/RxJS/issues/516)
+* **retry:** fix internal unsubscriptions for retry ([cc92f45](https://github.com/ReactiveX/RxJS/commit/cc92f45)), closes [#546](https://github.com/ReactiveX/RxJS/issues/546)
+* **windowToggle:** fix window closing and unsubscription semantics ([0cb21e6](https://github.com/ReactiveX/RxJS/commit/0cb21e6))
+
+
+
 <a name="5.0.0-alpha.4"></a>
-# 5.0.0-alpha.4 (2015-10-15)
+# [5.0.0-alpha.4](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.3...5.0.0-alpha.4) (2015-10-15)
 
 
-### chore
+### Bug Fixes
 
-* chore(.gitignore): ignore generated code coverage files ([26a0696](https://github.com/ReactiveX/RxJS/commit/26a0696))
-* chore(README): fix CONTRIBUTING.md link ([06fc120](https://github.com/ReactiveX/RxJS/commit/06fc120))
-* chore(bufferCount): fix linting issue ([def822c](https://github.com/ReactiveX/RxJS/commit/def822c))
-* chore(cjs): add copying of typings files over to cjs output directory ([64cd865](https://github.com/ReactiveX/RxJS/commit/64cd865))
-* chore(code coverage): remove generated files ([930c3ce](https://github.com/ReactiveX/RxJS/commit/930c3ce))
-* chore(code-coverage): Add istanbul code coverage and travis + coveralls configuration. ([699438e](https://github.com/ReactiveX/RxJS/commit/699438e))
+* **Subject:** fix missing unsubscribe call ([9dd27d6](https://github.com/ReactiveX/RxJS/commit/9dd27d6))
+* **Subscriber:** avoid implicit any ([08faaa9](https://github.com/ReactiveX/RxJS/commit/08faaa9))
+* **bufferWhen:** onComplete of closings determine buffers ([5d28a38](https://github.com/ReactiveX/RxJS/commit/5d28a38))
+* **fromEvent:** make selector argument optional in fromEvent static method ([71d90b4](https://github.com/ReactiveX/RxJS/commit/71d90b4))
+* **skipUntil:** update skipUntil behavior with error, completion ([6f0d98f](https://github.com/ReactiveX/RxJS/commit/6f0d98f)), closes [#518](https://github.com/ReactiveX/RxJS/issues/518)
+* **windowCount:** fix windowCount window opening times ([908ae56](https://github.com/ReactiveX/RxJS/commit/908ae56)), closes [#273](https://github.com/ReactiveX/RxJS/issues/273)
 
-### docs
+### Features
 
-* docs(Observable.combineLatest): add basic docs for static combineLatest ([c48baa7](https://github.com/ReactiveX/RxJS/commit/c48baa7))
-* docs(Observable.concat): add basic docs for Observable.concat ([59a3f3f](https://github.com/ReactiveX/RxJS/commit/59a3f3f))
-* docs(bufferCount): add basic docs for bufferCount ([35939be](https://github.com/ReactiveX/RxJS/commit/35939be))
-* docs(bufferTime): add basic docs for bufferTime ([01e0198](https://github.com/ReactiveX/RxJS/commit/01e0198))
-* docs(bufferToggle): add basic docs ([4791c1f](https://github.com/ReactiveX/RxJS/commit/4791c1f))
-* docs(bufferWhen): add basic docs ([d2583c2](https://github.com/ReactiveX/RxJS/commit/d2583c2))
-* docs(catch): add basic docs ([febfe6c](https://github.com/ReactiveX/RxJS/commit/febfe6c))
-* docs(combineAll): add basic docs ([2000d37](https://github.com/ReactiveX/RxJS/commit/2000d37))
-* docs(combineLatest): add basic docs ([67675fd](https://github.com/ReactiveX/RxJS/commit/67675fd))
-* docs(concat): add basic docs ([05d7654](https://github.com/ReactiveX/RxJS/commit/05d7654))
-* docs(concatAll): basic docs ([4d461cb](https://github.com/ReactiveX/RxJS/commit/4d461cb))
-* docs(concatMap): basic docs ([4ebb017](https://github.com/ReactiveX/RxJS/commit/4ebb017))
-* docs(concatMapTo): basic docs ([c564603](https://github.com/ReactiveX/RxJS/commit/c564603))
-* docs(count): basic docs ([da6eaf9](https://github.com/ReactiveX/RxJS/commit/da6eaf9))
+* **operator:** add debounce operator ([a1e652f](https://github.com/ReactiveX/RxJS/commit/a1e652f)), closes [#493](https://github.com/ReactiveX/RxJS/issues/493)
+* **operator:** add debounceTime operator ([dd2ba40](https://github.com/ReactiveX/RxJS/commit/dd2ba40))
 
-### feat
+### Performance Improvements
 
-* feat(operator): add debounce operator ([a1e652f](https://github.com/ReactiveX/RxJS/commit/a1e652f)), closes [#493](https://github.com/ReactiveX/RxJS/issues/493)
-* feat(operator): add debounceTime operator ([dd2ba40](https://github.com/ReactiveX/RxJS/commit/dd2ba40))
-
-### fix
-
-* fix(Subject): fix missing unsubscribe call ([9dd27d6](https://github.com/ReactiveX/RxJS/commit/9dd27d6))
-* fix(Subscriber): avoid implicit any ([08faaa9](https://github.com/ReactiveX/RxJS/commit/08faaa9))
-* fix(bufferWhen): onComplete of closings determine buffers ([5d28a38](https://github.com/ReactiveX/RxJS/commit/5d28a38))
-* fix(fromEvent): make selector argument optional in fromEvent static method ([71d90b4](https://github.com/ReactiveX/RxJS/commit/71d90b4))
-* fix(skipUntil): update skipUntil behavior with error, completion ([6f0d98f](https://github.com/ReactiveX/RxJS/commit/6f0d98f)), closes [#518](https://github.com/ReactiveX/RxJS/issues/518)
-* fix(windowCount): fix windowCount window opening times ([908ae56](https://github.com/ReactiveX/RxJS/commit/908ae56)), closes [#273](https://github.com/ReactiveX/RxJS/issues/273)
-
-### perf
-
-* perf(ScalarObservable): add fast-path for mapping scalar observables ([7b0d3dc](https://github.com/ReactiveX/RxJS/commit/7b0d3dc))
-* perf(count): fast-path for counting over scalars ([c35a120](https://github.com/ReactiveX/RxJS/commit/c35a120))
-* perf(filter): add fast-path for filtering scalar observables ([e2e8954](https://github.com/ReactiveX/RxJS/commit/e2e8954))
-* perf(reduce): add fast-path for reducing over scalar observables ([4c65136](https://github.com/ReactiveX/RxJS/commit/4c65136))
-* perf(scan): fast-path for scanning scalars ([0201b92](https://github.com/ReactiveX/RxJS/commit/0201b92))
-* perf(skip): fast-path for skip over scalar observable ([9b49936](https://github.com/ReactiveX/RxJS/commit/9b49936))
-* perf(take): add fast-path for take over scalars ([33053b1](https://github.com/ReactiveX/RxJS/commit/33053b1))
-
-### refactor
-
-* refactor(typings): make sure Observable.d.ts has all core operator type information ([d00a258](https://github.com/ReactiveX/RxJS/commit/d00a258))
-
-### test
-
-* test(ScalarObservable): add tests for fast-path methods ([754d445](https://github.com/ReactiveX/RxJS/commit/754d445))
-* test(buffer): add a few remaining tests for buffer ([8526206](https://github.com/ReactiveX/RxJS/commit/8526206))
-* test(bufferCount): add last missing test for bufferCount ([f9ad7d7](https://github.com/ReactiveX/RxJS/commit/f9ad7d7))
-* test(bufferWhen): add tests to mirror RxJS 4 buffer() ([50e9163](https://github.com/ReactiveX/RxJS/commit/50e9163))
-* test(count): add micro perf test for count ([559fd8a](https://github.com/ReactiveX/RxJS/commit/559fd8a))
-* test(count): add test for counting over scalars ([86a9b45](https://github.com/ReactiveX/RxJS/commit/86a9b45))
-* test(filter): add micro perf tests for filtering scalar observables ([e80bab6](https://github.com/ReactiveX/RxJS/commit/e80bab6))
-* test(map): add map scalar micro performance test ([acf56ec](https://github.com/ReactiveX/RxJS/commit/acf56ec))
-* test(reduce): add micro perf tests for reducing over scalar observables ([eb11736](https://github.com/ReactiveX/RxJS/commit/eb11736))
-* test(scan): add scan micro perf tests for seeded or seedless over scalars ([aca2d37](https://github.com/ReactiveX/RxJS/commit/aca2d37))
-* test(skip): add micro perf tests for skip over scalar ([d18e2bc](https://github.com/ReactiveX/RxJS/commit/d18e2bc))
-* test(take): add micro perf test for take over scalars ([be61d52](https://github.com/ReactiveX/RxJS/commit/be61d52))
-* test(windowCount): add comprehensive marble tests ([ababa3d](https://github.com/ReactiveX/RxJS/commit/ababa3d))
-* test(windowTime): add marble tests for windowTime ([626b92e](https://github.com/ReactiveX/RxJS/commit/626b92e))
+* **ScalarObservable:** add fast-path for mapping scalar observables ([7b0d3dc](https://github.com/ReactiveX/RxJS/commit/7b0d3dc))
+* **count:** fast-path for counting over scalars ([c35a120](https://github.com/ReactiveX/RxJS/commit/c35a120))
+* **filter:** add fast-path for filtering scalar observables ([e2e8954](https://github.com/ReactiveX/RxJS/commit/e2e8954))
+* **reduce:** add fast-path for reducing over scalar observables ([4c65136](https://github.com/ReactiveX/RxJS/commit/4c65136))
+* **scan:** fast-path for scanning scalars ([0201b92](https://github.com/ReactiveX/RxJS/commit/0201b92))
+* **skip:** fast-path for skip over scalar observable ([9b49936](https://github.com/ReactiveX/RxJS/commit/9b49936))
+* **take:** add fast-path for take over scalars ([33053b1](https://github.com/ReactiveX/RxJS/commit/33053b1))
 
 
 
 <a name="5.0.0-alpha.3"></a>
-# [5.0.0-alpha.3](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.2...v5.0.0-alpha.3) (2015-10-13)
+# [5.0.0-alpha.3](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.2...5.0.0-alpha.3) (2015-10-13)
 
 
 ### Bug Fixes
@@ -122,21 +90,20 @@
 
 ### BREAKING CHANGES
 
-* **mergeMap/flatMap/concatMap/switchMap**:
-The function signature of resultSelectors used to be `(innerValue,
-outerValue, innerIndex, outerIndex)` but this commits changes it to
-be `(outerValue, innerValue, outerIndex, innerIndex)`, to match
+* S:
+The function signature of resultSelectors used to be (innerValue,
+outerValue, innerIndex, outerIndex) but this commits changes it to
+be (outerValue, innerValue, outerIndex, innerIndex), to match
 signatures in RxJS 4.
 
 
 <a name="5.0.0-alpha.2"></a>
-# [5.0.0-alpha.2](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.1...v5.0.0-alpha.2) (2015-09-30)
+# [5.0.0-alpha.2](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.1...5.0.0-alpha.2) (2015-09-30)
 
 
 ### Bug Fixes
 
 * **concat:** let observable concat instead of merge ([c17e832](https://github.com/ReactiveX/RxJS/commit/c17e832))
-* **zip:** zip now completes the returned observable properly([a5684ba](https://github.com/ReactiveX/RxJS/commit/a5684ba))
 
 ### Features
 
@@ -148,7 +115,7 @@ signatures in RxJS 4.
 
 
 <a name="5.0.0-alpha.1"></a>
-# [5.0.0-alpha.1](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.1...v5.0.0-alpha.1) (2015-09-23)
+# [5.0.0-alpha.1](https://github.com/ReactiveX/RxJS/compare/0.0.0-prealpha.3...5.0.0-alpha.1) (2015-09-23)
 
 
 ### Bug Fixes
