@@ -34,7 +34,7 @@ describe('Observable.prototype.scan()', function () {
     var source = e1.scan(function (acc, x) { return [].concat(acc, x); }, []);
 
     expectObservable(source).toBe(expected, values);
-  })
+  });
 
   it('should handle errors in the projection function', function () {
     var e1 = hot('--a--^--b--c--d--e--f--g--|');
@@ -57,7 +57,7 @@ describe('Observable.prototype.scan()', function () {
     }, []);
 
     expectObservable(source).toBe(expected, values, 'bad!');
-  })
+  });
 
   it('handle empty', function () {
     var e1 = Observable.empty();
@@ -103,5 +103,4 @@ describe('Observable.prototype.scan()', function () {
 
     expectObservable(source, sub).toBe(expected, values);
   });
-
 });
