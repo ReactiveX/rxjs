@@ -35,10 +35,8 @@ describe('Observable.prototype.retry()', function () {
       observer.complete();
     })
       .map(function (x) {
-        if ((errors += 1) < retries) {
-          throw 'bad';
-        }
-        return x;
+        errors += 1;
+        throw 'bad';
       })
       .retry(retries - 1)
       .subscribe(
@@ -46,7 +44,7 @@ describe('Observable.prototype.retry()', function () {
           expect(x).toBe(42);
         },
         function (err) {
-          expect(errors).toBe(1);
+          expect(errors).toBe(2);
           done();
         }, function () {
           expect('this was called').toBe(false);
@@ -76,5 +74,99 @@ describe('Observable.prototype.retry()', function () {
         function (err) {
           expect('this was called').toBe(false);
         }, done);
+  });
+
+  it('should handle an empty source', function () {
+    var source = cold('|');
+    var expected =    '|';
+
+    var result = source.retry();
+
+    expectObservable(result).toBe(expected);
+  });
+
+  it('should handle a never source', function () {
+    var source = cold('-');
+    var expected =    '-';
+
+    var result = source.retry();
+
+    expectObservable(result).toBe(expected);
+  });
+
+  it('should return a never observable given an async just-throw source and no count', function () {
+    var source = cold('-#'); // important that it's not a sync error
+    var unsub =       '                                     !';
+    var expected =    '--------------------------------------';
+
+    var result = source.retry();
+
+    expectObservable(result, unsub).toBe(expected);
+  });
+
+  it('should handle a basic source that emits next then completes', function () {
+    var source = hot('--1--2--^--3--4--5---|');
+    var subs =               '^            !';
+    var expected =           '---3--4--5---|';
+
+    var result = source.retry();
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should handle a basic source that emits next but does not complete', function () {
+    var source = hot('--1--2--^--3--4--5---');
+    var subs =               '^            ';
+    var expected =           '---3--4--5---';
+
+    var result = source.retry();
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should handle a basic source that emits next then errors, no count', function () {
+    var source = cold('--1-2-3-#');
+    var unsub =       '                                     !';
+    var subs =       ['^       !                             ',
+                      '        ^       !                     ',
+                      '                ^       !             ',
+                      '                        ^       !     ',
+                      '                                ^    !'];
+    var expected =    '--1-2-3---1-2-3---1-2-3---1-2-3---1-2-';
+
+    var result = source.retry();
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should handle a basic source that emits next then errors, count=3', function () {
+    var source = cold('--1-2-3-#');
+    var subs =       ['^       !                        ',
+                      '        ^       !                ',
+                      '                ^       !        ',
+                      '                        ^       !'];
+    var expected =    '--1-2-3---1-2-3---1-2-3---1-2-3-#';
+
+    var result = source.retry(3);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should handle a source which eventually throws, count=3, and result is ' +
+  'unsubscribed early', function () {
+    var source = cold('--1-2-3-#');
+    var unsub =       '             !           ';
+    var subs =       ['^       !                ',
+                      '        ^    !           '];
+    var expected =    '--1-2-3---1-2-';
+
+    var result = source.retry(3);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
