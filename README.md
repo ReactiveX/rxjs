@@ -53,6 +53,7 @@ The build and test structure is fairly primitive at the moment. There are variou
 - build_test: builds ES6, then CommonJS, then runs the tests with `jasmine`
 - build_perf: builds ES6, CommonJS, then global, then runs the performance tests with `protractor`
 - build_docs: generates API documentation from `dist/es6` to `dist/docs`
+- build_cover: runs `istanbul` code coverage against test cases
 - test: runs tests with `jasmine`, must have built prior to running.
 
 ### Example
@@ -65,6 +66,7 @@ npm run build_all
 ## Performance Tests
 
 Run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor`.
+Run `npm run perf_micro` to run micro performance test benchmarking operator.
 
 ## Adding documentation
 RxNext uses [ESDoc](https://esdoc.org/) to generate API documentation. Refer to ESDoc's documentation for syntax. Run `npm run build_docs` to generate.

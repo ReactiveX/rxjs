@@ -20,4 +20,5 @@ script:
   - npm run build_cover
 
 after_script:
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - ./node_modules/.bin/remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.json && ./node_modules/.bin/remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.lcov -t lcovonly && ./node_modules/.bin/remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped -t html
+  - cat ./coverage/coverage-remapped.lcov  | ./node_modules/coveralls/bin/coveralls.js

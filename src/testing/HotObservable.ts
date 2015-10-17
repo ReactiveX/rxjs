@@ -1,5 +1,5 @@
 import Subject from '../Subject';
-import Subscriber from './Subscriber';
+import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 import Scheduler from '../Scheduler';
 import TestMessage from './TestMessage';
