@@ -14,8 +14,8 @@
     "build_test": "rm -rf dist/ && npm run lint && npm run build_es6 && npm run build_cjs && jasmine",
     "build_cover": "rm -rf dist/ && npm run lint && npm run build_es6 && npm run build_cjs && istanbul cover jasmine",
     "build_docs": "./docgen.sh",
-    "lint_perf": "eslint perf/",
-    "lint_spec": "eslint spec/**/*.js",
+    "lint_perf": "eslint perf/ --fix",
+    "lint_spec": "eslint spec/**/*.js --fix",
     "lint_src": "tslint -c .tslintrc src/**/*.ts",
     "lint": "npm run lint_src && npm run lint_spec && npm run lint_perf",
     "cover": "istanbul cover jasmine",
@@ -88,7 +88,7 @@
     "protractor": "2.2.0",
     "rx": "latest",
     "tslint": "2.5.0",
-    "typescript": "1.6.2",
+    "typescript": "1.8.0-dev.20151017",
     "watch": "0.16.0"
   },
   "engines": {
