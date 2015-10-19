@@ -4,39 +4,85 @@ var Observable = Rx.Observable;
 
 describe('Observable.prototype.repeat()', function () {
   it('should resubscribe count number of times', function () {
-    var e1 =   cold('--a--b--|');
+    var e1 =   cold('--a--b--|                ');
+    var subs =     ['^       !                ',
+                    '        ^       !        ',
+                    '                ^       !'];
     var expected =  '--a--b----a--b----a--b--|';
 
     expectObservable(e1.repeat(3)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should resubscribe multiple times', function () {
-    var e1 =   cold('--a--b--|');
+    var e1 =   cold('--a--b--|                        ');
+    var subs =     ['^       !                        ',
+                    '        ^       !                ',
+                    '                ^       !        ',
+                    '                        ^       !'];
     var expected =  '--a--b----a--b----a--b----a--b--|';
 
     expectObservable(e1.repeat(2).repeat(2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should complete without emit when count is zero', function () {
     var e1 =  cold('--a--b--|');
+    var subs = [];
     var expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should emit source once when count is one', function () {
     var e1 =  cold('--a--b--|');
+    var subs =     '^       !';
     var expected = '--a--b--|';
 
     expectObservable(e1.repeat(1)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should repeat until gets unsubscribed', function () {
-    var e1 =  cold('--a--b--|');
-    var unsub =    '--------------!';
+    var e1 =  cold('--a--b--|      ');
+    var subs =    ['^       !      ',
+                   '        ^     !'];
+    var unsub =    '              !';
     var expected = '--a--b----a--b-';
 
     expectObservable(e1.repeat(10), unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should be able to repeat indefinitely until unsubscribed', function () {
+    var e1 =  cold('--a--b--|                                    ');
+    var subs =    ['^       !                                    ',
+                   '        ^       !                            ',
+                   '                ^       !                    ',
+                   '                        ^       !            ',
+                   '                                ^       !    ',
+                   '                                        ^   !'];
+    var unsub =    '                                            !';
+    var expected = '--a--b----a--b----a--b----a--b----a--b----a--';
+
+    expectObservable(e1.repeat(), unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should consider negative count as repeat indefinitely', function () {
+    var e1 =  cold('--a--b--|                                    ');
+    var subs =    ['^       !                                    ',
+                   '        ^       !                            ',
+                   '                ^       !                    ',
+                   '                        ^       !            ',
+                   '                                ^       !    ',
+                   '                                        ^   !'];
+    var unsub =    '                                            !';
+    var expected = '--a--b----a--b----a--b----a--b----a--b----a--';
+
+    expectObservable(e1.repeat(-1), unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should not complete when source never completes', function () {
@@ -48,30 +94,39 @@ describe('Observable.prototype.repeat()', function () {
 
   it('should not complete when source does not completes', function () {
     var e1 =  cold('-');
+    var unsub =    '                              !';
+    var subs =     '^                             !';
     var expected = '-';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.repeat(3), unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should complete immediately when source does not complete withut emit but count is zero', function () {
+  it('should complete immediately when source does not complete without emit but count is zero', function () {
     var e1 =  cold('-');
+    var subs = [];
     var expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should complete immediately when source does not complete but count is zero', function () {
     var e1 =   cold('--a--b--');
+    var subs = [];
     var expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should emit source once and does not complete when source emits but does not complete', function () {
     var e1 =   cold('--a--b--');
+    var subs =     ['^       '];
     var expected =  '--a--b--';
 
     expectObservable(e1.repeat(3)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should complete when source is empty', function () {
@@ -82,24 +137,32 @@ describe('Observable.prototype.repeat()', function () {
   });
 
   it('should complete when source does not emit', function () {
-    var e1 =  cold('----|');
+    var e1 =  cold('----|        ');
+    var subs =    ['^   !        ',
+                   '    ^   !    ',
+                   '        ^   !'];
     var expected = '------------|';
 
     expectObservable(e1.repeat(3)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should complete immediately when source does not emit but count is zero', function () {
     var e1 =  cold('----|');
+    var subs = [];
     var expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should raise error when source raises error', function () {
     var e1 =  cold('--a--b--#');
+    var subs =     '^       !';
     var expected = '--a--b--#';
 
     expectObservable(e1.repeat(2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should raises error if source throws', function () {
