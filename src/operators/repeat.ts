@@ -2,48 +2,92 @@ import Operator from '../Operator';
 import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
+import EmptyObservable from '../observables/EmptyObservable';
 import immediate from '../schedulers/immediate';
+import Subscription from '../Subscription';
 
 export default function repeat<T>(count: number = -1): Observable<T> {
-  return this.lift(new RepeatOperator(count, this));
+  if (count === 0) {
+    return EmptyObservable.create();
+  } else {
+    return this.lift(new RepeatOperator(count, this));
+  }
 }
 
 class RepeatOperator<T, R> implements Operator<T, R> {
-  constructor(private count: number, private original: Observable<T>) {
+  constructor(private count: number,
+              private source: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new RepeatSubscriber(subscriber, this.count, this.original);
+    return new FirstRepeatSubscriber(subscriber, this.count, this.source);
   }
 }
 
-class RepeatSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>, private count: number, private original: Observable<T>) {
-    super(destination);
-    this.invalidateRepeat();
-  }
+class FirstRepeatSubscriber<T> extends Subscriber<T> {
+  private lastSubscription: Subscription<T>;
 
-  private repeatSubscription(): void {
-    let state = { dest: this.destination, count: this.count, original: this.original };
-    immediate.scheduleNow(RepeatSubscriber.dispatchSubscription, state);
-  }
-
-  private invalidateRepeat(): Boolean {
-    let completed = this.count === 0;
-    if (completed) {
+  constructor(public destination: Subscriber<T>,
+              private count: number,
+              private source: Observable<T>) {
+    super(null);
+    if (count === 0) {
       this.destination.complete();
+      super.unsubscribe();
     }
-    return completed;
+    this.lastSubscription = this;
   }
 
-  private static dispatchSubscription({ dest, count, original }): void {
-    return original.subscribe(new RepeatSubscriber(dest, count, original));
+  _next(value: T) {
+    this.destination.next(value);
+  }
+
+  _error(err: any) {
+    this.destination.error(err);
+  }
+
+  complete() {
+    if (!this.isUnsubscribed) {
+      this.resubscribe(this.count);
+    }
+  }
+
+  unsubscribe() {
+    const lastSubscription = this.lastSubscription;
+    if (lastSubscription === this) {
+      super.unsubscribe();
+    } else {
+      lastSubscription.unsubscribe();
+    }
+  }
+
+  resubscribe(count: number) {
+    this.lastSubscription.unsubscribe();
+    if (count - 1 === 0) {
+      this.destination.complete();
+    } else {
+      const nextSubscriber = new MoreRepeatSubscriber(this, count - 1);
+      this.lastSubscription = this.source.subscribe(nextSubscriber);
+    }
+  }
+}
+
+class MoreRepeatSubscriber<T> extends Subscriber<T> {
+  constructor(private parent: FirstRepeatSubscriber<T>,
+              private count: number) {
+    super(null);
+  }
+
+  _next(value: T) {
+    this.parent.destination.next(value);
+  }
+
+  _error(err: any) {
+    this.parent.destination.error(err);
   }
 
   _complete() {
-    if (!this.invalidateRepeat()) {
-      this.count--;
-      this.repeatSubscription();
-    }
+    const count = this.count;
+    this.parent.resubscribe(count < 0 ? -1 : count);
   }
 }
