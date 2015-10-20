@@ -13,7 +13,7 @@ describe('Observable.prototype.concatAll()', function () {
     var res = [];
     sources.concatAll().subscribe(
       function (x) { res.push(x); },
-      null,
+      function (err) { done.fail('should not be called.'); },
       function () {
         expect(res).toEqual([0,1,2,3]);
         done();
@@ -35,6 +35,74 @@ describe('Observable.prototype.concatAll()', function () {
         expect(res.length).toBe(1);
         expect(err).toBe(1);
         done();
-      }, null);
+      },
+      function () { done.fail('should not be called.'); });
   }, 2000);
+
+  it('should concat all observables in an observable', function () {
+    var e1 = Rx.Observable.fromArray([
+      Rx.Observable.of('a'),
+      Rx.Observable.of('b'),
+      Rx.Observable.of('c')
+    ]);
+    var expected = '(abc|)';
+
+    expectObservable(e1.concatAll()).toBe(expected);
+  });
+
+  it('should throw if any child observable throws', function () {
+    var e1 = Rx.Observable.fromArray([
+      Rx.Observable.of('a'),
+      Rx.Observable.throw('error'),
+      Rx.Observable.of('c')
+    ]);
+    var expected = '(a#)';
+
+    expectObservable(e1.concatAll()).toBe(expected);
+  });
+
+  it('should concat a hot observable of observables', function () {
+    var x = cold(     'a---b---c---|');
+    var y = cold(        'd---e---f---|');
+    var e1 =    hot('--x--y--|', { x: x, y: y });
+    var expected =  '--a---b---c---d---e---f---|';
+
+    expectObservable(e1.concatAll()).toBe(expected);
+  });
+
+  it('should concat merging a hot observable of non-overlapped observables', function () {
+    var values = {
+      x: cold(       'a-b---------|'),
+      y: cold(                 'c-d-e-f-|'),
+      z: cold(                          'g-h-i-j-k-|')
+    };
+
+    var e1 =   hot('--x---------y--------z--------|', values);
+    var expected = '--a-b---------c-d-e-f-g-h-i-j-k-|';
+
+    expectObservable(e1.concatAll()).toBe(expected);
+  });
+
+  it('should raise error if inner observable raises error', function () {
+    var values = {
+      x: cold(       'a-b---------|'),
+      y: cold(                 'c-d-e-f-#'),
+      z: cold(                          'g-h-i-j-k-|')
+    };
+    var e1 =   hot('--x---------y--------z--------|', values);
+    var expected = '--a-b---------c-d-e-f-#';
+
+    expectObservable(e1.concatAll()).toBe(expected);
+  });
+
+  it('should raise error if outer observable raises error', function () {
+    var values = {
+      y: cold(       'a-b---------|'),
+      z: cold(                 'c-d-e-f-|'),
+    };
+    var e1 =   hot('--y---------z---#-------------|', values);
+    var expected = '--a-b---------c-#';
+
+    expectObservable(e1.concatAll()).toBe(expected);
+  });
 });
