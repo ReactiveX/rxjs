@@ -5,93 +5,175 @@ var Promise = require('promise');
 
 describe('Observable.prototype.withLatestFrom()', function () {
   it('should merge the value with the latest values from the other observables into arrays', function () {
-    var e1 =   hot('--a--^---b---c---d--|');
-    var e2 =   hot('--e--^-f---g---h----|');
-    var e3 =   hot('--i--^-j---k---l----|');
-    var expected =      '----x---y---z--|';
+    var e1 =   hot('--a--^---b---c---d-|');
+    var e1subs =        '^             !';
+    var e2 =   hot('--e--^-f---g---h------|');
+    var e2subs =        '^             !';
+    var e3 =   hot('--i--^-j---k---l------|');
+    var e3subs =        '^             !';
+    var expected =      '----x---y---z-|';
     var values = {
       x: ['b', 'f', 'j'],
       y: ['c', 'g', 'k'],
       z: ['d', 'h', 'l']
     };
-    expectObservable(e1.withLatestFrom(e2, e3)).toBe(expected, values);
+
+    var result = e1.withLatestFrom(e2, e3);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
-  it('should merge the value with the latest values from the other observables into arrays and a project argument', function () {
-    var e1 =   hot('--a--^---b---c---d--|');
-    var e2 =   hot('--e--^-f---g---h----|');
-    var e3 =   hot('--i--^-j---k---l----|');
-    var expected =      '----x---y---z--|';
+  it('should merge the value with the latest values from the other observables into ' +
+  'arrays and a project argument', function () {
+    var e1 =   hot('--a--^---b---c---d-|');
+    var e1subs =        '^             !';
+    var e2 =   hot('--e--^-f---g---h------|');
+    var e2subs =        '^             !';
+    var e3 =   hot('--i--^-j---k---l------|');
+    var e3subs =        '^             !';
+    var expected =      '----x---y---z-|';
     var values = {
       x: 'bfj',
       y: 'cgk',
       z: 'dhl'
     };
     var project = function (a, b, c) { return a + b + c; };
-    expectObservable(e1.withLatestFrom(e2, e3, project)).toBe(expected, values);
+
+    var result = e1.withLatestFrom(e2, e3, project);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle empty', function () {
-    var e1 =   Observable.empty();
+    var e1 =   cold(    '|');
+    var e1subs =        '(^!)';
     var e2 =   hot('--e--^-f---g---h----|');
+    var e2subs =        '(^!)';
     var e3 =   hot('--i--^-j---k---l----|');
+    var e3subs =        '(^!)';
     var expected =      '|'; // empty
-    expectObservable(e1.withLatestFrom(e2, e3)).toBe(expected);
+
+    var result = e1.withLatestFrom(e2, e3);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle never', function () {
-    var e1 =   Observable.never();
+    var e1 =   cold('-');
+    var e1subs =        '^               ';
     var e2 =   hot('--e--^-f---g---h----|');
+    var e2subs =        '^              !';
     var e3 =   hot('--i--^-j---k---l----|');
+    var e3subs =        '^              !';
     var expected =      '--------------------'; // never
-    expectObservable(e1.withLatestFrom(e2, e3)).toBe(expected);
+
+    var result = e1.withLatestFrom(e2, e3);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle throw', function () {
-    var e1 =   Observable.throw(new Error('sad'));
+    var e1 =   cold('#');
+    var e1subs =        '(^!)';
     var e2 =   hot('--e--^-f---g---h----|');
+    var e2subs =        '(^!)';
     var e3 =   hot('--i--^-j---k---l----|');
+    var e3subs =        '(^!)';
     var expected =      '#'; // throw
-    expectObservable(e1.withLatestFrom(e2, e3)).toBe(expected, null, new Error('sad'));
+
+    var result = e1.withLatestFrom(e2, e3);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle error', function () {
     var e1 =   hot('--a--^---b---#', undefined, new Error('boo-hoo'));
+    var e1subs =        '^       !';
     var e2 =   hot('--e--^-f---g---h----|');
+    var e2subs =        '^       !';
     var e3 =   hot('--i--^-j---k---l----|');
+    var e3subs =        '^       !';
     var expected =      '----x---#'; // throw
     var values = {
       x: ['b','f','j']
     };
-    expectObservable(e1.withLatestFrom(e2, e3)).toBe(expected, values, new Error('boo-hoo'));
+
+    var result = e1.withLatestFrom(e2, e3);
+
+    expectObservable(result).toBe(expected, values, new Error('boo-hoo'));
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle error with project argument', function () {
     var e1 =   hot('--a--^---b---#', undefined, new Error('boo-hoo'));
+    var e1subs =        '^       !';
     var e2 =   hot('--e--^-f---g---h----|');
+    var e2subs =        '^       !';
     var e3 =   hot('--i--^-j---k---l----|');
+    var e3subs =        '^       !';
     var expected =      '----x---#'; // throw
     var values = {
       x: 'bfj'
     };
     var project = function (a, b, c) { return a + b + c; };
-    expectObservable(e1.withLatestFrom(e2, e3, project)).toBe(expected, values, new Error('boo-hoo'));
+
+    var result = e1.withLatestFrom(e2, e3, project);
+
+    expectObservable(result).toBe(expected, values, new Error('boo-hoo'));
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle merging with empty', function () {
-    var e1 =   hot('--a--^---b---c---d--|');
-    var e2 =   Observable.empty();
-    var e3 =   hot('--i--^-j---k---l----|');
-    var expected =      '---------------|';
-    expectObservable(e1.withLatestFrom(e2, e3)).toBe(expected);
+    var e1 =   hot('--a--^---b---c---d-|   ');
+    var e1subs =        '^             !   ';
+    var e2 =   cold(    '|'                 );
+    var e2subs =        '(^!)';
+    var e3 =   hot('--i--^-j---k---l------|');
+    var e3subs =        '^             !   ';
+    var expected =      '--------------|   ';
+
+    var result = e1.withLatestFrom(e2, e3);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle merging with never', function () {
-    var e1 =   hot('--a--^---b---c---d--|');
-    var e2 =   Observable.never();
-    var e3 =   hot('--i--^-j---k---l----|');
-    var expected =      '---------------|';
-    expectObservable(e1.withLatestFrom(e2, e3)).toBe(expected);
+    var e1 =   hot('--a--^---b---c---d-|   ');
+    var e1subs =        '^             !   ';
+    var e2 =   cold(    '-'                 );
+    var e2subs =        '^             !   ';
+    var e3 =   hot('--i--^-j---k---l------|');
+    var e3subs =        '^             !   ';
+    var expected =      '--------------|   ';
+
+    var result = e1.withLatestFrom(e2, e3);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should handle promises', function (done) {
