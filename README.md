@@ -4,7 +4,7 @@
 
 # RxJS 5 (alpha)
 
-Reactive Extensions Library for JavaScript
+Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is intended to supersede it once this is ready. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
 [Apache 2.0 License](LICENSE.txt)
 
