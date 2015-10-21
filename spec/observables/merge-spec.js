@@ -6,87 +6,194 @@ var Observable = Rx.Observable;
 describe('Observable.merge(...observables)', function () {
   it('should merge cold and cold', function () {
     var e1 =  cold('---a-----b-----c----|');
+    var e1subs =   '^                   !';
     var e2 =  cold('------x-----y-----z----|');
+    var e2subs =   '^                      !';
     var expected = '---a--x--b--y--c--z----|';
-    expectObservable(Observable.merge(e1, e2)).toBe(expected);
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge hot and hot', function () {
     var e1 =  hot('---a---^-b-----c----|');
+    var e1subs =         '^            !';
     var e2 =  hot('-----x-^----y-----z----|');
+    var e2subs =         '^               !';
     var expected =       '--b--y--c--z----|';
-    expectObservable(Observable.merge(e1, e2)).toBe(expected);
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge hot and cold', function () {
     var e1 =  hot('---a-^---b-----c----|');
+    var e1subs =       '^              !';
     var e2 =  cold(    '--x-----y-----z----|');
+    var e2subs =       '^                  !';
     var expected =     '--x-b---y-c---z----|';
-    expectObservable(Observable.merge(e1, e2)).toBe(expected);
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge parallel emissions', function () {
     var e1 =   hot('---a----b----c----|');
+    var e1subs =   '^                 !';
     var e2 =   hot('---x----y----z----|');
+    var e2subs =   '^                 !';
     var expected = '---(ax)-(by)-(cz)-|';
-    expectObservable(Observable.merge(e1, e2)).toBe(expected);
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge empty and empty', function () {
-    var e1 = Observable.empty();
-    var e2 = Observable.empty();
-    expectObservable(Observable.merge(e1, e2)).toBe('|');
+    var e1 = cold('|');
+    var e1subs = '(^!)';
+    var e2 = cold('|');
+    var e2subs = '(^!)';
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe('|');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should merge three empties', function () {
+    var e1 = cold('|');
+    var e1subs = '(^!)';
+    var e2 = cold('|');
+    var e2subs = '(^!)';
+    var e3 = cold('|');
+    var e3subs = '(^!)';
+
+    var result = Observable.merge(e1, e2, e3);
+
+    expectObservable(result).toBe('|');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should merge never and empty', function () {
-    var e1 = Observable.never();
-    var e2 = Observable.empty();
-    expectObservable(Observable.merge(e1, e2)).toBe('-');
+    var e1 = cold('-');
+    var e1subs =  '^';
+    var e2 = cold('|');
+    var e2subs =  '(^!)';
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe('-');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge never and never', function () {
-    var e1 = Observable.never();
-    var e2 = Observable.never();
-    expectObservable(Observable.merge(e1, e2)).toBe('-');
+    var e1 = cold('-');
+    var e1subs =  '^';
+    var e2 = cold('-');
+    var e2subs =  '^';
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe('-');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge empty and throw', function () {
-    var e1 = Observable.empty();
-    var e2 = Observable.throw(new Error('blah'));
-    expectObservable(Observable.merge(e1, e2)).toBe('#', undefined, new Error('blah'));
+    var e1 = cold('|');
+    var e1subs =  '(^!)';
+    var e2 = cold('#');
+    var e2subs =  '(^!)';
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe('#');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge hot and throw', function () {
     var e1 = hot('--a--b--c--|');
-    var e2 = Observable.throw(new Error('blah'));
-    expectObservable(Observable.merge(e1, e2)).toBe('#', undefined, new Error('blah'));
+    var e1subs = '(^!)';
+    var e2 = cold('#');
+    var e2subs =  '(^!)';
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe('#');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge never and throw', function () {
-    var e1 = Observable.never();
-    var e2 = Observable.throw(new Error('blah'));
-    expectObservable(Observable.merge(e1, e2)).toBe('#', undefined, new Error('blah'));
+    var e1 = cold('-');
+    var e1subs =  '(^!)';
+    var e2 = cold('#');
+    var e2subs =  '(^!)';
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe('#');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should merge empty and error', function () {
-    var e1 = Observable.empty();
-    var e2 =    hot('-------#', undefined, new Error('blah'));
+  it('should merge empty and eventual error', function () {
+    var e1 = cold('|');
+    var e1subs =  '(^!)';
+    var e2 =    hot('-------#');
+    var e2subs =    '^------!';
     var expected =  '-------#';
-    expectObservable(Observable.merge(e1, e2)).toBe(expected, undefined, new Error('blah'));
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge hot and error', function () {
     var e1 =   hot('--a--b--c--|');
-    var e2 =   hot('-------#', undefined, new Error('blah'));
-    var expected = '--a--b-#';
-    expectObservable(Observable.merge(e1, e2)).toBe(expected, undefined, new Error('blah'));
+    var e1subs =   '^      !    ';
+    var e2 =   hot('-------#    ');
+    var e2subs =   '^      !    ';
+    var expected = '--a--b-#    ';
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge never and error', function () {
-    var e1 = Observable.never();
-    var e2 =    hot('-------#', undefined, new Error('blah'));
+    var e1 = hot(   '-');
+    var e1subs =    '^      !';
+    var e2 =    hot('-------#');
+    var e2subs =    '^      !';
     var expected =  '-------#';
-    expectObservable(Observable.merge(e1, e2)).toBe(expected, undefined, new Error('blah'));
+
+    var result = Observable.merge(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 });
 
