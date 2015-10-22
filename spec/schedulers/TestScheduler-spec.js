@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var TestScheduler = Rx.TestScheduler;
 var Notification = Rx.Notification;

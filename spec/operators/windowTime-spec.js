@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, expectObservable, rxTestScheduler */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
