@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;

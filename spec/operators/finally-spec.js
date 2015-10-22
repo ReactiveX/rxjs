@@ -6,7 +6,7 @@ describe('Observable.prototype.finally()', function () {
   it('should call finally after complete', function (done) {
     var completed = false;
     Observable.of(1, 2, 3)
-      .finally(function (x) {
+      .finally(function () {
         expect(completed).toBe(true);
         done();
       })
@@ -24,7 +24,7 @@ describe('Observable.prototype.finally()', function () {
         }
         return x;
       })
-      .finally(function (x) {
+      .finally(function () {
         expect(thrown).toBe(true);
         done();
       })
@@ -37,7 +37,7 @@ describe('Observable.prototype.finally()', function () {
     var disposed = false;
     var subscription = Observable
       .timer(100)
-      .finally(function (x) {
+      .finally(function () {
         expect(disposed).toBe(true);
         done();
       }).subscribe();

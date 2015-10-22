@@ -1,4 +1,4 @@
-/* expect, it, describe, expectObserable, hot, cold */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Promise = require('promise');
 

@@ -1,6 +1,9 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, hot, cold, expectObservable */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+
+// function shortcuts
+var throwError = function () { throw new Error(); };
 
 describe('Observable.prototype.mapTo()', function () {
   it('should map one value', function () {
