@@ -2,8 +2,8 @@ import Operator from '../Operator';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 
-export default function skipUntil(total) {
-  return this.lift(new SkipUntilOperator(total));
+export default function skipUntil<T>(notifier: Observable<any>): Observable<T> {
+  return this.lift(new SkipUntilOperator(notifier));
 }
 
 class SkipUntilOperator<T, R> implements Operator<T, R> {
@@ -18,8 +18,9 @@ class SkipUntilOperator<T, R> implements Operator<T, R> {
 class SkipUntilSubscriber<T> extends Subscriber<T> {
   private notificationSubscriber: NotificationSubscriber<any> = null;
 
-  constructor(destination: Subscriber<T>, private notifier: Observable<any>) {
-    super(destination);
+  constructor(public destination: Subscriber<T>,
+              private notifier: Observable<any>) {
+    super(null);
     this.notificationSubscriber = new NotificationSubscriber(this);
     this.add(this.notifier.subscribe(this.notificationSubscriber));
   }
@@ -28,6 +29,10 @@ class SkipUntilSubscriber<T> extends Subscriber<T> {
     if (this.notificationSubscriber.hasValue) {
       this.destination.next(value);
     }
+  }
+
+  _error(err: any) {
+    this.destination.error(err);
   }
 
   _complete() {
