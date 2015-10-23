@@ -56,6 +56,7 @@ export interface CoreOperators<T> {
   sampleTime?: <T>(delay: number, scheduler?: Scheduler) => Observable<T>;
   scan?: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   share?: () => Observable<T>;
+  shareBehavior?: (value: any) => Observable<T>;
   shareReplay?: (bufferSize: number, windowTime: number, scheduler?: Scheduler) => Observable<T>;
   single?: (predicate?: (value: T, index:number) => boolean, thisArg?: any) => Observable<T>;
   skip?: (count: number) => Observable<T>;
