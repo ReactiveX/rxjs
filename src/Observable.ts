@@ -133,8 +133,8 @@ export default class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
-  static combineLatest: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T) | Scheduler)[]) => Observable<T>;
-  static concat: <T>(...observables: (Observable<any> | Scheduler)[]) => Observable<T>;
+  static combineLatest: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T) | Scheduler>) => Observable<T>;
+  static concat: <T>(...observables: Array<Observable<any> | Scheduler>) => Observable<T>;
   static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
   static empty: <T>(scheduler?: Scheduler) => Observable<T>;
   static forkJoin: <T>(...observables: Observable<any>[]) => Observable<T>;
@@ -144,13 +144,13 @@ export default class Observable<T> implements CoreOperators<T>  {
   static fromEventPattern: <T>(addHandler: (handler:Function)=>void, removeHandler: (handler:Function) => void, selector?: (...args:Array<any>) => T) => Observable<T>;
   static fromPromise: <T>(promise: Promise<T>, scheduler?: Scheduler) => Observable<T>;
   static interval: (interval: number, scheduler?: Scheduler) => Observable<number>;
-  static merge: <T>(...observables: (Observable<any> | Scheduler | number)[]) => Observable<T>;
+  static merge: <T>(...observables: Array<Observable<any> | Scheduler | number>) => Observable<T>;
   static never: <T>() => Observable<T>;
-  static of: <T>(...values: (T | Scheduler)[]) => Observable<T>;
+  static of: <T>(...values: Array<T | Scheduler>) => Observable<T>;
   static range: (start: number, end: number, scheduler?: Scheduler) => Observable<number>;
   static throw: <T>(error: T) => Observable<T>;
   static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
-  static zip: <T>(...observables: (Observable<any> | ((...values: Array<any>) => T)) []) => Observable<T>;
+  static zip: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T)>) => Observable<T>;
 
   // core operators
 
@@ -161,7 +161,7 @@ export default class Observable<T> implements CoreOperators<T>  {
   bufferWhen: <T>(closingSelector: () => Observable<any>) => Observable<T[]>;
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
-  combineLatest: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]) => Observable<R>;
+  combineLatest: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   concat: (...observables: any[]) => Observable<any>;
   concatAll: () => Observable<any>;
   concatMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
@@ -226,7 +226,7 @@ export default class Observable<T> implements CoreOperators<T>  {
   windowTime: <T>(windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
   windowToggle: <T, O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>;
   windowWhen: <T>(closingSelector: () => Observable<any>) => Observable<Observable<T>>;
-  withLatestFrom: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]) => Observable<R>;
-  zip: <R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]) => Observable<R>;
+  withLatestFrom: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
+  zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 }

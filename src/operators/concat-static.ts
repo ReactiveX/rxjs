@@ -11,7 +11,7 @@ import { CoreOperators } from '../CoreOperators';
  * @params {Scheduler} [scheduler] an optional scheduler to schedule each observable subscription on.
  * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
  */
-export default function concat<R>(...observables: (Observable<any>|Scheduler)[]): Observable<R> {
+export default function concat<R>(...observables: Array<Observable<any> | Scheduler>): Observable<R> {
   let scheduler: Scheduler = immediate;
   let args = <any[]>observables;
   const len = args.length;

@@ -2,7 +2,7 @@ import Observable from '../Observable';
 import ArrayObservable from '../observables/ArrayObservable';
 import { ZipOperator } from './zip-support';
 
-export default function zip<T, R>(...observables: (Observable<any> | ((...values: Array<any>) => R))[]): Observable<R> {
+export default function zip<T, R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
   const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
   if (typeof project === 'function') {
     observables.pop();
