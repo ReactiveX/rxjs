@@ -9,7 +9,7 @@ export default class ArrayObservable<T> extends Observable<T> {
     return new ArrayObservable(array, scheduler);
   }
 
-  static of<T>(...array: (T | Scheduler)[]): Observable<T> {
+  static of<T>(...array: Array<T | Scheduler>): Observable<T> {
     let scheduler = <Scheduler>array[array.length - 1];
     if (scheduler && typeof scheduler.schedule === 'function') {
       array.pop();

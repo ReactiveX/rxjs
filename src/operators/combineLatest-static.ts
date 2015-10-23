@@ -13,7 +13,7 @@ import Scheduler from '../Scheduler';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export default function combineLatest<R>(...observables: (Observable<any> | ((...values: Array<any>) => R) | Scheduler)[]): Observable<R> {
+export default function combineLatest<R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R) | Scheduler>): Observable<R> {
   let project, scheduler;
 
   if (typeof (<any>observables[observables.length - 1]).schedule === 'function') {

@@ -26,7 +26,7 @@ import subscribeToResult from '../util/subscribeToResult';
  * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
  * ```
  */
-export default function withLatestFrom<R>(...args: (Observable<any>|((...values: any[]) => Observable<R>))[]): Observable<R> {
+export default function withLatestFrom<R>(...args: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
   let project;
   if (typeof args[args.length - 1] === 'function') {
     project = args.pop();

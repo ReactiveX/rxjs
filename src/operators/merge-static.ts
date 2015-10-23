@@ -4,7 +4,7 @@ import ArrayObservable from '../observables/ArrayObservable';
 import { MergeAllOperator } from './mergeAll-support';
 import immediate from '../schedulers/immediate';
 
-export default function merge<R>(...observables: (Observable<any>|Scheduler|number)[]): Observable<R> {
+export default function merge<R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {
   let concurrent = Number.POSITIVE_INFINITY;
   let scheduler: Scheduler = immediate;
   let last: any = observables[observables.length - 1];
