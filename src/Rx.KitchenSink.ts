@@ -233,6 +233,9 @@ observableProto.scan = scan;
 import share from './operators/share';
 observableProto.share = share;
 
+import shareBehavior from './operators/shareBehavior';
+observableProto.shareBehavior = shareBehavior;
+
 import shareReplay from './operators/shareReplay';
 observableProto.shareReplay = shareReplay;
 
