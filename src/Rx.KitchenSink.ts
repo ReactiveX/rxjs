@@ -9,6 +9,7 @@ interface KitchenSinkOperators<T> extends CoreOperators<T> {
   distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
   find?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<T>;
   findIndex?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
+  max?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
 }
 
@@ -176,6 +177,9 @@ observableProto.mapTo = mapTo;
 
 import materialize from './operators/materialize';
 observableProto.materialize = materialize;
+
+import max from './operators/extended/max';
+observableProto.max = max;
 
 import merge from './operators/merge';
 observableProto.merge = merge;
