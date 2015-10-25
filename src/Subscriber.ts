@@ -5,50 +5,9 @@ import tryOrOnError from './util/tryOrOnError';
 import Observer from './Observer';
 import Subscription from './Subscription';
 
-
 export default class Subscriber<T> extends Subscription<T> implements Observer<T> {
-  protected destination: Observer<any>;
-
   private _subscription: Subscription<T>;
-
   private _isUnsubscribed: boolean = false;
-  
-  static create<T>(next    ?: (x?:any) => void,
-                   error   ?: (e?:any) => void,
-                   complete?: () => void): Subscriber<T> {
-    const subscriber = new Subscriber<T>();
-    subscriber._next = (typeof next === "function") && tryOrOnError(next) || noop;
-    subscriber._error = (typeof error === "function") && error || throwError;
-    subscriber._complete = (typeof complete === "function") && complete || noop;
-    return subscriber;
-  }
-  
-  _next(value: T) {
-    this.destination.next(value);
-  }
-  
-  _error(err: any) {
-    this.destination.error(err);
-  }
-  
-  _complete() {
-    this.destination.complete();
-  }
-
-  constructor(destination?: Observer<any>) {
-    super();
-    this.destination = destination;
-    
-    if (!destination) {
-      return;
-    }
-    const subscription = (<any> destination)._subscription;
-    if (subscription) {
-      this._subscription = subscription;
-    } else if (destination instanceof Subscriber) {
-      this._subscription = (<Subscription<T>> destination);
-    }
-  }
 
   get isUnsubscribed(): boolean {
     const subscription = this._subscription;
@@ -70,7 +29,31 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
     }
   }
 
-  add(sub: Subscription<T>|Function|void) {
+  static create<T>(next    ?: (x?: T) => void,
+                   error   ?: (e?: any) => void,
+                   complete?: () => void): Subscriber<T> {
+    const subscriber = new Subscriber<T>();
+    subscriber._next = (typeof next === "function") && tryOrOnError(next) || noop;
+    subscriber._error = (typeof error === "function") && error || throwError;
+    subscriber._complete = (typeof complete === "function") && complete || noop;
+    return subscriber;
+  }
+
+  constructor(protected destination?: Observer<any>) {
+    super();
+
+    if (!this.destination) {
+      return;
+    }
+    const subscription = (<any> destination)._subscription;
+    if (subscription) {
+      this._subscription = subscription;
+    } else if (destination instanceof Subscriber) {
+      this._subscription = (<Subscription<T>> destination);
+    }
+  }
+
+  add(sub: Subscription<T> | Function | void): void {
     // route add to the shared Subscription if it exists
     const _subscription = this._subscription;
     if (_subscription) {
@@ -80,7 +63,7 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
     }
   }
 
-  remove(sub: Subscription<T>) {
+  remove(sub: Subscription<T>): void {
     // route remove to the shared Subscription if it exists
     if (this._subscription) {
       this._subscription.remove(sub);
@@ -89,7 +72,7 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
     }
   }
 
-  unsubscribe() {
+  unsubscribe(): void {
     if(this._isUnsubscribed) {
       return;
     } else if(this._subscription) {
@@ -99,20 +82,32 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
     }
   }
 
-  next(value?) {
+  _next(value: T): void {
+    this.destination.next(value);
+  }
+
+  _error(err: any): void {
+    this.destination.error(err);
+  }
+
+  _complete(): void {
+    this.destination.complete();
+  }
+
+  next(value?: T): void {
     if (!this.isUnsubscribed) {
       this._next(value);
     }
   }
 
-  error(error?) {
+  error(error?: any): void {
     if (!this.isUnsubscribed) {
       this._error(error);
       this.unsubscribe();
     }
   }
 
-  complete() {
+  complete(): void {
     if (!this.isUnsubscribed) {
       this._complete();
       this.unsubscribe();

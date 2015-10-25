@@ -25,14 +25,14 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               private ish: any,
               private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
   }
 
-  _next(value: any) {
+  _next(value: any): void {
     if (this.active < this.concurrent) {
       const resultSelector = this.resultSelector;
       const index = this.index++;
@@ -53,18 +53,18 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
             destination: Observer<R>,
             resultSelector: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
             value: T,
-            index: number) {
+            index: number): void {
     this.add(subscribeToResult<T, R>(this, ish, value, index));
   }
 
-  _complete() {
+  _complete(): void {
     this.hasCompleted = true;
     if (this.active === 0 && this.buffer.length === 0) {
       this.destination.complete();
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
       const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
@@ -78,11 +78,11 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyError(err: any) {
+  notifyError(err: any): void {
     this.destination.error(err);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, R>) {
+  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

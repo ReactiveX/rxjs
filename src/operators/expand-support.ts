@@ -4,9 +4,6 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 
-import EmptyObservable from '../observables/EmptyObservable';
-import ScalarObservable from '../observables/ScalarObservable';
-
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import OuterSubscriber from '../OuterSubscriber';
@@ -28,7 +25,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: any[];
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => Observable<R>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
@@ -37,7 +34,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  _next(value: any) {
+  _next(value: any): void {
     const index = this.index++;
     this.destination.next(value);
     if (this.active < this.concurrent) {
@@ -57,14 +54,14 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete() {
+  _complete(): void {
     this.hasCompleted = true;
     if (this.hasCompleted && this.active === 0) {
       this.destination.complete();
     }
   }
 
-  notifyComplete(innerSub: Subscription<T>) {
+  notifyComplete(innerSub: Subscription<T>): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;
@@ -76,7 +73,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
     this._next(innerValue);
   }
 }

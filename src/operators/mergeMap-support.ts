@@ -2,12 +2,10 @@ import Observable from '../Observable';
 import Operator from '../Operator';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
-import Observer from '../Observer';
 import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
 import subscribeToResult from '../util/subscribeToResult';
 import OuterSubscriber from '../OuterSubscriber';
-import InnerSubscriber from '../InnerSubscriber';
 
 export class MergeMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
@@ -28,14 +26,14 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => Observable<R>,
               private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
   }
 
-  _next(value: any) {
+  _next(value: any): void {
     if (this.active < this.concurrent) {
       const resultSelector = this.resultSelector;
       const index = this.index++;
@@ -52,18 +50,18 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  _innerSub(ish: any, value: T, index: number) {
+  _innerSub(ish: any, value: T, index: number): void {
     this.add(subscribeToResult<T, R>(this, ish, value, index));
   }
 
-  _complete() {
+  _complete(): void {
     this.hasCompleted = true;
     if (this.active === 0 && this.buffer.length === 0) {
       this.destination.complete();
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
     const { destination, resultSelector } = this;
     if (resultSelector) {
       const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
@@ -77,7 +75,7 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(innerSub: Subscription<T>) {
+  notifyComplete(innerSub: Subscription<T>): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

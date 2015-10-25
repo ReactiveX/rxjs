@@ -31,7 +31,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
   private hasValue: boolean = false;
   private index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
@@ -43,7 +43,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _next(value: any) {
+  _next(value: T): void {
     const { predicate, resultSelector, destination } = this;
     const index = this.index++;
 
@@ -56,13 +56,15 @@ class LastSubscriber<T, R> extends Subscriber<T> {
 
       if (found) {
         if (resultSelector) {
-          value = tryCatch(resultSelector)(value, index);
-          if (value === errorObject) {
+          let result = tryCatch(resultSelector)(value, index);
+          if (result === errorObject) {
             destination.error(errorObject.e);
             return;
           }
+          this.lastValue = result;
+        } else {
+          this.lastValue = value;
         }
-        this.lastValue = value;
         this.hasValue = true;
       }
     } else {
@@ -71,7 +73,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  _complete(): void {
     const destination = this.destination;
     if (this.hasValue) {
       destination.next(this.lastValue);

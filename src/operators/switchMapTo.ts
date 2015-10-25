@@ -1,5 +1,4 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
@@ -28,9 +27,7 @@ class SwitchMapToOperator<T, R, R2> implements Operator<T, R> {
 }
 
 class SwitchMapToSubscriber<T, R, R2> extends MergeMapToSubscriber<T, R, R2> {
-  innerSubscription: Subscription<T>;
-
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               observable: Observable<R>,
               resultSelector?: (outerValue: T,
                                 innerValue: R,

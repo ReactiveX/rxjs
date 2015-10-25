@@ -21,7 +21,7 @@ class WindowCountOperator<T, R> implements Operator<T, R> {
               private startWindowEvery: number) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<Observable<T>>): Subscriber<T> {
     return new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery);
   }
 }
@@ -30,7 +30,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [ new Subject<T>() ];
   private count: number = 0;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: Subscriber<Observable<T>>,
               private windowSize: number,
               private startWindowEvery: number) {
     super(destination);

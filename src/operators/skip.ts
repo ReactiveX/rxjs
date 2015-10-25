@@ -1,5 +1,4 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 
 export default function skip(total) {
@@ -7,26 +6,19 @@ export default function skip(total) {
 }
 
 class SkipOperator<T, R> implements Operator<T, R> {
-
-  total: number;
-
-  constructor(total: number) {
-    this.total = total;
+  constructor(private total: number) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new SkipSubscriber(subscriber, this.total);
   }
 }
 
 class SkipSubscriber<T> extends Subscriber<T> {
-
-  total: number;
   count: number = 0;
 
-  constructor(destination: Subscriber<T>, total: number) {
+  constructor(destination: Subscriber<T>, private total: number) {
     super(destination);
-    this.total = total;
   }
 
   _next(x) {

@@ -30,7 +30,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
   private hasCompleted: boolean = false;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
@@ -38,7 +38,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: any) {
+  _next(value: T): void {
     const { destination, predicate, resultSelector } = this;
     const index = this.index++;
     let passed: any = true;
@@ -51,19 +51,21 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     }
     if (passed) {
       if (resultSelector) {
-        value = tryCatch(resultSelector)(value, index);
-        if (value === errorObject) {
+        let result = tryCatch(resultSelector)(value, index);
+        if (result === errorObject) {
           destination.error(errorObject.e);
           return;
         }
+        destination.next(result);
+      } else {
+        destination.next(value);
       }
-      destination.next(value);
       destination.complete();
       this.hasCompleted = true;
     }
   }
 
-  _complete() {
+  _complete(): void {
     const destination = this.destination;
     if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
       destination.next(this.defaultValue);
