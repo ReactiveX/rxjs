@@ -10,7 +10,7 @@ import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';
 
 export default function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                                 thisArg?: any): Observable<T> {
+                                 thisArg?: any): Observable<boolean> {
   const source = this;
   let result;
 
@@ -41,16 +41,16 @@ class EveryOperator<T, R> implements Operator<T, R> {
               private source?: Observable<T>) {
   }
 
-  call(observer: Subscriber<R>): Subscriber<T> {
+  call(observer: Subscriber<boolean>): Subscriber<T> {
     return new EverySubscriber(observer, this.predicate, this.thisArg, this.source);
   }
 }
 
-class EverySubscriber<T> extends Subscriber<T> {
+class EverySubscriber<T, R> extends Subscriber<T> {
   private predicate: Function = undefined;
   private index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Observer<R>,
               predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg?: any,
               private source?: Observable<T>) {
@@ -66,7 +66,7 @@ class EverySubscriber<T> extends Subscriber<T> {
     this.destination.complete();
   }
 
-  _next(value: T) {
+  _next(value: T): void {
     const predicate = this.predicate;
 
     if (predicate === undefined) {
@@ -81,7 +81,7 @@ class EverySubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  _complete(): void {
     this.notifyComplete(true);
   }
 }

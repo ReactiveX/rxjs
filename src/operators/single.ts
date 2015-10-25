@@ -21,7 +21,7 @@ class SingleOperator<T, R> implements Operator<T, R> {
               private source?: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new SingleSubscriber(subscriber, this.predicate, this.thisArg, this.source);
   }
 }
@@ -52,7 +52,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
+  _next(value: T): void {
     const predicate = this.predicate;
     const currentIndex = this.index++;
 
@@ -68,7 +68,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  _complete(): void {
     const destination = this.destination;
 
     if (this.index > 0) {

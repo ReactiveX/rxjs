@@ -1,5 +1,4 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
@@ -30,18 +29,17 @@ class SwitchMapOperator<T, R, R2> implements Operator<T, R> {
 }
 
 class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
-
   private innerSubscription: Subscription<T>;
   private hasCompleted = false;
-  index: number = 0;
+  private index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => Observable<R>,
               private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
     super(destination);
   }
 
-  _next(value: any) {
+  _next(value: T): void {
     const index = this.index++;
     const destination = this.destination;
     let result = tryCatch(this.project)(value, index);
@@ -56,7 +54,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete() {
+  _complete(): void {
     const innerSubscription = this.innerSubscription;
     this.hasCompleted = true;
     if (!innerSubscription || innerSubscription.isUnsubscribed) {
@@ -64,7 +62,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(innerSub: Subscription<R>) {
+  notifyComplete(innerSub: Subscription<R>): void {
     this.remove(innerSub);
     const prevSubscription = this.innerSubscription;
     if (prevSubscription) {
@@ -77,11 +75,11 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyError(err: any) {
+  notifyError(err: any): void {
     this.destination.error(err);
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
       const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);

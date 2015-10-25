@@ -6,32 +6,25 @@ export default function take(total) {
 }
 
 class TakeOperator<T, R> implements Operator<T, R> {
-
-  total: number;
-
-  constructor(total: number) {
-    this.total = total;
+  constructor(private total: number) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new TakeSubscriber(subscriber, this.total);
   }
 }
 
 class TakeSubscriber<T> extends Subscriber<T> {
+  private count: number = 0;
 
-  total: number;
-  count: number = 0;
-
-  constructor(destination: Subscriber<T>, total: number) {
+  constructor(destination: Subscriber<T>, private total: number) {
     super(destination);
-    this.total = total;
   }
 
-  _next(x) {
+  _next(value: T): void {
     const total = this.total;
     if (++this.count <= total) {
-      this.destination.next(x);
+      this.destination.next(value);
       if (this.count === total) {
         this.destination.complete();
       }

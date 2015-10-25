@@ -24,7 +24,7 @@ import bindCallback from '../util/bindCallback';
 export default function count<T>(predicate?: (value: T,
                                               index: number,
                                               source: Observable<T>) => boolean,
-                                 thisArg?: any): Observable<T> {
+                                 thisArg?: any): Observable<number> {
   return this.lift(new CountOperator(predicate, thisArg, this));
 }
 
@@ -35,18 +35,18 @@ class CountOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new CountSubscriber<T>(
+    return new CountSubscriber<T, R>(
       subscriber, this.predicate, this.thisArg, this.source
     );
   }
 }
 
-class CountSubscriber<T> extends Subscriber<T> {
+class CountSubscriber<T, R> extends Subscriber<T> {
   private predicate: Function;
   private count: number = 0;
   private index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Observer<R>,
               predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg?: any,
               private source?: Observable<T>) {
@@ -56,7 +56,7 @@ class CountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
+  _next(value: T): void {
     const predicate = this.predicate;
     let passed: any = true;
     if (predicate) {
@@ -71,7 +71,7 @@ class CountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  _complete(): void {
     this.destination.next(this.count);
     this.destination.complete();
   }
