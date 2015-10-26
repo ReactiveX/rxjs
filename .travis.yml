@@ -17,7 +17,7 @@ install:
   - npm install
 
 script:
-  - npm run build_cover
+  - npm test && npm run cover
 
 after_script:
   - cat ./coverage/coverage-remapped.lcov  | ./node_modules/coveralls/bin/coveralls.js
