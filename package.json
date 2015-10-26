@@ -3,6 +3,11 @@
   "version": "5.0.0-alpha.6",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
   "scripts": {
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global",
     "build_amd": "rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m amd --outDir dist/amd --sourcemap --target ES5",
@@ -24,7 +29,8 @@
     "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15",
     "perf": "protractor protractor.conf.js",
     "perf_micro": "node ./perf/micro/index.js",
-    "prepublish": "npm run build_all"
+    "prepublish": "npm run build_all",
+    "commit": "git-cz"
   },
   "repository": {
     "type": "git",
@@ -73,7 +79,9 @@
     "benchpress": "2.0.0-alpha.37.2",
     "browserify": "11.0.0",
     "colors": "1.1.2",
+    "commitizen": "2.3.0",
     "coveralls": "2.11.4",
+    "cz-conventional-changelog": "1.1.4",
     "esdoc": "0.2.5",
     "eslint": "1.5.1",
     "fs-extra": "0.24.0",

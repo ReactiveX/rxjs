@@ -101,9 +101,9 @@ from the main (upstream) repository:
 
 ### <a id="unit-tests"></a>Unit Tests
 
-Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations 
-can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any 
-asynchronous operator should be written in [Marble Test Style outlined in detail here](docs/writing-marble-tests.md). 
+Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
+can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any
+asynchronous operator should be written in [Marble Test Style outlined in detail here](docs/writing-marble-tests.md).
 
 Each operator under test must be in its own file to cover the following cases:
 
@@ -114,7 +114,7 @@ Each operator under test must be in its own file to cover the following cases:
 - Never ending sequences
 - Early disposal in sequences
 
-If the operator accepts a function as an argument from the user/developer (for example `filter(fn)` or `zip(a, fn)`), 
+If the operator accepts a function as an argument from the user/developer (for example `filter(fn)` or `zip(a, fn)`),
 then it must cover the following cases:
 
 - Success with all values in the callback
@@ -135,19 +135,19 @@ testing techniques.
   - DO add performance tests that you feel are missing from other operators
   - DO add additional performance tests for all worthy code paths. If you develop an operator with special handling for scalar observables,
     please add tests for those scenarios
-    
+
 
 #### <a id="macro"></a>Macro
-  
+
 [Macro performance tests](perf/macro) are best written for scenarios where many object instance allocations (or deallocations) are occuring. Operators
-that create a lot of child subscriptions, or operators that emit new objects like Observables and Subjects are definitely worth creating 
+that create a lot of child subscriptions, or operators that emit new objects like Observables and Subjects are definitely worth creating
 macro performance tests for.
 
-Other scenarios for macro performance testing may include common end-to-end scenarios from real-world apps. If you have a situation in your 
+Other scenarios for macro performance testing may include common end-to-end scenarios from real-world apps. If you have a situation in your
 app where you feal RxJS is performing poorly, please [submit and issue](/ReactiveX/RxJS/issues) and include a minimal code example showing
 your performance issues. We would love to solve perf for your real-world problems and add those tests to our perf test battery.
 
-Macro performance tests can be run by hosting the root directory with any web server (we use [http-server](https://www.npmjs.com/package/http-server)), 
+Macro performance tests can be run by hosting the root directory with any web server (we use [http-server](https://www.npmjs.com/package/http-server)),
 then running:
 
 ```sh
@@ -177,8 +177,9 @@ node perf/micro zip
 ## <a name="commit"></a> Commit Message Guidelines
 
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more
-readable messages** that are easy to follow when looking through the **project history**.  But also,
-we use the git commit messages to **generate the RxJS change log**.
+readable messages** that are easy to follow when looking through the **project history**. But also,
+we use the git commit messages to **generate the RxJS change log**. Helper script `npm run commit`
+provides commandline based wizard to format commit message easily.
 
 ### Commit Message Format
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
