@@ -1,5 +1,6 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable */
 var Rx = require('../../dist/cjs/Rx');
+var ArrayObservable = require('../../dist/cjs/observables/ArrayObservable');
 var ScalarObservable = require('../../dist/cjs/observables/ScalarObservable');
 var EmptyObservable = require('../../dist/cjs/observables/EmptyObservable');
 var Observable = Rx.Observable;
@@ -29,6 +30,11 @@ describe('Observable.of', function () {
     expect(obs instanceof ScalarObservable).toBe(true);
   });
 
+  it('should return an array observable if passed many values', function () {
+    var obs = Observable.of('one', 'two', 'three');
+    expect(obs instanceof ArrayObservable).toBe(true);
+  });
+
   it('should return an empty observable if passed no values', function () {
     var obs = Observable.of();
     expect(obs instanceof EmptyObservable).toBe(true);
@@ -46,5 +52,28 @@ describe('Observable.of', function () {
       expect(x).toBe(42);
       done();
     });
+  });
+
+  it('should handle an Observable as the only value', function () {
+    var source = Observable.of(
+      Observable.of('a', 'b', 'c', rxTestScheduler),
+      rxTestScheduler
+    );
+    expect(source instanceof ScalarObservable).toBe(true);
+
+    var result = source.concatAll();
+    expectObservable(result).toBe('(abc|)');
+  });
+
+  it('should handle many Observable as the given values', function () {
+    var source = Observable.of(
+      Observable.of('a', 'b', 'c', rxTestScheduler),
+      Observable.of('d', 'e', 'f', rxTestScheduler),
+      rxTestScheduler
+    );
+    expect(source instanceof ArrayObservable).toBe(true);
+
+    var result = source.concatAll();
+    expectObservable(result).toBe('(abcdef|)');
   });
 });
