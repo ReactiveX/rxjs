@@ -6,16 +6,11 @@ import {errorObject} from '../util/errorObject';
 
 export class ReduceOperator<T, R> implements Operator<T, R> {
 
-  acc: R;
-  project: (acc: R, x: T) => R;
-
-  constructor(project: (acc: R, x: T) => R, acc?: R) {
-    this.acc = acc;
-    this.project = project;
+  constructor(private project: (acc: R, x: T) => R, private seed?: R) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new ReduceSubscriber(subscriber, this.project, this.acc);
+    return new ReduceSubscriber(subscriber, this.project, this.seed);
   }
 }
 
@@ -26,11 +21,11 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
   hasValue: boolean = false;
   project: (acc: R, x: T) => R;
 
-  constructor(destination: Subscriber<T>, project: (acc: R, x: T) => R, acc?: R) {
+  constructor(destination: Subscriber<T>, project: (acc: R, x: T) => R, seed?: R) {
     super(destination);
-    this.acc = acc;
+    this.acc = seed;
     this.project = project;
-    this.hasSeed = typeof acc !== 'undefined';
+    this.hasSeed = typeof seed !== 'undefined';
   }
 
   _next(x) {
