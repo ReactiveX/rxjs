@@ -25,7 +25,7 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     return new BidirectionalSubject(source, destination);
   }
 
-  destination: Observer<T>;
+  protected destination: Observer<T>;
 
   observers: Observer<T>[] = [];
   isUnsubscribed: boolean = false;
@@ -41,8 +41,7 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     return subject;
   }
 
-  _subscribe(subscriber: Subscriber<any>) : Subscription<T> {
-
+  _subscribe(subscriber: Subscriber<any>): Subscription<T> {
     if (subscriber.isUnsubscribed) {
       return;
     } else if (this.errorSignal) {
@@ -73,8 +72,7 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     subscriptionUnsubscribe.call(this);
   }
 
-  next(value) {
-
+  next(value: T): void {
     if (this.isUnsubscribed) {
       return;
     }
@@ -90,25 +88,23 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     }
   }
 
-  error(error) {
-
+  error(err?: any): void {
     if (this.isUnsubscribed || this.completeSignal) {
       return;
     }
 
     this.errorSignal = true;
-    this.errorInstance = error;
+    this.errorInstance = err;
 
     if (this.dispatching) {
       return;
     }
 
-    this._error(error);
+    this._error(err);
     this.unsubscribe();
   }
 
-  complete() {
-
+  complete(): void {
     if (this.isUnsubscribed || this.errorSignal) {
       return;
     }
@@ -124,7 +120,7 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
   }
 
 
-  _next(value?) {
+  _next(value: T): void {
     let index = -1;
     const observers = this.observers.slice(0);
     const len = observers.length;
@@ -134,7 +130,7 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     }
   }
 
-  _error(error?) {
+  _error(err: any): void{
     let index = -1;
     const observers = this.observers;
     const len = observers.length;
@@ -144,13 +140,13 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
     this.isUnsubscribed = true;
 
     while(++index < len) {
-      observers[index].error(error);
+      observers[index].error(err);
     }
 
     this.isUnsubscribed = false;
   }
 
-  _complete() {
+  _complete(): void{
     let index = -1;
     const observers = this.observers;
     const len = observers.length;
@@ -168,39 +164,36 @@ export default class Subject<T> extends Observable<T> implements Observer<T>, Su
 }
 
 class BidirectionalSubject<T> extends Subject<T> {
-
-  constructor(source: Observable<any>, destination: Observer<any>) {
+  constructor(public source: Observable<any>, protected destination: Observer<any>) {
     super();
-    this.source = source;
-    this.destination = destination;
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  _subscribe(subscriber: Subscriber<T>): Subscription<T> {
     const operator = this.operator;
     return this.source._subscribe.call(this.source, operator ? operator.call(subscriber) : subscriber);
   }
 
-  next(x) {
-    subscriberNext.call(this, x);
+  next(value?: T): void {
+    subscriberNext.call(this, value);
   }
 
-  error(e) {
-    subscriberError.call(this, e);
+  error(err?: any): void {
+    subscriberError.call(this, err);
   }
 
-  complete() {
+  complete(): void {
     subscriberComplete.call(this);
   }
 
-  _next(x) {
-    _subscriberNext.call(this, x);
+  _next(value: T): void {
+    _subscriberNext.call(this, value);
   }
 
-  _error(e) {
-    _subscriberError.call(this, e);
+  _error(err: any): void {
+    _subscriberError.call(this, err);
   }
 
-  _complete() {
+  _complete(): void {
     _subscriberComplete.call(this);
   }
 }

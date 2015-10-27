@@ -3,7 +3,7 @@ import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 
 export default class BehaviorSubject<T> extends Subject<T> {
-  constructor(public value: any) {
+  constructor(private value: any) {
     super();
   }
 
@@ -17,7 +17,7 @@ export default class BehaviorSubject<T> extends Subject<T> {
     return subscription;
   }
 
-  _next(value?) {
+  _next(value: T): void {
     super._next(this.value = value);
   }
 }

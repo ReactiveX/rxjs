@@ -100,9 +100,9 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
     }
   }
 
-  error(error?: any): void {
+  error(err?: any): void {
     if (!this.isUnsubscribed) {
-      this._error(error);
+      this._error(err);
       this.unsubscribe();
     }
   }

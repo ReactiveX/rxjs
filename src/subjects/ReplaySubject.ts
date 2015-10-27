@@ -8,7 +8,7 @@ export default class ReplaySubject<T> extends Subject<T> {
   private bufferSize: number;
   private _windowTime: number;
   private scheduler: Scheduler;
-  private events: ReplayEvent<T> [] = [];
+  private events: ReplayEvent<T>[] = [];
 
   constructor(bufferSize: number = Number.POSITIVE_INFINITY,
               _windowTime: number = Number.POSITIVE_INFINITY,
@@ -19,7 +19,7 @@ export default class ReplaySubject<T> extends Subject<T> {
     this.scheduler = scheduler;
   }
 
-  _next(value?) {
+  _next(value: T): void {
     const now = this._getNow();
     this.events.push(new ReplayEvent(now, value));
     super._next(value);
@@ -35,12 +35,11 @@ export default class ReplaySubject<T> extends Subject<T> {
     return super._subscribe(subscriber);
   }
 
-  private _getNow() {
+  private _getNow(): number {
     return (this.scheduler || immediate).now();
   }
 
-  private _getEvents(now) {
-
+  private _getEvents(now): ReplayEvent<T>[] {
     const bufferSize = this.bufferSize;
     const _windowTime = this._windowTime;
     const events = this.events;
@@ -71,13 +70,7 @@ export default class ReplaySubject<T> extends Subject<T> {
 }
 
 class ReplayEvent<T> {
-
-  time: number;
-  value: T;
-
-  constructor(time: number, value: T) {
-    this.time = time;
-    this.value = value;
+  constructor(public time: number, public value: T) {
   }
 }
 
