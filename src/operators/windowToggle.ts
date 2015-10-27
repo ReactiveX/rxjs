@@ -1,5 +1,4 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import Subject from '../Subject';
@@ -7,7 +6,6 @@ import Subscription from '../Subscription';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 export default function windowToggle<T, O>(openings: Observable<O>,
                                            closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
@@ -34,7 +32,6 @@ interface WindowContext<T> {
 
 class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   private contexts: Array<WindowContext<T>> = [];
-  private closingNotification: Subscription<any>;
 
   constructor(destination: Subscriber<T>,
               private openings: Observable<O>,

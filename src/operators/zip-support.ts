@@ -1,10 +1,7 @@
 import Operator from '../Operator';
 import Observer from '../Observer';
-import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-import ArrayObservable from '../observables/ArrayObservable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import OuterSubscriber from '../OuterSubscriber';
@@ -54,7 +51,6 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   }
 
   _complete() {
-    const values = this.values;
     const iterators = this.iterators;
     const len = iterators.length;
     this.active = len;

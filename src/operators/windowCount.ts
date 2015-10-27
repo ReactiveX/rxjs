@@ -1,14 +1,7 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import Subject from '../Subject';
-import Subscription from '../Subscription';
-import Scheduler from '../Scheduler';
-
-import tryCatch from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 export default function windowCount<T>(windowSize: number,
                                        startWindowEvery: number = 0): Observable<Observable<T>> {

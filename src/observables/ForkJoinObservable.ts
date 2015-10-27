@@ -1,5 +1,4 @@
 import Observable from '../Observable';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 
 export default class ForkJoinObservable<T> extends Observable<T> {

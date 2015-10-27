@@ -7,7 +7,6 @@ import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
 import subscribeToResult from '../util/subscribeToResult';
 import OuterSubscriber from '../OuterSubscriber';
-import InnerSubscriber from '../InnerSubscriber';
 
 export class MergeMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
@@ -37,7 +36,6 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   _next(value: any) {
     if (this.active < this.concurrent) {
-      const resultSelector = this.resultSelector;
       const index = this.index++;
       const ish = tryCatch(this.project)(value, index);
       const destination = this.destination;

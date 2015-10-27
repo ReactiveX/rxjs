@@ -5,7 +5,6 @@ import Subscriber from '../Subscriber';
 import noop from '../util/noop';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 export default function _do<T>(nextOrObserver?: Observer<T>|((x: T) => void), error?: (e: any) => void, complete?: () => void) {
   let next;

@@ -1,4 +1,3 @@
-import mergeAll from './mergeAll';
 import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import immediate from '../schedulers/immediate';
@@ -14,7 +13,6 @@ import { CoreOperators } from '../CoreOperators';
 export default function concat<R>(...observables: Array<Observable<any> | Scheduler>): Observable<R> {
   let scheduler: Scheduler = immediate;
   let args = <any[]>observables;
-  const len = args.length;
   if (typeof (args[observables.length - 1]).schedule === 'function') {
     scheduler = args.pop();
     args.push(1, scheduler);

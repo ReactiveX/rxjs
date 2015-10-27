@@ -1,8 +1,6 @@
 import Observable from '../Observable';
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
 import Scheduler from '../Scheduler';
 import nextTick from '../schedulers/nextTick';
 

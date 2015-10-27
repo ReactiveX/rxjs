@@ -1,4 +1,3 @@
-import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';

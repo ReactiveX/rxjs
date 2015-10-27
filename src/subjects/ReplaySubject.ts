@@ -1,12 +1,10 @@
 import Subject from '../Subject';
-import SubjectSubscription from '../subjects/SubjectSubscription';
-import Observer from '../Observer';
 import Scheduler from '../Scheduler';
-import Subscription from '../Subscription';
 import immediate from '../schedulers/immediate';
+import Subscriber from '../Subscriber';
+import Subscription from '../Subscription';
 
 export default class ReplaySubject<T> extends Subject<T> {
-
   private bufferSize: number;
   private _windowTime: number;
   private scheduler: Scheduler;
@@ -27,7 +25,7 @@ export default class ReplaySubject<T> extends Subject<T> {
     super._next(value);
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<any>): Subscription<T> {
     const events = this._getEvents(this._getNow());
     let index = -1;
     const len = events.length;

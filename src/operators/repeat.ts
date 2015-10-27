@@ -1,9 +1,7 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import EmptyObservable from '../observables/EmptyObservable';
-import immediate from '../schedulers/immediate';
 import Subscription from '../Subscription';
 
 export default function repeat<T>(count: number = -1): Observable<T> {

@@ -1,16 +1,12 @@
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Subscription from '../Subscription';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
 import Subject from '../Subject';
 import Map from '../util/Map';
 import FastMap from '../util/FastMap';
-import {RefCountSubscription, GroupedObservable, InnerRefCountSubscription} from './groupBy-support';
+import {RefCountSubscription, GroupedObservable} from './groupBy-support';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 export function groupBy<T, R>(keySelector: (value: T) => string,
                               elementSelector?: (value: T) => R,

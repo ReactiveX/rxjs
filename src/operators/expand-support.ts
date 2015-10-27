@@ -4,9 +4,6 @@ import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 
-import EmptyObservable from '../observables/EmptyObservable';
-import ScalarObservable from '../observables/ScalarObservable';
-
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import OuterSubscriber from '../OuterSubscriber';

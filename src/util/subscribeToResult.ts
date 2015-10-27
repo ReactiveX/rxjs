@@ -3,9 +3,6 @@ import Observable from '../Observable';
 import $$iterator from '../util/Symbol_iterator';
 import $$observable from '../util/Symbol_observable';
 import Subscription from '../Subscription';
-import Observer from '../Observer';
-import tryCatch from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
 import InnerSubscriber from '../InnerSubscriber';
 import OuterSubscriber from '../OuterSubscriber';
 

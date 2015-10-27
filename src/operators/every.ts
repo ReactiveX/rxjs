@@ -5,7 +5,6 @@ import ScalarObservable from '../observables/ScalarObservable';
 import ArrayObservable from '../observables/ArrayObservable';
 import ErrorObservable from '../observables/ErrorObservable';
 import Subscriber from '../Subscriber';
-import immediate from '../schedulers/immediate';
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import bindCallback from '../util/bindCallback';

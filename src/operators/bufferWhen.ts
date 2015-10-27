@@ -1,13 +1,10 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
-import Subject from '../Subject';
 import Subscription from '../Subscription';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 /**
  * Opens a buffer immediately, then closes the buffer when the observable returned by calling `closingSelector` emits a value.

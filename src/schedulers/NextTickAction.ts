@@ -1,5 +1,4 @@
 import {Immediate} from '../util/Immediate';
-import Subscription from '../Subscription';
 import ImmediateAction from './ImmediateAction';
 import Action from './Action';
 

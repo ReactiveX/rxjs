@@ -1,6 +1,5 @@
 import Subject from '../Subject';
-import SubjectSubscription from './SubjectSubscription';
-import Observer from '../Observer';
+import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 
 export default class BehaviorSubject<T> extends Subject<T> {
@@ -8,7 +7,7 @@ export default class BehaviorSubject<T> extends Subject<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<any>): Subscription<T> {
     const subscription = super._subscribe(subscriber);
     if (!subscription) {
       return;

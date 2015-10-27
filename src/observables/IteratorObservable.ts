@@ -173,10 +173,6 @@ function numberIsFinite(value) {
   return typeof value === 'number' && root.isFinite(value);
 }
 
-function isNan(n) {
-  return n !== n;
-}
-
 function sign(value) {
   let valueAsNumber = +value;
   if (valueAsNumber === 0) {

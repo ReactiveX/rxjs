@@ -1,4 +1,3 @@
-import { Immediate } from '../util/Immediate';
 import Scheduler from '../Scheduler';
 import ImmediateAction from './ImmediateAction';
 import Subscription from '../Subscription';

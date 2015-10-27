@@ -1,4 +1,3 @@
-import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import publishReplay from './publishReplay';
 

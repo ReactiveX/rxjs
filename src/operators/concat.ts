@@ -1,4 +1,3 @@
-import mergeAll from './mergeAll';
 import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import { CoreOperators } from '../CoreOperators';

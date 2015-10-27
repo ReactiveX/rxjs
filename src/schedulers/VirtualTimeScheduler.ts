@@ -34,10 +34,7 @@ export default class VirtualTimeScheduler implements Scheduler {
   }
 
   addAction<T>(action: Action) {
-    const findDelay = action.delay;
     const actions = this.actions;
-    const len = actions.length;
-    const vaction = <VirtualAction<T>>action;
 
     actions.push(action);
 

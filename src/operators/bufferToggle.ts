@@ -1,13 +1,10 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
-import Subject from '../Subject';
 import Subscription from '../Subscription';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 /**
  * buffers values from the source by opening the buffer via signals from an observable provided to `openings`, and closing
@@ -40,7 +37,6 @@ interface BufferContext<T> {
 
 class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   private contexts: Array<BufferContext<T>> = [];
-  private closingNotification: Subscription<any>;
 
   constructor(destination: Subscriber<T>,
               private openings: Observable<O>,

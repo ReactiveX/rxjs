@@ -1,5 +1,4 @@
 import Observable from '../Observable';
-import Subscription from '../Subscription';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';

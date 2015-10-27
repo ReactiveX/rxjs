@@ -1,8 +1,6 @@
 import Observable from '../Observable';
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
 
 export default function sample<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SampleOperator(notifier));

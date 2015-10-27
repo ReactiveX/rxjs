@@ -1,11 +1,6 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
-
-import tryCatch from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 /**
  * buffers a number of values from the source observable by `bufferSize` then emits the buffer and clears it, and starts a
@@ -56,7 +51,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
       buffer.push(value);
       if (buffer.length === bufferSize) {
         remove = i;
-        this.destination.next(buffer);
+        destination.next(buffer);
       }
     }
 

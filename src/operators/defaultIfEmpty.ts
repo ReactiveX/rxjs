@@ -1,11 +1,6 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
-
-import tryCatch from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 export default function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T> | Observable<R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));

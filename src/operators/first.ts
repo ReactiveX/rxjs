@@ -5,7 +5,6 @@ import Observer from '../Observer';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 import EmptyError from '../util/EmptyError';
 
 export default function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,

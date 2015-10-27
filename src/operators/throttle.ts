@@ -1,14 +1,8 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
-import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import Subscription from '../Subscription';
 import nextTick from '../schedulers/nextTick';
-
-import tryCatch from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 export default function throttle<T>(delay: number, scheduler: Scheduler = nextTick) {
   return this.lift(new ThrottleOperator(delay, scheduler));

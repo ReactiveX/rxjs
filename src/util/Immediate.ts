@@ -4,7 +4,6 @@ All credit for this helper goes to http://github.com/YuzuJS/setImmediate
 
 // let JSGlobal = global || window || new Function('return this')(),
 
-import noop from './noop';
 import {root as JSGlobal} from './root';
 
 export let Immediate = {

@@ -1,4 +1,3 @@
-import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import Subscription from '../Subscription';
 import tryCatch from '../util/tryCatch';

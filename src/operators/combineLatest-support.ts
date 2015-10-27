@@ -1,10 +1,5 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
-import Observable from '../Observable';
 import Subscriber from '../Subscriber';
-
-import ArrayObservable from '../observables/ArrayObservable';
-import EmptyObservable from '../observables/EmptyObservable';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';

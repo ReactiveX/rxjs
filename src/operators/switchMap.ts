@@ -5,7 +5,6 @@ import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
 import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
-import { MergeMapSubscriber } from './mergeMap-support';
 import OuterSubscriber from '../OuterSubscriber';
 import subscribeToResult from '../util/subscribeToResult';
 

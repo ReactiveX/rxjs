@@ -40,9 +40,9 @@ export default class FromObservable<T> extends Observable<T> {
     const ish = this.ish;
     const scheduler = this.scheduler;
     if (scheduler === immediate) {
-      return this.ish[$$observable]().subscribe(subscriber);
+      return ish[$$observable]().subscribe(subscriber);
     } else {
-      return this.ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
+      return ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
     }
   }
 }

@@ -1,11 +1,6 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Subscriber from '../Subscriber';
 import Observable from '../Observable';
-
-import tryCatch from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
 
 /**
  * buffers the incoming observable values until the passed `closingNotifier` emits a value, at which point

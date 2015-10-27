@@ -1,4 +1,3 @@
-import Subscriber from '../Subscriber';
 import { root } from '../util/root';
 
 export default function toPromise<T>(PromiseCtor?: PromiseConstructor): Promise<T> {
