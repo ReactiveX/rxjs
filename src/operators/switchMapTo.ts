@@ -1,5 +1,4 @@
 import Operator from '../Operator';
-import Observer from '../Observer';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Subscription from '../Subscription';
@@ -34,7 +33,7 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private hasCompleted = false;
   index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: Subscriber<R>,
               private inner: Observable<R>,
               private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
     super(destination);
