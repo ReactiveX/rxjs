@@ -67,7 +67,7 @@ export interface CoreOperators<T> {
   switchMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   switchMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   take?: (count: number) => Observable<T>;
-  takeUntil?: (observable: Observable<any>) => Observable<T>;
+  takeUntil?: (notifier: Observable<any>) => Observable<T>;
   throttle?: (delay: number, scheduler?: Scheduler) => Observable<T>;
   timeout?: <T>(due: number|Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
   timeoutWith?: <T>(due: number|Date, withObservable: Observable<any>, scheduler?: Scheduler) => Observable<T>;
