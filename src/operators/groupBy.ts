@@ -1,4 +1,5 @@
 import Subscriber from '../Subscriber';
+import Subscription from '../Subscription';
 import Observable from '../Observable';
 import Subject from '../Subject';
 import Map from '../util/Map';
@@ -22,7 +23,7 @@ export class GroupByObservable<T, R> extends Observable<GroupedObservable<R>> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<any>): Subscription<T> | Function | void {
     const refCountSubscription = new RefCountSubscription();
     const groupBySubscriber = new GroupBySubscriber(
       subscriber, refCountSubscription, this.keySelector, this.elementSelector, this.durationSelector
@@ -45,7 +46,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
     this.add(destination);
   }
 
-  _next(x: T) {
+  _next(x: T): void {
     let key = tryCatch(this.keySelector)(x);
     if (key === errorObject) {
       this.error(key.e);
@@ -58,7 +59,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
         groups = this.groups = typeof key === 'string' ? new FastMap() : new Map();
       }
 
-      let group: Subject<R> = groups.get(key);
+      let group: Subject<T|R> = groups.get(key);
 
       if (!group) {
         groups.set(key, group = new Subject());
@@ -89,7 +90,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
+  _error(err: any): void {
     const groups = this.groups;
     if (groups) {
       groups.forEach((group, key) => {
@@ -100,7 +101,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
     this.destination.error(err);
   }
 
-  _complete() {
+  _complete(): void {
     const groups = this.groups;
     if (groups) {
       groups.forEach((group, key) => {
@@ -111,7 +112,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
     this.destination.complete();
   }
 
-  removeGroup(key: string) {
+  removeGroup(key: string): void {
     this.groups.delete(key);
   }
 }
@@ -123,17 +124,17 @@ class GroupDurationSubscriber<T> extends Subscriber<T> {
     super(null);
   }
 
-  _next(value: T) {
+  _next(value: T): void {
     this.group.complete();
     this.parent.removeGroup(this.key);
   }
 
-  _error(err: any) {
+  _error(err: any): void {
     this.group.error(err);
     this.parent.removeGroup(this.key);
   }
 
-  _complete() {
+  _complete(): void {
     this.group.complete();
     this.parent.removeGroup(this.key);
   }
