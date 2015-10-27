@@ -61,4 +61,29 @@ describe('Observable.prototype.last()', function () {
     };
     expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
   });
+
+  it('should raise error when predicate throws', function () {
+    var e1 = hot('--a--^---b---c---d---e--|');
+    var expected =    '--------#';
+    var predicate = function (x) {
+      if (x === 'c') {
+        throw 'error';
+      } else {
+        return false;
+      }
+    };
+
+    expectObservable(e1.last(predicate)).toBe(expected);
+  });
+
+  it('should raise error when result selector throws', function () {
+    var e1 = hot('--a--^---b---c---d---e--|');
+    var expected =    '--------#';
+    var predicate = function (x) { return x === 'c'; };
+    var resultSelector = function (x, i) {
+      throw 'error';
+    };
+
+    expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
+  });
 });
