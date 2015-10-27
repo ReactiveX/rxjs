@@ -41,7 +41,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
       if (ish === errorObject) {
         destination.error(ish.e);
       } else {
-        this.active--;
+        this.active++;
         this._innerSub(ish, destination, resultSelector, value, index);
       }
     } else {
