@@ -6,6 +6,9 @@
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
+    },
+    "ghooks": {
+      "commit-msg": "node ./node_modules/validate-commit-msg/index.js"
     }
   },
   "scripts": {
@@ -85,6 +88,7 @@
     "esdoc": "0.2.5",
     "eslint": "1.5.1",
     "fs-extra": "0.24.0",
+    "ghooks": "0.3.2",
     "glob": "5.0.14",
     "google-closure-compiler": "20150920.0.0",
     "http-server": "0.8.0",
@@ -101,6 +105,7 @@
     "rx": "latest",
     "tslint": "2.5.0",
     "typescript": "1.8.0-dev.20151017",
+    "validate-commit-msg": "1.0.0",
     "watch": "0.16.0"
   },
   "engines": {
