@@ -14,6 +14,7 @@ describe('Observable.prototype.concatMap()', function () {
     var d =   cold(                              '------(d|)');
     var dsubs =    '                              ^     !   ';
     var e1 =   hot('a---b--------------------c-d----|       ');
+    var e1subs =   '^                                   !   ';
     var expected = '--a-a-a-a---b--b--b-------c-c-c-----(d|)';
 
     var observableLookup = { a: a, b: b, c: c, d: d };
@@ -26,11 +27,13 @@ describe('Observable.prototype.concatMap()', function () {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
     expectSubscriptions(c.subscriptions).toBe(csubs);
     expectSubscriptions(d.subscriptions).toBe(dsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer values to many inner values', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d---|                        ');
+    var e1subs =     '^                                        !';
     var inner =  cold('--i-j-k-l-|                              ', values);
     var innersubs = [' ^         !                              ',
                      '           ^         !                    ',
@@ -42,71 +45,99 @@ describe('Observable.prototype.concatMap()', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle an empty source', function () {
     var e1 = cold( '|');
+    var e1subs =   '(^!)';
     var inner = cold('-1-2-3|');
+    var innersubs = [];
     var expected = '|';
 
     var result = e1.concatMap(function () { return inner; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a never source', function () {
     var e1 = cold( '-');
+    var e1subs =   '^';
     var inner = cold('-1-2-3|');
+    var innersubs = [];
     var expected = '-';
 
     var result = e1.concatMap(function () { return inner; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should error immediately if given a just-throw source', function () {
     var e1 = cold( '#');
+    var e1subs =   '(^!)';
     var inner = cold('-1-2-3|');
+    var innersubs = [];
     var expected = '#';
 
     var result = e1.concatMap(function () { return inner; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should return a silenced version of the source if the mapped inner is empty', function () {
-    var e1 = cold( '--a-b--c-|');
+    var e1 = cold(   '--a-b--c-| ');
+    var e1subs =     '^        ! ';
     var inner = cold('|');
-    var expected = '---------|';
+    var innersubs = ['  (^!)     ',
+                     '    (^!)   ',
+                     '       (^!)'];
+    var expected =   '---------| ';
 
     var result = e1.concatMap(function () { return inner; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should return a never if the mapped inner is never', function () {
-    var e1 = cold( '--a-b--c-|');
+    var e1 = cold(  '--a-b--c-|');
+    var e1subs =    '^         ';
     var inner = cold('-');
-    var expected = '----------';
+    var innersubs = '  ^       ';
+    var expected =  '----------';
 
     var result = e1.concatMap(function () { return inner; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should propagate errors if the mapped inner is a just-throw Observable', function () {
-    var e1 = cold( '--a-b--c-|');
+    var e1 = cold(  '--a-b--c-|');
+    var e1subs =    '^ !       ';
     var inner = cold('#');
-    var expected = '--#';
+    var innersubs = '  (^!)    ';
+    var expected =  '--#       ';
 
     var result = e1.concatMap(function () { return inner; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to many inner, complete late', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d----------------------------------|');
+    var e1subs =     '^                                               !';
     var inner =  cold('--i-j-k-l-|                                     ', values);
     var innersubs = [' ^         !                                     ',
                      '           ^         !                           ',
@@ -118,11 +149,13 @@ describe('Observable.prototype.concatMap()', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to many inner, outer never completes', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d-----------------------------------');
+    var e1subs =     '^                                                ';
     var inner =  cold('--i-j-k-l-|                                     ', values);
     var innersubs = [' ^         !                                     ',
                      '           ^         !                           ',
@@ -134,11 +167,13 @@ describe('Observable.prototype.concatMap()', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to many inner, inner never completes', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d---|');
+    var e1subs =     '^                 ';
     var inner =  cold('--i-j-k-l-       ', values);
     var innersubs =  ' ^                ';
     var expected =   '---i-j-k-l--------';
@@ -147,11 +182,13 @@ describe('Observable.prototype.concatMap()', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to many inner, and inner throws', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d---|');
+    var e1subs =     '^          !      ';
     var inner =  cold('--i-j-k-l-#      ', values);
     var innersubs =  ' ^         !      ';
     var expected =   '---i-j-k-l-#      ';
@@ -160,11 +197,13 @@ describe('Observable.prototype.concatMap()', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to many inner, and outer throws', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d---#');
+    var e1subs =     '^                !';
     var inner =  cold('--i-j-k-l-|      ', values);
     var innersubs = [' ^         !      ',
                      '           ^     !'];
@@ -174,11 +213,13 @@ describe('Observable.prototype.concatMap()', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to many inner, both inner and outer throw', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d---#');
+    var e1subs =     '^          !      ';
     var inner =  cold('--i-j-k-l-#      ', values);
     var innersubs =  ' ^         !      ';
     var expected =   '---i-j-k-l-#      ';
@@ -187,103 +228,191 @@ describe('Observable.prototype.concatMap()', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many complex, where all inners are finite', function () {
     var a =   cold( '-#                                                          ');
+    var asubs = [];
     var b =   cold(   '-#                                                        ');
+    var bsubs = [];
     var c =   cold(        '-2--3--4--5----6-|                                   ');
+    var csubs =          '  ^                !                                   ';
     var d =   cold(                         '----2--3|                           ');
+    var dsubs =          '                   ^       !                           ';
     var e =   cold(                                 '-1------2--3-4-5---|        ');
+    var esubs =          '                           ^                  !        ';
     var f =   cold(                                                    '--|      ');
+    var fsubs =          '                                              ^ !      ';
     var g =   cold(                                                      '---1-2|');
+    var gsubs =          '                                                ^     !';
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+    var e1subs =         '^                                                     !';
     var expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2|';
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     var result = e1.concatMap(function (value) { return observableLookup[value]; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+    expectSubscriptions(c.subscriptions).toBe(csubs);
+    expectSubscriptions(d.subscriptions).toBe(dsubs);
+    expectSubscriptions(e.subscriptions).toBe(esubs);
+    expectSubscriptions(f.subscriptions).toBe(fsubs);
+    expectSubscriptions(g.subscriptions).toBe(gsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many complex, all inners finite except one', function () {
     var a =   cold( '-#                                                          ');
+    var asubs = [];
     var b =   cold(   '-#                                                        ');
+    var bsubs = [];
     var c =   cold(        '-2--3--4--5----6-|                                   ');
+    var csubs =          '  ^                !                                   ';
     var d =   cold(                         '----2--3-                           ');
+    var dsubs =          '                   ^                                   ';
     var e =   cold(                                 '-1------2--3-4-5---|        ');
+    var esubs = [];
     var f =   cold(                                                    '--|      ');
+    var fsubs = [];
     var g =   cold(                                                      '---1-2|');
+    var gsubs = [];
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+    var e1subs =         '^                                                      ';
     var expected =       '---2--3--4--5----6-----2--3----------------------------';
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     var result = e1.concatMap(function (value) { return observableLookup[value]; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+    expectSubscriptions(c.subscriptions).toBe(csubs);
+    expectSubscriptions(d.subscriptions).toBe(dsubs);
+    expectSubscriptions(e.subscriptions).toBe(esubs);
+    expectSubscriptions(f.subscriptions).toBe(fsubs);
+    expectSubscriptions(g.subscriptions).toBe(gsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many complex, inners finite, outer does not complete', function () {
     var a =   cold( '-#                                                          ');
+    var asubs = [];
     var b =   cold(   '-#                                                        ');
+    var bsubs = [];
     var c =   cold(        '-2--3--4--5----6-|                                   ');
+    var csubs =          '  ^                !                                   ';
     var d =   cold(                         '----2--3|                           ');
+    var dsubs =          '                   ^       !                           ';
     var e =   cold(                                 '-1------2--3-4-5---|        ');
+    var esubs =          '                           ^                  !        ';
     var f =   cold(                                                    '--|      ');
+    var fsubs =          '                                              ^ !      ';
     var g =   cold(                                                      '---1-2|');
+    var gsubs =          '                                                ^     !';
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g---             ');
+    var e1subs =         '^                                                      ';
     var expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2-';
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     var result = e1.concatMap(function (value) { return observableLookup[value]; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+    expectSubscriptions(c.subscriptions).toBe(csubs);
+    expectSubscriptions(d.subscriptions).toBe(dsubs);
+    expectSubscriptions(e.subscriptions).toBe(esubs);
+    expectSubscriptions(f.subscriptions).toBe(fsubs);
+    expectSubscriptions(g.subscriptions).toBe(gsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many complex, all inners finite, and outer throws', function () {
     var a =   cold( '-#                                                          ');
+    var asubs = [];
     var b =   cold(   '-#                                                        ');
+    var bsubs = [];
     var c =   cold(        '-2--3--4--5----6-|                                   ');
+    var csubs =          '  ^                !                                   ';
     var d =   cold(                         '----2--3|                           ');
+    var dsubs =          '                   ^       !                           ';
     var e =   cold(                                 '-1------2--3-4-5---|        ');
+    var esubs =          '                           ^           !               ';
     var f =   cold(                                                    '--|      ');
+    var fsubs = [];
     var g =   cold(                                                      '---1-2|');
+    var gsubs = [];
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g#               ');
+    var e1subs =         '^                                      !               ';
     var expected =       '---2--3--4--5----6-----2--3-1------2--3#               ';
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     var result = e1.concatMap(function (value) { return observableLookup[value]; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+    expectSubscriptions(c.subscriptions).toBe(csubs);
+    expectSubscriptions(d.subscriptions).toBe(dsubs);
+    expectSubscriptions(e.subscriptions).toBe(esubs);
+    expectSubscriptions(f.subscriptions).toBe(fsubs);
+    expectSubscriptions(g.subscriptions).toBe(gsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many complex, all inners complete except one throws', function () {
     var a =   cold( '-#                                                          ');
+    var asubs = [];
     var b =   cold(   '-#                                                        ');
+    var bsubs = [];
     var c =   cold(        '-2--3--4--5----6-#                                   ');
+    var csubs =          '  ^                !                                   ';
     var d =   cold(                         '----2--3|                           ');
+    var dsubs = [];
     var e =   cold(                                 '-1------2--3-4-5---|        ');
+    var esubs = [];
     var f =   cold(                                                    '--|      ');
+    var fsubs = [];
     var g =   cold(                                                      '---1-2|');
+    var gsubs = [];
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+    var e1subs =         '^                  !                                   ';
     var expected =       '---2--3--4--5----6-#                                   ';
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     var result = e1.concatMap(function (value) { return observableLookup[value]; });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+    expectSubscriptions(c.subscriptions).toBe(csubs);
+    expectSubscriptions(d.subscriptions).toBe(dsubs);
+    expectSubscriptions(e.subscriptions).toBe(esubs);
+    expectSubscriptions(f.subscriptions).toBe(fsubs);
+    expectSubscriptions(g.subscriptions).toBe(gsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many complex, all inners finite, outer is unsubscribed early', function () {
     var a =   cold( '-#                                                          ');
+    var asubs = [];
     var b =   cold(   '-#                                                        ');
+    var bsubs = [];
     var c =   cold(        '-2--3--4--5----6-|                                   ');
+    var csubs =          '  ^                !                                   ';
     var d =   cold(                         '----2--3|                           ');
+    var dsubs =          '                   ^       !                           ';
     var e =   cold(                                 '-1------2--3-4-5---|        ');
     var esubs =          '                           ^  !                        ';
     var f =   cold(                                                    '--|      ');
+    var fsubs = [];
     var g =   cold(                                                      '---1-2|');
+    var gsubs = [];
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+    var e1subs =         '^                             !                        ';
     var unsub =          '                              !                        ';
     var expected =       '---2--3--4--5----6-----2--3-1--                        ';
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
@@ -291,18 +420,33 @@ describe('Observable.prototype.concatMap()', function () {
     var result = e1.concatMap(function (value) { return observableLookup[value]; });
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+    expectSubscriptions(c.subscriptions).toBe(csubs);
+    expectSubscriptions(d.subscriptions).toBe(dsubs);
     expectSubscriptions(e.subscriptions).toBe(esubs);
+    expectSubscriptions(f.subscriptions).toBe(fsubs);
+    expectSubscriptions(g.subscriptions).toBe(gsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many complex, all inners finite, project throws', function () {
     var a =   cold( '-#                                                          ');
+    var asubs = [];
     var b =   cold(   '-#                                                        ');
+    var bsubs = [];
     var c =   cold(        '-2--3--4--5----6-|                                   ');
+    var csubs =          '  ^                !                                   ';
     var d =   cold(                         '----2--3|                           ');
+    var dsubs =          '                   ^       !                           ';
     var e =   cold(                                 '-1------2--3-4-5---|        ');
+    var esubs = [];
     var f =   cold(                                                    '--|      ');
+    var fsubs = [];
     var g =   cold(                                                      '---1-2|');
+    var gsubs = [];
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+    var e1subs =         '^                          !                           ';
     var expected =       '---2--3--4--5----6-----2--3#                           ';
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
@@ -312,6 +456,14 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+    expectSubscriptions(c.subscriptions).toBe(csubs);
+    expectSubscriptions(d.subscriptions).toBe(dsubs);
+    expectSubscriptions(e.subscriptions).toBe(esubs);
+    expectSubscriptions(f.subscriptions).toBe(fsubs);
+    expectSubscriptions(g.subscriptions).toBe(gsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   function arrayRepeat(value, times) {
@@ -324,6 +476,7 @@ describe('Observable.prototype.concatMap()', function () {
 
   it('should concatMap many outer to an array for each value', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
+    var e1subs =   '^                               !';
     var expected = '(22)--(4444)---(333)----(22)----|';
 
     var result = e1.concatMap(function (value) {
@@ -331,10 +484,12 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to inner arrays, using resultSelector', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
+    var e1subs =   '^                               !';
     var expected = '(44)--(8888)---(666)----(44)----|';
 
     var result = e1.concatMap(function (value) {
@@ -344,10 +499,12 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to inner arrays, and outer throws', function () {
     var e1 =   hot('2-----4--------3--------2-------#');
+    var e1subs =   '^                               !';
     var expected = '(22)--(4444)---(333)----(22)----#';
 
     var result = e1.concatMap(function (value) {
@@ -355,10 +512,12 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to inner arrays, resultSelector, outer throws', function () {
     var e1 =   hot('2-----4--------3--------2-------#');
+    var e1subs =   '^                               !';
     var expected = '(44)--(8888)---(666)----(44)----#';
 
     var result = e1.concatMap(function (value) {
@@ -368,24 +527,28 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, outer unsubscribed early', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var unsub =    '             !';
-    var expected = '(22)--(4444)--';
+    var e1subs =   '^            !                   ';
+    var unsub =    '             !                   ';
+    var expected = '(22)--(4444)--                   ';
 
     var result = e1.concatMap(function (value) {
       return arrayRepeat(value, value);
     });
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to inner arrays, resultSelector, outer unsubscribed', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var unsub =    '             !';
-    var expected = '(44)--(8888)--';
+    var e1subs =   '^            !                   ';
+    var unsub =    '             !                   ';
+    var expected = '(44)--(8888)--                   ';
 
     var result = e1.concatMap(function (value) {
       return arrayRepeat(value, value);
@@ -394,11 +557,13 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to inner arrays, project throws', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var expected = '(22)--(4444)---#';
+    var e1subs =   '^              !                 ';
+    var expected = '(22)--(4444)---#                 ';
 
     var invoked = 0;
     var result = e1.concatMap(function (value) {
@@ -410,11 +575,13 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to inner arrays, resultSelector throws', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var expected = '(44)--(8888)---#';
+    var e1subs =   '^              !                 ';
+    var expected = '(44)--(8888)---#                 ';
 
     var result = e1.concatMap(function (value) {
       return arrayRepeat(value, value);
@@ -426,11 +593,13 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should concatMap many outer to inner arrays, resultSelector, project throws', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var expected = '(44)--(8888)---#';
+    var e1subs =   '^              !                 ';
+    var expected = '(44)--(8888)---#                 ';
 
     var invoked = 0;
     var result = e1.concatMap(function (value) {
@@ -444,6 +613,7 @@ describe('Observable.prototype.concatMap()', function () {
     });
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should map values to constant resolved promises and concatenate', function (done) {
