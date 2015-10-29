@@ -96,4 +96,34 @@ describe('Observable.prototype.do()', function () {
 
     expect(value).toBe('hi');
   });
+
+  it('should raise error if next handler raises error', function () {
+    Observable.of('hi').do({
+      next: function (x) {
+        throw new Error('bad');
+      }
+    }).subscribe(null, function (err) {
+      expect(err.message).toBe('bad');
+    });
+  });
+
+  it('should raise error if error handler raises error', function () {
+    Observable.throw('ops').do({
+      error: function (x) {
+        throw new Error('bad');
+      }
+    }).subscribe(null, function (err) {
+      expect(err.message).toBe('bad');
+    });
+  });
+
+  it('should raise error if complete handler raises error', function () {
+    Observable.empty().do({
+      complete: function (x) {
+        throw new Error('bad');
+      }
+    }).subscribe(null, function (err) {
+      expect(err.message).toBe('bad');
+    });
+  });
 });
