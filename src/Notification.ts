@@ -4,11 +4,11 @@ import noop from './util/noop';
 
 export default class Notification<T> {
   hasValue: boolean;
-  
+
   constructor(public kind: string, public value?: T, public exception?: any) {
     this.hasValue = kind === 'N';
   }
-  
+
   observe(observer: Observer<T>): any {
     switch (this.kind) {
       case 'N':
@@ -19,7 +19,7 @@ export default class Notification<T> {
         return observer.complete();
     }
   }
-  
+
   do(next: (value: T) => void, error?: (err: any) => void, complete?: () => void): any {
     const kind = this.kind;
     switch (kind) {
@@ -28,10 +28,10 @@ export default class Notification<T> {
       case 'E':
         return error(this.exception);
       case 'C':
-        return complete();  
+        return complete();
     }
   }
-  
+
   accept(nextOrObserver: Observer<T>|((value: T) => void), error?: (err: any) => void, complete?: () => void) {
     if (nextOrObserver && typeof (<Observer<T>>nextOrObserver).next === 'function') {
       return this.observe(<Observer<T>>nextOrObserver);
@@ -39,34 +39,33 @@ export default class Notification<T> {
       return this.do(<(value: T) => void>nextOrObserver, error, complete);
     }
   }
-  
+
   toObservable(): Observable<T> {
     const kind = this.kind;
-    const value = this.value;
     switch (kind) {
       case 'N':
-        return Observable.of(value);  
+        return Observable.of(this.value);
       case 'E':
-        return Observable.throw(value);
+        return Observable.throw(this.exception);
       case 'C':
-        return Observable.empty();  
+        return Observable.empty();
     }
   }
-  
+
   private static completeNotification: Notification<any> = new Notification('C');
   private static undefinedValueNotification: Notification<any> = new Notification('N', undefined);
-  
+
   static createNext<T>(value: T): Notification<T> {
     if (typeof value !== 'undefined') {
       return new Notification('N', value);
     }
     return this.undefinedValueNotification;
   }
-  
+
   static createError<T>(err: any): Notification<T> {
     return new Notification('E', undefined, err);
   }
-  
+
   static createComplete(): Notification<any> {
     return this.completeNotification;
   }
