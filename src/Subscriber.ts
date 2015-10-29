@@ -6,8 +6,8 @@ import Observer from './Observer';
 import Subscription from './Subscription';
 
 export default class Subscriber<T> extends Subscription<T> implements Observer<T> {
-  private _subscription: Subscription<T>;
-  private _isUnsubscribed: boolean = false;
+  protected _subscription: Subscription<T>;
+  protected _isUnsubscribed: boolean = false;
 
   get isUnsubscribed(): boolean {
     const subscription = this._subscription;
@@ -73,9 +73,9 @@ export default class Subscriber<T> extends Subscription<T> implements Observer<T
   }
 
   unsubscribe(): void {
-    if(this._isUnsubscribed) {
+    if (this._isUnsubscribed) {
       return;
-    } else if(this._subscription) {
+    } else if (this._subscription) {
       this._isUnsubscribed = true;
     } else {
       super.unsubscribe();

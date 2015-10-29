@@ -18,9 +18,9 @@ class SkipUntilOperator<T, R> implements Operator<T, R> {
 class SkipUntilSubscriber<T> extends Subscriber<T> {
   private notificationSubscriber: NotificationSubscriber<any> = null;
 
-  constructor(public destination: Subscriber<T>,
+  constructor(destination: Subscriber<T>,
               private notifier: Observable<any>) {
-    super(null);
+    super(destination);
     this.notificationSubscriber = new NotificationSubscriber(this);
     this.add(this.notifier.subscribe(this.notificationSubscriber));
   }
@@ -40,6 +40,17 @@ class SkipUntilSubscriber<T> extends Subscriber<T> {
       this.destination.complete();
     }
     this.notificationSubscriber.unsubscribe();
+  }
+
+  unsubscribe() {
+    if (this._isUnsubscribed) {
+      return;
+    } else if (this._subscription) {
+      this._subscription.unsubscribe();
+      this._isUnsubscribed = true;
+    } else {
+      super.unsubscribe();
+    }
   }
 }
 
