@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable */
+/* globals describe, it, expect, expectObservable, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var ArrayObservable = require('../../dist/cjs/observables/ArrayObservable');
 var ScalarObservable = require('../../dist/cjs/observables/ScalarObservable');
@@ -60,7 +60,6 @@ describe('Observable.of', function () {
       rxTestScheduler
     );
     expect(source instanceof ScalarObservable).toBe(true);
-
     var result = source.concatAll();
     expectObservable(result).toBe('(abc|)');
   });

@@ -1,10 +1,11 @@
-/* globals describe, it, expect, expectObservable */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, rxTestScheduler, hot, cold */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var TestScheduler = Rx.TestScheduler;
 var Notification = Rx.Notification;
 
 describe('TestScheduler', function () {
   it('should exist', function () {
+    expect(TestScheduler).toBeDefined();
     expect(typeof TestScheduler).toBe('function');
   });
 
@@ -121,6 +122,7 @@ describe('TestScheduler', function () {
 
     describe('cold()', function () {
       it('should exist', function () {
+        expect(cold).toBeDefined();
         expect(typeof cold).toBe('function');
       });
 
@@ -138,6 +140,7 @@ describe('TestScheduler', function () {
 
     describe('hot()', function () {
       it('should exist', function () {
+        expect(hot).toBeDefined();
         expect(typeof hot).toBe('function');
       });
 
@@ -150,6 +153,7 @@ describe('TestScheduler', function () {
 
     describe('expectObservable()', function () {
       it('should exist', function () {
+        expect(expectObservable).toBeDefined();
         expect(typeof expectObservable).toBe('function');
       });
 
@@ -181,6 +185,7 @@ describe('TestScheduler', function () {
 
     describe('expectSubscriptions()', function () {
       it('should exist', function () {
+        expect(expectSubscriptions).toBeDefined();
         expect(typeof expectSubscriptions).toBe('function');
       });
 

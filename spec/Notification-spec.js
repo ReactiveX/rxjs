@@ -5,6 +5,7 @@ var Notification = Rx.Notification;
 
 describe('Notification', function () {
   it('should exist', function () {
+    expect(Notification).toBeDefined();
     expect(typeof Notification).toBe('function');
   });
 
