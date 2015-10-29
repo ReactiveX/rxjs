@@ -6,7 +6,7 @@ import Subscription from '../Subscription';
 
 export default function repeat<T>(count: number = -1): Observable<T> {
   if (count === 0) {
-    return EmptyObservable.create();
+    return new EmptyObservable();
   } else {
     return this.lift(new RepeatOperator(count, this));
   }
