@@ -3,14 +3,14 @@ var Rx = require('../dist/cjs/Rx');
 
 var Scheduler = Rx.Scheduler;
 
-describe('Scheduler.immediate', function() {
-  it('should schedule things recursively', function() {
+describe('Scheduler.immediate', function () {
+  it('should schedule things recursively', function () {
     var call1 = false;
     var call2 = false;
     Scheduler.immediate.active = false;
     Scheduler.immediate.schedule(function () {
       call1 = true;
-      Scheduler.immediate.schedule(function(){
+      Scheduler.immediate.schedule(function () {
         call2 = true;
       });
     });
@@ -28,7 +28,7 @@ describe('Scheduler.immediate', function() {
       expect(called).toBe(false);
     }, 40);
 
-    setTimeout(function() {
+    setTimeout(function () {
       expect(called).toBe(true);
       done();
     }, 70);

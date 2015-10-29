@@ -4,6 +4,7 @@ var VirtualTimeScheduler = Rx.VirtualTimeScheduler;
 
 describe('VirtualTimeScheduler', function () {
   it('should exist', function () {
+    expect(VirtualTimeScheduler).toBeDefined();
     expect(typeof VirtualTimeScheduler).toBe('function');
   });
 

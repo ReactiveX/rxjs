@@ -69,7 +69,7 @@ describe('Subject', function () {
     done();
   });
 
-  it('should have a static create function that works', function() {
+  it('should have a static create function that works', function () {
     expect(typeof Subject.create).toBe('function');
     var source = Observable.of(1,2,3,4,5);
     var nexts = [];
@@ -80,14 +80,14 @@ describe('Subject', function () {
 
     var destination = {
       isUnsubscribed: false,
-      next: function(x) {
+      next: function (x) {
         nexts.push(x);
       },
-      error: function(err) {
+      error: function (err) {
         error = err;
         this.isUnsubscribed = true;
       },
-      complete: function() {
+      complete: function () {
         complete = true;
         this.isUnsubscribed = true;
       }
@@ -95,9 +95,9 @@ describe('Subject', function () {
 
     var sub = Subject.create(source, destination);
 
-    sub.subscribe(function(x) {
+    sub.subscribe(function (x) {
       output.push(x);
-    }, null, function() {
+    }, null, function () {
       outputComplete = true;
     });
 
