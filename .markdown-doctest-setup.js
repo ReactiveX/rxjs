@@ -1,12 +1,9 @@
 'use strict';
-let Rx = require('.');
+var Rx = require(__dirname);
 
-global.jasmine = {};
+var marbleTesting = require('./spec/helpers/marble-testing');
 
-global.beforeEach = function beforeEach () {};
-global.afterEach = function afterEach () {};
-
-require('./spec/helpers/test-helper');
+global.rxTestScheduler = new Rx.TestScheduler(marbleTesting.assertDeepEqual);
 
 module.exports = {
   require: {
@@ -14,11 +11,11 @@ module.exports = {
   },
 
   globals: {
-    hot,
-    cold,
-    expectObservable,
-    expectSubscriptions,
-    assertDeepEqual,
+    hot: marbleTesting.hot,
+    cold: marbleTesting.cold,
+    expectObservable: marbleTesting.expectObservable,
+    expectSubscriptions: marbleTesting.expectSubscriptions,
+    assertDeepEqual: marbleTesting.assertDeepEqual,
     Observable: Rx.Observable,
     someObservable: Rx.Observable.range(1, 10)
   },
@@ -27,5 +24,3 @@ module.exports = {
     stage: 0
   }
 }
-
-global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);

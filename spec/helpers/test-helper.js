@@ -5,42 +5,15 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 var _ = require('lodash');
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 
+var marbleHelpers = require('./marble-testing');
+
 global.rxTestScheduler = null;
-global.cold;
-global.hot;
-global.expectObservable;
+global.cold = marbleHelpers.cold;
+global.hot = marbleHelpers.hot;
+global.expectObservable = marbleHelpers.expectObservable;
+global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 
-global.assertDeepEqual = function assertDeepEqual(actual, expected) {
-  expect(actual).toDeepEqual(expected);
-};
-
-global.hot = function () {
-  if (!global.rxTestScheduler) {
-    throw 'tried to use hot() in async test';
-  }
-  return global.rxTestScheduler.createHotObservable.apply(global.rxTestScheduler, arguments);
-};
-
-global.cold = function () {
-  if (!global.rxTestScheduler) {
-    throw 'tried to use cold() in async test';
-  }
-  return global.rxTestScheduler.createColdObservable.apply(global.rxTestScheduler, arguments);
-};
-
-global.expectObservable = function () {
-  if (!global.rxTestScheduler) {
-    throw 'tried to use expectObservable() in async test';
-  }
-  return global.rxTestScheduler.expectObservable.apply(global.rxTestScheduler, arguments);
-};
-
-global.expectSubscriptions = function () {
-  if (!global.rxTestScheduler) {
-    throw 'tried to use expectSubscriptions() in async test';
-  }
-  return global.rxTestScheduler.expectSubscriptions.apply(global.rxTestScheduler, arguments);
-};
+var assertDeepEqual = marbleHelpers.assertDeepEqual;
 
 var glit = global.it;
 
