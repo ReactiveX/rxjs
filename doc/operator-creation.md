@@ -27,6 +27,7 @@ any way the developer sees fit, but here are some guidelines:
   
 
 
+<!-- share-code-between-examples -->
 ### Example
 
 ```js

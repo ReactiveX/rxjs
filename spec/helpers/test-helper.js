@@ -10,9 +10,9 @@ global.cold;
 global.hot;
 global.expectObservable;
 
-function assertDeepEqual(actual, expected) {
+global.assertDeepEqual = function assertDeepEqual(actual, expected) {
   expect(actual).toDeepEqual(expected);
-}
+};
 
 global.hot = function () {
   if (!global.rxTestScheduler) {
