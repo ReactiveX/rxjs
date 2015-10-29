@@ -1,12 +1,21 @@
 import Operator from '../Operator';
 import Subscriber from '../Subscriber';
+import ArgumentOutOfRangeError from '../util/ArgumentOutOfRangeError';
+import EmptyObservable from '../observables/EmptyObservable';
 
 export default function take(total) {
-  return this.lift(new TakeOperator(total));
+  if (total === 0) {
+    return new EmptyObservable();
+  } else {
+    return this.lift(new TakeOperator(total));
+  }
 }
 
 class TakeOperator<T, R> implements Operator<T, R> {
   constructor(private total: number) {
+    if (this.total < 0) {
+      throw new ArgumentOutOfRangeError;
+    }
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
