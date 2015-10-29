@@ -1,6 +1,5 @@
 import Observer from './Observer';
 import Observable from './Observable';
-import noop from './util/noop';
 
 export default class Notification<T> {
   hasValue: boolean;

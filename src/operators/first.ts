@@ -1,7 +1,6 @@
 import Observable from '../Observable';
 import Operator from '../Operator';
 import Subscriber from '../Subscriber';
-import Observer from '../Observer';
 
 import tryCatch from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';

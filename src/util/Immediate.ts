@@ -27,7 +27,6 @@ export class ImmediateDefinition {
       this.nextHandle = 1;
       this.tasksByHandle = {};
       this.currentlyRunningATask = false;
-      const doc = root.document;
 
       // Don't get fooled by e.g. browserify environments.
       if (this.canUseProcessNextTick()) {
@@ -204,12 +203,12 @@ export class ImmediateDefinition {
       const doc = root.document;
       const html = doc.documentElement;
 
-      let handle = instance.addFromSetImmediateArguments(arguments);
+      let handle = addFromSetImmediateArguments(arguments);
       // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
       // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
       let script = doc.createElement('script');
       script.onreadystatechange = () => {
-        instance.runIfPresent(handle);
+        runIfPresent(handle);
         script.onreadystatechange = null;
         html.removeChild(script);
         script = null;

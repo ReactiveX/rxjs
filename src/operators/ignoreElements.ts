@@ -1,5 +1,6 @@
 import Operator from '../Operator';
 import Subscriber from '../Subscriber';
+import noop from '../util/noop';
 
 export default function ignoreElements() {
   return this.lift(new IgnoreElementsOperator());
@@ -12,5 +13,7 @@ class IgnoreElementsOperator<T, R> implements Operator<T, R> {
 }
 
 class IgnoreElementsSubscriber<T> extends Subscriber<T> {
-  _next() {}
+  _next(unused: T): void {
+    noop();
+  }
 }

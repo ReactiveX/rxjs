@@ -1,6 +1,7 @@
 import Operator from '../Operator';
 import Observable from '../Observable';
 import Subscriber from '../Subscriber';
+import noop from '../util/noop';
 
 export default function takeUntil<T>(notifier: Observable<any>) {
   return this.lift(new TakeUntilOperator(notifier));
@@ -25,7 +26,7 @@ class TakeUntilSubscriber<T> extends Subscriber<T> {
     this.add(notifier.subscribe(this.notificationSubscriber));
   }
 
-  _complete() {
+  _complete(): void {
     this.destination.complete();
     this.notificationSubscriber.unsubscribe();
   }
@@ -36,14 +37,15 @@ class TakeUntilInnerSubscriber<T> extends Subscriber<T> {
     super(null);
   }
 
-  _next() {
+  _next(unused: T): void {
     this.destination.complete();
   }
 
-  _error(e) {
-    this.destination.error(e);
+  _error(err: any): void {
+    this.destination.error(err);
   }
 
-  _complete() {
+  _complete(): void {
+    noop();
   }
 }

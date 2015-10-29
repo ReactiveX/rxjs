@@ -1,7 +1,8 @@
 import Observable from '../Observable';
+import Subscriber from '../Subscriber';
+import noop from '../util/noop';
 
 export default class InfiniteObservable<T> extends Observable<T> {
-
   static create<T>() {
     return new InfiniteObservable();
   }
@@ -10,6 +11,7 @@ export default class InfiniteObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>): void {
+    noop();
   }
 }

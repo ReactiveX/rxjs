@@ -14,7 +14,7 @@ env:
   - alias babel=./node_modules/.bin/babel
 
 install:
-  - npm install
+  - npm install && npm run lint
 
 script:
   - npm test && npm run cover
