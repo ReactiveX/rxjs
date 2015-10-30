@@ -1,18 +1,19 @@
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
+import Subscriber from '../Subscriber';
+import Subscription from '../Subscription';
+
 import tryCatch from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
 import ErrorObservable from './ErrorObservable';
 import EmptyObservable from './EmptyObservable';
 
 export default class ScalarObservable<T> extends Observable<T> {
-
-  static create<T>(value: T, scheduler?: Scheduler) {
+  static create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {
     return new ScalarObservable(value, scheduler);
   }
 
-  static dispatch(state) {
-
+  static dispatch(state): void {
     const { done, value, subscriber } = state;
 
     if (done) {
@@ -21,13 +22,11 @@ export default class ScalarObservable<T> extends Observable<T> {
     }
 
     subscriber.next(value);
-
     if (subscriber.isUnsubscribed) {
       return;
     }
 
     state.done = true;
-
     (<any> this).schedule(state);
   }
 
@@ -37,8 +36,7 @@ export default class ScalarObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
-
+  _subscribe(subscriber: Subscriber<T>) {
     const value = this.value;
     const scheduler = this.scheduler;
 
