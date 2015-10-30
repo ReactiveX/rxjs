@@ -37,11 +37,25 @@ class WindowSubscriber<T> extends Subscriber<T> {
   _error(err: any) {
     this.window.error(err);
     this.destination.error(err);
+    this._unsubscribeClosingNotification();
   }
 
   _complete() {
     this.window.complete();
     this.destination.complete();
+    this._unsubscribeClosingNotification();
+  }
+
+  unsubscribe() {
+    super.unsubscribe();
+    this._unsubscribeClosingNotification();
+  }
+
+  _unsubscribeClosingNotification() {
+    let closingNotification = this.closingNotification;
+    if (closingNotification) {
+      closingNotification.unsubscribe();
+    }
   }
 
   openWindow() {
@@ -84,6 +98,6 @@ class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
   }
 
   _complete() {
-    // noop
+    this.parent.openWindow();
   }
 }
