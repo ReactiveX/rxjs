@@ -1,16 +1,44 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, hot, cold, expectObservable */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.defer', function () {
-  it('should create an observable from the provided observbale factory', function (done) {
-    var i = 0;
-    var expected = [1, 2, 3];
-    Observable.defer(function () {
-      return Observable.of(1, 2, 3);
-    })
-    .subscribe(function (x) {
-      expect(x).toBe(expected[i++]);
-    }, null, done);
+  it('should create an observable from the provided observbale factory', function () {
+    var source = hot('--a--b--c--|');
+    var e1 = Observable.defer(function () {
+      return source;
+    });
+    var expected = '--a--b--c--|';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should create an observable from completed', function () {
+    var source = hot('|');
+    var e1 = Observable.defer(function () {
+      return source;
+    });
+    var expected = '|';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should create an observable from error', function () {
+    var source = hot('#');
+    var e1 = Observable.defer(function () {
+      return source;
+    });
+    var expected = '#';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should create an observable when factory throws', function () {
+    var e1 = Observable.defer(function () {
+      throw 'error';
+    });
+    var expected = '#';
+
+    expectObservable(e1).toBe(expected);
   });
 });
