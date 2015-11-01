@@ -1,3 +1,4 @@
+import Observable from '../Observable';
 import { MergeAllOperator } from './mergeAll-support';
 
 /**
@@ -8,9 +9,9 @@ import { MergeAllOperator } from './mergeAll-support';
  * __Warning:__ If the source Observable emits Observables quickly and endlessly, and the
  * Observables it emits generally complete slower than the source emits, you can run into
  * memory issues as the incoming observables collect in an unbounded buffer.
- * 
+ *
  * @returns {Observable} an observable of values merged from the incoming observables.
  */
-export default function concatAll() {
+export default function concatAll(): Observable<any> {
   return this.lift(new MergeAllOperator(1));
 }
