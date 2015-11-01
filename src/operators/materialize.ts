@@ -1,8 +1,9 @@
 import Operator from '../Operator';
+import Observable from '../Observable';
 import Subscriber from '../Subscriber';
 import Notification from '../Notification';
 
-export default function materialize<T>() {
+export default function materialize<T>(): Observable<Notification<T>> {
   return this.lift(new MaterializeOperator());
 }
 

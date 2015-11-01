@@ -8,7 +8,7 @@ import EmptyError from '../util/EmptyError';
 
 export default function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
                                    resultSelector?: (value: T, index: number) => R,
-                                   defaultValue?: any): Observable<R> {
+                                   defaultValue?: any): Observable<T> | Observable<R> {
   return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 

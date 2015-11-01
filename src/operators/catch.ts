@@ -13,7 +13,7 @@ import {errorObject} from '../util/errorObject';
  * @return {Observable} an observable that originates from either the source or the observable returned by the
  *  catch `selector` function.
  */
-export default function _catch<T>(selector: (err: any, caught: Observable<any>) => Observable<any>) {
+export default function _catch<T>(selector: (err: any, caught: Observable<any>) => Observable<any>): Observable<T> {
   let catchOperator = new CatchOperator(selector);
   let caught = this.lift(catchOperator);
   catchOperator.caught = caught;

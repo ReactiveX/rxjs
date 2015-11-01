@@ -31,7 +31,7 @@ export default class Notification<T> {
     }
   }
 
-  accept(nextOrObserver: Observer<T>|((value: T) => void), error?: (err: any) => void, complete?: () => void) {
+  accept(nextOrObserver: Observer<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
     if (nextOrObserver && typeof (<Observer<T>>nextOrObserver).next === 'function') {
       return this.observe(<Observer<T>>nextOrObserver);
     } else {
@@ -65,7 +65,7 @@ export default class Notification<T> {
     return new Notification('E', undefined, err);
   }
 
-  static createComplete(): Notification<any> {
+  static createComplete<T>(): Notification<T> {
     return this.completeNotification;
   }
 }
