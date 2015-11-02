@@ -12,6 +12,7 @@ interface KitchenSinkOperators<T> extends CoreOperators<T> {
   max?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
+  mergeScan?: <T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) => Observable<R>;
 }
 
 // operators
@@ -195,6 +196,9 @@ observableProto.flatMap = mergeMap;
 import mergeMapTo from './operators/mergeMapTo';
 observableProto.mergeMapTo = mergeMapTo;
 observableProto.flatMapTo = mergeMapTo;
+
+import mergeScan from './operators/extended/mergeScan';
+observableProto.mergeScan = mergeScan;
 
 import min from './operators/extended/min';
 observableProto.min = min;
