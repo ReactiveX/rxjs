@@ -10,8 +10,18 @@ if (!root.Symbol.iterator) {
   } else if (root.Set && typeof new root.Set()['@@iterator'] === 'function') {
     // Bug for mozilla version
     root.Symbol.iterator = '@@iterator';
+  } else if (root.Map) {
+    // es6-shim specific logic
+    let keys = Object.getOwnPropertyNames(root.Map.prototype);
+    for (let i = 0; i < keys.length; ++i) {
+      let key = keys[i];
+      if (key !== 'entries' && key !== 'size' && root.Map.prototype[key] === root.Map.prototype['entries']) {
+        root.Symbol.iterator = key;
+        break;
+      }
+    }
   } else {
-    root.Symbol.iterator = '_es6shim_iterator_';
+    root.Symbol.iterator = '@@iterator';
   }
 }
 
