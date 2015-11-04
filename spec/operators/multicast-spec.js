@@ -4,6 +4,30 @@ var Observable = Rx.Observable;
 var Subject = Rx.Subject;
 
 describe('Observable.prototype.multicast()', function () {
+  it('should accept Subjects', function (done) {
+    var expected = [1,2,3,4];
+
+    var connectable = Observable.of(1,2,3,4).multicast(new Subject());
+
+    connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); },
+        done.throw,
+        done);
+
+    connectable.connect();
+  });
+
+  it('should accept Subject factory functions', function (done) {
+    var expected = [1,2,3,4];
+
+    var connectable = Observable.of(1,2,3,4).multicast(function () { return new Subject(); });
+
+    connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); },
+        done.throw,
+        done);
+
+    connectable.connect();
+  });
+
   it('should multicast one observable to multiple observers', function (done) {
     var results1 = [];
     var results2 = [];
