@@ -44,7 +44,7 @@ describe('Observable.prototype.publish()', function () {
     done();
   });
 
-  it('should allow you to reconnect by subscribing again', function (done) {
+  it('To match RxJS 4 behavior, it should NOT allow you to reconnect by subscribing again', function (done) {
     var expected = [1, 2, 3, 4];
     var i = 0;
 
@@ -52,12 +52,11 @@ describe('Observable.prototype.publish()', function () {
 
     source.subscribe(function (x) {
       expect(x).toBe(expected[i++]);
-    }, null,
+    },
+    null,
     function () {
-      i = 0;
-
       source.subscribe(function (x) {
-        expect(x).toBe(expected[i++]);
+        throw 'this should not be called';
       }, null, done);
 
       source.connect();
