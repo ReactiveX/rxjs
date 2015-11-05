@@ -1,3 +1,4 @@
+/* globals describe, it, expect, rxTestScheduler*/
 var Rx = require('../../dist/cjs/Rx');
 var ScalarObservable = require('../../dist/cjs/observables/ScalarObservable');
 var EmptyObservable = require('../../dist/cjs/observables/EmptyObservable');
@@ -8,6 +9,21 @@ describe('ScalarObservable', function () {
   it('should create expose a value property', function () {
     var s = new ScalarObservable(1);
     expect(s.value).toBe(1);
+  });
+
+  it('should create ScalarObservable via staic create function', function () {
+    var s = new ScalarObservable(1);
+    var r = ScalarObservable.create(1);
+
+    expect(s).toEqual(r);
+  });
+
+  it('should not schedule further if subscriber unsubscribed', function () {
+    var s = new ScalarObservable(1, rxTestScheduler);
+    var subscriber = new Rx.Subscriber();
+    s.subscribe(subscriber);
+    subscriber.isUnsubscribed = true;
+    rxTestScheduler.flush();
   });
 
   describe('prototype.map()', function () {
@@ -117,6 +133,37 @@ describe('ScalarObservable', function () {
       var s = new ScalarObservable(1);
       var r = s.reduce(function (a, x) { return a + x; });
       expect(r).toBe(s);
+    });
+
+    it('should return ErrorObservable if projection throws', function () {
+      var s = new ScalarObservable(1);
+      var r = s.reduce(function (a, x) { throw 'error'; }, 1);
+      var expected = new ErrorObservable('error');
+
+      expect(r).toEqual(expected);
+    });
+  });
+
+  describe('prototype.scan()', function () {
+    it('should return a ScalarObservable of the result if there is a seed', function () {
+      var s = new ScalarObservable(1);
+      var r = s.scan(function (a, x) { return a + x; }, 1);
+      expect(r instanceof ScalarObservable).toBe(true);
+      expect(r.value).toBe(2);
+    });
+
+    it('should return itself if there is no seed', function () {
+      var s = new ScalarObservable(1);
+      var r = s.scan(function (a, x) { return a + x; });
+      expect(r).toBe(s);
+    });
+
+    it('should return ErrorObservable if projection throws', function () {
+      var s = new ScalarObservable(1);
+      var r = s.scan(function (a, x) { throw 'error'; }, 1);
+      var expected = new ErrorObservable('error');
+
+      expect(r).toEqual(expected);
     });
   });
 });
