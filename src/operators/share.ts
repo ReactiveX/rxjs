@@ -1,6 +1,11 @@
 import Observable from '../Observable';
-import publish from './publish';
+import multicast from './multicast';
+import Subject from '../Subject';
+
+function shareSubjectFactory() {
+  return new Subject();
+}
 
 export default function share<T>(): Observable<T> {
-  return publish.call(this).refCount();
+  return multicast.call(this, shareSubjectFactory).refCount();
 };

@@ -48,6 +48,13 @@ describe('Observable.prototype.share()', function () {
     expectObservable(e1.share()).toBe(expected);
   });
 
+  it('should retry just fine', function () {
+    var e1 =  cold('---a--b--c--d--e--#');
+    var expected = '---a--b--c--d--e-----a--b--c--d--e--#';
+
+    expectObservable(e1.share().retry(1)).toBe(expected);
+  });
+
   it('should not change the output of the observable when never', function () {
     var e1 = Observable.never();
     var expected = '-';
