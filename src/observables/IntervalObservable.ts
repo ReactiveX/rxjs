@@ -1,16 +1,15 @@
+import Subscriber from '../Subscriber';
 import isNumeric from '../util/isNumeric';
 import Scheduler from '../Scheduler';
 import Observable from '../Observable';
 import nextTick from '../schedulers/nextTick';
 
 export default class IntervalObservable<T> extends Observable<T> {
-
   static create(period: number = 0, scheduler: Scheduler = nextTick): Observable<number> {
     return new IntervalObservable(period, scheduler);
   }
 
-  static dispatch(state) {
-
+  static dispatch(state): void {
     const { index, subscriber, period } = state;
 
     subscriber.next(index);
@@ -34,8 +33,7 @@ export default class IntervalObservable<T> extends Observable<T> {
     }
   }
 
-  _subscribe(subscriber) {
-
+  _subscribe(subscriber:Subscriber<T>) {
     const index = 0;
     const period = this.period;
     const scheduler = this.scheduler;
