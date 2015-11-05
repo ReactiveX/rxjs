@@ -76,11 +76,13 @@ describe('Observable.prototype.publishReplay()', function () {
     done();
   });
 
-  it('should allow you to reconnect by subscribing again', function (done) {
+  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', function (done) {
     var expected = [1, 2, 3, 4];
     var i = 0;
 
-    var source = Observable.of(1, 2, 3, 4).publishReplay();
+    var source = Observable.of(1, 2, 3, 4).publishReplay(1);
+
+    var results = [];
 
     source.subscribe(
       function (x) {
@@ -91,12 +93,14 @@ describe('Observable.prototype.publishReplay()', function () {
         i = 0;
 
         source.subscribe(function (x) {
-          expect(x).toBe(expected[i++]);
+          results.push(x);
         }, null, done);
 
         source.connect();
       });
 
     source.connect();
+
+    expect(results).toEqual([4]);
   });
 });
