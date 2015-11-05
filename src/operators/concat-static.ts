@@ -1,7 +1,8 @@
 import Observable from '../Observable';
 import Scheduler from '../Scheduler';
 import immediate from '../schedulers/immediate';
-import { CoreOperators } from '../CoreOperators';
+import { MergeAllOperator } from './mergeAll-support';
+import ArrayObservable from '../observables/ArrayObservable';
 
 /**
  * Joins multiple observables together by subscribing to them one at a time and merging their results
@@ -16,5 +17,6 @@ export default function concat<R>(...observables: Array<Observable<any> | Schedu
   if (typeof (args[observables.length - 1]).schedule === 'function') {
     scheduler = args.pop();
   }
-  return (<CoreOperators<any>>Observable.fromArray(observables, scheduler)).mergeAll(1);
+
+  return new ArrayObservable(observables, scheduler).lift(new MergeAllOperator(1));
 }
