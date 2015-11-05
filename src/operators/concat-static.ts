@@ -15,7 +15,6 @@ export default function concat<R>(...observables: Array<Observable<any> | Schedu
   let args = <any[]>observables;
   if (typeof (args[observables.length - 1]).schedule === 'function') {
     scheduler = args.pop();
-    args.push(1, scheduler);
   }
-  return (<CoreOperators<any>>Observable.fromArray(observables)).mergeAll(1);
+  return (<CoreOperators<any>>Observable.fromArray(observables, scheduler)).mergeAll(1);
 }
