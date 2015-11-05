@@ -167,7 +167,7 @@ describe('Observable.prototype.first()', function () {
     var resultSelector = function (x, i) {
       throw 'error';
     };
-    
+
     expectObservable(e1.first(predicate, resultSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
