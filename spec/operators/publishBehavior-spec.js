@@ -43,7 +43,7 @@ describe('Observable.prototype.publishBehavior()', function () {
     done();
   });
 
-  it('should emit default value to observer after completed', function (done) {
+  it('should follow the RxJS 4 behavior and emit nothing to observer after completed', function (done) {
     var results = [];
 
     var source = new Observable(function (observer) {
@@ -62,11 +62,11 @@ describe('Observable.prototype.publishBehavior()', function () {
       results.push(x);
     });
 
-    expect(results).toEqual([0]);
+    expect(results).toEqual([]);
     done();
   });
 
-  it('should allow you to reconnect by subscribing again', function (done) {
+  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', function (done) {
     var expected = [0, 1, 2, 3, 4];
     var i = 0;
 
@@ -78,10 +78,8 @@ describe('Observable.prototype.publishBehavior()', function () {
       },
       null,
       function () {
-        i = 0;
-
         source.subscribe(function (x) {
-          expect(x).toBe(expected[i++]);
+          throw 'should not be called';
         }, null, done);
 
         source.connect();
