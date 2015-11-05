@@ -33,7 +33,7 @@ export default class IntervalObservable<T> extends Observable<T> {
     }
   }
 
-  _subscribe(subscriber:Subscriber<T>) {
+  _subscribe(subscriber: Subscriber<T>) {
     const index = 0;
     const period = this.period;
     const scheduler = this.scheduler;

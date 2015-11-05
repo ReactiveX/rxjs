@@ -34,7 +34,7 @@ describe('Observable.interval', function () {
     var values = [];
     var expected = [0,1,2,3,4,5,6];
     var e1 = Observable.interval(5);
-    var subscription = e1.subscribe(function(x) {
+    var subscription = e1.subscribe(function (x) {
       values.push(x);
       if (x === 6) {
         subscription.unsubscribe();
