@@ -12,6 +12,9 @@ interface KitchenSinkOperators<T> extends CoreOperators<T> {
   min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
   mergeScan?: <T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) => Observable<R>;
+  switchFirst?: () => Observable<T>;
+  switchMapFirst?: <R>(project: ((x: T, ix: number) => Observable<any>),
+                       projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
 }
 
 // operators
@@ -269,6 +272,12 @@ observableProto.switchMap = switchMap;
 
 import {switchMapTo} from './operators/switchMapTo';
 observableProto.switchMapTo = switchMapTo;
+
+import {switchFirst} from './operators/switchFirst';
+observableProto.switchFirst = switchFirst;
+
+import {switchMapFirst} from './operators/switchMapFirst';
+observableProto.switchMapFirst = switchMapFirst;
 
 import {take} from './operators/take';
 observableProto.take = take;
