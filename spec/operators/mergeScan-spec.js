@@ -60,7 +60,7 @@ describe('Observable.prototype.mergeScan()', function () {
     var expected = '(u|)';
 
     var values = {
-        u: []
+      u: []
     };
 
     var source = e1.mergeScan(function (acc, x) { return Observable.of(acc.concat(x)); }, []);
