@@ -12,6 +12,6 @@ import {CombineLatestOperator} from './combineLatest-support';
  *   most recent values from each collected observable as arguments, in order.
  * @returns {Observable} an observable of projected results or arrays of recent values.
  */
-export default function combineAll<T, R>(project?: (...values: Array<any>) => R) {
+export function combineAll<T, R>(project?: (...values: Array<any>) => R) {
   return this.lift(new CombineLatestOperator(project));
 }

@@ -1,12 +1,12 @@
-import Operator from '../Operator';
-import Scheduler from '../Scheduler';
-import Subscriber from '../Subscriber';
-import Notification from '../Notification';
-import immediate from '../schedulers/immediate';
-import isDate from '../util/isDate';
+import {Operator} from '../Operator';
+import {Scheduler} from '../Scheduler';
+import {Subscriber} from '../Subscriber';
+import {Notification} from '../Notification';
+import {immediate} from '../schedulers/immediate';
+import {isDate} from '../util/isDate';
 
-export default function delay<T>(delay: number|Date,
-                                 scheduler: Scheduler = immediate) {
+export function delay<T>(delay: number|Date,
+                         scheduler: Scheduler = immediate) {
   let absoluteDelay = isDate(delay);
   let delayFor = absoluteDelay ? (+delay - scheduler.now()) : <number>delay;
   return this.lift(new DelayOperator(delayFor, scheduler));

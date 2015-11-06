@@ -1,9 +1,9 @@
-import Subject from '../Subject';
-import Subscription from '../Subscription';
-import Observer from '../Observer';
-import Subscriber from '../Subscriber';
+import {Subject} from '../Subject';
+import {Subscription} from '../Subscription';
+import {Observer} from '../Observer';
+import {Subscriber} from '../Subscriber';
 
-export default class SubjectSubscription<T> extends Subscription<T> {
+export class SubjectSubscription<T> extends Subscription<T> {
   isUnsubscribed: boolean = false;
 
   constructor(public subject: Subject<T>, public observer: Observer<any>) {

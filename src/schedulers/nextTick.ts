@@ -1,3 +1,3 @@
-import NextTickScheduler from './NextTickScheduler';
+import {NextTickScheduler} from './NextTickScheduler';
 
-export default new NextTickScheduler();
+export const nextTick = new NextTickScheduler();

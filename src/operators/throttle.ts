@@ -1,10 +1,10 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Scheduler from '../Scheduler';
-import Subscription from '../Subscription';
-import nextTick from '../schedulers/nextTick';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Scheduler} from '../Scheduler';
+import {Subscription} from '../Subscription';
+import {nextTick} from '../schedulers/nextTick';
 
-export default function throttle<T>(delay: number, scheduler: Scheduler = nextTick) {
+export function throttle<T>(delay: number, scheduler: Scheduler = nextTick) {
   return this.lift(new ThrottleOperator(delay, scheduler));
 }
 

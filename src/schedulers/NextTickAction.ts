@@ -1,8 +1,8 @@
 import {Immediate} from '../util/Immediate';
-import ImmediateAction from './ImmediateAction';
-import Action from './Action';
+import {ImmediateAction} from './ImmediateAction';
+import {Action} from './Action';
 
-export default class NextTickAction<T> extends ImmediateAction<T> {
+export class NextTickAction<T> extends ImmediateAction<T> {
   private id: any;
 
   schedule(state?: any): Action {

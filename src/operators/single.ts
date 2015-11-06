@@ -1,17 +1,17 @@
-import Observable from '../Observable';
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observer from '../Observer';
+import {Observable} from '../Observable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observer} from '../Observer';
 
-import tryCatch from '../util/tryCatch';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
-import EmptyError from '../util/EmptyError';
+import {bindCallback} from '../util/bindCallback';
+import {EmptyError} from '../util/EmptyError';
 
-export default function single<T>(predicate?: (value: T,
-                                               index: number,
-                                               source: Observable<T>) => boolean,
-                                  thisArg?: any): Observable<T> {
+export function single<T>(predicate?: (value: T,
+                                       index: number,
+                                       source: Observable<T>) => boolean,
+                          thisArg?: any): Observable<T> {
   return this.lift(new SingleOperator(predicate, thisArg, this));
 }
 

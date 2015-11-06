@@ -1,7 +1,7 @@
-import Subscription from '../Subscription';
-import Scheduler from '../Scheduler';
+import {Subscription} from '../Subscription';
+import {Scheduler} from '../Scheduler';
 
-interface Action extends Subscription<any> {
+export interface Action extends Subscription<any> {
   work: (state?: any) => void|Subscription<any>;
   state?: any;
   delay?: number;
@@ -9,5 +9,3 @@ interface Action extends Subscription<any> {
   execute(): void;
   scheduler: Scheduler;
 }
-
-export default Action;

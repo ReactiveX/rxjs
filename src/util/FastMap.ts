@@ -1,4 +1,4 @@
-export default class FastMap {
+export class FastMap {
   size: number = 0;
   private _values: Object = {};
 

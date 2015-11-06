@@ -15,7 +15,7 @@ if (!root.Symbol.iterator) {
   }
 }
 
-export default root.Symbol.iterator;
+export const $$iterator = root.Symbol.iterator;
 
 // // Shim in iterator support
 // export var $iterator$ = (typeof Symbol === 'function' && Symbol.iterator) || '_es6shim_iterator_';

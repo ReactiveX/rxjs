@@ -1,6 +1,6 @@
-import { root } from '../util/root';
+import {root} from '../util/root';
 
-export default function toPromise<T>(PromiseCtor?: PromiseConstructor): Promise<T> {
+export function toPromise<T>(PromiseCtor?: PromiseConstructor): Promise<T> {
   if (!PromiseCtor) {
     if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
       PromiseCtor = root.Rx.config.Promise;

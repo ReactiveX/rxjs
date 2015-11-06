@@ -1,8 +1,8 @@
-import Subject from '../Subject';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
+import {Subject} from '../Subject';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 
-export default class BehaviorSubject<T> extends Subject<T> {
+export class BehaviorSubject<T> extends Subject<T> {
   constructor(private value: any) {
     super();
   }

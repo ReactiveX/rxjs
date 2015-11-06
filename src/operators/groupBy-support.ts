@@ -1,7 +1,7 @@
-import Subscription from '../Subscription';
-import Subject from '../Subject';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
+import {Subscription} from '../Subscription';
+import {Subject} from '../Subject';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
 
 export class RefCountSubscription<T> extends Subscription<T> {
   primary: Subscription<T>;

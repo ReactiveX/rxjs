@@ -1,9 +1,9 @@
-import isNumeric from '../util/isNumeric';
-import Scheduler from '../Scheduler';
-import Observable from '../Observable';
-import nextTick from '../schedulers/nextTick';
+import {isNumeric} from '../util/isNumeric';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
+import {nextTick} from '../schedulers/nextTick';
 
-export default class TimerObservable<T> extends Observable<T> {
+export class TimerObservable<T> extends Observable<T> {
 
   static create(dueTime: number = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
     return new TimerObservable(dueTime, period, scheduler);

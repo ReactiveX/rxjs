@@ -1,11 +1,11 @@
-import Scheduler from '../Scheduler';
-import Observable from '../Observable';
-import ArrayObservable from '../observables/ArrayObservable';
-import ScalarObservable from '../observables/ScalarObservable';
-import EmptyObservable from '../observables/EmptyObservable';
-import concat from './concat-static';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
+import {ArrayObservable} from '../observables/ArrayObservable';
+import {ScalarObservable} from '../observables/ScalarObservable';
+import {EmptyObservable} from '../observables/EmptyObservable';
+import {concat} from './concat-static';
 
-export default function startWith<T>(...array: (T | Scheduler)[]): Observable<T> {
+export function startWith<T>(...array: (T | Scheduler)[]): Observable<T> {
   let scheduler = <Scheduler>array[array.length - 1];
   if (scheduler && typeof scheduler.schedule === 'function') {
     array.pop();

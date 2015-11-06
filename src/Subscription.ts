@@ -1,5 +1,4 @@
-
-export default class Subscription<T> {
+export class Subscription<T> {
   public static EMPTY: Subscription<void> = (function(empty){
     empty.isUnsubscribed = true;
     return empty;

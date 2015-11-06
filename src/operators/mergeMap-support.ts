@@ -1,11 +1,11 @@
-import Observable from '../Observable';
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-import tryCatch from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
-import subscribeToResult from '../util/subscribeToResult';
-import OuterSubscriber from '../OuterSubscriber';
+import {Observable} from '../Observable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
+import {subscribeToResult} from '../util/subscribeToResult';
+import {OuterSubscriber} from '../OuterSubscriber';
 
 export class MergeMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,

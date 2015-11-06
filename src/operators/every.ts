@@ -1,16 +1,16 @@
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Observable from '../Observable';
-import ScalarObservable from '../observables/ScalarObservable';
-import ArrayObservable from '../observables/ArrayObservable';
-import ErrorObservable from '../observables/ErrorObservable';
-import Subscriber from '../Subscriber';
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Observer} from '../Observer';
+import {Observable} from '../Observable';
+import {ScalarObservable} from '../observables/ScalarObservable';
+import {ArrayObservable} from '../observables/ArrayObservable';
+import {ErrorObservable} from '../observables/ErrorObservable';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
+import {bindCallback} from '../util/bindCallback';
 
-export default function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                                 thisArg?: any): Observable<boolean> {
+export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
+                         thisArg?: any): Observable<boolean> {
   const source = this;
   let result;
 

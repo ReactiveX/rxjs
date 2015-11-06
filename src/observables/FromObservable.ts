@@ -1,18 +1,18 @@
-import PromiseObservable from './PromiseObservable';
-import IteratorObservable from'./IteratorObservable';
-import ArrayObservable from './ArrayObservable';
+import {PromiseObservable} from './PromiseObservable';
+import {IteratorObservable} from'./IteratorObservable';
+import {ArrayObservable} from './ArrayObservable';
 
-import Scheduler from '../Scheduler';
-import $$observable from '../util/Symbol_observable';
-import $$iterator from '../util/Symbol_iterator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import { ObserveOnSubscriber } from '../operators/observeOn-support';
-import immediate from '../schedulers/immediate';
+import {Scheduler} from '../Scheduler';
+import {$$observable} from '../util/Symbol_observable';
+import {$$iterator} from '../util/Symbol_iterator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {ObserveOnSubscriber} from '../operators/observeOn-support';
+import {immediate} from '../schedulers/immediate';
 
 const isArray = Array.isArray;
 
-export default class FromObservable<T> extends Observable<T> {
+export class FromObservable<T> extends Observable<T> {
   constructor(private ish: any, private scheduler: Scheduler) {
     super(null);
   }

@@ -1,7 +1,7 @@
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
 
-export default class ForkJoinObservable<T> extends Observable<T> {
+export class ForkJoinObservable<T> extends Observable<T> {
   constructor(private observables: Observable<any>[]) {
     super();
   }

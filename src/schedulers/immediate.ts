@@ -1,3 +1,3 @@
-import ImmediateScheduler from './ImmediateScheduler';
+import {ImmediateScheduler} from './ImmediateScheduler';
 
-export default new ImmediateScheduler();
+export const immediate = new ImmediateScheduler();

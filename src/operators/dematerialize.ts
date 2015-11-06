@@ -1,9 +1,9 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import Notification from '../Notification';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {Notification} from '../Notification';
 
-export default function dematerialize<T>(): Observable<any> {
+export function dematerialize<T>(): Observable<any> {
   return this.lift(new DeMaterializeOperator());
 }
 

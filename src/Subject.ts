@@ -1,9 +1,9 @@
-import Operator from './Operator';
-import Observer from './Observer';
-import Observable from './Observable';
-import Subscriber from './Subscriber';
-import Subscription from './Subscription';
-import SubjectSubscription from './subjects/SubjectSubscription';
+import {Operator} from './Operator';
+import {Observer} from './Observer';
+import {Observable} from './Observable';
+import {Subscriber} from './Subscriber';
+import {Subscription} from './Subscription';
+import {SubjectSubscription} from './subjects/SubjectSubscription';
 
 const subscriptionAdd = Subscription.prototype.add;
 const subscriptionRemove = Subscription.prototype.remove;
@@ -17,7 +17,7 @@ const _subscriberError = Subscriber.prototype._error;
 const _subscriberComplete = Subscriber.prototype._complete;
 
 
-export default class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
+export class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
   _subscriptions: Subscription<T>[];
   _unsubscribe: () => void;
 

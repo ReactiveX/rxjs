@@ -1,9 +1,9 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import ArgumentOutOfRangeError from '../util/ArgumentOutOfRangeError';
-import EmptyObservable from '../observables/EmptyObservable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
+import {EmptyObservable} from '../observables/EmptyObservable';
 
-export default function take(total) {
+export function take(total) {
   if (total === 0) {
     return new EmptyObservable();
   } else {

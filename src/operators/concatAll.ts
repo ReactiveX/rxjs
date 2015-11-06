@@ -1,5 +1,5 @@
-import Observable from '../Observable';
-import { MergeAllOperator } from './mergeAll-support';
+import {Observable} from '../Observable';
+import {MergeAllOperator} from './mergeAll-support';
 
 /**
  * Joins every Observable emitted by the source (an Observable of Observables), in a serial
@@ -12,6 +12,6 @@ import { MergeAllOperator } from './mergeAll-support';
  *
  * @returns {Observable} an observable of values merged from the incoming observables.
  */
-export default function concatAll<T>(): Observable<T> {
+export function concatAll<T>(): Observable<T> {
   return this.lift(new MergeAllOperator(1));
 }

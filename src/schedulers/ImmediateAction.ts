@@ -1,8 +1,8 @@
-import Subscription from '../Subscription';
-import Scheduler from '../Scheduler';
-import Action from './Action';
+import {Subscription} from '../Subscription';
+import {Scheduler} from '../Scheduler';
+import {Action} from './Action';
 
-export default class ImmediateAction<T> extends Subscription<T> implements Action {
+export class ImmediateAction<T> extends Subscription<T> implements Action {
 
   state: any;
 

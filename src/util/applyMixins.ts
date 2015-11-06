@@ -1,4 +1,4 @@
-export default function applyMixins(derivedCtor: any, baseCtors: any[]) {
+export function applyMixins(derivedCtor: any, baseCtors: any[]) {
   for (let i = 0, len = baseCtors.length; i < len; i++) {
     const baseCtor = baseCtors[i];
     const propertyKeys = Object.getOwnPropertyNames(baseCtor.prototype);

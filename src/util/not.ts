@@ -1,4 +1,4 @@
-export default function not(pred: Function, thisArg: any): Function {
+export function not(pred: Function, thisArg: any): Function {
   function notPred(): any {
     return !((<any> notPred).pred.apply((<any> notPred).thisArg, arguments));
   }

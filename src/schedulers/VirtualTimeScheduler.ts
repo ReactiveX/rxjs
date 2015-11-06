@@ -1,8 +1,8 @@
-import Scheduler from '../Scheduler';
-import Subscription from '../Subscription';
-import Action from './Action';
+import {Scheduler} from '../Scheduler';
+import {Subscription} from '../Subscription';
+import {Action} from './Action';
 
-export default class VirtualTimeScheduler implements Scheduler {
+export class VirtualTimeScheduler implements Scheduler {
   actions: Action[] = [];
   active: boolean = false;
   scheduled: boolean = false;

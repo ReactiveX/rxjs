@@ -1,10 +1,10 @@
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import Scheduler from '../Scheduler';
-import Subscription from '../Subscription';
-import immediate from '../schedulers/immediate';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {Scheduler} from '../Scheduler';
+import {Subscription} from '../Subscription';
+import {immediate} from '../schedulers/immediate';
 
-export default class PromiseObservable<T> extends Observable<T> {
+export class PromiseObservable<T> extends Observable<T> {
 
   _isScalar: boolean = false;
   value: T;

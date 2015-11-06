@@ -1,8 +1,8 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import noop from '../util/noop';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {noop} from '../util/noop';
 
-export default function ignoreElements() {
+export function ignoreElements() {
   return this.lift(new IgnoreElementsOperator());
 };
 

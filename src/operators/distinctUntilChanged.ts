@@ -1,11 +1,10 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
+import {bindCallback} from '../util/bindCallback';
 
-export default function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean, thisArg?: any) {
+export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean, thisArg?: any) {
   return this.lift(new DistinctUntilChangedOperator(thisArg ?
     <(x: T, y: T) => boolean> bindCallback(compare, thisArg, 2) :
     compare));

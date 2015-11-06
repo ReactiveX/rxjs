@@ -1,17 +1,17 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-import tryCatch from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
-export default function switchMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
-                                            resultSelector?: (outerValue: T,
-                                                              innerValue: R,
-                                                              outerIndex: number,
-                                                              innerIndex: number) => R2): Observable<R> {
+export function switchMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
+                                    resultSelector?: (outerValue: T,
+                                                      innerValue: R,
+                                                      outerIndex: number,
+                                                      innerIndex: number) => R2): Observable<R> {
   return this.lift(new SwitchMapOperator(project, resultSelector));
 }
 

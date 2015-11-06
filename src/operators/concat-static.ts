@@ -1,8 +1,8 @@
-import Observable from '../Observable';
-import Scheduler from '../Scheduler';
-import immediate from '../schedulers/immediate';
-import { MergeAllOperator } from './mergeAll-support';
-import ArrayObservable from '../observables/ArrayObservable';
+import {Observable} from '../Observable';
+import {Scheduler} from '../Scheduler';
+import {immediate} from '../schedulers/immediate';
+import {MergeAllOperator} from './mergeAll-support';
+import {ArrayObservable} from '../observables/ArrayObservable';
 
 /**
  * Joins multiple observables together by subscribing to them one at a time and merging their results
@@ -11,8 +11,8 @@ import ArrayObservable from '../observables/ArrayObservable';
  * @params {Scheduler} [scheduler] an optional scheduler to schedule each observable subscription on.
  * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
  */
-export default function concat<R>(...observables: Array<Observable<any> | Scheduler>): Observable<R> {
-  let scheduler: Scheduler = immediate;
+export function concat<R>(...observables: Array<Observable<any> | Scheduler>): Observable<R> {
+ let scheduler: Scheduler = immediate;
   let args = <any[]>observables;
   if (typeof (args[observables.length - 1]).schedule === 'function') {
     scheduler = args.pop();

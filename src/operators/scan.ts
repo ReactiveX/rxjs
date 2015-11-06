@@ -1,10 +1,9 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function scan<T, R>(project: (acc: R, x: T) => R, acc?: R) {
+export function scan<T, R>(project: (acc: R, x: T) => R, acc?: R) {
   return this.lift(new ScanOperator(project, acc));
 }
 

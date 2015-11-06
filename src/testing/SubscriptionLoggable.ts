@@ -1,7 +1,7 @@
-import Scheduler from '../Scheduler';
-import SubscriptionLog from './SubscriptionLog';
+import {Scheduler} from '../Scheduler';
+import {SubscriptionLog} from './SubscriptionLog';
 
-export default class SubscriptionLoggable {
+export class SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
   scheduler: Scheduler;
 

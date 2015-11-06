@@ -1,8 +1,7 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 /**
@@ -13,7 +12,7 @@ import {errorObject} from '../util/errorObject';
  * @return {Observable} an observable that originates from either the source or the observable returned by the
  *  catch `selector` function.
  */
-export default function _catch<T>(selector: (err: any, caught: Observable<any>) => Observable<any>): Observable<T> {
+export function _catch<T>(selector: (err: any, caught: Observable<any>) => Observable<any>): Observable<T> {
   let catchOperator = new CatchOperator(selector);
   let caught = this.lift(catchOperator);
   catchOperator.caught = caught;

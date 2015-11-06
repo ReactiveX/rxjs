@@ -1,13 +1,13 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import PromiseObservable from '../observables/PromiseObservable';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {PromiseObservable} from '../observables/PromiseObservable';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 
-import tryCatch from '../util/tryCatch';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function debounce<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function debounce<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
   return this.lift(new DebounceOperator(durationSelector));
 }
 

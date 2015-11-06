@@ -1,12 +1,12 @@
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Subscriber from '../Subscriber';
+import {Operator} from '../Operator';
+import {Observer} from '../Observer';
+import {Subscriber} from '../Subscriber';
 
-import noop from '../util/noop';
-import tryCatch from '../util/tryCatch';
+import {noop} from '../util/noop';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function _do<T>(nextOrObserver?: Observer<T>|((x: T) => void), error?: (e: any) => void, complete?: () => void) {
+export function _do<T>(nextOrObserver?: Observer<T>|((x: T) => void), error?: (e: any) => void, complete?: () => void) {
   let next;
   if (nextOrObserver && typeof nextOrObserver === 'object') {
     next = (<Observer<T>>nextOrObserver).next;

@@ -1,10 +1,10 @@
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-
-import tryCatch from '../util/tryCatch';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default class DeferObservable<T> extends Observable<T> {
+export class DeferObservable<T> extends Observable<T> {
+
   static create<T>(observableFactory: () => Observable<T>): Observable<T> {
     return new DeferObservable(observableFactory);
   }

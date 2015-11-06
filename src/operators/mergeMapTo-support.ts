@@ -1,12 +1,12 @@
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import tryCatch from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
-import InnerSubscriber from '../InnerSubscriber';
+import {Operator} from '../Operator';
+import {Observer} from '../Observer';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+import {InnerSubscriber} from '../InnerSubscriber';
 
 export class MergeMapToOperator<T, R, R2> implements Operator<T, R> {
   constructor(private ish: any,

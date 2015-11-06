@@ -12,4 +12,4 @@ if (!root.Symbol.observable) {
   }
 }
 
-export default root.Symbol.observable;
+export const $$observable = root.Symbol.observable;

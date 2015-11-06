@@ -1,7 +1,7 @@
-import Observable from './Observable';
-import Operator from './Operator';
-import { CoreOperators } from './CoreOperators';
-import { default as IScheduler } from './Scheduler';
+import {Observable} from './Observable';
+import {Operator} from './Operator';
+import {CoreOperators} from './CoreOperators';
+import {Scheduler as IScheduler} from './Scheduler';
 
 interface KitchenSinkOperators<T> extends CoreOperators<T> {
   isEmpty?: () => Observable<boolean>;
@@ -16,323 +16,323 @@ interface KitchenSinkOperators<T> extends CoreOperators<T> {
 }
 
 // operators
-import combineLatestStatic from './operators/combineLatest-static';
+import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
 Observable.combineLatest = combineLatestStatic;
 
-import concatStatic from './operators/concat-static';
+import {concat as concatStatic} from './operators/concat-static';
 Observable.concat = concatStatic;
 
-import DeferObservable from './observables/DeferObservable';
+import {DeferObservable} from './observables/DeferObservable';
 Observable.defer = DeferObservable.create;
 
-import EmptyObservable from './observables/EmptyObservable';
+import {EmptyObservable} from './observables/EmptyObservable';
 Observable.empty = EmptyObservable.create;
 
-import ForkJoinObservable from './observables/ForkJoinObservable';
+import {ForkJoinObservable} from './observables/ForkJoinObservable';
 Observable.forkJoin = ForkJoinObservable.create;
 
-import FromObservable from './observables/FromObservable';
+import {FromObservable} from './observables/FromObservable';
 Observable.from = FromObservable.create;
 
-import ArrayObservable from './observables/ArrayObservable';
+import {ArrayObservable} from './observables/ArrayObservable';
 Observable.fromArray = ArrayObservable.create;
 
-import FromEventObservable from './observables/FromEventObservable';
+import {FromEventObservable} from './observables/FromEventObservable';
 Observable.fromEvent = FromEventObservable.create;
 
-import FromEventPatternObservable from './observables/FromEventPatternObservable';
+import {FromEventPatternObservable} from './observables/FromEventPatternObservable';
 Observable.fromEventPattern = FromEventPatternObservable.create;
 
-import PromiseObservable from './observables/PromiseObservable';
+import {PromiseObservable} from './observables/PromiseObservable';
 Observable.fromPromise = PromiseObservable.create;
 
-import IntervalObservable from './observables/IntervalObservable';
+import {IntervalObservable} from './observables/IntervalObservable';
 Observable.interval = IntervalObservable.create;
 
-import mergeStatic from './operators/merge-static';
+import {merge as mergeStatic} from './operators/merge-static';
 Observable.merge = mergeStatic;
 
-import InfiniteObservable from './observables/InfiniteObservable';
+import {InfiniteObservable} from './observables/InfiniteObservable';
 Observable.never = InfiniteObservable.create;
 
 Observable.of = ArrayObservable.of;
 
-import RangeObservable from './observables/RangeObservable';
+import {RangeObservable} from './observables/RangeObservable';
 Observable.range = RangeObservable.create;
 
-import ErrorObservable from './observables/ErrorObservable';
+import {ErrorObservable} from './observables/ErrorObservable';
 Observable.throw = ErrorObservable.create;
 
-import TimerObservable from './observables/TimerObservable';
+import {TimerObservable} from './observables/TimerObservable';
 Observable.timer = TimerObservable.create;
 
-import zipStatic from './operators/zip-static';
+import {zip as zipStatic} from './operators/zip-static';
 Observable.zip = zipStatic;
 
 // Operators
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
-import buffer from './operators/buffer';
+import {buffer} from './operators/buffer';
 observableProto.buffer = buffer;
 
-import bufferCount from './operators/bufferCount';
+import {bufferCount} from './operators/bufferCount';
 observableProto.bufferCount = bufferCount;
 
-import bufferTime from './operators/bufferTime';
+import {bufferTime} from './operators/bufferTime';
 observableProto.bufferTime = bufferTime;
 
-import bufferToggle from './operators/bufferToggle';
+import {bufferToggle} from './operators/bufferToggle';
 observableProto.bufferToggle = bufferToggle;
 
-import bufferWhen from './operators/bufferWhen';
+import {bufferWhen} from './operators/bufferWhen';
 observableProto.bufferWhen = bufferWhen;
 
-import _catch from './operators/catch';
+import {_catch} from './operators/catch';
 observableProto.catch = _catch;
 
-import combineAll from './operators/combineAll';
+import {combineAll} from './operators/combineAll';
 observableProto.combineAll = combineAll;
 
-import combineLatest from './operators/combineLatest';
+import {combineLatest} from './operators/combineLatest';
 observableProto.combineLatest = combineLatest;
 
-import concat from './operators/concat';
+import {concat} from './operators/concat';
 observableProto.concat = concat;
 
-import concatAll from './operators/concatAll';
+import {concatAll} from './operators/concatAll';
 observableProto.concatAll = concatAll;
 
-import concatMap from './operators/concatMap';
+import {concatMap} from './operators/concatMap';
 observableProto.concatMap = concatMap;
 
-import concatMapTo from './operators/concatMapTo';
+import {concatMapTo} from './operators/concatMapTo';
 observableProto.concatMapTo = concatMapTo;
 
-import count from './operators/count';
+import {count} from './operators/count';
 observableProto.count = count;
 
-import dematerialize from './operators/dematerialize';
+import {dematerialize} from './operators/dematerialize';
 observableProto.dematerialize = dematerialize;
 
-import debounce from './operators/debounce';
+import {debounce} from './operators/debounce';
 observableProto.debounce = debounce;
 
-import debounceTime from './operators/debounceTime';
+import {debounceTime} from './operators/debounceTime';
 observableProto.debounceTime = debounceTime;
 
-import defaultIfEmpty from './operators/defaultIfEmpty';
+import {defaultIfEmpty} from './operators/defaultIfEmpty';
 observableProto.defaultIfEmpty = defaultIfEmpty;
 
-import delay from './operators/delay';
+import {delay} from './operators/delay';
 observableProto.delay = delay;
 
-import distinctUntilChanged from './operators/distinctUntilChanged';
+import {distinctUntilChanged} from './operators/distinctUntilChanged';
 observableProto.distinctUntilChanged = distinctUntilChanged;
 
-import distinctUntilKeyChanged from './operators/extended/distinctUntilKeyChanged';
+import {distinctUntilKeyChanged} from './operators/extended/distinctUntilKeyChanged';
 observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
-import _do from './operators/do';
+import {_do} from './operators/do';
 observableProto.do = _do;
 
-import elementAt from './operators/extended/elementAt';
+import {elementAt} from './operators/extended/elementAt';
 observableProto.elementAt = elementAt;
 
-import expand from './operators/expand';
+import {expand} from './operators/expand';
 observableProto.expand = expand;
 
-import filter from './operators/filter';
+import {filter} from './operators/filter';
 observableProto.filter = filter;
 
-import find from './operators/extended/find';
+import {find} from './operators/extended/find';
 observableProto.find = find;
 
-import findIndex from './operators/extended/findIndex';
+import {findIndex} from './operators/extended/findIndex';
 observableProto.findIndex = findIndex;
 
-import _finally from './operators/finally';
+import {_finally} from './operators/finally';
 observableProto.finally = _finally;
 
-import first from './operators/first';
+import {first} from './operators/first';
 observableProto.first = first;
 
 import {groupBy} from './operators/groupBy';
 observableProto.groupBy = groupBy;
 
-import ignoreElements from './operators/ignoreElements';
+import {ignoreElements} from './operators/ignoreElements';
 observableProto.ignoreElements = ignoreElements;
 
-import isEmpty from './operators/extended/isEmpty';
+import {isEmpty} from './operators/extended/isEmpty';
 observableProto.isEmpty = isEmpty;
 
-import every from './operators/every';
+import {every} from './operators/every';
 observableProto.every = every;
 
-import last from './operators/last';
+import {last} from './operators/last';
 observableProto.last = last;
 
-import map from './operators/map';
+import {map} from './operators/map';
 observableProto.map = map;
 
-import mapTo from './operators/mapTo';
+import {mapTo} from './operators/mapTo';
 observableProto.mapTo = mapTo;
 
-import materialize from './operators/materialize';
+import {materialize} from './operators/materialize';
 observableProto.materialize = materialize;
 
-import max from './operators/extended/max';
+import {max} from './operators/extended/max';
 observableProto.max = max;
 
-import merge from './operators/merge';
+import {merge} from './operators/merge';
 observableProto.merge = merge;
 
-import mergeAll from './operators/mergeAll';
+import {mergeAll} from './operators/mergeAll';
 observableProto.mergeAll = mergeAll;
 
-import mergeMap from './operators/mergeMap';
+import {mergeMap} from './operators/mergeMap';
 observableProto.mergeMap = mergeMap;
 observableProto.flatMap = mergeMap;
 
-import mergeMapTo from './operators/mergeMapTo';
+import {mergeMapTo} from './operators/mergeMapTo';
 observableProto.mergeMapTo = mergeMapTo;
 observableProto.flatMapTo = mergeMapTo;
 
-import mergeScan from './operators/extended/mergeScan';
+import {mergeScan} from './operators/extended/mergeScan';
 observableProto.mergeScan = mergeScan;
 
-import min from './operators/extended/min';
+import {min} from './operators/extended/min';
 observableProto.min = min;
 
-import multicast from './operators/multicast';
+import {multicast} from './operators/multicast';
 observableProto.multicast = multicast;
 
-import observeOn from './operators/observeOn';
+import {observeOn} from './operators/observeOn';
 observableProto.observeOn = observeOn;
 
-import partition from './operators/partition';
+import {partition} from './operators/partition';
 observableProto.partition = partition;
 
-import publish from './operators/publish';
+import {publish} from './operators/publish';
 observableProto.publish = publish;
 
-import publishBehavior from './operators/publishBehavior';
+import {publishBehavior} from './operators/publishBehavior';
 observableProto.publishBehavior = publishBehavior;
 
-import publishReplay from './operators/publishReplay';
+import {publishReplay} from './operators/publishReplay';
 observableProto.publishReplay = publishReplay;
 
-import reduce from './operators/reduce';
+import {reduce} from './operators/reduce';
 observableProto.reduce = reduce;
 
-import repeat from './operators/repeat';
+import {repeat} from './operators/repeat';
 observableProto.repeat = repeat;
 
-import retry from './operators/retry';
+import {retry} from './operators/retry';
 observableProto.retry = retry;
 
-import retryWhen from './operators/retryWhen';
+import {retryWhen} from './operators/retryWhen';
 observableProto.retryWhen = retryWhen;
 
-import sample from './operators/sample';
+import {sample} from './operators/sample';
 observableProto.sample = sample;
 
-import sampleTime from './operators/sampleTime';
+import {sampleTime} from './operators/sampleTime';
 observableProto.sampleTime = sampleTime;
 
-import scan from './operators/scan';
+import {scan} from './operators/scan';
 observableProto.scan = scan;
 
-import share from './operators/share';
+import {share} from './operators/share';
 observableProto.share = share;
 
-import single from './operators/single';
+import {single} from './operators/single';
 observableProto.single = single;
 
-import skip from './operators/skip';
+import {skip} from './operators/skip';
 observableProto.skip = skip;
 
-import skipUntil from './operators/skipUntil';
+import {skipUntil} from './operators/skipUntil';
 observableProto.skipUntil = skipUntil;
 
-import startWith from './operators/startWith';
+import {startWith} from './operators/startWith';
 observableProto.startWith = startWith;
 
-import subscribeOn from './operators/subscribeOn';
+import {subscribeOn} from './operators/subscribeOn';
 observableProto.subscribeOn = subscribeOn;
 
-import _switch from './operators/switch';
+import {_switch} from './operators/switch';
 observableProto.switch = _switch;
 
-import switchMap from './operators/switchMap';
+import {switchMap} from './operators/switchMap';
 observableProto.switchMap = switchMap;
 
-import switchMapTo from './operators/switchMapTo';
+import {switchMapTo} from './operators/switchMapTo';
 observableProto.switchMapTo = switchMapTo;
 
-import take from './operators/take';
+import {take} from './operators/take';
 observableProto.take = take;
 
-import takeUntil from './operators/takeUntil';
+import {takeUntil} from './operators/takeUntil';
 observableProto.takeUntil = takeUntil;
 
-import throttle from './operators/throttle';
+import {throttle} from './operators/throttle';
 observableProto.throttle = throttle;
 
-import timeInterval from './operators/extended/timeInterval';
+import {timeInterval} from './operators/extended/timeInterval';
 observableProto.timeInterval = timeInterval;
 
-import timeout from './operators/timeout';
+import {timeout} from './operators/timeout';
 observableProto.timeout = timeout;
 
-import timeoutWith from './operators/timeoutWith';
+import {timeoutWith} from './operators/timeoutWith';
 observableProto.timeoutWith = timeoutWith;
 
-import toArray from './operators/toArray';
+import {toArray} from './operators/toArray';
 observableProto.toArray = toArray;
 
-import toPromise from './operators/toPromise';
+import {toPromise} from './operators/toPromise';
 observableProto.toPromise = toPromise;
 
-import window from './operators/window';
+import {window} from './operators/window';
 observableProto.window = window;
 
-import windowCount from './operators/windowCount';
+import {windowCount} from './operators/windowCount';
 observableProto.windowCount = windowCount;
 
-import windowTime from './operators/windowTime';
+import {windowTime} from './operators/windowTime';
 observableProto.windowTime = windowTime;
 
-import windowToggle from './operators/windowToggle';
+import {windowToggle} from './operators/windowToggle';
 observableProto.windowToggle = windowToggle;
 
-import windowWhen from './operators/windowWhen';
+import {windowWhen} from './operators/windowWhen';
 observableProto.windowWhen = windowWhen;
 
-import withLatestFrom from './operators/withLatestFrom';
+import {withLatestFrom} from './operators/withLatestFrom';
 observableProto.withLatestFrom = withLatestFrom;
 
-import zip from './operators/zip';
-observableProto.zip = zip;
+import {zipProto} from './operators/zip';
+observableProto.zip = zipProto;
 
-import zipAll from './operators/zipAll';
+import {zipAll} from './operators/zipAll';
 observableProto.zipAll = zipAll;
 
-import Subject from './Subject';
-import Subscription from './Subscription';
-import Subscriber from './Subscriber';
-import ReplaySubject from './subjects/ReplaySubject';
-import BehaviorSubject from './subjects/BehaviorSubject';
-import ConnectableObservable from './observables/ConnectableObservable';
-import Notification from './Notification';
-import EmptyError from './util/EmptyError';
-import ArgumentOutOfRangeError from './util/ArgumentOutOfRangeError';
-import nextTick from './schedulers/nextTick';
-import immediate from './schedulers/immediate';
-import NextTickScheduler from './schedulers/NextTickScheduler';
-import ImmediateScheduler from './schedulers/ImmediateScheduler';
-import { TimeInterval } from './operators/extended/timeInterval';
-import { TestScheduler } from './testing/TestScheduler';
-import VirtualTimeScheduler from './schedulers/VirtualTimeScheduler';
+import {Subject} from './Subject';
+import {Subscription} from './Subscription';
+import {Subscriber} from './Subscriber';
+import {ReplaySubject} from './subjects/ReplaySubject';
+import {BehaviorSubject} from './subjects/BehaviorSubject';
+import {ConnectableObservable} from './observables/ConnectableObservable';
+import {Notification} from './Notification';
+import {EmptyError} from './util/EmptyError';
+import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
+import {nextTick} from './schedulers/nextTick';
+import {immediate} from './schedulers/immediate';
+import {NextTickScheduler} from './schedulers/NextTickScheduler';
+import {ImmediateScheduler} from './schedulers/ImmediateScheduler';
+import {TimeInterval} from './operators/extended/timeInterval';
+import {TestScheduler} from './testing/TestScheduler';
+import {VirtualTimeScheduler} from './schedulers/VirtualTimeScheduler';
 
 var Scheduler = {
   nextTick,

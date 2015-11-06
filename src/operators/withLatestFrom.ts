@@ -1,11 +1,10 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
  * @param {Observable} observables the observables to get the latest values from.
@@ -25,7 +24,7 @@ import subscribeToResult from '../util/subscribeToResult';
  * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
  * ```
  */
-export default function withLatestFrom<R>(...args: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
+export function withLatestFrom<R>(...args: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
   let project;
   if (typeof args[args.length - 1] === 'function') {
     project = args.pop();

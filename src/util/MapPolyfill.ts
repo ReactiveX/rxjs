@@ -1,4 +1,4 @@
-export default class MapPolyfill {
+export class MapPolyfill {
   public size = 0;
   private _values = [];
   private _keys = [];

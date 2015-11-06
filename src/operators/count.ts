@@ -1,11 +1,11 @@
-import Observable from '../Observable';
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Subscriber from '../Subscriber';
+import {Observable} from '../Observable';
+import {Operator} from '../Operator';
+import {Observer} from '../Observer';
+import {Subscriber} from '../Subscriber';
 
-import tryCatch from '../util/tryCatch';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
+import {bindCallback} from '../util/bindCallback';
 
 /**
  * Returns an observable of a single number that represents the number of items that either:
@@ -21,10 +21,10 @@ import bindCallback from '../util/bindCallback';
  * @returns {Observable} an observable of one number that represents the count as described
  * above
  */
-export default function count<T>(predicate?: (value: T,
-                                              index: number,
-                                              source: Observable<T>) => boolean,
-                                 thisArg?: any): Observable<number> {
+export function count<T>(predicate?: (value: T,
+                                      index: number,
+                                      source: Observable<T>) => boolean,
+                         thisArg?: any): Observable<number> {
   return this.lift(new CountOperator(predicate, thisArg, this));
 }
 

@@ -1,16 +1,16 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Scheduler from '../Scheduler';
-import immediate from '../schedulers/immediate';
-import Subscription from '../Subscription';
-import Observable from '../Observable';
-import isDate from '../util/isDate';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Scheduler} from '../Scheduler';
+import {immediate} from '../schedulers/immediate';
+import {Subscription} from '../Subscription';
+import {Observable} from '../Observable';
+import {isDate} from '../util/isDate';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
-export default function timeoutWith<T, R>(due: number | Date,
-                                          withObservable: Observable<R>,
-                                          scheduler: Scheduler = immediate): Observable<T> | Observable<R> {
+export function timeoutWith<T, R>(due: number | Date,
+                                  withObservable: Observable<R>,
+                                  scheduler: Scheduler = immediate): Observable<T> | Observable<R> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : <number>due;
   return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));

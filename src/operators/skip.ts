@@ -1,7 +1,7 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
 
-export default function skip(total) {
+export function skip(total) {
   return this.lift(new SkipOperator(total));
 }
 

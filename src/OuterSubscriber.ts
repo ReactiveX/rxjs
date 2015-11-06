@@ -1,7 +1,7 @@
-import InnerSubscriber from './InnerSubscriber';
-import Subscriber from './Subscriber';
+import {InnerSubscriber} from './InnerSubscriber';
+import {Subscriber} from './Subscriber';
 
-export default class OuterSubscriber<T, R> extends Subscriber<T> {
+export class OuterSubscriber<T, R> extends Subscriber<T> {
   notifyComplete(inner?: InnerSubscriber<T, R>): void {
     this.destination.complete();
   }

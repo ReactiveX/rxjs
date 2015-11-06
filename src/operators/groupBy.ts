@@ -1,12 +1,11 @@
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-import Observable from '../Observable';
-import Subject from '../Subject';
-import Map from '../util/Map';
-import FastMap from '../util/FastMap';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {Observable} from '../Observable';
+import {Subject} from '../Subject';
+import {Map} from '../util/Map';
+import {FastMap} from '../util/FastMap';
 import {RefCountSubscription, GroupedObservable} from './groupBy-support';
-
-import tryCatch from '../util/tryCatch';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 export function groupBy<T, R>(keySelector: (value: T) => string,

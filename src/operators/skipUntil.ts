@@ -1,8 +1,8 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
 
-export default function skipUntil<T>(notifier: Observable<any>): Observable<T> {
+export function skipUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SkipUntilOperator(notifier));
 }
 

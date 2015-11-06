@@ -1,10 +1,10 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
 
-import tryCatch from '../util/tryCatch';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
 export class CombineLatestOperator<T, R> implements Operator<T, R> {
 

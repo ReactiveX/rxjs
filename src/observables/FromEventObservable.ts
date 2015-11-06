@@ -1,10 +1,10 @@
-import Observable from '../Observable';
-import tryCatch from '../util/tryCatch';
+import {Observable} from '../Observable';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import Subscription from '../Subscription';
-import Subscriber from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {Subscriber} from '../Subscriber';
 
-export default class FromEventObservable<T, R> extends Observable<T> {
+export class FromEventObservable<T, R> extends Observable<T> {
 
   static create<T>(sourceObj: any, eventName: string, selector?: (...args: Array<any>) => T) {
     return new FromEventObservable(sourceObj, eventName, selector);

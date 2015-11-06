@@ -1,4 +1,4 @@
-var MapPolyfill = require('../../dist/cjs/util/MapPolyfill');
+var MapPolyfill = require('../../dist/cjs/util/MapPolyfill').MapPolyfill;
 
 describe('MapPolyfill', function () {
   it('should exist', function () {

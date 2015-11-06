@@ -1,4 +1,4 @@
-export default function bindCallback (func: Function, thisArg, argCount): Function {
+export function bindCallback (func: Function, thisArg, argCount): Function {
   if (typeof thisArg === 'undefined') { return func; }
   switch (argCount) {
     case 0:

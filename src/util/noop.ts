@@ -1,2 +1,2 @@
 /* tslint:disable:no-empty */
-export default function noop() { }
+export function noop() { }

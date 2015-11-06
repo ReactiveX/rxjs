@@ -1,7 +1,7 @@
-import Observer from './Observer';
-import Observable from './Observable';
+import {Observer} from './Observer';
+import {Observable} from './Observable';
 
-export default class Notification<T> {
+export class Notification<T> {
   hasValue: boolean;
 
   constructor(public kind: string, public value?: T, public exception?: any) {

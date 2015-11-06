@@ -1,8 +1,8 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
 
-export default function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T> | Observable<R> {
+export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T> | Observable<R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 

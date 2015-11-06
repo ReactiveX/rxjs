@@ -1,14 +1,14 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Subject from '../Subject';
-import Subscription from '../Subscription';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subject} from '../Subject';
+import {Subscription} from '../Subscription';
 
-import tryCatch from '../util/tryCatch';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function windowToggle<T, O>(openings: Observable<O>,
-                                           closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
+export function windowToggle<T, O>(openings: Observable<O>,
+                                   closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowToggleOperator<T, T, O>(openings, closingSelector));
 }
 

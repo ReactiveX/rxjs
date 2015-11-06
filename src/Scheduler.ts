@@ -1,7 +1,7 @@
-import Subscription from './Subscription';
-import Action from './schedulers/Action';
+import {Subscription} from './Subscription';
+import {Action} from './schedulers/Action';
 
-interface Scheduler {
+export interface Scheduler {
   now(): number;
   
   schedule<T>(work: (state?: any) => Subscription<T>|void, delay?: number, state?: any): Subscription<T>;
@@ -14,5 +14,3 @@ interface Scheduler {
   
   active: boolean;
 }
-
-export default Scheduler;

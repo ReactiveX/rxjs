@@ -1,11 +1,11 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
-export default function _switch<T>(): Observable<T> {
+export function _switch<T>(): Observable<T> {
   return this.lift(new SwitchOperator());
 }
 

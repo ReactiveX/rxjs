@@ -1,9 +1,9 @@
-import Scheduler from '../Scheduler';
-import Observable from '../Observable';
-import ScalarObservable from './ScalarObservable';
-import EmptyObservable from './EmptyObservable';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
+import {ScalarObservable} from './ScalarObservable';
+import {EmptyObservable} from './EmptyObservable';
 
-export default class ArrayObservable<T> extends Observable<T> {
+export class ArrayObservable<T> extends Observable<T> {
 
   static create<T>(array: T[], scheduler?: Scheduler) {
     return new ArrayObservable(array, scheduler);

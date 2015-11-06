@@ -1,7 +1,7 @@
-import Subject from '../Subject';
-import ConnectableObservable from '../observables/ConnectableObservable';
+import {Subject} from '../Subject';
+import {ConnectableObservable} from '../observables/ConnectableObservable';
 
-export default function multicast<T>(subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) {
+export function multicast<T>(subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) {
   let subjectFactory: () => Subject<T>;
   if (typeof subjectOrSubjectFactory === 'function') {
     subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;

@@ -1,12 +1,12 @@
-import Scheduler from '../Scheduler';
-import Observable from '../Observable';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
 
 import {root} from '../util/root';
-import $$iterator from '../util/Symbol_iterator';
-import tryCatch from '../util/tryCatch';
+import {$$iterator} from '../util/Symbol_iterator';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default class IteratorObservable<T> extends Observable<T> {
+export class IteratorObservable<T> extends Observable<T> {
 
   static create<T>(iterator: any,
                    project?: (x?: any, i?: number) => T,

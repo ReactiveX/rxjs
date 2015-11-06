@@ -1,14 +1,14 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Subject from '../Subject';
-import Scheduler from '../Scheduler';
-import Action from '../schedulers/Action';
-import nextTick from '../schedulers/nextTick';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subject} from '../Subject';
+import {Scheduler} from '../Scheduler';
+import {Action} from '../schedulers/Action';
+import {nextTick} from '../schedulers/nextTick';
 
-export default function windowTime<T>(windowTimeSpan: number,
-                                      windowCreationInterval: number = null,
-                                      scheduler: Scheduler = nextTick): Observable<Observable<T>> {
+export function windowTime<T>(windowTimeSpan: number,
+                              windowCreationInterval: number = null,
+                              scheduler: Scheduler = nextTick): Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
 }
 

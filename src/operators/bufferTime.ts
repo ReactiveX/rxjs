@@ -1,9 +1,9 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Scheduler from '../Scheduler';
-import Action from '../schedulers/Action';
-import nextTick from '../schedulers/nextTick';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Scheduler} from '../Scheduler';
+import {Action} from '../schedulers/Action';
+import {nextTick} from '../schedulers/nextTick';
 
 /**
  * buffers values from the source for a specific time period. Optionally allows new buffers to be set up at an interval.
@@ -13,9 +13,9 @@ import nextTick from '../schedulers/nextTick';
  *  intervals that determine buffer boundaries.
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
-export default function bufferTime<T>(bufferTimeSpan: number,
-                                      bufferCreationInterval: number = null,
-                                      scheduler: Scheduler = nextTick): Observable<T[]> {
+export function bufferTime<T>(bufferTimeSpan: number,
+                              bufferCreationInterval: number = null,
+                              scheduler: Scheduler = nextTick): Observable<T[]> {
   return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
 }
 

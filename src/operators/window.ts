@@ -1,9 +1,9 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Subject from '../Subject';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subject} from '../Subject';
 
-export default function window<T>(closingNotifier: Observable<any>): Observable<Observable<T>> {
+export function window<T>(closingNotifier: Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowOperator(closingNotifier));
 }
 

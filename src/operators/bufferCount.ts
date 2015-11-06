@@ -1,6 +1,6 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
 
 /**
  * buffers a number of values from the source observable by `bufferSize` then emits the buffer and clears it, and starts a
@@ -11,7 +11,7 @@ import Observable from '../Observable';
  *   new buffer will be started on every other value from the source.) A new buffer is started at the beginning of the source by default.
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
-export default function bufferCount<T>(bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
+export function bufferCount<T>(bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
   return this.lift(new BufferCountOperator(bufferSize, startBufferEvery));
 }
 

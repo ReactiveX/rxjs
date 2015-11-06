@@ -1,11 +1,11 @@
-import noop from './util/noop';
-import throwError from './util/throwError';
-import tryOrOnError from './util/tryOrOnError';
+import {noop} from './util/noop';
+import {throwError} from './util/throwError';
+import {tryOrOnError} from './util/tryOrOnError';
 
-import Observer from './Observer';
-import Subscription from './Subscription';
+import {Observer} from './Observer';
+import {Subscription} from './Subscription';
 
-export default class Subscriber<T> extends Subscription<T> implements Observer<T> {
+export class Subscriber<T> extends Subscription<T> implements Observer<T> {
   protected _subscription: Subscription<T>;
   protected _isUnsubscribed: boolean = false;
 

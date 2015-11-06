@@ -1,7 +1,7 @@
-import Scheduler from '../Scheduler';
-import Observable from '../Observable';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
 
-export default class ErrorObservable<T> extends Observable<T> {
+export class ErrorObservable<T> extends Observable<T> {
 
   static create<T>(error: T, scheduler?: Scheduler) {
     return new ErrorObservable(error, scheduler);

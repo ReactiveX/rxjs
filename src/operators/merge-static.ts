@@ -1,12 +1,12 @@
-import Scheduler from '../Scheduler';
-import Observable from '../Observable';
-import ArrayObservable from '../observables/ArrayObservable';
-import { MergeAllOperator } from './mergeAll-support';
-import immediate from '../schedulers/immediate';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
+import {ArrayObservable} from '../observables/ArrayObservable';
+import {MergeAllOperator} from './mergeAll-support';
+import {immediate} from '../schedulers/immediate';
 
-export default function merge<R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {
-  let concurrent = Number.POSITIVE_INFINITY;
-  let scheduler: Scheduler = immediate;
+export function merge<R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {
+ let concurrent = Number.POSITIVE_INFINITY;
+ let scheduler: Scheduler = immediate;
   let last: any = observables[observables.length - 1];
   if (typeof last.schedule === 'function') {
     scheduler = <Scheduler>observables.pop();

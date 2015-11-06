@@ -1,11 +1,11 @@
-import Observable from '../Observable';
-import VirtualTimeScheduler from '../schedulers/VirtualTimeScheduler';
-import Notification from '../Notification';
-import Subject from '../Subject';
-import ColdObservable from './ColdObservable';
-import HotObservable from './HotObservable';
-import TestMessage from './TestMessage';
-import SubscriptionLog from './SubscriptionLog';
+import {Observable} from '../Observable';
+import {VirtualTimeScheduler} from '../schedulers/VirtualTimeScheduler';
+import {Notification} from '../Notification';
+import {Subject} from '../Subject';
+import {ColdObservable} from './ColdObservable';
+import {HotObservable} from './HotObservable';
+import {TestMessage} from './TestMessage';
+import {SubscriptionLog} from './SubscriptionLog';
 
 interface FlushableTest {
   ready: boolean;

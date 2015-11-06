@@ -1,7 +1,7 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
 
-export default function toArray() {
+export function toArray() {
   return this.lift(new ToArrayOperator());
 }
 

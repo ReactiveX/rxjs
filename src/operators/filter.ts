@@ -1,9 +1,8 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
+import {bindCallback} from '../util/bindCallback';
 
 /**
  * Similar to the well-known `Array.prototype.filter` method, this operator filters values down to a set
@@ -14,7 +13,7 @@ import bindCallback from '../util/bindCallback';
  * @param {any} [thisArg] an optional argument to determine the value of `this` in the `select` function
  * @returns {Observable} an observable of values allowed by the select function
  */
-export default function filter<T>(select: (x: T, ix?: number) => boolean, thisArg?: any) {
+export function filter<T>(select: (x: T, ix?: number) => boolean, thisArg?: any) {
   return this.lift(new FilterOperator(select, thisArg));
 }
 

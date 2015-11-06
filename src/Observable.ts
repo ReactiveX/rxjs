@@ -1,15 +1,15 @@
-import Observer from './Observer';
-import Operator from './Operator';
-import Scheduler from './Scheduler';
-import Subscriber from './Subscriber';
-import Subscription from './Subscription';
-import { root } from './util/root';
-import { CoreOperators } from './CoreOperators';
-import $$observable from './util/Symbol_observable';
-import { GroupedObservable } from './operators/groupBy-support';
-import ConnectableObservable from './observables/ConnectableObservable';
-import Subject from './Subject';
-import Notification from './Notification';
+import {Observer} from './Observer';
+import {Operator} from './Operator';
+import {Scheduler} from './Scheduler';
+import {Subscriber} from './Subscriber';
+import {Subscription} from './Subscription';
+import {root} from './util/root';
+import {CoreOperators } from './CoreOperators';
+import {$$observable} from './util/Symbol_observable';
+import {GroupedObservable} from './operators/groupBy-support';
+import {ConnectableObservable} from './observables/ConnectableObservable';
+import {Subject} from './Subject';
+import {Notification} from './Notification';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -17,7 +17,7 @@ import Notification from './Notification';
  *
  * @class Observable<T>
  */
-export default class Observable<T> implements CoreOperators<T>  {
+export class Observable<T> implements CoreOperators<T>  {
   source: Observable<any>;
   operator: Operator<any, T>;
   _isScalar: boolean = false;

@@ -1,13 +1,13 @@
-import Operator from '../../Operator';
-import Observable from '../../Observable';
-import Subscriber from '../../Subscriber';
-import Subscription from '../../Subscription';
-import tryCatch from '../../util/tryCatch';
-import { errorObject } from '../../util/errorObject';
-import subscribeToResult from '../../util/subscribeToResult';
-import OuterSubscriber from '../../OuterSubscriber';
+import {Operator} from '../../Operator';
+import {Observable} from '../../Observable';
+import {Subscriber} from '../../Subscriber';
+import {Subscription} from '../../Subscription';
+import {tryCatch} from '../../util/tryCatch';
+import {errorObject} from '../../util/errorObject';
+import {subscribeToResult} from '../../util/subscribeToResult';
+import {OuterSubscriber} from '../../OuterSubscriber';
 
-export default function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) {
+export function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) {
   return this.lift(new MergeScanOperator(project, seed));
 }
 

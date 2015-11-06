@@ -1,13 +1,13 @@
-import Scheduler from '../Scheduler';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
 
-import tryCatch from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
-import ErrorObservable from './ErrorObservable';
-import EmptyObservable from './EmptyObservable';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
+import {ErrorObservable} from './ErrorObservable';
+import {EmptyObservable} from './EmptyObservable';
 
-export default class ScalarObservable<T> extends Observable<T> {
+export class ScalarObservable<T> extends Observable<T> {
   static create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {
     return new ScalarObservable(value, scheduler);
   }

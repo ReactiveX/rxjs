@@ -1,10 +1,10 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import EmptyObservable from '../observables/EmptyObservable';
-import Subscription from '../Subscription';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {EmptyObservable} from '../observables/EmptyObservable';
+import {Subscription} from '../Subscription';
 
-export default function repeat<T>(count: number = -1): Observable<T> {
+export function repeat<T>(count: number = -1): Observable<T> {
   if (count === 0) {
     return new EmptyObservable();
   } else {

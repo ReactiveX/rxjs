@@ -1,11 +1,11 @@
-import Scheduler from '../Scheduler';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-import Observable from '../Observable';
-import nextTick from '../schedulers/nextTick';
-import isNumeric from '../util/isNumeric';
+import {Scheduler} from '../Scheduler';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {Observable} from '../Observable';
+import {nextTick} from '../schedulers/nextTick';
+import {isNumeric} from '../util/isNumeric';
 
-export default class SubscribeOnObservable<T> extends Observable<T> {
+export class SubscribeOnObservable<T> extends Observable<T> {
   static create<T>(source: Observable<T>, delay: number = 0, scheduler: Scheduler = nextTick): Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }

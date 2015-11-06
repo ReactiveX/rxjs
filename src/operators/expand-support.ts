@@ -1,12 +1,11 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<any>,

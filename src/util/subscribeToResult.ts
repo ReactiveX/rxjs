@@ -1,17 +1,17 @@
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import $$iterator from '../util/Symbol_iterator';
-import $$observable from '../util/Symbol_observable';
-import Subscription from '../Subscription';
-import InnerSubscriber from '../InnerSubscriber';
-import OuterSubscriber from '../OuterSubscriber';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {$$iterator} from '../util/Symbol_iterator';
+import {$$observable} from '../util/Symbol_observable';
+import {Subscription} from '../Subscription';
+import {InnerSubscriber} from '../InnerSubscriber';
+import {OuterSubscriber} from '../OuterSubscriber';
 
 const isArray = Array.isArray;
 
-export default function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
-                                                result: any,
-                                                outerValue?: T,
-                                                outerIndex?: number): Subscription<T> {
+export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
+                                        result: any,
+                                        outerValue?: T,
+                                        outerIndex?: number): Subscription<T> {
   let destination: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
   if (destination.isUnsubscribed) {

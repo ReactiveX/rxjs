@@ -1,5 +1,5 @@
 var Rx = require('../../dist/cjs/Rx');
-var RangeObservable = require('../../dist/cjs/observables/RangeObservable');
+var RangeObservable = require('../../dist/cjs/observables/RangeObservable').RangeObservable;
 var Observable = Rx.Observable;
 var nextTick = Rx.Scheduler.nextTick;
 

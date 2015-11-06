@@ -1,9 +1,9 @@
-import Operator from '../Operator';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import noop from '../util/noop';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {noop} from '../util/noop';
 
-export default function takeUntil<T>(notifier: Observable<any>) {
+export function takeUntil<T>(notifier: Observable<any>) {
   return this.lift(new TakeUntilOperator(notifier));
 }
 

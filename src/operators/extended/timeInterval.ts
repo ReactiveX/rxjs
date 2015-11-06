@@ -1,11 +1,11 @@
-import Operator from '../../Operator';
-import Observer from '../../Observer';
-import Observable from '../../Observable';
-import Subscriber from '../../Subscriber';
-import Scheduler from '../../Scheduler';
-import immediate from '../../schedulers/immediate';
+import {Operator} from '../../Operator';
+import {Observer} from '../../Observer';
+import {Observable} from '../../Observable';
+import {Subscriber} from '../../Subscriber';
+import {Scheduler} from '../../Scheduler';
+import {immediate} from '../../schedulers/immediate';
 
-export default function timeInterval<T>(scheduler: Scheduler = immediate): Observable<TimeInterval> {
+export function timeInterval<T>(scheduler: Scheduler = immediate): Observable<TimeInterval> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }
 

@@ -1,13 +1,13 @@
-import Subject from '../Subject';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
-import Scheduler from '../Scheduler';
-import TestMessage from './TestMessage';
-import SubscriptionLog from './SubscriptionLog';
-import SubscriptionLoggable from './SubscriptionLoggable';
-import applyMixins from '../util/applyMixins';
+import {Subject} from '../Subject';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {Scheduler} from '../Scheduler';
+import {TestMessage} from './TestMessage';
+import {SubscriptionLog} from './SubscriptionLog';
+import {SubscriptionLoggable} from './SubscriptionLoggable';
+import {applyMixins} from '../util/applyMixins';
 
-export default class HotObservable<T> extends Subject<T> implements SubscriptionLoggable {
+export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
   scheduler: Scheduler;
   logSubscribedFrame: () => number;
@@ -31,12 +31,16 @@ export default class HotObservable<T> extends Subject<T> implements Subscription
   setup() {
     const subject = this;
     const messagesLength = subject.messages.length;
-    for (let i = 0; i < messagesLength; i++) {
-      const message = subject.messages[i];
-      this.scheduler.schedule(
-        () => { message.notification.observe(subject); },
-        message.frame
-      );
+    /* tslint:disable:no-var-keyword */
+    for (var i = 0; i < messagesLength; i++) {
+      (() => {
+        var message = subject.messages[i];
+   /* tslint:enable */
+        subject.scheduler.schedule(
+          () => { message.notification.observe(subject); },
+          message.frame
+        );
+      })();
     }
   }
 }

@@ -1,9 +1,8 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Subscription from '../Subscription';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 /**
@@ -14,8 +13,8 @@ import {errorObject} from '../util/errorObject';
  *  when it emits, signals that the associated buffer should be emitted and cleared.
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
-export default function bufferToggle<T, O>(openings: Observable<O>,
-                                           closingSelector: (openValue: O) => Observable<any>): Observable<T[]> {
+export function bufferToggle<T, O>(openings: Observable<O>,
+                                   closingSelector: (openValue: O) => Observable<any>): Observable<T[]> {
   return this.lift(new BufferToggleOperator<T, T, O>(openings, closingSelector));
 }
 

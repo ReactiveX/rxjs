@@ -1,10 +1,9 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import bindCallback from '../util/bindCallback';
+import {bindCallback} from '../util/bindCallback';
 
 /**
  * Similar to the well known `Array.prototype.map` function, this operator
@@ -14,7 +13,7 @@ import bindCallback from '../util/bindCallback';
  * @param {any} [thisArg] an optional argument to define what `this` is in the project function
  * @returns {Observable} a observable of projected values
  */
-export default function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
+export function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
   return this.lift(new MapOperator(project, thisArg));
 }
 

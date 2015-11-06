@@ -1,9 +1,9 @@
-import Subscription from '../Subscription';
-import ImmediateScheduler from './ImmediateScheduler';
-import Action from './Action';
-import ImmediateAction from './ImmediateAction';
+import {Subscription} from '../Subscription';
+import {ImmediateScheduler} from './ImmediateScheduler';
+import {Action} from './Action';
+import {ImmediateAction} from './ImmediateAction';
 
-export default class FutureAction<T> extends ImmediateAction<T> {
+export class FutureAction<T> extends ImmediateAction<T> {
 
   id: any;
   delay: number;

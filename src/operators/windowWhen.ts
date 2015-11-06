@@ -1,13 +1,13 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Subject from '../Subject';
-import Subscription from '../Subscription';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subject} from '../Subject';
+import {Subscription} from '../Subscription';
 
-import tryCatch from '../util/tryCatch';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default function window<T>(closingSelector: () => Observable<any>): Observable<Observable<T>> {
+export function windowWhen<T>(closingSelector: () => Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowOperator(closingSelector));
 }
 

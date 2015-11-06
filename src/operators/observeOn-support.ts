@@ -1,8 +1,8 @@
-import Scheduler from '../Scheduler';
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Subscriber from '../Subscriber';
-import Notification from '../Notification';
+import {Scheduler} from '../Scheduler';
+import {Operator} from '../Operator';
+import {Observer} from '../Observer';
+import {Subscriber} from '../Subscriber';
+import {Notification} from '../Notification';
 
 export class ObserveOnOperator<T, R> implements Operator<T, R> {
 

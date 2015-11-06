@@ -1,10 +1,9 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Subscription from '../Subscription';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+import {bindCallback} from '../util/bindCallback';
 
-import bindCallback from '../util/bindCallback';
-
-export default function _finally<T>(finallySelector: () => void, thisArg?: any) {
+export function _finally<T>(finallySelector: () => void, thisArg?: any) {
   return this.lift(new FinallyOperator(thisArg ?
     <() => void> bindCallback(finallySelector, thisArg, 2) :
     finallySelector));

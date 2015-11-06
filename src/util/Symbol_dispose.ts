@@ -12,4 +12,4 @@ if (!root.Symbol.dispose) {
   }
 }
 
-export default root.Symbol.dispose;
+export const $$dispose = root.Symbol.dispose;

@@ -1,9 +1,8 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Subscription from '../Subscription';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 /**
@@ -12,7 +11,7 @@ import {errorObject} from '../util/errorObject';
  * @param {function} a function that takes no arguments and returns an Observable that signals buffer closure
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
-export default function bufferWhen<T>(closingSelector: () => Observable<any>): Observable<T[]> {
+export function bufferWhen<T>(closingSelector: () => Observable<any>): Observable<T[]> {
   return this.lift(new BufferWhenOperator(closingSelector));
 }
 

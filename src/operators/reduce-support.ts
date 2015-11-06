@@ -1,7 +1,6 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 export class ReduceOperator<T, R> implements Operator<T, R> {

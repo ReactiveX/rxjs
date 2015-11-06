@@ -14,7 +14,7 @@
   "scripts": {
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global",
     "build_amd": "rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m amd --outDir dist/amd --sourcemap --target ES5 --diagnostics",
-    "build_cjs": "rm -rf dist/cjs && babel dist/es6 --out-dir dist/cjs --modules common --source-maps --loose all && node lib/copy_dts.js",
+    "build_cjs": "rm -rf dist/cjs && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts src/Rx.KitchenSink.ts -m commonjs --outDir dist/cjs --sourcemap --target ES5 -d --diagnostics",
     "build_es6": "rm -rf dist/es6 && tsc src/Rx.ts src/Rx.KitchenSink.ts --outDir dist/es6 --sourceMap --target ES6 -d --diagnostics",
     "build_closure": "java -jar ./node_modules/google-closure-compiler/compiler.jar ./dist/global/Rx.js --create_source_map ./dist/global/Rx.min.js.map --js_output_file ./dist/global/Rx.min.js",
     "build_global": "rm -rf dist/global && mkdir \"dist/global\" && browserify src/Rx.global.js --outfile dist/global/Rx.js && npm run build_closure",
@@ -76,8 +76,6 @@
   },
   "homepage": "https://github.com/ReactiveX/RxJS",
   "devDependencies": {
-    "babel": "5.8.23",
-    "babelify": "6.1.2",
     "benchmark": "1.0.0",
     "benchpress": "2.0.0-alpha.37.2",
     "browserify": "11.0.0",

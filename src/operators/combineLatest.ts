@@ -1,6 +1,6 @@
-import Observable from '../Observable';
-import ArrayObservable from '../observables/ArrayObservable';
-import { CombineLatestOperator } from './combineLatest-support';
+import {Observable} from '../Observable';
+import {ArrayObservable} from '../observables/ArrayObservable';
+import {CombineLatestOperator} from './combineLatest-support';
 
 /**
  * Combines the values from this observable with values from observables passed as arguments. This is done by subscribing
@@ -12,7 +12,7 @@ import { CombineLatestOperator } from './combineLatest-support';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export default function combineLatest<R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
+export function combineLatest<R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
   observables.unshift(this);
   let project;
   if (typeof observables[observables.length - 1] === 'function') {

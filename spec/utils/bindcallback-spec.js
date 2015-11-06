@@ -1,6 +1,6 @@
 /* globals describe, it, expect */
 var Rx = require('../../dist/cjs/Rx');
-var bindCallback = require('../../dist/cjs/util/bindCallback');
+var bindCallback = require('../../dist/cjs/util/bindCallback').bindCallback;
 
 describe('bindCallback', function () {
   it('should bind function has no parameter', function () {

@@ -1,10 +1,10 @@
-import Subscriber from './Subscriber';
-import Observer from './Observer';
-import OuterSubscriber from './OuterSubscriber';
-import tryCatch from './util/tryCatch';
-import { errorObject } from './util/errorObject';
+import {Subscriber} from './Subscriber';
+import {Observer} from './Observer';
+import {OuterSubscriber} from './OuterSubscriber';
+import {tryCatch} from './util/tryCatch';
+import {errorObject} from './util/errorObject';
 
-export default class InnerSubscriber<T, R> extends Subscriber<R> {
+export class InnerSubscriber<T, R> extends Subscriber<R> {
   index: number = 0;
 
   constructor(private parent: OuterSubscriber<T, R>, private outerValue: T, private outerIndex: number) {

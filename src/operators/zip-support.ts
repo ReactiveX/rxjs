@@ -1,12 +1,12 @@
-import Operator from '../Operator';
-import Observer from '../Observer';
-import Observable from '../Observable';
-import Subscriber from '../Subscriber';
-import tryCatch from '../util/tryCatch';
+import {Operator} from '../Operator';
+import {Observer} from '../Observer';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import OuterSubscriber from '../OuterSubscriber';
-import subscribeToResult from '../util/subscribeToResult';
-import $$iterator from '../util/Symbol_iterator';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+import {$$iterator} from '../util/Symbol_iterator';
 
 const isArray = Array.isArray;
 

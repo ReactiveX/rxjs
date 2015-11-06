@@ -1,8 +1,8 @@
-import Subject from '../Subject';
-import Observable from '../Observable';
-import Subscription from '../Subscription';
+import {Subject} from '../Subject';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
 
-export default class ConnectableObservable<T> extends Observable<T> {
+export class ConnectableObservable<T> extends Observable<T> {
 
   subject: Subject<T>;
   subscription: Subscription<T>;

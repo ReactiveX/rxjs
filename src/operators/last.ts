@@ -1,14 +1,13 @@
-import Observable from '../Observable';
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-
-import tryCatch from '../util/tryCatch';
+import {Observable} from '../Observable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import EmptyError from '../util/EmptyError';
+import {EmptyError} from '../util/EmptyError';
 
-export default function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                                   resultSelector?: (value: T, index: number) => R,
-                                   defaultValue?: any): Observable<T> | Observable<R> {
+export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                           resultSelector?: (value: T, index: number) => R,
+                           defaultValue?: any): Observable<T> | Observable<R> {
   return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 

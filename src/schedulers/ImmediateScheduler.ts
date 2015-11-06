@@ -1,10 +1,10 @@
-import Scheduler from '../Scheduler';
-import ImmediateAction from './ImmediateAction';
-import Subscription from '../Subscription';
-import FutureAction from './FutureAction';
-import Action from './Action';
+import {Scheduler} from '../Scheduler';
+import {ImmediateAction} from './ImmediateAction';
+import {Subscription} from '../Subscription';
+import {FutureAction} from './FutureAction';
+import {Action} from './Action';
 
-export default class ImmediateScheduler implements Scheduler {
+export class ImmediateScheduler implements Scheduler {
   actions: ImmediateAction<any>[] = [];
   active: boolean = false;
   scheduled: boolean = false;

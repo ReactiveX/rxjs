@@ -11,7 +11,7 @@ function tryCatcher(): any {
   }
 }
 
-export default function tryCatch(fn: Function): Function {
+export function tryCatch(fn: Function): Function {
   tryCatchTarget = fn;
   return tryCatcher;
 };

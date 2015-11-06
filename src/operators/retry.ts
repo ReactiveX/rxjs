@@ -1,9 +1,9 @@
-import Operator from '../Operator';
-import Subscriber from '../Subscriber';
-import Observable from '../Observable';
-import Subscription from '../Subscription';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
 
-export default function retry<T>(count: number = 0): Observable<T> {
+export function retry<T>(count: number = 0): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 

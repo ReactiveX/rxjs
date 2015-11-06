@@ -1,12 +1,12 @@
-import Observable from '../Observable';
-import Subscription from '../Subscription';
-import Scheduler from '../Scheduler';
-import TestMessage from './TestMessage';
-import SubscriptionLog from './SubscriptionLog';
-import SubscriptionLoggable from './SubscriptionLoggable';
-import applyMixins from '../util/applyMixins';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
+import {Scheduler} from '../Scheduler';
+import {TestMessage} from './TestMessage';
+import {SubscriptionLog} from './SubscriptionLog';
+import {SubscriptionLoggable} from './SubscriptionLoggable';
+import {applyMixins} from '../util/applyMixins';
 
-export default class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
+export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
   scheduler: Scheduler;
   logSubscribedFrame: () => number;

@@ -1,9 +1,9 @@
-import Observable from '../Observable';
-import Subscription from '../Subscription';
-import tryCatch from '../util/tryCatch';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
+import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export default class FromEventPatternObservable<T, R> extends Observable<T> {
+export class FromEventPatternObservable<T, R> extends Observable<T> {
 
   static create<T>(addHandler: (handler: Function) => any,
                    removeHandler: (handler: Function) => void,
