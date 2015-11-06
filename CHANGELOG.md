@@ -149,7 +149,7 @@
 
 ### BREAKING CHANGES
 
-* S:
+* **operators with resultSelectors** (mergeMap, concatMap, switchMap, etc):
 The function signature of resultSelectors used to be (innerValue,
 outerValue, innerIndex, outerIndex) but this commits changes it to
 be (outerValue, innerValue, outerIndex, innerIndex), to match
