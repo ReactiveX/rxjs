@@ -62,7 +62,7 @@ export interface CoreOperators<T> {
   skipUntil?: (notifier: Observable<any>) => Observable<T>;
   startWith?: (x: T) => Observable<T>;
   subscribeOn?: (scheduler: Scheduler, delay?: number) => Observable<T>;
-  switch?: <R>() => Observable<R>;
+  switch?: () => Observable<T>;
   switchMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   switchMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   take?: (count: number) => Observable<T>;
