@@ -15,7 +15,7 @@ export interface CoreOperators<T> {
   combineAll?: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
   combineLatest?: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   concat?: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
-  concatAll?: () => Observable<any>;
+  concatAll?: () => Observable<T>;
   concatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   concatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   count?: (predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
