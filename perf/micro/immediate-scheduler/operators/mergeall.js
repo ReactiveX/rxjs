@@ -1,12 +1,17 @@
 var RxOld = require('rx');
 var RxNew = require('../../../../index');
 
+var source = Array.apply(null, { length: 25 });
+
 module.exports = function (suite) {
-  var oldMergeAllWithImmediateScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate)
-    .map(RxOld.Observable.range(0, 25), RxOld.Scheduler.immediate)
+  var oldMergeAllWithImmediateScheduler = RxOld.Observable.fromArray(
+    source.map(function () { return RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate); }),
+    RxOld.Scheduler.immediate
+  )
     .mergeAll();
-  var newMergeAllWithImmediateScheduler = RxNew.Observable.range(0, 25)
-    .mapTo(RxNew.Observable.range(0, 25))
+  var newMergeAllWithImmediateScheduler = RxNew.Observable.fromArray(
+    source.map(function () { return RxNew.Observable.range(0, 25); })
+  )
     .mergeAll();
 
   function _next(x) { }
