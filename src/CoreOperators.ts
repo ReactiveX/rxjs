@@ -40,7 +40,7 @@ export interface CoreOperators<T> {
   mapTo?: <R>(value: R) => Observable<R>;
   materialize?: () => Observable<Notification<T>>;
   merge?: (...observables: any[]) => Observable<any>;
-  mergeAll?: (concurrent?: any) => Observable<any>;
+  mergeAll?: (concurrent?: number) => Observable<T>;
   mergeMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   mergeMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   multicast?: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
