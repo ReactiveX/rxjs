@@ -1,4 +1,4 @@
-/* globals describe, it, expect, Symbol */
+/* globals describe, it, expect, Symbol, expectObservable, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Promise = require('promise');
 var Observable = Rx.Observable;
@@ -38,6 +38,24 @@ describe('Observable.from', function () {
     }, null, done);
   });
 
+  it('should accept scheduler for observableque object', function () {
+    var observablesque = {};
+
+    observablesque[Symbol.observable] = function () {
+      return {
+        subscribe: function (observer) {
+          observer.next('x');
+          observer.complete();
+        }
+      };
+    };
+
+    var e1 = Observable.from(observablesque, rxTestScheduler);
+    var expected = '(x|)';
+
+    expectObservable(e1).toBe(expected);
+  });
+
   it('should handle a string', function (done) {
     var expected = ['a', 'b', 'c'];
     Observable.from('abc').subscribe(function (x) {
@@ -67,5 +85,23 @@ describe('Observable.from', function () {
     Observable.from(iterable).subscribe(function (x) {
       expect(x).toBe(expected.shift());
     }, null, done);
+  });
+
+  it('should throw for non observable object', function () {
+    var r = function () {
+      Observable.from({}).subscribe();
+    };
+
+    expect(r).toThrow();
+  });
+
+  it('should handle object has observable symbol', function (done) {
+    var value = 'x';
+
+    Observable.from(Observable.of(value)).subscribe(function (x) {
+      expect(x).toBe(value);
+    }, function (err) {
+      done.fail('should not be called');
+    }, done);
   });
 });
