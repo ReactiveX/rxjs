@@ -138,7 +138,7 @@ export class Observable<T> implements CoreOperators<T>  {
   static concat: <T>(...observables: Array<Observable<any> | Scheduler>) => Observable<T>;
   static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
   static empty: <T>(scheduler?: Scheduler) => Observable<T>;
-  static forkJoin: <T>(...observables: Observable<any>[]) => Observable<T>;
+  static forkJoin: (...sources: Array<Observable<any> | Promise<any> | ((...values: Array<any>) => any)>) => Observable<any>;
   static from: <T>(iterable: any, scheduler?: Scheduler) => Observable<T>;
   static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
   static fromEvent: <T>(element: any, eventName: string, selector?: (...args: Array<any>) => T) => Observable<T>;

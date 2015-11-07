@@ -5,6 +5,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
+import {isPromise} from '../util/isPromise';
 import {errorObject} from '../util/errorObject';
 
 export function debounce<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
@@ -41,8 +42,7 @@ class DebounceSubscriber<T> extends Subscriber<T> {
     if (debounce === errorObject) {
       destination.error(errorObject.e);
     } else {
-      if (typeof debounce.subscribe !== 'function'
-        && typeof debounce.then === 'function') {
+      if (isPromise(debounce)) {
         debounce = PromiseObservable.create(debounce);
       }
 
