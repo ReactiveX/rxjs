@@ -12,6 +12,6 @@ import { MergeAllOperator } from './mergeAll-support';
  *
  * @returns {Observable} an observable of values merged from the incoming observables.
  */
-export default function concatAll(): Observable<any> {
+export default function concatAll<T>(): Observable<T> {
   return this.lift(new MergeAllOperator(1));
 }
