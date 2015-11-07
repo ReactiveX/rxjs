@@ -1,50 +1,96 @@
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
+import {PromiseObservable} from './PromiseObservable';
+import {EmptyObservable} from './EmptyObservable';
+import {isPromise} from '../util/isPromise';
 
 export class ForkJoinObservable<T> extends Observable<T> {
-  constructor(private observables: Observable<any>[]) {
-    super();
+  constructor(private sources: Array<Observable<any> |
+                                    Promise<any> |
+                                    ((...values: Array<any>) => any)>) {
+     super();
+   }
+
+  static create(...sources: Array<Observable<any> |
+                                  Promise<any> |
+                                  ((...values: Array<any>) => any)>)
+                                  : Observable<any> {
+    if (sources === null || sources.length === 0) {
+      return new EmptyObservable();
+    }
+    return new ForkJoinObservable(sources);
   }
 
-  static create<R>(...observables: Observable<any>[]): Observable<R> {
-    return new ForkJoinObservable(observables);
+  private getResultSelector(): (...values: Array<any>) => any {
+    const sources = this.sources;
+
+    let resultSelector = sources[sources.length - 1];
+    if (typeof resultSelector !== 'function') {
+      return null;
+    }
+    this.sources.pop();
+    return <(...values: Array<any>) => any>resultSelector;
   }
 
   _subscribe(subscriber: Subscriber<any>) {
-    const observables = this.observables;
-    const len = observables.length;
-    let context = { complete: 0, total: len, values: emptyArray(len) };
+    let resultSelector = this.getResultSelector();
+    const sources = this.sources;
+    const len = sources.length;
+
+    const context = { completed: 0, total: len, values: emptyArray(len), selector: resultSelector };
     for (let i = 0; i < len; i++) {
-      observables[i].subscribe(new AllSubscriber(subscriber, this, i, context));
+      let source = sources[i];
+      if (isPromise(source)) {
+        source = new PromiseObservable(<Promise<any>>source);
+      }
+      (<Observable<any>>source).subscribe(new AllSubscriber(subscriber, i, context));
     }
   }
 }
 
 class AllSubscriber<T> extends Subscriber<T> {
-  private _value: T;
+  private _value: any = null;
 
-  constructor(destination: Subscriber<T>,
-              private parent: ForkJoinObservable<T>,
+  constructor(destination: Subscriber<any>,
               private index: number,
-              private context: { complete: number, total: number, values: any[] }) {
+              private context: { completed: number,
+                                 total: number,
+                                 values: any[],
+                                 selector: (...values: Array<any>) => any }) {
     super(destination);
   }
 
-  _next(value: T) {
+  _next(value: any): void {
     this._value = value;
   }
 
-  _complete() {
-    const context = this.context;
-    context.values[this.index] = this._value;
-    if (context.values.every(hasValue)) {
-      this.destination.next(context.values);
-      this.destination.complete();
+  _complete(): void {
+    const destination = this.destination;
+
+    if (this._value == null) {
+      destination.complete();
     }
+
+    const context = this.context;
+    context.completed++;
+    context.values[this.index] = this._value;
+    const values = context.values;
+
+    if (context.completed !== values.length) {
+      return;
+    }
+
+    if (values.every(hasValue)) {
+      let value = context.selector ? context.selector.apply(this, values) :
+                                     values;
+      destination.next(value);
+    }
+
+    destination.complete();
   }
 }
 
-function hasValue(x) {
+function hasValue(x: any): boolean {
   return x !== null;
 }
 

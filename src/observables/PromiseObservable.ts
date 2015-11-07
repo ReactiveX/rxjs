@@ -13,7 +13,7 @@ export class PromiseObservable<T> extends Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
-  constructor(private promise: Promise<T>, public scheduler: Scheduler) {
+  constructor(private promise: Promise<T>, public scheduler: Scheduler = immediate) {
     super();
   }
 
