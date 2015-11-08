@@ -1,16 +1,19 @@
+import {noop} from './util/noop';
+
 export class Subscription<T> {
   public static EMPTY: Subscription<void> = (function(empty){
     empty.isUnsubscribed = true;
     return empty;
   }(new Subscription<void>()));
-  
+
   isUnsubscribed: boolean = false;
 
   _subscriptions: Subscription<any>[];
-  
-  _unsubscribe(): void { 
+
+  _unsubscribe(): void {
+    noop();
   }
-  
+
   constructor(_unsubscribe?: () => void) {
     if (_unsubscribe) {
       this._unsubscribe = _unsubscribe;
@@ -29,7 +32,7 @@ export class Subscription<T> {
     const subscriptions = this._subscriptions;
 
     this._subscriptions = void 0;
-    
+
     if (unsubscribe) {
       unsubscribe.call(this);
     }
@@ -45,7 +48,7 @@ export class Subscription<T> {
   }
 
   add(subscription: Subscription<T>|Function|void): void {
-    // return early if: 
+    // return early if:
     //  1. the subscription is null
     //  2. we're attempting to add our this
     //  3. we're attempting to add the static `empty` Subscription
@@ -57,11 +60,11 @@ export class Subscription<T> {
 
     let sub = (<Subscription<T>> subscription);
 
-    switch(typeof subscription) {
-      case "function":
+    switch (typeof subscription) {
+      case 'function':
         sub = new Subscription<void>(<(() => void) > subscription);
-      case "object":
-        if (sub.isUnsubscribed || typeof sub.unsubscribe !== "function") {
+      case 'object':
+        if (sub.isUnsubscribed || typeof sub.unsubscribe !== 'function') {
           break;
         } else if (this.isUnsubscribed) {
             sub.unsubscribe();
@@ -77,7 +80,7 @@ export class Subscription<T> {
 
   remove(subscription: Subscription<T>): void {
 
-    // return early if: 
+    // return early if:
     //  1. the subscription is null
     //  2. we're attempting to remove ourthis
     //  3. we're attempting to remove the static `empty` Subscription

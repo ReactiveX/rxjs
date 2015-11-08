@@ -29,13 +29,13 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     }
   }
 
-  static create<T>(next    ?: (x?: T) => void,
-                   error   ?: (e?: any) => void,
+  static create<T>(next?: (x?: T) => void,
+                   error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
     const subscriber = new Subscriber<T>();
-    subscriber._next = (typeof next === "function") && tryOrOnError(next) || noop;
-    subscriber._error = (typeof error === "function") && error || throwError;
-    subscriber._complete = (typeof complete === "function") && complete || noop;
+    subscriber._next = (typeof next === 'function') && tryOrOnError(next) || noop;
+    subscriber._error = (typeof error === 'function') && error || throwError;
+    subscriber._complete = (typeof complete === 'function') && complete || noop;
     return subscriber;
   }
 

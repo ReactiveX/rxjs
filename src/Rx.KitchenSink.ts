@@ -1,5 +1,4 @@
 import {Observable} from './Observable';
-import {Operator} from './Operator';
 import {CoreOperators} from './CoreOperators';
 import {Scheduler as IScheduler} from './Scheduler';
 
@@ -16,11 +15,16 @@ interface KitchenSinkOperators<T> extends CoreOperators<T> {
 }
 
 // operators
+/* tslint:disable:no-use-before-declare */
 import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
 Observable.combineLatest = combineLatestStatic;
 
 import {concat as concatStatic} from './operators/concat-static';
 Observable.concat = concatStatic;
+
+import {merge as mergeStatic} from './operators/merge-static';
+Observable.merge = mergeStatic;
+/* tslint:enable:no-use-before-declare */
 
 import {DeferObservable} from './observables/DeferObservable';
 Observable.defer = DeferObservable.create;
@@ -48,9 +52,6 @@ Observable.fromPromise = PromiseObservable.create;
 
 import {IntervalObservable} from './observables/IntervalObservable';
 Observable.interval = IntervalObservable.create;
-
-import {merge as mergeStatic} from './operators/merge-static';
-Observable.merge = mergeStatic;
 
 import {InfiniteObservable} from './observables/InfiniteObservable';
 Observable.never = InfiniteObservable.create;
@@ -317,6 +318,7 @@ observableProto.zip = zipProto;
 import {zipAll} from './operators/zipAll';
 observableProto.zipAll = zipAll;
 
+/* tslint:disable:no-unused-variable */
 import {Subject} from './Subject';
 import {Subscription} from './Subscription';
 import {Subscriber} from './Subscriber';
@@ -333,11 +335,14 @@ import {ImmediateScheduler} from './schedulers/ImmediateScheduler';
 import {TimeInterval} from './operators/extended/timeInterval';
 import {TestScheduler} from './testing/TestScheduler';
 import {VirtualTimeScheduler} from './schedulers/VirtualTimeScheduler';
+/* tslint:enable:no-unused-variable */
 
+/* tslint:disable:no-var-keyword */
 var Scheduler = {
   nextTick,
   immediate
 };
+/* tslint:enable:no-var-keyword */
 
 export {
     Subject,

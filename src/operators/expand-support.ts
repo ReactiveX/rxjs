@@ -1,10 +1,10 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
@@ -59,7 +59,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(innerSub: Subscription<T>): void {
+  notifyComplete(innerSub?: InnerSubscriber<T, R>): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;
