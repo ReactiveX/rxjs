@@ -276,7 +276,7 @@ describe('ImmediateDefinition', function () {
 
         expect(typeof result).toBe('function');
 
-        calledWith = result();
+        var calledWith = result();
 
         expect(__root__.__wasCalled).toEqual(true);
 
