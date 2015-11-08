@@ -1,11 +1,16 @@
 import {Observable} from './Observable';
 
 // operators
+/* tslint:disable:no-use-before-declare */
 import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
 Observable.combineLatest = combineLatestStatic;
 
 import {concat as concatStatic} from './operators/concat-static';
 Observable.concat = concatStatic;
+
+import {merge as mergeStatic} from './operators/merge-static';
+Observable.merge = mergeStatic;
+/* tslint:enable:no-use-before-declare */
 
 import {DeferObservable} from './observables/DeferObservable';
 Observable.defer = DeferObservable.create;
@@ -33,9 +38,6 @@ Observable.fromPromise = PromiseObservable.create;
 
 import {IntervalObservable} from './observables/IntervalObservable';
 Observable.interval = IntervalObservable.create;
-
-import {merge as mergeStatic} from './operators/merge-static';
-Observable.merge = mergeStatic;
 
 import {InfiniteObservable} from './observables/InfiniteObservable';
 Observable.never = InfiniteObservable.create;
@@ -276,6 +278,7 @@ observableProto.zip = zipProto;
 import {zipAll} from './operators/zipAll';
 observableProto.zipAll = zipAll;
 
+/* tslint:disable:no-unused-variable */
 import {Subject} from './Subject';
 import {Subscription} from './Subscription';
 import {Subscriber} from './Subscriber';
@@ -289,11 +292,14 @@ import {nextTick} from './schedulers/nextTick';
 import {immediate} from './schedulers/immediate';
 import {NextTickScheduler} from './schedulers/NextTickScheduler';
 import {ImmediateScheduler} from './schedulers/ImmediateScheduler';
+/* tslint:enable:no-unused-variable */
 
+/* tslint:disable:no-var-keyword */
 var Scheduler = {
   nextTick,
   immediate
 };
+/* tslint:enable:no-var-keyword */
 
 export {
     Subject,

@@ -16,7 +16,6 @@ const _subscriberNext = Subscriber.prototype._next;
 const _subscriberError = Subscriber.prototype._error;
 const _subscriberComplete = Subscriber.prototype._complete;
 
-
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
   _subscriptions: Subscription<T>[];
   _unsubscribe: () => void;
@@ -51,7 +50,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
       subscriber.complete();
       return;
     } else if (this.isUnsubscribed) {
-      throw new Error("Cannot subscribe to a disposed Subject.");
+      throw new Error('Cannot subscribe to a disposed Subject.');
     }
 
     this.observers.push(subscriber);
@@ -119,7 +118,6 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     this.unsubscribe();
   }
 
-
   _next(value: T): void {
     let index = -1;
     const observers = this.observers.slice(0);
@@ -130,7 +128,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     }
   }
 
-  _error(err: any): void{
+  _error(err: any): void {
     let index = -1;
     const observers = this.observers;
     const len = observers.length;
@@ -139,14 +137,14 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     this.observers = void 0;
     this.isUnsubscribed = true;
 
-    while(++index < len) {
+    while (++index < len) {
       observers[index].error(err);
     }
 
     this.isUnsubscribed = false;
   }
 
-  _complete(): void{
+  _complete(): void {
     let index = -1;
     const observers = this.observers;
     const len = observers.length;

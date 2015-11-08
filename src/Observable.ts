@@ -88,8 +88,8 @@ export class Observable<T> implements CoreOperators<T>  {
 
     let subscriber: Subscriber<T>;
 
-    if (observerOrNext && typeof observerOrNext === "object") {
-      if(observerOrNext instanceof Subscriber) {
+    if (observerOrNext && typeof observerOrNext === 'object') {
+      if (observerOrNext instanceof Subscriber) {
         subscriber = (<Subscriber<T>> observerOrNext);
       } else {
         subscriber = new Subscriber(<Observer<T>> observerOrNext);
@@ -111,16 +111,16 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next:(value:T) => void, PromiseCtor?: PromiseConstructor): Promise<void> {
-    if(!PromiseCtor) {
-      if(root.Rx && root.Rx.config && root.Rx.config.Promise) {
+  forEach(next: (value: T) => void, PromiseCtor?: PromiseConstructor): Promise<void> {
+    if (!PromiseCtor) {
+      if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
         PromiseCtor = root.Rx.config.Promise;
       } else if (root.Promise) {
         PromiseCtor = root.Promise;
       }
     }
 
-    if(!PromiseCtor) {
+    if (!PromiseCtor) {
       throw new Error('no Promise impl found');
     }
 
@@ -141,8 +141,10 @@ export class Observable<T> implements CoreOperators<T>  {
   static forkJoin: <T>(...observables: Observable<any>[]) => Observable<T>;
   static from: <T>(iterable: any, scheduler?: Scheduler) => Observable<T>;
   static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
-  static fromEvent: <T>(element: any, eventName: string, selector?: (...args:Array<any>) => T) => Observable<T>;
-  static fromEventPattern: <T>(addHandler: (handler:Function)=>void, removeHandler: (handler:Function) => void, selector?: (...args:Array<any>) => T) => Observable<T>;
+  static fromEvent: <T>(element: any, eventName: string, selector?: (...args: Array<any>) => T) => Observable<T>;
+  static fromEventPattern: <T>(addHandler: (handler: Function) => void,
+                               removeHandler: (handler: Function) => void,
+                               selector?: (...args: Array<any>) => T) => Observable<T>;
   static fromPromise: <T>(promise: Promise<T>, scheduler?: Scheduler) => Observable<T>;
   static interval: (interval: number, scheduler?: Scheduler) => Observable<number>;
   static merge: <T>(...observables: Array<Observable<any> | Scheduler | number>) => Observable<T>;
@@ -157,7 +159,7 @@ export class Observable<T> implements CoreOperators<T>  {
   buffer: (closingNotifier: Observable<any>) => Observable<T[]>;
   bufferCount: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
   bufferTime: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
-  bufferToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>
+  bufferToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>;
   bufferWhen: (closingSelector: () => Observable<any>) => Observable<T[]>;
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
@@ -177,19 +179,28 @@ export class Observable<T> implements CoreOperators<T>  {
   expand: <R>(project: (x: T, ix: number) => Observable<R>) => Observable<R>;
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   finally: (ensure: () => void, thisArg?: any) => Observable<T>;
-  first: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
-  flatMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
+  first: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+             resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
+  flatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+               projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+               concurrent?: number) => Observable<R>;
   flatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy: <R>(keySelector: (value:T) => string, elementSelector?: (value: T) => R, durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
+  groupBy: <R>(keySelector: (value: T) => string,
+               elementSelector?: (value: T) => R,
+               durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
   ignoreElements: () => Observable<T>;
-  last: <R>(predicate?: (value: T, index: number) => boolean, resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
+  last: <R>(predicate?: (value: T, index: number) => boolean,
+            resultSelector?: (value: T, index: number) => R,
+            thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
   every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   map: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
   materialize: () => Observable<Notification<T>>;
   merge: (...observables: any[]) => Observable<any>;
   mergeAll: (concurrent?: any) => Observable<any>;
-  mergeMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
+  mergeMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+                concurrent?: number) => Observable<R>;
   mergeMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;

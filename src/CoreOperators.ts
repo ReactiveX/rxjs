@@ -29,19 +29,27 @@ export interface CoreOperators<T> {
   expand?: <R>(project: (x: T, ix: number) => Observable<R>) => Observable<R>;
   filter?: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   finally?: (ensure: () => void, thisArg?: any) => Observable<T>;
-  first?: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
-  flatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
+  first?: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
+  flatMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
+                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+                concurrent?: number) => Observable<R>;
   flatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy?: <R>(keySelector: (value: T) => string, elementSelector?: (value: T) => R, durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
+  groupBy?: <R>(keySelector: (value: T) => string,
+                elementSelector?: (value: T) => R,
+                durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
   ignoreElements?: () => Observable<T>;
-  last?: <R>(predicate?: (value: T, index: number) => boolean, resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
+  last?: <R>(predicate?: (value: T, index: number) => boolean,
+             resultSelector?: (value: T, index: number) => R,
+             thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
   every?: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   map?: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo?: <R>(value: R) => Observable<R>;
   materialize?: () => Observable<Notification<T>>;
   merge?: (...observables: any[]) => Observable<any>;
   mergeAll?: (concurrent?: number) => Observable<T>;
-  mergeMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
+  mergeMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
+                 projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   mergeMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   multicast?: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
   observeOn?: (scheduler: Scheduler, delay?: number) => Observable<T>;

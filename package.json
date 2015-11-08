@@ -24,7 +24,7 @@
     "build_docs": "./docgen.sh",
     "lint_perf": "eslint perf/ --fix",
     "lint_spec": "eslint spec/**/*.js --fix",
-    "lint_src": "tslint -c .tslintrc src/**/*.ts",
+    "lint_src": "tslint -c .tslintrc src/*.ts src/**/*.ts src/**/**/*.ts",
     "lint": "npm run lint_src && npm run lint_spec && npm run lint_perf",
     "cover": "istanbul cover -x \"*-spec.js index.js *-helper.js\" jasmine && npm run cover_remapping",
     "cover_remapping": "remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.json && remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.lcov -t lcovonly && remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped -t html",
