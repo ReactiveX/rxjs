@@ -1,7 +1,7 @@
 import Observable from './Observable';
 import Scheduler from './Scheduler';
 import ConnectableObservable from './observables/ConnectableObservable';
-import Subject from './Subject'
+import Subject from './Subject';
 import {GroupedObservable} from './operators/groupBy-support';
 import Notification from './Notification';
 
@@ -9,7 +9,7 @@ export interface CoreOperators<T> {
   buffer?: (closingNotifier: Observable<any>) => Observable<T[]>;
   bufferCount?: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
   bufferTime?: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
-  bufferToggle?: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>
+  bufferToggle?: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>;
   bufferWhen?: (closingSelector: () => Observable<any>) => Observable<T[]>;
   catch?: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll?: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
@@ -32,7 +32,7 @@ export interface CoreOperators<T> {
   first?: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
   flatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   flatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy?: <R>(keySelector: (value:T) => string, elementSelector?: (value: T) => R, durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
+  groupBy?: <R>(keySelector: (value: T) => string, elementSelector?: (value: T) => R, durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
   ignoreElements?: () => Observable<T>;
   last?: <R>(predicate?: (value: T, index: number) => boolean, resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
   every?: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
