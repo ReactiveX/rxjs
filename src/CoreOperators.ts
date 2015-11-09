@@ -22,7 +22,7 @@ export interface CoreOperators<T> {
   dematerialize?: () => Observable<any>;
   debounce?: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
   debounceTime?: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
-  defaultIfEmpty?: <R>(defaultValue: R) => Observable<T> | Observable<R>;
+  defaultIfEmpty?: <R>(defaultValue?: T | R) => Observable<T> | Observable<R>;
   delay?: (delay: number, scheduler?: Scheduler) => Observable<T>;
   distinctUntilChanged?: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;
   do?: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
@@ -50,8 +50,8 @@ export interface CoreOperators<T> {
   publishBehavior?: (value: any) => ConnectableObservable<T>;
   publishReplay?: (bufferSize: number, windowTime: number, scheduler?: Scheduler) => ConnectableObservable<T>;
   reduce?: <R>(project: (acc: R, x: T) => R, seed?: R) => Observable<R>;
-  repeat?: (count: number) => Observable<T>;
-  retry?: (count: number) => Observable<T>;
+  repeat?: (count?: number) => Observable<T>;
+  retry?: (count?: number) => Observable<T>;
   retryWhen?: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
   sample?: (notifier: Observable<any>) => Observable<T>;
   sampleTime?: (delay: number, scheduler?: Scheduler) => Observable<T>;
