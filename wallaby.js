@@ -2,7 +2,7 @@ module.exports = wallaby => ({
   files: [
     'index.js',
     'src/**/*.ts',
-    {pattern: 'spec/helpers/test-helper.js', instrument: false}
+    {pattern: 'spec/helpers/*.js', instrument: false}
   ],
 
   tests: ['spec/**/*-spec.js'],
