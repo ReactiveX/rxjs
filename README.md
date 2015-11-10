@@ -19,11 +19,21 @@ By contributing or commenting on issues in this repository, whether you've read 
 
 ## Installation and Usage
 
+
+### npm
+
 To install this library via [npm](https://www.npmjs.org), use the following command:
 
 ```sh
 npm install @reactivex/rxjs
 ```
+
+### CDN
+
+For CDN, you can use [npmcdn](https://npmcdn.com). Just replace `version` with the current
+version on the link below:
+
+https://npmcdn.com/@reactivex/rxjs@version/dist/global/Rx.js
 
 #### Node.js Usage:
 
