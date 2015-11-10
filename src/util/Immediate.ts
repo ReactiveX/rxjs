@@ -112,10 +112,9 @@ export class ImmediateDefinition {
 
   createProcessNextTickSetImmediate() {
     let fn = function setImmediate() {
-      const named = (<any>setImmediate);
-      const { root, addFromSetImmediateArguments, partiallyApplied, runIfPresent } = named.instance;
-      let handle = addFromSetImmediateArguments(arguments);
-      root.process.nextTick(partiallyApplied(runIfPresent, handle));
+      const { instance } = (<any>setImmediate);
+      let handle = instance.addFromSetImmediateArguments(arguments);
+      instance.root.process.nextTick(instance.partiallyApplied(instance.runIfPresent, handle));
       return handle;
     };
 
@@ -143,9 +142,9 @@ export class ImmediateDefinition {
     root.addEventListener('message', onGlobalMessage, false);
 
     let fn = function setImmediate() {
-      const { messagePrefix, instance: { root, addFromSetImmediateArguments } } = (<any>setImmediate);
-      let handle = addFromSetImmediateArguments(arguments);
-      root.postMessage(messagePrefix + handle, '*');
+      const { messagePrefix, instance } = (<any>setImmediate);
+      let handle = instance.addFromSetImmediateArguments(arguments);
+      instance.root.postMessage(messagePrefix + handle, '*');
       return handle;
     };
 
@@ -199,11 +198,11 @@ export class ImmediateDefinition {
   createReadyStateChangeSetImmediate() {
     let fn = function setImmediate() {
       const instance = (<any>setImmediate).instance;
-      const { root, runIfPresent, addFromSetImmediateArguments } = instance;
+      const { root, runIfPresent } = instance;
       const doc = root.document;
       const html = doc.documentElement;
 
-      let handle = addFromSetImmediateArguments(arguments);
+      let handle = instance.addFromSetImmediateArguments(arguments);
       // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
       // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
       let script = doc.createElement('script');
@@ -225,9 +224,8 @@ export class ImmediateDefinition {
   createSetTimeoutSetImmediate() {
     let fn = function setImmediate() {
       const instance = (<any>setImmediate).instance;
-      const { runIfPresent, partiallyApplied, root } = instance;
       let handle = instance.addFromSetImmediateArguments(arguments);
-      root.setTimeout(partiallyApplied(runIfPresent, handle), 0);
+      instance.root.setTimeout(instance.partiallyApplied(instance.runIfPresent, handle), 0);
       return handle;
     };
 

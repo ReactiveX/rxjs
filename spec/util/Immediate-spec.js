@@ -1,4 +1,5 @@
 var ImmediateDefinition = require('../../dist/cjs/util/Immediate').ImmediateDefinition;
+var Rx = require('../../dist/cjs/Rx');
 
 describe('ImmediateDefinition', function () {
   it('should have setImmediate and clearImmediate methods', function () {
@@ -585,10 +586,6 @@ describe('ImmediateDefinition', function () {
         ImmediateDefinition.prototype.runIfPresent.call(instance, 123456);
         expect(instance.clearImmediate).toHaveBeenCalledWith(123456);
       });
-
-      it('should throw if the task errors, but still clean up', function () {
-
-      });
     });
   });
 
@@ -612,6 +609,20 @@ describe('ImmediateDefinition', function () {
       expect(handle).toBe(123456);
       expect(instance.addFromSetImmediateArguments).toHaveBeenCalled();
       expect(instance.root.setTimeout).toHaveBeenCalledWith(mockApplied, 0);
+    });
+  });
+
+  describe('integration test', function () {
+    it('should work', function (done) {
+      var results = [];
+      Rx.Observable.fromArray([1, 2, 3], Rx.Scheduler.nextTick)
+        .subscribe(function (x) {
+          results.push(x);
+        }, done.throw,
+        function () {
+          expect(results).toEqual([1,2,3]);
+          done();
+        });
     });
   });
 });
