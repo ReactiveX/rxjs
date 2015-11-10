@@ -9,7 +9,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
                                     Promise<any> |
                                     ((...values: Array<any>) => any)>) {
      super();
-   }
+  }
 
   static create(...sources: Array<Observable<any> |
                                   Promise<any> |
