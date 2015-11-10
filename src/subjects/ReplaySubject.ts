@@ -11,11 +11,11 @@ export class ReplaySubject<T> extends Subject<T> {
   private events: ReplayEvent<T>[] = [];
 
   constructor(bufferSize: number = Number.POSITIVE_INFINITY,
-              _windowTime: number = Number.POSITIVE_INFINITY,
+              windowTime: number = Number.POSITIVE_INFINITY,
               scheduler?: Scheduler) {
     super();
     this.bufferSize = bufferSize < 1 ? 1 : bufferSize;
-    this._windowTime = _windowTime < 1 ? 1 : _windowTime;
+    this._windowTime = windowTime < 1 ? 1 : windowTime;
     this.scheduler = scheduler;
   }
 
