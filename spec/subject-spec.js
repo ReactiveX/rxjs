@@ -39,6 +39,202 @@ describe('Subject', function () {
     subject.complete();
   });
 
+  it('should handle subscribers that arrive and leave at different times, ' +
+  'subject does not complete', function () {
+    var subject = new Subject();
+    var results1 = [];
+    var results2 = [];
+    var results3 = [];
+
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
+
+    var subscription1 = subject.subscribe(
+      function (x) { results1.push(x); },
+      function (e) { results1.push('E'); },
+      function () { results1.push('C'); }
+    );
+
+    subject.next(5);
+
+    var subscription2 = subject.subscribe(
+      function (x) { results2.push(x); },
+      function (e) { results2.push('E'); },
+      function () { results2.push('C'); }
+    );
+
+    subject.next(6);
+    subject.next(7);
+
+    subscription1.unsubscribe();
+
+    subject.next(8);
+
+    subscription2.unsubscribe();
+
+    subject.next(9);
+    subject.next(10);
+
+    var subscription3 = subject.subscribe(
+      function (x) { results3.push(x); },
+      function (e) { results3.push('E'); },
+      function () { results3.push('C'); }
+    );
+
+    subject.next(11);
+
+    subscription3.unsubscribe();
+
+    expect(results1).toEqual([5,6,7]);
+    expect(results2).toEqual([6,7,8]);
+    expect(results3).toEqual([11]);
+  });
+
+  it('should handle subscribers that arrive and leave at different times, ' +
+  'subject completes', function () {
+    var subject = new Subject();
+    var results1 = [];
+    var results2 = [];
+    var results3 = [];
+
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
+
+    var subscription1 = subject.subscribe(
+      function (x) { results1.push(x); },
+      function (e) { results1.push('E'); },
+      function () { results1.push('C'); }
+    );
+
+    subject.next(5);
+
+    var subscription2 = subject.subscribe(
+      function (x) { results2.push(x); },
+      function (e) { results2.push('E'); },
+      function () { results2.push('C'); }
+    );
+
+    subject.next(6);
+    subject.next(7);
+
+    subscription1.unsubscribe();
+
+    subject.complete();
+    subject.next(9);
+    subject.complete();
+    subject.error(new Error('err'));
+
+    subscription2.unsubscribe();
+
+    var subscription3 = subject.subscribe(
+      function (x) { results3.push(x); },
+      function (e) { results3.push('E'); },
+      function () { results3.push('C'); }
+    );
+
+    subscription3.unsubscribe();
+
+    expect(results1).toEqual([5,6,7]);
+    expect(results2).toEqual([6,7,'C']);
+    expect(results3).toEqual(['C']);
+  });
+
+  it('should handle subscribers that arrive and leave at different times, ' +
+  'subject terminates with an error', function () {
+    var subject = new Subject();
+    var results1 = [];
+    var results2 = [];
+    var results3 = [];
+
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
+
+    var subscription1 = subject.subscribe(
+      function (x) { results1.push(x); },
+      function (e) { results1.push('E'); },
+      function () { results1.push('C'); }
+    );
+
+    subject.next(5);
+
+    var subscription2 = subject.subscribe(
+      function (x) { results2.push(x); },
+      function (e) { results2.push('E'); },
+      function () { results2.push('C'); }
+    );
+
+    subject.next(6);
+    subject.next(7);
+
+    subscription1.unsubscribe();
+
+    subject.error(new Error('err'));
+    subject.next(9);
+    subject.complete();
+    subject.error(new Error('err'));
+
+    subscription2.unsubscribe();
+
+    var subscription3 = subject.subscribe(
+      function (x) { results3.push(x); },
+      function (e) { results3.push('E'); },
+      function () { results3.push('C'); }
+    );
+
+    subscription3.unsubscribe();
+
+    expect(results1).toEqual([5,6,7]);
+    expect(results2).toEqual([6,7,'E']);
+    expect(results3).toEqual(['E']);
+  });
+
+  it('should handle subscribers that arrive and leave at different times, ' +
+  'subject completes before nexting any value', function () {
+    var subject = new Subject();
+    var results1 = [];
+    var results2 = [];
+    var results3 = [];
+
+    var subscription1 = subject.subscribe(
+      function (x) { results1.push(x); },
+      function (e) { results1.push('E'); },
+      function () { results1.push('C'); }
+    );
+
+    var subscription2 = subject.subscribe(
+      function (x) { results2.push(x); },
+      function (e) { results2.push('E'); },
+      function () { results2.push('C'); }
+    );
+
+    subscription1.unsubscribe();
+
+    subject.complete();
+    subject.next(9);
+    subject.complete();
+    subject.error(new Error('err'));
+
+    subscription2.unsubscribe();
+
+    var subscription3 = subject.subscribe(
+      function (x) { results3.push(x); },
+      function (e) { results3.push('E'); },
+      function () { results3.push('C'); }
+    );
+
+    subscription3.unsubscribe();
+
+    expect(results1).toEqual([]);
+    expect(results2).toEqual(['C']);
+    expect(results3).toEqual(['C']);
+  });
+
   it('should not allow values to be nexted after a return', function (done) {
     var subject = new Subject();
     var expected = ['foo'];
