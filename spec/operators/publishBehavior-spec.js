@@ -96,7 +96,7 @@ describe('Observable.prototype.publishBehavior()', function () {
   });
 
   describe('with refCount()', function () {
-    it('should connect when first subscriber subscribes', function() {
+    it('should connect when first subscriber subscribes', function () {
       var source = cold(       '-1-2-3----4-|');
       var sourceSubs =      '   ^           !';
       var replayed = source.publishBehavior('0').refCount();
