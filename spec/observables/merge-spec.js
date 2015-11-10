@@ -18,6 +18,13 @@ describe('Observable.merge(...observables)', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should return itself when try to merge single observable', function () {
+    var e1 = Observable.of('a');
+    var result = Observable.merge(e1);
+
+    expect(e1).toBe(result);
+  });
+
   it('should merge hot and hot', function () {
     var e1 =  hot('---a---^-b-----c----|');
     var e1subs =         '^            !';
@@ -197,12 +204,28 @@ describe('Observable.merge(...observables)', function () {
   });
 });
 
-describe('Observable.merge(number, ...observables)', function () {
+describe('Observable.merge(...observables, Scheduler, number)', function () {
   it('should handle concurrency limits', function () {
     var e1 =  cold('---a---b---c---|');
     var e2 =  cold('-d---e---f--|');
     var e3 =  cold(            '---x---y---z---|');
     var expected = '-d-a-e-b-f-c---x---y---z---|';
     expectObservable(Observable.merge(e1, e2, e3, 2)).toBe(expected);
+  });
+
+  it('should handle scheduler', function () {
+    var e1 =  Observable.of('a');
+    var e2 =  Observable.of('b').delay(20, rxTestScheduler);
+    var expected = 'a-(b|)';
+
+    expectObservable(Observable.merge(e1, e2, rxTestScheduler)).toBe(expected);
+  });
+
+  it('should handle scheduler with concurrency limits', function () {
+    var e1 =  cold('---a---b---c---|');
+    var e2 =  cold('-d---e---f--|');
+    var e3 =  cold(            '---x---y---z---|');
+    var expected = '-d-a-e-b-f-c---x---y---z---|';
+    expectObservable(Observable.merge(e1, e2, e3, 2, rxTestScheduler)).toBe(expected);
   });
 });
