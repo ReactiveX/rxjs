@@ -128,16 +128,17 @@ export class ImmediateDefinition {
     // * https://developer.mozilla.org/en/DOM/window.postMessage
     // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
     const root = this.root;
-    const runIfPresent = this.runIfPresent;
 
     let messagePrefix = 'setImmediate$' + root.Math.random() + '$';
-    let onGlobalMessage = function (event) {
+    let onGlobalMessage = function globalMessageHandler(event) {
+      const instance = (<any>globalMessageHandler).instance;
       if (event.source === root &&
         typeof event.data === 'string' &&
         event.data.indexOf(messagePrefix) === 0) {
-        runIfPresent(+event.data.slice(messagePrefix.length));
+        instance.runIfPresent(+event.data.slice(messagePrefix.length));
       }
     };
+    (<any>onGlobalMessage).instance = this;
 
     root.addEventListener('message', onGlobalMessage, false);
 
@@ -198,7 +199,7 @@ export class ImmediateDefinition {
   createReadyStateChangeSetImmediate() {
     let fn = function setImmediate() {
       const instance = (<any>setImmediate).instance;
-      const { root, runIfPresent } = instance;
+      const root = instance.root;
       const doc = root.document;
       const html = doc.documentElement;
 
@@ -207,7 +208,7 @@ export class ImmediateDefinition {
       // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
       let script = doc.createElement('script');
       script.onreadystatechange = () => {
-        runIfPresent(handle);
+        instance.runIfPresent(handle);
         script.onreadystatechange = null;
         html.removeChild(script);
         script = null;
