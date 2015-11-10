@@ -1,10 +1,19 @@
+<a name="5.0.0-alpha.10"></a>
+# [5.0.0-alpha.10](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.9...v5.0.0-alpha.10) (2015-11-10)
+
+
+### Bug Fixes
+
+* **Immediate:** set immediate should no longer throw in Chrome ([a3de7d9](https://github.com/ReactiveX/RxJS/commit/a3de7d9)), closes [#690](https://github.com/ReactiveX/RxJS/issues/690)
+
+
+
 <a name="5.0.0-alpha.9"></a>
 # [5.0.0-alpha.9](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.8...v5.0.0-alpha.9) (2015-11-10)
 
 
 ### Bug Fixes
 
-* **Immediate:** nextTick scheduler should no longer throw in Chrome ([6011dfb](https://github.com/ReactiveX/RxJS/commit/6011dfb)), closes [#690](https://github.com/ReactiveX/RxJS/issues/690)
 * **util:** incorrect Symbol.iterator for es6-shim ([15bf32c](https://github.com/ReactiveX/RxJS/commit/15bf32c))
 
 ### Features
