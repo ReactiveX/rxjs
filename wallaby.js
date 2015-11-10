@@ -10,13 +10,9 @@ module.exports = wallaby => ({
   compilers: {
     '**/*.ts': wallaby.compilers.typeScript({
       module: 1,  // commonjs
-      target: 2,  // ES6
-      preserveConstEnums: true
+      target: 1,  // ES5
+      preserveConstEnums: true,
     })
-  },
-
-  preprocessors: {
-    '**/*.js': file => require('babel').transform(file.content, {sourceMap: true, loose: 'all'})
   },
 
   testFramework: 'jasmine',
