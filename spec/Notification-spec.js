@@ -201,11 +201,13 @@ describe('Notification', function () {
 
     it('should accept function for error Notification', function () {
       var observed = false;
-      var n = Notification.createError();
+      var error = 'error';
+      var n = Notification.createError(error);
 
       n.accept(function (x) {
         throw 'should not be called';
       }, function (x) {
+        expect(x).toBe(error);
         observed = true;
       }, function () {
         throw 'should not be called';
