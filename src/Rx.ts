@@ -218,6 +218,9 @@ observableProto.skip = skip;
 import {skipUntil} from './operators/skipUntil';
 observableProto.skipUntil = skipUntil;
 
+import {skipWhile} from './operators/skipWhile';
+observableProto.skipWhile = skipWhile;
+
 import {startWith} from './operators/startWith';
 observableProto.startWith = startWith;
 
