@@ -3,12 +3,13 @@ import {Observable} from '../Observable';
 import {ArrayObservable} from '../observables/ArrayObservable';
 import {MergeAllOperator} from './mergeAll-support';
 import {immediate} from '../schedulers/immediate';
+import {isScheduler} from '../util/isScheduler';
 
 export function merge<R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {
  let concurrent = Number.POSITIVE_INFINITY;
  let scheduler: Scheduler = immediate;
   let last: any = observables[observables.length - 1];
-  if (typeof last.schedule === 'function') {
+  if (isScheduler(last)) {
     scheduler = <Scheduler>observables.pop();
     if (observables.length > 1 && typeof observables[observables.length - 1] === 'number') {
       concurrent = <number>observables.pop();
