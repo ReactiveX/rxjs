@@ -4,20 +4,20 @@ import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
 import {nextTick} from '../schedulers/nextTick';
 
-export function throttle<T>(delay: number, scheduler: Scheduler = nextTick) {
-  return this.lift(new ThrottleOperator(delay, scheduler));
+export function throttleTime<T>(delay: number, scheduler: Scheduler = nextTick) {
+  return this.lift(new ThrottleTimeOperator(delay, scheduler));
 }
 
-class ThrottleOperator<T, R> implements Operator<T, R> {
+class ThrottleTimeOperator<T, R> implements Operator<T, R> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new ThrottleSubscriber(subscriber, this.delay, this.scheduler);
+    return new ThrottleTimeSubscriber(subscriber, this.delay, this.scheduler);
   }
 }
 
-class ThrottleSubscriber<T> extends Subscriber<T> {
+class ThrottleTimeSubscriber<T> extends Subscriber<T> {
   private throttled: Subscription<any>;
 
   constructor(destination: Subscriber<T>,
@@ -28,13 +28,9 @@ class ThrottleSubscriber<T> extends Subscriber<T> {
 
   _next(value: T) {
     if (!this.throttled) {
-      this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { value, subscriber: this }));
+      this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { subscriber: this }));
+      this.destination.next(value);
     }
-  }
-
-  throttledNext(value: T) {
-    this.clearThrottle();
-    this.destination.next(value);
   }
 
   clearThrottle() {
@@ -42,10 +38,11 @@ class ThrottleSubscriber<T> extends Subscriber<T> {
     if (throttled) {
       throttled.unsubscribe();
       this.remove(throttled);
+      this.throttled = null;
     }
   }
 }
 
-function dispatchNext<T>({ value, subscriber }) {
-  subscriber.throttledNext(value);
+function dispatchNext<T>({ subscriber }) {
+  subscriber.clearThrottle();
 }
