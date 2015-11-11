@@ -68,6 +68,7 @@ export interface CoreOperators<T> {
   single?: (predicate?: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   skip?: (count: number) => Observable<T>;
   skipUntil?: (notifier: Observable<any>) => Observable<T>;
+  skipWhile?: (predicate: (x: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   startWith?: (x: T) => Observable<T>;
   subscribeOn?: (scheduler: Scheduler, delay?: number) => Observable<T>;
   switch?: () => Observable<T>;
