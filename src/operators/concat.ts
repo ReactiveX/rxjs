@@ -1,6 +1,7 @@
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {CoreOperators} from '../CoreOperators';
+import {isScheduler} from '../util/isScheduler';
 
 /**
  * Joins this observable with multiple other observables by subscribing to them one at a time, starting with the source,
@@ -13,7 +14,7 @@ import {CoreOperators} from '../CoreOperators';
 export function concat<R>(...observables: (Observable<any> | Scheduler)[]): Observable<R> {
   let args = <any[]>observables;
   args.unshift(this);
-  if (args.length > 1 && typeof args[args.length - 1].schedule === 'function') {
+  if (args.length > 1 && isScheduler(args[args.length - 1])) {
     args.splice(args.length - 2, 0, 1);
   }
   return (<CoreOperators<any>>Observable.fromArray(args)).mergeAll(1);

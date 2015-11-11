@@ -2,6 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './EmptyObservable';
+import {isScheduler} from '../util/isScheduler';
 
 export class ArrayObservable<T> extends Observable<T> {
 
@@ -11,7 +12,7 @@ export class ArrayObservable<T> extends Observable<T> {
 
   static of<T>(...array: Array<T | Scheduler>): Observable<T> {
     let scheduler = <Scheduler>array[array.length - 1];
-    if (scheduler && typeof scheduler.schedule === 'function') {
+    if (isScheduler(scheduler)) {
       array.pop();
     } else {
       scheduler = void 0;

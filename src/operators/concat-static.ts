@@ -3,6 +3,7 @@ import {Scheduler} from '../Scheduler';
 import {immediate} from '../schedulers/immediate';
 import {MergeAllOperator} from './mergeAll-support';
 import {ArrayObservable} from '../observables/ArrayObservable';
+import {isScheduler} from '../util/isScheduler';
 
 /**
  * Joins multiple observables together by subscribing to them one at a time and merging their results
@@ -14,7 +15,7 @@ import {ArrayObservable} from '../observables/ArrayObservable';
 export function concat<R>(...observables: Array<Observable<any> | Scheduler>): Observable<R> {
  let scheduler: Scheduler = immediate;
   let args = <any[]>observables;
-  if (typeof (args[observables.length - 1]).schedule === 'function') {
+  if (isScheduler(args[observables.length - 1])) {
     scheduler = args.pop();
   }
 

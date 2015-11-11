@@ -4,10 +4,11 @@ import {ArrayObservable} from '../observables/ArrayObservable';
 import {ScalarObservable} from '../observables/ScalarObservable';
 import {EmptyObservable} from '../observables/EmptyObservable';
 import {concat} from './concat-static';
+import {isScheduler} from '../util/isScheduler';
 
 export function startWith<T>(...array: (T | Scheduler)[]): Observable<T> {
   let scheduler = <Scheduler>array[array.length - 1];
-  if (scheduler && typeof scheduler.schedule === 'function') {
+  if (isScheduler(scheduler)) {
     array.pop();
   } else {
     scheduler = void 0;

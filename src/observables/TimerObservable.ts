@@ -2,6 +2,7 @@ import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {nextTick} from '../schedulers/nextTick';
+import {isScheduler} from '../util/isScheduler';
 
 export class TimerObservable<T> extends Observable<T> {
 
@@ -39,7 +40,7 @@ export class TimerObservable<T> extends Observable<T> {
     super();
     if (isNumeric(period)) {
       this._period = Number(period) < 1 && 1 || Number(period);
-    } else if (period && typeof (<Scheduler> period).schedule === 'function') {
+    } else if (isScheduler(period)) {
       scheduler = <Scheduler> period;
     }
     if (!scheduler || typeof scheduler.schedule !== 'function') {
