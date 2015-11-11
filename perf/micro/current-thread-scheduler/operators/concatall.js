@@ -1,15 +1,19 @@
 var RxOld = require('rx');
 var RxNew = require('../../../../index');
 
+var source = Array.apply(null, { length: 25 });
+
 module.exports = function (suite) {
-  var oldConcatAllWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread)
-    .map(function (x) {
-      return RxOld.Observable.range(x, 25, RxOld.Scheduler.currentThread);
-    }).concatAll();
-  var newConcatAllWithCurrentThreadScheduler = RxNew.Observable.range(0, 25)
-    .map(function (x) {
-      return RxNew.Observable.range(x, 25);
-    }).concatAll();
+  var oldConcatAllWithCurrentThreadScheduler = RxOld.Observable.fromArray(
+    source.map(function () { return RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread); }),
+    RxOld.Scheduler.currentThread
+  )
+    .concatAll();
+  var newConcatAllWithCurrentThreadScheduler = RxNew.Observable.fromArray(
+    source.map(function () { return RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate); }),
+    RxNew.Scheduler.immediate
+  )
+    .concatAll();
 
   function _next(x) { }
   function _error(e) { }
