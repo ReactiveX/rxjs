@@ -273,6 +273,3 @@ export class Observable<T> implements CoreOperators<T>  {
   zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 }
-
-var o = new Observable<any>();
-o.combineLatest
