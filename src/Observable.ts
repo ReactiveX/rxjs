@@ -4,12 +4,18 @@ import {Scheduler} from './Scheduler';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
-import {CoreOperators } from './CoreOperators';
+import {CoreOperators} from "./CoreOperators";
 import {$$observable} from './util/Symbol_observable';
 import {GroupedObservable} from './operators/groupBy-support';
 import {ConnectableObservable} from './observables/ConnectableObservable';
 import {Subject} from './Subject';
 import {Notification} from './Notification';
+
+export type ObservableOrPromise<T> = Observable<T> | PromiseLike<T>;
+export type ArrayOrIterable<T> = IterableShim<T> | ArrayLike<T> | Array<T>;
+export type ObservableOrIterable<T> = ObservableOrPromise<T> | ArrayOrIterable<T>;
+
+import {combineLatest as combineLatestStatic} from "./operators/combineLatest-static";
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -134,7 +140,7 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
-  static combineLatest: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T) | Scheduler>) => Observable<T>;
+  static combineLatest: typeof combineLatestStatic;
   static concat: <T>(...observables: Array<Observable<any> | Scheduler>) => Observable<T>;
   static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
   static empty: <T>(scheduler?: Scheduler) => Observable<T>;
@@ -155,41 +161,68 @@ export class Observable<T> implements CoreOperators<T>  {
   static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
   static zip: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T)>) => Observable<T>;
 
-  // core operators
-  buffer: (closingNotifier: Observable<any>) => Observable<T[]>;
-  bufferCount: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
-  bufferTime: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
-  bufferToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>;
-  bufferWhen: (closingSelector: () => Observable<any>) => Observable<T[]>;
-  catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
-  combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
-  combineLatest: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
-  concat: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
-  concatAll: () => Observable<any>;
-  concatMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  concatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  count: (predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
-  dematerialize: () => Observable<any>;
-  debounce: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
-  debounceTime: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
-  defaultIfEmpty: <R>(defaultValue?: T | R) => Observable<T> | Observable<R>;
-  delay: (delay: number, scheduler?: Scheduler) => Observable<T>;
-  distinctUntilChanged: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;
-  do: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
-  expand: <R>(project: (x: T, ix: number) => Observable<R>) => Observable<R>;
-  filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
-  finally: (ensure: () => void, thisArg?: any) => Observable<T>;
-  first: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  // Once we get the ability to declare the type of `this` as a generic <T>
+  // We can replace these duplicates with typeof abc;
+  // https://github.com/Microsoft/TypeScript/issues/3694
+  buffer?: (closingNotifier: Observable<any>) => Observable<T[]>;
+  bufferCount?: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
+  bufferTime?: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
+  bufferToggle?: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>;
+  bufferWhen?: (closingSelector: () => Observable<any>) => Observable<T[]>;
+  catch?: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
+  combineAll: {
+      (project?: (...values: Array<any>) => T): Observable<T>;
+      <R>(project?: (...values: Array<any>) => R): Observable<R>;
+  };
+  combineLatest: {
+      (first: ObservableOrIterable<T>): Observable<[T]>;
+      <TResult>(first: ObservableOrIterable<T>, project: (v1: T) => TResult): Observable<TResult>;
+      <T2>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>): Observable<[T, T2]>;
+      <T2, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+      <T2, T3>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>): Observable<[T, T2, T3]>;
+      <T2, T3, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+      <T2, T3, T4>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>): Observable<[T, T2, T3, T4]>;
+      <T2, T3, T4, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
+      <T2, T3, T4, T5>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>): Observable<[T, T2, T3, T4, T5]>;
+      <T2, T3, T4, T5, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => TResult): Observable<TResult>;
+      <T2, T3, T4, T5, T6>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+      <T2, T3, T4, T5, T6, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => TResult): Observable<TResult>;
+      <T2, T3, T4, T5, T6, T7>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, eventh: ObservableOrIterable<T7>): Observable<[T, T2, T3, T4, T5, T6, T7]>;
+      <T2, T3, T4, T5, T6, T7, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, eventh: ObservableOrIterable<T7>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7) => TResult): Observable<TResult>;
+      <T2, T3, T4, T5, T6, T7, T8>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>): Observable<[T, T2, T3, T4, T5, T6, T7, T8]>;
+      <T2, T3, T4, T5, T6, T7, T8, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7, v8: T8) => TResult): Observable<TResult>;
+      <T2, T3, T4, T5, T6, T7, T8, T9>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, ninth: ObservableOrIterable<T9>): Observable<[T, T2, T3, T4, T5, T6, T7, T8, T9]>;
+      <T2, T3, T4, T5, T6, T7, T8, T9, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, ninth: ObservableOrIterable<T9>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7, v8: T8, v9: T9) => TResult): Observable<TResult>;
+      (...observables: Array<ObservableOrIterable<T> | ((...values: Array<T>) => T)>): Observable<T>;
+      <R>(...observables: Array<ObservableOrIterable<T> | ((...values: Array<T>) => R)>): Observable<R>;
+      (...observables: Array<T>): Observable<T[]>;
+  };
+  concat?: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
+  concatAll?: () => Observable<T>;
+  concatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  concatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  count?: (predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
+  dematerialize?: () => Observable<any>;
+  debounce?: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
+  debounceTime?: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
+  defaultIfEmpty?: <R>(defaultValue?: T | R) => Observable<T> | Observable<R>;
+  delay?: (delay: number, scheduler?: Scheduler) => Observable<T>;
+  distinctUntilChanged?: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;
+  do?: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
+  expand?: <R>(project: (x: T, ix: number) => Observable<R>) => Observable<R>;
+  filter?: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
+  finally?: (ensure: () => void, thisArg?: any) => Observable<T>;
+  first?: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
              resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
-  flatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+  flatMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                concurrent?: number) => Observable<R>;
-  flatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy: <R>(keySelector: (value: T) => string,
+  flatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
+  groupBy?: <R>(keySelector: (value: T) => string,
                elementSelector?: (value: T) => R,
                durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
-  ignoreElements: () => Observable<T>;
-  last: <R>(predicate?: (value: T, index: number) => boolean,
+  ignoreElements?: () => Observable<T>;
+  last?: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,
             thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
   every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
@@ -242,3 +275,6 @@ export class Observable<T> implements CoreOperators<T>  {
   zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 }
+
+var o = new Observable<any>();
+o.combineLatest
