@@ -47,6 +47,7 @@ class DebounceSubscriber<T> extends Subscriber<T> {
       }
 
       this.lastValue = value;
+      this.clearDebounce();
       this.add(this.debouncedSubscription = debounce._subscribe(new DurationSelectorSubscriber(this, currentIndex)));
     }
   }
@@ -67,7 +68,8 @@ class DebounceSubscriber<T> extends Subscriber<T> {
   private clearDebounce(): void {
     const debouncedSubscription = this.debouncedSubscription;
 
-    if (debouncedSubscription !== null) {
+    if (debouncedSubscription) {
+      debouncedSubscription.unsubscribe();
       this.remove(debouncedSubscription);
       this.debouncedSubscription = null;
     }
