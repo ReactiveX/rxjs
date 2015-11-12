@@ -226,6 +226,7 @@ export class Observable<T> implements CoreOperators<T>  {
   switchMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   take: (count: number) => Observable<T>;
   takeUntil: (notifier: Observable<any>) => Observable<T>;
+  takeWhile: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   throttle: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
   throttleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
   timeout: (due: number | Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;

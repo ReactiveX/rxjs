@@ -288,6 +288,9 @@ observableProto.take = take;
 import {takeUntil} from './operators/takeUntil';
 observableProto.takeUntil = takeUntil;
 
+import {takeWhile} from './operators/takeWhile';
+observableProto.takeWhile = takeWhile;
+
 import {throttle} from './operators/throttle';
 observableProto.throttle = throttle;
 
