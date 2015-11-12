@@ -4,7 +4,7 @@ import {Scheduler} from './Scheduler';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
-import {CoreOperators} from "./CoreOperators";
+import {CoreOperators} from './CoreOperators';
 import {$$observable} from './util/Symbol_observable';
 import {GroupedObservable} from './operators/groupBy-support';
 import {ConnectableObservable} from './observables/ConnectableObservable';
@@ -161,9 +161,6 @@ export class Observable<T> implements CoreOperators<T>  {
   static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
   static zip: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T)>) => Observable<T>;
 
-  // Once we get the ability to declare the type of `this` as a generic <T>
-  // We can replace these duplicates with typeof abc;
-  // https://github.com/Microsoft/TypeScript/issues/3694
   buffer?: (closingNotifier: Observable<any>) => Observable<T[]>;
   bufferCount?: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
   bufferTime?: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
@@ -171,31 +168,31 @@ export class Observable<T> implements CoreOperators<T>  {
   bufferWhen?: (closingSelector: () => Observable<any>) => Observable<T[]>;
   catch?: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll: {
-      (project?: (...values: Array<any>) => T): Observable<T>;
-      <R>(project?: (...values: Array<any>) => R): Observable<R>;
+    (project?: (...values: Array<any>) => T): Observable<T>;
+    <R>(project?: (...values: Array<any>) => R): Observable<R>;
   };
   combineLatest: {
-      (first: ObservableOrIterable<T>): Observable<[T]>;
-      <TResult>(first: ObservableOrIterable<T>, project: (v1: T) => TResult): Observable<TResult>;
-      <T2>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>): Observable<[T, T2]>;
-      <T2, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
-      <T2, T3>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>): Observable<[T, T2, T3]>;
-      <T2, T3, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
-      <T2, T3, T4>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>): Observable<[T, T2, T3, T4]>;
-      <T2, T3, T4, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
-      <T2, T3, T4, T5>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>): Observable<[T, T2, T3, T4, T5]>;
-      <T2, T3, T4, T5, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => TResult): Observable<TResult>;
-      <T2, T3, T4, T5, T6>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
-      <T2, T3, T4, T5, T6, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => TResult): Observable<TResult>;
-      <T2, T3, T4, T5, T6, T7>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, eventh: ObservableOrIterable<T7>): Observable<[T, T2, T3, T4, T5, T6, T7]>;
-      <T2, T3, T4, T5, T6, T7, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, eventh: ObservableOrIterable<T7>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7) => TResult): Observable<TResult>;
-      <T2, T3, T4, T5, T6, T7, T8>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>): Observable<[T, T2, T3, T4, T5, T6, T7, T8]>;
-      <T2, T3, T4, T5, T6, T7, T8, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7, v8: T8) => TResult): Observable<TResult>;
-      <T2, T3, T4, T5, T6, T7, T8, T9>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, ninth: ObservableOrIterable<T9>): Observable<[T, T2, T3, T4, T5, T6, T7, T8, T9]>;
-      <T2, T3, T4, T5, T6, T7, T8, T9, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, ninth: ObservableOrIterable<T9>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7, v8: T8, v9: T9) => TResult): Observable<TResult>;
-      (...observables: Array<ObservableOrIterable<T> | ((...values: Array<T>) => T)>): Observable<T>;
-      <R>(...observables: Array<ObservableOrIterable<T> | ((...values: Array<T>) => R)>): Observable<R>;
-      (...observables: Array<T>): Observable<T[]>;
+    (first: ObservableOrIterable<T>): Observable<[T]>;
+    <TResult>(first: ObservableOrIterable<T>, project: (v1: T) => TResult): Observable<TResult>;
+    <T2>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>): Observable<[T, T2]>;
+    <T2, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+    <T2, T3>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>): Observable<[T, T2, T3]>;
+    <T2, T3, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+    <T2, T3, T4>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>): Observable<[T, T2, T3, T4]>;
+    <T2, T3, T4, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
+    <T2, T3, T4, T5>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>): Observable<[T, T2, T3, T4, T5]>;
+    <T2, T3, T4, T5, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => TResult): Observable<TResult>;
+    <T2, T3, T4, T5, T6>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+    <T2, T3, T4, T5, T6, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => TResult): Observable<TResult>;
+    <T2, T3, T4, T5, T6, T7>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, eventh: ObservableOrIterable<T7>): Observable<[T, T2, T3, T4, T5, T6, T7]>;
+    <T2, T3, T4, T5, T6, T7, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, eventh: ObservableOrIterable<T7>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7) => TResult): Observable<TResult>;
+    <T2, T3, T4, T5, T6, T7, T8>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>): Observable<[T, T2, T3, T4, T5, T6, T7, T8]>;
+    <T2, T3, T4, T5, T6, T7, T8, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7, v8: T8) => TResult): Observable<TResult>;
+    <T2, T3, T4, T5, T6, T7, T8, T9>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, ninth: ObservableOrIterable<T9>): Observable<[T, T2, T3, T4, T5, T6, T7, T8, T9]>;
+    <T2, T3, T4, T5, T6, T7, T8, T9, TResult>(first: ObservableOrIterable<T>, second: ObservableOrIterable<T2>, third: ObservableOrIterable<T3>, fourth: ObservableOrIterable<T4>, fifth: ObservableOrIterable<T5>, sixth: ObservableOrIterable<T6>, seventh: ObservableOrIterable<T7>, eighth: ObservableOrIterable<T8>, ninth: ObservableOrIterable<T9>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7, v8: T8, v9: T9) => TResult): Observable<TResult>;
+    (...observables: Array<ObservableOrIterable<T> | ((...values: Array<T>) => T)>): Observable<T>;
+    <R>(...observables: Array<ObservableOrIterable<T> | ((...values: Array<T>) => R)>): Observable<R>;
+    (...observables: Array<T>): Observable<T[]>;
   };
   concat?: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
   concatAll?: () => Observable<T>;
