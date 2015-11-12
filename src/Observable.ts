@@ -216,8 +216,6 @@ export class Observable<T> implements CoreOperators<T>  {
   sampleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
   scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   share: () => Observable<T>;
-  shareBehavior: (value: T) => Observable<T>;
-  shareReplay: (bufferSize: number, windowTime: number, scheduler?: Scheduler) => Observable<T>;
   single: (predicate?: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   skip: (count: number) => Observable<T>;
   skipUntil: (notifier: Observable<any>) => Observable<T>;
