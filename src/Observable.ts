@@ -161,6 +161,7 @@ export class Observable<T> implements CoreOperators<T>  {
   static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
   static zip: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T)>) => Observable<T>;
 
+  // core operators
   buffer?: (closingNotifier: Observable<any>) => Observable<T[]>;
   bufferCount?: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
   bufferTime?: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
