@@ -10,8 +10,8 @@ export class ArrayObservable<T> extends Observable<T> {
     return new ArrayObservable(array, scheduler);
   }
 
-  static of<T>(...array: Array<T | Scheduler>): Observable<T> {
-    let scheduler = <Scheduler>array[array.length - 1];
+  static of<T>(...array: Array<T>): Observable<T> {
+    let scheduler: Scheduler = <any>array[array.length - 1];
     if (isScheduler(scheduler)) {
       array.pop();
     } else {
@@ -24,7 +24,7 @@ export class ArrayObservable<T> extends Observable<T> {
     } else if (len === 1) {
       return new ScalarObservable(array[0], scheduler);
     } else {
-      return new EmptyObservable(scheduler);
+      return new EmptyObservable<T>(scheduler);
     }
   }
 

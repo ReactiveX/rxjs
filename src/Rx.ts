@@ -282,7 +282,7 @@ import {withLatestFrom} from './operators/withLatestFrom';
 observableProto.withLatestFrom = withLatestFrom;
 
 import {zipProto} from './operators/zip';
-observableProto.zip = zipProto;
+observableProto.zip = <any>zipProto;
 
 import {zipAll} from './operators/zipAll';
 observableProto.zipAll = zipAll;

@@ -9,7 +9,7 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 export function groupBy<T, R>(keySelector: (value: T) => string,
-                              elementSelector?: (value: T) => R,
+                              elementSelector?: any,
                               durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>): GroupByObservable<T, R> {
   return new GroupByObservable<T, R>(this, keySelector, elementSelector, durationSelector);
 }
@@ -61,11 +61,11 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
       let group: Subject<T|R> = groups.get(key);
 
       if (!group) {
-        groups.set(key, group = new Subject());
-        let groupedObservable = new GroupedObservable<R>(key, group, this.refCountSubscription);
+        groups.set(key, group = new Subject<T|R>());
+        let groupedObservable = new GroupedObservable<R>(key, <Subject<R>>group, this.refCountSubscription);
 
         if (durationSelector) {
-          let duration = tryCatch(durationSelector)(new GroupedObservable<R>(key, group));
+          let duration = tryCatch(durationSelector)(new GroupedObservable<R>(key, <Subject<R>>group));
           if (duration === errorObject) {
             this.error(duration.e);
           } else {

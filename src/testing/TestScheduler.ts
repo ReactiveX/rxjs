@@ -40,7 +40,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Hot observable cannot have unsubscription marker "!"');
     }
     let messages = TestScheduler.parseMarbles(marbles, values, error);
-    const subject = new HotObservable(messages, this);
+    const subject = new HotObservable<T>(messages, this);
     this.hotObservables.push(subject);
     return subject;
   }

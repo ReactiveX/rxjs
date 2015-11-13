@@ -20,16 +20,16 @@ export class FromObservable<T> extends Observable<T> {
   static create<T>(ish: any, scheduler: Scheduler = immediate): Observable<T> {
     if (ish) {
       if (isArray(ish)) {
-        return new ArrayObservable(ish, scheduler);
+        return new ArrayObservable<T>(ish, scheduler);
       } else if (typeof ish.then === 'function') {
-        return new PromiseObservable(ish, scheduler);
+        return new PromiseObservable<T>(ish, scheduler);
       } else if (typeof ish[$$observable] === 'function') {
         if (ish instanceof Observable) {
           return ish;
         }
-        return new FromObservable(ish, scheduler);
+        return new FromObservable<T>(ish, scheduler);
       } else if (typeof ish[$$iterator] === 'function') {
-        return new IteratorObservable(ish, null, null, scheduler);
+        return new IteratorObservable<T>(ish, null, null, scheduler);
       }
     }
 
