@@ -3,7 +3,7 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
 
-export function takeUntil<T>(notifier: Observable<any>) {
+export function takeUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new TakeUntilOperator(notifier));
 }
 

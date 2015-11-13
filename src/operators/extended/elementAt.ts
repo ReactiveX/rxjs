@@ -1,8 +1,9 @@
+import {Observable} from '../../Observable';
 import {Operator} from '../../Operator';
 import {Subscriber} from '../../Subscriber';
 import {ArgumentOutOfRangeError} from '../../util/ArgumentOutOfRangeError';
 
-export function elementAt(index: number, defaultValue?: any) {
+export function elementAt<T>(index: number, defaultValue?: T): Observable<T> {
   return this.lift(new ElementAtOperator(index, defaultValue));
 }
 

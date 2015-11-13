@@ -4,6 +4,7 @@ import {Subscriber} from '../../Subscriber';
 import {Scheduler} from '../../Scheduler';
 import {immediate} from '../../schedulers/immediate';
 
+export function timeInterval<T>(scheduler?: Scheduler): Observable<TimeInterval>;
 export function timeInterval<T>(scheduler: Scheduler = immediate): Observable<TimeInterval> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }

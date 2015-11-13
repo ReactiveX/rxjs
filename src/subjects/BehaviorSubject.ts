@@ -3,11 +3,11 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class BehaviorSubject<T> extends Subject<T> {
-  constructor(private value: any) {
+  constructor(private value: T) {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription<T> {
+  _subscribe(subscriber: Subscriber<T>): Subscription<T> {
     const subscription = super._subscribe(subscriber);
     if (!subscription) {
       return;

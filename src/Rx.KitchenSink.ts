@@ -1,13 +1,14 @@
 import {Observable} from './Observable';
 import {CoreOperators} from './CoreOperators';
 import {Scheduler as IScheduler} from './Scheduler';
+import {_PredicateObservable} from './types';
 
 interface KitchenSinkOperators<T> extends CoreOperators<T> {
   isEmpty?: () => Observable<boolean>;
   elementAt?: (index: number, defaultValue?: any) => Observable<T>;
   distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
-  find?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<T>;
-  findIndex?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
+  find?: (predicate: _PredicateObservable<T>, thisArg?: any) => Observable<T>;
+  findIndex?: (predicate: _PredicateObservable<T>, thisArg?: any) => Observable<number>;
   max?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;

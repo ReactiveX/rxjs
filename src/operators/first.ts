@@ -5,16 +5,18 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
 
-export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                            resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: any): Observable<T> | Observable<R> {
+import {_IndexSelector, _PredicateObservable} from '../types';
+
+export function first<T, R>(predicate?: _PredicateObservable<T>,
+                            resultSelector?: _IndexSelector<T, R>,
+                            defaultValue?: any): Observable<T | R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
 class FirstOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
-              private defaultValue?: any,
+  constructor(private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
+              private defaultValue?: R,
               private source?: Observable<T>) {
   }
 
@@ -28,8 +30,8 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   private hasCompleted: boolean = false;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+              private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);

@@ -7,6 +7,8 @@ import {errorObject} from '../util/errorObject';
 import {ErrorObservable} from './ErrorObservable';
 import {EmptyObservable} from './EmptyObservable';
 
+import {_IndexSelector, _PredicateObservable} from '../types';
+
 export class ScalarObservable<T> extends Observable<T> {
   static create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {
     return new ScalarObservable(value, scheduler);
@@ -55,7 +57,7 @@ export class ScalarObservable<T> extends Observable<T> {
 // TypeScript is weird about class prototype member functions and instance properties touching on it's plate.
 const proto = ScalarObservable.prototype;
 
-proto.map = function <T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
+proto.map = function <T, R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R> {
   let result = tryCatch(project).call(thisArg || this, this.value, 0);
   if (result === errorObject) {
     return new ErrorObservable<any>(errorObject.e);
@@ -91,7 +93,7 @@ proto.scan = function <T, R>(project: (acc: R, x: T) => R, acc?: R): Observable<
   return this.reduce(project, acc);
 };
 
-proto.count = function <T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number> {
+proto.count = function <T>(predicate?: _PredicateObservable<T>, thisArg?: any): Observable<number> {
   if (!predicate) {
     return new ScalarObservable(1);
   } else {

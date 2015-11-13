@@ -4,6 +4,7 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {nextTick} from '../schedulers/nextTick';
 
+export function sampleTime<T>(delay: number, scheduler?: Scheduler): Observable<T>;
 export function sampleTime<T>(delay: number, scheduler: Scheduler = nextTick): Observable<T> {
   return this.lift(new SampleTimeOperator(delay, scheduler));
 }

@@ -1,11 +1,12 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {bindCallback} from '../util/bindCallback';
 
-export function _finally<T>(finallySelector: () => void, thisArg?: any) {
+export function _finally<T>(finallySelector: () => void, thisArg?: any): Observable<T> {
   return this.lift(new FinallyOperator(thisArg ?
-    <() => void> bindCallback(finallySelector, thisArg, 2) :
+    <() => void>bindCallback(finallySelector, thisArg, 2) :
     finallySelector));
 }
 

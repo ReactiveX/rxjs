@@ -1,20 +1,23 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {bindCallback} from '../util/bindCallback';
 
-export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean, thisArg?: any) {
+import {_Comparer} from '../types';
+
+export function distinctUntilChanged<T>(compare?: _Comparer<T, boolean>, thisArg?: any): Observable<T> {
   return this.lift(new DistinctUntilChangedOperator(thisArg ?
-    <(x: T, y: T) => boolean> bindCallback(compare, thisArg, 2) :
+    <_Comparer<T, boolean>>bindCallback(compare, thisArg, 2) :
     compare));
 }
 
 class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
 
-  compare: (x: T, y: T) => boolean;
+  compare: _Comparer<T, boolean>;
 
-  constructor(compare?: (x: T, y: T) => boolean) {
+  constructor(compare?: _Comparer<T, boolean>) {
     this.compare = compare;
   }
 
@@ -28,7 +31,7 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
   value: T;
   hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>, compare?: (x: T, y: T) => boolean) {
+  constructor(destination: Subscriber<T>, compare?: _Comparer<T, boolean>) {
     super(destination);
     if (typeof compare === 'function') {
       this.compare = compare;

@@ -8,6 +8,7 @@ import {$$observable} from './util/Symbol_observable';
 export type ObservableOrPromise<T> = Observable<T> | PromiseLike<T>;
 export type ArrayOrIterable<T> = IterableShim<T> | ArrayLike<T> | Array<T>;
 export type ObservableOrIterable<T> = ObservableOrPromise<T> | ArrayOrIterable<T>;
+export type ObservableOrPromiseOrIterable<T> = Observable<T> | PromiseLike<T> | IterableShim<T>;
 import * as operators from './operator-typings';
 import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
 import {concat as concatStatic} from './operators/concat-static';

@@ -8,15 +8,15 @@ import {errorObject} from '../util/errorObject';
 import {bindCallback} from '../util/bindCallback';
 import {EmptyError} from '../util/EmptyError';
 
-export function single<T>(predicate?: (value: T,
-                                       index: number,
-                                       source: Observable<T>) => boolean,
+import {_PredicateObservable} from '../types';
+
+export function single<T>(predicate?: _PredicateObservable<T>,
                           thisArg?: any): Observable<T> {
   return this.lift(new SingleOperator(predicate, thisArg, this));
 }
 
 class SingleOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  constructor(private predicate?: _PredicateObservable<T>,
               private thisArg?: any,
               private source?: Observable<T>) {
   }
@@ -33,7 +33,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<T>,
-              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              predicate?: _PredicateObservable<T>,
               private thisArg?: any,
               private source?: Observable<T>) {
     super(destination);

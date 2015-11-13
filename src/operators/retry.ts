@@ -3,6 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
+export function retry<T>(count?: number): Observable<T>;
 export function retry<T>(count: number = 0): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }

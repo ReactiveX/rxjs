@@ -5,24 +5,26 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {bindCallback} from '../util/bindCallback';
 
+import {_IndexSelector} from '../types';
+
 /**
  * Similar to the well known `Array.prototype.map` function, this operator
  * applies a projection to each value and emits that projection in the returned observable
- * 
+ *
  * @param {Function} project the function to create projection
  * @param {any} [thisArg] an optional argument to define what `this` is in the project function
  * @returns {Observable} a observable of projected values
  */
-export function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
+export function map<T, R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R> {
   return this.lift(new MapOperator(project, thisArg));
 }
 
 class MapOperator<T, R> implements Operator<T, R> {
 
-  project: (x: T, ix?: number) => R;
+  project: _IndexSelector<T, R>;
 
-  constructor(project: (x: T, ix?: number) => R, thisArg?: any) {
-    this.project = <(x: T, ix?: number) => R>bindCallback(project, thisArg, 2);
+  constructor(project: _IndexSelector<T, R>, thisArg?: any) {
+    this.project = <_IndexSelector<T, R>>bindCallback(project, thisArg, 2);
   }
   call(subscriber: Subscriber<R>): Subscriber<T> {
     return new MapSubscriber(subscriber, this.project);
@@ -32,10 +34,10 @@ class MapOperator<T, R> implements Operator<T, R> {
 class MapSubscriber<T, R> extends Subscriber<T> {
 
   count: number = 0;
-  project: (x: T, ix?: number) => R;
+  project: _IndexSelector<T, R>;
 
   constructor(destination: Subscriber<R>,
-              project: (x: T, ix?: number) => R) {
+              project: _IndexSelector<T, R>) {
     super(destination);
     this.project = project;
   }

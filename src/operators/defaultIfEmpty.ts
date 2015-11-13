@@ -2,7 +2,8 @@ import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
-export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T> | Observable<R> {
+export function defaultIfEmpty<T, R>(defaultValue?: R): Observable<T | R>;
+export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 

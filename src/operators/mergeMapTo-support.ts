@@ -8,9 +8,11 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {InnerSubscriber} from '../InnerSubscriber';
 
+import {_SwitchMapResultSelector} from '../types';
+
 export class MergeMapToOperator<T, R, R2> implements Operator<T, R> {
   constructor(private ish: any,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+              private resultSelector?: _SwitchMapResultSelector<T, R, R2>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     }
 
@@ -27,7 +29,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   constructor(destination: Subscriber<R>,
               private ish: any,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+              private resultSelector?: _SwitchMapResultSelector<T, R, R2>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
   }
@@ -51,7 +53,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   _innerSub(ish: any,
             destination: Observer<R>,
-            resultSelector: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+            resultSelector: _SwitchMapResultSelector<T, R, R2>,
             value: T,
             index: number): void {
     this.add(subscribeToResult<T, R>(this, ish, value, index));

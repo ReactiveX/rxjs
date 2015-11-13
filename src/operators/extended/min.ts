@@ -1,7 +1,9 @@
 import {Observable} from '../../Observable';
 import {ReduceOperator} from '../reduce-support';
 
-export function min<T, R>(comparer?: (x: R, y: T) => R): Observable<R> {
+import {_Comparer} from '../../types';
+
+export function min<T, R>(comparer?: _Comparer<T, R>): Observable<R> {
   const min = (typeof comparer === 'function')
     ? comparer
     : (x, y) => x < y ? x : y;

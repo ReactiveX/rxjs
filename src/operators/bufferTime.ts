@@ -14,6 +14,9 @@ import {nextTick} from '../schedulers/nextTick';
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
 export function bufferTime<T>(bufferTimeSpan: number,
+                              bufferCreationInterval?: number,
+                              scheduler?: Scheduler): Observable<T[]>;
+export function bufferTime<T>(bufferTimeSpan: number,
                               bufferCreationInterval: number = null,
                               scheduler: Scheduler = nextTick): Observable<T[]> {
   return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));

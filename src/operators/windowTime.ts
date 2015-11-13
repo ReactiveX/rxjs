@@ -7,6 +7,9 @@ import {Action} from '../schedulers/Action';
 import {nextTick} from '../schedulers/nextTick';
 
 export function windowTime<T>(windowTimeSpan: number,
+                              windowCreationInterval?: number,
+                              scheduler?: Scheduler): Observable<Observable<T>>;
+export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,
                               scheduler: Scheduler = nextTick): Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));

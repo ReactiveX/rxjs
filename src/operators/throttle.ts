@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, ObservableOrPromise} from '../Observable';
 import {PromiseObservable} from '../observables/PromiseObservable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
@@ -8,12 +8,12 @@ import {tryCatch} from '../util/tryCatch';
 import {isPromise} from '../util/isPromise';
 import {errorObject} from '../util/errorObject';
 
-export function throttle<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function throttle<T>(durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
 }
 
 class ThrottleOperator<T, R> implements Operator<T, R> {
-  constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+  constructor(private durationSelector: (value: T) => ObservableOrPromise<number>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -25,7 +25,7 @@ class ThrottleSubscriber<T> extends Subscriber<T> {
   private throttled: Subscription<any>;
 
   constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+              private durationSelector: (value: T) => ObservableOrPromise<number>) {
     super(destination);
   }
 

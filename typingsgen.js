@@ -8,13 +8,14 @@ var extraSpaceRegex = /  /;
 
 var operators = {};
 var fileResult = '/* tslint:disable:class-name */ /* tslint:disable:no-unused-variable */ /* tslint:disable:max-line-length */\n\
-import { Observable, ObservableOrIterable, ObservableOrPromise, ArrayOrIterable } from \'./Observable\';\n\
+import { Observable, ObservableOrIterable, ObservableOrPromise, ArrayOrIterable, ObservableOrPromiseOrIterable } from \'./Observable\';\n\
 import {Scheduler} from \'./Scheduler\';\n\
 import {Notification} from \'./Notification\';\n\
 import {Subject} from \'./Subject\';\n\
 import {Observer} from \'./Observer\';\n\
 import {GroupedObservable} from \'./operators/groupBy-support\';\n\
-import {GroupByObservable} from \'./operators/groupBy\';\n\n\
+import {GroupByObservable} from \'./operators/groupBy\';\n\
+import {_Selector, _IndexSelector, _SwitchMapResultSelector, _MergeMapProjector, _Predicate, _PredicateObservable, _Comparer, _Accumulator, _MergeAccumulator} from \'./types\';\n\n\
 ';
 
 for (var i = 0; i < contents.length; i++) {

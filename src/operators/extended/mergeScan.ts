@@ -7,7 +7,9 @@ import {errorObject} from '../../util/errorObject';
 import {subscribeToResult} from '../../util/subscribeToResult';
 import {OuterSubscriber} from '../../OuterSubscriber';
 
-export function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) {
+import {_MergeAccumulator} from '../../types';
+
+export function mergeScan<T, R>(project: _MergeAccumulator<T, R>, seed: R): Observable<R> {
   return this.lift(new MergeScanOperator(project, seed));
 }
 
