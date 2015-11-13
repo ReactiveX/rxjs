@@ -91,6 +91,13 @@ describe('Observable', function () {
       expect(mutatedByComplete).toBe(true);
     });
 
+    it('should accept a fourth argument for a start handler', function () {
+      Observable.create(function _subscriber(observer) {
+        expect(observer.isUnsubscribed).toBe(true);
+      })
+      .subscribe(null, null, null, function start(subscription) { subscription.unsubscribe(); });
+    });
+
     it('should return a Subscription that calls the unsubscribe function returned by the subscriber', function () {
       var unsubscribeCalled = false;
 
@@ -138,6 +145,16 @@ describe('Observable', function () {
         expect(function testEmptyObject() {
           Observable.empty().subscribe({});
         }).not.toThrow();
+      });
+
+      it('should accept an anonymous observer with only a start function', function () {
+        Observable.create(function _subscriber(observer) {
+          expect(observer.isUnsubscribed).toBe(true);
+        }).subscribe({
+          start: function start(subscription) {
+            subscription.unsubscribe();
+          }
+        });
       });
     });
   });
