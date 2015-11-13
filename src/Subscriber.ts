@@ -31,11 +31,13 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
 
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,
-                   complete?: () => void): Subscriber<T> {
+                   complete?: () => void,
+                   start?: (subscription: Subscription<T>) => void): Subscriber<T> {
     const subscriber = new Subscriber<T>();
     subscriber._next = (typeof next === 'function') && tryOrOnError(next) || noop;
     subscriber._error = (typeof error === 'function') && error || throwError;
     subscriber._complete = (typeof complete === 'function') && complete || noop;
+    subscriber._start = (typeof start === 'function') && start || noop;
     return subscriber;
   }
 
@@ -103,6 +105,13 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     }
   }
 
+  _start(subscription: Subscription<T>): void {
+    const destination = this.destination;
+    if (destination && destination.start) {
+      destination.start(subscription);
+    }
+  }
+
   next(value?: T): void {
     if (!this.isUnsubscribed) {
       this._next(value);
@@ -120,6 +129,12 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     if (!this.isUnsubscribed) {
       this._complete();
       this.unsubscribe();
+    }
+  }
+
+  start(subscription: Subscription<T>): void {
+    if (!this.isUnsubscribed) {
+      this._start(subscription);
     }
   }
 }

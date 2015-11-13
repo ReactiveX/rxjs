@@ -84,7 +84,8 @@ export class Observable<T> implements CoreOperators<T>  {
    */
   subscribe(observerOrNext?: Observer<T> | ((value: T) => void),
             error?: (error: T) => void,
-            complete?: () => void): Subscription<T> {
+            complete?: () => void,
+            start?: (subscription: Subscription<T>) => void): Subscription<T> {
 
     let subscriber: Subscriber<T>;
 
@@ -96,9 +97,10 @@ export class Observable<T> implements CoreOperators<T>  {
       }
     } else {
       const next = <((x?) => void)> observerOrNext;
-      subscriber = Subscriber.create(next, error, complete);
+      subscriber = Subscriber.create(next, error, complete, start);
     }
 
+    subscriber.start(subscriber);
     subscriber.add(this._subscribe(subscriber));
 
     return subscriber;
