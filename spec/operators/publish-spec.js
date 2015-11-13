@@ -132,10 +132,7 @@ describe('Observable.prototype.publish()', function () {
 
     it('should NOT be retryable', function () {
       var source =     cold('-1-2-3----4-#');
-      var sourceSubs =     ['^           !',
-                            '            (^!)',
-                            '            (^!)',
-                            '            (^!)'];
+      var sourceSubs =      '^           !';
       var published = source.publish().refCount().retry(3);
       var subscriber1 = hot('a|           ').mergeMapTo(published);
       var expected1   =     '-1-2-3----4-#';
@@ -152,9 +149,7 @@ describe('Observable.prototype.publish()', function () {
 
     it('should NOT be repeatable', function () {
       var source =     cold('-1-2-3----4-|');
-      var sourceSubs =     ['^           !',
-                            '            (^!)',
-                            '            (^!)'];
+      var sourceSubs =      '^           !';
       var published = source.publish().refCount().repeat(3);
       var subscriber1 = hot('a|           ').mergeMapTo(published);
       var expected1   =     '-1-2-3----4-|';

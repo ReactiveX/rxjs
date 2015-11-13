@@ -150,10 +150,7 @@ describe('Observable.prototype.publishReplay()', function () {
 
     it('should NOT be retryable', function () {
       var source =     cold('-1-2-3----4-#');
-      var sourceSubs =     ['^           !',
-                            '            (^!)',
-                            '            (^!)',
-                            '            (^!)'];
+      var sourceSubs =      '^           !';
       var published = source.publishReplay(1).refCount().retry(3);
       var subscriber1 = hot('a|           ').mergeMapTo(published);
       var expected1   =     '-1-2-3----4-(444#)';
@@ -170,9 +167,7 @@ describe('Observable.prototype.publishReplay()', function () {
 
     it('should NOT be repeatable', function () {
       var source =     cold('-1-2-3----4-|');
-      var sourceSubs =     ['^           !',
-                            '            (^!)',
-                            '            (^!)'];
+      var sourceSubs =      '^           !';
       var published = source.publishReplay(1).refCount().repeat(3);
       var subscriber1 = hot('a|           ').mergeMapTo(published);
       var expected1   =     '-1-2-3----4-(44|)';
