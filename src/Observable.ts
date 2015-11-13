@@ -1,25 +1,18 @@
 import {Observer} from './Observer';
 import {Operator} from './Operator';
-import {Scheduler} from './Scheduler';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
 import {CoreOperators} from './CoreOperators';
 import {$$observable} from './util/Symbol_observable';
-import {GroupedObservable} from './operators/groupBy-support';
-import {ConnectableObservable} from './observables/ConnectableObservable';
-import {Subject} from './Subject';
-import {Notification} from './Notification';
-
 export type ObservableOrPromise<T> = Observable<T> | PromiseLike<T>;
 export type ArrayOrIterable<T> = IterableShim<T> | ArrayLike<T> | Array<T>;
 export type ObservableOrIterable<T> = ObservableOrPromise<T> | ArrayOrIterable<T>;
-import * as operators from "./operator-typings";
-
-import {combineLatest as combineLatestStatic} from "./operators/combineLatest-static";
-import {concat as concatStatic} from "./operators/concat-static";
-import {merge as mergeStatic} from "./operators/merge-static";
-import {zip as zipStatic} from "./operators/zip-static";
+import * as operators from './operator-typings';
+import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
+import {concat as concatStatic} from './operators/concat-static';
+import {merge as mergeStatic} from './operators/merge-static';
+import {zip as zipStatic} from './operators/zip-static';
 import {DeferObservable} from './observables/DeferObservable';
 import {EmptyObservable} from './observables/EmptyObservable';
 import {ForkJoinObservable} from './observables/ForkJoinObservable';
@@ -231,6 +224,7 @@ export class Observable<T> implements CoreOperators<T>  {
   single: operators.operator_proto_single<T>;
   skip: operators.operator_proto_skip<T>;
   skipUntil: operators.operator_proto_skipUntil<T>;
+  skipWhile: operators.operator_proto_skipWhile<T>;
   startWith: operators.operator_proto_startWith<T>;
   subscribeOn: operators.operator_proto_subscribeOn<T>;
   switch: operators.operator_proto_switch<T>;
@@ -238,6 +232,7 @@ export class Observable<T> implements CoreOperators<T>  {
   switchMapTo: operators.operator_proto_switchMapTo<T>;
   take: operators.operator_proto_take<T>;
   takeUntil: operators.operator_proto_takeUntil<T>;
+  takeWhile: operators.operator_proto_takeWhile<T>;
   throttle: operators.operator_proto_throttle<T>;
   throttleTime: operators.operator_proto_throttleTime<T>;
   timeout: operators.operator_proto_timeout<T>;

@@ -1,6 +1,5 @@
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
-import {CoreOperators} from '../CoreOperators';
 import {isScheduler} from '../util/isScheduler';
 
 /**
@@ -11,7 +10,7 @@ import {isScheduler} from '../util/isScheduler';
  * @params {Scheduler} [scheduler] an optional scheduler to schedule each observable subscription on.
  * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
  */
-export function concat<T>(...observables: (Observable<any> | Scheduler)[]): T;
+export function concat<T>(...observables: (Observable<T> | Scheduler)[]): T;
 export function concat(...observables: (Observable<any> | Scheduler)[]): Observable<any> {
   let args = <any[]>observables;
   args.unshift(this);

@@ -1,4 +1,4 @@
-import * as operators from "./operator-typings";
+import * as operators from './operator-typings';
 export interface CoreOperators<T> {
   buffer: operators.operator_proto_buffer<T>;
   bufferCount: operators.operator_proto_bufferCount<T>;
@@ -54,6 +54,7 @@ export interface CoreOperators<T> {
   single: operators.operator_proto_single<T>;
   skip: operators.operator_proto_skip<T>;
   skipUntil: operators.operator_proto_skipUntil<T>;
+  skipWhile: operators.operator_proto_skipWhile<T>;
   startWith: operators.operator_proto_startWith<T>;
   subscribeOn: operators.operator_proto_subscribeOn<T>;
   switch: operators.operator_proto_switch<T>;
@@ -61,6 +62,7 @@ export interface CoreOperators<T> {
   switchMapTo: operators.operator_proto_switchMapTo<T>;
   take: operators.operator_proto_take<T>;
   takeUntil: operators.operator_proto_takeUntil<T>;
+  takeWhile: operators.operator_proto_takeWhile<T>;
   throttle: operators.operator_proto_throttle<T>;
   throttleTime: operators.operator_proto_throttleTime<T>;
   timeout: operators.operator_proto_timeout<T>;
