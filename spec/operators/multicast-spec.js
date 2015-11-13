@@ -19,13 +19,267 @@ describe('Observable.prototype.multicast()', function () {
   it('should accept Subject factory functions', function (done) {
     var expected = [1,2,3,4];
 
-    var connectable = Observable.of(1,2,3,4).multicast(function () { return new Subject(); });
+    var connectable = Observable.of(1,2,3,4).multicast(function () {
+      return new Subject();
+    });
 
     connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); },
         done.throw,
         done);
 
     connectable.connect();
+  });
+
+  it('should mirror a simple source Observable', function () {
+    var source = cold('--1-2---3-4--5-|');
+    var sourceSubs =  '^              !';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var expected =    '--1-2---3-4--5-|';
+
+    expectObservable(multicasted).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    multicasted.connect();
+  });
+
+  it('should do nothing if connect is not called, despite subscriptions', function () {
+    var source = cold('--1-2---3-4--5-|');
+    var sourceSubs = [];
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var expected =    '-';
+
+    expectObservable(multicasted).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should multicast the same values to multiple observers', function () {
+    var source =     cold('-1-2-3----4-|');
+    var sourceSubs =      '^           !';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    var expected1   =     '-1-2-3----4-|';
+    var subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    var expected2   =     '    -3----4-|';
+    var subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    var expected3   =     '        --4-|';
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    multicasted.connect();
+  });
+
+  it('should multicast an error from the source to multiple observers', function () {
+    var source =     cold('-1-2-3----4-#');
+    var sourceSubs =      '^           !';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    var expected1   =     '-1-2-3----4-#';
+    var subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    var expected2   =     '    -3----4-#';
+    var subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    var expected3   =     '        --4-#';
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    multicasted.connect();
+  });
+
+  it('should multicast the same values to multiple observers, ' +
+  'but is unsubscribed explicitly and early', function () {
+    var source =     cold('-1-2-3----4-|');
+    var sourceSubs =      '^        !   ';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var unsub =           '         u   ';
+    var subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    var expected1   =     '-1-2-3----   ';
+    var subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    var expected2   =     '    -3----   ';
+    var subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    var expected3   =     '        --   ';
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    // Set up unsubscription action
+    var connection;
+    expectObservable(hot(unsub).do(function () {
+      connection.unsubscribe();
+    })).toBe(unsub);
+
+    connection = multicasted.connect();
+  });
+
+  it('should multicast an empty source', function () {
+    var source = cold('|');
+    var sourceSubs =  '(^!)';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var expected =    '|';
+
+    expectObservable(multicasted).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    multicasted.connect();
+  });
+
+  it('should multicast a never source', function () {
+    var source = cold('-');
+    var sourceSubs =  '^';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var expected =    '-';
+
+    expectObservable(multicasted).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    multicasted.connect();
+  });
+
+  it('should multicast a throw source', function () {
+    var source = cold('#');
+    var sourceSubs =  '(^!)';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var expected =    '#';
+
+    expectObservable(multicasted).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    multicasted.connect();
+  });
+
+  describe('with refCount() and subject factory', function () {
+    it('should connect when first subscriber subscribes', function () {
+      var source = cold(       '-1-2-3----4-|');
+      var sourceSubs =      '   ^           !';
+      var multicasted = source.multicast(function () { return new Subject(); }).refCount();
+      var subscriber1 = hot('   a|           ').mergeMapTo(multicasted);
+      var expected1 =       '   -1-2-3----4-|';
+      var subscriber2 = hot('       b|       ').mergeMapTo(multicasted);
+      var expected2 =       '       -3----4-|';
+      var subscriber3 = hot('           c|   ').mergeMapTo(multicasted);
+      var expected3 =       '           --4-|';
+
+      expectObservable(subscriber1).toBe(expected1);
+      expectObservable(subscriber2).toBe(expected2);
+      expectObservable(subscriber3).toBe(expected3);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should disconnect when last subscriber unsubscribes', function () {
+      var source =     cold(   '-1-2-3----4-|');
+      var sourceSubs =      '   ^        !   ';
+      var multicasted = source.multicast(function () { return new Subject(); }).refCount();
+      var subscriber1 = hot('   a|           ').mergeMapTo(multicasted);
+      var unsub1 =          '          !     ';
+      var expected1   =     '   -1-2-3--     ';
+      var subscriber2 = hot('       b|       ').mergeMapTo(multicasted);
+      var unsub2 =          '            !   ';
+      var expected2   =     '       -3----   ';
+
+      expectObservable(subscriber1, unsub1).toBe(expected1);
+      expectObservable(subscriber2, unsub2).toBe(expected2);
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should be retryable when cold source is synchronous', function () {
+      function subjectFactory() { return new Subject(); }
+      var source = cold('(123#)');
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =  's         ';
+      var expected1 =   '(123123#) ';
+      var subscribe2 =  ' s        ';
+      var expected2 =   ' (123123#)';
+      var sourceSubs = ['(^!)',
+                        '(^!)',
+                        ' (^!)',
+                        ' (^!)'];
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.retry(1)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.retry(1)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should be repeatable when cold source is synchronous', function () {
+      function subjectFactory() { return new Subject(); }
+      var source = cold('(123|)');
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =  's         ';
+      var expected1 =   '(123123|) ';
+      var subscribe2 =  ' s        ';
+      var expected2 =   ' (123123|)';
+      var sourceSubs = ['(^!)',
+                        '(^!)',
+                        ' (^!)',
+                        ' (^!)'];
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.repeat(2)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.repeat(2)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should be retryable', function () {
+      function subjectFactory() { return new Subject(); }
+      var source =     cold('-1-2-3----4-#                        ');
+      var sourceSubs =     ['^           !                        ',
+                            '            ^           !            ',
+                            '                        ^           !'];
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =      's                                    ';
+      var expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-#';
+      var subscribe2 =      '    s                                ';
+      var expected2 =       '    -3----4--1-2-3----4--1-2-3----4-#';
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.retry(2)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.retry(2)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should be repeatable', function () {
+      function subjectFactory() { return new Subject(); }
+      var source =     cold('-1-2-3----4-|                        ');
+      var sourceSubs =     ['^           !                        ',
+                            '            ^           !            ',
+                            '                        ^           !'];
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =      's                                    ';
+      var expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
+      var subscribe2 =      '    s                                ';
+      var expected2 =       '    -3----4--1-2-3----4--1-2-3----4-|';
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.repeat(3)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.repeat(3)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
   });
 
   it('should multicast one observable to multiple observers', function (done) {
@@ -70,10 +324,7 @@ describe('Observable.prototype.multicast()', function () {
     var expected = [1, 2, 3, 4];
     var i = 0;
 
-    var source = Observable.fromArray([1, 2, 3, 4]).multicast(function () {
-      //NOTE: This is done for testing only, NEVER do this in prod code, LOL
-      return subject;
-    });
+    var source = Observable.fromArray([1, 2, 3, 4]).multicast(subject);
 
     source.subscribe(function (x) {
       expect(x).toBe(expected[i++]);
@@ -85,27 +336,52 @@ describe('Observable.prototype.multicast()', function () {
     source.connect();
   });
 
-  it('should allow you to reconnect by subscribing again', function (done) {
-    var expected = [1, 2, 3, 4];
-    var i = 0;
+  describe('when given a subject factory', function () {
+    it('should allow you to reconnect by subscribing again', function (done) {
+      var expected = [1, 2, 3, 4];
+      var i = 0;
 
-    var source = Observable.of(1, 2, 3, 4).multicast(function () {
-      return new Subject();
-    });
-
-    source.subscribe(function (x) {
-      expect(x).toBe(expected[i++]);
-    }, null,
-    function () {
-      i = 0;
+      var source = Observable.of(1, 2, 3, 4).multicast(function () {
+        return new Subject();
+      });
 
       source.subscribe(function (x) {
         expect(x).toBe(expected[i++]);
-      }, null, done);
+      }, null,
+        function () {
+          i = 0;
+
+          source.subscribe(function (x) {
+            expect(x).toBe(expected[i++]);
+          }, null, done);
+
+          source.connect();
+        });
 
       source.connect();
     });
+  });
 
-    source.connect();
+  describe('when given a subject', function () {
+    it('it should NOT allow you to reconnect by subscribing again', function (done) {
+      var expected = [1, 2, 3, 4];
+      var i = 0;
+
+      var source = Observable.of(1, 2, 3, 4).multicast(new Subject());
+
+      source.subscribe(function (x) {
+        expect(x).toBe(expected[i++]);
+      },
+        null,
+        function () {
+          source.subscribe(function (x) {
+            throw 'this should not be called';
+          }, null, done);
+
+          source.connect();
+        });
+
+      source.connect();
+    });
   });
 });
