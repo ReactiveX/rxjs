@@ -92,6 +92,6 @@ class DelaySubscriber<T> extends Subscriber<T> {
 
 class DelayMessage<T> {
   constructor(private time: number,
-    private notification: any) {
+              private notification: any) {
   }
 }

@@ -22,8 +22,8 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
   private throttled: Subscription<any>;
 
   constructor(destination: Subscriber<T>,
-    private delay: number,
-    private scheduler: Scheduler) {
+              private delay: number,
+              private scheduler: Scheduler) {
     super(destination);
   }
 

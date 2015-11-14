@@ -5,10 +5,6 @@ import {Subscription} from './Subscription';
 import {root} from './util/root';
 import {CoreOperators} from './CoreOperators';
 import {$$observable} from './util/Symbol_observable';
-export type ObservableOrPromise<T> = Observable<T> | PromiseLike<T>;
-export type ArrayOrIterable<T> = IterableShim<T> | ArrayLike<T> | Array<T>;
-export type ObservableOrIterable<T> = ObservableOrPromise<T> | ArrayOrIterable<T>;
-export type ObservableOrPromiseOrIterable<T> = Observable<T> | PromiseLike<T> | IterableShim<T>;
 import * as operators from './operator-typings';
 import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
 import {concat as concatStatic} from './operators/concat-static';
@@ -249,3 +245,8 @@ export class Observable<T> implements CoreOperators<T>  {
   zip: operators.operator_proto_zip<T>;
   zipAll: operators.operator_proto_zipAll<T>;
 }
+
+export type ObservableOrPromise<T> = Observable<T> | PromiseLike<T>;
+export type ArrayOrIterable<T> = IterableShim<T> | ArrayLike<T> | Array<T>;
+export type ObservableOrIterable<T> = ObservableOrPromise<T> | ArrayOrIterable<T>;
+export type ObservableOrPromiseOrIterable<T> = Observable<T> | PromiseLike<T> | IterableShim<T>;

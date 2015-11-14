@@ -42,10 +42,10 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
   }
 
   constructor(destination: Subscriber<T>,
-    private absoluteTimeout: boolean,
-    private waitFor: number,
-    private errorToSend: any,
-    private scheduler: Scheduler) {
+              private absoluteTimeout: boolean,
+              private waitFor: number,
+              private errorToSend: any,
+              private scheduler: Scheduler) {
     super(destination);
     this.scheduleTimeout();
   }
