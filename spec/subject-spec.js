@@ -19,6 +19,31 @@ describe('Subject', function () {
     subject.complete();
   });
 
+  it('should have a start method that does not pass through', function () {
+    var subject = new Subject();
+    expect(typeof subject.start).toBe('function');
+
+    var testSubscription = new Rx.Subscription();
+
+    subject.subscribe(null, null, null, function startHandler(subscription) {
+      expect(subscription).not.toBe(testSubscription);
+    });
+
+    subject.start(testSubscription);
+  });
+
+  it('should trigger observer\'s start handlers when they subscribe and if they unsubscribe it should prevent the ' +
+    'observer from being added to the observers list', function () {
+    var subject = new Subject();
+    subject.subscribe({
+      start: function start(subscription) {
+        expect(subject.observers.length).toBe(0);
+        subscription.unsubscribe();
+      }
+    });
+    expect(subject.observers.length).toBe(0);
+  });
+
   it('should pump values to multiple subscribers', function (done) {
     var subject = new Subject();
     var expected = ['foo', 'bar'];
