@@ -1,8 +1,9 @@
 var fs = require('fs');
-var regex = /export interface CoreOperators<T> \{([\S|\s]*)\}/;
+var regex = /export interface .*?Operators<T> \{([\S|\s]*)\}/;
 
 var content = fs.readFileSync('./src/CoreOperators.ts').toString();
-var contentResult = content.match(regex)[1].trim();
+var content2 = fs.readFileSync('./src/KitchenSinkOperators.ts').toString();
+var contentResult = content.match(regex)[1].trim() + '\n' + content2.match(regex)[1].trim();
 var contents = contentResult.split('\n');
 var extraSpaceRegex = /  /;
 
@@ -15,6 +16,7 @@ import {Subject} from \'./Subject\';\n\
 import {Observer} from \'./Observer\';\n\
 import {GroupedObservable} from \'./operators/groupBy-support\';\n\
 import {GroupByObservable} from \'./operators/groupBy\';\n\
+import {TimeInterval} from \'./operators/extended/timeInterval\';\n\
 import {_Selector, _IndexSelector, _SwitchMapResultSelector, _MergeMapProjector, _Predicate, _PredicateObservable, _Comparer, _Accumulator, _MergeAccumulator} from \'./types\';\n\n\
 ';
 
@@ -28,9 +30,13 @@ for (var i = 0; i < contents.length; i++) {
     }
 
     var property = file[1].trim();
-    var filename = file[2];
-    var fileContent = fs.readFileSync('./src/operators/'+filename+'.ts').toString();
-
+    var filename = file[2].trim();
+	if (fs.existsSync('./src/operators/'+filename+'.ts')) {
+      var fileContent = fs.readFileSync('./src/operators/'+filename+'.ts').toString();
+	} else {
+      var fileContent = fs.readFileSync('./src/operators/extended/'+filename+'.ts').toString();
+	}
+    
     var methods = [];
 
     var r = new RegExp('export function [_]?'+ filename +'([\\s|\\S]*?[\\;\\{])', 'g');

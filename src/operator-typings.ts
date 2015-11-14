@@ -6,6 +6,7 @@ import {Subject} from './Subject';
 import {Observer} from './Observer';
 import {GroupedObservable} from './operators/groupBy-support';
 import {GroupByObservable} from './operators/groupBy';
+import {TimeInterval} from './operators/extended/timeInterval';
 import {_Selector, _IndexSelector, _SwitchMapResultSelector, _MergeMapProjector, _Predicate, _PredicateObservable, _Comparer, _Accumulator, _MergeAccumulator} from './types';
 
 export interface operator_proto_buffer<T> {
@@ -268,4 +269,38 @@ export interface operator_proto_zip<T> {
 }
 export interface operator_proto_zipAll<T> {
   <R>(project?: (...values: Array<any>) => R): Observable<R>;
+}
+export interface operator_proto_isEmpty<T> {
+  (): Observable<T>;
+}
+export interface operator_proto_elementAt<T> {
+  (index: number, defaultValue?: T): Observable<T>;
+}
+export interface operator_proto_distinctUntilKeyChanged<T> {
+  (key: string, compare?: _Comparer<T, boolean>, thisArg?: any): Observable<T>;
+}
+export interface operator_proto_find<T> {
+  (predicate: _PredicateObservable<T>, thisArg?: any): Observable<T>;
+}
+export interface operator_proto_findIndex<T> {
+  (predicate: _PredicateObservable<T>, thisArg?: any): Observable<number>;
+}
+export interface operator_proto_max<T> {
+  <R>(comparer?: _Comparer<T, R>): Observable<R>;
+}
+export interface operator_proto_min<T> {
+  <R>(comparer?: _Comparer<T, R>): Observable<R>;
+}
+export interface operator_proto_timeInterval<T> {
+  (scheduler?: Scheduler): Observable<TimeInterval>;
+}
+export interface operator_proto_mergeScan<T> {
+  <R>(project: _MergeAccumulator<T, R>, seed: R): Observable<R>;
+}
+export interface operator_proto_switchFirst<T> {
+  (): Observable<T>;
+}
+export interface operator_proto_switchMapFirst<T> {
+  <R>(project: _MergeMapProjector<T, R>): Observable<R>;
+  <R, R2>(project: _MergeMapProjector<T, R>, resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
 }
