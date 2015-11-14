@@ -5,18 +5,21 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
-import {_MergeMapProjector, _SwitchMapResultSelector} from '../types';
+import {_ObservableMergeMapProjector, _IteratorMergeMapProjector, _SwitchMapResultSelector} from '../types';
 
-export function switchMapFirst<T, R>(project: _MergeMapProjector<T, R>): Observable<R>;
-export function switchMapFirst<T, R, R2>(project: _MergeMapProjector<T, R>,
+export function switchMapFirst<T, R>(project: _ObservableMergeMapProjector<T, R>): Observable<R>;
+export function switchMapFirst<T, R, R2>(project: _ObservableMergeMapProjector<T, R>,
                                          resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
-export function switchMapFirst(project: _MergeMapProjector<any, any>,
+export function switchMapFirst<T, R>(project: _IteratorMergeMapProjector<T, R>): Observable<R>;
+export function switchMapFirst<T, R, R2>(project: _IteratorMergeMapProjector<T, R>,
+                                         resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+export function switchMapFirst(project: any,
                                resultSelector?: _SwitchMapResultSelector<any, any, any>): Observable<any> {
   return this.lift(new SwitchMapFirstOperator(project, resultSelector));
 }
 
 class SwitchMapFirstOperator<T, R, R2> implements Operator<T, R> {
-  constructor(private project: _MergeMapProjector<T, R>,
+  constructor(private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
               private resultSelector?: _SwitchMapResultSelector<T, R, R2>) {
   }
 
@@ -31,7 +34,7 @@ class SwitchMapFirstSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private project: _MergeMapProjector<T, R>,
+              private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
               private resultSelector?: _SwitchMapResultSelector<T, R, R2>) {
     super(destination);
   }

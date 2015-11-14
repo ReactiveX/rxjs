@@ -246,7 +246,6 @@ export class Observable<T> implements CoreOperators<T>  {
   zipAll: operators.operator_proto_zipAll<T>;
 }
 
-export type ObservableOrPromise<T> = Observable<T> | PromiseLike<T>;
-export type ArrayOrIterable<T> = IterableShim<T> | ArrayLike<T> | Array<T>;
-export type ObservableOrIterable<T> = ObservableOrPromise<T> | ArrayOrIterable<T>;
-export type ObservableOrPromiseOrIterable<T> = Observable<T> | PromiseLike<T> | IterableShim<T>;
+export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
+export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T> | Array<T>;
+export type ObservableOrPromiseOrIterator<T> = ObservableOrPromise<T> | Iterator<T>;

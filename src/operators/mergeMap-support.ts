@@ -7,10 +7,10 @@ import {errorObject} from '../util/errorObject';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
 
-import {_MergeMapProjector, _SwitchMapResultSelector} from '../types';
+import {_ObservableMergeMapProjector, _IteratorMergeMapProjector, _SwitchMapResultSelector} from '../types';
 
 export class MergeMapOperator<T, R, R2> implements Operator<T, R> {
-  constructor(private project: _MergeMapProjector<T, R>,
+  constructor(private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
               private resultSelector?: _SwitchMapResultSelector<T, R, R2>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
@@ -29,7 +29,7 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   protected index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private project: _MergeMapProjector<T, R>,
+              private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
               private resultSelector?: _SwitchMapResultSelector<T, R, R2>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);

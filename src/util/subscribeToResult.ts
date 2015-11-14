@@ -1,10 +1,12 @@
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {$$iterator} from '../util/Symbol_iterator';
 import {$$observable} from '../util/Symbol_observable';
 import {Subscription} from '../Subscription';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {isPromise} from '../util/isPromise';
+import {isObservable} from '../util/isObservable';
+import {isIterator} from '../util/isIterator';
 
 const isArray = Array.isArray;
 
@@ -35,7 +37,7 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
     if (!destination.isUnsubscribed) {
       destination.complete();
     }
-  } else if (typeof result.then === 'function') {
+  } else if (isPromise(result)) {
     result.then(x => {
       if (!destination.isUnsubscribed) {
         destination.next(x);
@@ -47,7 +49,7 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
       setTimeout(() => { throw err; });
     });
     return destination;
-  } else if (typeof result[$$iterator] === 'function') {
+  } else if (isIterator(result)) {
     for (let item of result) {
       destination.next(item);
       if (destination.isUnsubscribed) {
@@ -57,7 +59,7 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
     if (!destination.isUnsubscribed) {
       destination.complete();
     }
-  } else if (typeof result[$$observable] === 'function') {
+  } else if (isObservable(result)) {
     const obs = result[$$observable]();
     if (typeof obs.subscribe !== 'function') {
       destination.error('invalid observable');

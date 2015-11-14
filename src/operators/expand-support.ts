@@ -6,10 +6,10 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-import {_MergeMapProjector} from '../types';
+import {_ObservableMergeMapProjector, _IteratorMergeMapProjector} from '../types';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: _MergeMapProjector<T, R>,
+  constructor(private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
@@ -25,7 +25,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private buffer: any[];
 
   constructor(destination: Subscriber<R>,
-              private project: _MergeMapProjector<T, R>,
+              private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
     if (concurrent < Number.POSITIVE_INFINITY) {

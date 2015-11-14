@@ -5,20 +5,25 @@ import {root} from '../util/root';
 import {$$iterator} from '../util/Symbol_iterator';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_IndexSelector} from '../types';
 
-export class IteratorObservable<T> extends Observable<T> {
+export class IteratorObservable<T, R> extends Observable<R> {
 
-  static create<T>(iterator: any,
-                   project?: (x?: any, i?: number) => T,
+  static create<T>(iterator: Iterator<T>,
+                   project?: _IndexSelector<T, T>,
                    thisArg?: any,
-                   scheduler?: Scheduler) {
+                    scheduler?: Scheduler): Observable<T>;
+  static create<T, R>(iterator: Iterator<T>,
+                    project?: _IndexSelector<T, R>,
+                    thisArg?: any,
+                    scheduler?: Scheduler): Observable<R> {
     if (iterator == null) {
       throw new Error('iterator cannot be null.');
     }
     if (project && typeof project !== 'function') {
       throw new Error('When provided, `project` must be a function.');
     }
-    return new IteratorObservable(iterator, project, thisArg, scheduler);
+    return new IteratorObservable<T, R>(iterator, project, thisArg, scheduler);
   }
 
   static dispatch(state) {
@@ -58,8 +63,8 @@ export class IteratorObservable<T> extends Observable<T> {
     (<any> this).schedule(state);
   }
 
-  constructor(private iterator: any,
-              private project?: (x?: any, i?: number) => T,
+  constructor(private iterator: Iterator<T>,
+              private project?: (x?: any, i?: number) => R,
               private thisArg?: any,
               private scheduler?: Scheduler) {
     super();

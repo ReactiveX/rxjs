@@ -7,6 +7,10 @@ import {EmptyError} from '../util/EmptyError';
 
 import {_IndexSelector, _PredicateObservable} from '../types';
 
+export function first<T>(predicate?: _PredicateObservable<T>): Observable<T>;
+export function first<T, R>(predicate?: _PredicateObservable<T>,
+                            resultSelector?: _IndexSelector<T, R>,
+                            defaultValue?: any): Observable<T | R>;
 export function first<T, R>(predicate?: _PredicateObservable<T>,
                             resultSelector?: _IndexSelector<T, R>,
                             defaultValue?: any): Observable<T | R> {

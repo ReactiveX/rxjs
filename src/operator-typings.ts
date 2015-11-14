@@ -1,5 +1,5 @@
 /* tslint:disable:class-name */ /* tslint:disable:no-unused-variable */ /* tslint:disable:max-line-length */
-import { Observable, ObservableOrIterable, ObservableOrPromise, ArrayOrIterable, ObservableOrPromiseOrIterable } from './Observable';
+import { Observable, ObservableOrPromise, ArrayOrIterator, ObservableOrPromiseOrIterator } from './Observable';
 import {Scheduler} from './Scheduler';
 import {Notification} from './Notification';
 import {Subject} from './Subject';
@@ -7,7 +7,7 @@ import {Observer} from './Observer';
 import {GroupedObservable} from './operators/groupBy-support';
 import {GroupByObservable} from './operators/groupBy';
 import {TimeInterval} from './operators/extended/timeInterval';
-import {_Selector, _IndexSelector, _SwitchMapResultSelector, _MergeMapProjector, _Predicate, _PredicateObservable, _Comparer, _Accumulator, _MergeAccumulator} from './types';
+import {_Selector, _IndexSelector, _SwitchMapResultSelector, _ObservableMergeMapProjector, _IteratorMergeMapProjector, _Predicate, _PredicateObservable, _Comparer, _Accumulator, _MergeAccumulator} from './types';
 
 export interface operator_proto_buffer<T> {
   (closingNotifier: Observable<any>): Observable<T[]>;
@@ -31,13 +31,13 @@ export interface operator_proto_combineAll<T> {
   (): Observable<T[]>;
 }
 export interface operator_proto_combineLatest<T> {
-  <T2>( second: ObservableOrPromiseOrIterable<T2>): Observable<[T, T2]>;
-  <T2, TResult>( second: ObservableOrPromiseOrIterable<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
-  <T2, T3>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>): Observable<[T, T2, T3]>;
-  <T2, T3, TResult>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
-  <T2, T3, T4>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, fourth: ObservableOrPromiseOrIterable<T4>): Observable<[T, T2, T3, T4]>;
-  <T2, T3, T4, TResult>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, fourth: ObservableOrPromiseOrIterable<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
-  <A, R>( ...observables: Array<ObservableOrPromiseOrIterable<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
+  <T2>( second: ObservableOrPromiseOrIterator<T2>): Observable<[T, T2]>;
+  <T2, TResult>( second: ObservableOrPromiseOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+  <T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>): Observable<[T, T2, T3]>;
+  <T2, T3, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  <T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>): Observable<[T, T2, T3, T4]>;
+  <T2, T3, T4, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
+  <A, R>( ...observables: Array<ObservableOrPromiseOrIterator<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
   (): Observable<[T]>;
   <TResult>( project: (v1: T) => TResult): Observable<TResult>;
   <A>( ...observables: Array<A>): Observable<(T | A)[]>;
@@ -52,8 +52,10 @@ export interface operator_proto_concatAll<T> {
   (): Observable<T>;
 }
 export interface operator_proto_concatMap<T> {
-  <R>(project: _IndexSelector<T, Observable<R>>): Observable<R>;
-  <R, R2>(project: _IndexSelector<T, Observable<R>>, projectResult: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+  <R>(project: _ObservableMergeMapProjector<T, R>): Observable<R>;
+  <R, R2>(project: _ObservableMergeMapProjector<T, R>, projectResult: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+  <R>(project: _IteratorMergeMapProjector<T, R>): Observable<R>;
+  <R, R2>(project: _IteratorMergeMapProjector<T, R>, projectResult: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
 }
 export interface operator_proto_concatMapTo<T> {
   <R>(observable: Observable<R>): Observable<R>;
@@ -84,7 +86,8 @@ export interface operator_proto_do<T> {
   (nextOrObserver?: Observer<T>|((x: T) => void), error?: (e: any) => void, complete?: () => void): Observable<T>;
 }
 export interface operator_proto_expand<T> {
-  <R>(project: _MergeMapProjector<T, R>, concurrent: number): Observable<R>;
+  <R>(project: _ObservableMergeMapProjector<T, R>, concurrent?: number): Observable<R>;
+  <R>(project: _IteratorMergeMapProjector<T, R>, concurrent?: number): Observable<R>;
 }
 export interface operator_proto_filter<T> {
   (select: _Predicate<T>, thisArg?: any): Observable<T>;
@@ -93,11 +96,14 @@ export interface operator_proto_finally<T> {
   (finallySelector: () => void, thisArg?: any): Observable<T>;
 }
 export interface operator_proto_first<T> {
+  (predicate?: _PredicateObservable<T>): Observable<T>;
   <R>(predicate?: _PredicateObservable<T>, resultSelector?: _IndexSelector<T, R>, defaultValue?: any): Observable<T | R>;
 }
 export interface operator_proto_mergeMap<T> {
-  <R>(project: _MergeMapProjector<T, R>): Observable<R>;
-  <R, R2>(project: _MergeMapProjector<T, R>, resultSelector: _SwitchMapResultSelector<T, R, R2>, concurrent?: number): Observable<R>;
+  <R>(project: _ObservableMergeMapProjector<T, R>): Observable<R>;
+  <R, R2>(project: _ObservableMergeMapProjector<T, R>, resultSelector: _SwitchMapResultSelector<T, R, R2>, concurrent?: number): Observable<R2>;
+  <R>(project: _IteratorMergeMapProjector<T, R>): Observable<R>;
+  <R, R2>(project: _IteratorMergeMapProjector<T, R>, resultSelector: _SwitchMapResultSelector<T, R, R2>, concurrent?: number): Observable<R2>;
 }
 export interface operator_proto_mergeMapTo<T> {
   <R>(observable: Observable<R>): Observable<R>;
@@ -110,25 +116,28 @@ export interface operator_proto_ignoreElements<T> {
   (): Observable<T>;
 }
 export interface operator_proto_last<T> {
-  <R>(predicate?: _PredicateObservable<T>, resultSelector?: _IndexSelector<T, R>, defaultValue?: R): Observable<T | R>;
+  (predicate?: _PredicateObservable<T>): Observable<T>;
+  <R>(predicate?: _PredicateObservable<T>, resultSelector?: _IndexSelector<T, R>, defaultValue?: any): Observable<T | R>;
 }
 export interface operator_proto_every<T> {
   (predicate: _PredicateObservable<T>, thisArg?: any): Observable<boolean>;
 }
 export interface operator_proto_map<T> {
+  (project: _IndexSelector<T, T>, thisArg?: any): Observable<T>;
   <R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R>;
 }
 export interface operator_proto_mapTo<T> {
+  (value: T): Observable<T>;
   <R>(value: R): Observable<R>;
 }
 export interface operator_proto_materialize<T> {
   (): Observable<Notification<T>>;
 }
 export interface operator_proto_merge<T> {
-  <T2>( second: ObservableOrPromiseOrIterable<T2>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2>;
-  <T2, T3>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2 | T3>;
-  <T2, T3, T4>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, forth: ObservableOrPromiseOrIterable<T4>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2 | T3 | T4>;
-  (...observables: (ObservableOrPromiseOrIterable<T> | Scheduler | number)[]): Observable<T>;
+  <T2>( second: ObservableOrPromiseOrIterator<T2>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2>;
+  <T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2 | T3>;
+  <T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, forth: ObservableOrPromiseOrIterator<T4>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2 | T3 | T4>;
+  (...observables: (ObservableOrPromiseOrIterator<T> | Scheduler | number)[]): Observable<T>;
 }
 export interface operator_proto_mergeAll<T> {
   <R>(concurrent: number): Observable<R>;
@@ -197,8 +206,10 @@ export interface operator_proto_switch<T> {
   (): Observable<T>;
 }
 export interface operator_proto_switchMap<T> {
-  <TResult>( project: _MergeMapProjector<T, Observable<TResult>>): Observable<TResult>;
-  <TOther, TResult>( project: _MergeMapProjector<T, Observable<TOther>>, resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
+  <TResult>( project: _ObservableMergeMapProjector<T, Observable<TResult>>): Observable<TResult>;
+  <TOther, TResult>( project: _ObservableMergeMapProjector<T, Observable<TOther>>, resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
+  <TResult>( project: _IteratorMergeMapProjector<T, Observable<TResult>>): Observable<TResult>;
+  <TOther, TResult>( project: _IteratorMergeMapProjector<T, Observable<TOther>>, resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
 }
 export interface operator_proto_switchMapTo<T> {
   <R>(observable: Observable<R>): Observable<R>;
@@ -247,24 +258,24 @@ export interface operator_proto_windowWhen<T> {
   (closingSelector: () => Observable<any>): Observable<Observable<T>>;
 }
 export interface operator_proto_withLatestFrom<T> {
-  <T2>( second: ObservableOrPromiseOrIterable<T2>): Observable<[T, T2]>;
-  <T2, TResult>( second: ObservableOrPromiseOrIterable<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
-  <T2, T3>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>): Observable<[T, T2, T3]>;
-  <T2, T3, TResult>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
-  <T2, T3, T4>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, fourth: ObservableOrPromiseOrIterable<T4>): Observable<[T, T2, T3, T4]>;
-  <T2, T3, T4, TResult>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, fourth: ObservableOrPromiseOrIterable<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
-  <A, R>( ...observables: Array<ObservableOrPromiseOrIterable<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
+  <T2>( second: ObservableOrPromiseOrIterator<T2>): Observable<[T, T2]>;
+  <T2, TResult>( second: ObservableOrPromiseOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+  <T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>): Observable<[T, T2, T3]>;
+  <T2, T3, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  <T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>): Observable<[T, T2, T3, T4]>;
+  <T2, T3, T4, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
+  <A, R>( ...observables: Array<ObservableOrPromiseOrIterator<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
   (): Observable<[T]>;
   <TResult>( project: (v1: T) => TResult): Observable<TResult>;
-  <A>( ...observables: Array<A>): ObservableOrPromiseOrIterable<(T | A)[]>;
+  <A>( ...observables: Array<A>): ObservableOrPromiseOrIterator<(T | A)[]>;
 }
 export interface operator_proto_zip<T> {
-  Proto<T, T2>( second: ObservableOrPromiseOrIterable<T2>): Observable<[T, T2]>;
-  Proto<T, T2, TResult>( second: ObservableOrPromiseOrIterable<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
-  Proto<T, T2, T3>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>): Observable<[T, T2, T3]>;
-  Proto<T, T2, T3, TResult>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
-  Proto<T, T2, T3, T4>( second: ObservableOrPromiseOrIterable<T2>, third: ObservableOrPromiseOrIterable<T3>, fourth: ObservableOrPromiseOrIterable<T4>): Observable<[T, T2, T3, T4]>;
-  Proto<T, A, R>( ...observables: Array<ObservableOrPromiseOrIterable<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
+  Proto<T, T2>( second: ObservableOrPromiseOrIterator<T2>): Observable<[T, T2]>;
+  Proto<T, T2, TResult>( second: ObservableOrPromiseOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+  Proto<T, T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>): Observable<[T, T2, T3, T4]>;
+  Proto<T, A, R>( ...observables: Array<ObservableOrPromiseOrIterator<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
   Proto<T>(): Observable<[T]>;
 }
 export interface operator_proto_zipAll<T> {
@@ -301,6 +312,8 @@ export interface operator_proto_switchFirst<T> {
   (): Observable<T>;
 }
 export interface operator_proto_switchMapFirst<T> {
-  <R>(project: _MergeMapProjector<T, R>): Observable<R>;
-  <R, R2>(project: _MergeMapProjector<T, R>, resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+  <R>(project: _ObservableMergeMapProjector<T, R>): Observable<R>;
+  <R, R2>(project: _ObservableMergeMapProjector<T, R>, resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+  <R>(project: _IteratorMergeMapProjector<T, R>): Observable<R>;
+  <R, R2>(project: _IteratorMergeMapProjector<T, R>, resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
 }
