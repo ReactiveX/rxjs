@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, hot, cold, rxTestScheduler */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -217,5 +217,21 @@ describe('Observable.prototype.repeat()', function () {
       e1.repeat();
       rxTestScheduler.flush();
     }).toThrow();
+  });
+
+  it('should raise error after first emit succeed', function () {
+    var repeated = false;
+
+    var e1 = cold('--a--|').map(function (x) {
+      if (repeated) {
+        throw 'error';
+      } else {
+        repeated = true;
+        return x;
+      }
+    });
+    var expected = '--a----#';
+
+    expectObservable(e1.repeat(2)).toBe(expected);
   });
 });
