@@ -9,14 +9,14 @@ import {subscribeToResult} from '../util/subscribeToResult';
 import {_ObservableMergeMapProjector, _IteratorMergeMapProjector, _SwitchMapResultSelector} from '../types';
 
 export function switchMap<T, TResult>(
-  project: _ObservableMergeMapProjector<T, Observable<TResult>>): Observable<TResult>;
+  project: _ObservableMergeMapProjector<T, TResult>): Observable<TResult>;
 export function switchMap<T, TOther, TResult>(
-  project: _ObservableMergeMapProjector<T, Observable<TOther>>,
+  project: _ObservableMergeMapProjector<T, TOther>,
   resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
 export function switchMap<T, TResult>(
-  project: _IteratorMergeMapProjector<T, Observable<TResult>>): Observable<TResult>;
+  project: _IteratorMergeMapProjector<T, TResult>): Observable<TResult>;
 export function switchMap<T, TOther, TResult>(
-  project: _IteratorMergeMapProjector<T, Observable<TOther>>,
+  project: _IteratorMergeMapProjector<T, TOther>,
   resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
 export function switchMap(project: any,
                           resultSelector?: _SwitchMapResultSelector<any, any, any>): Observable<any> {

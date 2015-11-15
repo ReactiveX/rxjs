@@ -1,5 +1,5 @@
 /* tslint:disable:class-name */ /* tslint:disable:no-unused-variable */ /* tslint:disable:max-line-length */
-import { Observable, ObservableOrPromise, ArrayOrIterator, ObservableOrPromiseOrIterator } from './Observable';
+import {Observable, ObservableOrPromise, ArrayOrIterator} from './Observable';
 import {Scheduler} from './Scheduler';
 import {Notification} from './Notification';
 import {Subject} from './Subject';
@@ -31,16 +31,36 @@ export interface operator_proto_combineAll<T> {
   (): Observable<T[]>;
 }
 export interface operator_proto_combineLatest<T> {
-  <T2>( second: ObservableOrPromiseOrIterator<T2>): Observable<[T, T2]>;
-  <T2, TResult>( second: ObservableOrPromiseOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
-  <T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>): Observable<[T, T2, T3]>;
-  <T2, T3, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
-  <T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>): Observable<[T, T2, T3, T4]>;
-  <T2, T3, T4, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
-  <A, R>( ...observables: Array<ObservableOrPromiseOrIterator<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
-  (): Observable<[T]>;
-  <TResult>( project: (v1: T) => TResult): Observable<TResult>;
-  <A>( ...observables: Array<A>): Observable<(T | A)[]>;
+  <TResult>( project: (v1: T) => TResult ): Observable<TResult>;
+  <TResult>( project: (v1: T) => TResult ): Observable<TResult>;
+  <T2>( second: ObservableOrPromise<T2> ): Observable<[T, T2]>;
+  <T2>( second: ObservableOrPromise<T2> | ArrayOrIterator<T2> ): Observable<[T, T2]>;
+  <T2>( second: ArrayOrIterator<T2> ): Observable<[T, T2]>;
+  <T2>( second: ArrayOrIterator<T2> ): Observable<[T, T2]>;
+  <T2, TResult>( second: ObservableOrPromise<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, TResult>( second: ArrayOrIterator<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, TResult>( second: ObservableOrPromise<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, TResult>( second: ArrayOrIterator<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  ( ...observables: Array<ObservableOrPromise<T>>): Observable<T[]>;
+  ( ...observables: Array<ArrayOrIterator<T>>): Observable<T[]>;
+  <R>( ...observables: Array<ObservableOrPromise<T> | ((...values: Array<T>) => R)>): Observable<R>;
+  <R>( ...observables: Array<ArrayOrIterator<T> | ((...values: Array<T>) => R)>): Observable<R>;
 }
 export interface operator_proto_concat<T> {
   <T2>( second: Observable<T2>, scheduler?: Scheduler): Observable<T | T2>;
@@ -134,10 +154,10 @@ export interface operator_proto_materialize<T> {
   (): Observable<Notification<T>>;
 }
 export interface operator_proto_merge<T> {
-  <T2>( second: ObservableOrPromiseOrIterator<T2>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2>;
-  <T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2 | T3>;
-  <T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, forth: ObservableOrPromiseOrIterator<T4>, concurrent?: number, scheduler?: Scheduler): Observable<T | T2 | T3 | T4>;
-  (...observables: (ObservableOrPromiseOrIterator<T> | Scheduler | number)[]): Observable<T>;
+  (...observables: (ObservableOrPromise<T> | Scheduler | number)[]): T;
+  (...observables: (ArrayOrIterator<T> | Scheduler | number)[]): T;
+  <R>(...observables: (ObservableOrPromise<T> | Scheduler | number)[]): Observable<R>;
+  <R>(...observables: (ArrayOrIterator<T> | Scheduler | number)[]): Observable<R>;
 }
 export interface operator_proto_mergeAll<T> {
   <R>(concurrent: number): Observable<R>;
@@ -206,10 +226,10 @@ export interface operator_proto_switch<T> {
   (): Observable<T>;
 }
 export interface operator_proto_switchMap<T> {
-  <TResult>( project: _ObservableMergeMapProjector<T, Observable<TResult>>): Observable<TResult>;
-  <TOther, TResult>( project: _ObservableMergeMapProjector<T, Observable<TOther>>, resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
-  <TResult>( project: _IteratorMergeMapProjector<T, Observable<TResult>>): Observable<TResult>;
-  <TOther, TResult>( project: _IteratorMergeMapProjector<T, Observable<TOther>>, resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
+  <TResult>( project: _ObservableMergeMapProjector<T, TResult>): Observable<TResult>;
+  <TOther, TResult>( project: _ObservableMergeMapProjector<T, TOther>, resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
+  <TResult>( project: _IteratorMergeMapProjector<T, TResult>): Observable<TResult>;
+  <TOther, TResult>( project: _IteratorMergeMapProjector<T, TOther>, resultSelector: _SwitchMapResultSelector<T, TOther, TResult>): Observable<TResult>;
 }
 export interface operator_proto_switchMapTo<T> {
   <R>(observable: Observable<R>): Observable<R>;
@@ -258,24 +278,68 @@ export interface operator_proto_windowWhen<T> {
   (closingSelector: () => Observable<any>): Observable<Observable<T>>;
 }
 export interface operator_proto_withLatestFrom<T> {
-  <T2>( second: ObservableOrPromiseOrIterator<T2>): Observable<[T, T2]>;
-  <T2, TResult>( second: ObservableOrPromiseOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
-  <T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>): Observable<[T, T2, T3]>;
-  <T2, T3, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
-  <T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>): Observable<[T, T2, T3, T4]>;
-  <T2, T3, T4, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
-  <A, R>( ...observables: Array<ObservableOrPromiseOrIterator<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
-  (): Observable<[T]>;
-  <TResult>( project: (v1: T) => TResult): Observable<TResult>;
-  <A>( ...observables: Array<A>): ObservableOrPromiseOrIterator<(T | A)[]>;
+  <TResult>( project: (v1: T) => TResult ): Observable<TResult>;
+  <TResult>( project: (v1: T) => TResult ): Observable<TResult>;
+  <T2>( second: ObservableOrPromise<T2> ): Observable<[T, T2]>;
+  <T2>( second: ObservableOrPromise<T2> | ArrayOrIterator<T2> ): Observable<[T, T2]>;
+  <T2>( second: ArrayOrIterator<T2> ): Observable<[T, T2]>;
+  <T2>( second: ArrayOrIterator<T2> ): Observable<[T, T2]>;
+  <T2, TResult>( second: ObservableOrPromise<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, TResult>( second: ArrayOrIterator<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, TResult>( second: ObservableOrPromise<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, TResult>( second: ArrayOrIterator<T2>, project: (v1: T, v2: T2) => TResult ): Observable<TResult>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3> ): Observable<[T, T2, T3]>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  <T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult ): Observable<TResult>;
+  ( ...observables: Array<ObservableOrPromise<T>>): Observable<T[]>;
+  ( ...observables: Array<ArrayOrIterator<T>>): Observable<T[]>;
+  <R>( ...observables: Array<ObservableOrPromise<T> | ((...values: Array<T>) => R)>): Observable<R>;
+  <R>( ...observables: Array<ArrayOrIterator<T> | ((...values: Array<T>) => R)>): Observable<R>;
 }
 export interface operator_proto_zip<T> {
-  Proto<T, T2>( second: ObservableOrPromiseOrIterator<T2>): Observable<[T, T2]>;
-  Proto<T, T2, TResult>( second: ObservableOrPromiseOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
-  Proto<T, T2, T3>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>): Observable<[T, T2, T3]>;
-  Proto<T, T2, T3, TResult>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
-  Proto<T, T2, T3, T4>( second: ObservableOrPromiseOrIterator<T2>, third: ObservableOrPromiseOrIterator<T3>, fourth: ObservableOrPromiseOrIterator<T4>): Observable<[T, T2, T3, T4]>;
-  Proto<T, A, R>( ...observables: Array<ObservableOrPromiseOrIterator<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
+  Proto<T, TResult>( project: (v1: T) => TResult): Observable<TResult>;
+  Proto<T, TResult>( project: (v1: T) => TResult): Observable<TResult>;
+  Proto<T, T2>( second: ObservableOrPromise<T2>): Observable<[T, T2]>;
+  Proto<T, T2>( second: ObservableOrPromise<T2> | ArrayOrIterator<T2>): Observable<[T, T2]>;
+  Proto<T, T2>( second: ArrayOrIterator<T2>): Observable<[T, T2]>;
+  Proto<T, T2>( second: ArrayOrIterator<T2>): Observable<[T, T2]>;
+  Proto<T, T2, TResult>( second: ObservableOrPromise<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+  Proto<T, T2, TResult>( second: ArrayOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+  Proto<T, T2, TResult>( second: ObservableOrPromise<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+  Proto<T, T2, TResult>( second: ArrayOrIterator<T2>, project: (v1: T, v2: T2) => TResult): Observable<TResult>;
+  Proto<T, T2, T3>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>): Observable<[T, T2, T3]>;
+  Proto<T, T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, TResult>( second: ObservableOrPromise<T2>, third: ArrayOrIterator<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T, T2, T3, TResult>( second: ArrayOrIterator<T2>, third: ObservableOrPromise<T3>, project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
+  Proto<T>( ...observables: Array<ObservableOrPromise<T>>): Observable<T[]>;
+  Proto<T>( ...observables: Array<ArrayOrIterator<T>>): Observable<T[]>;
+  Proto<T, R>( ...observables: Array<ObservableOrPromise<T> | ((...values: Array<T>) => R)>): Observable<R>;
+  Proto<T, R>( ...observables: Array<ArrayOrIterator<T> | ((...values: Array<T>) => R)>): Observable<R>;
   Proto<T>(): Observable<[T]>;
 }
 export interface operator_proto_zipAll<T> {

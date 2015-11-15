@@ -1,4 +1,4 @@
-import {Observable, ObservableOrPromiseOrIterator} from '../Observable';
+import {Observable, ObservableOrPromise, ArrayOrIterator} from '../Observable';
 import {ArrayObservable} from '../observables/ArrayObservable';
 import {CombineLatestOperator} from './combineLatest-support';
 import {Scheduler} from '../Scheduler';
@@ -15,42 +15,151 @@ import {isScheduler} from '../util/isScheduler';
  * the most recent values from each observable.
  */
 export function combineLatest<T>(
-  first: ObservableOrPromiseOrIterator<T>,
+  first: ObservableOrPromise<T>,
+  scheduler?: Scheduler): Observable<[T]>;
+export function combineLatest<T>(
+  first: ArrayOrIterator<T>,
   scheduler?: Scheduler): Observable<[T]>;
 export function combineLatest<T, TResult>(
-  first: ObservableOrPromiseOrIterator<T>,
+  first: ObservableOrPromise<T>,
+  project: (v1: T) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, TResult>(
+  first: ArrayOrIterator<T>,
   project: (v1: T) => TResult,
   scheduler?: Scheduler): Observable<TResult>;
 export function combineLatest<T, T2>(
-  first: ObservableOrPromiseOrIterator<T>,
-  second: ObservableOrPromiseOrIterator<T2>,
+  first: ObservableOrPromise<T>,
+  second: ObservableOrPromise<T2>,
+  scheduler?: Scheduler): Observable<[T, T2]>;
+export function combineLatest<T, T2>(
+  first: ArrayOrIterator<T>,
+  second: ObservableOrPromise<T2> | ArrayOrIterator<T2>,
+  scheduler?: Scheduler): Observable<[T, T2]>;
+export function combineLatest<T, T2>(
+  first: ObservableOrPromise<T>,
+  second: ArrayOrIterator<T2>,
+  scheduler?: Scheduler): Observable<[T, T2]>;
+export function combineLatest<T, T2>(
+  first: ArrayOrIterator<T>,
+  second: ArrayOrIterator<T2>,
   scheduler?: Scheduler): Observable<[T, T2]>;
 export function combineLatest<T, T2, TResult>(
-  first: ObservableOrPromiseOrIterator<T>,
-  second: ObservableOrPromiseOrIterator<T2>,
+  first: ObservableOrPromise<T>,
+  second: ObservableOrPromise<T2>,
+  project: (v1: T, v2: T2) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, TResult>(
+  first: ObservableOrPromise<T>,
+  second: ArrayOrIterator<T2>,
+  project: (v1: T, v2: T2) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, TResult>(
+  first: ArrayOrIterator<T>,
+  second: ObservableOrPromise<T2>,
+  project: (v1: T, v2: T2) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, TResult>(
+  first: ArrayOrIterator<T>,
+  second: ArrayOrIterator<T2>,
   project: (v1: T, v2: T2) => TResult,
   scheduler?: Scheduler): Observable<TResult>;
 export function combineLatest<T, T2, T3>(
-  first: ObservableOrPromiseOrIterator<T>,
-  second: ObservableOrPromiseOrIterator<T2>,
-  third: ObservableOrPromiseOrIterator<T3>,
+  first: ObservableOrPromise<T>,
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
+  scheduler?: Scheduler): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  first: ArrayOrIterator<T>,
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
+  scheduler?: Scheduler): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  first: ArrayOrIterator<T>,
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
+  scheduler?: Scheduler): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  first: ArrayOrIterator<T>,
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  scheduler?: Scheduler): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  first: ObservableOrPromise<T>,
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  scheduler?: Scheduler): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  first: ObservableOrPromise<T>,
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  scheduler?: Scheduler): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  first: ArrayOrIterator<T>,
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  scheduler?: Scheduler): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  first: ObservableOrPromise<T>,
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
   scheduler?: Scheduler): Observable<[T, T2, T3]>;
 export function combineLatest<T, T2, T3, TResult>(
-  first: ObservableOrPromiseOrIterator<T>,
-  second: ObservableOrPromiseOrIterator<T2>,
-  third: ObservableOrPromiseOrIterator<T3>,
+  first: ObservableOrPromise<T>,
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
   project: (v1: T, v2: T2, v3: T3) => TResult,
   scheduler?: Scheduler): Observable<TResult>;
-export function combineLatest<T, T2, T3, T4>(
-  first: ObservableOrPromiseOrIterator<T>,
-  second: ObservableOrPromiseOrIterator<T2>,
-  third: ObservableOrPromiseOrIterator<T3>,
-  fourth: ObservableOrPromiseOrIterator<T4>,
-  scheduler?: Scheduler): Observable<[T, T2, T3, T4]>;
+export function combineLatest<T, T2, T3, TResult>(
+  first: ArrayOrIterator<T>,
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  first: ArrayOrIterator<T>,
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  first: ArrayOrIterator<T>,
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  first: ObservableOrPromise<T>,
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  first: ObservableOrPromise<T>,
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  first: ArrayOrIterator<T>,
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  first: ObservableOrPromise<T>,
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult,
+  scheduler?: Scheduler): Observable<TResult>;
 export function combineLatest<T>(
-  ...observables: Array<ObservableOrPromiseOrIterator<T> | ((...values: Array<T>) => T) | Scheduler>): Observable<T>;
+  ...observables: Array<ObservableOrPromise<T> | Scheduler>): Observable<T[]>;
+export function combineLatest<T>(
+  ...observables: Array<ArrayOrIterator<T> | Scheduler>): Observable<T[]>;
 export function combineLatest<T, R>(
-  ...observables: Array<ObservableOrPromiseOrIterator<T> | ((...values: Array<T>) => R) | Scheduler>): Observable<R>;
+  ...observables: Array<ObservableOrPromise<T> | ((...values: Array<T>) => R) | Scheduler>): Observable<R>;
+export function combineLatest<T, R>(
+  ...observables: Array<ArrayOrIterator<T> | ((...values: Array<T>) => R) | Scheduler>): Observable<R>;
 export function combineLatest(
   ...observables: Array<any>): Observable<any> {
   let project, scheduler;

@@ -9,7 +9,7 @@ var extraSpaceRegex = /  /;
 
 var operators = {};
 var fileResult = '/* tslint:disable:class-name */ /* tslint:disable:no-unused-variable */ /* tslint:disable:max-line-length */\n\
-import { Observable, ObservableOrPromise, ArrayOrIterator, ObservableOrPromiseOrIterator } from \'./Observable\';\n\
+import {Observable, ObservableOrPromise, ArrayOrIterator} from \'./Observable\';\n\
 import {Scheduler} from \'./Scheduler\';\n\
 import {Notification} from \'./Notification\';\n\
 import {Subject} from \'./Subject\';\n\

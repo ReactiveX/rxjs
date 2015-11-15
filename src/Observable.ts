@@ -248,4 +248,3 @@ export class Observable<T> implements CoreOperators<T>  {
 
 export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
 export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T> | Array<T>;
-export type ObservableOrPromiseOrIterator<T> = ObservableOrPromise<T> | Iterator<T>;

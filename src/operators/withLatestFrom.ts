@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable, ObservableOrPromiseOrIterator} from '../Observable';
+import {Observable, ObservableOrPromise, ArrayOrIterator} from '../Observable';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -24,35 +24,121 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
  * ```
  */
- export function withLatestFrom<T, T2>(
-     second: ObservableOrPromiseOrIterator<T2>): Observable<[T, T2]>;
- export function withLatestFrom<T, T2, TResult>(
-     second: ObservableOrPromiseOrIterator<T2>,
-     project: (v1: T, v2: T2) => TResult): Observable<TResult>;
- export function withLatestFrom<T, T2, T3>(
-     second: ObservableOrPromiseOrIterator<T2>,
-     third: ObservableOrPromiseOrIterator<T3>): Observable<[T, T2, T3]>;
- export function withLatestFrom<T, T2, T3, TResult>(
-     second: ObservableOrPromiseOrIterator<T2>,
-     third: ObservableOrPromiseOrIterator<T3>,
-     project: (v1: T, v2: T2, v3: T3) => TResult): Observable<TResult>;
- export function withLatestFrom<T, T2, T3, T4>(
-     second: ObservableOrPromiseOrIterator<T2>,
-     third: ObservableOrPromiseOrIterator<T3>,
-     fourth: ObservableOrPromiseOrIterator<T4>): Observable<[T, T2, T3, T4]>;
- export function withLatestFrom<T, T2, T3, T4, TResult>(
-     second: ObservableOrPromiseOrIterator<T2>,
-     third: ObservableOrPromiseOrIterator<T3>,
-     fourth: ObservableOrPromiseOrIterator<T4>,
-     project: (v1: T, v2: T2, v3: T3, v4: T4) => TResult): Observable<TResult>;
- export function withLatestFrom<T, A, R>(
-     ...observables: Array<ObservableOrPromiseOrIterator<A> | ((...values: Array<T | A>) => R)>): Observable<R>;
- export function withLatestFrom<T>(): Observable<[T]>;
- export function withLatestFrom<T, TResult>(
-     project: (v1: T) => TResult): Observable<TResult>;
- export function withLatestFrom<T, A>(
-     ...observables: Array<A>): ObservableOrPromiseOrIterator<(T | A)[]>;
-export function withLatestFrom<R>(...args: Array<ObservableOrPromiseOrIterator<any> | ((...values: Array<any>) => R)>): Observable<R> {
+export function withLatestFrom<T, TResult>(
+  project: (v1: T) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, TResult>(
+  project: (v1: T) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2>(
+  second: ObservableOrPromise<T2>
+): Observable<[T, T2]>;
+export function withLatestFrom<T, T2>(
+  second: ObservableOrPromise<T2> | ArrayOrIterator<T2>
+): Observable<[T, T2]>;
+export function withLatestFrom<T, T2>(
+  second: ArrayOrIterator<T2>
+): Observable<[T, T2]>;
+export function withLatestFrom<T, T2>(
+  second: ArrayOrIterator<T2>
+): Observable<[T, T2]>;
+export function withLatestFrom<T, T2, TResult>(
+  second: ObservableOrPromise<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, TResult>(
+  second: ArrayOrIterator<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, TResult>(
+  second: ObservableOrPromise<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, TResult>(
+  second: ArrayOrIterator<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function withLatestFrom<T>(
+  ...observables: Array<ObservableOrPromise<T>>): Observable<T[]>;
+export function withLatestFrom<T>(
+  ...observables: Array<ArrayOrIterator<T>>): Observable<T[]>;
+export function withLatestFrom<T, R>(
+  ...observables: Array<ObservableOrPromise<T> | ((...values: Array<T>) => R)>): Observable<R>;
+export function withLatestFrom<T, R>(
+  ...observables: Array<ArrayOrIterator<T> | ((...values: Array<T>) => R)>): Observable<R>;
+export function withLatestFrom(...args: Array<any>): Observable<any> {
   let project;
   if (typeof args[args.length - 1] === 'function') {
     project = args.pop();
