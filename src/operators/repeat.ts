@@ -29,28 +29,24 @@ class FirstRepeatSubscriber<T> extends Subscriber<T> {
               private count: number,
               private source: Observable<T>) {
     super(null);
-    if (count === 0) {
-      this.destination.complete();
-      super.unsubscribe();
-    }
     this.lastSubscription = this;
   }
 
-  _next(value: T) {
+  _next(value: T): void {
     this.destination.next(value);
   }
 
-  _error(err: any) {
+  _error(err: any): void {
     this.destination.error(err);
   }
 
-  complete() {
+  complete(): void {
     if (!this.isUnsubscribed) {
       this.resubscribe(this.count);
     }
   }
 
-  unsubscribe() {
+  unsubscribe(): void {
     const lastSubscription = this.lastSubscription;
     if (lastSubscription === this) {
       super.unsubscribe();
@@ -59,7 +55,7 @@ class FirstRepeatSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  resubscribe(count: number) {
+  resubscribe(count: number): void {
     this.lastSubscription.unsubscribe();
     if (count - 1 === 0) {
       this.destination.complete();
@@ -76,15 +72,15 @@ class MoreRepeatSubscriber<T> extends Subscriber<T> {
     super(null);
   }
 
-  _next(value: T) {
+  _next(value: T): void {
     this.parent.destination.next(value);
   }
 
-  _error(err: any) {
+  _error(err: any): void {
     this.parent.destination.error(err);
   }
 
-  _complete() {
+  _complete(): void {
     const count = this.count;
     this.parent.resubscribe(count < 0 ? -1 : count);
   }
