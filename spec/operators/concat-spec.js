@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, hot, cold */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 
 describe('Observable.prototype.concat()', function () {
@@ -220,5 +220,38 @@ describe('Observable.prototype.concat()', function () {
     expectObservable(e1.concat(e2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should accept scheduler with multiple observables', function () {
+    var e1 =   cold('---a|');
+    var e1subs =    '^   !';
+    var e2 =   cold(    '---b--|');
+    var e2subs =    '    ^     !';
+    var e3 =   cold(          '---c--|');
+    var e3subs =    '          ^     !';
+    var expected =  '---a---b-----c--|';
+
+    expectObservable(e1.concat(e2, e3, rxTestScheduler)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
+  });
+
+  it('should accept scheduler without observable parameters', function () {
+    var e1 =   cold('---a-|');
+    var e1subs =    '^    !';
+    var expected =  '---a-|';
+
+    expectObservable(e1.concat(rxTestScheduler)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should emit self without parameters', function () {
+    var e1 =   cold('---a-|');
+    var e1subs =    '^    !';
+    var expected =  '---a-|';
+
+    expectObservable(e1.concat()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
