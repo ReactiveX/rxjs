@@ -3,10 +3,11 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {nextTick} from '../schedulers/nextTick';
 import {isScheduler} from '../util/isScheduler';
+import {isDate} from '../util/isDate';
 
 export class TimerObservable<T> extends Observable<T> {
 
-  static create(dueTime: number = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
+  static create(dueTime: number | Date = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
     return new TimerObservable(dueTime, period, scheduler);
   }
 
@@ -35,9 +36,13 @@ export class TimerObservable<T> extends Observable<T> {
   }
 
   _period: number;
+  private dueTime: number = 0;
 
-  constructor(private dueTime: number = 0, private period?: number | Scheduler, private scheduler?: Scheduler) {
+  constructor(dueTime: number | Date = 0,
+              private period?: number | Scheduler,
+              private scheduler?: Scheduler) {
     super();
+
     if (isNumeric(period)) {
       this._period = Number(period) < 1 && 1 || Number(period);
     } else if (isScheduler(period)) {
@@ -47,6 +52,9 @@ export class TimerObservable<T> extends Observable<T> {
       scheduler = nextTick;
     }
     this.scheduler = scheduler;
+
+    const absoluteDueTime = isDate(dueTime);
+    this.dueTime = absoluteDueTime ? (+dueTime - this.scheduler.now()) : <number>dueTime;
   }
 
   _subscribe(subscriber) {

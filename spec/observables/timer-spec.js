@@ -43,4 +43,19 @@ describe('Observable.timer', function () {
 
     expectObservable(source, unsub).toBe(expected, values);
   });
+
+  it('should schedule a value at a specified Date', function () {
+    var source = Observable.timer(new Date(rxTestScheduler.now() + 40), null, rxTestScheduler);
+    var expected = '----(a|)';
+
+    expectObservable(source).toBe(expected, {a: 0});
+  });
+
+  it('should start after delay and periodically emit values', function () {
+    var source = Observable.timer(new Date(rxTestScheduler.now() + 40), 20, rxTestScheduler).take(5);
+    var expected = '----a-b-c-d-(e|)';
+    var values = { a: 0, b: 1, c: 2, d: 3, e: 4};
+
+    expectObservable(source).toBe(expected, values);
+  });
 });

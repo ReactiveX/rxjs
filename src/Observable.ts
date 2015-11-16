@@ -152,7 +152,7 @@ export class Observable<T> implements CoreOperators<T>  {
   static of: <T>(...values: Array<T | Scheduler>) => Observable<T>;
   static range: (start: number, end: number, scheduler?: Scheduler) => Observable<number>;
   static throw: <T>(error: T) => Observable<T>;
-  static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
+  static timer: (dueTime?: number | Date, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
   static zip: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T)>) => Observable<T>;
 
   // core operators
