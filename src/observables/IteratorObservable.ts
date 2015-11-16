@@ -12,11 +12,11 @@ export class IteratorObservable<T, R> extends Observable<R> {
   static create<T>(iterator: Iterator<T>,
                    project?: _IndexSelector<T, T>,
                    thisArg?: any,
-                    scheduler?: Scheduler): Observable<T>;
+                   scheduler?: Scheduler): Observable<T>;
   static create<T, R>(iterator: Iterator<T>,
-                    project?: _IndexSelector<T, R>,
-                    thisArg?: any,
-                    scheduler?: Scheduler): Observable<R> {
+                      project?: _IndexSelector<T, R>,
+                      thisArg?: any,
+                      scheduler?: Scheduler): Observable<R> {
     if (iterator == null) {
       throw new Error('iterator cannot be null.');
     }
