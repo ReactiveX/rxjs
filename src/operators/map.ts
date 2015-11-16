@@ -15,7 +15,6 @@ import {_IndexSelector} from '../types';
  * @param {any} [thisArg] an optional argument to define what `this` is in the project function
  * @returns {Observable} a observable of projected values
  */
-export function map<T>(project: _IndexSelector<T, T>, thisArg?: any): Observable<T>;
 export function map<T, R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R>;
 export function map(project: _IndexSelector<any, any>, thisArg?: any): Observable<any> {
   return this.lift(new MapOperator(project, thisArg));

@@ -1,5 +1,6 @@
 /* tslint:disable:class-name */ /* tslint:disable:no-unused-variable */ /* tslint:disable:max-line-length */
 import {Observable, ObservableOrPromise, ArrayOrIterator} from './Observable';
+import {ConnectableObservable} from './observables/ConnectableObservable';
 import {Scheduler} from './Scheduler';
 import {Notification} from './Notification';
 import {Subject} from './Subject';
@@ -143,19 +144,19 @@ export interface operator_proto_every<T> {
   (predicate: _PredicateObservable<T>, thisArg?: any): Observable<boolean>;
 }
 export interface operator_proto_map<T> {
-  (project: _IndexSelector<T, T>, thisArg?: any): Observable<T>;
   <R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R>;
 }
 export interface operator_proto_mapTo<T> {
-  (value: T): Observable<T>;
   <R>(value: R): Observable<R>;
 }
 export interface operator_proto_materialize<T> {
   (): Observable<Notification<T>>;
 }
 export interface operator_proto_merge<T> {
-  (...observables: (ObservableOrPromise<T> | Scheduler | number)[]): T;
-  (...observables: (ArrayOrIterator<T> | Scheduler | number)[]): T;
+  (concurrency: number): T;
+  (scheduler: Scheduler, concurrency: number): T;
+  (...observables: (ObservableOrPromise<T> | Scheduler | number)[]): Observable<T>;
+  (...observables: (ArrayOrIterator<T> | Scheduler | number)[]): Observable<T>;
   <R>(...observables: (ObservableOrPromise<T> | Scheduler | number)[]): Observable<R>;
   <R>(...observables: (ArrayOrIterator<T> | Scheduler | number)[]): Observable<R>;
 }
@@ -163,7 +164,7 @@ export interface operator_proto_mergeAll<T> {
   <R>(concurrent: number): Observable<R>;
 }
 export interface operator_proto_multicast<T> {
-  (subjectOrSubjectFactory: Subject<T> | (() => Subject<T>)): Observable<T>;
+  (subjectOrSubjectFactory: Subject<T> | (() => Subject<T>)): ConnectableObservable<T>;
 }
 export interface operator_proto_observeOn<T> {
   (scheduler: Scheduler, delay?: number): Observable<T>;
@@ -172,13 +173,13 @@ export interface operator_proto_partition<T> {
   (predicate: _Predicate<T>, thisArg?: any): Observable<[T, T]>;
 }
 export interface operator_proto_publish<T> {
-  (): Observable<T>;
+  (): ConnectableObservable<T>;
 }
 export interface operator_proto_publishBehavior<T> {
-  (value: T): Observable<T>;
+  (value: T): ConnectableObservable<T>;
 }
 export interface operator_proto_publishReplay<T> {
-  (bufferSize?: number, windowTime?: number, scheduler?: Scheduler): Observable<T>;
+  (bufferSize?: number, windowTime?: number, scheduler?: Scheduler): ConnectableObservable<T>;
 }
 export interface operator_proto_reduce<T> {
   <R>(project: _Accumulator<T, R>, seed?: R): Observable<R>;
@@ -248,7 +249,7 @@ export interface operator_proto_throttle<T> {
   (durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T>;
 }
 export interface operator_proto_throttleTime<T> {
-  (delay: number, scheduler: Scheduler): Observable<T>;
+  (delay: number, scheduler?: Scheduler): Observable<T>;
 }
 export interface operator_proto_timeout<T> {
   (due: number | Date, errorToSend?: any, scheduler?: Scheduler): Observable<T>;
