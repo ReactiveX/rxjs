@@ -3,7 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class BehaviorSubject<T> extends Subject<T> {
-  constructor(private value: T) {
+  constructor(public value: T) {
     super();
   }
 

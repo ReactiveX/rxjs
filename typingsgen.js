@@ -10,6 +10,7 @@ var extraSpaceRegex = /  /;
 var operators = {};
 var fileResult = '/* tslint:disable:class-name */ /* tslint:disable:no-unused-variable */ /* tslint:disable:max-line-length */\n\
 import {Observable, ObservableOrPromise, ArrayOrIterator} from \'./Observable\';\n\
+import {ConnectableObservable} from \'./observables/ConnectableObservable\';\n\
 import {Scheduler} from \'./Scheduler\';\n\
 import {Notification} from \'./Notification\';\n\
 import {Subject} from \'./Subject\';\n\
@@ -36,7 +37,7 @@ for (var i = 0; i < contents.length; i++) {
 	} else {
       var fileContent = fs.readFileSync('./src/operators/extended/'+filename+'.ts').toString();
 	}
-    
+
     var methods = [];
 
     var r = new RegExp('export function [_]?'+ filename +'([\\s|\\S]*?[\\;\\{])', 'g');
