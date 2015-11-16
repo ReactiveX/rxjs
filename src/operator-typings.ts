@@ -144,11 +144,9 @@ export interface operator_proto_every<T> {
   (predicate: _PredicateObservable<T>, thisArg?: any): Observable<boolean>;
 }
 export interface operator_proto_map<T> {
-  (project: _IndexSelector<T, T>, thisArg?: any): Observable<T>;
   <R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R>;
 }
 export interface operator_proto_mapTo<T> {
-  (value: T): Observable<T>;
   <R>(value: R): Observable<R>;
 }
 export interface operator_proto_materialize<T> {
