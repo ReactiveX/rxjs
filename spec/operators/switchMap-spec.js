@@ -46,6 +46,31 @@ describe('Observable.prototype.switchMap()', function () {
     expectSubscriptions(y.subscriptions).toBe(ysubs);
   });
 
+  it('should raise error when projection throws', function () {
+    var e1 =   hot('---------x---------y---------|');
+    var expected = '---------#';
+    function project() {
+      throw 'error';
+    }
+
+    expectObservable(e1.switchMap(project)).toBe(expected);
+  });
+
+  it('should raise error when resultSelector throws', function () {
+    var x =   cold(         '--a--b--c--d--e--|');
+    var xsubs =    '         ^ !';
+    var e1 =   hot('---------x---------y---------|');
+    var expected = '-----------#';
+
+    function selector() {
+      throw 'error';
+    }
+    expectObservable(e1.switchMap(function (value) {
+      return x;
+    }, selector)).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+  });
+
   it('should switch inner cold observables, outer is unsubscribed early', function () {
     var x =   cold(         '--a--b--c--d--e--|');
     var xsubs =    '         ^         !';
