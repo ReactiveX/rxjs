@@ -39,7 +39,7 @@ describe('Observable.prototype.takeWhile()', function () {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it ('should take all elements until predicate return false', function () {
+  it('should take all elements until predicate return false', function () {
     var e1 = hot('--a-^-b--c--d--e--|');
     var sub =        '^       !';
     var expected =   '--b--c--|';
@@ -52,7 +52,7 @@ describe('Observable.prototype.takeWhile()', function () {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it ('should take elements with predicate when source does not complete', function () {
+  it('should take elements with predicate when source does not complete', function () {
     var e1 = hot('--a-^-b--c--d--e--');
     var sub =        '^             ';
     var expected =   '--b--c--d--e--';
@@ -61,14 +61,14 @@ describe('Observable.prototype.takeWhile()', function () {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it ('should not complete when source never completes', function () {
+  it('should not complete when source never completes', function () {
     var e1 = Observable.never();
     var expected =   '-';
 
     expectObservable(e1.takeWhile(function () { return true; })).toBe(expected);
   });
 
-  it ('should complete when source does not emit', function () {
+  it('should complete when source does not emit', function () {
     var e1 = hot('--a-^------------|');
     var sub =        '^            !';
     var expected =   '-------------|';
@@ -77,14 +77,14 @@ describe('Observable.prototype.takeWhile()', function () {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it ('should complete when source is empty', function () {
+  it('should complete when source is empty', function () {
     var e1 = Observable.empty();
     var expected =   '|';
 
     expectObservable(e1.takeWhile(function () { return true; })).toBe(expected);
   });
 
-  it ('should pass element index to predicate', function () {
+  it('should pass element index to predicate', function () {
     var e1 = hot('--a-^-b--c--d--e--|');
     var sub =        '^       !';
     var expected =   '--b--c--|';
@@ -97,7 +97,7 @@ describe('Observable.prototype.takeWhile()', function () {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it ('should raise error when source raises error', function () {
+  it('should raise error when source raises error', function () {
     var e1 = hot('--a-^-b--c--d--e--#');
     var sub =        '^             !';
     var expected =   '--b--c--d--e--#';
@@ -113,7 +113,7 @@ describe('Observable.prototype.takeWhile()', function () {
     expectObservable(source.takeWhile(function () { return true; })).toBe(expected);
   });
 
-  it ('should invoke predicate until return false', function () {
+  it('should invoke predicate until return false', function () {
     var e1 = hot('--a-^-b--c--d--e--|');
     var sub =        '^       !';
     var expected =   '--b--c--|';
@@ -144,7 +144,7 @@ describe('Observable.prototype.takeWhile()', function () {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it ('should pass element thisArg to predicate', function () {
+  it('should pass element thisArg to predicate', function () {
     var e1 = hot('--a-^-b--c--d--e--|');
     var sub =        '^       !';
     var expected =   '--b--c--|';
@@ -152,14 +152,14 @@ describe('Observable.prototype.takeWhile()', function () {
     function predicate() {
       this.take = function (value) {
         return value !== 'd';
-      }
+      };
     }
 
     expectObservable(e1.takeWhile(function (v) { return this.take(v); }, new predicate())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it ('should take elements until unsubscribed', function () {
+  it('should take elements until unsubscribed', function () {
     var e1 = hot('--a-^-b--c--d--e--|');
     var unsub =      '-----!';
     var sub =        '^    !';

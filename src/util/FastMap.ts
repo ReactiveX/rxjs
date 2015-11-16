@@ -1,23 +1,22 @@
 export class FastMap {
-  size: number = 0;
-  private _values: Object = {};
+  private values: Object = {};
 
   delete(key: string): boolean {
-    this._values[key] = null;
+    this.values[key] = null;
     return true;
   }
 
   set(key: string, value: any): FastMap {
-    this._values[key] = value;
+    this.values[key] = value;
     return this;
   }
 
   get(key: string): any {
-    return this._values[key];
+    return this.values[key];
   }
 
-  forEach(cb, thisArg) {
-    const values = this._values;
+  forEach(cb: (value: any, key: any) => void, thisArg?: any): void {
+    const values = this.values;
     for (let key in values) {
       if (values.hasOwnProperty(key) && values[key] !== null) {
         cb.call(thisArg, values[key], key);
@@ -25,7 +24,7 @@ export class FastMap {
     }
   }
 
-  clear() {
-    this._values = {};
+  clear(): void {
+    this.values = {};
   }
 }

@@ -22,10 +22,16 @@ By contributing or commenting on issues in this repository, whether you've read 
 
 ### npm
 
-To install this library via [npm](https://www.npmjs.org), use the following command:
+To install this library via [npm](https://www.npmjs.org) **version 3**, use the following command:
 
 ```sh
 npm install @reactivex/rxjs
+```
+
+If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
+
+```sh
+npm install @reactivex/rxjs@5.0.0-alpha.10
 ```
 
 ### CDN

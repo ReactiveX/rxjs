@@ -108,6 +108,38 @@ describe('Observable', function () {
       sub.unsubscribe();
       expect(unsubscribeCalled).toBe(true);
     });
+
+    describe('when called with an anonymous observer', function () {
+      it('should accept an anonymous observer with just a next function', function () {
+        Observable.of(1).subscribe({
+          next: function next(x) {
+            expect(x).toBe(1);
+          }
+        });
+      });
+
+      it('should accept an anonymous observer with just an error function', function () {
+        Observable.throw('bad').subscribe({
+          error: function error(err) {
+            expect(err).toBe('bad');
+          }
+        });
+      });
+
+      it('should accept an anonymous observer with just a complete function', function (done) {
+        Observable.empty().subscribe({
+          complete: function complete() {
+            done();
+          }
+        });
+      });
+
+      it('should accept an anonymous observer with no functions at all', function () {
+        expect(function testEmptyObject() {
+          Observable.empty().subscribe({});
+        }).not.toThrow();
+      });
+    });
   });
 });
 

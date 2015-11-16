@@ -83,15 +83,24 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
   }
 
   _next(value: T): void {
-    this.destination.next(value);
+    const destination = this.destination;
+    if (destination.next) {
+      destination.next(value);
+    }
   }
 
   _error(err: any): void {
-    this.destination.error(err);
+    const destination = this.destination;
+    if (destination.error) {
+      destination.error(err);
+    }
   }
 
   _complete(): void {
-    this.destination.complete();
+    const destination = this.destination;
+    if (destination.complete) {
+      destination.complete();
+    }
   }
 
   next(value?: T): void {
