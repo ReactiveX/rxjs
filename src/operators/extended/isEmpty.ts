@@ -1,7 +1,8 @@
+import {Observable} from '../../Observable';
 import {Operator} from '../../Operator';
 import {Subscriber} from '../../Subscriber';
 
-export function isEmpty() {
+export function isEmpty<T>(): Observable<T> {
   return this.lift(new IsEmptyOperator());
 }
 

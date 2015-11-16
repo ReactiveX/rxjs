@@ -5,22 +5,20 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {_SwitchMapResultSelector} from '../types';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+export function switchMapTo<T, R>(observable: Observable<R>): Observable<R>;
 export function switchMapTo<T, R, R2>(observable: Observable<R>,
-                                      projectResult?: (outerValue: T,
-                                                       innerValue: R,
-                                                       outerIndex: number,
-                                                       innerIndex: number) => R2): Observable<R2> {
+                                      projectResult?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+export function switchMapTo(observable: Observable<any>,
+                            projectResult?: _SwitchMapResultSelector<any, any, any>): Observable<any> {
   return this.lift(new SwitchMapToOperator(observable, projectResult));
 }
 
 class SwitchMapToOperator<T, R, R2> implements Operator<T, R> {
   constructor(private observable: Observable<R>,
-              private resultSelector?: (outerValue: T,
-                                        innerValue: R,
-                                        outerIndex: number,
-                                        innerIndex: number) => R2) {
+              private resultSelector?: _SwitchMapResultSelector<T, R, R2>) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -35,7 +33,7 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   constructor(destination: Subscriber<R>,
               private inner: Observable<R>,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
+              private resultSelector?: _SwitchMapResultSelector<T, R, R2>) {
     super(destination);
   }
 

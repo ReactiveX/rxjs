@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, ObservableOrPromise} from '../Observable';
 import {PromiseObservable} from '../observables/PromiseObservable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
@@ -8,12 +8,12 @@ import {tryCatch} from '../util/tryCatch';
 import {isPromise} from '../util/isPromise';
 import {errorObject} from '../util/errorObject';
 
-export function debounce<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function debounce<T>(durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T> {
   return this.lift(new DebounceOperator(durationSelector));
 }
 
 class DebounceOperator<T, R> implements Operator<T, R> {
-  constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+  constructor(private durationSelector: (value: T) => ObservableOrPromise<number>) {
   }
 
   call(observer: Subscriber<T>): Subscriber<T> {
@@ -22,15 +22,15 @@ class DebounceOperator<T, R> implements Operator<T, R> {
 }
 
 class DebounceSubscriber<T> extends Subscriber<T> {
-  private debouncedSubscription: Subscription<any> = null;
-  private lastValue: any = null;
+  private debouncedSubscription: Subscription<T> = null;
+  private lastValue: T = null;
   private _index: number = 0;
   get index() {
     return this._index;
   }
 
   constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+              private durationSelector: (value: T) => ObservableOrPromise<number>) {
     super(destination);
   }
 
@@ -77,7 +77,7 @@ class DebounceSubscriber<T> extends Subscriber<T> {
 }
 
 class DurationSelectorSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: DebounceSubscriber<any>,
+  constructor(private parent: DebounceSubscriber<T>,
               private currentIndex: number) {
     super(null);
   }

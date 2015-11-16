@@ -35,7 +35,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   completeSignal: boolean = false;
 
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const subject = new BidirectionalSubject(this, this.destination || this);
+    const subject: Subject<T> = <any>new BidirectionalSubject(this, this.destination || this);
     subject.operator = operator;
     return subject;
   }
@@ -162,7 +162,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
 }
 
 class BidirectionalSubject<T> extends Subject<T> {
-  constructor(public source: Observable<any>, protected destination: Observer<any>) {
+  constructor(public source: Observable<T>, protected destination: Observer<T>) {
     super();
   }
 

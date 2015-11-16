@@ -1,7 +1,8 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 
-export function toArray() {
+export function toArray<T>(): Observable<T[]> {
   return this.lift(new ToArrayOperator());
 }
 
@@ -13,7 +14,7 @@ class ToArrayOperator<T, R> implements Operator<T, R> {
 
 class ToArraySubscriber<T> extends Subscriber<T> {
 
-  array: T [] = [];
+  array: T[] = [];
 
   constructor(destination: Subscriber<T[]>) {
     super(destination);

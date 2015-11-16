@@ -61,4 +61,3 @@ export class InnerRefCountSubscription<T> extends Subscription<T> {
     }
   }
 }
-

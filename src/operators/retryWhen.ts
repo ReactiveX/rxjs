@@ -6,7 +6,7 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>) {
+export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): Observable<T> {
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 

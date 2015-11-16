@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, ObservableOrPromise, ArrayOrIterator} from '../Observable';
 import {ArrayObservable} from '../observables/ArrayObservable';
 import {CombineLatestOperator} from './combineLatest-support';
 
@@ -12,7 +12,122 @@ import {CombineLatestOperator} from './combineLatest-support';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export function combineLatest<R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
+export function combineLatest<T, TResult>(
+  project: (v1: T) => TResult
+): Observable<TResult>;
+export function combineLatest<T, TResult>(
+  project: (v1: T) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2>(
+  second: ObservableOrPromise<T2>
+): Observable<[T, T2]>;
+export function combineLatest<T, T2>(
+  second: ObservableOrPromise<T2> | ArrayOrIterator<T2>
+): Observable<[T, T2]>;
+export function combineLatest<T, T2>(
+  second: ArrayOrIterator<T2>
+): Observable<[T, T2]>;
+export function combineLatest<T, T2>(
+  second: ArrayOrIterator<T2>
+): Observable<[T, T2]>;
+export function combineLatest<T, T2, TResult>(
+  second: ObservableOrPromise<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, TResult>(
+  second: ArrayOrIterator<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, TResult>(
+  second: ObservableOrPromise<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, TResult>(
+  second: ArrayOrIterator<T2>,
+  project: (v1: T, v2: T2) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>
+): Observable<[T, T2, T3]>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ObservableOrPromise<T2>,
+  third: ArrayOrIterator<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T, T2, T3, TResult>(
+  second: ArrayOrIterator<T2>,
+  third: ObservableOrPromise<T3>,
+  project: (v1: T, v2: T2, v3: T3) => TResult
+): Observable<TResult>;
+export function combineLatest<T>(
+  ...observables: Array<ObservableOrPromise<T>>): Observable<T[]>;
+export function combineLatest<T>(
+  ...observables: Array<ArrayOrIterator<T>>): Observable<T[]>;
+export function combineLatest<T, R>(
+  ...observables: Array<ObservableOrPromise<T> | ((...values: Array<T>) => R)>): Observable<R>;
+export function combineLatest<T, R>(
+  ...observables: Array<ArrayOrIterator<T> | ((...values: Array<T>) => R)>): Observable<R>;
+export function combineLatest(
+  ...observables: Array<ObservableOrPromise<any> | ArrayOrIterator<any> | ((...values: Array<any>) => any)>): Observable<any> {
   observables.unshift(this);
   let project;
   if (typeof observables[observables.length - 1] === 'function') {

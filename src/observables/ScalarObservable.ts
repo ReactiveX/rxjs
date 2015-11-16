@@ -7,6 +7,8 @@ import {errorObject} from '../util/errorObject';
 import {ErrorObservable} from './ErrorObservable';
 import {EmptyObservable} from './EmptyObservable';
 
+import {_IndexSelector, _PredicateObservable} from '../types';
+
 export class ScalarObservable<T> extends Observable<T> {
   static create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {
     return new ScalarObservable(value, scheduler);
@@ -55,10 +57,10 @@ export class ScalarObservable<T> extends Observable<T> {
 // TypeScript is weird about class prototype member functions and instance properties touching on it's plate.
 const proto = ScalarObservable.prototype;
 
-proto.map = function <T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
+proto.map = function <T, R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R> {
   let result = tryCatch(project).call(thisArg || this, this.value, 0);
   if (result === errorObject) {
-    return new ErrorObservable(errorObject.e);
+    return new ErrorObservable<any>(errorObject.e);
   } else {
     return new ScalarObservable(project.call(thisArg || this, this.value, 0));
   }
@@ -67,11 +69,11 @@ proto.map = function <T, R>(project: (x: T, ix?: number) => R, thisArg?: any): O
 proto.filter = function <T>(select: (x: T, ix?: number) => boolean, thisArg?: any): Observable<T> {
   let result = tryCatch(select).call(thisArg || this, this.value, 0);
   if (result === errorObject) {
-    return new ErrorObservable(errorObject.e);
+    return new ErrorObservable<any>(errorObject.e);
   } else if (result) {
     return this;
   } else {
-    return new EmptyObservable();
+    return new EmptyObservable<T>();
   }
 };
 
@@ -81,7 +83,7 @@ proto.reduce = function <T, R>(project: (acc: R, x: T) => R, seed?: R): Observab
   }
   let result = tryCatch(project)(seed, this.value);
   if (result === errorObject) {
-    return new ErrorObservable(errorObject.e);
+    return new ErrorObservable<any>(errorObject.e);
   } else {
     return new ScalarObservable(result);
   }
@@ -91,13 +93,13 @@ proto.scan = function <T, R>(project: (acc: R, x: T) => R, acc?: R): Observable<
   return this.reduce(project, acc);
 };
 
-proto.count = function <T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number> {
+proto.count = function <T>(predicate?: _PredicateObservable<T>, thisArg?: any): Observable<number> {
   if (!predicate) {
     return new ScalarObservable(1);
   } else {
     let result = tryCatch(predicate).call(thisArg || this, this.value, 0, this);
     if (result === errorObject) {
-      return new ErrorObservable(errorObject.e);
+      return new ErrorObservable<any>(errorObject.e);
     } else {
       return new ScalarObservable(result ? 1 : 0);
     }
@@ -106,7 +108,7 @@ proto.count = function <T>(predicate?: (value: T, index: number, source: Observa
 
 proto.skip = function <T>(count: number): Observable<T> {
   if (count > 0) {
-    return new EmptyObservable();
+    return new EmptyObservable<T>();
   }
   return this;
 };
@@ -115,5 +117,5 @@ proto.take = function <T>(count: number): Observable<T> {
   if (count > 0) {
     return this;
   }
-  return new EmptyObservable();
+  return new EmptyObservable<T>();
 };

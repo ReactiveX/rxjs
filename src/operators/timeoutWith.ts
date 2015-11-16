@@ -10,7 +10,10 @@ import {subscribeToResult} from '../util/subscribeToResult';
 
 export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: Observable<R>,
-                                  scheduler: Scheduler = immediate): Observable<T> | Observable<R> {
+                                  scheduler?: Scheduler): Observable<T | R>;
+export function timeoutWith<T, R>(due: number | Date,
+                                  withObservable: Observable<R>,
+                                  scheduler: Scheduler = immediate): Observable<T | R> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : <number>due;
   return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));

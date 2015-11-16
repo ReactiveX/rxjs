@@ -8,7 +8,6 @@ export function window<T>(closingNotifier: Observable<any>): Observable<Observab
 }
 
 class WindowOperator<T, R> implements Operator<T, R> {
-
   constructor(private closingNotifier: Observable<any>) {
   }
 

@@ -1,18 +1,20 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_Accumulator} from '../types';
 
-export function scan<T, R>(project: (acc: R, x: T) => R, acc?: R) {
+export function scan<T, R>(project: _Accumulator<T, R>, acc?: R): Observable<R> {
   return this.lift(new ScanOperator(project, acc));
 }
 
 class ScanOperator<T, R> implements Operator<T, R> {
 
   acc: R;
-  project: (acc: R, x: T) => R;
+  project: _Accumulator<T, R>;
 
-  constructor(project: (acc: R, x: T) => R, acc?: R) {
+  constructor(project: _Accumulator<T, R>, acc?: R) {
     this.acc = acc;
     this.project = project;
   }
@@ -36,9 +38,9 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
 
   accumulatorSet: boolean = false;
 
-  project: (acc: R, x: T) => R;
+  project: _Accumulator<T, R>;
 
-  constructor(destination: Subscriber<T>, project: (acc: R, x: T) => R, acc?: R) {
+  constructor(destination: Subscriber<T>, project: _Accumulator<T, R>, acc?: R) {
     super(destination);
     this.acc = acc;
     this.project = project;

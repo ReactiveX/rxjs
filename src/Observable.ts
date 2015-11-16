@@ -1,15 +1,28 @@
 import {Observer} from './Observer';
 import {Operator} from './Operator';
-import {Scheduler} from './Scheduler';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
-import {CoreOperators } from './CoreOperators';
+import {CoreOperators} from './CoreOperators';
 import {$$observable} from './util/Symbol_observable';
-import {GroupedObservable} from './operators/groupBy-support';
-import {ConnectableObservable} from './observables/ConnectableObservable';
-import {Subject} from './Subject';
-import {Notification} from './Notification';
+import * as operators from './operator-typings';
+import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
+import {concat as concatStatic} from './operators/concat-static';
+import {merge as mergeStatic} from './operators/merge-static';
+import {zip as zipStatic} from './operators/zip-static';
+import {DeferObservable} from './observables/DeferObservable';
+import {EmptyObservable} from './observables/EmptyObservable';
+import {ForkJoinObservable} from './observables/ForkJoinObservable';
+import {FromObservable} from './observables/FromObservable';
+import {ArrayObservable} from './observables/ArrayObservable';
+import {FromEventObservable} from './observables/FromEventObservable';
+import {FromEventPatternObservable} from './observables/FromEventPatternObservable';
+import {PromiseObservable} from './observables/PromiseObservable';
+import {IntervalObservable} from './observables/IntervalObservable';
+import {InfiniteObservable} from './observables/InfiniteObservable';
+import {TimerObservable} from './observables/TimerObservable';
+import {RangeObservable} from './observables/RangeObservable';
+import {ErrorObservable} from './observables/ErrorObservable';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -56,7 +69,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * operator defined as the new observable's operator.
    */
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const observable = new Observable();
+    const observable = new Observable<T>();
     observable.source = this;
     observable.operator = operator;
     return observable;
@@ -134,111 +147,104 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
-  static combineLatest: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T) | Scheduler>) => Observable<T>;
-  static concat: <T>(...observables: Array<Observable<any> | Scheduler>) => Observable<T>;
-  static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
-  static empty: <T>(scheduler?: Scheduler) => Observable<T>;
-  static forkJoin: (...sources: Array<Observable<any> | Promise<any> | ((...values: Array<any>) => any)>) => Observable<any>;
-  static from: <T>(iterable: any, scheduler?: Scheduler) => Observable<T>;
-  static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
-  static fromEvent: <T>(element: any, eventName: string, selector?: (...args: Array<any>) => T) => Observable<T>;
-  static fromEventPattern: <T>(addHandler: (handler: Function) => void,
-                               removeHandler: (handler: Function) => void,
-                               selector?: (...args: Array<any>) => T) => Observable<T>;
-  static fromPromise: <T>(promise: Promise<T>, scheduler?: Scheduler) => Observable<T>;
-  static interval: (interval: number, scheduler?: Scheduler) => Observable<number>;
-  static merge: <T>(...observables: Array<Observable<any> | Scheduler | number>) => Observable<T>;
-  static never: <T>() => Observable<T>;
-  static of: <T>(...values: Array<T | Scheduler>) => Observable<T>;
-  static range: (start: number, end: number, scheduler?: Scheduler) => Observable<number>;
-  static throw: <T>(error: T) => Observable<T>;
-  static timer: (dueTime: number, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
-  static zip: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T)>) => Observable<T>;
+  static combineLatest: typeof combineLatestStatic;
+  static concat: typeof concatStatic;
+  static defer: typeof DeferObservable.create;
+  static empty: typeof EmptyObservable.create;
+  static forkJoin: typeof ForkJoinObservable.create;
+  static from: typeof FromObservable.create;
+  static fromArray: typeof ArrayObservable.create;
+  static fromEvent: typeof FromEventObservable.create;
+  static fromEventPattern: typeof FromEventPatternObservable.create;
+  static fromPromise: typeof PromiseObservable.create;
+  static interval: typeof IntervalObservable.create;
+  static merge: typeof mergeStatic;
+  static never: typeof InfiniteObservable.create;
+  static of: typeof ArrayObservable.of;
+  static range: typeof RangeObservable.create;
+  static throw: typeof ErrorObservable.create;
+  static timer: typeof TimerObservable.create;
+  static zip: typeof zipStatic;
 
   // core operators
-  buffer: (closingNotifier: Observable<any>) => Observable<T[]>;
-  bufferCount: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
-  bufferTime: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
-  bufferToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>;
-  bufferWhen: (closingSelector: () => Observable<any>) => Observable<T[]>;
-  catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
-  combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
-  combineLatest: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
-  concat: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
-  concatAll: () => Observable<any>;
-  concatMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  concatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  count: (predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
-  dematerialize: () => Observable<any>;
-  debounce: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
-  debounceTime: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
-  defaultIfEmpty: <R>(defaultValue?: T | R) => Observable<T> | Observable<R>;
-  delay: (delay: number, scheduler?: Scheduler) => Observable<T>;
-  distinctUntilChanged: (compare?: (x: T, y: T) => boolean, thisArg?: any) => Observable<T>;
-  do: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
-  expand: <R>(project: (x: T, ix: number) => Observable<R>) => Observable<R>;
-  filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
-  finally: (ensure: () => void, thisArg?: any) => Observable<T>;
-  first: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-             resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
-  flatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
-               projectResult?: (x: T, y: any, ix: number, iy: number) => R,
-               concurrent?: number) => Observable<R>;
-  flatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy: <R>(keySelector: (value: T) => string,
-               elementSelector?: (value: T) => R,
-               durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
-  ignoreElements: () => Observable<T>;
-  last: <R>(predicate?: (value: T, index: number) => boolean,
-            resultSelector?: (value: T, index: number) => R,
-            thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
-  every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
-  map: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
-  mapTo: <R>(value: R) => Observable<R>;
-  materialize: () => Observable<Notification<T>>;
-  merge: (...observables: any[]) => Observable<any>;
-  mergeAll: (concurrent?: any) => Observable<any>;
-  mergeMap: <R>(project: ((x: T, ix: number) => Observable<any>),
-                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
-                concurrent?: number) => Observable<R>;
-  mergeMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
-  observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
-  partition: (predicate: (x: T) => boolean) => Observable<T>[];
-  publish: () => ConnectableObservable<T>;
-  publishBehavior: (value: any) => ConnectableObservable<T>;
-  publishReplay: (bufferSize: number, windowTime: number, scheduler?: Scheduler) => ConnectableObservable<T>;
-  reduce: <R>(project: (acc: R, x: T) => R, seed?: R) => Observable<R>;
-  repeat: (count?: number) => Observable<T>;
-  retry: (count?: number) => Observable<T>;
-  retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
-  sample: (notifier: Observable<any>) => Observable<T>;
-  sampleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
-  scan: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
-  share: () => Observable<T>;
-  single: (predicate?: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
-  skip: (count: number) => Observable<T>;
-  skipUntil: (notifier: Observable<any>) => Observable<T>;
-  startWith: (x: T) => Observable<T>;
-  subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
-  switch: <R>() => Observable<R>;
-  switchMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  switchMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  take: (count: number) => Observable<T>;
-  takeUntil: (notifier: Observable<any>) => Observable<T>;
-  takeWhile: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
-  throttle: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
-  throttleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
-  timeout: (due: number | Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
-  timeoutWith: <R>(due: number | Date, withObservable: Observable<R>, scheduler?: Scheduler) => Observable<T> | Observable<R>;
-  toArray: () => Observable<T[]>;
-  toPromise: (PromiseCtor: PromiseConstructor) => Promise<T>;
-  window: (closingNotifier: Observable<any>) => Observable<Observable<T>>;
-  windowCount: (windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
-  windowTime: (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
-  windowToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>;
-  windowWhen: (closingSelector: () => Observable<any>) => Observable<Observable<T>>;
-  withLatestFrom: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
-  zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
-  zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
+  buffer: operators.operator_proto_buffer<T>;
+  bufferCount: operators.operator_proto_bufferCount<T>;
+  bufferTime: operators.operator_proto_bufferTime<T>;
+  bufferToggle: operators.operator_proto_bufferToggle<T>;
+  bufferWhen: operators.operator_proto_bufferWhen<T>;
+  catch: operators.operator_proto_catch<T>;
+  combineAll: operators.operator_proto_combineAll<T>;
+  combineLatest: operators.operator_proto_combineLatest<T>;
+  concat: operators.operator_proto_concat<T>;
+  concatAll: operators.operator_proto_concatAll<T>;
+  concatMap: operators.operator_proto_concatMap<T>;
+  concatMapTo: operators.operator_proto_concatMapTo<T>;
+  count: operators.operator_proto_count<T>;
+  dematerialize: operators.operator_proto_dematerialize<T>;
+  debounce: operators.operator_proto_debounce<T>;
+  debounceTime: operators.operator_proto_debounceTime<T>;
+  defaultIfEmpty: operators.operator_proto_defaultIfEmpty<T>;
+  delay: operators.operator_proto_delay<T>;
+  distinctUntilChanged: operators.operator_proto_distinctUntilChanged<T>;
+  do: operators.operator_proto_do<T>;
+  expand: operators.operator_proto_expand<T>;
+  filter: operators.operator_proto_filter<T>;
+  finally: operators.operator_proto_finally<T>;
+  first: operators.operator_proto_first<T>;
+  flatMap: operators.operator_proto_mergeMap<T>;
+  flatMapTo: operators.operator_proto_mergeMapTo<T>;
+  groupBy: operators.operator_proto_groupBy<T>;
+  ignoreElements: operators.operator_proto_ignoreElements<T>;
+  last: operators.operator_proto_last<T>;
+  every: operators.operator_proto_every<T>;
+  map: operators.operator_proto_map<T>;
+  mapTo: operators.operator_proto_mapTo<T>;
+  materialize: operators.operator_proto_materialize<T>;
+  merge: operators.operator_proto_merge<T>;
+  mergeAll: operators.operator_proto_mergeAll<T>;
+  mergeMap: operators.operator_proto_mergeMap<T>;
+  mergeMapTo: operators.operator_proto_mergeMapTo<T>;
+  multicast: operators.operator_proto_multicast<T>;
+  observeOn: operators.operator_proto_observeOn<T>;
+  partition: operators.operator_proto_partition<T>;
+  publish: operators.operator_proto_publish<T>;
+  publishBehavior: operators.operator_proto_publishBehavior<T>;
+  publishReplay: operators.operator_proto_publishReplay<T>;
+  reduce: operators.operator_proto_reduce<T>;
+  repeat: operators.operator_proto_repeat<T>;
+  retry: operators.operator_proto_retry<T>;
+  retryWhen: operators.operator_proto_retryWhen<T>;
+  sample: operators.operator_proto_sample<T>;
+  sampleTime: operators.operator_proto_sampleTime<T>;
+  scan: operators.operator_proto_scan<T>;
+  share: operators.operator_proto_share<T>;
+  single: operators.operator_proto_single<T>;
+  skip: operators.operator_proto_skip<T>;
+  skipUntil: operators.operator_proto_skipUntil<T>;
+  skipWhile: operators.operator_proto_skipWhile<T>;
+  startWith: operators.operator_proto_startWith<T>;
+  subscribeOn: operators.operator_proto_subscribeOn<T>;
+  switch: operators.operator_proto_switch<T>;
+  switchMap: operators.operator_proto_switchMap<T>;
+  switchMapTo: operators.operator_proto_switchMapTo<T>;
+  take: operators.operator_proto_take<T>;
+  takeUntil: operators.operator_proto_takeUntil<T>;
+  takeWhile: operators.operator_proto_takeWhile<T>;
+  throttle: operators.operator_proto_throttle<T>;
+  throttleTime: operators.operator_proto_throttleTime<T>;
+  timeout: operators.operator_proto_timeout<T>;
+  timeoutWith: operators.operator_proto_timeoutWith<T>;
+  toArray: operators.operator_proto_toArray<T>;
+  toPromise: operators.operator_proto_toPromise<T>;
+  window: operators.operator_proto_window<T>;
+  windowCount: operators.operator_proto_windowCount<T>;
+  windowTime: operators.operator_proto_windowTime<T>;
+  windowToggle: operators.operator_proto_windowToggle<T>;
+  windowWhen: operators.operator_proto_windowWhen<T>;
+  withLatestFrom: operators.operator_proto_withLatestFrom<T>;
+  zip: operators.operator_proto_zip<T>;
+  zipAll: operators.operator_proto_zipAll<T>;
 }
+
+export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
+export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T> | Array<T>;

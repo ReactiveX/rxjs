@@ -1,10 +1,12 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
 import {nextTick} from '../schedulers/nextTick';
 
-export function throttleTime<T>(delay: number, scheduler: Scheduler = nextTick) {
+export function throttleTime<T>(delay: number, scheduler?: Scheduler): Observable<T>;
+export function throttleTime<T>(delay: number, scheduler: Scheduler = nextTick): Observable<T> {
   return this.lift(new ThrottleTimeOperator(delay, scheduler));
 }
 

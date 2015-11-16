@@ -3,33 +3,37 @@ import {IteratorObservable} from'./IteratorObservable';
 import {ArrayObservable} from './ArrayObservable';
 
 import {Scheduler} from '../Scheduler';
+import {Observable, ObservableOrPromise, ArrayOrIterator} from '../Observable';
 import {$$observable} from '../util/Symbol_observable';
-import {$$iterator} from '../util/Symbol_iterator';
-import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operators/observeOn-support';
 import {immediate} from '../schedulers/immediate';
+import {isPromise} from '../util/isPromise';
+import {isObservable} from '../util/isObservable';
+import {isIterator} from '../util/isIterator';
 
 const isArray = Array.isArray;
 
 export class FromObservable<T> extends Observable<T> {
-  constructor(private ish: any, private scheduler: Scheduler) {
+  constructor(private ish: Observable<T>, private scheduler: Scheduler) {
     super(null);
   }
 
+  static create<T>(ish: ObservableOrPromise<T>, scheduler?: Scheduler): Observable<T>;
+  static create<T>(ish: ArrayOrIterator<T>, scheduler?: Scheduler): Observable<T>;
   static create<T>(ish: any, scheduler: Scheduler = immediate): Observable<T> {
     if (ish) {
       if (isArray(ish)) {
-        return new ArrayObservable(ish, scheduler);
-      } else if (typeof ish.then === 'function') {
-        return new PromiseObservable(ish, scheduler);
-      } else if (typeof ish[$$observable] === 'function') {
+        return new ArrayObservable<T>(ish, scheduler);
+      } else if (isPromise(ish)) {
+        return new PromiseObservable<T>(ish, scheduler);
+      } else if (isObservable(ish)) {
         if (ish instanceof Observable) {
           return ish;
         }
-        return new FromObservable(ish, scheduler);
-      } else if (typeof ish[$$iterator] === 'function') {
-        return new IteratorObservable(ish, null, null, scheduler);
+        return new FromObservable<T>(ish, scheduler);
+      } else if (isIterator(ish)) {
+        return new IteratorObservable<T, T>(ish, null, null, scheduler);
       }
     }
 

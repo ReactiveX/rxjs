@@ -7,6 +7,8 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {bindCallback} from '../util/bindCallback';
 
+import {_PredicateObservable} from '../types';
+
 /**
  * Returns an observable of a single number that represents the number of items that either:
  * Match a provided predicate function, _or_ if a predicate is not provided, the number
@@ -21,15 +23,13 @@ import {bindCallback} from '../util/bindCallback';
  * @returns {Observable} an observable of one number that represents the count as described
  * above
  */
-export function count<T>(predicate?: (value: T,
-                                      index: number,
-                                      source: Observable<T>) => boolean,
+export function count<T>(predicate?: _PredicateObservable<T>,
                          thisArg?: any): Observable<number> {
   return this.lift(new CountOperator(predicate, thisArg, this));
 }
 
 class CountOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  constructor(private predicate?: _PredicateObservable<T>,
               private thisArg?: any,
               private source?: Observable<T>) {
   }
@@ -47,7 +47,7 @@ class CountSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<R>,
-              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              predicate?: _PredicateObservable<T>,
               private thisArg?: any,
               private source?: Observable<T>) {
     super(destination);

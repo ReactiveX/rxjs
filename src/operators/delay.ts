@@ -1,3 +1,4 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
@@ -5,7 +6,9 @@ import {Notification} from '../Notification';
 import {immediate} from '../schedulers/immediate';
 import {isDate} from '../util/isDate';
 
-export function delay<T>(delay: number|Date,
+export function delay<T>(delay: number | Date,
+                         scheduler?: Scheduler): Observable<T>;
+export function delay<T>(delay: number | Date,
                          scheduler: Scheduler = immediate) {
   let absoluteDelay = isDate(delay);
   let delayFor = absoluteDelay ? (+delay - scheduler.now()) : <number>delay;
@@ -39,7 +42,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
 
     if (queue.length > 0) {
       let delay = Math.max(0, queue[0].time - scheduler.now());
-      (<any> this).schedule(state, delay);
+      (<any>this).schedule(state, delay);
     } else {
       source.active = false;
     }

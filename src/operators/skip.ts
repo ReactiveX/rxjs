@@ -1,7 +1,8 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 
-export function skip(total) {
+export function skip<T>(total: number): Observable<T> {
   return this.lift(new SkipOperator(total));
 }
 

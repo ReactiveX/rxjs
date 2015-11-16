@@ -1,11 +1,12 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observables/EmptyObservable';
 
-export function take(total) {
+export function take<T>(total: number): Observable<T> {
   if (total === 0) {
-    return new EmptyObservable();
+    return new EmptyObservable<T>();
   } else {
     return this.lift(new TakeOperator(total));
   }

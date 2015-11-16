@@ -16,10 +16,10 @@ export function startWith<T>(...array: (T | Scheduler)[]): Observable<T> {
 
   const len = array.length;
   if (len === 1) {
-    return concat(new ScalarObservable(array[0], scheduler), this);
+    return concat(new ScalarObservable((<T[]>array)[0], scheduler), this);
   } else if (len > 1) {
-    return concat(new ArrayObservable(array, scheduler), this);
+    return concat(new ArrayObservable(<T[]>array, scheduler), this);
   } else {
-    return concat(new EmptyObservable(scheduler), this);
+    return concat(new EmptyObservable<T>(scheduler), this);
   }
 }

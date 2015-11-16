@@ -1,3 +1,4 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 
@@ -6,7 +7,8 @@ import {Subscriber} from '../Subscriber';
  * @param {any} value the value to map each incoming value to
  * @returns {Observable} an observable of the passed value that emits everytime the source does
  */
-export function mapTo<T, R>(value: R) {
+export function mapTo<T, R>(value: R): Observable<R>;
+export function mapTo(value: any): Observable<any> {
   return this.lift(new MapToOperator(value));
 }
 

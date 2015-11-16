@@ -5,16 +5,22 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
 
-export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                           resultSelector?: (value: T, index: number) => R,
-                           defaultValue?: any): Observable<T> | Observable<R> {
+import {_IndexSelector, _PredicateObservable} from '../types';
+
+export function last<T>(predicate?: _PredicateObservable<T>): Observable<T>;
+export function last<T, R>(predicate?: _PredicateObservable<T>,
+                           resultSelector?: _IndexSelector<T, R>,
+                           defaultValue?: any): Observable<T | R>;
+export function last<T, R>(predicate?: _PredicateObservable<T>,
+                           resultSelector?: _IndexSelector<T, R>,
+                           defaultValue?: R): Observable<T | R> {
   return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 
 class LastOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
-              private defaultValue?: any,
+  constructor(private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
+              private defaultValue?: R,
               private source?: Observable<T>) {
   }
 
@@ -29,8 +35,8 @@ class LastSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+              private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);

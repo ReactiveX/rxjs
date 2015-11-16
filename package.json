@@ -13,18 +13,18 @@
   },
   "scripts": {
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global",
-    "build_amd": "rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m amd --outDir dist/amd --sourcemap --target ES5 --diagnostics",
-    "build_cjs": "rm -rf dist/cjs && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts src/Rx.KitchenSink.ts -m commonjs --outDir dist/cjs --sourcemap --target ES5 -d --diagnostics",
-    "build_es6": "rm -rf dist/es6 && tsc src/Rx.ts src/Rx.KitchenSink.ts --outDir dist/es6 --sourceMap --target ES6 -d --diagnostics",
+    "build_amd": "npm run build_operators && rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m amd --outDir dist/amd --sourcemap --target ES5 --diagnostics",
+    "build_cjs": "npm run build_operators && rm -rf dist/cjs && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts src/Rx.KitchenSink.ts -m commonjs --outDir dist/cjs --sourcemap --target ES5 -d --diagnostics",
+    "build_es6": "npm run build_operators && rm -rf dist/es6 && tsc typings/es6-build-shim.d.ts src/Rx.ts src/Rx.KitchenSink.ts --outDir dist/es6 --sourceMap --target ES6 -d --diagnostics",
     "build_closure": "java -jar ./node_modules/google-closure-compiler/compiler.jar ./dist/global/Rx.js --create_source_map ./dist/global/Rx.min.js.map --js_output_file ./dist/global/Rx.min.js",
-    "build_global": "rm -rf dist/global && mkdir \"dist/global\" && browserify src/Rx.global.js --outfile dist/global/Rx.js && npm run build_closure",
+    "build_global": "npm run build_operators && rm -rf dist/global && mkdir \"dist/global\" && browserify src/Rx.global.js --outfile dist/global/Rx.js && npm run build_closure",
     "build_perf": "npm run build_cjs && npm run build_global && webdriver-manager update && npm run perf",
     "build_test": "rm -rf dist/ && npm run lint && npm run build_cjs && jasmine",
     "build_cover": "rm -rf dist/ && npm run lint && npm run build_cjs && npm run cover",
     "build_docs": "./docgen.sh",
     "lint_perf": "eslint perf/ --fix",
     "lint_spec": "eslint spec/**/*.js --fix",
-    "lint_src": "tslint -c .tslintrc src/*.ts src/**/*.ts src/**/**/*.ts",
+    "lint_src": "tslint src/*.ts src/**/*.ts src/**/**/*.ts",
     "lint": "npm run lint_src && npm run lint_spec && npm run lint_perf",
     "cover": "istanbul cover -x \"*-spec.js index.js *-helper.js spec/helpers/*\" ./node_modules/jasmine/bin/jasmine.js && npm run cover_remapping",
     "cover_remapping": "remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.json && remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.lcov -t lcovonly && remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped -t html",
@@ -33,7 +33,8 @@
     "perf": "protractor protractor.conf.js",
     "perf_micro": "node ./perf/micro/index.js",
     "prepublish": "npm run build_all",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "build_operators": "node typingsgen.js"
   },
   "repository": {
     "type": "git",

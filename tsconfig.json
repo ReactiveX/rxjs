@@ -7,7 +7,21 @@
     "target": "es6",
     "outDir": "dist/es6"
   },
+  "formatCodeOptions": {
+    "indentSize": 2,
+    "tabSize": 2,
+    "convertTabsToSpaces": true,
+    "insertSpaceAfterCommaDelimiter": true,
+    "insertSpaceAfterSemicolonInForStatements": true,
+    "insertSpaceBeforeAndAfterBinaryOperators": true,
+    "insertSpaceAfterKeywordsInControlFlowStatements": true,
+    "insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
+    "placeOpenBraceOnNewLineForFunctions": false,
+    "placeOpenBraceOnNewLineForControlBlocks": false
+  },
    "files": [
+     "typings/es6-build-shim.d.ts",
      "src/Rx.ts",
      "src/Rx.KitchenSink.ts"
    ]

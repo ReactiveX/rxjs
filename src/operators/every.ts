@@ -9,7 +9,9 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {bindCallback} from '../util/bindCallback';
 
-export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
+import {_PredicateObservable} from '../types';
+
+export function every<T>(predicate: _PredicateObservable<T>,
                          thisArg?: any): Observable<boolean> {
   const source = this;
   let result;
@@ -17,7 +19,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
   if (source._isScalar) {
     result = tryCatch(predicate)(source.value, 0, source);
     if (result === errorObject) {
-      return new ErrorObservable(errorObject.e, source.scheduler);
+      return new ErrorObservable<any>(errorObject.e, source.scheduler);
     } else {
       return new ScalarObservable(result, source.scheduler);
     }
@@ -27,7 +29,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
     const array = (<ArrayObservable<T>>source).array;
     let result = tryCatch((array, predicate) => array.every(<any>predicate))(array, predicate);
     if (result === errorObject) {
-      return new ErrorObservable(errorObject.e, source.scheduler);
+      return new ErrorObservable<any>(errorObject.e, source.scheduler);
     } else {
       return new ScalarObservable(result, source.scheduler);
     }
@@ -36,7 +38,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
 }
 
 class EveryOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  constructor(private predicate: _PredicateObservable<T>,
               private thisArg?: any,
               private source?: Observable<T>) {
   }
@@ -51,7 +53,7 @@ class EverySubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<R>,
-              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              predicate?: _PredicateObservable<T>,
               private thisArg?: any,
               private source?: Observable<T>) {
     super(destination);

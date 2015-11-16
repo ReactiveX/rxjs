@@ -1,21 +1,5 @@
 import {Observable} from './Observable';
-import {CoreOperators} from './CoreOperators';
-import {Scheduler as IScheduler} from './Scheduler';
-
-interface KitchenSinkOperators<T> extends CoreOperators<T> {
-  isEmpty?: () => Observable<boolean>;
-  elementAt?: (index: number, defaultValue?: any) => Observable<T>;
-  distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean, thisArg?: any) => Observable<T>;
-  find?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<T>;
-  findIndex?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
-  max?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
-  min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
-  timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
-  mergeScan?: <T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) => Observable<R>;
-  switchFirst?: () => Observable<T>;
-  switchMapFirst?: <R>(project: ((x: T, ix: number) => Observable<any>),
-                       projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-}
+import {KitchenSinkOperators} from './KitchenSinkOperators';
 
 // operators
 /* tslint:disable:no-use-before-declare */
@@ -74,7 +58,7 @@ import {zip as zipStatic} from './operators/zip-static';
 Observable.zip = zipStatic;
 
 // Operators
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
+const observableProto: KitchenSinkOperators<any> = (<any>Observable.prototype);
 
 import {buffer} from './operators/buffer';
 observableProto.buffer = buffer;
@@ -277,10 +261,10 @@ import {switchMapTo} from './operators/switchMapTo';
 observableProto.switchMapTo = switchMapTo;
 
 import {switchFirst} from './operators/switchFirst';
-observableProto.switchFirst = switchFirst;
+observableProto.switchFirst = <any>switchFirst;
 
 import {switchMapFirst} from './operators/switchMapFirst';
-observableProto.switchMapFirst = switchMapFirst;
+observableProto.switchMapFirst = <any>switchMapFirst;
 
 import {take} from './operators/take';
 observableProto.take = take;
@@ -331,7 +315,7 @@ import {withLatestFrom} from './operators/withLatestFrom';
 observableProto.withLatestFrom = withLatestFrom;
 
 import {zipProto} from './operators/zip';
-observableProto.zip = zipProto;
+observableProto.zip = <any>zipProto;
 
 import {zipAll} from './operators/zipAll';
 observableProto.zipAll = zipAll;

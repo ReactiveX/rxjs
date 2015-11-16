@@ -1,10 +1,11 @@
-import {Operator} from '../Operator';
 import {Observable} from '../Observable';
+import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
 import {nextTick} from '../schedulers/nextTick';
 
+export function debounceTime<T>(dueTime: number, scheduler?: Scheduler): Observable<T>;
 export function debounceTime<T>(dueTime: number, scheduler: Scheduler = nextTick): Observable<T> {
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }

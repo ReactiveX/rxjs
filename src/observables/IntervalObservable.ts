@@ -4,7 +4,7 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {nextTick} from '../schedulers/nextTick';
 
-export class IntervalObservable<T> extends Observable<T> {
+export class IntervalObservable extends Observable<number> {
   static create(period: number = 0, scheduler: Scheduler = nextTick): Observable<number> {
     return new IntervalObservable(period, scheduler);
   }
@@ -33,7 +33,7 @@ export class IntervalObservable<T> extends Observable<T> {
     }
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  _subscribe(subscriber: Subscriber<number>) {
     const index = 0;
     const period = this.period;
     const scheduler = this.scheduler;

@@ -7,17 +7,18 @@ import {FastMap} from '../util/FastMap';
 import {RefCountSubscription, GroupedObservable} from './groupBy-support';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_Selector} from '../types';
 
-export function groupBy<T, R>(keySelector: (value: T) => string,
-                              elementSelector?: (value: T) => R,
+export function groupBy<T, R>(keySelector: _Selector<T, string>,
+                              elementSelector?: _Selector<T, R>,
                               durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>): GroupByObservable<T, R> {
   return new GroupByObservable<T, R>(this, keySelector, elementSelector, durationSelector);
 }
 
 export class GroupByObservable<T, R> extends Observable<GroupedObservable<R>> {
   constructor(public source: Observable<T>,
-              private keySelector: (value: T) => string,
-              private elementSelector?: (value: T) => R,
+              private keySelector: _Selector<T, string>,
+              private elementSelector?: _Selector<T, R>,
               private durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>) {
     super();
   }
@@ -37,8 +38,8 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
 
   constructor(destination: Subscriber<R>,
               private refCountSubscription: RefCountSubscription<T>,
-              private keySelector: (value: T) => string,
-              private elementSelector?: (value: T) => R,
+              private keySelector: _Selector<T, string>,
+              private elementSelector?: _Selector<T, R>,
               private durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>) {
     super();
     this.destination = destination;
@@ -61,11 +62,11 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
       let group: Subject<T|R> = groups.get(key);
 
       if (!group) {
-        groups.set(key, group = new Subject());
-        let groupedObservable = new GroupedObservable<R>(key, group, this.refCountSubscription);
+        groups.set(key, group = new Subject<T|R>());
+        let groupedObservable = new GroupedObservable<R>(key, <Subject<R>>group, this.refCountSubscription);
 
         if (durationSelector) {
-          let duration = tryCatch(durationSelector)(new GroupedObservable<R>(key, group));
+          let duration = tryCatch(durationSelector)(new GroupedObservable<R>(key, <Subject<R>>group));
           if (duration === errorObject) {
             this.error(duration.e);
           } else {

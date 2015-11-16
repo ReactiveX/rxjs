@@ -1,10 +1,11 @@
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
+import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {nextTick} from '../schedulers/nextTick';
 import {isScheduler} from '../util/isScheduler';
 
-export class TimerObservable<T> extends Observable<T> {
+export class TimerObservable extends Observable<number> {
 
   static create(dueTime: number = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
     return new TimerObservable(dueTime, period, scheduler);
@@ -49,7 +50,7 @@ export class TimerObservable<T> extends Observable<T> {
     this.scheduler = scheduler;
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<number>) {
 
     const index = 0;
     const period = this._period;

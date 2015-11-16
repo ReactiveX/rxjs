@@ -5,25 +5,26 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
+import {_ObservableMergeMapProjector, _IteratorMergeMapProjector, _SwitchMapResultSelector} from '../types';
 
-export function switchMapFirst<T, R, R2>(project: (value: T, index: number) => Observable<R>,
-                                         resultSelector?: (outerValue: T,
-                                                           innerValue: R,
-                                                           outerIndex: number,
-                                                           innerIndex: number) => R2): Observable<R> {
+export function switchMapFirst<T, R>(project: _ObservableMergeMapProjector<T, R>): Observable<R>;
+export function switchMapFirst<T, R, R2>(project: _ObservableMergeMapProjector<T, R>,
+                                         resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+export function switchMapFirst<T, R>(project: _IteratorMergeMapProjector<T, R>): Observable<R>;
+export function switchMapFirst<T, R, R2>(project: _IteratorMergeMapProjector<T, R>,
+                                         resultSelector?: _SwitchMapResultSelector<T, R, R2>): Observable<R2>;
+export function switchMapFirst(project: any,
+                               resultSelector?: _SwitchMapResultSelector<any, any, any>): Observable<any> {
   return this.lift(new SwitchMapFirstOperator(project, resultSelector));
 }
 
 class SwitchMapFirstOperator<T, R, R2> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (outerValue: T,
-                                        innerValue: R,
-                                        outerIndex: number,
-                                        innerIndex: number) => R2) {
+  constructor(private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
+              private resultSelector?: _SwitchMapResultSelector<T, R, R2>) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new SwitchMapFirstSubscriber(subscriber, this.project, this.resultSelector);
+    return new SwitchMapFirstSubscriber<T, R, R2>(subscriber, this.project, this.resultSelector);
   }
 }
 
@@ -33,8 +34,8 @@ class SwitchMapFirstSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
+              private project: _ObservableMergeMapProjector<T, R> | _IteratorMergeMapProjector<T, R>,
+              private resultSelector?: _SwitchMapResultSelector<T, R, R2>) {
     super(destination);
   }
 

@@ -4,7 +4,7 @@ import {Observable} from '../Observable';
 export class EmptyObservable<T> extends Observable<T> {
 
   static create<T>(scheduler?: Scheduler): Observable<T> {
-    return new EmptyObservable(scheduler);
+    return new EmptyObservable<T>(scheduler);
   }
 
   static dispatch({ subscriber }) {
