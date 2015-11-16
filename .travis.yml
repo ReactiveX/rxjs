@@ -20,13 +20,12 @@ env:
   - CXX=g++-4.8
   - alias jasmine=./node_modules/.bin/jasmine
   - alias tsc=./node_modules/.bin/tsc
-  - alias babel=./node_modules/.bin/babel
 
 install:
   - npm install && npm run lint
 
 script:
-  - npm test && npm run cover
+  - npm test && node ./node_modules/markdown-doctest/bin/cmd.js && npm run cover
 
 after_script:
   - cat ./coverage/coverage-remapped.lcov  | ./node_modules/coveralls/bin/coveralls.js
