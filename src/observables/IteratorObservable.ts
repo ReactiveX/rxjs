@@ -7,17 +7,12 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 export class IteratorObservable<T> extends Observable<T> {
+  private iterator: any;
 
   static create<T>(iterator: any,
                    project?: (x?: any, i?: number) => T,
                    thisArg?: any,
                    scheduler?: Scheduler) {
-    if (iterator == null) {
-      throw new Error('iterator cannot be null.');
-    }
-    if (project && typeof project !== 'function') {
-      throw new Error('When provided, `project` must be a function.');
-    }
     return new IteratorObservable(iterator, project, thisArg, scheduler);
   }
 
@@ -58,20 +53,24 @@ export class IteratorObservable<T> extends Observable<T> {
     (<any> this).schedule(state);
   }
 
-  constructor(private iterator: any,
+  constructor(iterator: any,
               private project?: (x?: any, i?: number) => T,
               private thisArg?: any,
               private scheduler?: Scheduler) {
     super();
+    if (iterator == null) {
+      throw new Error('iterator cannot be null.');
+    }
+    if (project && typeof project !== 'function') {
+      throw new Error('When provided, `project` must be a function.');
+    }
+    this.iterator = getIterator(iterator);
   }
 
   _subscribe(subscriber) {
 
     let index = 0;
-    const project = this.project;
-    const thisArg = this.thisArg;
-    const iterator = getIterator(Object(this.iterator));
-    const scheduler = this.scheduler;
+    const { iterator, project, thisArg, scheduler } = this;
 
     if (scheduler) {
       subscriber.add(scheduler.schedule(IteratorObservable.dispatch, 0, {
@@ -100,8 +99,6 @@ export class IteratorObservable<T> extends Observable<T> {
     }
   }
 }
-
-const maxSafeInteger = Math.pow(2, 53) - 1;
 
 class StringIterator {
   constructor(private str: string,
@@ -137,19 +134,21 @@ class ArrayIterator {
   }
 }
 
-function getIterator(o) {
-  const i = o[$$iterator];
-  if (!i && typeof o === 'string') {
-    return new StringIterator(o);
+function getIterator(obj: any) {
+  const i = obj[$$iterator];
+  if (!i && typeof obj === 'string') {
+    return new StringIterator(obj);
   }
-  if (!i && o.length !== undefined) {
-    return new ArrayIterator(o);
+  if (!i && obj.length !== undefined) {
+    return new ArrayIterator(obj);
   }
   if (!i) {
     throw new TypeError('Object is not iterable');
   }
-  return o[$$iterator]();
+  return obj[$$iterator]();
 }
+
+const maxSafeInteger = Math.pow(2, 53) - 1;
 
 function toLength(o) {
   let len = +o.length;
