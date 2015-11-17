@@ -22,11 +22,12 @@ export class ReplaySubject<T> extends Subject<T> {
   _next(value: T): void {
     const now = this._getNow();
     this.events.push(new ReplayEvent(now, value));
+    this._trimBufferThenGetEvents(now);
     super._next(value);
   }
 
   _subscribe(subscriber: Subscriber<any>): Subscription<T> {
-    const events = this._getEvents(this._getNow());
+    const events = this._trimBufferThenGetEvents(this._getNow());
     let index = -1;
     const len = events.length;
     while (!subscriber.isUnsubscribed && ++index < len) {
@@ -39,7 +40,7 @@ export class ReplaySubject<T> extends Subject<T> {
     return (this.scheduler || immediate).now();
   }
 
-  private _getEvents(now): ReplayEvent<T>[] {
+  private _trimBufferThenGetEvents(now): ReplayEvent<T>[] {
     const bufferSize = this.bufferSize;
     const _windowTime = this._windowTime;
     const events = this.events;
