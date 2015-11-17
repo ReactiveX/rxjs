@@ -164,7 +164,7 @@ Observable.create(function (observer) {
     return Observable.throw(new Error('could not execute specified test, check parameter : ' + testArgument));
   }
   // If we specified a CSV file, write it.
-  else if (csv !== -1) {
+  else if (csv && csv !== -1) {
     var fileName = testArgument[csv + 1];
     return Observable.create(function (obs) {
       var fileData = output.map(function (o) {
