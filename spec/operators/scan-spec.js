@@ -21,6 +21,21 @@ describe('Observable.prototype.scan()', function () {
     expectObservable(source).toBe(expected, values);
   });
 
+  it('should scan without seed', function () {
+    var e1 = hot('--a--^--b--c--d--|');
+    var expected =    '---x--y--z--|';
+
+    var values = {
+      x: 'b',
+      y: 'bc',
+      z: 'bcd'
+    };
+
+    var source = e1.scan(function (acc, x) { return acc + x; });
+
+    expectObservable(source).toBe(expected, values);
+  });
+
   it('should handle errors', function () {
     var e1 = hot('--a--^--b--c--d--#');
     var expected =    '---u--v--w--#';
