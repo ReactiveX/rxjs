@@ -16,7 +16,7 @@
     "build_amd": "rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts -m amd --outDir dist/amd --sourcemap --target ES5 --diagnostics",
     "build_cjs": "rm -rf dist/cjs && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts src/Rx.KitchenSink.ts -m commonjs --outDir dist/cjs --sourcemap --target ES5 -d --diagnostics",
     "build_es6": "rm -rf dist/es6 && tsc src/Rx.ts src/Rx.KitchenSink.ts --outDir dist/es6 --sourceMap --target ES6 -d --diagnostics",
-    "build_closure": "java -jar ./node_modules/google-closure-compiler/compiler.jar ./dist/global/Rx.js --create_source_map ./dist/global/Rx.min.js.map --js_output_file ./dist/global/Rx.min.js",
+    "build_closure": "java -jar ./node_modules/google-closure-compiler/compiler.jar ./dist/global/Rx.js --language_in ECMASCRIPT5 --create_source_map ./dist/global/Rx.min.js.map --js_output_file ./dist/global/Rx.min.js",
     "build_global": "rm -rf dist/global && mkdir \"dist/global\" && browserify src/Rx.global.js --outfile dist/global/Rx.js && npm run build_closure",
     "build_perf": "npm run build_cjs && npm run build_global && webdriver-manager update && npm run perf",
     "build_test": "rm -rf dist/ && npm run lint && npm run build_cjs && jasmine",
