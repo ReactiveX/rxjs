@@ -1,61 +1,54 @@
 import {Operator} from '../Operator';
+import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export function scan<T, R>(project: (acc: R, x: T) => R, acc?: R) {
-  return this.lift(new ScanOperator(project, acc));
+export function scan<T, R>(accumulator: (acc: R, x: T) => R, seed?: T | R): Observable<R> {
+  return this.lift(new ScanOperator(accumulator, seed));
 }
 
 class ScanOperator<T, R> implements Operator<T, R> {
-
-  acc: R;
-  project: (acc: R, x: T) => R;
-
-  constructor(project: (acc: R, x: T) => R, acc?: R) {
-    this.acc = acc;
-    this.project = project;
+  constructor(private accumulator: (acc: R, x: T) => R, private seed?: T | R) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new ScanSubscriber(subscriber, this.project, this.acc);
+    return new ScanSubscriber(subscriber, this.accumulator, this.seed);
   }
 }
 
 class ScanSubscriber<T, R> extends Subscriber<T> {
-  private _acc: R;
+  private _seed: T | R;
 
-  get acc(): R {
-    return this._acc;
+  get seed(): T | R {
+    return this._seed;
   }
 
-  set acc(value: R) {
+  set seed(value: T | R) {
     this.accumulatorSet = true;
-    this._acc = value;
+    this._seed = value;
   }
 
-  accumulatorSet: boolean = false;
+  private accumulatorSet: boolean = false;
 
-  project: (acc: R, x: T) => R;
-
-  constructor(destination: Subscriber<T>, project: (acc: R, x: T) => R, acc?: R) {
+  constructor(destination: Subscriber<T>, private accumulator: (acc: R, x: T) => R, seed?: T|R) {
     super(destination);
-    this.acc = acc;
-    this.project = project;
-    this.accumulatorSet = typeof acc !== 'undefined';
+    this.seed = seed;
+    this.accumulator = accumulator;
+    this.accumulatorSet = typeof seed !== 'undefined';
   }
 
-  _next(x) {
+  _next(value: T): void {
     if (!this.accumulatorSet) {
-      this.acc = x;
-      this.destination.next(x);
+      this.seed = value;
+      this.destination.next(value);
     } else {
-      const result = tryCatch(this.project).call(this, this.acc, x);
+      const result = tryCatch(this.accumulator).call(this, this.seed, value);
       if (result === errorObject) {
         this.destination.error(errorObject.e);
       } else {
-        this.acc = result;
-        this.destination.next(this.acc);
+        this.seed = result;
+        this.destination.next(this.seed);
       }
     }
   }
