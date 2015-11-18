@@ -10,6 +10,7 @@ var marbleHelpers = require('./marble-testing');
 global.rxTestScheduler = null;
 global.cold = marbleHelpers.cold;
 global.hot = marbleHelpers.hot;
+global.promise = marbleHelpers.promise;
 global.expectObservable = marbleHelpers.expectObservable;
 global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 
@@ -17,15 +18,40 @@ var assertDeepEqual = marbleHelpers.assertDeepEqual;
 
 var glit = global.it;
 
-global.it = function (description, cb, timeout) {
-  if (cb.length === 0) {
+global.it = function (description, test, timeout) {
+  if (test.length === 0) {
     glit(description, function () {
       global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
-      cb();
+      test();
       global.rxTestScheduler.flush();
+      global.rxTestScheduler = null;
     });
   } else {
-    glit.apply(this, arguments);
+    glit(description, function (done) {
+      global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
+      test(done);
+      global.rxTestScheduler.flush();
+      global.rxTestScheduler = null;
+    }, timeout);
+  }
+};
+
+var glfit = global.fit;
+
+global.fit = function (description, test, timeout) {
+  if (test.length === 0) {
+    glfit(description, function () {
+      global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
+      test();
+      global.rxTestScheduler.flush();
+      global.rxTestScheduler = null;
+    });
+  } else {
+    glfit(description, function (done) {
+      global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
+      test(done);
+      global.rxTestScheduler.flush();
+    }, timeout);
   }
 };
 
@@ -67,10 +93,6 @@ beforeEach(function () {
       };
     }
   });
-});
-
-afterEach(function () {
-  global.rxTestScheduler = null;
 });
 
 (function () {

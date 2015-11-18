@@ -12,6 +12,13 @@ function cold() {
   return global.rxTestScheduler.createColdObservable.apply(global.rxTestScheduler, arguments);
 }
 
+function promise() {
+  if (!global.rxTestScheduler) {
+    throw 'tried to use promise() in async test';
+  }
+  return global.rxTestScheduler.createPromise.apply(global.rxTestScheduler, arguments);
+}
+
 function expectObservable() {
   if (!global.rxTestScheduler) {
     throw 'tried to use expectObservable() in async test';
@@ -33,6 +40,7 @@ function assertDeepEqual(actual, expected) {
 module.exports = {
   hot: hot,
   cold: cold,
+  promise: promise,
   expectObservable: expectObservable,
   expectSubscriptions: expectSubscriptions,
   assertDeepEqual: assertDeepEqual

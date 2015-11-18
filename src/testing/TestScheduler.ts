@@ -6,6 +6,8 @@ import {ColdObservable} from './ColdObservable';
 import {HotObservable} from './HotObservable';
 import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
+import {TestPromise} from './TestPromise';
+import {Immediate} from '../util/Immediate';
 
 interface FlushableTest {
   ready: boolean;
@@ -18,6 +20,8 @@ export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
 export class TestScheduler extends VirtualTimeScheduler {
   private hotObservables: HotObservable<any>[] = [];
+  private testPromises: TestPromise<any>[] = [];
+  private testPromisesDone: () => void = null;
   private flushTests: FlushableTest[] = [];
 
   constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
@@ -45,6 +49,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     return subject;
   }
 
+  createPromise<T>(marbles: string, valueOrError: any, done: () => void): Promise<T> {
+    const messages = TestScheduler.parseMarblesAsPromise(marbles, valueOrError);
+    const testPromise = new TestPromise(messages, this);
+    this.testPromises.push(testPromise);
+    this.testPromisesDone = done;
+    return testPromise.promise;
+  }
+
   private materializeInnerObservable(observable: Observable<any>,
                                      outerFrame: number): TestMessage[] {
     let messages: TestMessage[] = [];
@@ -68,6 +80,11 @@ export class TestScheduler extends VirtualTimeScheduler {
 
     this.schedule(() => {
       subscription = observable.subscribe(x => {
+        // Support Promises
+        if (x && x.fromTestPromise) {
+          actual.push({ frame: x.frame, notification: Notification.createNext(x.value) });
+          return;
+        }
         let value = x;
         // Support Observable-of-Observables
         if (x instanceof Observable) {
@@ -75,6 +92,11 @@ export class TestScheduler extends VirtualTimeScheduler {
         }
         actual.push({ frame: this.frame, notification: Notification.createNext(value) });
       }, (err) => {
+        // Support Promises
+        if (err && err.fromTestPromise) {
+          actual.push({ frame: err.frame, notification: Notification.createError(err.reason) });
+          return;
+        }
         actual.push({ frame: this.frame, notification: Notification.createError(err) });
       }, () => {
         actual.push({ frame: this.frame, notification: Notification.createComplete() });
@@ -111,11 +133,33 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   flush() {
     const hotObservables = this.hotObservables;
+    const testPromises = this.testPromises;
+    const shouldWaitForPromises = testPromises.length > 0;
     while (hotObservables.length > 0) {
       hotObservables.shift().setup();
     }
+    while (testPromises.length > 0) {
+      testPromises.shift().setup();
+    }
 
     super.flush();
+    if (shouldWaitForPromises) {
+      Immediate.setImmediate(() => {
+        this._assertReadyFlushTests();
+        this.testPromisesDone();
+      });
+    } else {
+      this._assertReadyFlushTests();
+    }
+  }
+
+  _reset() {
+    // Do not reset. Once a TestScheduler has flushed, it is useless for
+    // subsequent executions. This is order to support results from Promises
+    // which come at next tick, and to preserve the last scheduler frame.
+  }
+
+  _assertReadyFlushTests() {
     const readyFlushTests = this.flushTests.filter(test => test.ready);
     while (readyFlushTests.length > 0) {
       let test = readyFlushTests.shift();
@@ -170,6 +214,41 @@ export class TestScheduler extends VirtualTimeScheduler {
     } else {
       return new SubscriptionLog(subscriptionFrame, unsubscriptionFrame);
     }
+  }
+
+  static parseMarblesAsPromise(marbles: string, valueOrError: any): TestMessage[] {
+    const len = marbles.length;
+    const testMessages: TestMessage[] = [];
+    const subIndex = marbles.indexOf('^');
+    const frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
+
+    for (let i = 0; i < len; i++) {
+      let frame = i * this.frameTimeFactor;
+      let notification;
+      let c = marbles[i];
+      switch (c) {
+        case '-':
+        case ' ':
+          break;
+        case '|':
+          notification = Notification.createNext(valueOrError);
+          break;
+        case '^':
+          break;
+        case '#':
+          notification = Notification.createError(valueOrError || 'error');
+          break;
+        default:
+          break;
+      }
+
+      frame += frameOffset;
+
+      if (notification) {
+        testMessages.push({ frame, notification });
+      }
+    }
+    return testMessages;
   }
 
   static parseMarbles(marbles: string,
