@@ -24,14 +24,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     super();
   }
 
-  createColdObservable(marbles: string, values?: any, error?: any) {
+  createColdObservable<T>(marbles: string, values?: any, error?: any): Observable<T> {
     if (marbles.indexOf('^') !== -1) {
       throw new Error('Cold observable cannot have subscription offset "^"');
     }
     if (marbles.indexOf('!') !== -1) {
       throw new Error('Cold observable cannot have unsubscription marker "!"');
     }
-    let messages = TestScheduler.parseMarbles(marbles, values, error);
+    const messages = TestScheduler.parseMarbles(marbles, values, error);
     return new ColdObservable(messages, this);
   }
 
@@ -39,7 +39,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     if (marbles.indexOf('!') !== -1) {
       throw new Error('Hot observable cannot have unsubscription marker "!"');
     }
-    let messages = TestScheduler.parseMarbles(marbles, values, error);
+    const messages = TestScheduler.parseMarbles(marbles, values, error);
     const subject = new HotObservable(messages, this);
     this.hotObservables.push(subject);
     return subject;
@@ -47,7 +47,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   private materializeInnerObservable(observable: Observable<any>,
                                      outerFrame: number): TestMessage[] {
-    let messages: TestMessage[] = [];
+    const messages: TestMessage[] = [];
     observable.subscribe((value) => {
       messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
     }, (err) => {
@@ -60,9 +60,9 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   expectObservable(observable: Observable<any>,
                    unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
-    let actual: TestMessage[] = [];
-    let flushTest: FlushableTest = { actual, ready: false };
-    let unsubscriptionFrame = TestScheduler
+    const actual: TestMessage[] = [];
+    const flushTest: FlushableTest = { actual, ready: false };
+    const unsubscriptionFrame = TestScheduler
       .parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
     let subscription;
 
@@ -118,7 +118,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     super.flush();
     const readyFlushTests = this.flushTests.filter(test => test.ready);
     while (readyFlushTests.length > 0) {
-      let test = readyFlushTests.shift();
+      const test = readyFlushTests.shift();
       this.assertDeepEqual(test.actual, test.expected);
     }
   }
@@ -127,14 +127,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Number.POSITIVE_INFINITY);
     }
-    let len = marbles.length;
+    const len = marbles.length;
     let groupStart = -1;
     let subscriptionFrame = Number.POSITIVE_INFINITY;
     let unsubscriptionFrame = Number.POSITIVE_INFINITY;
 
     for (let i = 0; i < len; i++) {
-      let frame = i * this.frameTimeFactor;
-      let c = marbles[i];
+      const frame = i * this.frameTimeFactor;
+      const c = marbles[i];
       switch (c) {
         case '-':
         case ' ':
@@ -180,11 +180,11 @@ export class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Conventional marble diagrams cannot have the ' +
         'unsubscription marker "!"');
     }
-    let len = marbles.length;
-    let testMessages: TestMessage[] = [];
-    let subIndex = marbles.indexOf('^');
-    let frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
-    let getValue = typeof values !== 'object' ?
+    const len = marbles.length;
+    const testMessages: TestMessage[] = [];
+    const subIndex = marbles.indexOf('^');
+    const frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
+    const getValue = typeof values !== 'object' ?
       (x) => x :
       (x) => {
         // Support Observable-of-Observables
@@ -196,9 +196,9 @@ export class TestScheduler extends VirtualTimeScheduler {
     let groupStart = -1;
 
     for (let i = 0; i < len; i++) {
-      let frame = i * this.frameTimeFactor;
+      const frame = i * this.frameTimeFactor + frameOffset;
       let notification;
-      let c = marbles[i];
+      const c = marbles[i];
       switch (c) {
         case '-':
         case ' ':
@@ -221,8 +221,6 @@ export class TestScheduler extends VirtualTimeScheduler {
           notification = Notification.createNext(getValue(c));
           break;
       }
-
-      frame += frameOffset;
 
       if (notification) {
         testMessages.push({ frame: groupStart > -1 ? groupStart : frame, notification });
