@@ -67,10 +67,10 @@ describe('FastMap', function () {
       var thisArg = {};
 
       map.forEach(function (value, key) {
-          expect(this).toBe(thisArg);
-          expect(value).toBe(expectedValues.shift());
-          expect(key).toBe(expectedKeys.shift());
-        }, thisArg);
+        expect(this).toBe(thisArg);
+        expect(value).toBe(expectedValues.shift());
+        expect(key).toBe(expectedKeys.shift());
+      }, thisArg);
 
       expect(expectedValues.length).toBe(0);
       expect(expectedKeys.length).toBe(0);
