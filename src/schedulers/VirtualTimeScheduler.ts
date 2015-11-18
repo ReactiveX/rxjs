@@ -29,7 +29,11 @@ export class VirtualTimeScheduler implements Scheduler {
         break;
       }
     }
-    actions.length = 0;
+    this._reset();
+  }
+
+  _reset() {
+    this.actions.length = 0;
     this.frame = 0;
   }
 

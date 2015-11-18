@@ -117,6 +117,20 @@ describe('Observable.prototype.debounce()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should accept a Promise as the duration selector ', function () {
+    var e1 =    hot('--a--bc--d----|');
+    var ptemplate =   '--|          ';
+    var e1subs =    '^             !';
+    var expected =  '----a---c--d--|';
+
+    function durationSelector() {
+      return promise(ptemplate, 0);
+    }
+
+    expectObservable(e1.debounce(durationSelector)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should delay element by same selector observable emits multiple', function () {
     var e1 =    hot('----a--b--c----d----e-------|');
     var e1subs =    '^                           !';

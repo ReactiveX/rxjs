@@ -85,6 +85,29 @@ describe('TestScheduler', function () {
     });
   });
 
+  describe('parseMarblesAsPromise()', function () {
+    it('should parse a resolved promise marble string into a sequence of test messages', function () {
+      var result = TestScheduler.parseMarblesAsPromise('----|', 42);
+      expect(result).toDeepEqual([
+        { frame: 40, notification: Notification.createNext(42) }
+      ]);
+    });
+
+    it('should parse a rejected promise marble string into a sequence of test messages', function () {
+      var result = TestScheduler.parseMarblesAsPromise('----#', 'blast');
+      expect(result).toDeepEqual([
+        { frame: 40, notification: Notification.createError('blast') }
+      ]);
+    });
+
+    it('should parse a marble string with a subscription point', function () {
+      var result = TestScheduler.parseMarblesAsPromise('---^---|', 42);
+      expect(result).toDeepEqual([
+        { frame: 40, notification: Notification.createNext(42) }
+      ]);
+    });
+  });
+
   describe('createColdObservable()', function () {
     it('should create a cold observable', function () {
       var expected = ['A', 'B'];
@@ -110,6 +133,19 @@ describe('TestScheduler', function () {
       });
       scheduler.flush();
       expect(expected.length).toBe(0);
+    });
+  });
+
+  describe('createPromise()', function () {
+    it('should create a Promise', function (done) {
+      var scheduler = new TestScheduler();
+      var promise = scheduler.createPromise('---|', 'foo', done);
+      expect(promise instanceof Promise).toBe(true);
+      promise.then(function (x) {
+        expect(x).toBeDefined();
+        expect(x.value).toBe('foo');
+      }, done.fail);
+      scheduler.flush();
     });
   });
 
@@ -148,6 +184,22 @@ describe('TestScheduler', function () {
         var source = hot('---^-a-b-|', { a: 1, b: 2 });
         expect(source instanceof Rx.Subject).toBe(true);
         expectObservable(source).toBe('--a-b-|', { a: 1, b: 2 });
+      });
+    });
+
+    describe('promise()', function () {
+      it('should exist', function () {
+        expect(promise).toBeDefined();
+        expect(typeof promise).toBe('function');
+      });
+
+      it('should create a promise', function (done) {
+        var p = promise('---^----|', 42, done);
+        var expected =     '-----(a|)';
+        var values = { a: 42 };
+        expect(p instanceof Promise).toBe(true);
+        var result = Rx.Observable.from(p);
+        expectObservable(result).toBe(expected, values);
       });
     });
 
