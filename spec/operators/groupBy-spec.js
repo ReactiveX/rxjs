@@ -626,7 +626,7 @@ describe('Observable.prototype.groupBy()', function () {
       .groupBy(
         function (val) { return val.toLowerCase().trim(); },
         function (val) { return reverseString(val); },
-        function (group) { return group.skip(2).map(function () { throw 'error'; })
+        function (group) { return group.skip(2).map(function () { throw 'error'; });
         }
       );
     expectObservable(source).toBe(expected, expectedValues);
