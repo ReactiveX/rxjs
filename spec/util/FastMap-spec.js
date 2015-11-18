@@ -58,22 +58,22 @@ describe('FastMap', function () {
     });
 
     it('should iterate over keys and values', function () {
-        var expectedKeys = ['a', 'b', 'c'];
-        var expectedValues = [1, 2, 3];
-        var map = new FastMap();
-        map.set('a', 1);
-        map.set('b', 2);
-        map.set('c', 3);
-        var thisArg = {};
+      var expectedKeys = ['a', 'b', 'c'];
+      var expectedValues = [1, 2, 3];
+      var map = new FastMap();
+      map.set('a', 1);
+      map.set('b', 2);
+      map.set('c', 3);
+      var thisArg = {};
 
-        map.forEach(function (value, key) {
+      map.forEach(function (value, key) {
           expect(this).toBe(thisArg);
           expect(value).toBe(expectedValues.shift());
           expect(key).toBe(expectedKeys.shift());
         }, thisArg);
 
-        expect(expectedValues.length).toBe(0);
-        expect(expectedKeys.length).toBe(0);
-      });
+      expect(expectedValues.length).toBe(0);
+      expect(expectedKeys.length).toBe(0);
+    });
   });
 });

@@ -11,7 +11,7 @@ describe('Observable.prototype.catch()', function () {
       })
       .subscribe(function () { },
         function (err) {
-          expect('this was called').not.toBeTruthy();
+          done.fail('should not be called');
         },
         done);
   });
@@ -31,7 +31,7 @@ describe('Observable.prototype.catch()', function () {
       .subscribe(function (x) {
         expect(x).toBe(expected.shift());
       }, function (err) {
-        expect('this was called').not.toBeTruthy();
+        done.fail('should not be called');
       }, function () {
         done();
       });
@@ -59,7 +59,7 @@ describe('Observable.prototype.catch()', function () {
         expect(err).toBe('done');
         done();
       }, function () {
-        expect('this was called').not.toBeTruthy();
+        done.fail('should not be called');
       });
   });
 
@@ -78,7 +78,7 @@ describe('Observable.prototype.catch()', function () {
       .subscribe(function (x) {
         expect(x).toBe(expected.shift());
       }, function (err) {
-        expect('this was called').not.toBeTruthy();
+        done.fail('should not be called');
       }, function () {
         done();
       });
@@ -102,7 +102,7 @@ describe('Observable.prototype.catch()', function () {
         expect(err).toBe('haha');
         done();
       }, function () {
-        expect('this was called').not.toBeTruthy();
+        done.fail('should not be called');
       });
   });
 });
