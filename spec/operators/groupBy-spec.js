@@ -597,6 +597,41 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source).toBe(expected, expectedValues);
   });
 
+  it('should allow using a keySelector, elementSelector, and durationSelector that throws', function () {
+    var values = {
+      a: '  foo',
+      b: ' FoO ',
+      c: 'baR  ',
+      d: 'foO ',
+      e: ' Baz   ',
+      f: '  qux ',
+      g: '   bar',
+      h: ' BAR  ',
+      i: 'FOO ',
+      j: 'baz  ',
+      k: ' bAZ ',
+      l: '    fOo    '
+    };
+    var reversedValues = mapObject(values, reverseString);
+    var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var expected =      '--v---w---x-y-----z-------|';
+    var v = cold(         'a-b---(d#)'               , reversedValues);
+    var w = cold(             'c-------g-(h#)'       , reversedValues);
+    var x = cold(                 'e---------j-(k#)' , reversedValues);
+    var y = cold(                   'f-------------|', reversedValues);
+    var z = cold(                         'i-----l-|', reversedValues);
+    var expectedValues = { v: v, w: w, x: x, y: y, z: z };
+
+    var source = e1
+      .groupBy(
+        function (val) { return val.toLowerCase().trim(); },
+        function (val) { return reverseString(val); },
+        function (group) { return group.skip(2).map(function () { throw 'error'; })
+        }
+      );
+    expectObservable(source).toBe(expected, expectedValues);
+  });
+
   it('should allow using a keySelector and a durationSelector, outer throws', function () {
     var values = {
       a: '  foo',

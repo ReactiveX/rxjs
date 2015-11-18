@@ -235,6 +235,123 @@ describe('Subject', function () {
     expect(results3).toEqual(['C']);
   });
 
+  it('should disallow new subscriber once subject has been disposed', function () {
+    var subject = new Subject();
+    var results1 = [];
+    var results2 = [];
+    var results3 = [];
+
+    var subscription1 = subject.subscribe(
+      function (x) { results1.push(x); },
+      function (e) { results1.push('E'); },
+      function () { results1.push('C'); }
+    );
+
+    subject.next(1);
+    subject.next(2);
+
+    var subscription2 = subject.subscribe(
+      function (x) { results2.push(x); },
+      function (e) { results2.push('E'); },
+      function () { results2.push('C'); }
+    );
+
+    subject.next(3);
+    subject.next(4);
+    subject.next(5);
+
+    subscription1.unsubscribe();
+    subscription2.unsubscribe();
+    subject.unsubscribe();
+
+    expect(function () {
+      var subscription3 = subject.subscribe(
+        function (x) { results3.push(x); },
+        function (e) { results3.push('E'); },
+        function () { results3.push('C'); }
+      );
+    }).toThrow();
+
+    expect(results1).toEqual([1,2,3,4,5]);
+    expect(results2).toEqual([3,4,5]);
+    expect(results3).toEqual([]);
+  });
+
+  it('should allow ad-hoc subscription to be added to itself', function () {
+    var subject = new Subject();
+    var results1 = [];
+    var results2 = [];
+
+    var auxSubject = new Subject();
+
+    var subscription1 = subject.subscribe(
+      function (x) { results1.push(x); },
+      function (e) { results1.push('E'); },
+      function () { results1.push('C'); }
+    );
+    var subscription2 = auxSubject.subscribe(
+      function (x) { results2.push(x); },
+      function (e) { results2.push('E'); },
+      function () { results2.push('C'); }
+    );
+
+    subject.add(subscription2);
+
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    auxSubject.next('a');
+    auxSubject.next('b');
+
+    subscription1.unsubscribe();
+    subject.unsubscribe();
+
+    auxSubject.next('c');
+    auxSubject.next('d');
+
+    expect(results1).toEqual([1,2,3]);
+    expect(subscription2.isUnsubscribed).toBe(true);
+    expect(results2).toEqual(['a','b']);
+  });
+
+  it('should allow ad-hoc subscription to be removed from itself', function () {
+    var subject = new Subject();
+    var results1 = [];
+    var results2 = [];
+
+    var auxSubject = new Subject();
+
+    var subscription1 = subject.subscribe(
+      function (x) { results1.push(x); },
+      function (e) { results1.push('E'); },
+      function () { results1.push('C'); }
+    );
+    var subscription2 = auxSubject.subscribe(
+      function (x) { results2.push(x); },
+      function (e) { results2.push('E'); },
+      function () { results2.push('C'); }
+    );
+
+    subject.add(subscription2);
+
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    auxSubject.next('a');
+    auxSubject.next('b');
+
+    subject.remove(subscription2);
+    subscription1.unsubscribe();
+    subject.unsubscribe();
+
+    auxSubject.next('c');
+    auxSubject.next('d');
+
+    expect(results1).toEqual([1,2,3]);
+    expect(subscription2.isUnsubscribed).toBe(false);
+    expect(results2).toEqual(['a','b','c','d']);
+  });
+
   it('should not allow values to be nexted after a return', function (done) {
     var subject = new Subject();
     var expected = ['foo'];
@@ -305,6 +422,51 @@ describe('Subject', function () {
     expect(nexts).toEqual(['a','b','c']);
     expect(complete).toBe(true);
     expect(error).toBe(undefined);
+
+    expect(output).toEqual([1,2,3,4,5]);
+    expect(outputComplete).toBe(true);
+  });
+
+  it('should have a static create function that works also to raise errors', function () {
+    expect(typeof Subject.create).toBe('function');
+    var source = Observable.of(1,2,3,4,5);
+    var nexts = [];
+    var error;
+    var complete = false;
+    var output = [];
+    var outputComplete = false;
+
+    var destination = {
+      isUnsubscribed: false,
+      next: function (x) {
+        nexts.push(x);
+      },
+      error: function (err) {
+        error = err;
+        this.isUnsubscribed = true;
+      },
+      complete: function () {
+        complete = true;
+        this.isUnsubscribed = true;
+      }
+    };
+
+    var sub = Subject.create(source, destination);
+
+    sub.subscribe(function (x) {
+      output.push(x);
+    }, null, function () {
+      outputComplete = true;
+    });
+
+    sub.next('a');
+    sub.next('b');
+    sub.next('c');
+    sub.error('boom');
+
+    expect(nexts).toEqual(['a','b','c']);
+    expect(complete).toBe(false);
+    expect(error).toBe('boom');
 
     expect(output).toEqual([1,2,3,4,5]);
     expect(outputComplete).toBe(true);
