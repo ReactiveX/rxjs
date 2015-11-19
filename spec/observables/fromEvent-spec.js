@@ -94,11 +94,12 @@ describe('Observable.fromEvent', function () {
       }
     };
 
-    var subscription = Observable.fromEvent(obj, 'click')
+    Observable.fromEvent(obj, 'click').take(1)
       .subscribe(function (e) {
         expect(e).toBe('test');
-        done();
-      });
+      }, function (err) {
+        done.fail('should not be called');
+      }, done);
 
     send('test');
   });
@@ -117,11 +118,12 @@ describe('Observable.fromEvent', function () {
       return x + '!';
     }
 
-    var subscription = Observable.fromEvent(obj, 'click', selector)
+    Observable.fromEvent(obj, 'click', selector).take(1)
       .subscribe(function (e) {
         expect(e).toBe('test!');
-        done();
-      });
+      }, function (err) {
+        done.fail('should not be called');
+      }, done);
 
     send('test');
   });

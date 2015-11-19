@@ -230,17 +230,17 @@ describe('Observable.prototype.bufferWhen', function () {
     var closing = Observable.empty();
     var TOO_MANY_INVOCATIONS = 30;
 
-    var invoked = 0;
     source
       .bufferWhen(function () { return closing; })
+      .takeWhile(function (val, index) {
+        return index < TOO_MANY_INVOCATIONS;
+      })
       .subscribe(function (val) {
         expect(Array.isArray(val)).toBe(true);
         expect(val.length).toBe(0);
-        invoked++;
-        if (invoked > TOO_MANY_INVOCATIONS) {
-          done();
-        }
-      }, null, null);
+      }, function (err) {
+        done.fail('should not be called');
+      }, done);
   });
 
   it('should handle inner throw', function () {
