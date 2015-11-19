@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, hot */
+/* globals describe, it, expect, expectObservable, hot, cold, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -18,16 +18,20 @@ describe('Observable.prototype.filter()', function () {
 
   it('should filter out even values', function () {
     var source = hot('--0--1--2--3--4--|');
+    var subs =       '^                !';
     var expected =   '-----1-----3-----|';
 
     expectObservable(source.filter(oddFilter)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should filter in only prime numbers', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var subs =              '^                  !';
     var expected =          '--3---5----7-------|';
 
     expectObservable(source.filter(isPrime)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should filter with an always-true predicate', function () {
@@ -48,22 +52,27 @@ describe('Observable.prototype.filter()', function () {
 
   it('should filter in only prime numbers, source unsubscribes early', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
-    var unsub =             '------------!';
-    var expected =          '--3---5----7-';
+    var subs =              '^           !       ';
+    var unsub =             '            !       ';
+    var expected =          '--3---5----7-       ';
 
     expectObservable(source.filter(isPrime), unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should filter in only prime numbers, source throws', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--#');
+    var subs =              '^                  !';
     var expected =          '--3---5----7-------#';
 
     expectObservable(source.filter(isPrime)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should filter in only prime numbers, but predicate throws', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
-    var expected =          '--3---5-#';
+    var subs =              '^       !           ';
+    var expected =          '--3---5-#           ';
 
     var invoked = 0;
     var predicate = function (x) {
@@ -75,10 +84,12 @@ describe('Observable.prototype.filter()', function () {
     };
 
     expectObservable(source.filter(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should filter in only prime numbers, predicate with index', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var subs =              '^                  !';
     var expected =          '--3--------7-------|';
 
     var predicate = function (x, i) {
@@ -86,6 +97,7 @@ describe('Observable.prototype.filter()', function () {
     };
 
     expectObservable(source.filter(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should invoke predicate once for each checked value', function () {
@@ -108,21 +120,23 @@ describe('Observable.prototype.filter()', function () {
   });
 
   it('should filter in only prime numbers, predicate with index, ' +
-    'source unsubscribes early',
-  function () {
+  'source unsubscribes early', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
-    var unsub =             '------------!';
-    var expected =          '--3--------7-';
+    var subs =              '^           !       ';
+    var unsub =             '            !       ';
+    var expected =          '--3--------7-       ';
 
     var predicate = function (x, i) {
       return isPrime((+x) + i * 10);
     };
 
     expectObservable(source.filter(predicate), unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should filter in only prime numbers, predicate with index, source throws', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--#');
+    var subs =              '^                  !';
     var expected =          '--3--------7-------#';
 
     var predicate = function (x, i) {
@@ -130,11 +144,13 @@ describe('Observable.prototype.filter()', function () {
     };
 
     expectObservable(source.filter(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should filter in only prime numbers, predicate with index and throws', function () {
     var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
-    var expected =          '--3-----#';
+    var subs =              '^       !           ';
+    var expected =          '--3-----#           ';
 
     var invoked = 0;
     var predicate = function (x, i) {
@@ -146,6 +162,7 @@ describe('Observable.prototype.filter()', function () {
     };
 
     expectObservable(source.filter(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should compose with another filter to allow multiples of six', function () {
@@ -192,30 +209,38 @@ describe('Observable.prototype.filter()', function () {
 
   it('should propagate errors from the source', function () {
     var source = hot('--0--1--2--3--4--#');
+    var subs =       '^                !';
     var expected =   '-----1-----3-----#';
 
     expectObservable(source.filter(oddFilter)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should support Observable.empty', function () {
-    var source = Observable.empty();
-    var expected = '|';
+    var source = cold('|');
+    var subs =        '(^!)';
+    var expected =    '|';
 
     expectObservable(source.filter(oddFilter)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should support Observable.never', function () {
-    var source = Observable.never();
-    var expected = '-';
+    var source = cold('-');
+    var subs =        '^';
+    var expected =    '-';
 
     expectObservable(source.filter(oddFilter)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should support Observable.throw', function () {
-    var source = Observable.throw(new Error('oops'));
-    var expected = '#';
+    var source = cold('#');
+    var subs =        '(^!)';
+    var expected =    '#';
 
-    expectObservable(source.filter(oddFilter)).toBe(expected, undefined, new Error('oops'));
+    expectObservable(source.filter(oddFilter)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should send errors down the error path', function (done) {
