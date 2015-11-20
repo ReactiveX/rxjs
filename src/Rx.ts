@@ -36,6 +36,9 @@ Observable.fromEventPattern = FromEventPatternObservable.create;
 import {PromiseObservable} from './observables/PromiseObservable';
 Observable.fromPromise = PromiseObservable.create;
 
+import {CallbackObservable} from './observables/CallbackObservable';
+Observable.fromCallback = CallbackObservable.create;
+
 import {IntervalObservable} from './observables/IntervalObservable';
 Observable.interval = IntervalObservable.create;
 
