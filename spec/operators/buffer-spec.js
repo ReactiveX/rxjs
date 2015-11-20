@@ -5,7 +5,7 @@ var Observable = Rx.Observable;
 describe('Observable.prototype.buffer()', function () {
   it.asDiagram('buffer')('should emit buffers that close and reopen', function () {
     var a =    hot('-a-b-c-d-e-f-g-h-i-|');
-    var b =    hot('-----1-----2-----3-|');
+    var b =    hot('-----B-----B-----B-|');
     var expected = '-----x-----y-----z-|';
     var expectedValues = {
       x: ['a','b','c'],

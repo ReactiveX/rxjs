@@ -66,9 +66,19 @@ function drawError(out, x, y) {
   return out;
 }
 
-function drawComplete(out, x, y) {
+function drawComplete(out, x, y, maxFrame, streamData) {
+  var startX = CANVAS_PADDING +
+    MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
+  var isOverlapping = streamData.messages.some(function (msg) {
+    if (msg.notification.kind !== 'N') { return false; }
+    var msgX = startX + MESSAGES_WIDTH * (msg.frame / maxFrame);
+    return Math.abs(msgX - x) < MARBLE_RADIUS;
+  });
+  var radius = isOverlapping ? 1.8 * MARBLE_RADIUS : MARBLE_RADIUS;
   out = out.stroke('#000000', 3);
-  out = out.drawLine(x, y - MARBLE_RADIUS, x, y + MARBLE_RADIUS);
+  out = out.drawLine(
+    x, y - radius,
+    x, y + radius);
   return out;
 }
 
@@ -76,12 +86,12 @@ function drawObservableMessages(out, maxFrame, y, streamData) {
   var startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
 
-  streamData.messages.forEach(function (message) {
+  streamData.messages.slice().reverse().forEach(function (message) {
     var x = startX + MESSAGES_WIDTH * (message.frame / maxFrame);
     switch (message.notification.kind) {
     case 'N': out = drawMarble(out, x, y, message.notification.value); break;
     case 'E': out = drawError(out, x, y); break;
-    case 'C': out = drawComplete(out, x, y); break;
+    case 'C': out = drawComplete(out, x, y, maxFrame, streamData); break;
     default: break;
     }
   });
