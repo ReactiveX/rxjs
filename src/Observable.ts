@@ -149,6 +149,7 @@ export class Observable<T> implements CoreOperators<T>  {
                                removeHandler: (handler: Function) => void,
                                selector?: (...args: Array<any>) => T) => Observable<T>;
   static fromPromise: <T>(promise: Promise<T>, scheduler?: Scheduler) => Observable<T>;
+  static fromCallback: <T>(callbackFunc: Function, ctx?: Object, selector?: Function, scheduler?: Scheduler) => Function;
   static interval: (interval: number, scheduler?: Scheduler) => Observable<number>;
   static merge: <T>(...observables: Array<Observable<any> | Scheduler | number>) => Observable<T>;
   static never: <T>() => Observable<T>;
