@@ -4,10 +4,10 @@ var Observable = Rx.Observable;
 
 describe('Observable.prototype.bufferWhen', function () {
   it.asDiagram('bufferWhen')('should emit buffers that close and reopen', function () {
-    var e1 = hot('--a--^---b---c---d---e---f---g----------|');
+    var e1 = hot('--a--^---b---c---d---e---f---g---------|');
     var e2 = cold(    '--------------(s|)');
-    //                               ---------------(s|)
-    var expected =    '--------------x--------------y----(z|)';
+    //                               --------------(s|)
+    var expected =    '--------------x-------------y-----(z|)';
     var values = {
       x: ['b','c','d'],
       y: ['e','f','g'],
