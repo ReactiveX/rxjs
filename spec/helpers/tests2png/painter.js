@@ -10,6 +10,7 @@ var OBSERVABLE_END_PADDING = 4 * ARROW_HEAD_SIZE;
 var MARBLE_RADIUS = 32;
 var SIN_45 = 0.707106;
 var MESSAGES_WIDTH = (CANVAS_WIDTH - 2 * CANVAS_PADDING - OBSERVABLE_END_PADDING);
+var COLORS = ['#3EA1CB', '#FFCB46', '#FF6946', '#82D736'];
 
 function getMaxFrame(allStreams) {
   var allStreamsLen = allStreams.length;
@@ -23,6 +24,15 @@ function getMaxFrame(allStreams) {
     }
   }
   return max;
+}
+
+function stringToColor(str) {
+  var smallPrime1 = 59;
+  var smallPrime2 = 97;
+  var hash = str.split('')
+    .map(function (x) { return x.charCodeAt(0); })
+    .reduce(function (x, y) { return (x * smallPrime1) + (y * smallPrime2); }, 1);
+  return COLORS[hash % COLORS.length];
 }
 
 function drawObservableArrow(out, maxFrame, y, streamData) {
@@ -41,7 +51,7 @@ function drawObservableArrow(out, maxFrame, y, streamData) {
 
 function drawMarble(out, x, y, content) {
   out = out.stroke('#000000', 3);
-  out = out.fill('#82D736');
+  out = out.fill(stringToColor(String(content)));
   out = out.drawEllipse(x, y, MARBLE_RADIUS, MARBLE_RADIUS, 0, 360);
 
   out = out.strokeWidth(-1);
