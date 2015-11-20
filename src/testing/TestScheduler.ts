@@ -18,6 +18,7 @@ export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
 export class TestScheduler extends VirtualTimeScheduler {
   private hotObservables: HotObservable<any>[] = [];
+  private coldObservables: ColdObservable<any>[] = [];
   private flushTests: FlushableTest[] = [];
 
   constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
@@ -32,7 +33,9 @@ export class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Cold observable cannot have unsubscription marker "!"');
     }
     const messages = TestScheduler.parseMarbles(marbles, values, error);
-    return new ColdObservable(messages, this);
+    const cold = new ColdObservable(messages, this);
+    this.coldObservables.push(cold);
+    return cold;
   }
 
   createHotObservable<T>(marbles: string, values?: any, error?: any): Subject<T> {

@@ -2,6 +2,14 @@
 var Rx = require('../../dist/cjs/Rx');
 
 describe('Observable.prototype.concat()', function () {
+  it.asDiagram('concat')('should concatenate two cold observables', function () {
+    var e1 =   cold('--a--b-|');
+    var e2 =   cold(       '--x---y--|');
+    var expected =  '--a--b---x---y--|';
+
+    expectObservable(e1.concat(e2, rxTestScheduler)).toBe(expected);
+  });
+
   it('should complete without emit if both sources are empty', function () {
     var e1 =   cold('--|');
     var e1subs =    '^ !';

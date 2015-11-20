@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.bufferWhen', function () {
-  it('should emit buffers that close and reopen', function () {
+  it.asDiagram('bufferWhen')('should emit buffers that close and reopen', function () {
     var e1 = hot('--a--^---b---c---d---e---f---g---h------|');
     var e2 = cold(    '---------------(s|)');
     //                                ---------------(s|)

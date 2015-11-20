@@ -10,6 +10,39 @@ global.hot = marbleHelpers.hot;
 global.expectObservable = marbleHelpers.expectObservable;
 global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 
+function getInputStreams(rxTestScheduler) {
+  return Array.prototype.concat.call([],
+    rxTestScheduler.hotObservables
+      .map(function (hot) {
+        return {
+          messages: hot.messages,
+          subscription: {start: 0, end: '100%'},
+        };
+      })
+      .slice(),
+    rxTestScheduler.coldObservables
+      .map(function (cold) {
+        return {
+          messages: cold.messages,
+          cold: cold,
+        };
+      })
+      .slice()
+  );
+}
+
+function updateInputStreamsPostFlush(inputStreams, rxTestScheduler) {
+  return inputStreams.map(function (singleInputStream) {
+    if (singleInputStream.cold) {
+      singleInputStream.subscription = {
+        start: singleInputStream.cold.subscriptions[0].subscribedFrame,
+        end: singleInputStream.cold.subscriptions[0].unsubscribedFrame,
+      };
+    }
+    return singleInputStream;
+  });
+}
+
 var glit = global.it;
 
 global.it = function (description, specFn, timeout) { };
@@ -21,15 +54,17 @@ global.it.asDiagram = function asDiagram(operatorLabel) {
         var outputStream;
         global.rxTestScheduler = new Rx.TestScheduler(function (actual) {
           if (Array.isArray(actual) && typeof actual[0].frame === 'number') {
-            outputStream = actual;
+            outputStream = {
+              messages: actual,
+              subscription: {start: 0, end: '100%'}
+            };
           }
           return true;
         });
         specFn();
-        var inputStreams = global.rxTestScheduler.hotObservables
-          .map(function (hot) { return hot.messages; })
-          .slice();
+        var inputStreams = getInputStreams(global.rxTestScheduler);
         global.rxTestScheduler.flush();
+        inputStreams = updateInputStreamsPostFlush(inputStreams, rxTestScheduler);
         painter(inputStreams, operatorLabel, outputStream);
         console.log('Painted img/' + operatorLabel + '.png');
       });

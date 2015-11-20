@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('count', function () {
+  it.asDiagram('count')('should count the values of an observable', function () {
+    var source = hot('--a--b--c--|');
+    var subs =       '^          !';
+    var expected =   '-----------(x|)';
+
+    expectObservable(source.count()).toBe(expected, {x: 3});
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should be never when source is never', function () {
     var e1 =  cold('-');
     var e1subs =   '^';
@@ -46,15 +55,6 @@ describe('count', function () {
 
     expectObservable(e1.count()).toBe(expected, { w: 1 });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should count the values of an observable', function () {
-    var source = hot('--a--b--c--|');
-    var subs =       '^          !';
-    var expected =   '-----------(x|)';
-
-    expectObservable(source.count()).toBe(expected, {x: 3});
-    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should count the values of an ongoing hot observable', function () {
