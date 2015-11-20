@@ -1,11 +1,8 @@
-//Fail timeouts faster
-//Individual suites/specs should specify longer timeouts if needed.
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
 
-var _ = require('lodash');
-var Rx = require('../../dist/cjs/Rx.KitchenSink');
-
-var marbleHelpers = require('./marble-testing');
+var Rx = require('../../../dist/cjs/Rx.KitchenSink');
+var marbleHelpers = require('../marble-testing');
+var painter = require('./painter');
 
 global.rxTestScheduler = null;
 global.cold = marbleHelpers.cold;
@@ -13,60 +10,41 @@ global.hot = marbleHelpers.hot;
 global.expectObservable = marbleHelpers.expectObservable;
 global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 
-var assertDeepEqual = marbleHelpers.assertDeepEqual;
-
 var glit = global.it;
 
-global.it = function (description, cb, timeout) {
-  if (cb.length === 0) {
-    glit(description, function () {
-      global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
-      cb();
-      global.rxTestScheduler.flush();
-    });
-  } else {
-    glit.apply(this, arguments);
-  }
-};
+global.it = function (description, specFn, timeout) { };
 
-global.it.asDiagram = function () {
-  return global.it;
-};
-
-function stringify(x) {
-  return JSON.stringify(x, function (key, value) {
-    if (Array.isArray(value)) {
-      return '[' + value
-        .map(function (i) {
-          return '\n\t' + stringify(i);
-        }) + '\n]';
+global.it.asDiagram = function asDiagram(operatorLabel) {
+  return function specFnWithPainter(description, specFn) {
+    if (specFn.length === 0) {
+      glit(description, function () {
+        var outputStream;
+        global.rxTestScheduler = new Rx.TestScheduler(function (actual) {
+          if (Array.isArray(actual) && typeof actual[0].frame === 'number') {
+            outputStream = actual;
+          }
+          return true;
+        });
+        specFn();
+        var inputStreams = global.rxTestScheduler.hotObservables
+          .map(function (hot) { return hot.messages; })
+          .slice();
+        global.rxTestScheduler.flush();
+        painter(inputStreams, operatorLabel, outputStream);
+        console.log('Painted img/' + operatorLabel + '.png');
+      });
+    } else {
+      throw new Error('Cannot generate PNG marble diagram for async test ' + description);
     }
-    return value;
-  })
-  .replace(/\\"/g, '"')
-  .replace(/\\t/g, '\t')
-  .replace(/\\n/g, '\n');
-}
+  };
+};
 
 beforeEach(function () {
   jasmine.addMatchers({
     toDeepEqual: function (util, customEqualityTesters) {
       return {
         compare: function (actual, expected) {
-          var result = { pass: _.isEqual(actual, expected) };
-
-          if (!result.pass && Array.isArray(actual) && Array.isArray(expected)) {
-            result.message = 'Expected \n';
-            actual.forEach(function (x) {
-              result.message += stringify(x) + '\n';
-            });
-            result.message += '\nto deep equal \n';
-            expected.forEach(function (x) {
-              result.message += stringify(x) + '\n';
-            });
-          }
-
-          return result;
+          return { pass: true };
         }
       };
     }
@@ -133,14 +111,3 @@ global.lowerCaseO = function lowerCaseO() {
   return o;
 };
 
-var ___start;
-beforeEach(function () {
-  ___start = Date.now();
-});
-
-afterEach(function () {
-  var elapsed = Date.now() - ___start;
-  if (elapsed > 500) {
-    throw 'slow test!';
-  }
-});

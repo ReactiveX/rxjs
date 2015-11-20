@@ -3,6 +3,18 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.buffer()', function () {
+  it.asDiagram('buffer')('should emit buffers that close and reopen', function () {
+    var a =    hot('-a-b-c-d-e-f-g-h-i-|');
+    var b =    hot('-----1-----2-----3-|');
+    var expected = '-----x-----y-----z-|';
+    var expectedValues = {
+      x: ['a','b','c'],
+      y: ['d','e','f'],
+      z: ['g','h','i']
+    };
+    expectObservable(a.buffer(b)).toBe(expected, expectedValues);
+  });
+
   it('should work with empty and empty selector', function () {
     var a = Observable.empty();
     var b = Observable.empty();
@@ -43,18 +55,6 @@ describe('Observable.prototype.buffer()', function () {
     var b = Observable.never();
     var expected = '|';
     expectObservable(a.buffer(b)).toBe(expected);
-  });
-
-  it('should emit buffers that close and reopen', function () {
-    var a =    hot('-a-b-c-d-e-f-g-h-i-|');
-    var b =    hot('-----1-----2-----3-|');
-    var expected = '-----x-----y-----z-|';
-    var expectedValues = {
-      x: ['a','b','c'],
-      y: ['d','e','f'],
-      z: ['g','h','i']
-    };
-    expectObservable(a.buffer(b)).toBe(expected, expectedValues);
   });
 
   it('should work with non-empty and throw selector', function () {
