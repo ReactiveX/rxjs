@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.bufferCount', function () {
-  it('should emit buffers at intervals', function () {
+  it.asDiagram('bufferCount(3,2)')('should emit buffers at intervals', function () {
     var values = {
       v: ['a', 'b', 'c'],
       w: ['c', 'd', 'e'],

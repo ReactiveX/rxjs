@@ -71,6 +71,7 @@ The build and test structure is fairly primitive at the moment. There are variou
 - build_docs: generates API documentation from `dist/es6` to `dist/docs`
 - build_cover: runs `istanbul` code coverage against test cases
 - test: runs tests with `jasmine`, must have built prior to running.
+- tests2png: generates PNG marble diagrams from test cases. You must have `imagemagick`, `graphicsmagick`, and `ghostscript` installed locally.
 
 ### Example
 

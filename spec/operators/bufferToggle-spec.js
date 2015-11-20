@@ -3,6 +3,21 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.bufferToggle', function () {
+  it.asDiagram('bufferToggle')('should emit buffers using hot openings and hot closings', function () {
+    var e1 =   hot('---a---b---c---d---e---f---g---|');
+    var e2 =   hot('--o------------------o---------|');
+    var e3 =   hot('---------c---------------c-----|');
+    var expected = '---------x---------------y-----|';
+    var values = {
+      x: ['a','b'],
+      y: ['f'],
+    };
+
+    var result = e1.bufferToggle(e2, function (x) { return e3; });
+
+    expectObservable(result).toBe(expected, values);
+  });
+
   it('should emit buffers that are opened by an observable from the first argument ' +
       'and closed by an observable returned by the function in the second argument',
   function () {

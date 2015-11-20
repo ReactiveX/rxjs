@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.bufferTime', function () {
-  it('should emit buffers at intervals', function () {
+  it.asDiagram('bufferTime(100)')('should emit buffers at intervals', function () {
     var e1 =   hot('---a---b---c---d---e---f---g---|');
     var subs =     '^                              !';
     var expected = '----------w---------x---------y(z|)';
