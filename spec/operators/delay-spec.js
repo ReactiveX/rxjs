@@ -4,11 +4,11 @@ var Observable = Rx.Observable;
 
 describe('Observable.prototype.delay()', function () {
   it.asDiagram('delay')('should delay by specified timeframe', function () {
-    var e1 =   hot('--a--b--|');
+    var e1 =   hot('---a--b--|');
     var expected = '-----a--b--|';
     var subs =     '^          !';
 
-    expectObservable(e1.delay(30, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.delay(20, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
