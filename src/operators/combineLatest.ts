@@ -1,6 +1,7 @@
 import {Observable} from '../Observable';
 import {ArrayObservable} from '../observables/ArrayObservable';
 import {CombineLatestOperator} from './combineLatest-support';
+import {isArray} from '../util/isArray';
 
 /**
  * Combines the values from this observable with values from observables passed as arguments. This is done by subscribing
@@ -12,11 +13,21 @@ import {CombineLatestOperator} from './combineLatest-support';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export function combineLatest<R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
-  observables.unshift(this);
-  let project;
+export function combineLatest<R>(...observables: Array<Observable<any> |
+                                                       Array<Observable<any>> |
+                                                       ((...values: Array<any>) => R)>): Observable<R> {
+  let project: (...values: Array<any>) => R =  null;
   if (typeof observables[observables.length - 1] === 'function') {
-    project = observables.pop();
+    project = <(...values: Array<any>) => R>observables.pop();
   }
+
+  // if the first and only other argument besides the resultSelector is an array
+  // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
+  if (observables.length === 1 && isArray(observables[0])) {
+    observables = <Array<Observable<any>>>observables[0];
+  }
+
+  observables.unshift(this);
+
   return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }

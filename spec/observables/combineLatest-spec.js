@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, cold, expectObservable */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
@@ -27,6 +27,18 @@ describe('Observable.combineLatest', function () {
       expect(i).toEqual(r.length);
       done();
     });
+  });
+
+  it('should accept array of observables', function () {
+    var firstSource =  hot('----a----b----c----|');
+    var secondSource = hot('--d--e--f--g--|');
+    var expected =         '----uv--wx-y--z----|';
+
+    var combined = Observable.combineLatest([firstSource, secondSource], function (a, b) {
+      return '' + a + b;
+    });
+
+    expectObservable(combined).toBe(expected, {u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg'});
   });
 
   it('should work with two nevers', function () {

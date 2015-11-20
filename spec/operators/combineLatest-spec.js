@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, cold, expectObservable */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
@@ -143,6 +143,23 @@ describe('Observable.prototype.combineLatest', function () {
     expectObservable(result).toBe(expected, { x: 'bf', y: 'cf', z: 'cg' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should accept array of observables', function () {
+    var e1 =   hot('--a--^--b--c--|');
+    var e1subs =        '^        !';
+    var e2 =   hot('---e-^---f--g--|');
+    var e2subs =        '^         !';
+    var e3 =   hot('---h-^----i--j-|');
+    var e3subs =        '^         !';
+    var expected =      '-----wxyz-|';
+
+    var result = e1.combineLatest([e2, e3], function (x, y, z) { return x + y + z; });
+
+    expectObservable(result).toBe(expected, { w: 'bfi', x: 'cfi', y: 'cgi', z: 'cgj' });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
   it('should work with empty and error', function () {
