@@ -33,6 +33,34 @@ describe('Observable.prototype.switchMapFirst()', function () {
     expectSubscriptions(x.subscriptions).toBe(xsubs);
   });
 
+  it('should raise error if project throws', function () {
+    var e1 =   hot('---x---------y-----------------z-------------|');
+    var subs =     '^  !';
+    var expected = '---#';
+
+    expectObservable(e1.switchMapFirst(function (value) {
+      throw 'error';
+    })).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should raise error if selector throws', function () {
+    var x = cold(     '--a--b--c--|                              ');
+    var xsubs =    '   ^ !                                       ';
+    var e1 =   hot('---x---------y-----------------z-------------|');
+    var subs =     '^    !';
+    var expected = '-----#';
+
+    expectObservable(e1.switchMapFirst(function (value) {
+      return x;
+    },  function () {
+      throw 'error';
+    })).toBe(expected);
+
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
   it('should switch with a selector function', function () {
     var x = cold(     '--a--b--c--|                              ');
     var xsubs =    '   ^          !                              ';
