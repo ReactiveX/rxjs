@@ -1,19 +1,95 @@
 /* globals describe, it, expect */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var Promise = require('promise');
 
 describe('Observable.fromPromise', function () {
-  it('should emit one value from that promise', function (done) {
+  it('should emit one value from a resolved promise', function (done) {
     var promise = Promise.resolve(42);
     Observable.fromPromise(promise)
-      .subscribe(function (x) {
-        expect(x).toBe(42);
-      }, null,
-      function (x) {
-        expect(x).toBe(undefined);
-        done();
-      });
+      .subscribe(
+        function (x) { expect(x).toBe(42); },
+        done.fail,
+        done);
+  });
+
+  it('should raise error from a rejected promise', function (done) {
+    var promise = Promise.reject('bad');
+    Observable.fromPromise(promise)
+      .subscribe(done.fail,
+        function (e) {
+          expect(e).toBe('bad');
+          done();
+        },
+        done.fail);
+  });
+
+  it('should share the underlying promise with multiple subscribers', function (done) {
+    var promise = Promise.resolve(42);
+    var observable = Observable.fromPromise(promise);
+
+    observable
+      .subscribe(
+        function (x) { expect(x).toBe(42); },
+        done.fail,
+        null);
+    setTimeout(function () {
+      observable
+        .subscribe(
+          function (x) { expect(x).toBe(42); },
+          done.fail,
+          done);
+    });
+  });
+
+  it('should accept already-resolved Promise', function (done) {
+    var promise = Promise.resolve(42);
+    promise.then(function (x) {
+      expect(x).toBe(42);
+      Observable.fromPromise(promise)
+        .subscribe(
+          function (y) { expect(y).toBe(42); },
+          done.fail,
+          done);
+    }, done.fail);
+  });
+
+  it('should emit a value from a resolved promise on a separate scheduler', function (done) {
+    var promise = Promise.resolve(42);
+    Observable.fromPromise(promise, Rx.Scheduler.nextTick)
+      .subscribe(
+        function (x) { expect(x).toBe(42); },
+        done.fail,
+        done);
+  });
+
+  it('should raise error from a rejected promise on a separate scheduler', function (done) {
+    var promise = Promise.reject('bad');
+    Observable.fromPromise(promise, Rx.Scheduler.nextTick)
+      .subscribe(
+        done.fail,
+        function (e) {
+          expect(e).toBe('bad');
+          done();
+        },
+        done.fail);
+  });
+
+  it('should share the underlying promise with multiple subscribers on a separate scheduler', function (done) {
+    var promise = Promise.resolve(42);
+    var observable = Observable.fromPromise(promise, Rx.Scheduler.nextTick);
+
+    observable
+      .subscribe(
+        function (x) { expect(x).toBe(42); },
+        done.fail,
+        null);
+    setTimeout(function () {
+      observable
+        .subscribe(
+          function (x) { expect(x).toBe(42); },
+          done.fail,
+          done);
+    });
   });
 
   it('should not emit, throw or complete if immediately unsubscribed', function (done) {
@@ -31,5 +107,26 @@ describe('Observable.fromPromise', function () {
       expect(completeSpy).not.toHaveBeenCalled();
       done();
     });
+  });
+
+  it('should globally throw unhandled errors', function (done) {
+    var invoked = false;
+    process.on('uncaughtException', function (reason, p) {
+      if (invoked) {
+        return;
+      }
+      invoked = true;
+      expect(reason).toBe('fail');
+      done();
+    });
+
+    Observable.fromPromise(Promise.reject('bad'))
+      .subscribe(
+        done.fail,
+        function (e) {
+          expect(e).toBe('bad');
+          throw 'fail';
+        },
+        done.fail);
   });
 });
