@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, hot */
+/* globals describe, it, expect, hot, expectObservable,, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -93,6 +93,18 @@ describe('Observable.prototype.sample', function () {
     var expected = '#';
     var e1subs =   '(^!)';
     var e2subs =   '(^!)';
+
+    expectObservable(e1.sample(e2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should raise error if notification raises error', function () {
+    var e1 =   hot('--a-----|');
+    var e2 =   hot('----#');
+    var expected = '----#';
+    var e1subs =   '^   !';
+    var e2subs =   '^   !';
 
     expectObservable(e1.sample(e2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
