@@ -4,6 +4,18 @@ var Observable = Rx.Observable;
 var GroupedObservable = require('../../dist/cjs/operators/groupBy-support').GroupedObservable;
 
 describe('Observable.prototype.groupBy()', function () {
+  it.asDiagram('groupBy(i => i % 2)')('should group numbers by odd/even', function () {
+    var e1 =   hot('--1---2---3---4---5---|');
+    var expected = '--x---y---------------|';
+    var x = cold(    '1-------3-------5---|');
+    var y = cold(        '2-------4-------|');
+    var expectedValues = { x: x, y: y };
+
+    var source = e1
+      .groupBy(function (val) { return parseInt(val) % 2; });
+    expectObservable(source).toBe(expected, expectedValues);
+  });
+
   function reverseString(str) {
     return str.split('').reverse().join('');
   }

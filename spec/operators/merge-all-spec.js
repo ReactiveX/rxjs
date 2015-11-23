@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.mergeAll()', function () {
+  it.asDiagram('mergeAll')('should merge a hot observable of cold observables', function () {
+    var x = cold(    '--a---b--c---d--|      ');
+    var y = cold(           '----e---f--g---|');
+    var e1 = hot(  '--x------y-------|       ', { x: x, y: y });
+    var expected = '----a---b--c-e-d-f--g---|';
+
+    expectObservable(e1.mergeAll()).toBe(expected);
+  });
+
   it('should merge all observables in an observable', function () {
     var e1 = Observable.fromArray([
       Observable.of('a'),

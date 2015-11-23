@@ -33,7 +33,7 @@ function getInputStreams(rxTestScheduler) {
 
 function updateInputStreamsPostFlush(inputStreams, rxTestScheduler) {
   return inputStreams.map(function (singleInputStream) {
-    if (singleInputStream.cold) {
+    if (singleInputStream.cold && singleInputStream.cold.subscriptions.length) {
       singleInputStream.subscription = {
         start: singleInputStream.cold.subscriptions[0].subscribedFrame,
         end: singleInputStream.cold.subscriptions[0].unsubscribedFrame,
@@ -41,6 +41,22 @@ function updateInputStreamsPostFlush(inputStreams, rxTestScheduler) {
     }
     return singleInputStream;
   });
+}
+
+function postProcessOutputMessage(msg) {
+  if (Array.isArray(msg.notification.value)
+  && msg.notification.value.length
+  && typeof msg.notification.value[0] === 'object') {
+    msg.notification.value = {
+      messages: msg.notification.value,
+      subscription: {start: msg.frame, end: '100%'},
+    }
+  }
+  return msg;
+}
+
+function makeFilename(operatorLabel) {
+  return /^(\w+)/.exec(operatorLabel)[1];
 }
 
 var glit = global.it;
@@ -55,7 +71,7 @@ global.it.asDiagram = function asDiagram(operatorLabel) {
         global.rxTestScheduler = new Rx.TestScheduler(function (actual) {
           if (Array.isArray(actual) && typeof actual[0].frame === 'number') {
             outputStream = {
-              messages: actual,
+              messages: actual.map(postProcessOutputMessage),
               subscription: {start: 0, end: '100%'}
             };
           }
@@ -65,8 +81,9 @@ global.it.asDiagram = function asDiagram(operatorLabel) {
         var inputStreams = getInputStreams(global.rxTestScheduler);
         global.rxTestScheduler.flush();
         inputStreams = updateInputStreamsPostFlush(inputStreams, rxTestScheduler);
-        painter(inputStreams, operatorLabel, outputStream);
-        console.log('Painted img/' + operatorLabel + '.png');
+        var filename = makeFilename(operatorLabel);
+        painter(inputStreams, operatorLabel, outputStream, filename);
+        console.log('Painted img/' + filename + '.png');
       });
     } else {
       throw new Error('Cannot generate PNG marble diagram for async test ' + description);

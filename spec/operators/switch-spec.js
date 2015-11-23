@@ -6,6 +6,15 @@ var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
 
 describe('Observable.prototype.switch()', function () {
+  it.asDiagram('switch')('should switch a hot observable of cold observables', function () {
+    var x = cold(    '--a---b--c---d--|      ');
+    var y = cold(           '----e---f--g---|');
+    var e1 = hot(  '--x------y-------|       ', { x: x, y: y });
+    var expected = '----a---b----e---f--g---|';
+
+    expectObservable(e1.switch()).toBe(expected);
+  });
+
   it('should switch to each immediately-scheduled inner Observable', function (done) {
     var a = Observable.of(1, 2, 3, immediateScheduler);
     var b = Observable.of(4, 5, 6, immediateScheduler);
