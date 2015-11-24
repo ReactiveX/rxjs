@@ -53,6 +53,13 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   }
 
   _error(err: any) {
+    const contexts = this.contexts;
+    while (contexts.length > 0) {
+      const context = contexts.shift();
+      context.subscription.unsubscribe();
+      context.buffer = null;
+      context.subscription = null;
+    }
     this.contexts = null;
     this.destination.error(err);
   }
@@ -64,7 +71,9 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
       this.destination.next(context.buffer);
       context.subscription.unsubscribe();
       context.buffer = null;
+      context.subscription = null;
     }
+    this.contexts = null;
     this.destination.complete();
   }
 
@@ -74,16 +83,14 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
 
     let closingNotifier = tryCatch(closingSelector)(value);
     if (closingNotifier === errorObject) {
-      const err = closingNotifier.e;
-      this.contexts = null;
-      this.destination.error(err);
+      this._error(closingNotifier.e);
     } else {
       let context = {
         buffer: [],
         subscription: new Subscription()
       };
       contexts.push(context);
-      const subscriber = new BufferClosingNotifierSubscriber(this, context);
+      const subscriber = new BufferToggleClosingsSubscriber(this, context);
       const subscription = closingNotifier._subscribe(subscriber);
       this.add(context.subscription.add(subscription));
     }
@@ -102,24 +109,6 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   }
 }
 
-class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: BufferToggleSubscriber<any, T>, private context: { subscription: any, buffer: T[] }) {
-    super(null);
-  }
-
-  _next() {
-    this.parent.closeBuffer(this.context);
-  }
-
-  _error(err) {
-    this.parent.error(err);
-  }
-
-  _complete() {
-    this.parent.closeBuffer(this.context);
-  }
-}
-
 class BufferToggleOpeningsSubscriber<T> extends Subscriber<T> {
   constructor(private parent: BufferToggleSubscriber<any, T>) {
     super(null);
@@ -135,5 +124,24 @@ class BufferToggleOpeningsSubscriber<T> extends Subscriber<T> {
 
   _complete() {
     // noop
+  }
+}
+
+class BufferToggleClosingsSubscriber<T> extends Subscriber<T> {
+  constructor(private parent: BufferToggleSubscriber<any, T>,
+              private context: { subscription: any, buffer: T[] }) {
+    super(null);
+  }
+
+  _next() {
+    this.parent.closeBuffer(this.context);
+  }
+
+  _error(err) {
+    this.parent.error(err);
+  }
+
+  _complete() {
+    this.parent.closeBuffer(this.context);
   }
 }
