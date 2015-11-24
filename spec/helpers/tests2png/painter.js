@@ -266,6 +266,6 @@ module.exports = function painter(inputStreams, operatorLabel, outputStream, fil
     if (err) {
       return console.error(arguments);
     }
-    //console.log(this.outname + ' created  :: ' + arguments[3]);
+    console.log(this.outname + ' created :: ' + arguments[3]);
   });
 };
