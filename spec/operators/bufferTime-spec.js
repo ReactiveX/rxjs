@@ -61,6 +61,7 @@ describe('Observable.prototype.bufferTime', function () {
                     //                      ----------|
                     //                             ----------|
                     //                                    ----------|
+    var e1subs =      '^                                       !';
     var expected =    '----------a------b------c------d------e-(f|)';
     var values = {
       a: ['2', '3', '4'],
@@ -74,6 +75,7 @@ describe('Observable.prototype.bufferTime', function () {
     var result = e1.bufferTime(100, 70, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should emit buffers but handle source ending with an error', function () {
@@ -120,12 +122,14 @@ describe('Observable.prototype.bufferTime', function () {
 
   it('should handle empty', function () {
     var e1 = cold( '|');
+    var e1subs =   '(^!)';
     var expected = '(b|)';
     var values = { b: [] };
 
     var result = e1.bufferTime(100, null, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle never', function () {
@@ -149,6 +153,7 @@ describe('Observable.prototype.bufferTime', function () {
 
   it('should handle errors', function () {
     var e1 =   hot('---a---b---c---#');
+    var e1subs =   '^              !';
     var expected = '----------w----#';
     var values = {
       w: ['a','b']
@@ -157,6 +162,7 @@ describe('Observable.prototype.bufferTime', function () {
     var result = e1.bufferTime(100, null, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should emit buffers that have been created at intervals and close after ' +
@@ -166,6 +172,7 @@ describe('Observable.prototype.bufferTime', function () {
                  // ---------------------|                          timespans
                  //                     ---------------------|
                  //                                          -----|
+    var e1subs =   '^                                           !';
     var expected = '---------------------x-------------------y--#';
     var values = {
       x: ['a', 'b', 'c', 'd', 'e'],
@@ -175,5 +182,6 @@ describe('Observable.prototype.bufferTime', function () {
     var result = e1.bufferTime(210, 200, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
