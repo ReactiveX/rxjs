@@ -1,6 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -20,12 +21,9 @@ export function _catch<T>(selector: (err: any, caught: Observable<any>) => Obser
 }
 
 class CatchOperator<T, R> implements Operator<T, R> {
-  selector: (err: any, caught: Observable<any>) => Observable<any>;
   caught: Observable<any>;
-  source: Observable<T>;
 
-  constructor(selector: (err: any, caught: Observable<any>) => Observable<any>) {
-    this.selector = selector;
+  constructor(private selector: (err: any, caught: Observable<any>) => Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -34,15 +32,17 @@ class CatchOperator<T, R> implements Operator<T, R> {
 }
 
 class CatchSubscriber<T> extends Subscriber<T> {
-  selector: (err: any, caught: Observable<any>) => Observable<any>;
-  caught: Observable<any>;
+  private lastSubscription: Subscription<T>;
 
-  constructor(destination: Subscriber<T>,
-              selector: (err: any, caught: Observable<any>) => Observable<any>,
-              caught: Observable<any>) {
-    super(destination);
-    this.selector = selector;
-    this.caught = caught;
+  constructor(public destination: Subscriber<T>,
+              private selector: (err: any, caught: Observable<any>) => Observable<any>,
+              private caught: Observable<any>) {
+    super(null);
+    this.lastSubscription = this;
+  }
+
+  _next(value: T) {
+    this.destination.next(value);
   }
 
   _error(err) {
@@ -50,7 +50,17 @@ class CatchSubscriber<T> extends Subscriber<T> {
     if (result === errorObject) {
       this.destination.error(errorObject.e);
     } else {
-      this.add(result.subscribe(this.destination));
+      this.lastSubscription.unsubscribe();
+      this.lastSubscription = result.subscribe(this.destination);
     }
+  }
+
+  _complete() {
+    this.lastSubscription.unsubscribe();
+    this.destination.complete();
+  }
+
+  _unsubscribe() {
+    this.lastSubscription.unsubscribe();
   }
 }
