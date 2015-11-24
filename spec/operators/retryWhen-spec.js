@@ -134,6 +134,17 @@ describe('Observable.prototype.retryWhen()', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should propagate error thrown from notifierSelector function', function () {
+    var source = cold('--a--b--c--#');
+    var subs =        '^          !';
+    var expected =    '--a--b--c--#';
+
+    var result = source.retryWhen(function () { throw 'bad!'; });
+
+    expectObservable(result).toBe(expected, undefined, 'bad!');
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should replace error with complete using an empty notifier on a source ' +
   'with eventual error', function () {
     var source = cold(  '--a--b--c--#');
@@ -195,6 +206,30 @@ describe('Observable.prototype.retryWhen()', function () {
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should handle a hot source that raises error but eventually completes', function () {
+    var source =   hot('-1--2--3----4--5---|');
+    var ssubs =       ['^      !            ',
+                       '              ^    !'];
+    var notifier = hot('--------------r--------r---r--r--r---|');
+    var nsubs =        '       ^           !';
+    var expected =     '-1--2---      -5---|';
+
+    var result = source
+      .map(function (x) {
+        if (x === '3') {
+          throw 'error';
+        }
+        return x;
+      })
+      .retryWhen(function () {
+        return notifier;
+      });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(ssubs);
+    expectSubscriptions(notifier.subscriptions).toBe(nsubs);
   });
 
   it('should tear down resources when result is unsubscribed early', function () {
