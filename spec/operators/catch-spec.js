@@ -25,7 +25,7 @@ describe('Observable.prototype.catch()', function () {
 
   it('should catch error and replace it with a cold Observable', function () {
     var e1 =   hot('--a--b--#----|     ');
-    var e1subs =   '^                 !';
+    var e1subs =   '^       !          ';
     var e2 =  cold(        '1-2-3-4-5-|');
     var e2subs =   '        ^         !';
     var expected = '--a--b--1-2-3-4-5-|';
@@ -37,9 +37,23 @@ describe('Observable.prototype.catch()', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 =   hot('--1-2-3-4-5-6---#');
+    var unsub =    '       !         ';
+    var e1subs =   '^      !         ';
+    var expected = '--1-2-3-         ';
+
+    var result = e1.catch(function () {
+      return Observable.of('X', 'Y', 'Z');
+    });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should catch error and replace it with a hot Observable', function () {
     var e1 =   hot('--a--b--#----|     ');
-    var e1subs =   '^                 !';
+    var e1subs =   '^       !          ';
     var e2 =   hot('1-2-3-4-5-6-7-8-9-|');
     var e2subs =   '        ^         !';
     var expected = '--a--b--5-6-7-8-9-|';
@@ -54,8 +68,8 @@ describe('Observable.prototype.catch()', function () {
   it('should catch and allow the cold observable to be repeated with the third ' +
   '(caught) argument', function () {
     var e1 =  cold('--a--b--c--------|       ');
-    var subs =    ['^                       !',
-                   '        ^               !',
+    var subs =    ['^       !                ',
+                   '        ^       !        ',
                    '                ^       !'];
     var expected = '--a--b----a--b----a--b--#';
 
@@ -81,7 +95,7 @@ describe('Observable.prototype.catch()', function () {
   it('should catch and allow the hot observable to proceed with the third ' +
   '(caught) argument', function () {
     var e1 =   hot('--a--b--c----d---|');
-    var subs =    ['^                !',
+    var subs =    ['^       !         ',
                    '        ^        !'];
     var expected = '--a--b-------d---|';
 
@@ -132,41 +146,44 @@ describe('Observable.prototype.catch()', function () {
 
   it('should complete if you return Observable.empty()', function () {
     var e1 =   hot('--a--b--#');
-    var subs =     '^       !';
+    var e1subs =   '^       !';
+    var e2 =  cold(        '|');
+    var e2subs =   '        (^!)';
     var expected = '--a--b--|';
 
-    var result = e1.catch(function (err) {
-      return Observable.empty();
-    });
+    var result = e1.catch(function () { return e2; });
 
     expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should raise error if you return Observable.throw()', function () {
     var e1 =   hot('--a--b--#');
-    var subs =     '^       !';
+    var e1subs =   '^       !';
+    var e2 =  cold(        '#');
+    var e2subs =   '        (^!)';
     var expected = '--a--b--#';
 
-    var result = e1.catch(function (err) {
-      return Observable.throw('error');
-    });
+    var result = e1.catch(function () { return e2; });
 
     expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should never terminate if you return Observable.never()', function () {
     var e1 =   hot('--a--b--#');
-    var subs =     '^        ';
+    var e1subs =   '^       !';
+    var e2 = cold(         '-');
+    var e2subs =   '        ^';
     var expected = '--a--b---';
 
-    var result = e1.catch(function (err) {
-      return Observable.never();
-    });
+    var result = e1.catch(function () { return e2; });
 
     expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should pass the error as the first argument', function (done) {
