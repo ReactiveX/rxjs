@@ -38,9 +38,11 @@ describe('Observable.prototype.bufferCount', function () {
 
   it('should emit full buffer then last partial buffer if source completes', function () {
     var e1 =   hot('--a^-b--c--d--e--|');
+    var e1subs =      '^             !';
     var expected =    '--------y-----(z|)';
 
     expectObservable(e1.bufferCount(3)).toBe(expected, {y: ['b', 'c', 'd'], z: ['e']});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should emit buffers at intervals, but stop when result is unsubscribed early', function () {
@@ -59,9 +61,11 @@ describe('Observable.prototype.bufferCount', function () {
 
   it('should raise error if source raise error before reaching specified buffer count', function () {
     var e1 =   hot('--a--b--c--d--#');
+    var e1subs =   '^             !';
     var expected = '--------------#';
 
     expectObservable(e1.bufferCount(5)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should emit buffers with specified skip count when skip count is less than window count', function () {
@@ -73,15 +77,23 @@ describe('Observable.prototype.bufferCount', function () {
       z: ['e']
     };
     var e1 =   hot('--a--b--c--d--e--|');
+    var e1subs =   '^                !';
     var expected = '--------v--w--x--(yz|)';
 
     expectObservable(e1.bufferCount(3, 1)).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should emit buffers with specified skip count when skip count is more than window count', function () {
     var e1 =   hot('--a--b--c--d--e--|');
+    var e1subs =   '^                !';
     var expected = '-----y--------z--|';
+    var values = {
+      y: ['a', 'b'],
+      z: ['d', 'e']
+    };
 
-    expectObservable(e1.bufferCount(2, 3)).toBe(expected, {y: ['a', 'b'], z: ['d', 'e']});
+    expectObservable(e1.bufferCount(2, 3)).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
