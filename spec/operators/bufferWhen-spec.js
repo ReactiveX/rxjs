@@ -66,13 +66,16 @@ describe('Observable.prototype.bufferWhen', function () {
   });
 
   it('should emit buffers using varying empty delayed closings', function () {
-    var e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
-    var subs =        '^                                  !      ';
+    var e1 = hot('--a--^---b---c---d---e---f---g---h------|    ');
+    var subs =        '^                                  !   ';
     var closings = [
       cold(           '---------------|                       '),
       cold(                          '----------|             '),
       cold(                                    '-------------|')];
-    var expected =    '---------------x---------y---------(z|)   ';
+    var closeSubs =  ['^              !                       ',
+                      '               ^         !             ',
+                      '                         ^         !   '];
+    var expected =    '---------------x---------y---------(z|)';
     var values = {
       x: ['b','c','d'],
       y: ['e','f','g'],
@@ -84,6 +87,9 @@ describe('Observable.prototype.bufferWhen', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
+    expectSubscriptions(closings[2].subscriptions).toBe(closeSubs[2]);
   });
 
   it('should emit buffers using varying cold closings, outer unsubscribed early', function () {
@@ -94,6 +100,8 @@ describe('Observable.prototype.bufferWhen', function () {
       cold(           '---------------(s|)                       '),
       cold(                          '----------(s|)             '),
       cold(                                    '-------------(s|)')];
+    var closeSubs =  ['^              !                          ',
+                      '               ^  !                       '];
     var expected =    '---------------x---                       ';
     var values = {
       x: ['b','c','d']
@@ -104,6 +112,9 @@ describe('Observable.prototype.bufferWhen', function () {
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
+    expectSubscriptions(closings[2].subscriptions).toBe([]);
   });
 
   it('should propagate error thrown from closingSelector', function () {
@@ -113,6 +124,7 @@ describe('Observable.prototype.bufferWhen', function () {
       cold(           '---------------s--|                       '),
       cold(                          '----------(s|)             '),
       cold(                                    '-------------(s|)')];
+    var closeSubs0 =  '^              !                          ';
     var expected =    '---------------(x#)                       ';
     var values = { x: ['b','c','d'] };
 
@@ -126,6 +138,7 @@ describe('Observable.prototype.bufferWhen', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs0);
   });
 
   it('should propagate error emitted from a closing', function () {
@@ -134,6 +147,8 @@ describe('Observable.prototype.bufferWhen', function () {
     var closings = [
       cold(           '---------------s--|                 '),
       cold(                          '#                    ')];
+    var closeSubs =  ['^              !                    ',
+                      '               (^!)                 '];
     var expected =    '---------------(x#)                 ';
     var values = { x: ['b','c','d'] };
 
@@ -142,6 +157,8 @@ describe('Observable.prototype.bufferWhen', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
   });
 
   it('should propagate error emitted late from a closing', function () {
@@ -150,6 +167,8 @@ describe('Observable.prototype.bufferWhen', function () {
     var closings = [
       cold(           '---------------s--|                 '),
       cold(                          '------#              ')];
+    var closeSubs =  ['^              !                    ',
+                      '               ^     !              '];
     var expected =    '---------------x-----#              ';
     var values = { x: ['b','c','d'] };
 
@@ -158,47 +177,68 @@ describe('Observable.prototype.bufferWhen', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
   });
 
   it('should handle errors', function () {
     var e1 = hot('--a--^---b---c---d---e---f---#');
     var e2 = cold(    '---------------(s|)');
     //                                ---------------(s|)
+    var e2subs =     ['^              !         ',
+                      '               ^        !'];
     var expected =    '---------------x--------#';
     var values = {
       x: ['b','c','d']
     };
 
-    expectObservable(e1.bufferWhen(function () { return e2; })).toBe(expected, values);
+    var result = e1.bufferWhen(function () { return e2; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should handle empty', function () {
-    var e1 = Observable.empty();
-    var e2 = cold('--------(s|)');
+    var e1 =  cold('|');
+    var e2 =  cold('--------(s|)');
+    var e1subs =   '(^!)';
     var expected = '(x|)';
     var values = {
       x: []
     };
 
-    expectObservable(e1.bufferWhen(function () { return e2; })).toBe(expected, values);
+    var result = e1.bufferWhen(function () { return e2; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle throw', function () {
-    var e1 = Observable.throw('blah?');
-    var e2 = cold('--------(s|)');
+    var e1 =  cold('#');
+    var e2 =  cold('--------(s|)');
+    var e1subs =   '(^!)';
     var expected = '#';
     var values = {
       x: []
     };
 
-    expectObservable(e1.bufferWhen(function () { return e2; })).toBe(expected, values, 'blah?');
+    var result = e1.bufferWhen(function () { return e2; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle never', function () {
     var e1 =   hot('-');
-    var e2 = cold( '--------(s|)                                 ');
     var unsub =    '                                            !';
-    var subs =     '^                                           !';
+    var e1subs =   '^                                           !';
+    var e2 = cold( '--------(s|)                                 ');
+    var e2subs =  ['^       !                                    ',
+                   '        ^       !                            ',
+                   '                ^       !                    ',
+                   '                        ^       !            ',
+                   '                                ^       !    ',
+                   '                                        ^   !'];
     var expected = '--------x-------x-------x-------x-------x----';
     var values = {
       x: []
@@ -207,7 +247,8 @@ describe('Observable.prototype.bufferWhen', function () {
     var source = e1.bufferWhen(function () { return e2; });
 
     expectObservable(source, unsub).toBe(expected, values);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should handle an inner never', function () {
@@ -245,15 +286,19 @@ describe('Observable.prototype.bufferWhen', function () {
 
   it('should handle inner throw', function () {
     var e1 = hot('--a--^---b---c---d---e---f---g---h------|');
-    var subs =        '(^!)';
-    var e2 = Observable.throw('bad!');
+    var e1subs =      '(^!)';
+    var e2 = cold(    '#');
+    var e2subs =      '(^!)';
     var expected =    '#';
     var values = {
       x: ['b','c','d','e','f','g','h']
     };
 
-    expectObservable(e1.bufferWhen(function () { return e2; })).toBe(expected, values, 'bad!');
-    expectSubscriptions(e1.subscriptions).toBe(subs);
+    var result = e1.bufferWhen(function () { return e2; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should handle disposing of source', function () {
