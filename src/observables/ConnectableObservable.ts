@@ -8,7 +8,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   subject: Subject<T>;
   subscription: Subscription<T>;
 
-  constructor(public    source: Observable<T>,
+  constructor(public source: Observable<T>,
               protected subjectFactory: () => Subject<T>) {
     super();
   }
@@ -25,16 +25,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     return (this.subject = this.subjectFactory());
   }
 
-  connect(onSubscribe?: (subscription: Subscription<T>) => void): Subscription<T> {
-    if (onSubscribe) {
-      this._callbackConnect(onSubscribe);
-      return null;
-    } else {
-      return this._returningConnect();
-    }
-  }
-
-  _returningConnect(): Subscription<T> {
+  connect(): Subscription<T> {
     const source = this.source;
     let subscription = this.subscription;
     if (subscription && !subscription.isUnsubscribed) {
@@ -43,26 +34,6 @@ export class ConnectableObservable<T> extends Observable<T> {
     subscription = source.subscribe(this._getSubject());
     subscription.add(new ConnectableSubscription(this));
     return (this.subscription = subscription);
-  }
-
-  /**
-   * Instructs the ConnectableObservable to begin emitting the items from its
-   * underlying source to its Subscribers.
-   *
-   * @param onSubscribe a function that receives the connection subscription
-   * before the subscription to source happens, allowing the caller to
-   * synchronously disconnect a synchronous source.
-   */
-  _callbackConnect(onSubscribe: (subscription: Subscription<T>) => void): void {
-    let subscription = this.subscription;
-    if (subscription && !subscription.isUnsubscribed) {
-      onSubscribe(subscription);
-      return;
-    }
-    this.subscription = subscription = new Subscription();
-    onSubscribe(subscription);
-    subscription.add(this.source.subscribe(this._getSubject()));
-    subscription.add(new ConnectableSubscription(this));
   }
 
   refCount(): Observable<T> {
@@ -85,32 +56,30 @@ class ConnectableSubscription<T> extends Subscription<T> {
 
 class RefCountObservable<T> extends Observable<T> {
   connection: Subscription<T>;
+
   constructor(protected connectable: ConnectableObservable<T>,
-              public    refCount: number = 0) {
+              public refCount: number = 0) {
     super();
   }
 
   _subscribe(subscriber) {
     const connectable = this.connectable;
     const refCountSubscriber = new RefCountSubscriber(subscriber, this);
-    refCountSubscriber.myConnection = this.connection;
     const subscription = connectable.subscribe(refCountSubscriber);
-
     if (!subscription.isUnsubscribed && ++this.refCount === 1) {
-      connectable.connect(_subscription => {
-        refCountSubscriber.myConnection = this.connection = _subscription;
-      });
+      refCountSubscriber.connection = this.connection = connectable.connect();
     }
     return subscription;
   }
 }
 
 class RefCountSubscriber<T> extends Subscriber<T> {
-  myConnection: Subscription<T>;
+  connection: Subscription<T>;
 
   constructor(public destination: Subscriber<T>,
               private refCountObservable: RefCountObservable<T>) {
     super(null);
+    this.connection = refCountObservable.connection;
     destination.add(this);
   }
 
@@ -130,10 +99,11 @@ class RefCountSubscriber<T> extends Subscriber<T> {
 
   _resetConnectable() {
     const observable = this.refCountObservable;
-    const myConnection = this.myConnection;
-    if (myConnection && myConnection === observable.connection) {
+    const obsConnection = observable.connection;
+    const subConnection = this.connection;
+    if (subConnection && subConnection === obsConnection) {
       observable.refCount = 0;
-      observable.connection.unsubscribe();
+      obsConnection.unsubscribe();
       observable.connection = void 0;
       this.unsubscribe();
     }
@@ -144,10 +114,13 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     if (observable.refCount === 0) {
       return;
     }
-    const myConnection = this.myConnection;
-    if (--observable.refCount === 0 && myConnection && myConnection === observable.connection) {
-      observable.connection.unsubscribe();
-      observable.connection = void 0;
+    if (--observable.refCount === 0) {
+      const obsConnection = observable.connection;
+      const subConnection = this.connection;
+      if (subConnection && subConnection === obsConnection) {
+        obsConnection.unsubscribe();
+        observable.connection = void 0;
+      }
     }
   }
 }
