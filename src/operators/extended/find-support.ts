@@ -44,10 +44,6 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
   _next(value: T): void {
     const predicate = this.predicate;
 
-    if (predicate === undefined) {
-      this.destination.error(new TypeError('predicate must be a function'));
-    }
-
     let index = this.index++;
     let result = tryCatch(predicate)(value, index, this.source);
     if (result === errorObject) {
