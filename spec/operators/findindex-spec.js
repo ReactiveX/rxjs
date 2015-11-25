@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, expectObservable */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
@@ -9,20 +9,28 @@ describe('Observable.prototype.findIndex()', function () {
 
   it('should not emit if source does not emit', function () {
     var source = hot('-');
+    var subs =       '^';
     var expected =   '-';
 
     expectObservable(source.findIndex(truePredicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should return negative index if source is empty to match predicate', function () {
-    var expected = '(x|)';
+    var source = cold('|');
+    var subs =        '(^!)';
+    var expected =    '(x|)';
 
-    expectObservable(Observable.empty().findIndex(truePredicate)).toBe(expected, {x: -1});
+    var result = source.findIndex(truePredicate);
+
+    expectObservable(result).toBe(expected, {x: -1});
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should return index of element from source emits single element', function () {
     var sourceValue = 1;
     var source = hot('--a--|', { a: sourceValue });
+    var subs =       '^ !   ';
     var expected =   '--(x|)';
 
     var predicate = function (value) {
@@ -30,10 +38,12 @@ describe('Observable.prototype.findIndex()', function () {
     };
 
     expectObservable(source.findIndex(predicate)).toBe(expected, { x: 0 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should return negative index if element does not match with predicate', function () {
     var source = hot('--a--b--c--|');
+    var subs =       '^          !';
     var expected =   '-----------(x|)';
 
     var predicate = function (value) {
@@ -41,10 +51,12 @@ describe('Observable.prototype.findIndex()', function () {
     };
 
     expectObservable(source.findIndex(predicate)).toBe(expected, { x: -1 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should raise if source raise error while element does not match with predicate', function () {
     var source = hot('--a--b--#');
+    var subs =       '^       !';
     var expected =   '--------#';
 
     var predicate = function (value) {
@@ -52,10 +64,12 @@ describe('Observable.prototype.findIndex()', function () {
     };
 
     expectObservable(source.findIndex(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should raise error if predicate throws error', function () {
     var source = hot('--a--b--c--|');
+    var subs =       '^ !';
     var expected =   '--#';
 
     var predicate = function (value) {
@@ -63,5 +77,6 @@ describe('Observable.prototype.findIndex()', function () {
     };
 
     expectObservable(source.findIndex(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
