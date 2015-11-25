@@ -54,8 +54,9 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     }
 
     this.observers.push(subscriber);
-
-    return new SubjectSubscription(this, subscriber);
+    const subscription = new SubjectSubscription(this, subscriber);
+    subscriber.start(subscription);
+    return subscription;
   }
 
   add(subscription?) {
@@ -116,6 +117,14 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
 
     this._complete();
     this.unsubscribe();
+  }
+
+  start(subscription: Subscription<T>): void {
+    // noop
+  }
+
+  _start(subscription: Subscription<T>): void {
+    // noop
   }
 
   _next(value: T): void {
@@ -183,6 +192,10 @@ class BidirectionalSubject<T> extends Subject<T> {
     subscriberComplete.call(this);
   }
 
+  start(subscription: Subscription<T>): void {
+    //noop
+  }
+
   _next(value: T): void {
     _subscriberNext.call(this, value);
   }
@@ -193,5 +206,9 @@ class BidirectionalSubject<T> extends Subject<T> {
 
   _complete(): void {
     _subscriberComplete.call(this);
+  }
+
+  _start(subscription: Subscription<T>): void {
+    //noop
   }
 }
