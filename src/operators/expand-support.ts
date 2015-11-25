@@ -33,12 +33,19 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   _next(value: any): void {
+    const destination = this.destination;
+
+    if (destination.isUnsubscribed) {
+      this._complete();
+      return;
+    }
+
     const index = this.index++;
     if (this.active < this.concurrent) {
-      this.destination.next(value);
+      destination.next(value);
       let result = tryCatch(this.project)(value, index);
       if (result === errorObject) {
-        this.destination.error(result.e);
+        destination.error(result.e);
       } else {
         if (result._isScalar) {
           this._next(result.value);
