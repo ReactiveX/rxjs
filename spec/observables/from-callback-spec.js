@@ -4,7 +4,7 @@ var Observable = Rx.Observable;
 
 describe('Observable.fromCallback', function () {
   it('should emit one value from a callback', function (done) {
-    function callback (datum, cb) {
+    function callback(datum, cb) {
       cb(datum);
     }
     var cbToObs = Observable.fromCallback(callback);
@@ -19,7 +19,7 @@ describe('Observable.fromCallback', function () {
   });
 
   it('should emit one value chosen by a selector', function (done) {
-    function callback (datum, cb) {
+    function callback(datum, cb) {
       cb(null, datum);
     }
     var cbToObs = Observable.fromCallback(callback, null, function (err, datum) { return datum; });
@@ -34,7 +34,7 @@ describe('Observable.fromCallback', function () {
   });
 
   it('should override `this` in the callback', function (done) {
-    function callback (cb) {
+    function callback(cb) {
       cb(this.value);
     }
     var cbToObs = Observable.fromCallback(callback, {value: 42});
@@ -49,7 +49,7 @@ describe('Observable.fromCallback', function () {
   });
 
   it('should emit an error when the selector throws', function (done) {
-    function callback (cb) {
+    function callback(cb) {
       cb(42);
     }
     var cbToObs = Observable.fromCallback(callback, null, function (err) { throw new Error('Yikes!'); });
@@ -75,7 +75,7 @@ describe('Observable.fromCallback', function () {
     var throwSpy = jasmine.createSpy('throw');
     var completeSpy = jasmine.createSpy('complete');
     var timeout;
-    function callback (datum, cb) {
+    function callback(datum, cb) {
       // Need to cb async in order for the unsub to trigger
       timeout = setTimeout(function () {
         cb(datum);
