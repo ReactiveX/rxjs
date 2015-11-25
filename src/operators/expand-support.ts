@@ -34,8 +34,8 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   _next(value: any): void {
     const index = this.index++;
-    this.destination.next(value);
     if (this.active < this.concurrent) {
+      this.destination.next(value);
       let result = tryCatch(this.project)(value, index);
       if (result === errorObject) {
         this.destination.error(result.e);
