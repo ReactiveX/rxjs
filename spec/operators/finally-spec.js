@@ -44,4 +44,18 @@ describe('Observable.prototype.finally()', function () {
     disposed = true;
     subscription.unsubscribe();
   });
+
+  it('should call finally after complete, with a thisArg', function (done) {
+    var completed = false;
+    Observable.of(1, 2, 3)
+      .finally(function () {
+        expect(typeof this).toBe('object');
+        expect(this.blesh).toBe('blish');
+        expect(completed).toBe(true);
+        done();
+      }, {blesh: 'blish'})
+      .subscribe(null, null, function () {
+        completed = true;
+      });
+  });
 });
