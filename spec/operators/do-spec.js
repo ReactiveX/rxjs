@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -125,5 +125,36 @@ describe('Observable.prototype.do()', function () {
     }).subscribe(null, function (err) {
       expect(err.message).toBe('bad');
     });
+  });
+
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 =   hot('--1--2--3--#');
+    var unsub =    '       !    ';
+    var e1subs =   '^      !    ';
+    var expected = '--1--2--    ';
+
+    var result = e1.do();
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should mirror multiple values and complete', function () {
+    var e1 =  cold('--1--2--3--|');
+    var e1subs =   '^          !';
+    var expected = '--1--2--3--|';
+
+    var result = e1.do();
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should mirror multiple values and terminate with error', function () {
+    var e1 =  cold('--1--2--3--#');
+    var e1subs =   '^          !';
+    var expected = '--1--2--3--#';
+
+    var result = e1.do();
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
