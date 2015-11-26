@@ -1,48 +1,69 @@
-/* globals describe, it, expect, expectObservable, hot */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, cold, hot */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('min', function () {
   it('should be never when source is never', function () {
-    var e1 = Observable.never();
+    var e1 =  cold('-');
+    var e1subs =   '^';
     var expected = '-';
+
     expectObservable(e1.min()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should be zero when source is empty', function () {
-    var e1 = Observable.empty();
+    var e1 =  cold('|');
+    var e1subs =   '(^!)';
     var expected = '|';
+
     expectObservable(e1.min()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should be never when source doesn\'t complete', function () {
     var e1 = hot('--x--^--y--');
+    var e1subs =      '^     ';
     var expected =    '------';
+
     expectObservable(e1.min()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should be completes when source doesn\'t have values', function () {
     var e1 = hot('-x-^---|');
+    var e1subs =    '^   !';
     var expected =  '----|';
+
     expectObservable(e1.min()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should min the unique value of an observable', function () {
     var e1 = hot('-x-^--y--|', { y: 42 });
+    var e1subs =    '^     !';
     var expected =  '------(w|)';
+
     expectObservable(e1.min()).toBe(expected, { w: 42 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should min the values of an observable', function () {
     var source = hot('--a--b--c--|', { a: 42, b: -1, c: 0 });
+    var subs =       '^          !';
     var expected =   '-----------(x|)';
+
     expectObservable(source.min()).toBe(expected, { x: -1 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should min the values of an ongoing hot observable', function () {
     var source = hot('--a-^-b--c--d--|', { a: 42, b: -1, c: 0, d: 666 });
+    var subs =           '^          !';
     var expected =       '-----------(x|)';
+
     expectObservable(source.min()).toBe(expected, { x: -1 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should min a range() source observable', function (done) {
@@ -77,88 +98,140 @@ describe('min', function () {
 
   it('should work with error', function () {
     var e1 = hot('-x-^--y--z--#', { x: 1, y: 2, z: 3 }, 'too bad');
+    var e1subs =    '^        !';
     var expected =  '---------#';
+
     expectObservable(e1.min()).toBe(expected, null, 'too bad');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should work with throw', function () {
-    var e1 = Observable.throw(new Error('too bad'));
+    var e1 =  cold('#');
+    var e1subs =   '(^!)';
     var expected = '#';
-    expectObservable(e1.min()).toBe(expected, null, new Error('too bad'));
+
+    expectObservable(e1.min()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a constant predicate on an empty hot observable', function () {
     var e1 = hot('-x-^---|');
+    var e1subs =    '^   !';
     var expected =  '----|';
+
     var predicate = function (x, y) {
       return 42;
     };
+
     expectObservable(e1.min(predicate)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a constant predicate on an never hot observable', function () {
     var e1 = hot('-x-^----');
-    var expected =  '-';
+    var e1subs =    '^    ';
+    var expected =  '-----';
+
     var predicate = function (x, y) {
       return 42;
     };
+
     expectObservable(e1.min(predicate)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a constant predicate on a simple hot observable', function () {
     var e1 = hot('-x-^-a-|', { a: 1 });
+    var e1subs =    '^   !';
     var expected =  '----(w|)';
+
     var predicate = function () {
       return 42;
     };
+
     expectObservable(e1.min(predicate)).toBe(expected, { w: 1 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 = hot('-x-^-a-b-c-d-e-f-g-|');
+    var unsub =     '       !         ';
+    var e1subs =    '^      !         ';
+    var expected =  '--------         ';
+
+    var predicate = function () {
+      return 42;
+    };
+
+    expectObservable(e1.min(predicate), unsub).toBe(expected, { w: 42 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a constant predicate on observable with many values', function () {
     var e1 = hot('-x-^-a-b-c-d-e-f-g-|');
+    var e1subs =    '^               !';
     var expected =  '----------------(w|)';
+
     var predicate = function () {
       return 42;
     };
+
     expectObservable(e1.min(predicate)).toBe(expected, { w: 42 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a predicate on observable with many values', function () {
     var e1 = hot('-a-^-b--c--d-|', { a: 42, b: -1, c: 0, d: 666 });
+    var e1subs =    '^         !';
     var expected =  '----------(w|)';
+
     var predicate = function (x, y) {
       return Math.max(x, y);
     };
+
     expectObservable(e1.min(predicate)).toBe(expected, { w: 666 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a predicate for string on observable with many values', function () {
     var e1 = hot('-1-^-2--3--4-|');
+    var e1subs =    '^         !';
     var expected =  '----------(w|)';
+
     var predicate = function (x, y) {
       return x < y ? x : y;
     };
+
     expectObservable(e1.min(predicate)).toBe(expected, { w: '2' });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a constant predicate on observable that throws', function () {
     var e1 = hot('-1-^---#');
+    var e1subs =    '^   !';
     var expected =  '----#';
+
     var predicate = function () {
       return 42;
     };
+
     expectObservable(e1.min(predicate)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a predicate that throws, on observable with many values', function () {
     var e1 = hot('-1-^-2--3--|');
-    var expected =  '-----#';
+    var e1subs =    '^    !   ';
+    var expected =  '-----#   ';
+
     var predicate = function (x, y) {
       if (y === '3') {
         throw 'error';
       }
       return x > y ? x : y;
     };
+
     expectObservable(e1.min(predicate)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
