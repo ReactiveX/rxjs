@@ -41,7 +41,21 @@ describe('Observable.prototype.last()', function () {
   it('should return a default value if no element found', function () {
     var e1 = Observable.empty();
     var expected = '(a|)';
-    expectObservable(e1.last(null, null, 'a')).toBe(expected);
+    expectObservable(e1.last(null, null, null, 'a')).toBe(expected);
+  });
+
+  it('should accept thisArg for predicate', function () {
+    var e1 =   hot('--a--|');
+    var expected = '-----(a|)';
+
+    var thisArg = { context: true };
+
+    function predicate(x) {
+      expect(this.context).toBe(true);
+      return true;
+    }
+
+    expectObservable(e1.last(predicate, null, thisArg)).toBe(expected);
   });
 
   it('should not return default value if an element is found', function () {

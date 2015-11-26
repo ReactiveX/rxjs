@@ -9,7 +9,7 @@ module.exports = function (suite) {
   var testThis = {};
 
   var oldLastPredicateThisArg = RxOld.Observable.range(0, 50, RxOld.Scheduler.immediate).last(predicate, testThis);
-  var newLastPredicateThisArg = RxNew.Observable.range(0, 50).last(predicate, testThis);
+  var newLastPredicateThisArg = RxNew.Observable.range(0, 50).last(predicate, null, testThis);
 
   function _next(x) { }
   function _error(e) { }
