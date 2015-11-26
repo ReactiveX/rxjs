@@ -1,10 +1,11 @@
-/* globals describe, it, expect, hot, cold, expectObservable */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.reduce()', function () {
   it('should reduce', function () {
     var e1 =     hot('--a--b--c--|');
+    var e1subs =     '^          !';
     var expected =   '-----------(x|)';
 
     var reduceFunction = function (o, x) {
@@ -12,10 +13,12 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, '')).toBe(expected, {x: 'abc'});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should reduce with seed', function () {
     var e1 =     hot('--a--b--|');
+    var e1subs =     '^       !';
     var expected =   '--------(x|)';
 
     var seed = 'n';
@@ -24,10 +27,12 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected, {x: seed + 'ab'});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should reduce with seed if source is empty', function () {
     var e1 = hot('--a--^-------|');
+    var e1subs =      '^       !';
     var expected =    '--------(x|)';
 
     var expectedValue = '42';
@@ -36,21 +41,41 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, expectedValue)).toBe(expected, {x: expectedValue});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error if reduce function throws without seed', function () {
     var e1 =     hot('--a--b--|');
-    var expected =   '-----#';
+    var e1subs =     '^    !   ';
+    var expected =   '-----#   ';
 
     var reduceFunction = function (o, x) {
       throw 'error';
     };
 
     expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 =     hot('--a--b--|');
+    var unsub =      '      !  ';
+    var e1subs =     '^     !  ';
+    var expected =   '-------  ';
+
+    var reduceFunction = function (o, x) {
+      return o + x;
+    };
+
+    var result = e1.reduce(reduceFunction);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error if source emits and raises error with seed', function () {
     var e1 =   hot('--a--b--#');
+    var e1subs =   '^       !';
     var expected = '--------#';
 
     var expectedValue = '42';
@@ -59,10 +84,12 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, expectedValue)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error if source raises error with seed', function () {
     var e1 =   hot('----#');
+    var e1subs =   '^   !';
     var expected = '----#';
 
     var expectedValue = '42';
@@ -71,11 +98,13 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, expectedValue)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error if reduce function throws with seed', function () {
     var e1 =     hot('--a--b--|');
-    var expected =   '--#';
+    var e1subs =     '^ !     ';
+    var expected =   '--#     ';
 
     var seed = 'n';
     var reduceFunction = function (o, x) {
@@ -83,11 +112,13 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should not complete with seed if source emits but does not completes', function () {
     var e1 =     hot('--a--');
-    var expected =   '-';
+    var e1subs =     '^    ';
+    var expected =   '-----';
 
     var seed = 'n';
     var reduceFunction = function (o, x) {
@@ -95,10 +126,12 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should not complete with seed if source never completes', function () {
-    var e1 = Observable.never();
+    var e1 =  cold('-');
+    var e1subs =   '^';
     var expected = '-';
 
     var seed = 'n';
@@ -107,21 +140,25 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should not complete without seed if source emits but does not completes', function () {
     var e1 =   hot('--a--b--');
-    var expected = '-';
+    var e1subs =   '^       ';
+    var expected = '--------';
 
     var reduceFunction = function (o, x) {
       return o + x;
     };
 
     expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should not complete without seed if source never completes', function () {
-    var e1 = Observable.never();
+    var e1 =  cold('-');
+    var e1subs =   '^';
     var expected = '-';
 
     var reduceFunction = function (o, x) {
@@ -129,10 +166,12 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should reduce if source does not emit without seed', function () {
     var e1 = hot('--a--^-------|');
+    var e1subs =      '^       !';
     var expected =    '--------|';
 
     var reduceFunction = function (o, x) {
@@ -140,10 +179,12 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error if source emits and raises error without seed', function () {
     var e1 =   hot('--a--b--#');
+    var e1subs =   '^       !';
     var expected = '--------#';
 
     var reduceFunction = function (o, x) {
@@ -151,10 +192,12 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error if source raises error without seed', function () {
     var e1 =   hot('----#');
+    var e1subs =   '^   !';
     var expected = '----#';
 
     var reduceFunction = function (o, x) {
@@ -162,5 +205,6 @@ describe('Observable.prototype.reduce()', function () {
     };
 
     expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
