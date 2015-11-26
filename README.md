@@ -71,7 +71,7 @@ The build and test structure is fairly primitive at the moment. There are variou
 - build_docs: generates API documentation from `dist/es6` to `dist/docs`
 - build_cover: runs `istanbul` code coverage against test cases
 - test: runs tests with `jasmine`, must have built prior to running.
-- tests2png: generates PNG marble diagrams from test cases. You must have `imagemagick`, `graphicsmagick`, and `ghostscript` installed locally.
+- tests2png: generates PNG marble diagrams from test cases.
 
 ### Example
 
@@ -87,3 +87,26 @@ Run `npm run perf_micro` to run micro performance test benchmarking operator.
 
 ## Adding documentation
 RxNext uses [ESDoc](https://esdoc.org/) to generate API documentation. Refer to ESDoc's documentation for syntax. Run `npm run build_docs` to generate.
+
+## Generating PNG marble diagrams
+
+The script `npm run tests2png` requires some native packages installed locally: `imagemagick`, `graphicsmagick`, and `ghostscript`.
+
+For Mac OS X with [Homebrew](http://brew.sh/):
+
+- `brew install imagemagick`
+- `brew install graphicsmagick`
+- `brew install ghostscript`
+
+For Debian Linux:
+
+- `sudo add-apt-repository ppa:dhor/myway`
+- `apt-get install imagemagick`
+- `apt-get install graphicsmagick`
+- `apt-get install ghostscript`
+
+For Windows and other Operating Systems, check the download instructions here:
+
+- http://imagemagick.org
+- http://www.graphicsmagick.org
+- http://www.ghostscript.com/
