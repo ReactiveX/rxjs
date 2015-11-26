@@ -5,11 +5,12 @@ var Promise = require('promise');
 
 describe('Observable.prototype.mergeMap()', function () {
   it('should mergeMap many regular interval inners', function () {
-    var a =   cold('----a---a---a---(a|)'                    );
-    var b =   cold(    '----b---b---(b|)'                    );
+    var a =   cold('----a---a---a---(a|)                    ');
+    var b =   cold(    '----b---b---(b|)                    ');
     var c =   cold(                '----c---c---c---c---(c|)');
-    var d =   cold(                        '----(d|)'        );
-    var e1 =   hot('a---b-----------c-------d-------|'       );
+    var d =   cold(                        '----(d|)        ');
+    var e1 =   hot('a---b-----------c-------d-------|       ');
+    var e1subs =   '^                                   !   ';
     var expected = '----a---(ab)(ab)(ab)c---c---(cd)c---(c|)';
 
     var observableLookup = { a: a, b: b, c: c, d: d };
@@ -18,6 +19,7 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should map values to constant resolved promises and merge', function (done) {
@@ -154,78 +156,99 @@ describe('Observable.prototype.mergeMap()', function () {
 
   it('should mergeMap many outer values to many inner values', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    var e1 =     hot('-a-------b-------c-------d-------|');
-    var inner =  cold('----i---j---k---l---|', values);
-    var innersubs = ['-^-------------------!',
-                     '---------^-------------------!',
-                     '-----------------^-------------------!',
-                     '-------------------------^-------------------!'];
+    var e1 =     hot('-a-------b-------c-------d-------|            ');
+    var e1subs =     '^                                            !';
+    var inner =  cold('----i---j---k---l---|                        ', values);
+    var innersubs = [' ^                   !                        ',
+                     '         ^                   !                ',
+                     '                 ^                   !        ',
+                     '                         ^                   !'];
     var expected =   '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l---|';
 
-    expectObservable(e1.mergeMap(function (value) { return inner; }))
-      .toBe(expected, values);
+    var result = e1.mergeMap(function (value) { return inner; });
+
+    expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to many inner, complete late', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =    hot('-a-------b-------c-------d-----------------------|');
-    var inner = cold('----i---j---k---l---|', values);
+    var e1subs =    '^                                                !';
+    var inner = cold('----i---j---k---l---|                            ', values);
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l-------|';
 
-    expectObservable(e1.mergeMap(function (value) { return inner; }))
-      .toBe(expected, values);
+    var result = e1.mergeMap(function (value) { return inner; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to many inner, outer never completes', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    var e1 =    hot('-a-------b-------c-------d-------e---------------f');
-    var inner = cold('----i---j---k---l---|', values);
-    var unsub =     '-------------------------------------------------------!';
-    var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)(ki)(lj)k---l---i-';
+    var e1 =    hot('-a-------b-------c-------d-------e---------------f------');
+    var unsub =     '                                                       !';
+    var e1subs =    '^                                                      !';
+    var inner = cold('----i---j---k---l---|                                  ', values);
+    var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)(ki)(lj)k---l---i--';
 
     var source = e1.mergeMap(function (value) { return inner; });
+
     expectObservable(source, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to many inner, inner never completes', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    var e1 =    hot('-a-------b-------c-------d-------|');
-    var inner = cold('----i---j---k---l-', values);
+    var e1 =    hot('-a-------b-------c-------d-------|         ');
+    var e1subs =    '^                                          ';
+    var inner = cold('----i---j---k---l-------------------------', values);
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)k---l-';
 
-    expectObservable(e1.mergeMap(function (value) { return inner; }))
-      .toBe(expected, values);
+    var result = e1.mergeMap(function (value) { return inner; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to many inner, and inner throws', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =    hot('-a-------b-------c-------d-------|');
-    var inner = cold('----i---j---k---l-------#', values);
-    var expected =  '-----i---j---(ki)(lj)(ki)#';
+    var e1subs =    '^                        !        ';
+    var inner = cold('----i---j---k---l-------#        ', values);
+    var expected =  '-----i---j---(ki)(lj)(ki)#        ';
 
-    expectObservable(e1.mergeMap(function (value) { return inner; }))
-      .toBe(expected, values);
+    var result = e1.mergeMap(function (value) { return inner; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to many inner, and outer throws', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =    hot('-a-------b-------c-------d-------#');
-    var inner = cold('----i---j---k---l---|', values);
+    var e1subs =    '^                                !';
+    var inner = cold('----i---j---k---l---|            ', values);
     var expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)#';
 
-    expectObservable(e1.mergeMap(function (value) { return inner; }))
-      .toBe(expected, values);
+    var result = e1.mergeMap(function (value) { return inner; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to many inner, both inner and outer throw', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =    hot('-a-------b-------c-------d-------#');
-    var inner = cold('----i---j---k---l---#', values);
-    var expected =  '-----i---j---(ki)(lj)#';
+    var e1subs =    '^                    !            ';
+    var inner = cold('----i---j---k---l---#            ', values);
+    var expected =  '-----i---j---(ki)(lj)#            ';
 
-    expectObservable(e1.mergeMap(function (value) { return inner; }))
-      .toBe(expected, values);
+    var result = e1.mergeMap(function (value) { return inner; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many complex, where all inners are finite', function () {
@@ -237,13 +260,17 @@ describe('Observable.prototype.mergeMap()', function () {
     var f =   cold(                                      '--|'            );
     var g =   cold(                                            '---1-2|'  );
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|'       );
+    var e1subs =         '^                                             !';
     var expected =       '---2--3--4--5---1--2--3--2--3--6--4--5---1-2--|';
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function (value) {
+    var result = e1.mergeMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many complex, all inners finite except one', function () {
@@ -255,13 +282,17 @@ describe('Observable.prototype.mergeMap()', function () {
     var f =   cold(                                      '--|'            );
     var g =   cold(                                            '---1-2|'  );
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|'       );
+    var e1subs =         '^                                               ';
     var expected =       '---2--3--4--5---1--2--3--2--3--6--4--5---1-2----';
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function (value) {
+    var result = e1.mergeMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many complex, inners finite, outer does not complete', function () {
@@ -272,14 +303,18 @@ describe('Observable.prototype.mergeMap()', function () {
     var e =   cold(                     '-1--------2--3-----4--5--------|');
     var f =   cold(                                      '--|'            );
     var g =   cold(                                            '---1-2|'  );
-    var e1 =   hot('-a-b--^-c-----d------e----------------f-----g---'     );
+    var e1 =   hot('-a-b--^-c-----d------e----------------f-----g--------');
+    var e1subs =         '^                                               ';
     var expected =       '---2--3--4--5---1--2--3--2--3--6--4--5---1-2----';
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function (value) {
+    var result = e1.mergeMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many complex, all inners finite, and outer throws', function () {
@@ -290,14 +325,18 @@ describe('Observable.prototype.mergeMap()', function () {
     var e =   cold(                     '-1--------2--3-----4--5--------|');
     var f =   cold(                                      '--|'            );
     var g =   cold(                                            '---1-2|'  );
-    var e1 =   hot('-a-b--^-c-----d------e----------------f-----g#'       );
-    var expected =       '---2--3--4--5---1--2--3--2--3--6--4--5-#'        ;
+    var e1 =   hot('-a-b--^-c-----d------e----------------f-----g#       ');
+    var e1subs =         '^                                      !       ';
+    var expected =       '---2--3--4--5---1--2--3--2--3--6--4--5-#       ';
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function (value) {
+    var result = e1.mergeMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many complex, all inners complete except one throws', function () {
@@ -309,13 +348,17 @@ describe('Observable.prototype.mergeMap()', function () {
     var f =   cold(                                      '--|'            );
     var g =   cold(                                            '---1-2|'  );
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|'       );
-    var expected =       '---2--3--4--5---1--2--3--2--3--6-#'              ;
+    var e1subs =         '^                                !             ';
+    var expected =       '---2--3--4--5---1--2--3--2--3--6-#             ';
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    expectObservable(e1.mergeMap(function (value) {
+    var result = e1.mergeMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many complex, all inners finite, outer is unsubscribed', function () {
@@ -327,8 +370,9 @@ describe('Observable.prototype.mergeMap()', function () {
     var f =   cold(                                      '--|'            );
     var g =   cold(                                            '---1-2|'  );
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|'       );
-    var unsub =          '------------------------------!'                 ;
-    var expected =       '---2--3--4--5---1--2--3--2--3--';
+    var unsub =          '                              !                ';
+    var e1subs =         '^                             !                ';
+    var expected =       '---2--3--4--5---1--2--3--2--3--                ';
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
     var source = e1.mergeMap(function (value) {
@@ -336,6 +380,7 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many complex, all inners finite, project throws', function () {
@@ -347,7 +392,8 @@ describe('Observable.prototype.mergeMap()', function () {
     var f =   cold(                                      '--|'            );
     var g =   cold(                                            '---1-2|'  );
     var e1 =   hot('-a-b--^-c-----d------e----------------f-----g|'       );
-    var expected =       '---2--3--4--5--#'                                ;
+    var e1subs =         '^              !                               ';
+    var expected =       '---2--3--4--5--#                               ';
 
     var observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
     var invoked = 0;
@@ -360,6 +406,7 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   function arrayRepeat(value, times) {
@@ -372,6 +419,7 @@ describe('Observable.prototype.mergeMap()', function () {
 
   it('should mergeMap many outer to an array for each value', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
+    var e1subs =   '^                               !';
     var expected = '(22)--(4444)---(333)----(22)----|';
 
     var source = e1.mergeMap(function (value) {
@@ -379,10 +427,12 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, using resultSelector', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
+    var e1subs =   '^                               !';
     var expected = '(44)--(8888)---(666)----(44)----|';
 
     var source = e1.mergeMap(function (value) {
@@ -392,10 +442,12 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, and outer throws', function () {
     var e1 =   hot('2-----4--------3--------2-------#');
+    var e1subs =   '^                               !';
     var expected = '(22)--(4444)---(333)----(22)----#';
 
     var source = e1.mergeMap(function (value) {
@@ -403,10 +455,12 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, resultSelector, outer throws', function () {
     var e1 =   hot('2-----4--------3--------2-------#');
+    var e1subs =   '^                               !';
     var expected = '(44)--(8888)---(666)----(44)----#';
 
     var source = e1.mergeMap(function (value) {
@@ -416,24 +470,28 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, outer gets unsubscribed', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var unsub =    '-------------!';
-    var expected = '(22)--(4444)--';
+    var unsub =    '             !                   ';
+    var e1subs  =  '^            !                   ';
+    var expected = '(22)--(4444)--                   ';
 
     var source = e1.mergeMap(function (value) {
       return arrayRepeat(value, value);
     });
 
     expectObservable(source, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, resultSelector, outer unsubscribed', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var unsub =    '-------------!';
-    var expected = '(44)--(8888)--';
+    var unsub =    '             !                   ';
+    var e1subs =   '^            !                   ';
+    var expected = '(44)--(8888)--                   ';
 
     var source = e1.mergeMap(function (value) {
       return arrayRepeat(value, value);
@@ -442,11 +500,13 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, project throws', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var expected = '(22)--(4444)---#';
+    var e1subs =   '^              !                 ';
+    var expected = '(22)--(4444)---#                 ';
 
     var invoked = 0;
     var source = e1.mergeMap(function (value) {
@@ -458,11 +518,13 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, resultSelector throws', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var expected = '(44)--(8888)---#';
+    var e1subs  =  '^              !                 ';
+    var expected = '(44)--(8888)---#                 ';
 
     var source = e1.mergeMap(function (value) {
       return arrayRepeat(value, value);
@@ -474,11 +536,13 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should mergeMap many outer to inner arrays, resultSelector, project throws', function () {
     var e1 =   hot('2-----4--------3--------2-------|');
-    var expected = '(44)--(8888)---#';
+    var e1subs  =  '^              !                 ';
+    var expected = '(44)--(8888)---#                 ';
 
     var invoked = 0;
     var source = e1.mergeMap(function (value) {
@@ -492,6 +556,7 @@ describe('Observable.prototype.mergeMap()', function () {
     });
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should map and flatten', function () {
