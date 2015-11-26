@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, cold, expectObservable */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 var GroupedObservable = require('../../dist/cjs/operators/groupBy-support').GroupedObservable;
@@ -78,42 +78,54 @@ describe('Observable.prototype.groupBy()', function () {
   });
 
   it('should handle an empty Observable', function () {
-    var e1 = cold('|');
+    var e1 =  cold('|');
+    var e1subs =   '(^!)';
     var expected = '|';
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); });
+
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a never Observable', function () {
-    var e1 = cold('-');
+    var e1 =  cold('-');
+    var e1subs =   '^';
     var expected = '-';
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); });
+
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a just-throw Observable', function () {
-    var e1 = cold('#');
+    var e1 =  cold('#');
+    var e1subs =   '(^!)';
     var expected = '#';
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); });
+
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle an Observable with a single value', function () {
     var values = { a: '  foo' };
     var e1 =   hot('^--a--|', values);
+    var e1subs =   '^     !';
     var expected = '---g--|';
     var g = cold(     'a--|', values);
     var expectedValues = { g: g };
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should group values with a keySelector', function () {
@@ -132,6 +144,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                         !';
     var expected =      '--w---x---y-z-------------|';
     var w = cold(         'a-b---d---------i-----l-|', values);
     var x = cold(             'c-------g-h---------|', values);
@@ -141,7 +154,9 @@ describe('Observable.prototype.groupBy()', function () {
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should emit GroupObservables', function () {
@@ -150,6 +165,7 @@ describe('Observable.prototype.groupBy()', function () {
       b: ' FoO '
     };
     var e1 = hot('-1--2--^-a-b----|', values);
+    var e1subs =        '^        !';
     var expected =      '--g------|';
     var expectedValues = { g: 'foo' };
 
@@ -160,7 +176,9 @@ describe('Observable.prototype.groupBy()', function () {
         expect(group instanceof GroupedObservable).toBe(true);
       })
       .map(function (group) { return group.key; });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should group values with a keySelector, assert GroupSubject key', function () {
@@ -179,13 +197,16 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                         !';
     var expected =      '--w---x---y-z-------------|';
     var expectedValues = { w: 'foo', x: 'bar', y: 'baz', z: 'qux' };
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); })
       .map(function (g) { return g.key; });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should group values with a keySelector, but outer throws', function () {
@@ -204,13 +225,16 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-#', values);
+    var e1subs =        '^                         !';
     var expected =      '--w---x---y-z-------------#';
     var expectedValues = { w: 'foo', x: 'bar', y: 'baz', z: 'qux' };
 
     var source = e1
       .groupBy(function (x) { return x.toLowerCase().trim(); })
       .map(function (g) { return g.key; });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should group values with a keySelector, inners propagate error from outer', function () {
@@ -229,6 +253,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-#', values);
+    var e1subs =        '^                         !';
     var expected =      '--w---x---y-z-------------#';
     var w = cold(         'a-b---d---------i-----l-#', values);
     var x = cold(             'c-------g-h---------#', values);
@@ -238,7 +263,9 @@ describe('Observable.prototype.groupBy()', function () {
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow outer to be unsubscribed early', function () {
@@ -258,13 +285,16 @@ describe('Observable.prototype.groupBy()', function () {
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
     var unsub =         '           !';
+    var e1subs =        '^          !';
     var expected =      '--w---x---y-';
     var expectedValues = { w: 'foo', x: 'bar', y: 'baz' };
 
     var source = e1
       .groupBy(function (x) { return x.toLowerCase().trim(); })
       .map(function (group) { return group.key; });
+
     expectObservable(source, unsub).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should group values with a keySelector which eventually throws', function () {
@@ -283,6 +313,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                   !';
     var expected =      '--w---x---y-z-------#';
     var w = cold(         'a-b---d---------i-#', values);
     var x = cold(             'c-------g-h---#', values);
@@ -299,12 +330,13 @@ describe('Observable.prototype.groupBy()', function () {
         }
         return val.toLowerCase().trim();
       });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should group values with a keySelector and elementSelector, ' +
-    'but elementSelector throws',
-  function () {
+  'but elementSelector throws', function () {
     var values = {
       a: '  foo',
       b: ' FoO ',
@@ -321,6 +353,7 @@ describe('Observable.prototype.groupBy()', function () {
     };
     var reversedValues = mapObject(values, reverseString);
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                   !';
     var expected =      '--w---x---y-z-------#';
     var w = cold(         'a-b---d---------i-#', reversedValues);
     var x = cold(             'c-------g-h---#', reversedValues);
@@ -339,7 +372,9 @@ describe('Observable.prototype.groupBy()', function () {
         }
         return reverseString(val);
       });
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow the outer to be unsubscribed early but inners continue', function () {
@@ -366,6 +401,7 @@ describe('Observable.prototype.groupBy()', function () {
 
     var source = e1
       .groupBy(function (val) { return val.toLowerCase().trim(); });
+
     expectObservable(source, unsub).toBe(expected, expectedValues);
   });
 
@@ -546,8 +582,9 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot(       '--a-b---d---------i-----l-#', values);
-    var expectedOuter = '--w----------';
     var unsub =         '            !';
+    var e1subs =        '^           !';
+    var expectedOuter = '--w----------';
     var expectedInner = '-------------';
     var outerValues = { w: 'foo' };
 
@@ -561,6 +598,7 @@ describe('Observable.prototype.groupBy()', function () {
       .map(function (group) { return group.key; });
 
     expectObservable(source, unsub).toBe(expectedOuter, outerValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow using a keySelector, elementSelector, and durationSelector', function () {
@@ -580,6 +618,7 @@ describe('Observable.prototype.groupBy()', function () {
     };
     var reversedValues = mapObject(values, reverseString);
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                         !';
     var expected =      '--v---w---x-y-----z-------|';
     var v = cold(         'a-b---(d|)'               , reversedValues);
     var w = cold(             'c-------g-(h|)'       , reversedValues);
@@ -594,7 +633,9 @@ describe('Observable.prototype.groupBy()', function () {
         function (val) { return reverseString(val); },
         function (group) { return group.skip(2); }
       );
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow using a keySelector, elementSelector, and durationSelector that throws', function () {
@@ -648,6 +689,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-#', values);
+    var e1subs =        '^                         !';
     var expected =      '--v---w---x-y-----z-------#';
     var v = cold(         'a-b---(d|)'               , values);
     var w = cold(             'c-------g-(h|)'       , values);
@@ -662,7 +704,9 @@ describe('Observable.prototype.groupBy()', function () {
         function (val) { return val; },
         function (group) { return group.skip(2); }
       );
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow using a durationSelector, and outer unsubscribed early', function () {
@@ -694,6 +738,7 @@ describe('Observable.prototype.groupBy()', function () {
         function (val) { return val; },
         function (group) { return group.skip(2); }
       );
+
     expectObservable(source, unsub).toBe(expected, expectedValues);
   });
 
@@ -773,6 +818,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                   !';
     var expected =      '--v---w---x-y-----z-#'      ;
     var v = cold(         'a-b---(d|)'               , values);
     var w = cold(             'c-------g-(h|)'       , values);
@@ -794,7 +840,9 @@ describe('Observable.prototype.groupBy()', function () {
         function (val) { return val; },
         function (group) { return group.skip(2); }
       );
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow using a durationSelector, but elementSelector throws', function () {
@@ -813,12 +861,13 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
-    var expected =      '--v---w---x-y-----z-#'      ;
-    var v = cold(         'a-b---(d|)'               , values);
-    var w = cold(             'c-------g-(h|)'       , values);
-    var x = cold(                 'e---------#'      , values);
-    var y = cold(                   'f-------#'      , values);
-    var z = cold(                         'i-#'      , values);
+    var e1subs =        '^                   !      ';
+    var expected =      '--v---w---x-y-----z-#      ';
+    var v = cold(         'a-b---(d|)               ', values);
+    var w = cold(             'c-------g-(h|)       ', values);
+    var x = cold(                 'e---------#      ', values);
+    var y = cold(                   'f-------#      ', values);
+    var z = cold(                         'i-#      ', values);
     var expectedValues = { v: v, w: w, x: x, y: y, z: z };
 
     var invoked = 0;
@@ -834,7 +883,9 @@ describe('Observable.prototype.groupBy()', function () {
         },
         function (group) { return group.skip(2); }
       );
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow using a durationSelector which eventually throws', function () {
@@ -853,11 +904,12 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
-    var expected =      '--v---w---x-#'              ;
-    var v = cold(         'a-b---(d|)'               , values);
-    var w = cold(             'c-----#'              , values);
-    var x = cold(                 'e-#'              , values);
-    var y = cold(                   '#'              , values);
+    var e1subs =        '^           !              ';
+    var expected =      '--v---w---x-#              ';
+    var v = cold(         'a-b---(d|)               ', values);
+    var w = cold(             'c-----#              ', values);
+    var x = cold(                 'e-#              ', values);
+    var y = cold(                   '#              ', values);
     var expectedValues = { v: v, w: w, x: x, y: y };
 
     var invoked = 0;
@@ -873,7 +925,9 @@ describe('Observable.prototype.groupBy()', function () {
           return group.skip(2);
         }
       );
+
     expectObservable(source).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow an inner to be unsubscribed early but other inners continue, ' +
@@ -894,6 +948,7 @@ describe('Observable.prototype.groupBy()', function () {
     };
     var reversedValues = mapObject(values, reverseString);
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                         !';
     var expected =      '--v---w---x-y-----z-------|';
     var v =             '--a-b---'                   ;
     var unsubv =        '       !';
@@ -939,7 +994,9 @@ describe('Observable.prototype.groupBy()', function () {
         }
         return arr;
       });
+
     expectObservable(source).toBe(expected, expectedGroups);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow inners to be unsubscribed early at different times, with durationSelector',
@@ -959,6 +1016,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                         !';
     var expected =      '--v---w---x-y-----z-------|';
     var v =             '--a-b---'                   ;
     var unsubv =        '       !'                   ;
@@ -1017,6 +1075,7 @@ describe('Observable.prototype.groupBy()', function () {
       });
 
     expectObservable(source).toBe(expected, expectedGroups);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should return inners that when subscribed late exhibit hot behavior', function () {
@@ -1035,6 +1094,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^                         !';
     var expected =      '--v---w---x-y-----z-------|';
     var subv =          '       ^                   ';
     var v =             '--------(d|)'               ;
@@ -1093,6 +1153,7 @@ describe('Observable.prototype.groupBy()', function () {
       });
 
     expectObservable(source).toBe(expected, expectedGroups);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should return inner group that when subscribed late emits complete()', function () {
@@ -1104,6 +1165,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b---d---------i-----l-|', values);
+    var e1subs =        '^                         !';
     var expected =      '--g-----------------------|';
     var innerSub =      '                                ^';
     var g =             '--------------------------------|';
@@ -1140,6 +1202,7 @@ describe('Observable.prototype.groupBy()', function () {
       });
 
     expectObservable(source).toBe(expected, expectedGroups);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should return inner group that when subscribed late emits error()', function () {
@@ -1151,6 +1214,7 @@ describe('Observable.prototype.groupBy()', function () {
       l: '    fOo    '
     };
     var e1 = hot('-1--2--^-a-b---d---------i-----l-#', values);
+    var e1subs =        '^                         !';
     var expected =      '--g-----------------------#';
     var innerSub =      '                                ^';
     var g =             '--------------------------------#';
@@ -1187,6 +1251,7 @@ describe('Observable.prototype.groupBy()', function () {
       });
 
     expectObservable(source).toBe(expected, expectedGroups);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should return inner that does not throw when faulty outer is unsubscribed early',
