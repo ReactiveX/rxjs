@@ -33,6 +33,20 @@ global.it.asDiagram = function () {
   return global.it;
 };
 
+var glfit = global.fit;
+
+global.fit = function (description, cb, timeout) {
+  if (cb.length === 0) {
+    glfit(description, function () {
+      global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
+      cb();
+      global.rxTestScheduler.flush();
+    });
+  } else {
+    glfit.apply(this, arguments);
+  }
+};
+
 function stringify(x) {
   return JSON.stringify(x, function (key, value) {
     if (Array.isArray(value)) {
