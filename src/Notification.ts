@@ -61,11 +61,11 @@ export class Notification<T> {
     return this.undefinedValueNotification;
   }
 
-  static createError<T>(err: any): Notification<T> {
+  static createError<T>(err?: any): Notification<T> {
     return new Notification('E', undefined, err);
   }
 
-  static createComplete<T>(): Notification<T> {
+  static createComplete(): Notification<any> {
     return this.completeNotification;
   }
 }
