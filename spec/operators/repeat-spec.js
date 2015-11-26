@@ -86,10 +86,12 @@ describe('Observable.prototype.repeat()', function () {
   });
 
   it('should not complete when source never completes', function () {
-    var e1 = Observable.never();
+    var e1 =  cold('-');
+    var e1subs =   '^';
     var expected = '-';
 
     expectObservable(e1.repeat(3)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should not complete when source does not completes', function () {
@@ -130,10 +132,12 @@ describe('Observable.prototype.repeat()', function () {
   });
 
   it('should complete when source is empty', function () {
-    var e1 = Observable.empty();
+    var e1 =  cold('|');
+    var e1subs =  ['(^!)', '(^!)', '(^!)'];
     var expected = '|';
 
     expectObservable(e1.repeat(3)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should complete when source does not emit', function () {
@@ -166,17 +170,21 @@ describe('Observable.prototype.repeat()', function () {
   });
 
   it('should raises error if source throws', function () {
-    var e1 = Observable.throw('error');
+    var e1 =  cold('#');
+    var e1subs =   '(^!)';
     var expected = '#';
 
     expectObservable(e1.repeat(3)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raises error if source throws when repeating infinitely', function () {
-    var e1 = Observable.throw('error');
+    var e1 =  cold('#');
+    var e1subs =   '(^!)';
     var expected = '#';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.repeat()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should terminate repeat and throw if source subscription to _next throws', function () {
