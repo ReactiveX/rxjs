@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, cold, expectObservable, rxTestScheduler */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var immediateScheduler = Rx.Scheduler.immediate;
@@ -90,6 +90,21 @@ describe('Observable.prototype.merge', function () {
     var result = e1.merge(e2, rxTestScheduler);
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 =    hot('--a-----b-----c----|  ');
+    var e1subs =    '^         !           ';
+    var e2 =    hot('-----d-----e-----f---|');
+    var e2subs =    '^         !           ';
+    var expected =  '--a--d--b--           ';
+    var unsub =     '          !           ';
+
+    var result = e1.merge(e2, rxTestScheduler);
+
+    expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -192,7 +207,7 @@ describe('Observable.prototype.merge', function () {
     var e1 = cold(  '|');
     var e1subs =    '(^!)    ';
     var e2 =    hot('-------#');
-    var e2subs =    '^------!';
+    var e2subs =    '^      !';
     var expected =  '-------#';
 
     var result = e1.merge(e2, rxTestScheduler);
