@@ -1,31 +1,59 @@
-/* globals describe, it, expect, expectObservable, hot */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, cold, hot */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 
 describe('Observable.prototype.isEmpty()', function () {
   it('should return true if source is empty', function () {
     var source = hot('-----|');
-    var expected =   '-----(x|)';
+    var subs =       '^    !';
+    var expected =   '-----(T|)';
 
-    expectObservable(source.isEmpty()).toBe(expected, { x: true });
+    expectObservable(source.isEmpty()).toBe(expected, { T: true });
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should return false if source emits element', function () {
     var source = hot('--a--^--b--|');
-    var expected =        '---(x|)';
+    var subs =            '^  !';
+    var expected =        '---(F|)';
 
-    expectObservable(source.isEmpty()).toBe(expected, { x: false });
+    expectObservable(source.isEmpty()).toBe(expected, { F: false });
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should raise error if source raise error', function () {
     var source = hot('--#');
+    var subs =       '^ !';
     var expected =   '--#';
 
     expectObservable(source.isEmpty()).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should not completes if source never emits', function () {
-    var expected = '-';
+    var source = cold('-');
+    var subs =        '^';
+    var expected =    '-';
 
-    expectObservable(Rx.Observable.never().isEmpty()).toBe(expected);
+    expectObservable(source.isEmpty()).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should return true if source is Observable.empty()', function () {
+    var source = cold('|');
+    var subs =        '(^!)';
+    var expected =    '(T|)';
+
+    expectObservable(source.isEmpty()).toBe(expected, { T: true });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should allow unsubscribing explicitly and early', function () {
+    var source = cold('-----------a--b--|');
+    var unsub =       '      !           ';
+    var subs =        '^     !           ';
+    var expected =    '-------           ';
+
+    expectObservable(source.isEmpty(), unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
