@@ -156,3 +156,29 @@ expectSubscriptions(y.subscriptions).toBe(ysubs);
 
 In most tests it will be unnecessary to test subscription and unsubscription points, be either obvious or can be implied from the `expected` diagram. In those cases do not write subscription assertions. In test cases that have inner subscriptions or cold observables with multiple subscribers, these subscription assertions can be useful.
 
+## Generating PNG marble diagrams from tests
+
+Typically, each test case in Jasmine is written as `it('should do something', function () { /* ... */ })`. To mark a test case for PNG diagram generation, you must use the `asDiagram(label)` function, like this:
+
+```js
+it.asDiagram(operatorLabel)('should do something', function () {
+  // ...
+});
+```
+
+For instance, with `zip`, we would write
+
+```js
+it.asDiagram('zip')('should zip by concatenating', function () {
+  var e1 =    hot('---a---b---|');
+  var e2 =    hot('-----c---d---|');
+  var expected =  '-----x---y---|';
+  var values = { x: 'ac', y: 'bd' };
+
+  var result = e1.zip(e2, function(x, y) { return String(x) + String(y); });
+
+  expectObservable(result).toBe(expected, values);
+});
+```
+
+Then, when running `npm run tests2png`, this test case will be parsed and a PNG file `zip.png` (filename determined by `${operatorLabel}.png`) will be created in the `img/` folder.
