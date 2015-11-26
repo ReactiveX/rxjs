@@ -78,20 +78,24 @@ describe('Observable.prototype.retry()', function () {
 
   it('should handle an empty source', function () {
     var source = cold('|');
+    var subs =        '(^!)';
     var expected =    '|';
 
     var result = source.retry();
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should handle a never source', function () {
     var source = cold('-');
+    var subs =        '^';
     var expected =    '-';
 
     var result = source.retry();
 
     expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should return a never observable given an async just-throw source and no count', function () {
