@@ -1,10 +1,11 @@
-/* globals describe, it, expect, expectObservable, hot */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, cold, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.scan()', function () {
   it('should scan things', function () {
     var e1 = hot('--a--^--b--c--d--e--f--g--|');
+    var e1subs =      '^                    !';
     var expected =    '---u--v--w--x--y--z--|';
 
     var values = {
@@ -19,10 +20,12 @@ describe('Observable.prototype.scan()', function () {
     var source = e1.scan(function (acc, x) { return [].concat(acc, x); }, []);
 
     expectObservable(source).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should scan without seed', function () {
     var e1 = hot('--a--^--b--c--d--|');
+    var e1subs =      '^           !';
     var expected =    '---x--y--z--|';
 
     var values = {
@@ -34,10 +37,12 @@ describe('Observable.prototype.scan()', function () {
     var source = e1.scan(function (acc, x) { return acc + x; });
 
     expectObservable(source).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle errors', function () {
     var e1 = hot('--a--^--b--c--d--#');
+    var e1subs =      '^           !';
     var expected =    '---u--v--w--#';
 
     var values = {
@@ -49,11 +54,13 @@ describe('Observable.prototype.scan()', function () {
     var source = e1.scan(function (acc, x) { return [].concat(acc, x); }, []);
 
     expectObservable(source).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle errors in the projection function', function () {
     var e1 = hot('--a--^--b--c--d--e--f--g--|');
-    var expected =    '---u--v--#';
+    var e1subs =      '^        !            ';
+    var expected =    '---u--v--#            ';
 
     var values = {
       u: ['b'],
@@ -72,39 +79,47 @@ describe('Observable.prototype.scan()', function () {
     }, []);
 
     expectObservable(source).toBe(expected, values, 'bad!');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('handle empty', function () {
-    var e1 = Observable.empty();
+    var e1 =  cold('|');
+    var e1subs =   '(^!)';
     var expected = '|';
 
     var source = e1.scan(function (acc, x) { return [].concat(acc, x); }, []);
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('handle never', function () {
-    var e1 = Observable.never();
+    var e1 =  cold('-');
+    var e1subs =   '^';
     var expected = '-';
 
     var source = e1.scan(function (acc, x) { return [].concat(acc, x); }, []);
 
     expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('handle throw', function () {
-    var e1 = Observable.throw('bad!');
+    var e1 =  cold('#');
+    var e1subs =   '(^!)';
     var expected = '#';
 
     var source = e1.scan(function (acc, x) { return [].concat(acc, x); }, []);
 
-    expectObservable(source).toBe(expected, undefined, 'bad!');
+    expectObservable(source).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should scan unsubscription', function () {
+  it('should allow unsubscribing explicitly and early', function () {
     var e1 = hot('--a--^--b--c--d--e--f--g--|');
-    var expected =    '---u--v--w--x--';
-    var sub =         '^             !';
+    var unsub =       '              !       ';
+    var e1subs =      '^             !       ';
+    var expected =    '---u--v--w--x--       ';
     var values = {
       u: ['b'],
       v: ['b', 'c'],
@@ -116,6 +131,7 @@ describe('Observable.prototype.scan()', function () {
 
     var source = e1.scan(function (acc, x) { return [].concat(acc, x); }, []);
 
-    expectObservable(source, sub).toBe(expected, values);
+    expectObservable(source, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
