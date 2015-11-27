@@ -1,37 +1,56 @@
-/* globals describe, it, expect, expectObservable, hot, cold */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 
 describe('Observable.prototype.single()', function () {
-  it('Should raise error from empty predicate if observable does not emit', function () {
+  it('should raise error from empty predicate if observable does not emit', function () {
     var e1 = hot('--a--^--|');
+    var e1subs =      '^  !';
     var expected =    '---#';
 
     expectObservable(e1.single()).toBe(expected, null, new Rx.EmptyError());
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should return only element from empty predicate if observable emits only once', function () {
+  it('should return only element from empty predicate if observable emits only once', function () {
     var e1 =    hot('--a--|');
+    var e1subs =    '^    !';
     var expected =  '-----(a|)';
 
     expectObservable(e1.single()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should raise error from empty predicate if observable emits multiple time', function () {
+  it('should raise error from empty predicate if observable emits multiple time', function () {
     var e1 =    hot('--a--b--c--|');
-    var expected =  '-----#';
+    var e1subs =    '^    !      ';
+    var expected =  '-----#      ';
 
     expectObservable(e1.single()).toBe(expected, null, 'Sequence contains more than one element');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should raise error from empty predicate if observable emits error', function () {
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 =    hot('--a--b--c--|');
+    var unsub =     '   !        ';
+    var e1subs =    '^  !        ';
+    var expected =  '----        ';
+
+    expectObservable(e1.single(), unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should raise error from empty predicate if observable emits error', function () {
     var e1 =    hot('--a--b^--#');
+    var e1subs =          '^  !';
     var expected =        '---#';
 
     expectObservable(e1.single()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should raise error from predicate if observable emits error', function () {
+  it('should raise error from predicate if observable emits error', function () {
     var e1 =    hot('--a--b^--#');
+    var e1subs =          '^  !';
     var expected =        '---#';
 
     var predicate = function (value) {
@@ -39,11 +58,13 @@ describe('Observable.prototype.single()', function () {
     };
 
     expectObservable(e1.single(predicate)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should raise error if predicate throws error', function () {
+  it('should raise error if predicate throws error', function () {
     var e1 =    hot('--a--b--c--d--|');
-    var expected =  '-----------#';
+    var e1subs =    '^          !   ';
+    var expected =  '-----------#   ';
 
     var predicate = function (value) {
       if (value !== 'd') {
@@ -53,10 +74,12 @@ describe('Observable.prototype.single()', function () {
     };
 
     expectObservable(e1.single(predicate)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should return element from predicate if observable have single matching element', function () {
+  it('should return element from predicate if observable have single matching element', function () {
     var e1 =    hot('--a--b--c--|');
+    var e1subs =    '^          !';
     var expected =  '-----------(b|)';
 
     var predicate = function (value) {
@@ -64,21 +87,25 @@ describe('Observable.prototype.single()', function () {
     };
 
     expectObservable(e1.single(predicate)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should raise error from predicate if observable have multiple matching element', function () {
+  it('should raise error from predicate if observable have multiple matching element', function () {
     var e1 =    hot('--a--b--a--b--b--|');
-    var expected =  '-----------#';
+    var e1subs =    '^          !      ';
+    var expected =  '-----------#      ';
 
     var predicate = function (value) {
       return value === 'b';
     };
 
     expectObservable(e1.single(predicate)).toBe(expected, null, 'Sequence contains more than one element');
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should raise error from predicate if observable does not emit', function () {
+  it('should raise error from predicate if observable does not emit', function () {
     var e1 = hot('--a--^--|');
+    var e1subs =      '^  !';
     var expected =    '---#';
 
     var predicate = function (value) {
@@ -86,10 +113,12 @@ describe('Observable.prototype.single()', function () {
     };
 
     expectObservable(e1.single(predicate)).toBe(expected, null, new Rx.EmptyError());
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('Should return undefined from predicate if observable does not contain matching element', function () {
+  it('should return undefined from predicate if observable does not contain matching element', function () {
     var e1 =    hot('--a--b--c--|');
+    var e1subs =    '^          !';
     var expected =  '-----------(z|)';
 
     var predicate = function (value) {
@@ -97,5 +126,6 @@ describe('Observable.prototype.single()', function () {
     };
 
     expectObservable(e1.single(predicate)).toBe(expected, {z: undefined});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
