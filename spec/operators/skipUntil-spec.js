@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, hot */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, cold, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -47,6 +47,19 @@ describe('Observable.prototype.skipUntil()', function () {
     var expected = '-----------------|';
 
     expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(skip.subscriptions).toBe(skipSubs);
+  });
+
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 =     hot('--a--b--c--d--e----|');
+    var unsub =      '         !          ';
+    var e1subs =     '^        !          ';
+    var skip =   hot('-------------x--|   ');
+    var skipSubs =   '^        !          ';
+    var expected =  ('----------          ');
+
+    expectObservable(e1.skipUntil(skip), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
