@@ -184,4 +184,17 @@ describe('Observable.prototype.buffer()', function () {
     expectSubscriptions(a.subscriptions).toBe(subs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
+
+  it('should unsubscribe notifier when source unsubscribed', function () {
+    var a =    hot('-a-b-c-d-e-f-g-h-i-|');
+    var b =    hot('-----1-----2-----3-|');
+    var bsubs =    '^    !';
+    var expected = '-----(x|)';
+    var expectedValues = {
+      x: ['a','b','c'],
+    };
+
+    expectObservable(a.buffer(b).take(1)).toBe(expected, expectedValues);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+  });
 });
