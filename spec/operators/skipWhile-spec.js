@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, expectSubscriptions, hot */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, cold, hot */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -159,23 +159,29 @@ describe('Observable.prototype.skipWhile()', function () {
   });
 
   it('should handle Observable.empty', function () {
-    var source = Observable.empty();
-    var expected = '|';
+    var source = cold('|');
+    var subs =        '(^!)';
+    var expected =    '|';
 
     expectObservable(source.skipWhile(function () { return true; })).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should handle Observable.never', function () {
-    var source = Observable.never();
-    var expected = '-';
+    var source = cold('-');
+    var subs =        '^';
+    var expected =    '-';
 
     expectObservable(source.skipWhile(function () { return true; })).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should handle Observable.throw', function () {
-    var source = Observable.throw(new Error('oh no!'));
-    var expected = '#';
+    var source = cold('#');
+    var subs =        '(^!)';
+    var expected =    '#';
 
-    expectObservable(source.skipWhile(function () { return true; })).toBe(expected, undefined, new Error('oh no!'));
+    expectObservable(source.skipWhile(function () { return true; })).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
