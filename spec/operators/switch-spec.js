@@ -119,24 +119,33 @@ describe('Observable.prototype.switch()', function () {
   });
 
   it('should handle an empty hot observable', function () {
-    var e1 = hot(  '------|');
+    var e1 =   hot('------|');
+    var e1subs =   '^     !';
     var expected = '------|';
+
     expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a never hot observable', function () {
-    var e1 = hot('-');
+    var e1 =   hot('-');
+    var e1subs =   '^';
     var expected = '-';
+
     expectObservable(e1.switch()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should complete not before the outer completes', function () {
     var x = cold(        '--a---b---c--|   ');
     var xsubs =    '      ^            !   ';
     var e1 = hot(  '------x---------------|', { x: x });
+    var e1subs =   '^                     !';
     var expected = '--------a---b---c-----|';
+
     expectObservable(e1.switch()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle an observable of promises', function (done) {
