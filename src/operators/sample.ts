@@ -21,7 +21,7 @@ class SampleSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>, private notifier: Observable<any>) {
     super(destination);
-    this.add(notifier._subscribe(new SampleNoficationSubscriber(this)));
+    this.add(notifier._subscribe(new SampleNotificationSubscriber(this)));
   }
 
   _next(value: T) {
@@ -36,7 +36,7 @@ class SampleSubscriber<T> extends Subscriber<T> {
   }
 }
 
-class SampleNoficationSubscriber<T> extends Subscriber<T> {
+class SampleNotificationSubscriber<T> extends Subscriber<T> {
   constructor(private parent: SampleSubscriber<T>) {
     super(null);
   }
