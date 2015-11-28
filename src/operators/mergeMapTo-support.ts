@@ -38,12 +38,9 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
       const index = this.index++;
       const ish = this.ish;
       const destination = this.destination;
-      if (ish === errorObject) {
-        destination.error(ish.e);
-      } else {
-        this.active++;
-        this._innerSub(ish, destination, resultSelector, value, index);
-      }
+
+      this.active++;
+      this._innerSub(ish, destination, resultSelector, value, index);
     } else {
       this.buffer.push(value);
     }
