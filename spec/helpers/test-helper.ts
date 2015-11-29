@@ -1,21 +1,22 @@
+///<reference path='../../typings/jasmine/jasmine.d.ts'/>
+///<reference path='../../typings/lodash/lodash.d.ts'/>
+declare var global: any;
+declare var exports: any;
+declare var module: any;
+declare var Symbol: any;
+declare var require: any;
+
 //Fail timeouts faster
 //Individual suites/specs should specify longer timeouts if needed.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
-var _ = require('lodash');
-var Rx = require('../../dist/cjs/Rx.KitchenSink');
-
-var marbleHelpers = require('./marble-testing');
+import * as _ from 'lodash';
+import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import {assertDeepEqual} from './marble-testing';
 
 global.rxTestScheduler = null;
-global.cold = marbleHelpers.cold;
-global.hot = marbleHelpers.hot;
-global.expectObservable = marbleHelpers.expectObservable;
-global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 
-var assertDeepEqual = marbleHelpers.assertDeepEqual;
-
-var glit = global.it;
+const glit = global.it;
 
 global.it = function (description, cb, timeout) {
   if (cb.length === 0) {
@@ -49,7 +50,7 @@ beforeEach(function () {
     toDeepEqual: function (util, customEqualityTesters) {
       return {
         compare: function (actual, expected) {
-          var result = { pass: _.isEqual(actual, expected) };
+          let result: any = { pass: _.isEqual(actual, expected) };
 
           if (!result.pass && Array.isArray(actual) && Array.isArray(expected)) {
             result.message = 'Expected \n';
