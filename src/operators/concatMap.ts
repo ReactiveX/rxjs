@@ -24,3 +24,5 @@ export function concatMap<T, R>(project: (value: T, index: number) => Observable
                                 projectResult?: (outerValue: T, innerValue: any, outerIndex: number, innerIndex: number) => R) {
   return this.lift(new MergeMapOperator(project, projectResult, 1));
 }
+
+Observable.prototype.concatMap = concatMap;

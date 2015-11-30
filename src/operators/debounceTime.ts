@@ -61,3 +61,5 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
 function dispatchNext(subscriber) {
   subscriber.debouncedNext();
 }
+
+Observable.prototype.debounceTime = debounceTime;

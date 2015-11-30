@@ -105,3 +105,5 @@ class DurationSelectorSubscriber<T> extends Subscriber<T> {
     this.debounceNext();
   }
 }
+
+Observable.prototype.debounce = debounce;

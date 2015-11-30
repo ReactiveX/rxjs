@@ -49,3 +49,5 @@ class MapSubscriber<T, R> extends Subscriber<T> {
     }
   }
 }
+
+Observable.prototype.map = map;

@@ -97,3 +97,5 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(this.timeoutSubscription = subscribeToResult(this, withObservable));
   }
 }
+
+Observable.prototype.timeoutWith = timeoutWith;

@@ -66,3 +66,5 @@ class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
     this.parent._complete();
   }
 }
+
+Observable.prototype.window = window;

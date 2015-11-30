@@ -36,3 +36,5 @@ class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
     this.destination.complete();
   }
 }
+
+Observable.prototype.defaultIfEmpty = defaultIfEmpty;

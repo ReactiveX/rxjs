@@ -84,3 +84,5 @@ class SwitchMapFirstSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 }
+
+Observable.prototype.switchMapFirst = switchMapFirst;

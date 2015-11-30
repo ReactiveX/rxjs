@@ -101,3 +101,5 @@ class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
     this.parent.openWindow();
   }
 }
+
+Observable.prototype.windowWhen = windowWhen;

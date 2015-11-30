@@ -1,4 +1,5 @@
 import {Subject} from '../Subject';
+import {Observable} from '../Observable';
 import {ConnectableObservable} from '../observables/ConnectableObservable';
 
 export function multicast<T>(subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) {
@@ -12,3 +13,5 @@ export function multicast<T>(subjectOrSubjectFactory: Subject<T>|(() => Subject<
   }
   return new ConnectableObservable(this, subjectFactory);
 }
+
+Observable.prototype.multicast = multicast;

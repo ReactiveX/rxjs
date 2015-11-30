@@ -31,3 +31,5 @@ export function combineLatest<R>(...observables: Array<Observable<any> |
 
   return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }
+
+Observable.prototype.combineLatest = combineLatest;

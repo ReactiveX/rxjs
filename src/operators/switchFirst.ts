@@ -53,3 +53,5 @@ class SwitchFirstSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 }
+
+Observable.prototype.switchFirst = switchFirst;

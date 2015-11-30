@@ -1,5 +1,9 @@
 import {Operator} from '../../Operator';
 import {Subscriber} from '../../Subscriber';
+import {Observable} from '../../Observable';
+import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+
+const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
 export function isEmpty() {
   return this.lift(new IsEmptyOperator());
@@ -32,3 +36,5 @@ class IsEmptySubscriber<T> extends Subscriber<T> {
     this.notifyComplete(true);
   }
 }
+
+observableProto.isEmpty = isEmpty;

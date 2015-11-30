@@ -129,3 +129,5 @@ class RetryNotificationSubscriber<T> extends Subscriber<T> {
     this.parent.destinationComplete();
   }
 }
+
+Observable.prototype.retryWhen = retryWhen;

@@ -54,3 +54,5 @@ class CatchSubscriber<T> extends Subscriber<T> {
     }
   }
 }
+
+Observable.prototype.catch = _catch;

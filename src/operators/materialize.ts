@@ -34,3 +34,5 @@ class MaterializeSubscriber<T> extends Subscriber<T> {
     destination.complete();
   }
 }
+
+Observable.prototype.materialize = materialize;
