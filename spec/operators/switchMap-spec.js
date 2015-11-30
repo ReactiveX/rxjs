@@ -30,262 +30,333 @@ describe('Observable.prototype.switchMap()', function () {
   });
 
   it('should switch inner cold observables', function () {
-    var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         ^         !';
+    var x =   cold(         '--a--b--c--d--e--|           ');
+    var xsubs =    '         ^         !                  ';
     var y =   cold(                   '---f---g---h---i--|');
     var ysubs =    '                   ^                 !';
-    var e1 =   hot('---------x---------y---------|');
+    var e1 =   hot('---------x---------y---------|        ');
+    var e1subs =   '^                                    !';
     var expected = '-----------a--b--c----f---g---h---i--|';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error when projection throws', function () {
-    var e1 =   hot('---------x---------y---------|');
-    var expected = '---------#';
+    var e1 =   hot('-------x-----y---|');
+    var e1subs =   '^      !          ';
+    var expected = '-------#          ';
     function project() {
       throw 'error';
     }
 
     expectObservable(e1.switchMap(project)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error when resultSelector throws', function () {
-    var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         ^ !';
+    var x =   cold(         '--a--b--c--d--e--|   ');
+    var xsubs =    '         ^ !                  ';
     var e1 =   hot('---------x---------y---------|');
-    var expected = '-----------#';
+    var e1subs =   '^          !                  ';
+    var expected = '-----------#                  ';
 
     function selector() {
       throw 'error';
     }
-    expectObservable(e1.switchMap(function (value) {
+
+    var result = e1.switchMap(function (value) {
       return x;
-    }, selector)).toBe(expected);
+    }, selector);
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner cold observables, outer is unsubscribed early', function () {
-    var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         ^         !';
+    var x =   cold(         '--a--b--c--d--e--|           ');
+    var xsubs =    '         ^         !                  ';
     var y =   cold(                   '---f---g---h---i--|');
-    var ysubs =    '                   ^ !';
-    var e1 =   hot('---------x---------y---------|');
-    var unsub =    '                     !';
-    var expected = '-----------a--b--c---';
+    var ysubs =    '                   ^ !                ';
+    var e1 =   hot('---------x---------y---------|        ');
+    var e1subs =   '^                    !                ';
+    var unsub =    '                     !                ';
+    var expected = '-----------a--b--c----                ';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    }), unsub).toBe(expected);
+    });
+
+    expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner cold observables, inner never completes', function () {
-    var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         ^         !';
+    var x =   cold(         '--a--b--c--d--e--|          ');
+    var xsubs =    '         ^         !                 ';
     var y =   cold(                   '---f---g---h---i--');
     var ysubs =    '                   ^                 ';
-    var e1 =   hot('---------x---------y---------|');
+    var e1 =   hot('---------x---------y---------|       ');
+    var e1subs =   '^                                    ';
     var expected = '-----------a--b--c----f---g---h---i--';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a synchronous switch to the second inner observable', function () {
-    var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         (^!)';
-    var y =   cold(         '---f---g---h---i--|');
-    var ysubs =    '         ^                 !';
+    var x =   cold(         '--a--b--c--d--e--|   ');
+    var xsubs =    '         (^!)                 ';
+    var y =   cold(         '---f---g---h---i--|  ');
+    var ysubs =    '         ^                 !  ';
     var e1 =   hot('---------(xy)----------------|');
+    var e1subs =   '^                            !';
     var expected = '------------f---g---h---i----|';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner cold observables, one inner throws', function () {
-    var x =   cold(         '--a--b--#--d--e--|');
-    var xsubs =    '         ^       !';
+    var x =   cold(         '--a--b--#--d--e--|          ');
+    var xsubs =    '         ^       !                   ';
     var y =   cold(                   '---f---g---h---i--');
     var ysubs = [];
-    var e1 =   hot('---------x---------y---------|');
-    var expected = '-----------a--b--#';
+    var e1 =   hot('---------x---------y---------|       ');
+    var e1subs =   '^                !                   ';
+    var expected = '-----------a--b--#                   ';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner hot observables', function () {
-    var x =    hot('-----a--b--c--d--e--|');
-    var xsubs =    '         ^         !';
+    var x =    hot('-----a--b--c--d--e--|                 ');
+    var xsubs =    '         ^         !                  ';
     var y =    hot('--p-o-o-p-------------f---g---h---i--|');
     var ysubs =    '                   ^                 !';
-    var e1 =   hot('---------x---------y---------|');
+    var e1 =   hot('---------x---------y---------|        ');
+    var e1subs =   '^                                    !';
     var expected = '-----------c--d--e----f---g---h---i--|';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner empty and empty', function () {
     var x = cold('|');
     var y = cold('|');
-    var xsubs =    '         (^!)';
-    var ysubs =    '                   (^!)';
+    var xsubs =    '         (^!)                 ';
+    var ysubs =    '                   (^!)       ';
     var e1 =   hot('---------x---------y---------|');
+    var e1subs =   '^                            !';
     var expected = '-----------------------------|';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner empty and never', function () {
     var x = cold('|');
     var y = cold('-');
-    var xsubs =    '         (^!)                  ';
-    var ysubs =    '                   ^           ';
+    var xsubs =    '         (^!)                 ';
+    var ysubs =    '                   ^          ';
     var e1 =   hot('---------x---------y---------|');
-    var expected = '----------------------------------';
+    var e1subs =   '^                             ';
+    var expected = '------------------------------';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner never and empty', function () {
     var x = cold('-');
     var y = cold('|');
-    var xsubs =    '         ^         !           ';
-    var ysubs =    '                   (^!)        ';
+    var xsubs =    '         ^         !          ';
+    var ysubs =    '                   (^!)       ';
     var e1 =   hot('---------x---------y---------|');
+    var e1subs =   '^                            !';
     var expected = '-----------------------------|';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner never and throw', function () {
     var x = cold('-');
     var y = cold('#', null, 'sad');
-    var xsubs =    '         ^         !           ';
-    var ysubs =    '                   (^!)        ';
+    var xsubs =    '         ^         !          ';
+    var ysubs =    '                   (^!)       ';
     var e1 =   hot('---------x---------y---------|');
-    var expected = '-------------------#';
+    var e1subs =   '^                  !          ';
+    var expected = '-------------------#          ';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected, undefined, 'sad');
+    });
+
+    expectObservable(result).toBe(expected, undefined, 'sad');
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch inner empty and throw', function () {
     var x = cold('|');
     var y = cold('#', null, 'sad');
-    var xsubs =    '         (^!)                  ';
-    var ysubs =    '                   (^!)        ';
+    var xsubs =    '         (^!)                 ';
+    var ysubs =    '                   (^!)       ';
     var e1 =   hot('---------x---------y---------|');
-    var expected = '-------------------#';
+    var e1subs =   '^                  !          ';
+    var expected = '-------------------#          ';
 
     var observableLookup = { x: x, y: y };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected, undefined, 'sad');
+    });
+
+    expectObservable(result).toBe(expected, undefined, 'sad');
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle outer empty', function () {
-    var e1 = Observable.empty();
+    var e1 =  cold('|');
+    var e1subs =   '(^!)';
     var expected = '|';
-    expectObservable(e1.switchMap(function (value) {
+
+    var result = e1.switchMap(function (value) {
       return Observable.of(value);
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle outer never', function () {
-    var e1 = Observable.never();
-    var expected = '----';
-    expectObservable(e1.switchMap(function (value) {
+    var e1 =  cold('-');
+    var e1subs =   '^';
+    var expected = '-';
+
+    var result = e1.switchMap(function (value) {
       return Observable.of(value);
-    })).toBe(expected);
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle outer throw', function () {
-    var e1 = Observable.throw(new Error('wah'));
+    var e1 =  cold('#');
+    var e1subs =   '(^!)';
     var expected = '#';
-    expectObservable(e1.switchMap(function (value) {
+
+    var result = e1.switchMap(function (value) {
       return Observable.of(value);
-    })).toBe(expected, undefined, new Error('wah'));
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle outer error', function () {
     var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         ^         !';
-    var e1 =   hot('---------x---------#', undefined, new Error('boo-hoo'));
-    var expected = '-----------a--b--c-#';
+    var xsubs =    '         ^         !       ';
+    var e1 =   hot('---------x---------#       ');
+    var e1subs =   '^                  !       ';
+    var expected = '-----------a--b--c-#       ';
 
     var observableLookup = { x: x };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
-    })).toBe(expected, undefined, new Error('boo-hoo'));
+    });
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch with resultSelector goodness', function () {
-    var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         ^         !';
+    var x =   cold(         '--a--b--c--d--e--|           ');
+    var xsubs =    '         ^         !                  ';
     var y =   cold(                   '---f---g---h---i--|');
     var ysubs =    '                   ^                 !';
-    var e1 =   hot('---------x---------y---------|');
+    var e1 =   hot('---------x---------y---------|        ');
+    var e1subs =   '^                                    !';
     var expected = '-----------a--b--c----f---g---h---i--|';
 
     var observableLookup = { x: x, y: y };
@@ -300,12 +371,15 @@ describe('Observable.prototype.switchMap()', function () {
       i: ['y', 'i', 1, 3]
     };
 
-    expectObservable(e1.switchMap(function (value) {
+    var result = e1.switchMap(function (value) {
       return observableLookup[value];
     }, function (innerValue, outerValue, innerIndex, outerIndex) {
       return [innerValue, outerValue, innerIndex, outerIndex];
-    })).toBe(expected, expectedValues);
+    });
+
+    expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
