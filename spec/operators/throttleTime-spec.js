@@ -61,9 +61,11 @@ describe('Observable.prototype.throttleTime()', function () {
 
   it('should raise error when source does not emit and raises error', function () {
     var e1 =   hot('-----#');
+    var subs =     '^    !';
     var expected = '-----#';
 
     expectObservable(e1.throttleTime(10, rxTestScheduler)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should handle an empty source', function () {
