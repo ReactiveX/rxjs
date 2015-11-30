@@ -3,6 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 
 var ReplaySubject = Rx.ReplaySubject;
 var nextTick = Rx.Scheduler.nextTick;
+var Observable = Rx.Observable;
 
 describe('ReplaySubject', function () {
   it('should extend Subject', function (done) {
@@ -205,5 +206,21 @@ describe('ReplaySubject', function () {
       )).toBe(sourceTemplate);
       expectObservable(subscriber1).toBe(expected1);
     });
+  });
+
+  it('should be an Observer which can be given to Observable.subscribe', function (done) {
+    var source = Observable.of(1, 2, 3, 4, 5);
+    var subject = new ReplaySubject(3);
+    var expected = [3, 4, 5];
+
+    source.subscribe(subject);
+
+    subject.subscribe(
+      function (x) {
+        expect(x).toBe(expected.shift());
+      },
+      done.fail,
+      done
+    );
   });
 });
