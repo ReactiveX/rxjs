@@ -22,3 +22,5 @@ export class DeferObservable<T> extends Observable<T> {
     }
   }
 }
+
+Observable.defer = DeferObservable.create;

@@ -78,3 +78,6 @@ export class ArrayObservable<T> extends Observable<T> {
     }
   }
 }
+
+Observable.fromArray = ArrayObservable.create;
+Observable.of = ArrayObservable.of;
