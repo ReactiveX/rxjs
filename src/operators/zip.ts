@@ -5,3 +5,5 @@ export function zipProto<R>(...observables: Array<Observable<any> | ((...values:
   observables.unshift(this);
   return zip.apply(this, observables);
 }
+
+Observable.prototype.zip = zipProto;

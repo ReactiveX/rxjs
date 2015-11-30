@@ -46,3 +46,5 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
     }
   }
 }
+
+Observable.prototype.skipWhile = skipWhile;

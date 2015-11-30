@@ -9,3 +9,5 @@ export function zip<T, R>(...observables: Array<Observable<any> | ((...values: A
   }
   return new ArrayObservable(observables).lift(new ZipOperator(project));
 }
+
+Observable.zip = zip;

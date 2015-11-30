@@ -9,3 +9,6 @@ export function mergeMap<T, R, R2>(project: (value: T, index: number) => Observa
                                    concurrent: number = Number.POSITIVE_INFINITY) {
   return this.lift(new MergeMapOperator(project, resultSelector, concurrent));
 }
+
+Observable.prototype.mergeMap = mergeMap;
+Observable.prototype.flatMap = mergeMap;

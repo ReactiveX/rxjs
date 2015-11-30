@@ -64,3 +64,5 @@ class CatchSubscriber<T> extends Subscriber<T> {
     this.lastSubscription.unsubscribe();
   }
 }
+
+Observable.prototype.catch = _catch;

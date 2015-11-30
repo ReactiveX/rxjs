@@ -76,3 +76,5 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
     destination.complete();
   }
 }
+
+Observable.prototype.bufferCount = bufferCount;

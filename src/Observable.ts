@@ -228,10 +228,13 @@ export class Observable<T> implements CoreOperators<T>  {
   single: (predicate?: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   skip: (count: number) => Observable<T>;
   skipUntil: (notifier: Observable<any>) => Observable<T>;
+  skipWhile: (predicate: (x: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   startWith: (x: T) => Observable<T>;
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   switch: <R>() => Observable<R>;
+  switchFirst: <T>() => Observable<T>;
   switchMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  switchMapFirst: <T, R, R2>(project: (x: T, ix: number) => Observable<R>, rSelector?: (x: T, y: R, ix: number, iy: number) => R2) => Observable<R>;
   switchMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   take: (count: number) => Observable<T>;
   takeUntil: (notifier: Observable<any>) => Observable<T>;

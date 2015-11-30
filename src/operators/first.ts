@@ -72,3 +72,5 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     }
   }
 }
+
+Observable.prototype.first = first;

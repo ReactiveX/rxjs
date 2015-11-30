@@ -1,4 +1,5 @@
 import {Operator} from '../Operator';
+import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -49,3 +50,5 @@ class FilterSubscriber<T> extends Subscriber<T> {
     }
   }
 }
+
+Observable.prototype.filter = filter;

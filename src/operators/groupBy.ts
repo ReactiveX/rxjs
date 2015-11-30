@@ -138,3 +138,5 @@ class GroupDurationSubscriber<T> extends Subscriber<T> {
     this.parent.removeGroup(this.key);
   }
 }
+
+Observable.prototype.groupBy = groupBy;

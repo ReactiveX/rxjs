@@ -130,3 +130,5 @@ class WindowToggleOpeningsSubscriber<T> extends Subscriber<T> {
     // noop
   }
 }
+
+Observable.prototype.windowToggle = windowToggle;

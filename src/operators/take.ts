@@ -1,4 +1,5 @@
 import {Operator} from '../Operator';
+import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observables/EmptyObservable';
@@ -40,3 +41,5 @@ class TakeSubscriber<T> extends Subscriber<T> {
     }
   }
 }
+
+Observable.prototype.take = take;

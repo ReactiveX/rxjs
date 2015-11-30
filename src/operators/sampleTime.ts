@@ -43,3 +43,5 @@ function dispatchNotification<T>(state) {
   subscriber.notifyNext();
   (<any>this).schedule(state, delay);
 }
+
+Observable.prototype.sampleTime = sampleTime;

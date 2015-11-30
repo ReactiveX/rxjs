@@ -23,3 +23,5 @@ export function startWith<T>(...array: (T | Scheduler)[]): Observable<T> {
     return concat(new EmptyObservable(scheduler), this);
   }
 }
+
+Observable.prototype.startWith = startWith;

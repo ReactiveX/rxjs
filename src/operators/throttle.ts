@@ -82,3 +82,5 @@ class ThrottleDurationSelectorSubscriber<T> extends Subscriber<T> {
     this.parent.clearThrottle();
   }
 }
+
+Observable.prototype.throttle = throttle;

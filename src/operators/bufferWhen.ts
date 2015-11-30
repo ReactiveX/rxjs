@@ -91,3 +91,5 @@ class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
     this.parent.openBuffer();
   }
 }
+
+Observable.prototype.bufferWhen = bufferWhen;

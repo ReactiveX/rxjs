@@ -85,3 +85,5 @@ class MoreRepeatSubscriber<T> extends Subscriber<T> {
     this.parent.resubscribe(count < 0 ? -1 : count);
   }
 }
+
+Observable.prototype.repeat = repeat;

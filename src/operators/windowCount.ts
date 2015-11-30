@@ -66,3 +66,5 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     this.destination.complete();
   }
 }
+
+Observable.prototype.windowCount = windowCount;

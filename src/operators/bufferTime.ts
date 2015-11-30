@@ -114,3 +114,5 @@ function dispatchBufferCreation(state) {
 function dispatchBufferClose({ subscriber, buffer }) {
   subscriber.closeBuffer(buffer);
 }
+
+Observable.prototype.bufferTime = bufferTime;

@@ -1,4 +1,5 @@
 import {root} from '../util/root';
+import {Observable} from '../Observable';
 
 export function toPromise<T>(PromiseCtor?: PromiseConstructor): Promise<T> {
   if (!PromiseCtor) {
@@ -18,3 +19,5 @@ export function toPromise<T>(PromiseCtor?: PromiseConstructor): Promise<T> {
     this.subscribe(x => value = x, err => reject(err), () => resolve(value));
   });
 }
+
+Observable.prototype.toPromise = toPromise;

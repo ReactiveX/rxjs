@@ -6,3 +6,5 @@ export function merge<R>(...observables: (Observable<any>|Scheduler|number)[]): 
   observables.unshift(this);
   return mergeStatic.apply(this, observables);
 }
+
+Observable.prototype.merge = merge;

@@ -21,3 +21,5 @@ export function concatMapTo<T, R, R2>(observable: Observable<R>,
                                                        innerIndex: number) => R2): Observable<R2> {
   return this.lift(new MergeMapToOperator(observable, projectResult, 1));
 }
+
+Observable.prototype.concatMapTo = concatMapTo;

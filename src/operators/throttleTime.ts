@@ -1,4 +1,5 @@
 import {Operator} from '../Operator';
+import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
@@ -46,3 +47,5 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
 function dispatchNext<T>({ subscriber }) {
   subscriber.clearThrottle();
 }
+
+Observable.prototype.throttleTime = throttleTime;

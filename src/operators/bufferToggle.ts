@@ -137,3 +137,5 @@ class BufferToggleOpeningsSubscriber<T> extends Subscriber<T> {
     // noop
   }
 }
+
+Observable.prototype.bufferToggle = bufferToggle;

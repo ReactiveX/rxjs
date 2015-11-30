@@ -23,3 +23,5 @@ export function concat<R>(...observables: (Observable<any> | Scheduler)[]): Obse
 
    return new ArrayObservable(args, scheduler).lift(new MergeAllOperator(1));
 }
+
+Observable.prototype.concat = concat;

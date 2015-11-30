@@ -1,4 +1,5 @@
 import {Operator} from '../Operator';
+import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
 
@@ -17,3 +18,5 @@ class IgnoreElementsSubscriber<T> extends Subscriber<T> {
     noop();
   }
 }
+
+Observable.prototype.ignoreElements = ignoreElements;

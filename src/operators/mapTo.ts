@@ -1,4 +1,5 @@
 import {Operator} from '../Operator';
+import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 /**
@@ -36,3 +37,5 @@ class MapToSubscriber<T, R> extends Subscriber<T> {
     this.destination.next(this.value);
   }
 }
+
+Observable.prototype.mapTo = mapTo;
