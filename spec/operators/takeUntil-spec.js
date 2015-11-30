@@ -51,6 +51,19 @@ describe('Observable.prototype.takeUntil()', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should allow unsubscribing explicitly and early', function () {
+    var e1 =     hot('--a--b--c--d--e--f--g--|');
+    var e1subs =     '^      !                ';
+    var e2 =     hot('-------------z--|       ');
+    var e2subs =     '^      !                ';
+    var unsub =      '       !                ';
+    var expected =   '--a--b--                ';
+
+    expectObservable(e1.takeUntil(e2), unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should complete when notifier emits if source observable does not complete', function () {
     var e1 =     hot('-');
     var e1subs =     '^ !';
