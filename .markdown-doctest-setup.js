@@ -5,6 +5,16 @@ var marbleTesting = require('./spec/helpers/marble-testing');
 
 global.rxTestScheduler = new Rx.TestScheduler(marbleTesting.assertDeepEqual);
 
+function it(callback) {
+  callback();
+}
+
+it.asDiagram = function asDiagram() {
+  return function (spec, callback) {
+    callback();
+  }
+};
+
 module.exports = {
   require: {
     '@reactivex/rxjs': Rx
@@ -17,10 +27,11 @@ module.exports = {
     expectSubscriptions: marbleTesting.expectSubscriptions,
     assertDeepEqual: marbleTesting.assertDeepEqual,
     Observable: Rx.Observable,
-    someObservable: Rx.Observable.range(1, 10)
+    someObservable: Rx.Observable.range(1, 10),
+    it: it
   },
 
   babel: {
     stage: 0
   }
-}
+};
