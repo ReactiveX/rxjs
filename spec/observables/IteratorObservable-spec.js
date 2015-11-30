@@ -1,6 +1,6 @@
 /* globals describe, it, expect, rxTestScheduler*/
 var Rx = require('../../dist/cjs/Rx');
-var IteratorObservable = require('../../dist/cjs/observables/IteratorObservable').IteratorObservable;
+var IteratorObservable = require('../../dist/cjs/observable/IteratorObservable').IteratorObservable;
 var Observable = Rx.Observable;
 
 describe('IteratorObservable', function () {

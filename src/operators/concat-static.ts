@@ -2,7 +2,7 @@ import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {immediate} from '../schedulers/immediate';
 import {MergeAllOperator} from './mergeAll-support';
-import {ArrayObservable} from '../observables/ArrayObservable';
+import {ArrayObservable} from '../observable/fromArray';
 import {isScheduler} from '../util/isScheduler';
 
 /**

@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
-import {EmptyObservable} from '../observables/EmptyObservable';
+import {EmptyObservable} from '../observable/empty';
 
 export function take(total) {
   if (total === 0) {

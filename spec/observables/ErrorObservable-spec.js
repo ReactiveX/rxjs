@@ -1,6 +1,6 @@
 /* globals describe, it, expect, rxTestScheduler, expectObservable*/
 var Rx = require('../../dist/cjs/Rx');
-var ErrorObservable = require('../../dist/cjs/observables/ErrorObservable').ErrorObservable;
+var ErrorObservable = require('../../dist/cjs/observable/throw').ErrorObservable;
 var Observable = Rx.Observable;
 
 describe('ErrorObservable', function () {

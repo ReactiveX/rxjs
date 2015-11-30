@@ -1,6 +1,6 @@
 import {Subject} from '../Subject';
 import {Observable} from '../Observable';
-import {ConnectableObservable} from '../observables/ConnectableObservable';
+import {ConnectableObservable} from '../observable/ConnectableObservable';
 
 export function multicast<T>(subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) {
   let subjectFactory: () => Subject<T>;

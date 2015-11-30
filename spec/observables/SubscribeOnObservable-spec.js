@@ -1,6 +1,6 @@
 /* globals describe, it, expect, hot, expectObservable, expectSubscriptions, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
-var SubscribeOnObservable = require('../../dist/cjs/observables/SubscribeOnObservable').SubscribeOnObservable;
+var SubscribeOnObservable = require('../../dist/cjs/observable/SubscribeOnObservable').SubscribeOnObservable;
 var Observable = Rx.Observable;
 
 describe('SubscribeOnObservable', function () {
