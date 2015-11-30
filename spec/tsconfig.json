@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "sourceMap": false,
+        "declaration": false,
+        "target": "es5",
+        "module": "commonjs",
+        "outDir": "../tmp"
+    },
+        "files": [
+        "../typings/es6-shim/es6-shim.d.ts",
+        "./helpers/marble-testing.ts",
+        "./helpers/test-helper.ts",
+        "./operators/count-spec.ts"
+    ]
+}

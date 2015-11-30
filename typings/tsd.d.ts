@@ -3,3 +3,4 @@
 /// <reference path="node/node.d.ts" />
 /// <reference path="requirejs/require.d.ts" />
 /// <reference path="../node_modules/immutable/dist/immutable.d.ts" />
+/// <reference path="lodash/lodash.d.ts" />
