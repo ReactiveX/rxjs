@@ -1,63 +1,25 @@
 import {Observable} from './Observable';
 
-// operators
+// statics
 /* tslint:disable:no-use-before-declare */
-import {combineLatest as combineLatestStatic} from './operators/combineLatest-static';
-Observable.combineLatest = combineLatestStatic;
-
-import {concat as concatStatic} from './operators/concat-static';
-Observable.concat = concatStatic;
-
-import {merge as mergeStatic} from './operators/merge-static';
-Observable.merge = mergeStatic;
-/* tslint:enable:no-use-before-declare */
-
-import {DeferObservable} from './observables/DeferObservable';
-Observable.defer = DeferObservable.create;
-
-import {EmptyObservable} from './observables/EmptyObservable';
-Observable.empty = EmptyObservable.create;
-
-import {ForkJoinObservable} from './observables/ForkJoinObservable';
-Observable.forkJoin = ForkJoinObservable.create;
-
-import {FromObservable} from './observables/FromObservable';
-Observable.from = FromObservable.create;
-
-import {ArrayObservable} from './observables/ArrayObservable';
-Observable.fromArray = ArrayObservable.create;
-
-import {FromEventObservable} from './observables/FromEventObservable';
-Observable.fromEvent = FromEventObservable.create;
-
-import {FromEventPatternObservable} from './observables/FromEventPatternObservable';
-Observable.fromEventPattern = FromEventPatternObservable.create;
-
-import {PromiseObservable} from './observables/PromiseObservable';
-Observable.fromPromise = PromiseObservable.create;
-
-import {CallbackObservable} from './observables/CallbackObservable';
-Observable.fromCallback = CallbackObservable.create;
-
-import {IntervalObservable} from './observables/IntervalObservable';
-Observable.interval = IntervalObservable.create;
-
-import {InfiniteObservable} from './observables/InfiniteObservable';
-Observable.never = InfiniteObservable.create;
-
-Observable.of = ArrayObservable.of;
-
-import {RangeObservable} from './observables/RangeObservable';
-Observable.range = RangeObservable.create;
-
-import {ErrorObservable} from './observables/ErrorObservable';
-Observable.throw = ErrorObservable.create;
-
-import {TimerObservable} from './observables/TimerObservable';
-Observable.timer = TimerObservable.create;
-
-import {zip as zipStatic} from './operators/zip-static';
-Observable.zip = zipStatic;
+import './operators/combineLatest-static';
+import './operators/concat-static';
+import './operators/merge-static';
+import './observables/DeferObservable';
+import './observables/EmptyObservable';
+import './observables/ForkJoinObservable';
+import './observables/FromObservable';
+import './observables/ArrayObservable';
+import './observables/FromEventObservable';
+import './observables/FromEventPatternObservable';
+import './observables/PromiseObservable';
+import './observables/CallbackObservable';
+import './observables/IntervalObservable';
+import './observables/InfiniteObservable';
+import './observables/RangeObservable';
+import './observables/ErrorObservable';
+import './observables/TimerObservable';
+import './operators/zip-static';
 
 //operators
 import './operators/buffer';

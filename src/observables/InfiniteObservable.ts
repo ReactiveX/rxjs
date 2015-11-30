@@ -15,3 +15,5 @@ export class InfiniteObservable<T> extends Observable<T> {
     noop();
   }
 }
+
+Observable.never = InfiniteObservable.create;

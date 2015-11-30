@@ -41,3 +41,5 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
     }));
   }
 }
+
+Observable.fromEventPattern = FromEventPatternObservable.create;

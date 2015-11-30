@@ -64,3 +64,5 @@ export class RangeObservable<T> extends Observable<T> {
     }
   }
 }
+
+Observable.range = RangeObservable.create;

@@ -101,3 +101,5 @@ function emptyArray(len: number): any[] {
   }
   return arr;
 }
+
+Observable.forkJoin = ForkJoinObservable.create;
