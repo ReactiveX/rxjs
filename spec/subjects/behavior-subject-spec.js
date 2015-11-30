@@ -3,6 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 
 var BehaviorSubject = Rx.BehaviorSubject;
 var nextTick = Rx.Scheduler.nextTick;
+var Observable = Rx.Observable;
 
 describe('BehaviorSubject', function () {
   it('should extend Subject', function (done) {
@@ -114,5 +115,21 @@ describe('BehaviorSubject', function () {
       feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
     )).toBe(sourceTemplate);
     expectObservable(subscriber1).toBe(expected1);
+  });
+
+  it('should be an Observer which can be given to Observable.subscribe', function (done) {
+    var source = Observable.of(1, 2, 3, 4, 5);
+    var subject = new BehaviorSubject(0);
+    var expected = [0, 1, 2, 3, 4, 5];
+
+    subject.subscribe(
+      function (x) {
+        expect(x).toBe(expected.shift());
+      },
+      done.fail,
+      done
+    );
+
+    source.subscribe(subject);
   });
 });

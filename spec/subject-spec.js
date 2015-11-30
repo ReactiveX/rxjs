@@ -471,4 +471,20 @@ describe('Subject', function () {
     expect(output).toEqual([1,2,3,4,5]);
     expect(outputComplete).toBe(true);
   });
+
+  it('should be an Observer which can be given to Observable.subscribe', function (done) {
+    var source = Observable.of(1, 2, 3, 4, 5);
+    var subject = new Subject();
+    var expected = [1, 2, 3, 4, 5];
+
+    subject.subscribe(
+      function (x) {
+        expect(x).toBe(expected.shift());
+      },
+      done.fail,
+      done
+    );
+
+    source.subscribe(subject);
+  });
 });
