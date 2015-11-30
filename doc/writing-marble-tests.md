@@ -160,6 +160,7 @@ In most tests it will be unnecessary to test subscription and unsubscription poi
 
 Typically, each test case in Jasmine is written as `it('should do something', function () { /* ... */ })`. To mark a test case for PNG diagram generation, you must use the `asDiagram(label)` function, like this:
 
+<!-- skip-example -->
 ```js
 it.asDiagram(operatorLabel)('should do something', function () {
   // ...
