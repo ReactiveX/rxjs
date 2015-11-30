@@ -33,20 +33,24 @@ describe('Observable.prototype.switchMapTo()', function () {
     //                                 --a--b--c--d--e--|
                    '                   ^                !'];
     var e1 =   hot('---------x---------x---------|       ');
+    var e1subs =   '^                                   !';
     var expected = '-----------a--b--c---a--b--c--d--e--|';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch to an inner cold observable, outer eventually throws', function () {
     var x =   cold(         '--a--b--c--d--e--|');
-    var xsubs =    '         ^         !';
-    var e1 =   hot('---------x---------#');
-    var expected = '-----------a--b--c-#';
+    var xsubs =    '         ^         !       ';
+    var e1 =   hot('---------x---------#       ');
+    var e1subs =   '^                  !       ';
+    var expected = '-----------a--b--c-#       ';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch to an inner cold observable, outer is unsubscribed early', function () {
@@ -56,10 +60,12 @@ describe('Observable.prototype.switchMapTo()', function () {
                    '                   ^  !       '];
     var e1 =   hot('---------x---------x---------|');
     var unsub =    '                      !       ';
+    var e1subs =   '^                     !       ';
     var expected = '-----------a--b--c---a-       ';
 
     expectObservable(e1.switchMapTo(x), unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch to an inner cold observable, inner never completes', function () {
@@ -67,11 +73,13 @@ describe('Observable.prototype.switchMapTo()', function () {
     var xsubs =   ['         ^         !               ',
     //                                 --a--b--c--d--e-
                    '                   ^               '];
-    var e1 =   hot('---------x---------y---------|');
+    var e1 =   hot('---------x---------y---------|     ');
+    var e1subs =   '^                                  ';
     var expected = '-----------a--b--c---a--b--c--d--e-';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a synchronous switch to the inner observable', function () {
@@ -79,20 +87,24 @@ describe('Observable.prototype.switchMapTo()', function () {
     var xsubs =   ['         (^!)                 ',
                    '         ^                !   '];
     var e1 =   hot('---------(xx)----------------|');
+    var e1subs =   '^                            !';
     var expected = '-----------a--b--c--d--e-----|';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch to an inner cold observable, inner raises an error', function () {
-    var x =   cold(         '--a--b--#');
-    var xsubs =    '         ^       !';
+    var x =   cold(         '--a--b--#            ');
+    var xsubs =    '         ^       !            ';
     var e1 =   hot('---------x---------x---------|');
-    var expected = '-----------a--b--#';
+    var e1subs =   '^                !            ';
+    var expected = '-----------a--b--#            ';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch an inner hot observable', function () {
@@ -100,10 +112,12 @@ describe('Observable.prototype.switchMapTo()', function () {
     var xsubs =   ['         ^         !          ',
                    '                   ^   !      '];
     var e1 =   hot('---------x---------x---------|');
+    var e1subs =   '^                            !';
     var expected = '------------a--b--c--d-------|';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch to an inner empty', function () {
@@ -111,52 +125,64 @@ describe('Observable.prototype.switchMapTo()', function () {
     var xsubs =   ['         (^!)                 ',
                    '                   (^!)       '];
     var e1 =   hot('---------x---------x---------|');
+    var e1subs =   '^                            !';
     var expected = '-----------------------------|';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch to an inner never', function () {
     var x = cold('-');
-    var xsubs =   ['         ^         !           ',
-                   '                   ^           '];
+    var xsubs =   ['         ^         !          ',
+                   '                   ^          '];
     var e1 =   hot('---------x---------x---------|');
-    var expected = '----------------------------------';
+    var e1subs =   '^                             ';
+    var expected = '------------------------------';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch to an inner that just raises an error', function () {
     var x = cold('#');
-    var xsubs =    '         (^!)';
+    var xsubs =    '         (^!)                 ';
     var e1 =   hot('---------x---------x---------|');
-    var expected = '---------#';
+    var e1subs =   '^        !                    ';
+    var expected = '---------#                    ';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle an empty outer', function () {
-    var e1 = cold( '|');
+    var e1 =  cold('|');
+    var e1subs =   '(^!)';
     var expected = '|';
 
     expectObservable(e1.switchMapTo(Observable.of('foo'))).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle a never outer', function () {
-    var e1 = cold( '-');
+    var e1 =  cold('-');
+    var e1subs =   '^';
     var expected = '-';
 
     expectObservable(e1.switchMapTo(Observable.of('foo'))).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should handle an outer that just raises and error', function () {
-    var e1 = cold( '#');
+    var e1 =  cold('#');
+    var e1subs =   '(^!)';
     var expected = '#';
 
     expectObservable(e1.switchMapTo(Observable.of('foo'))).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should switch with resultSelector goodness', function () {
@@ -165,6 +191,7 @@ describe('Observable.prototype.switchMapTo()', function () {
     //                                 --1--2--3--4--5--|
                    '                   ^                !'];
     var e1 =   hot('---------x---------y---------|       ');
+    var e1subs =   '^                                   !';
     var expected = '-----------a--b--c---d--e--f--g--h--|';
     var expectedValues = {
       a: ['x', '1', 0, 0],
@@ -183,5 +210,6 @@ describe('Observable.prototype.switchMapTo()', function () {
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
