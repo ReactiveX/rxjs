@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {ArrayObservable} from '../observables/ArrayObservable';
+import {ArrayObservable} from '../observable/fromArray';
 import {ZipOperator} from './zip-support';
 
 export function zip<T, R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {

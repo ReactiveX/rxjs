@@ -1,6 +1,6 @@
 import {Observable} from './Observable';
 import {Scheduler} from './Scheduler';
-import {ConnectableObservable} from './observables/ConnectableObservable';
+import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {GroupedObservable} from './operators/groupBy-support';
 import {Notification} from './Notification';

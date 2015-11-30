@@ -4,8 +4,8 @@ import {Subscriber} from '../Subscriber';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {ErrorObservable} from './ErrorObservable';
-import {EmptyObservable} from './EmptyObservable';
+import {ErrorObservable} from './throw';
+import {EmptyObservable} from './empty';
 
 export class ScalarObservable<T> extends Observable<T> {
   static create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {

@@ -7,7 +7,7 @@ import {root} from './util/root';
 import {CoreOperators } from './CoreOperators';
 import {$$observable} from './util/Symbol_observable';
 import {GroupedObservable} from './operators/groupBy-support';
-import {ConnectableObservable} from './observables/ConnectableObservable';
+import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {Notification} from './Notification';
 

@@ -1,7 +1,7 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
-import {EmptyObservable} from './EmptyObservable';
+import {EmptyObservable} from './empty';
 import {isScheduler} from '../util/isScheduler';
 
 export class ArrayObservable<T> extends Observable<T> {
@@ -79,5 +79,5 @@ export class ArrayObservable<T> extends Observable<T> {
   }
 }
 
-Observable.fromArray = ArrayObservable.create;
 Observable.of = ArrayObservable.of;
+Observable.fromArray = ArrayObservable.create;

@@ -1,6 +1,6 @@
-import {PromiseObservable} from './PromiseObservable';
+import {PromiseObservable} from './fromPromise';
 import {IteratorObservable} from'./IteratorObservable';
-import {ArrayObservable} from './ArrayObservable';
+import {ArrayObservable} from './fromArray';
 
 import {Scheduler} from '../Scheduler';
 import {$$observable} from '../util/Symbol_observable';
