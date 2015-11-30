@@ -184,4 +184,20 @@ describe('Observable.prototype.switchMapTo()', function () {
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
   });
+
+  it('should raise error when resultSelector throws', function () {
+    var x =   cold(         '--1--2--3--4--5--|   ');
+    var xsubs =    '         ^ !                  ';
+    var e1 =   hot('---------x---------y---------|');
+    var e1subs =   '^          !';
+    var expected = '-----------#';
+
+    var result = e1.switchMapTo(x, function () {
+      throw 'error';
+    });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
