@@ -49,6 +49,9 @@ describe('Observable.prototype.bufferToggle', function () {
       cold(             '---------------s--|                     '),
       cold(                         '----(s|)                    '),
       cold(                                  '---------------(s|)')];
+    var closeSubs =  ['  ^              !                        ',
+                      '              ^   !                       ',
+                      '                       ^           !      '];
     var expected =    '-----------------ij----------------(k|)   ';
     var values = {
       i: ['b','c','d','e'],
@@ -61,6 +64,9 @@ describe('Observable.prototype.bufferToggle', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
+    expectSubscriptions(closings[2].subscriptions).toBe(closeSubs[2]);
   });
 
   it('should emit buffers using varying hot closings', function () {
@@ -142,6 +148,7 @@ describe('Observable.prototype.bufferToggle', function () {
       cold(             '---------------s--|                     '),
       cold(                         '----(s|)                    '),
       cold(                                  '---------------(s|)')];
+    var closeSubs0 =  '  ^           !                           ';
     var expected =    '--------------#                           ';
 
     var i = 0;
@@ -154,6 +161,9 @@ describe('Observable.prototype.bufferToggle', function () {
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs0);
+    expectSubscriptions(closings[1].subscriptions).toBe([]);
+    expectSubscriptions(closings[2].subscriptions).toBe([]);
   });
 
   it('should propagate error emitted from a closing', function () {
@@ -163,6 +173,8 @@ describe('Observable.prototype.bufferToggle', function () {
     var closings = [
       cold(             '---------------s--|               '),
       cold(                         '#                     ')];
+    var closeSubs =  ['  ^           !                     ',
+                      '              (^!)                  '];
     var expected =    '--------------#                     ';
 
     var i = 0;
@@ -170,6 +182,8 @@ describe('Observable.prototype.bufferToggle', function () {
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
   });
 
   it('should propagate error emitted late from a closing', function () {
@@ -179,6 +193,8 @@ describe('Observable.prototype.bufferToggle', function () {
     var closings = [
       cold(             '---------------s--|               '),
       cold(                         '-----#                ')];
+    var closeSubs =  ['  ^              !                  ',
+                      '              ^    !                '];
     var expected =    '-----------------i-#                ';
     var values = {
       i: ['b','c','d','e']
@@ -189,16 +205,20 @@ describe('Observable.prototype.bufferToggle', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
   });
 
   it('should handle errors', function () {
-    var e1 = hot('--a--^---b---c---d---e--#f---g---h------|');
-    var e2 =     cold('--x-----------y--------z---|        ');
-    var subs =        '^                  !                ';
+    var e1 = hot('--a--^---b---c---d---e--#        ');
+    var e2 =     cold('--x-----------y--------z---|');
+    var subs =        '^                  !        ';
     var closings = [
-      cold(             '---------------s--|               '),
-      cold(                         '-------s|             ')];
-    var expected =    '-----------------i-#                ';
+      cold(             '---------------s--|       '),
+      cold(                         '-------s|     ')];
+    var closeSubs =  ['  ^              !                  ',
+                      '              ^    !                '];
+    var expected =    '-----------------i-#        ';
     var values = {
       i: ['b','c','d','e']
     };
@@ -208,12 +228,14 @@ describe('Observable.prototype.bufferToggle', function () {
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
   });
 
   it('should handle empty source', function () {
-    var e1 = cold( '|');
-    var e2 = cold( '--o-----|');
-    var e3 = cold(   '-----c--|');
+    var e1 =  cold('|');
+    var e2 =  cold('--o-----|');
+    var e3 =  cold(  '-----c--|');
     var expected = '|';
     var values = { x: [] };
 
@@ -223,9 +245,9 @@ describe('Observable.prototype.bufferToggle', function () {
   });
 
   it('should handle throw', function () {
-    var e1 = cold('#');
-    var e2 = cold('--o-----|');
-    var e3 = cold('-----c--|');
+    var e1 =  cold('#');
+    var e2 =  cold('--o-----|');
+    var e3 =  cold(  '-----c--|');
     var expected = '#';
     var values = { x: [] };
 
@@ -251,8 +273,8 @@ describe('Observable.prototype.bufferToggle', function () {
 
   it('should handle a never opening Observable', function () {
     var e1 = hot('--a--^---b---c---d---e---f---g---h------|');
-    var e2 = cold('-');
-    var e3 =  cold(  '--c-|');
+    var e2 = cold(    '-');
+    var e3 =  cold(   '--c-|');
     var expected =    '-----------------------------------|';
 
     var result = e1.bufferToggle(e2, function () { return e3; });
@@ -277,14 +299,16 @@ describe('Observable.prototype.bufferToggle', function () {
 
   it('should handle opening Observable that just throws', function () {
     var e1 = hot('--a--^---b---c---d---e---f---g---h------|');
+    var e1subs =      '(^!)';
     var e2 = cold(    '#');
+    var e2subs =      '(^!)';
     var e3 = cold(    '--c-|');
-    var subs =        '(^!)';
     var expected =    '#';
 
     var result = e1.bufferToggle(e2, function () { return e3; });
 
     expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 });
