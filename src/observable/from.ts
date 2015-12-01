@@ -3,8 +3,7 @@ import {IteratorObservable} from'./IteratorObservable';
 import {ArrayObservable} from './fromArray';
 
 import {Scheduler} from '../Scheduler';
-import {$$observable} from '../util/Symbol_observable';
-import {$$iterator} from '../util/Symbol_iterator';
+import {SymbolShim} from '../util/SymbolShim';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn-support';
@@ -23,12 +22,12 @@ export class FromObservable<T> extends Observable<T> {
         return new ArrayObservable(ish, scheduler);
       } else if (typeof ish.then === 'function') {
         return new PromiseObservable(ish, scheduler);
-      } else if (typeof ish[$$observable] === 'function') {
+      } else if (typeof ish[SymbolShim.observable] === 'function') {
         if (ish instanceof Observable) {
           return ish;
         }
         return new FromObservable(ish, scheduler);
-      } else if (typeof ish[$$iterator] === 'function') {
+      } else if (typeof ish[SymbolShim.iterator] === 'function') {
         return new IteratorObservable(ish, null, null, scheduler);
       }
     }
@@ -40,9 +39,9 @@ export class FromObservable<T> extends Observable<T> {
     const ish = this.ish;
     const scheduler = this.scheduler;
     if (scheduler === immediate) {
-      return ish[$$observable]().subscribe(subscriber);
+      return ish[SymbolShim.observable]().subscribe(subscriber);
     } else {
-      return ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
+      return ish[SymbolShim.observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
     }
   }
 }

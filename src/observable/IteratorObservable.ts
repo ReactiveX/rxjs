@@ -2,7 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 
 import {root} from '../util/root';
-import {$$iterator} from '../util/Symbol_iterator';
+import {SymbolShim} from '../util/SymbolShim';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -105,7 +105,7 @@ class StringIterator {
               private idx: number = 0,
               private len: number = str.length) {
   }
-  [$$iterator]() { return (this); }
+  [SymbolShim.iterator]() { return (this); }
   next() {
     return this.idx < this.len ? {
         done: false,
@@ -122,7 +122,7 @@ class ArrayIterator {
               private idx: number = 0,
               private len: number = toLength(arr)) {
   }
-  [$$iterator]() { return this; }
+  [SymbolShim.iterator]() { return this; }
   next() {
     return this.idx < this.len ? {
         done: false,
@@ -135,7 +135,7 @@ class ArrayIterator {
 }
 
 function getIterator(obj: any) {
-  const i = obj[$$iterator];
+  const i = obj[SymbolShim.iterator];
   if (!i && typeof obj === 'string') {
     return new StringIterator(obj);
   }
@@ -145,7 +145,7 @@ function getIterator(obj: any) {
   if (!i) {
     throw new TypeError('Object is not iterable');
   }
-  return obj[$$iterator]();
+  return obj[SymbolShim.iterator]();
 }
 
 const maxSafeInteger = Math.pow(2, 53) - 1;
