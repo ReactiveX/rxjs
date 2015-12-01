@@ -48,7 +48,7 @@ export class TimerObservable<T> extends Observable<T> {
     } else if (isScheduler(period)) {
       scheduler = <Scheduler> period;
     }
-    if (!scheduler || typeof scheduler.schedule !== 'function') {
+    if (!isScheduler(scheduler)) {
       scheduler = nextTick;
     }
     this.scheduler = scheduler;
