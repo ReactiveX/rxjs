@@ -1,4 +1,4 @@
-import {ReplaySubject} from '../subjects/ReplaySubject';
+import {ReplaySubject} from '../subject/ReplaySubject';
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {multicast} from './multicast';

@@ -1,7 +1,7 @@
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {nextTick} from '../schedulers/nextTick';
+import {nextTick} from '../scheduler/nextTick';
 import {isScheduler} from '../util/isScheduler';
 import {isDate} from '../util/isDate';
 

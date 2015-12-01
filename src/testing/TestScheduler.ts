@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {VirtualTimeScheduler} from '../schedulers/VirtualTimeScheduler';
+import {VirtualTimeScheduler} from '../scheduler/VirtualTimeScheduler';
 import {Notification} from '../Notification';
 import {Subject} from '../Subject';
 import {ColdObservable} from './ColdObservable';

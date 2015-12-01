@@ -1,4 +1,4 @@
-import {BehaviorSubject} from '../subjects/BehaviorSubject';
+import {BehaviorSubject} from '../subject/BehaviorSubject';
 import {Observable} from '../Observable';
 import {multicast} from './multicast';
 

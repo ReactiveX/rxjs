@@ -3,7 +3,7 @@ import {Observer} from './Observer';
 import {Observable} from './Observable';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
-import {SubjectSubscription} from './subjects/SubjectSubscription';
+import {SubjectSubscription} from './subject/SubjectSubscription';
 
 const subscriptionAdd = Subscription.prototype.add;
 const subscriptionRemove = Subscription.prototype.remove;

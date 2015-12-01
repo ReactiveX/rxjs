@@ -2,7 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {ArrayObservable} from '../observable/fromArray';
 import {MergeAllOperator} from './mergeAll-support';
-import {immediate} from '../schedulers/immediate';
+import {immediate} from '../scheduler/immediate';
 import {isScheduler} from '../util/isScheduler';
 
 export function merge<R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {

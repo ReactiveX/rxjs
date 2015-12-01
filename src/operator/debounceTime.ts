@@ -3,7 +3,7 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
-import {nextTick} from '../schedulers/nextTick';
+import {nextTick} from '../scheduler/nextTick';
 
 export function debounceTime<T>(dueTime: number, scheduler: Scheduler = nextTick): Observable<T> {
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
