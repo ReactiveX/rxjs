@@ -2,7 +2,7 @@
 var Rx = require('../../dist/cjs/Rx');
 var Promise = require('promise');
 var Observable = Rx.Observable;
-var $$iterator = require('../../dist/cjs/util/Symbol_iterator').$$iterator;
+var $$iterator = require('../../dist/cjs/util/SymbolShim').SymbolShim.iterator;
 
 describe('Observable.from', function () {
   it('should enumerate an Array', function (done) {
