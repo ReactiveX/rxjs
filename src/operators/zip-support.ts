@@ -6,7 +6,7 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
-import {$$iterator} from '../util/Symbol_iterator';
+import {SymbolShim} from '../util/SymbolShim';
 
 const isArray = Array.isArray;
 
@@ -43,8 +43,8 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     const index = this.index++;
     if (isArray(value)) {
       iterators.push(new StaticArrayIterator(value));
-    } else if (typeof value[$$iterator] === 'function') {
-      iterators.push(new StaticIterator(value[$$iterator]()));
+    } else if (typeof value[SymbolShim.iterator] === 'function') {
+      iterators.push(new StaticIterator(value[SymbolShim.iterator]()));
     } else {
       iterators.push(new ZipBufferIterator(this.destination, this, value, index));
     }
@@ -158,7 +158,7 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
     this.length = array.length;
   }
 
-  [$$iterator]() {
+  [SymbolShim.iterator]() {
     return this;
   }
 
@@ -189,7 +189,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
     super(destination);
   }
 
-  [$$iterator]() {
+  [SymbolShim.iterator]() {
     return this;
   }
 

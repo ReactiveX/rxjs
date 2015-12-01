@@ -5,7 +5,7 @@ import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
 import {CoreOperators } from './CoreOperators';
-import {$$observable} from './util/Symbol_observable';
+import {SymbolShim} from './util/SymbolShim';
 import {GroupedObservable} from './operators/groupBy-support';
 import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
@@ -67,7 +67,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Observable} this instance of the observable
    * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
    */
-  [$$observable]() {
+  [SymbolShim.observable]() {
     return this;
   }
 
