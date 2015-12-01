@@ -323,4 +323,28 @@ describe('Observable.prototype.expand()', function () {
         done();
       });
   });
+
+  it('should work when passing undefined for the optional arguments', function () {
+    var values = {
+      a: 1,
+      b: 1 + 1, // a + a,
+      c: 2 + 2, // b + b,
+      d: 4 + 4, // c + c,
+      e: 8 + 8, // d + d
+    };
+    var e1 =   hot('(a|)', values);
+    var e1subs =   '^           !   ';
+    var e2shape =  '---(z|)         ';
+    var expected = 'a--b--c--d--(e|)';
+
+    var result = e1.expand(function (x) {
+      if (x === 16) {
+        return Observable.empty();
+      }
+      return cold(e2shape, { z: x + x });
+    }, undefined, undefined);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
