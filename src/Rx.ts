@@ -117,7 +117,7 @@ import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Notification} from './Notification';
 import {EmptyError} from './util/EmptyError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
-import {nextTick} from './scheduler/nextTick';
+import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {immediate} from './scheduler/immediate';
 import {NextTickScheduler} from './scheduler/NextTickScheduler';
 import {ImmediateScheduler} from './scheduler/ImmediateScheduler';
@@ -142,5 +142,6 @@ export {
     ConnectableObservable,
     Notification,
     EmptyError,
-    ArgumentOutOfRangeError
+    ArgumentOutOfRangeError,
+    ObjectUnsubscribedError
 };

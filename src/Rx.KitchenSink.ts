@@ -137,6 +137,7 @@ import {BehaviorSubject} from './subject/BehaviorSubject';
 import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Notification} from './Notification';
 import {EmptyError} from './util/EmptyError';
+import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 import {nextTick} from './scheduler/nextTick';
 import {immediate} from './scheduler/immediate';
@@ -167,6 +168,7 @@ export {
     Notification,
     EmptyError,
     ArgumentOutOfRangeError,
+    ObjectUnsubscribedError,
     TestScheduler,
     VirtualTimeScheduler,
     TimeInterval
