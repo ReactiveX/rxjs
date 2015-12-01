@@ -2,7 +2,7 @@ import {Operator} from '../../Operator';
 import {Observable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
 import {Scheduler} from '../../Scheduler';
-import {immediate} from '../../schedulers/immediate';
+import {immediate} from '../../scheduler/immediate';
 import {KitchenSinkOperators} from '../../Rx.KitchenSink';
 
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);

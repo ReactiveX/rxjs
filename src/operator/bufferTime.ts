@@ -2,8 +2,8 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
-import {Action} from '../schedulers/Action';
-import {nextTick} from '../schedulers/nextTick';
+import {Action} from '../scheduler/Action';
+import {nextTick} from '../scheduler/nextTick';
 
 /**
  * buffers values from the source for a specific time period. Optionally allows new buffers to be set up at an interval.

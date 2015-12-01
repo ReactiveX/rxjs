@@ -3,8 +3,8 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subject} from '../Subject';
 import {Scheduler} from '../Scheduler';
-import {Action} from '../schedulers/Action';
-import {nextTick} from '../schedulers/nextTick';
+import {Action} from '../scheduler/Action';
+import {nextTick} from '../scheduler/nextTick';
 
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,

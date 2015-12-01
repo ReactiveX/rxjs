@@ -7,8 +7,8 @@ import {$$observable} from '../util/Symbol_observable';
 import {$$iterator} from '../util/Symbol_iterator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {ObserveOnSubscriber} from '../operators/observeOn-support';
-import {immediate} from '../schedulers/immediate';
+import {ObserveOnSubscriber} from '../operator/observeOn-support';
+import {immediate} from '../scheduler/immediate';
 
 const isArray = Array.isArray;
 

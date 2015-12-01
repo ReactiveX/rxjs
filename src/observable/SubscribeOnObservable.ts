@@ -2,7 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {Observable} from '../Observable';
-import {nextTick} from '../schedulers/nextTick';
+import {nextTick} from '../scheduler/nextTick';
 import {isNumeric} from '../util/isNumeric';
 
 export class SubscribeOnObservable<T> extends Observable<T> {

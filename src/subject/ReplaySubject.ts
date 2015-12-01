@@ -1,6 +1,6 @@
 import {Subject} from '../Subject';
 import {Scheduler} from '../Scheduler';
-import {immediate} from '../schedulers/immediate';
+import {immediate} from '../scheduler/immediate';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 

@@ -1,5 +1,5 @@
 import {Subscription} from './Subscription';
-import {Action} from './schedulers/Action';
+import {Action} from './scheduler/Action';
 
 export interface Scheduler {
   now(): number;

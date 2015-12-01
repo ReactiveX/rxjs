@@ -2,7 +2,7 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
-import {immediate} from '../schedulers/immediate';
+import {immediate} from '../scheduler/immediate';
 
 export class PromiseObservable<T> extends Observable<T> {
 

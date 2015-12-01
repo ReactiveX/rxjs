@@ -1,7 +1,7 @@
 /* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
-var GroupedObservable = require('../../dist/cjs/operators/groupBy-support').GroupedObservable;
+var GroupedObservable = require('../../dist/cjs/operator/groupBy-support').GroupedObservable;
 
 describe('Observable.prototype.groupBy()', function () {
   it.asDiagram('groupBy(i => i % 2)')('should group numbers by odd/even', function () {

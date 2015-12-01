@@ -2,7 +2,7 @@ import {Subscriber} from '../Subscriber';
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {nextTick} from '../schedulers/nextTick';
+import {nextTick} from '../scheduler/nextTick';
 
 export class IntervalObservable<T> extends Observable<T> {
   static create(period: number = 0, scheduler: Scheduler = nextTick): Observable<number> {
