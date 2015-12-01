@@ -128,6 +128,7 @@ import './operators/zipAll';
 import {Subject} from './Subject';
 import {Subscription} from './Subscription';
 import {Subscriber} from './Subscriber';
+import {AsyncSubject} from './subjects/AsyncSubject';
 import {ReplaySubject} from './subjects/ReplaySubject';
 import {BehaviorSubject} from './subjects/BehaviorSubject';
 import {ConnectableObservable} from './observable/ConnectableObservable';
@@ -156,6 +157,7 @@ export {
     Observable,
     Subscriber,
     Subscription,
+    AsyncSubject,
     ReplaySubject,
     BehaviorSubject,
     ConnectableObservable,
