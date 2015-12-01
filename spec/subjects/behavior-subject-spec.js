@@ -4,6 +4,7 @@ var Rx = require('../../dist/cjs/Rx');
 var BehaviorSubject = Rx.BehaviorSubject;
 var nextTick = Rx.Scheduler.nextTick;
 var Observable = Rx.Observable;
+var ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 
 describe('BehaviorSubject', function () {
   it('should extend Subject', function (done) {
@@ -11,6 +12,23 @@ describe('BehaviorSubject', function () {
     expect(subject instanceof Rx.Subject).toBe(true);
     done();
   });
+
+  it('should throw if it has received an error and getValue() is called', function () {
+    var subject = new BehaviorSubject(null);
+    subject.error(new Error('derp'));
+    expect(function () {
+      subject.getValue();
+    }).toThrow(new Error('derp'));
+  });
+
+  it('should throw an ObjectUnsubscribedError if getValue() is called ' +
+    'and the BehaviorSubject has been unsubscribed', function () {
+      var subject = new BehaviorSubject('hi there');
+      subject.unsubscribe();
+      expect(function () {
+        subject.getValue();
+      }).toThrow(new ObjectUnsubscribedError());
+    });
 
   it('should have a getValue() method to retrieve the current value', function () {
     var subject = new BehaviorSubject('staltz');
