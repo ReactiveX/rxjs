@@ -1,5 +1,6 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
+import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -8,12 +9,13 @@ import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => Observable<any>,
-              private concurrent: number = Number.POSITIVE_INFINITY) {
+  constructor(private project: (value: T, index: number) => Observable<R>,
+              private concurrent: number,
+              private scheduler: Scheduler) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new ExpandSubscriber(subscriber, this.project, this.concurrent);
+    return new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler);
   }
 }
 
@@ -25,11 +27,16 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => Observable<R>,
-              private concurrent: number = Number.POSITIVE_INFINITY) {
+              private concurrent: number,
+              private scheduler: Scheduler) {
     super(destination);
     if (concurrent < Number.POSITIVE_INFINITY) {
       this.buffer = [];
     }
+  }
+
+  private static dispatch({subscriber, result, value, index}): void {
+    subscriber.subscribeToProjection(result, value, index);
   }
 
   _next(value: any): void {
@@ -46,16 +53,23 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
       let result = tryCatch(this.project)(value, index);
       if (result === errorObject) {
         destination.error(result.e);
+      } else if (!this.scheduler) {
+        this.subscribeToProjection(result, value, index);
       } else {
-        if (result._isScalar) {
-          this._next(result.value);
-        } else {
-          this.active++;
-          this.add(subscribeToResult<T, R>(this, result, value, index));
-        }
+        const state = { subscriber: this, result, value, index };
+        this.add(this.scheduler.schedule(ExpandSubscriber.dispatch, 0, state));
       }
     } else {
       this.buffer.push(value);
+    }
+  }
+
+  private subscribeToProjection(result, value: T, index: number): void {
+    if (result._isScalar) {
+      this._next(result.value);
+    } else {
+      this.active++;
+      this.add(subscribeToResult<T, R>(this, result, value, index));
     }
   }
 
