@@ -12,6 +12,29 @@ describe('BehaviorSubject', function () {
     done();
   });
 
+  it('should have a getValue() method to retrieve the current value', function () {
+    var subject = new BehaviorSubject('staltz');
+    expect(subject.getValue()).toBe('staltz');
+
+    subject.next('oj');
+
+    expect(subject.getValue()).toBe('oj');
+  });
+
+  it('should not allow you to set `value` directly', function () {
+    var subject = new BehaviorSubject('flibberty');
+    subject.value = 'jibbets';
+    expect(subject.getValue()).toBe('flibberty');
+    expect(subject.value).toBe('flibberty');
+  });
+
+  it('should still allow you to retrieve the value from the value property', function () {
+    var subject = new BehaviorSubject('fuzzy');
+    expect(subject.value).toBe('fuzzy');
+    subject.next('bunny');
+    expect(subject.value).toBe('bunny');
+  });
+
   it('should start with an initialization value', function (done) {
     var subject = new BehaviorSubject('foo');
     var expected = ['foo', 'bar'];

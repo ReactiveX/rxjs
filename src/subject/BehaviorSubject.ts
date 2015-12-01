@@ -3,8 +3,16 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class BehaviorSubject<T> extends Subject<T> {
-  constructor(private value: any) {
+  constructor(private _value: T) {
     super();
+  }
+
+  getValue(): T {
+    return this._value;
+  }
+
+  get value(): T {
+    return this._value;
   }
 
   _subscribe(subscriber: Subscriber<any>): Subscription<T> {
@@ -12,12 +20,12 @@ export class BehaviorSubject<T> extends Subject<T> {
     if (!subscription) {
       return;
     } else if (!subscription.isUnsubscribed) {
-      subscriber.next(this.value);
+      subscriber.next(this._value);
     }
     return subscription;
   }
 
   _next(value: T): void {
-    super._next(this.value = value);
+    super._next(this._value = value);
   }
 }
