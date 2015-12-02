@@ -49,6 +49,72 @@ describe('Observable.prototype.mergeAll()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should merge one cold Observable at a time with parameter concurrency=1', function () {
+    var x = cold(     'a---b---c---|            ');
+    var xsubs =     '  ^           !            ';
+    var y = cold(                 'd---e---f---|');
+    var ysubs =     '              ^           !';
+    var e1 =    hot('--x--y--|                  ', { x: x, y: y });
+    var e1subs =    '^                         !';
+    var expected =  '--a---b---c---d---e---f---|';
+
+    expectObservable(e1.mergeAll(1)).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should merge two cold Observables at a time with parameter concurrency=2', function () {
+    var x = cold(     'a---b---c---|        ');
+    var xsubs =     '  ^           !        ';
+    var y = cold(        'd---e---f---|     ');
+    var ysubs =     '     ^           !     ';
+    var z = cold(                 '--g---h-|');
+    var zsubs =     '              ^       !';
+    var e1 =    hot('--x--y--z--|           ', { x: x, y: y, z: z });
+    var e1subs =    '^                     !';
+    var expected =  '--a--db--ec--f--g---h-|';
+
+    expectObservable(e1.mergeAll(2)).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(z.subscriptions).toBe(zsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should merge one hot Observable at a time with parameter concurrency=1', function () {
+    var x =     hot('---a---b---c---|          ');
+    var xsubs =     '  ^            !          ';
+    var y =     hot('-------------d---e---f---|');
+    var ysubs =     '               ^         !';
+    var e1 =    hot('--x--y--|                 ', { x: x, y: y });
+    var e1subs =    '^                        !';
+    var expected =  '---a---b---c-----e---f---|';
+
+    expectObservable(e1.mergeAll(1)).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should merge two hot Observables at a time with parameter concurrency=2', function () {
+    var x =     hot('i--a---b---c---|        ');
+    var xsubs =     '  ^            !        ';
+    var y =     hot('-i-i--d---e---f---|     ');
+    var ysubs =     '     ^            !     ';
+    var z =     hot('--i--i--i--i-----g---h-|');
+    var zsubs =     '               ^       !';
+    var e1 =    hot('--x--y--z--|            ', { x: x, y: y, z: z });
+    var e1subs =    '^                      !';
+    var expected =  '---a--db--ec--f--g---h-|';
+
+    expectObservable(e1.mergeAll(2)).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(z.subscriptions).toBe(zsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should handle merging a hot observable of observables, outer unsubscribed early', function () {
     var x = cold(     'a---b---c---|   ');
     var xsubs =     '  ^         !     ';
