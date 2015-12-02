@@ -89,7 +89,7 @@ export class Observable<T> implements CoreOperators<T>  {
     let subscriber: Subscriber<T>;
 
     if (observerOrNext && typeof observerOrNext === 'object') {
-      if (observerOrNext instanceof Subscriber) {
+      if (observerOrNext instanceof Subscriber || observerOrNext instanceof Subject) {
         subscriber = (<Subscriber<T>> observerOrNext);
       } else {
         subscriber = new Subscriber(<Observer<T>> observerOrNext);

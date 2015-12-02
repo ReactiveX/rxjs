@@ -1,3 +1,6 @@
+/* tslint:disable:no-unused-variable */
+import {Subject} from './Subject';
+/* tslint:enable:no-unused-variable */
 import {Observable} from './Observable';
 import {CoreOperators} from './CoreOperators';
 import {Scheduler as IScheduler} from './Scheduler';
@@ -125,7 +128,6 @@ import './operator/zip';
 import './operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
-import {Subject} from './Subject';
 import {Subscription} from './Subscription';
 import {Subscriber} from './Subscriber';
 import {AsyncSubject} from './subject/AsyncSubject';
