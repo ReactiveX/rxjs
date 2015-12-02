@@ -23,6 +23,35 @@ describe('AsyncSubject', function () {
     expect(results).toEqual([2, 'done']);
   });
 
+  it('should emit the last value to subsequent subscriptions after complete', function () {
+    var subject = new AsyncSubject();
+    var results = [];
+
+    var observer = {
+      next: function (x) {
+        results.push(x);
+      },
+      error: null,
+      complete: function () {
+        results.push('done');
+      }
+    };
+    var subscription = subject.subscribe(observer);
+
+    subject.next(1);
+    expect(results).toEqual([]);
+    subject.next(2);
+    expect(results).toEqual([]);
+    subject.complete();
+    expect(results).toEqual([2, 'done']);
+
+    subscription.unsubscribe();
+
+    results = [];
+    subject.subscribe(observer);
+    expect(results).toEqual([2, 'done']);
+  });
+
   it('should just complete if no value has been nexted into it', function () {
     var subject = new AsyncSubject();
     var results = [];
@@ -35,6 +64,31 @@ describe('AsyncSubject', function () {
 
     expect(results).toEqual([]);
     subject.complete();
+    expect(results).toEqual(['done']);
+  });
+
+  it('should just complete to any subscription if no value has been nexted into it', function () {
+    var subject = new AsyncSubject();
+    var results = [];
+
+    var observer = {
+      next: function (x) {
+        results.push(x);
+      },
+      error: null,
+      complete: function () {
+        results.push('done');
+      }
+    };
+    var subscription = subject.subscribe(observer);
+
+    expect(results).toEqual([]);
+    subject.complete();
+    expect(results).toEqual(['done']);
+
+    subscription.unsubscribe();
+    results = [];
+    subject.subscribe(observer);
     expect(results).toEqual(['done']);
   });
 
