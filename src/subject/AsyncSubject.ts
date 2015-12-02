@@ -12,14 +12,11 @@ export class AsyncSubject<T> extends Subject<T> {
   }
 
   _subscribe(subscriber: Subscriber<any>): Subscription<T> {
-    const subscription = super._subscribe(subscriber);
-    if (!subscription) {
-      return;
-    } else if (!subscription.isUnsubscribed && this._hasNext) {
+    if (this.completeSignal && this._hasNext) {
       subscriber.next(this._value);
-      subscriber.complete();
     }
-    return subscription;
+
+    return super._subscribe(subscriber);
   }
 
   _next(value: T): void {
