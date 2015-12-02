@@ -1,3 +1,9 @@
+/* tslint:disable:no-unused-variable */
+// Subject imported before Observable to bypass circular dependency issue since
+// Subject extends Observable and Observable references Subject in it's
+// definition
+import {Subject} from './Subject';
+/* tslint:enable:no-unused-variable */
 import {Observable} from './Observable';
 
 // statics
@@ -101,7 +107,6 @@ import './operator/zip';
 import './operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
-import {Subject} from './Subject';
 import {Subscription} from './Subscription';
 import {Subscriber} from './Subscriber';
 import {AsyncSubject} from './subject/AsyncSubject';
