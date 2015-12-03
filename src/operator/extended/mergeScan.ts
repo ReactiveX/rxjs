@@ -6,9 +6,6 @@ import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
 import {subscribeToResult} from '../../util/subscribeToResult';
 import {OuterSubscriber} from '../../OuterSubscriber';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
-
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
 export function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) {
   return this.lift(new MergeScanOperator(project, seed));
@@ -92,5 +89,3 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 }
-
-observableProto.mergeScan = mergeScan;

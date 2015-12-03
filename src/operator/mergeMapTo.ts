@@ -9,5 +9,3 @@ export function mergeMapTo<T, R, R2>(observable: Observable<R>,
                                      concurrent: number = Number.POSITIVE_INFINITY): Observable<R2> {
   return this.lift(new MergeMapToOperator(observable, resultSelector, concurrent));
 }
-
-Observable.prototype.mergeMapTo = mergeMapTo;

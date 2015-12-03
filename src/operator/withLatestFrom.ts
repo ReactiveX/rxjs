@@ -98,5 +98,3 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 }
-
-Observable.prototype.withLatestFrom = withLatestFrom;

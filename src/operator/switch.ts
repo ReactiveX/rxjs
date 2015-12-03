@@ -61,5 +61,3 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 }
-
-Observable.prototype.switch = _switch;

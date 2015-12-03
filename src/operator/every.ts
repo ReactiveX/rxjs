@@ -85,5 +85,3 @@ class EverySubscriber<T, R> extends Subscriber<T> {
     this.notifyComplete(true);
   }
 }
-
-Observable.prototype.every = every;

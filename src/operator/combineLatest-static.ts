@@ -38,5 +38,3 @@ export function combineLatest<R>(...observables: Array<Observable<any> |
 
   return new ArrayObservable(observables, scheduler).lift(new CombineLatestOperator(project));
 }
-
-Observable.combineLatest = combineLatest;

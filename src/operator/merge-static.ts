@@ -24,5 +24,3 @@ export function merge<R>(...observables: Array<Observable<any> | Scheduler | num
 
   return new ArrayObservable(observables, scheduler).lift(new MergeAllOperator(concurrent));
 }
-
-Observable.merge = merge;

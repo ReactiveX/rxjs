@@ -46,5 +46,3 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
     }
   }
 }
-
-Observable.prototype.takeWhile = takeWhile;

@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
@@ -93,5 +92,3 @@ class DelayMessage<T> {
               private notification: any) {
   }
 }
-
-Observable.prototype.delay = delay;

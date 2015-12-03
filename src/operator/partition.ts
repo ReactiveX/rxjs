@@ -8,5 +8,3 @@ export function partition<T>(predicate: (x: any, i?: any, a?: any) => boolean, t
     filter.call(this, not(predicate, thisArg))
   ];
 }
-
-Observable.prototype.partition = partition;

@@ -145,5 +145,3 @@ class BufferToggleClosingsSubscriber<T> extends Subscriber<T> {
     this.parent.closeBuffer(this.context);
   }
 }
-
-Observable.prototype.bufferToggle = bufferToggle;

@@ -9,5 +9,3 @@ function shareSubjectFactory() {
 export function share<T>(): Observable<T> {
   return multicast.call(this, shareSubjectFactory).refCount();
 };
-
-Observable.prototype.share = share;

@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -60,5 +59,3 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
     }
   }
 }
-
-Observable.prototype.distinctUntilChanged = distinctUntilChanged;

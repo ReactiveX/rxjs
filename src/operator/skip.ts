@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 export function skip(total) {
@@ -28,5 +27,3 @@ class SkipSubscriber<T> extends Subscriber<T> {
     }
   }
 }
-
-Observable.prototype.skip = skip;

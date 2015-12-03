@@ -79,5 +79,3 @@ class SingleSubscriber<T> extends Subscriber<T> {
     }
   }
 }
-
-Observable.prototype.single = single;

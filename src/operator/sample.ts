@@ -53,5 +53,3 @@ class SampleNotificationSubscriber<T> extends Subscriber<T> {
     //noop
   }
 }
-
-Observable.prototype.sample = sample;
