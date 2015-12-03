@@ -6,7 +6,7 @@ import {immediate} from '../scheduler/immediate';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export class CallbackObservable<T> extends Observable<T> {
+export class BoundCallbackObservable<T> extends Observable<T> {
 
   _isScalar: boolean = false;
   value: T | T[];
@@ -16,7 +16,7 @@ export class CallbackObservable<T> extends Observable<T> {
                    selector: Function = undefined,
                    scheduler: Scheduler = immediate): Function {
     return (...args): Observable<T> => {
-      return new CallbackObservable(callbackFunc, ctx, selector, args, scheduler);
+      return new BoundCallbackObservable(callbackFunc, ctx, selector, args, scheduler);
     };
   }
 

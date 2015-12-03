@@ -25,7 +25,7 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
 import './add/operator/combineLatest-static';
 import './add/operator/concat-static';
 import './add/operator/merge-static';
-import './add/observable/defer';
+import './add/observable/bindCallback';
 import './add/observable/empty';
 import './add/observable/forkJoin';
 import './add/observable/from';
@@ -33,7 +33,6 @@ import './add/observable/fromArray';
 import './add/observable/fromEvent';
 import './add/observable/fromEventPattern';
 import './add/observable/fromPromise';
-import './add/observable/fromCallback';
 import './add/observable/interval';
 import './add/observable/never';
 import './add/observable/range';

@@ -2,14 +2,14 @@
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
-describe('Observable.fromCallback', function () {
+describe('Observable.bindCallback', function () {
   it('should emit one value from a callback', function (done) {
     function callback(datum, cb) {
       cb(datum);
     }
-    var cbToObs = Observable.fromCallback(callback);
+    var boundCallback = Observable.bindCallback(callback);
 
-    cbToObs(42)
+    boundCallback(42)
       .subscribe(function (x) {
         expect(x).toBe(42);
       }, function () {
@@ -22,9 +22,9 @@ describe('Observable.fromCallback', function () {
     function callback(datum, cb) {
       cb(null, datum);
     }
-    var cbToObs = Observable.fromCallback(callback, null, function (err, datum) { return datum; });
+    var boundCallback = Observable.bindCallback(callback, null, function (err, datum) { return datum; });
 
-    cbToObs(42)
+    boundCallback(42)
       .subscribe(function (x) {
         expect(x).toBe(42);
       }, function () {
@@ -37,9 +37,9 @@ describe('Observable.fromCallback', function () {
     function callback(cb) {
       cb(this.value);
     }
-    var cbToObs = Observable.fromCallback(callback, {value: 42});
+    var boundCallback = Observable.bindCallback(callback, {value: 42});
 
-    cbToObs()
+    boundCallback()
       .subscribe(function (x) {
         expect(x).toBe(42);
       }, function () {
@@ -52,9 +52,9 @@ describe('Observable.fromCallback', function () {
     function callback(cb) {
       cb(42);
     }
-    var cbToObs = Observable.fromCallback(callback, null, function (err) { throw new Error('Yikes!'); });
+    var boundCallback = Observable.bindCallback(callback, null, function (err) { throw new Error('Yikes!'); });
 
-    cbToObs()
+    boundCallback()
       .subscribe(function () {
         // Considered a failure if we don't go directly to err handler
         done.fail('should not be called');
@@ -81,7 +81,7 @@ describe('Observable.fromCallback', function () {
         cb(datum);
       });
     }
-    var subscription = Observable.fromCallback(callback)(42)
+    var subscription = Observable.bindCallback(callback)(42)
       .subscribe(nextSpy, throwSpy, completeSpy);
     subscription.unsubscribe();
 
