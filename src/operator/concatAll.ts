@@ -15,5 +15,3 @@ import {MergeAllOperator} from './mergeAll-support';
 export function concatAll<T>(): Observable<T> {
   return this.lift(new MergeAllOperator(1));
 }
-
-Observable.prototype.concatAll = concatAll;

@@ -74,5 +74,3 @@ class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
     this.parent.complete();
   }
 }
-
-Observable.prototype.buffer = buffer;

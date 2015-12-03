@@ -75,5 +75,3 @@ class NotificationSubscriber<T> extends Subscriber<T> {
     this.hasCompleted = true;
   }
 }
-
-Observable.prototype.skipUntil = skipUntil;

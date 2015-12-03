@@ -117,5 +117,3 @@ function dispatchWindowClose({ subscriber, window, context }) {
   }
   subscriber.closeWindow(window);
 }
-
-Observable.prototype.windowTime = windowTime;

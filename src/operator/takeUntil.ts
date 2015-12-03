@@ -49,5 +49,3 @@ class TakeUntilInnerSubscriber<T> extends Subscriber<T> {
     noop();
   }
 }
-
-Observable.prototype.takeUntil = takeUntil;

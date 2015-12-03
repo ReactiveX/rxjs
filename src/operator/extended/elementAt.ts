@@ -1,10 +1,6 @@
 import {Operator} from '../../Operator';
 import {Subscriber} from '../../Subscriber';
 import {ArgumentOutOfRangeError} from '../../util/ArgumentOutOfRangeError';
-import {Observable} from '../../Observable';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
-
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
 export function elementAt(index: number, defaultValue?: any) {
   return this.lift(new ElementAtOperator(index, defaultValue));
@@ -48,5 +44,3 @@ class ElementAtSubscriber<T, R> extends Subscriber<T> {
     destination.complete();
   }
 }
-
-observableProto.elementAt = elementAt;

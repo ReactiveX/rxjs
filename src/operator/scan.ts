@@ -53,5 +53,3 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
     }
   }
 }
-
-Observable.prototype.scan = scan;

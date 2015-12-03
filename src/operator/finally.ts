@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {bindCallback} from '../util/bindCallback';
@@ -29,5 +28,3 @@ class FinallySubscriber<T> extends Subscriber<T> {
     this.add(new Subscription(finallySelector));
   }
 }
-
-Observable.prototype.finally = _finally;

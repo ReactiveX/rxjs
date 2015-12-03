@@ -1,5 +1,4 @@
 import {CombineLatestOperator} from './combineLatest-support';
-import {Observable} from '../Observable';
 
 /**
  * Takes an Observable of Observables, and collects all observables from it. Once the outer observable
@@ -16,5 +15,3 @@ import {Observable} from '../Observable';
 export function combineAll<T, R>(project?: (...values: Array<any>) => R) {
   return this.lift(new CombineLatestOperator(project));
 }
-
-Observable.prototype.combineAll = combineAll;

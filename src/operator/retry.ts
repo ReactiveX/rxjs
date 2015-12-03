@@ -86,5 +86,3 @@ class RetryMoreSubscriber<T> extends Subscriber<T> {
     this.parent.destination.complete();
   }
 }
-
-Observable.prototype.retry = retry;

@@ -3,9 +3,6 @@ import {Observable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
 import {Scheduler} from '../../Scheduler';
 import {immediate} from '../../scheduler/immediate';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
-
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
 export function timeInterval<T>(scheduler: Scheduler = immediate): Observable<TimeInterval> {
   return this.lift(new TimeIntervalOperator(scheduler));
@@ -44,5 +41,3 @@ class TimeIntervalSubscriber<TimeInterval> extends Subscriber<TimeInterval> {
     this.destination.next(new TimeInterval(value, span));
   }
 }
-
-observableProto.timeInterval = timeInterval;

@@ -80,5 +80,3 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     }
   }
 }
-
-Observable.prototype.last = last;

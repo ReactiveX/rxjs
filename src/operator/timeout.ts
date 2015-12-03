@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {immediate} from '../scheduler/immediate';
@@ -84,5 +83,3 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     this.error(this.errorToSend || new Error('timeout'));
   }
 }
-
-Observable.prototype.timeout = timeout;

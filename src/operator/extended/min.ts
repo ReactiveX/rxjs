@@ -1,8 +1,5 @@
 import {Observable} from '../../Observable';
 import {ReduceOperator} from '../reduce-support';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
-
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
 export function min<T, R>(comparer?: (x: R, y: T) => R): Observable<R> {
   const min = (typeof comparer === 'function')
@@ -10,5 +7,3 @@ export function min<T, R>(comparer?: (x: R, y: T) => R): Observable<R> {
     : (x, y) => x < y ? x : y;
   return this.lift(new ReduceOperator(min));
 }
-
-observableProto.min = min;

@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 export function toArray() {
@@ -29,5 +28,3 @@ class ToArraySubscriber<T> extends Subscriber<T> {
     this.destination.complete();
   }
 }
-
-Observable.prototype.toArray = toArray;

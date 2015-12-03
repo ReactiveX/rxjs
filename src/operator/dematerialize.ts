@@ -22,5 +22,3 @@ class DeMaterializeSubscriber<T extends Notification<any>> extends Subscriber<T>
     value.observe(this.destination);
   }
 }
-
-Observable.prototype.dematerialize = dematerialize;

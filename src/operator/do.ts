@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Observer} from '../Observer';
 import {Subscriber} from '../Subscriber';
 
@@ -76,5 +75,3 @@ class DoSubscriber<T> extends Subscriber<T> {
     }
   }
 }
-
-Observable.prototype.do = _do;
