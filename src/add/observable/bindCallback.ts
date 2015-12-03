@@ -1,3 +1,3 @@
 import {Observable} from '../../Observable';
-import {BoundCallbackObsevable} from '../../observable/bindCallback';
-Observable.bindCallback = BoundCallbackObsevable.create;
+import {BoundCallbackObservable} from '../../observable/bindCallback';
+Observable.bindCallback = BoundCallbackObservable.create;
