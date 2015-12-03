@@ -32,7 +32,6 @@ class TimeoutWithOperator<T, R> implements Operator<T, R> {
 
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   private timeoutSubscription: Subscription<T> = undefined;
-  private timedOut: boolean = false;
   private index: number = 0;
   private _previousIndex: number = 0;
   get previousIndex(): number {
@@ -43,12 +42,13 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
     return this._hasCompleted;
   }
 
-  constructor(destination: Subscriber<T>,
+  constructor(public destination: Subscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
               private withObservable: Observable<any>,
               private scheduler: Scheduler) {
-    super(destination);
+    super(null);
+    destination.add(this);
     this.scheduleTimeout();
   }
 
@@ -69,31 +69,27 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   _next(value: T) {
-    if (!this.timedOut) {
-      this.destination.next(value);
-      if (!this.absoluteTimeout) {
-        this.scheduleTimeout();
-      }
+    this.destination.next(value);
+    if (!this.absoluteTimeout) {
+      this.scheduleTimeout();
     }
   }
 
   _error(err) {
-    if (!this.timedOut) {
-      this.destination.error(err);
-      this._hasCompleted = true;
-    }
+    this.destination.error(err);
+    this._hasCompleted = true;
   }
 
   _complete() {
-    if (!this.timedOut) {
-      this.destination.complete();
-      this._hasCompleted = true;
-    }
+    this.destination.complete();
+    this._hasCompleted = true;
   }
 
   handleTimeout(): void {
-    const withObservable = this.withObservable;
-    this.timedOut = true;
-    this.add(this.timeoutSubscription = subscribeToResult(this, withObservable));
+    if (!this.isUnsubscribed) {
+      const withObservable = this.withObservable;
+      this.unsubscribe();
+      this.destination.add(this.timeoutSubscription = subscribeToResult(this, withObservable));
+    }
   }
 }
