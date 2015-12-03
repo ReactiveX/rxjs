@@ -12,6 +12,9 @@ import {Subject} from './Subject';
 import {Notification} from './Notification';
 import {rxSubscriber} from'./symbol/rxSubscriber';
 
+/* tslint:disable */
+import * as operator from './operator-typings';
+/* tslint:enable */
 import {combineLatest as combineLatestStatic} from './operator/combineLatest-static';
 import {concat as concatStatic} from './operator/concat-static';
 import {merge as mergeStatic} from './operator/merge-static';
