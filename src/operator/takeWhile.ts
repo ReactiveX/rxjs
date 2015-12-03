@@ -3,34 +3,26 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {bindCallback} from '../util/bindCallback';
 
-export function takeWhile<T>(predicate: (value: T, index: number) => boolean,
-                             thisArg?: any): Observable<T> {
-  return this.lift(new TakeWhileOperator(predicate, thisArg));
+export function takeWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
+  return this.lift(new TakeWhileOperator(predicate));
 }
 
 class TakeWhileOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate: (value: T, index: number) => boolean,
-              private thisArg?: any) {
+  constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new TakeWhileSubscriber(subscriber, this.predicate, this.thisArg);
+    return new TakeWhileSubscriber(subscriber, this.predicate);
   }
 }
 
 class TakeWhileSubscriber<T> extends Subscriber<T> {
-  private predicate: (value: T, index: number) => boolean;
   private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              predicate: (value: T, index: number) => boolean,
-              thisArg?: any) {
+              private predicate: (value: T, index: number) => boolean) {
     super(destination);
-    if (typeof predicate === 'function') {
-      this.predicate = <(value: T, index: number) => boolean>bindCallback(predicate, thisArg, 2);
-    }
   }
 
   _next(value: T): void {
