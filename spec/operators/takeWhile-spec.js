@@ -154,23 +154,6 @@ describe('Observable.prototype.takeWhile()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should pass element thisArg to predicate', function () {
-    var e1 = hot('--a-^-b--c--d--e--|');
-    var e1subs =     '^       !      ';
-    var expected =   '--b--c--|      ';
-
-    function predicate() {
-      this.take = function (value) {
-        return value !== 'd';
-      };
-    }
-
-    var result = e1.takeWhile(function (v) { return this.take(v); }, new predicate());
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
   it('should take elements until unsubscribed', function () {
     var e1 = hot('--a-^-b--c--d--e--|');
     var unsub =      '-----!         ';
