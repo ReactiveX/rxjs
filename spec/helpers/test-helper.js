@@ -3,6 +3,7 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
 var _ = require('lodash');
+var root = require('../../dist/cjs/util/root').root;
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 
 var marbleHelpers = require('./marble-testing');
@@ -92,15 +93,6 @@ afterEach(function () {
 });
 
 (function () {
-  var objectTypes = {
-    'boolean': false,
-    'function': true,
-    'object': true,
-    'number': false,
-    'string': false,
-    'undefined': false
-  };
-
   Object.defineProperty(Error.prototype, 'toJSON', {
     value: function () {
       var alt = {};
@@ -115,17 +107,7 @@ afterEach(function () {
     configurable: true
   });
 
-  var _root = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);
-
-  var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
-  var freeModule = objectTypes[typeof module] && module && !module.nodeType && module;
-  var freeGlobal = objectTypes[typeof global] && global;
-
-  if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
-    _root = freeGlobal;
-  }
-
-  global.__root__ = _root;
+  global.__root__ = root;
 })();
 
 global.lowerCaseO = function lowerCaseO() {
@@ -146,15 +128,3 @@ global.lowerCaseO = function lowerCaseO() {
 
   return o;
 };
-
-var ___start;
-beforeEach(function () {
-  ___start = Date.now();
-});
-
-afterEach(function () {
-  var elapsed = Date.now() - ___start;
-  if (elapsed > 500) {
-    throw 'slow test!';
-  }
-});
