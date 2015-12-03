@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
+/* globals describe, it, expect, rxTestScheduler, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -224,5 +224,151 @@ describe('Observable.prototype.mergeScan()', function () {
 
     expectObservable(source, sub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(sub);
+  });
+
+  it('should mergescan projects cold Observable with single concurrency', function () {
+    var e1 =   hot('--a--b--c--|');
+    var e1subs =   '^                                  !';
+
+    var inner = [
+      cold(          '--d--e--f--|                      '),
+      cold(                     '--g--h--i--|           '),
+      cold(                                '--j--k--l--|')
+    ];
+
+    var xsubs =    '  ^          !';
+    var ysubs =    '             ^          !';
+    var zsubs =    '                        ^          !';
+
+    var expected = '--x-d--e--f--f-g--h--i--i-j--k--l--|';
+
+    var index = 0;
+    var source = e1.mergeScan(function (acc, x) {
+      var value = inner[index++];
+      return value.startWith(acc);
+    }, 'x', 1);
+
+    expectObservable(source).toBe(expected);
+
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+  });
+
+  it('should emit accumulator if inner completes without value', function () {
+    var e1 = hot('--a--^--b--c--d--e--f--g--|');
+    var e1subs =      '^                    !';
+    var expected =    '---------------------(x|)';
+
+    var source = e1.mergeScan(function (acc, x) {
+      return Observable.empty();
+    }, ['1']);
+
+    expectObservable(source).toBe(expected, {x: ['1']});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should emit accumulator if inner completes without value after source completes', function () {
+    var e1 = hot('--a--^--b--c--d--e--f--g--|');
+    var e1subs =      '^                      !';
+    var expected =    '-----------------------(x|)';
+
+    var source = e1.mergeScan(function (acc, x) {
+      return Observable.empty().delay(50, rxTestScheduler);
+    }, ['1']);
+
+    expectObservable(source).toBe(expected, {x: ['1']});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should mergescan projects hot Observable with single concurrency', function () {
+    var e1 =   hot('---a---b---c---|');
+    var e1subs =   '^                           !';
+
+    var inner = [
+      hot(         '--d--e--f--|'),
+      hot(         '----g----h----i----|'),
+      hot(         '------j------k-------l------|')
+    ];
+
+    var xsubs =    '   ^       !';
+    var ysubs =    '           ^       !';
+    var zsubs =    '                   ^        !';
+
+    var expected = '---x-e--f--f--i----i-l------|';
+
+    var index = 0;
+    var source = e1.mergeScan(function (acc, x) {
+      var value = inner[index++];
+      return value.startWith(acc);
+    }, 'x', 1);
+
+    expectObservable(source).toBe(expected);
+
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+  });
+
+  it('should mergescan projects cold Observable with dual concurrency', function () {
+    var e1 =   hot('----a----b----c----|');
+    var e1subs =   '^                                 !';
+
+    var inner = [
+      cold(            '---d---e---f---|               '),
+      cold(                 '---g---h---i---|          '),
+      cold(                           '---j---k---l---|')
+    ];
+
+    var xsubs =    '    ^              !';
+    var ysubs =    '         ^              !';
+    var zsubs =    '                   ^              !';
+
+    var expected = '----x--d-d-eg--fh--hi-j---k---l---|';
+
+    var index = 0;
+    var source = e1.mergeScan(function (acc, x) {
+      var value = inner[index++];
+      return value.startWith(acc);
+    }, 'x', 2);
+
+    expectObservable(source).toBe(expected);
+
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
+  });
+
+  it('should mergescan projects hot Observable with dual concurrency', function () {
+    var e1 =   hot('---a---b---c---|');
+    var e1subs =   '^                           !';
+
+    var inner = [
+      hot(         '--d--e--f--|'),
+      hot(         '----g----h----i----|'),
+      hot(         '------j------k-------l------|')
+    ];
+
+    var xsubs =    '   ^       !';
+    var ysubs =    '       ^           !';
+    var zsubs =    '           ^                !';
+
+    var expected = '---x-e-efh-h-ki------l------|';
+
+    var index = 0;
+    var source = e1.mergeScan(function (acc, x) {
+      var value = inner[index++];
+      return value.startWith(acc);
+    }, 'x', 2);
+
+    expectObservable(source).toBe(expected);
+
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(inner[0].subscriptions).toBe(xsubs);
+    expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
+    expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
   });
 });

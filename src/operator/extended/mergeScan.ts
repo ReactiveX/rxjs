@@ -10,14 +10,16 @@ import {KitchenSinkOperators} from '../../Rx.KitchenSink';
 
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 
-export function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>, seed: R) {
-  return this.lift(new MergeScanOperator(project, seed));
+export function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>,
+                                seed: R,
+                                concurrent: number = Number.POSITIVE_INFINITY) {
+  return this.lift(new MergeScanOperator(project, seed, concurrent));
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
   constructor(private project: (acc: R, x: T) => Observable<R>,
               private seed: R,
-              private concurrent: number = Number.POSITIVE_INFINITY) {
+              private concurrent: number) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -37,7 +39,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   constructor(destination: Subscriber<R>,
               private project: (acc: R, x: T) => Observable<R>,
               private acc: R,
-              private concurrent: number = Number.POSITIVE_INFINITY) {
+              private concurrent: number) {
     super(destination);
   }
 
