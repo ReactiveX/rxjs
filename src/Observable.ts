@@ -134,7 +134,7 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
-  static bindCallback: <T>(callbackFunc: Function, ctx?: Object, selector?: Function, scheduler?: Scheduler) => Function;
+  static bindCallback: <T>(callbackFunc: Function, selector?: Function, scheduler?: Scheduler) => Function;
   static combineLatest: <T>(...observables: Array<Observable<any> |
                                                   Array<Observable<any>> |
                                                   ((...values: Array<any>) => T) |

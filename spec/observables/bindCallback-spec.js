@@ -22,24 +22,9 @@ describe('Observable.bindCallback', function () {
     function callback(datum, cb) {
       cb(null, datum);
     }
-    var boundCallback = Observable.bindCallback(callback, null, function (err, datum) { return datum; });
+    var boundCallback = Observable.bindCallback(callback, function (err, datum) { return datum; });
 
     boundCallback(42)
-      .subscribe(function (x) {
-        expect(x).toBe(42);
-      }, function () {
-        done.fail('should not be called');
-      },
-      done);
-  });
-
-  it('should override `this` in the callback', function (done) {
-    function callback(cb) {
-      cb(this.value);
-    }
-    var boundCallback = Observable.bindCallback(callback, {value: 42});
-
-    boundCallback()
       .subscribe(function (x) {
         expect(x).toBe(42);
       }, function () {
@@ -52,7 +37,7 @@ describe('Observable.bindCallback', function () {
     function callback(cb) {
       cb(42);
     }
-    var boundCallback = Observable.bindCallback(callback, null, function (err) { throw new Error('Yikes!'); });
+    var boundCallback = Observable.bindCallback(callback, function (err) { throw new Error('Yikes!'); });
 
     boundCallback()
       .subscribe(function () {

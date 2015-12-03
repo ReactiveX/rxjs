@@ -12,16 +12,14 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   value: T | T[];
 
   static create<T>(callbackFunc: Function,
-                   ctx: Object = undefined,
                    selector: Function = undefined,
                    scheduler: Scheduler = immediate): Function {
     return (...args): Observable<T> => {
-      return new BoundCallbackObservable(callbackFunc, ctx, selector, args, scheduler);
+      return new BoundCallbackObservable(callbackFunc, selector, args, scheduler);
     };
   }
 
   constructor(private callbackFunc: Function,
-              private ctx,
               private selector,
               private args: any[],
               public scheduler: Scheduler = immediate) {
@@ -30,7 +28,6 @@ export class BoundCallbackObservable<T> extends Observable<T> {
 
   _subscribe(subscriber: Subscriber<T | T[]>) {
     const callbackFunc = this.callbackFunc;
-    const ctx = this.ctx;
     const selector = this.selector;
     const args = this.args;
     const scheduler = this.scheduler;
@@ -49,7 +46,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
           this.value = innerArgs;
 
           if (selector) {
-            results = tryCatch(selector).apply(ctx, innerArgs);
+            results = tryCatch(selector).apply(this, innerArgs);
             if (results === errorObject) { return subscriber.error(results.e); }
             subscriber.next(results);
           } else {
@@ -74,7 +71,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
           this._isScalar = true;
 
           if (selector) {
-            results = tryCatch(selector).apply(ctx, innerArgs);
+            results = tryCatch(selector).apply(this, innerArgs);
             if (results === errorObject) {
               return subscription.add(scheduler.schedule(dispatchError, 0, { err: results.e, subscriber }));
             }
@@ -95,7 +92,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
 
     if (handler) {
       args.push(handler);
-      callbackFunc.apply(ctx, args);
+      callbackFunc.apply(this, args);
     }
   }
 }
