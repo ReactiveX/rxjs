@@ -26,5 +26,3 @@ export class EmptyObservable<T> extends Observable<T> {
     }
   }
 }
-
-Observable.empty = EmptyObservable.create;

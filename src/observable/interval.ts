@@ -43,5 +43,3 @@ export class IntervalObservable<T> extends Observable<T> {
     }));
   }
 }
-
-Observable.interval = IntervalObservable.create;

@@ -45,5 +45,3 @@ export class FromObservable<T> extends Observable<T> {
     }
   }
 }
-
-Observable.from = FromObservable.create;
