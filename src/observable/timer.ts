@@ -67,5 +67,3 @@ export class TimerObservable<T> extends Observable<T> {
     subscriber.add(scheduler.schedule(TimerObservable.dispatch, dueTime, { index, period, subscriber }));
   }
 }
-
-Observable.timer = TimerObservable.create;

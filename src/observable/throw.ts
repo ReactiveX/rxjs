@@ -29,5 +29,3 @@ export class ErrorObservable<T> extends Observable<T> {
     }
   }
 }
-
-Observable.throw = ErrorObservable.create;

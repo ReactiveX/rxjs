@@ -66,5 +66,3 @@ function dispatchNext({ value, subscriber }) {
 function dispatchError({ err, subscriber }) {
   subscriber.error(err);
 }
-
-Observable.fromPromise = PromiseObservable.create;

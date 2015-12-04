@@ -51,5 +51,3 @@ export class FromEventObservable<T, R> extends Observable<T> {
     FromEventObservable.setupSubscription(sourceObj, eventName, handler, subscriber);
   }
 }
-
-Observable.fromEvent = FromEventObservable.create;
