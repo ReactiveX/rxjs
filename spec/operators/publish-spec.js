@@ -268,7 +268,7 @@ describe('Observable.prototype.publish()', function () {
     connectable.connect();
 
     expect(results1).toEqual([1, 2, 3, 4]);
-    expect(results1).toEqual([1, 2, 3, 4]);
+    expect(results2).toEqual([1, 2, 3, 4]);
     expect(subscriptions).toBe(1);
     done();
   });
