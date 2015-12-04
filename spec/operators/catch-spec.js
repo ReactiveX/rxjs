@@ -24,7 +24,7 @@ describe('Observable.prototype.catch()', function () {
   });
 
   it('should catch error and replace it with a cold Observable', function () {
-    var e1 =   hot('--a--b--#----|     ');
+    var e1 =   hot('--a--b--#          ');
     var e1subs =   '^       !          ';
     var e2 =  cold(        '1-2-3-4-5-|');
     var e2subs =   '        ^         !';
@@ -39,13 +39,30 @@ describe('Observable.prototype.catch()', function () {
 
   it('should allow unsubscribing explicitly and early', function () {
     var e1 =   hot('--1-2-3-4-5-6---#');
-    var unsub =    '       !         ';
     var e1subs =   '^      !         ';
     var expected = '--1-2-3-         ';
+    var unsub =    '       !         ';
 
     var result = e1.catch(function () {
       return Observable.of('X', 'Y', 'Z');
     });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var e1 =   hot('--1-2-3-4-5-6---#');
+    var e1subs =   '^      !         ';
+    var expected = '--1-2-3-         ';
+    var unsub =    '       !         ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .catch(function () {
+        return Observable.of('X', 'Y', 'Z');
+      })
+      .mergeMap(function (x) { return Observable.of(x); });
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
