@@ -39,6 +39,7 @@ class CatchSubscriber<T> extends Subscriber<T> {
               private caught: Observable<any>) {
     super(null);
     this.lastSubscription = this;
+    this.destination.add(this);
   }
 
   _next(value: T) {
