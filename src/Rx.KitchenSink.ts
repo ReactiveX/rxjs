@@ -91,6 +91,7 @@ import './add/operator/partition';
 import './add/operator/publish';
 import './add/operator/publishBehavior';
 import './add/operator/publishReplay';
+import './add/operator/publishLast';
 import './add/operator/reduce';
 import './add/operator/repeat';
 import './add/operator/retry';

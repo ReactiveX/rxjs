@@ -57,6 +57,7 @@ export interface CoreOperators<T> {
   publish?: () => ConnectableObservable<T>;
   publishBehavior?: (value: any) => ConnectableObservable<T>;
   publishReplay?: (bufferSize?: number, windowTime?: number, scheduler?: Scheduler) => ConnectableObservable<T>;
+  publishLast?: () => ConnectableObservable<T>;
   reduce?: <R>(project: (acc: R, x: T) => R, seed?: R) => Observable<R>;
   repeat?: (count?: number) => Observable<T>;
   retry?: (count?: number) => Observable<T>;
