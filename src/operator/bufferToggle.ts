@@ -92,7 +92,8 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
       contexts.push(context);
       const subscriber = new BufferToggleClosingsSubscriber(this, context);
       const subscription = closingNotifier._subscribe(subscriber);
-      this.add(context.subscription.add(subscription));
+      context.subscription.add(subscription);
+      this.add(subscription);
     }
   }
 
