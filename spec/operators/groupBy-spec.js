@@ -309,6 +309,36 @@ describe('Observable.prototype.groupBy()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var values = {
+      a: '  foo',
+      b: ' FoO ',
+      c: 'baR  ',
+      d: 'foO ',
+      e: ' Baz   ',
+      f: '  qux ',
+      g: '   bar',
+      h: ' BAR  ',
+      i: 'FOO ',
+      j: 'baz  ',
+      k: ' bAZ ',
+      l: '    fOo    '
+    };
+    var e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    var e1subs =        '^          !';
+    var expected =      '--w---x---y-';
+    var unsub =         '           !';
+    var expectedValues = { w: 'foo', x: 'bar', y: 'baz' };
+
+    var source = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .groupBy(function (x) { return x.toLowerCase().trim(); })
+      .mergeMap(function (group) { return Observable.of(group.key); });
+
+    expectObservable(source, unsub).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should group values with a keySelector which eventually throws', function () {
     var values = {
       a: '  foo',
