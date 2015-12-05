@@ -3,18 +3,14 @@ var fs = require('fs');
 
 delete pkg.scripts;
 
-var cjsPkg = pkg;
-var es6Pkg = pkg;
-
-//override stuff for CJS package
-cjsPkg.name = 'rxjs';
-cjsPkg.main = 'Rx.js';
-cjsPkg.typings = 'Rx.d.ts';
-
-//override stuff for ES6 package
-es6Pkg.name = 'rxjs-es6';
-es6Pkg.main = 'Rx.js';
-es6Pkg.typings = 'Rx.d.ts';
+var cjsPkg = Object.assign({}, pkg, {
+  name: 'rxjs',
+  main: 'Rx.js',
+  typings: 'Rx.d.ts'
+});
+var es6Pkg = Object.assign({}, cjsPkg, {
+  name: 'rxjs-es6',
+});
 
 fs.writeFileSync('dist/cjs/package.json', JSON.stringify(cjsPkg, null, 2));
 fs.writeFileSync('dist/cjs/LICENSE.txt', fs.readFileSync('./LICENSE.txt').toString());
