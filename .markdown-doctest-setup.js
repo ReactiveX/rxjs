@@ -17,7 +17,11 @@ it.asDiagram = function asDiagram() {
 
 module.exports = {
   require: {
-    '@reactivex/rxjs': Rx
+    '@reactivex/rxjs': Rx,
+    'rxjs/Observable': {Observable: Rx.Observable},
+    'rxjs/Rx': {Rx: Rx},
+    'rxjs/operator/map': require(__dirname + '/dist/cjs/operator/map'),
+    'rxjs/add/operator/map': require(__dirname + '/dist/cjs/add/operator/map')
   },
 
   globals: {

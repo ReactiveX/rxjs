@@ -79,7 +79,7 @@ Import operators and use them _manually_ you can do the following (this is also 
 
 ```js
 var Observable = require('rxjs/Observable').Observable;
-var map = require('rxjx/operators/map').map;
+var map = require('rxjs/operator/map').map;
 
 map.call(Observable.of(1,2,3), function (x) { return x + '!!!'; });
 ```
