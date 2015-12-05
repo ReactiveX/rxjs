@@ -11,11 +11,7 @@ export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean, thisA
 }
 
 class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
-
-  compare: (x: T, y: T) => boolean;
-
-  constructor(compare?: (x: T, y: T) => boolean) {
-    this.compare = compare;
+  constructor(private compare?: (x: T, y: T) => boolean) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -24,9 +20,8 @@ class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
 }
 
 class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
-
-  value: T;
-  hasValue: boolean = false;
+  private value: T;
+  private hasValue: boolean = false;
 
   constructor(destination: Subscriber<T>, compare?: (x: T, y: T) => boolean) {
     super(destination);
@@ -35,16 +30,15 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  compare(x: T, y: T) {
+  private compare(x: T, y: T): boolean {
     return x === y;
   }
 
-  _next(x) {
-
+  _next(value: T): void {
     let result: any = false;
 
     if (this.hasValue) {
-      result = tryCatch(this.compare)(this.value, x);
+      result = tryCatch(this.compare)(this.value, value);
       if (result === errorObject) {
         this.destination.error(errorObject.e);
         return;
@@ -54,8 +48,8 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
     }
 
     if (Boolean(result) === false) {
-      this.value = x;
-      this.destination.next(x);
+      this.value = value;
+      this.destination.next(value);
     }
   }
 }
