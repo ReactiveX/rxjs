@@ -121,14 +121,15 @@ describe('Observable.prototype.bufferToggle', function () {
 
   it('should emit buffers using varying cold closings, outer unsubscribed early', function () {
     var e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
-    var unsub =       '                  !                       ';
-    var subs =        '^                 !                       ';
+    var subs =        '^         !                               ';
     var e2 =     cold('--x-----------y--------z---|              ');
     var closings = [
       cold(             '---------------s--|                     '),
       cold(                         '----(s|)                    '),
       cold(                                  '---------------(s|)')];
-    var expected =    '-----------------i                        ';
+    var csub0 =       '  ^       !                               ';
+    var expected =    '-----------                               ';
+    var unsub =       '          !                               ';
     var values = {
       i: ['b','c','d','e']
     };
@@ -138,6 +139,9 @@ describe('Observable.prototype.bufferToggle', function () {
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(csub0);
+    expectSubscriptions(closings[1].subscriptions).toBe([]);
+    expectSubscriptions(closings[2].subscriptions).toBe([]);
   });
 
   it('should propagate error thrown from closingSelector', function () {
