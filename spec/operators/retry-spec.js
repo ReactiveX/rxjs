@@ -173,4 +173,20 @@ describe('Observable.prototype.retry()', function () {
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var source = cold('--1-2-3-#');
+    var subs =       ['^       !                ',
+                      '        ^    !           '];
+    var expected =    '--1-2-3---1-2-';
+    var unsub =       '             !           ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .retry(100)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
 });
