@@ -23,7 +23,8 @@ class FirstRetrySubscriber<T> extends Subscriber<T> {
   constructor(public destination: Subscriber<T>,
               private count: number,
               private source: Observable<T>) {
-    super(null);
+    super();
+    destination.add(this);
     this.lastSubscription = this;
   }
 
@@ -33,29 +34,23 @@ class FirstRetrySubscriber<T> extends Subscriber<T> {
 
   error(error?) {
     if (!this.isUnsubscribed) {
-      super.unsubscribe();
+      this.unsubscribe();
       this.resubscribe();
     }
   }
 
   _complete() {
-    super.unsubscribe();
+    this.unsubscribe();
     this.destination.complete();
   }
 
-  unsubscribe() {
-    const lastSubscription = this.lastSubscription;
-    if (lastSubscription === this) {
-      super.unsubscribe();
-    } else {
-      lastSubscription.unsubscribe();
-    }
-  }
-
   resubscribe(retried: number = 0) {
-    this.lastSubscription.unsubscribe();
+    const { lastSubscription, destination } = this;
+    destination.remove(lastSubscription);
+    lastSubscription.unsubscribe();
     const nextSubscriber = new RetryMoreSubscriber(this, this.count, retried + 1);
     this.lastSubscription = this.source.subscribe(nextSubscriber);
+    destination.add(this.lastSubscription);
   }
 }
 
