@@ -28,7 +28,8 @@ class FirstRepeatSubscriber<T> extends Subscriber<T> {
   constructor(public destination: Subscriber<T>,
               private count: number,
               private source: Observable<T>) {
-    super(null);
+    super();
+    destination.add(this);
     this.lastSubscription = this;
   }
 
@@ -56,12 +57,15 @@ class FirstRepeatSubscriber<T> extends Subscriber<T> {
   }
 
   resubscribe(count: number): void {
-    this.lastSubscription.unsubscribe();
+    const { destination, lastSubscription } = this;
+    destination.remove(lastSubscription);
+    lastSubscription.unsubscribe();
     if (count - 1 === 0) {
-      this.destination.complete();
+      destination.complete();
     } else {
       const nextSubscriber = new MoreRepeatSubscriber(this, count - 1);
       this.lastSubscription = this.source.subscribe(nextSubscriber);
+      destination.add(this.lastSubscription);
     }
   }
 }
@@ -69,7 +73,7 @@ class FirstRepeatSubscriber<T> extends Subscriber<T> {
 class MoreRepeatSubscriber<T> extends Subscriber<T> {
   constructor(private parent: FirstRepeatSubscriber<T>,
               private count: number) {
-    super(null);
+    super();
   }
 
   _next(value: T): void {
