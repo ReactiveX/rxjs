@@ -17,11 +17,7 @@ it.asDiagram = function asDiagram() {
 
 module.exports = {
   require: {
-    '@reactivex/rxjs': Rx,
-    'rxjs/Observable': {Observable: Rx.Observable},
-    'rxjs/Rx': {Rx: Rx},
-    'rxjs/operator/map': require(__dirname + '/dist/cjs/operator/map'),
-    'rxjs/add/operator/map': require(__dirname + '/dist/cjs/add/operator/map')
+    '@reactivex/rxjs': Rx
   },
 
   globals: {
@@ -33,6 +29,12 @@ module.exports = {
     Observable: Rx.Observable,
     someObservable: Rx.Observable.range(1, 10),
     it: it
+  },
+
+  regexRequire: {
+    'rxjs/(.*)': function (_, moduleName) {
+      return require(__dirname + '/dist/cjs/' + moduleName);
+    }
   },
 
   babel: {
