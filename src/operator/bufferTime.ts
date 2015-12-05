@@ -20,7 +20,6 @@ export function bufferTime<T>(bufferTimeSpan: number,
 }
 
 class BufferTimeOperator<T, R> implements Operator<T, R> {
-
   constructor(private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private scheduler: Scheduler) {
@@ -41,7 +40,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
               private bufferCreationInterval: number,
               private scheduler: Scheduler) {
     super(destination);
-    let buffer = this.openBuffer();
+    const buffer = this.openBuffer();
     if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
       const closeState = { subscriber: this, buffer };
       const creationState = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
@@ -102,9 +101,9 @@ function dispatchBufferTimeSpanOnly(state) {
 }
 
 function dispatchBufferCreation(state) {
-  let { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
-  let buffer = subscriber.openBuffer();
-  let action = <Action>this;
+  const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
+  const buffer = subscriber.openBuffer();
+  const action = <Action>this;
   if (!subscriber.isUnsubscribed) {
     action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
     action.schedule(state, bufferCreationInterval);

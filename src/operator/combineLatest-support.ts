@@ -7,11 +7,7 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export class CombineLatestOperator<T, R> implements Operator<T, R> {
-
-  project: (...values: Array<any>) => R;
-
-  constructor(project?: (...values: Array<any>) => R) {
-    this.project = project;
+  constructor(private project?: (...values: Array<any>) => R) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -43,13 +39,13 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     } else {
       this.active = len;
       for (let i = 0; i < len; i++) {
-        let observable = observables[i];
+        const observable = observables[i];
         this.add(subscribeToResult(this, observable, observable, i));
       }
     }
   }
 
-  notifyComplete(innerSubscriber) {
+  notifyComplete(unused: Subscriber<R>): void {
     if ((this.active -= 1) === 0) {
       this.destination.complete();
     }
@@ -72,7 +68,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
       const destination = this.destination;
 
       if (project) {
-        let result = tryCatch(project).apply(this, values);
+        const result = tryCatch(project).apply(this, values);
         if (result === errorObject) {
           destination.error(errorObject.e);
         } else {

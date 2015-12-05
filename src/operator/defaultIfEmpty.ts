@@ -17,19 +17,18 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, R> {
 }
 
 class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
-
-  isEmpty: boolean = true;
+  private isEmpty: boolean = true;
 
   constructor(destination: Subscriber<T>, private defaultValue: R) {
     super(destination);
   }
 
-  _next(x) {
+  _next(value: T): void {
     this.isEmpty = false;
-    this.destination.next(x);
+    this.destination.next(value);
   }
 
-  _complete() {
+  _complete(): void {
     if (this.isEmpty) {
       this.destination.next(this.defaultValue);
     }

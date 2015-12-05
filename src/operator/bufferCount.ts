@@ -16,7 +16,6 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number = nu
 }
 
 class BufferCountOperator<T, R> implements Operator<T, R> {
-
   constructor(private bufferSize: number, private startBufferEvery: number) {
   }
 
@@ -26,8 +25,8 @@ class BufferCountOperator<T, R> implements Operator<T, R> {
 }
 
 class BufferCountSubscriber<T> extends Subscriber<T> {
-  buffers: Array<T[]> = [[]];
-  count: number = 0;
+  private buffers: Array<T[]> = [[]];
+  private count: number = 0;
 
   constructor(destination: Subscriber<T>, private bufferSize: number, private startBufferEvery: number) {
     super(destination);
@@ -47,7 +46,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
     }
 
     for (let i = 0; i < len; i++) {
-      let buffer = buffers[i];
+      const buffer = buffers[i];
       buffer.push(value);
       if (buffer.length === bufferSize) {
         remove = i;

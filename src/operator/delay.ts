@@ -7,8 +7,8 @@ import {isDate} from '../util/isDate';
 
 export function delay<T>(delay: number|Date,
                          scheduler: Scheduler = immediate) {
-  let absoluteDelay = isDate(delay);
-  let delayFor = absoluteDelay ? (+delay - scheduler.now()) : <number>delay;
+  const absoluteDelay = isDate(delay);
+  const delayFor = absoluteDelay ? (+delay - scheduler.now()) : <number>delay;
   return this.lift(new DelayOperator(delayFor, scheduler));
 }
 
@@ -38,7 +38,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }
 
     if (queue.length > 0) {
-      let delay = Math.max(0, queue[0].time - scheduler.now());
+      const delay = Math.max(0, queue[0].time - scheduler.now());
       (<any> this).schedule(state, delay);
     } else {
       source.active = false;
@@ -64,7 +64,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }
 
     const scheduler = this.scheduler;
-    let message = new DelayMessage<T>(scheduler.now() + this.delay, notification);
+    const message = new DelayMessage<T>(scheduler.now() + this.delay, notification);
     this.queue.push(message);
 
     if (this.active === false) {
