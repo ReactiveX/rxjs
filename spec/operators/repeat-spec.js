@@ -70,6 +70,26 @@ describe('Observable.prototype.repeat()', function () {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var e1 =  cold('--a--b--|                                    ');
+    var subs =    ['^       !                                    ',
+                   '        ^       !                            ',
+                   '                ^       !                    ',
+                   '                        ^       !            ',
+                   '                                ^       !    ',
+                   '                                        ^   !'];
+    var unsub =    '                                            !';
+    var expected = '--a--b----a--b----a--b----a--b----a--b----a--';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .repeat()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
   it('should consider negative count as repeat indefinitely', function () {
     var e1 =  cold('--a--b--|                                    ');
     var subs =    ['^       !                                    ',
