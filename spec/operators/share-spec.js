@@ -184,6 +184,25 @@ describe('Observable.prototype.share()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
+  it('should not break unsubscription chain when last subscriber unsubscribes', function () {
+    var source =     cold(   '-1-2-3----4-|');
+    var sourceSubs =      '   ^        !   ';
+    var shared = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .share()
+      .mergeMap(function (x) { return Observable.of(x); });
+    var subscriber1 = hot('   a|           ').mergeMapTo(shared);
+    var unsub1 =          '          !     ';
+    var expected1   =     '   -1-2-3--     ';
+    var subscriber2 = hot('       b|       ').mergeMapTo(shared);
+    var unsub2 =          '            !   ';
+    var expected2   =     '       -3----   ';
+
+    expectObservable(subscriber1, unsub1).toBe(expected1);
+    expectObservable(subscriber2, unsub2).toBe(expected2);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should be retryable when cold source is synchronous', function () {
     var source = cold('(123#)');
     var shared = source.share();
