@@ -28,7 +28,7 @@ npm install rxjs-es
 To import the entire core set of functionality:
 
 ```js
-import {Rx} from 'rxjs/Rx';
+import Rx from 'rxjs/Rx';
 
 Rx.Observable.of(1,2,3)
 ```
@@ -60,7 +60,7 @@ npm install rxjs
 Import all core functionality:
 
 ```js
-var Rx = require('rxjs/Rx').Rx;
+var Rx = require('rxjs/Rx');
 
 Rx.Observable.of(1,2,3); // etc
 ```
