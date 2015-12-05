@@ -29,7 +29,8 @@ class FirstRetryWhenSubscriber<T> extends Subscriber<T> {
   constructor(public destination: Subscriber<T>,
               public notifier: (errors: Observable<any>) => Observable<any>,
               public source: Observable<T>) {
-    super(null);
+    super();
+    destination.add(this);
     this.lastSubscription = this;
   }
 
@@ -38,17 +39,19 @@ class FirstRetryWhenSubscriber<T> extends Subscriber<T> {
   }
 
   error(err?) {
+    const destination = this.destination;
     if (!this.isUnsubscribed) {
       super.unsubscribe();
       if (!this.retryNotifications) {
         this.errors = new Subject();
         const notifications = tryCatch(this.notifier).call(this, this.errors);
         if (notifications === errorObject) {
-          this.destination.error(errorObject.e);
+          destination.error(errorObject.e);
         } else {
           this.retryNotifications = notifications;
           const notificationSubscriber = new RetryNotificationSubscriber(this);
           this.notificationSubscription = notifications.subscribe(notificationSubscriber);
+          destination.add(this.notificationSubscription);
         }
       }
       this.errors.next(err);
@@ -88,9 +91,12 @@ class FirstRetryWhenSubscriber<T> extends Subscriber<T> {
   }
 
   resubscribe() {
-    this.lastSubscription.unsubscribe();
+    const { destination, lastSubscription } = this;
+    destination.remove(lastSubscription);
+    lastSubscription.unsubscribe();
     const nextSubscriber = new MoreRetryWhenSubscriber(this);
     this.lastSubscription = this.source.subscribe(nextSubscriber);
+    destination.add(this.lastSubscription);
   }
 }
 
