@@ -249,6 +249,26 @@ describe('Observable.prototype.retryWhen()', function () {
     expectSubscriptions(notifier.subscriptions).toBe(nsubs);
   });
 
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var source = cold( '-1--2--#');
+    var subs =        ['^      !                    ',
+                       '         ^      !           ',
+                       '                 ^  !       '];
+    var notifier = hot('---------r-------r-------r-#');
+    var nsubs =        '       ^            !       ';
+    var expected =     '-1--2-----1--2----1--       ';
+    var unsub =        '                    !       ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .retryWhen(function (errors) { return notifier; })
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+    expectSubscriptions(notifier.subscriptions).toBe(nsubs);
+  });
+
   it('should handle a source with eventual error using a dynamic notifier ' +
   'selector which eventually throws', function () {
     var source = cold('-1--2--#');
