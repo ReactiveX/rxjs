@@ -19,8 +19,75 @@ By contributing or commenting on issues in this repository, whether you've read 
 
 ## Installation and Usage
 
+### ES6 via npm
 
-### npm
+```sh
+npm install rxjs-es
+```
+
+To import the entire core set of functionality:
+
+```js
+import {Rx} from 'rxjs/Rx';
+
+Rx.Observable.of(1,2,3)
+```
+
+To import only what you need by patching (this is useful for size-sensitive bundling):
+
+```js
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+
+Observable.of(1,2,3).map(x => x + '!!!'); // etc
+```
+
+To import what you need and use it with ES7 function bind (best overall method, if possible):
+
+```js
+import {Observable} from 'rxjs/Observable';
+import {map} from 'rxjs/operator/map';
+
+Observable.of(1,2,3)::map(x => x + '!!!'); // etc
+```
+
+### CommonJS via npm
+
+```sh
+npm install rxjs
+```
+
+Import all core functionality:
+
+```js
+var Rx = require('rxjs/Rx').Rx;
+
+Rx.Observable.of(1,2,3); // etc
+```
+
+Import only what you need and patch Observable (this is useful in size-sensitive bundling scenarios):
+
+```js
+var Observable = require('rxjs/Observable').Observable;
+// patch Observable with appropriate methods
+require('rxjs/add/operator/map');
+
+Observable.of(1,2,3).map(function (x) { return x + '!!!'; }); // etc
+```
+
+Import operators and use them _manually_ you can do the following (this is also useful for bundling):
+
+```js
+var Observable = require('rxjs/Observable').Observable;
+var map = require('rxjx/operators/map').map;
+
+map.call(Observable.of(1,2,3), function (x) { return x + '!!!'; });
+```
+
+You can also use the above method to build your own Observable and export it from your own module.
+
+
+### All Module Types (CJS/ES6/AMD/TypeScript) via npm
 
 To install this library via [npm](https://www.npmjs.org) **version 3**, use the following command:
 
