@@ -4,7 +4,7 @@ import {Scheduler} from './Scheduler';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
-import {CoreOperators } from './CoreOperators';
+import {CoreOperators} from './CoreOperators';
 import {SymbolShim} from './util/SymbolShim';
 import {GroupedObservable} from './operator/groupBy-support';
 import {ConnectableObservable} from './observable/ConnectableObservable';
@@ -211,7 +211,7 @@ export class Observable<T> implements CoreOperators<T>  {
                 projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                 concurrent?: number) => Observable<R>;
   mergeMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  multicast: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
+  multicast: (subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) => ConnectableObservable<T>;
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   partition: (predicate: (x: T) => boolean) => Observable<T>[];
   publish: () => ConnectableObservable<T>;

@@ -51,7 +51,7 @@ export interface CoreOperators<T> {
   mergeMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
                  projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   mergeMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  multicast?: (subjectFactory: () => Subject<T>) => ConnectableObservable<T>;
+  multicast?: (subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) => ConnectableObservable<T>;
   observeOn?: (scheduler: Scheduler, delay?: number) => Observable<T>;
   partition?: (predicate: (x: T) => boolean) => Observable<T>[];
   publish?: () => ConnectableObservable<T>;
