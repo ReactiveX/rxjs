@@ -171,4 +171,22 @@ describe('Observable.prototype.takeUntil()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var e1 =     hot('--a--b--c--d--e--f--g--|');
+    var e1subs =     '^      !                ';
+    var e2 =     hot('-------------z--|       ');
+    var e2subs =     '^      !                ';
+    var unsub =      '       !                ';
+    var expected =   '--a--b--                ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .takeUntil(e2)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
 });
