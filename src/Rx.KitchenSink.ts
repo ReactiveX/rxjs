@@ -146,12 +146,17 @@ import {ImmediateScheduler} from './scheduler/ImmediateScheduler';
 import {TimeInterval} from './operator/extended/timeInterval';
 import {TestScheduler} from './testing/TestScheduler';
 import {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
+import {rxSubscriber} from './symbol/rxSubscriber';
 /* tslint:enable:no-unused-variable */
 
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
   nextTick,
   immediate
+};
+
+var Symbol = {
+  rxSubscriber
 };
 /* tslint:enable:no-var-keyword */
 
@@ -171,5 +176,6 @@ export {
     ObjectUnsubscribedError,
     TestScheduler,
     VirtualTimeScheduler,
-    TimeInterval
+    TimeInterval,
+    Symbol
 };

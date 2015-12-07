@@ -122,12 +122,17 @@ import {immediate} from './scheduler/immediate';
 import {nextTick} from './scheduler/nextTick';
 import {NextTickScheduler} from './scheduler/NextTickScheduler';
 import {ImmediateScheduler} from './scheduler/ImmediateScheduler';
+import {rxSubscriber} from './symbol/rxSubscriber';
 /* tslint:enable:no-unused-variable */
 
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
   nextTick,
   immediate
+};
+
+var Symbol = {
+  rxSubscriber
 };
 /* tslint:enable:no-var-keyword */
 
@@ -137,6 +142,7 @@ export {
     Observable,
     Subscriber,
     Subscription,
+    Symbol,
     AsyncSubject,
     ReplaySubject,
     BehaviorSubject,
