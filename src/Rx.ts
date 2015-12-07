@@ -119,6 +119,7 @@ import {EmptyError} from './util/EmptyError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {immediate} from './scheduler/immediate';
+import {nextTick} from './scheduler/nextTick';
 import {NextTickScheduler} from './scheduler/NextTickScheduler';
 import {ImmediateScheduler} from './scheduler/ImmediateScheduler';
 /* tslint:enable:no-unused-variable */
