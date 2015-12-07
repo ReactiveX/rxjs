@@ -139,9 +139,9 @@ import {Notification} from './Notification';
 import {EmptyError} from './util/EmptyError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
-import {nextTick} from './scheduler/nextTick';
+import {asap} from './scheduler/asap';
 import {queue} from './scheduler/queue';
-import {NextTickScheduler} from './scheduler/NextTickScheduler';
+import {AsapScheduler} from './scheduler/AsapScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
 import {TimeInterval} from './operator/extended/timeInterval';
 import {TestScheduler} from './testing/TestScheduler';
@@ -151,7 +151,7 @@ import {rxSubscriber} from './symbol/rxSubscriber';
 
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
-  nextTick,
+  asap,
   queue
 };
 

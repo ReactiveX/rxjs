@@ -2,9 +2,9 @@ import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {nextTick} from '../scheduler/nextTick';
+import {asap} from '../scheduler/asap';
 
-export function sampleTime<T>(delay: number, scheduler: Scheduler = nextTick): Observable<T> {
+export function sampleTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
   return this.lift(new SampleTimeOperator(delay, scheduler));
 }
 

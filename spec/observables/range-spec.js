@@ -1,7 +1,7 @@
 var Rx = require('../../dist/cjs/Rx');
 var RangeObservable = require('../../dist/cjs/observable/range').RangeObservable;
 var Observable = Rx.Observable;
-var nextTick = Rx.Scheduler.nextTick;
+var asap = Rx.Scheduler.asap;
 
 describe('Observable.range', function () {
   it('should synchronously create a range of values by default', function () {
@@ -14,14 +14,14 @@ describe('Observable.range', function () {
 
   it('should accept a scheduler' , function (done) {
     var expected = [12, 13, 14, 15];
-    spyOn(nextTick, 'schedule').and.callThrough();
+    spyOn(asap, 'schedule').and.callThrough();
 
-    var source = Observable.range(12, 4, nextTick);
+    var source = Observable.range(12, 4, asap);
 
-    expect(source.scheduler).toBe(nextTick);
+    expect(source.scheduler).toBe(asap);
 
     source.subscribe(function (x) {
-      expect(nextTick.schedule).toHaveBeenCalled();
+      expect(asap.schedule).toHaveBeenCalled();
       var exp = expected.shift();
       expect(x).toBe(exp);
     }, done.throw, done);
@@ -36,8 +36,8 @@ describe('RangeObservable', function () {
     });
 
     it('should accept a scheduler', function () {
-      var observable = RangeObservable.create(12, 4, nextTick);
-      expect(observable.scheduler).toBe(nextTick);
+      var observable = RangeObservable.create(12, 4, asap);
+      expect(observable.scheduler).toBe(asap);
     });
   });
 

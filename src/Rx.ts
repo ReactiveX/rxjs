@@ -118,16 +118,16 @@ import {Notification} from './Notification';
 import {EmptyError} from './util/EmptyError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
+import {asap} from './scheduler/asap';
 import {queue} from './scheduler/queue';
-import {nextTick} from './scheduler/nextTick';
-import {NextTickScheduler} from './scheduler/NextTickScheduler';
+import {AsapScheduler} from './scheduler/AsapScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
 import {rxSubscriber} from './symbol/rxSubscriber';
 /* tslint:enable:no-unused-variable */
 
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
-  nextTick,
+  asap,
   queue
 };
 

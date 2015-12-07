@@ -3,9 +3,9 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
-import {nextTick} from '../scheduler/nextTick';
+import {asap} from '../scheduler/asap';
 
-export function debounceTime<T>(dueTime: number, scheduler: Scheduler = nextTick): Observable<T> {
+export function debounceTime<T>(dueTime: number, scheduler: Scheduler = asap): Observable<T> {
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 

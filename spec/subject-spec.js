@@ -2,7 +2,7 @@
 var Rx = require('../dist/cjs/Rx');
 
 var Subject = Rx.Subject;
-var nextTick = Rx.Scheduler.nextTick;
+var asap = Rx.Scheduler.asap;
 var Observable = Rx.Observable;
 
 describe('Subject', function () {

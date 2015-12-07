@@ -4,11 +4,11 @@ import {Observable} from '../Observable';
 import {Subject} from '../Subject';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
-import {nextTick} from '../scheduler/nextTick';
+import {asap} from '../scheduler/asap';
 
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,
-                              scheduler: Scheduler = nextTick): Observable<Observable<T>> {
+                              scheduler: Scheduler = asap): Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
 }
 

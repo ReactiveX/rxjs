@@ -2,9 +2,9 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
-import {nextTick} from '../scheduler/nextTick';
+import {asap} from '../scheduler/asap';
 
-export function throttleTime<T>(delay: number, scheduler: Scheduler = nextTick) {
+export function throttleTime<T>(delay: number, scheduler: Scheduler = asap) {
   return this.lift(new ThrottleTimeOperator(delay, scheduler));
 }
 

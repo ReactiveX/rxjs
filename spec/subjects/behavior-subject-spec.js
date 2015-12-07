@@ -2,7 +2,7 @@
 var Rx = require('../../dist/cjs/Rx');
 
 var BehaviorSubject = Rx.BehaviorSubject;
-var nextTick = Rx.Scheduler.nextTick;
+var asap = Rx.Scheduler.asap;
 var Observable = Rx.Observable;
 var ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 

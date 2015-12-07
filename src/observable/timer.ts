@@ -1,7 +1,7 @@
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {nextTick} from '../scheduler/nextTick';
+import {asap} from '../scheduler/asap';
 import {isScheduler} from '../util/isScheduler';
 import {isDate} from '../util/isDate';
 
@@ -49,7 +49,7 @@ export class TimerObservable<T> extends Observable<T> {
       scheduler = <Scheduler> period;
     }
     if (!isScheduler(scheduler)) {
-      scheduler = nextTick;
+      scheduler = asap;
     }
     this.scheduler = scheduler;
 

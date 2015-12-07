@@ -12,7 +12,7 @@ describe('Observable.interval', function () {
   it('should specify default scheduler if incorrect scheduler specified', function () {
     var scheduler = Observable.interval(10, jasmine.createSpy('dummy')).scheduler;
 
-    expect(scheduler).toBe(Rx.Scheduler.nextTick);
+    expect(scheduler).toBe(Rx.Scheduler.asap);
   });
 
   it('should emit when relative interval set to zero', function () {

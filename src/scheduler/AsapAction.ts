@@ -2,7 +2,7 @@ import {Immediate} from '../util/Immediate';
 import {QueueAction} from './QueueAction';
 import {Action} from './Action';
 
-export class NextTickAction<T> extends QueueAction<T> {
+export class AsapAction<T> extends QueueAction<T> {
   private id: any;
 
   schedule(state?: any): Action {

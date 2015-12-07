@@ -18,7 +18,7 @@ describe('SubscribeOnObservable', function () {
     var e1 = hot('--a--b--|');
     var scheduler = new SubscribeOnObservable(e1, 0, jasmine.createSpy('dummy')).scheduler;
 
-    expect(scheduler).toBe(Rx.Scheduler.nextTick);
+    expect(scheduler).toBe(Rx.Scheduler.asap);
   });
 
   it('should create observable via staic create function', function () {
