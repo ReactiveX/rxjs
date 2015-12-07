@@ -10,6 +10,7 @@ import {GroupedObservable} from './operator/groupBy-support';
 import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {Notification} from './Notification';
+import {rxSubscriber} from'./symbol/rxSubscriber';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -89,8 +90,10 @@ export class Observable<T> implements CoreOperators<T>  {
     let subscriber: Subscriber<T>;
 
     if (observerOrNext && typeof observerOrNext === 'object') {
-      if (observerOrNext instanceof Subscriber || observerOrNext instanceof Subject) {
+      if (observerOrNext instanceof Subscriber) {
         subscriber = (<Subscriber<T>> observerOrNext);
+      } else if (observerOrNext[rxSubscriber]) {
+        subscriber = observerOrNext[rxSubscriber]();
       } else {
         subscriber = new Subscriber(<Observer<T>> observerOrNext);
       }
