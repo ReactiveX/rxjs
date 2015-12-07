@@ -4,10 +4,15 @@ import {tryOrOnError} from './util/tryOrOnError';
 
 import {Observer} from './Observer';
 import {Subscription} from './Subscription';
+import {rxSubscriber} from './symbol/rxSubscriber';
 
 export class Subscriber<T> extends Subscription<T> implements Observer<T> {
   protected _subscription: Subscription<T>;
   protected _isUnsubscribed: boolean = false;
+
+  [rxSubscriber]() {
+    return this;
+  }
 
   get isUnsubscribed(): boolean {
     const subscription = this._subscription;
