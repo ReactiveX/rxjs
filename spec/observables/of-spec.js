@@ -26,7 +26,7 @@ describe('Observable.of', function () {
   });
 
   it('should return a scalar observable if only passed one value and a scheduler', function () {
-    var obs = Observable.of('one', Rx.Scheduler.immediate);
+    var obs = Observable.of('one', Rx.Scheduler.queue);
     expect(obs instanceof ScalarObservable).toBe(true);
   });
 
@@ -41,7 +41,7 @@ describe('Observable.of', function () {
   });
 
   it('should return an empty observable if passed only a scheduler', function () {
-    var obs = Observable.of(Rx.Scheduler.immediate);
+    var obs = Observable.of(Rx.Scheduler.queue);
     expect(obs instanceof EmptyObservable).toBe(true);
   });
 

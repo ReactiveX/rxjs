@@ -3,14 +3,14 @@ var Rx = require('../dist/cjs/Rx');
 
 var Scheduler = Rx.Scheduler;
 
-describe('Scheduler.immediate', function () {
+describe('Scheduler.queue', function () {
   it('should schedule things recursively', function () {
     var call1 = false;
     var call2 = false;
-    Scheduler.immediate.active = false;
-    Scheduler.immediate.schedule(function () {
+    Scheduler.queue.active = false;
+    Scheduler.queue.schedule(function () {
       call1 = true;
-      Scheduler.immediate.schedule(function () {
+      Scheduler.queue.schedule(function () {
         call2 = true;
       });
     });
@@ -20,7 +20,7 @@ describe('Scheduler.immediate', function () {
 
   it('should schedule things in the future too', function (done) {
     var called = false;
-    Scheduler.immediate.schedule(function () {
+    Scheduler.queue.schedule(function () {
       called = true;
     }, 50);
 

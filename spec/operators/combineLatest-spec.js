@@ -1,7 +1,7 @@
 /* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.combineLatest', function () {
   it('should work with two nevers', function () {

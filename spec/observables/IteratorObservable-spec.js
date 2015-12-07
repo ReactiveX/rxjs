@@ -88,7 +88,7 @@ describe('IteratorObservable', function () {
       [10, 20, 30, 40],
       function (x) { return x; },
       null,
-      Rx.Scheduler.immediate
+      Rx.Scheduler.queue
     );
 
     var subscriber = Rx.Subscriber.create(

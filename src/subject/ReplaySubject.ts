@@ -1,6 +1,6 @@
 import {Subject} from '../Subject';
 import {Scheduler} from '../Scheduler';
-import {immediate} from '../scheduler/immediate';
+import {queue} from '../scheduler/queue';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
@@ -37,7 +37,7 @@ export class ReplaySubject<T> extends Subject<T> {
   }
 
   private _getNow(): number {
-    return (this.scheduler || immediate).now();
+    return (this.scheduler || queue).now();
   }
 
   private _trimBufferThenGetEvents(now): ReplayEvent<T>[] {

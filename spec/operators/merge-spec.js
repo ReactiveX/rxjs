@@ -1,7 +1,7 @@
 /* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.merge', function () {
   it('should merge a source with a second', function (done) {
@@ -15,11 +15,11 @@ describe('Observable.prototype.merge', function () {
   });
 
   it('should merge an immediately-scheduled source with an immediately-scheduled second', function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
+    var a = Observable.of(1, 2, 3, queueScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
     var r = [1, 2, 4, 3, 5, 6, 7, 8];
     var i = 0;
-    a.merge(b, immediateScheduler).subscribe(function (val) {
+    a.merge(b, queueScheduler).subscribe(function (val) {
       expect(val).toBe(r[i++]);
     }, null, done);
   });
@@ -258,11 +258,11 @@ describe('Observable.prototype.mergeAll', function () {
   });
 
   it('should merge two immediately-scheduled observables', function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
+    var a = Observable.of(1, 2, 3, queueScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
     var r = [1, 2, 4, 3, 5, 6, 7, 8];
     var i = 0;
-    Observable.of(a, b, immediateScheduler).mergeAll().subscribe(function (val) {
+    Observable.of(a, b, queueScheduler).mergeAll().subscribe(function (val) {
       expect(val).toBe(r[i++]);
     }, null, done);
   });

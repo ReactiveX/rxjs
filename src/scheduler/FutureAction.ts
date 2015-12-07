@@ -1,14 +1,14 @@
 import {Subscription} from '../Subscription';
-import {ImmediateScheduler} from './ImmediateScheduler';
+import {QueueScheduler} from './QueueScheduler';
 import {Action} from './Action';
-import {ImmediateAction} from './ImmediateAction';
+import {QueueAction} from './QueueAction';
 
-export class FutureAction<T> extends ImmediateAction<T> {
+export class FutureAction<T> extends QueueAction<T> {
 
   id: any;
   delay: number;
 
-  constructor(public scheduler: ImmediateScheduler,
+  constructor(public scheduler: QueueScheduler,
               public work: (x?: any) => Subscription<T> | void) {
     super(scheduler, work);
   }

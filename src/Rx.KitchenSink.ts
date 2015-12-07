@@ -140,9 +140,9 @@ import {EmptyError} from './util/EmptyError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 import {nextTick} from './scheduler/nextTick';
-import {immediate} from './scheduler/immediate';
+import {queue} from './scheduler/queue';
 import {NextTickScheduler} from './scheduler/NextTickScheduler';
-import {ImmediateScheduler} from './scheduler/ImmediateScheduler';
+import {QueueScheduler} from './scheduler/QueueScheduler';
 import {TimeInterval} from './operator/extended/timeInterval';
 import {TestScheduler} from './testing/TestScheduler';
 import {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
@@ -152,7 +152,7 @@ import {rxSubscriber} from './symbol/rxSubscriber';
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
   nextTick,
-  immediate
+  queue
 };
 
 var Symbol = {

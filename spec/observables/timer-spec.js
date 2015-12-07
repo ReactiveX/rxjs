@@ -1,7 +1,6 @@
 /* globals describe, it, expect, expectObservable, hot, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var immediate = Rx.Scheduler.immediate;
 var Observer = Rx.Observer;
 
 describe('Observable.timer', function () {

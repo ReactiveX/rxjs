@@ -1,7 +1,7 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold, Symbol */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.zip', function () {
   it('should combine a source with a second', function () {
@@ -562,8 +562,8 @@ describe('Observable.zip', function () {
   });
 
   it('should combine an immediately-scheduled source with an immediately-scheduled second', function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
+    var a = Observable.of(1, 2, 3, queueScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
     var r = [[1, 4], [2, 5], [3, 6]];
     var i = 0;
 

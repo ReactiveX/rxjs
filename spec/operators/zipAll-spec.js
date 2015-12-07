@@ -1,7 +1,7 @@
 /* globals describe, it, expect, expectSubscriptions, expectObservable */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.zipAll', function () {
   it('should combine two observables', function () {
@@ -654,12 +654,12 @@ describe('Observable.prototype.zipAll', function () {
   });
 
   it('should combine two immediately-scheduled observables', function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
+    var a = Observable.of(1, 2, 3, queueScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
     var r = [[1, 4], [2, 5], [3, 6]];
     var i = 0;
 
-    var result = Observable.of(a, b, immediateScheduler).zipAll();
+    var result = Observable.of(a, b, queueScheduler).zipAll();
 
     result.subscribe(function (vals) {
       expect(vals).toDeepEqual(r[i++]);
@@ -667,12 +667,12 @@ describe('Observable.prototype.zipAll', function () {
   });
 
   it('should combine a source with an immediately-scheduled source', function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
+    var a = Observable.of(1, 2, 3, queueScheduler);
     var b = Observable.of(4, 5, 6, 7, 8);
     var r = [[1, 4], [2, 5], [3, 6]];
     var i = 0;
 
-    var result = Observable.of(a, b, immediateScheduler).zipAll();
+    var result = Observable.of(a, b, queueScheduler).zipAll();
 
     result.subscribe(function (vals) {
       expect(vals).toDeepEqual(r[i++]);

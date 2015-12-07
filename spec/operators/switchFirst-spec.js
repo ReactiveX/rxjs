@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Promise = require('promise');
 
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.switchFirst()', function () {
   it('should switch to first immediately-scheduled inner Observable', function () {

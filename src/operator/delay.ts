@@ -2,11 +2,11 @@ import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
-import {immediate} from '../scheduler/immediate';
+import {queue} from '../scheduler/queue';
 import {isDate} from '../util/isDate';
 
 export function delay<T>(delay: number|Date,
-                         scheduler: Scheduler = immediate) {
+                         scheduler: Scheduler = queue) {
   const absoluteDelay = isDate(delay);
   const delayFor = absoluteDelay ? (+delay - scheduler.now()) : <number>delay;
   return this.lift(new DelayOperator(delayFor, scheduler));

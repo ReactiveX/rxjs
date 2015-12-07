@@ -1,11 +1,11 @@
 import {Scheduler} from '../Scheduler';
-import {ImmediateAction} from './ImmediateAction';
+import {QueueAction} from './QueueAction';
 import {Subscription} from '../Subscription';
 import {FutureAction} from './FutureAction';
 import {Action} from './Action';
 
-export class ImmediateScheduler implements Scheduler {
-  actions: ImmediateAction<any>[] = [];
+export class QueueScheduler implements Scheduler {
+  actions: QueueAction<any>[] = [];
   active: boolean = false;
   scheduled: boolean = false;
 
@@ -32,7 +32,7 @@ export class ImmediateScheduler implements Scheduler {
   }
 
   scheduleNow<T>(work: (x?: any) => Subscription<T> | void, state?: any): Action {
-    return new ImmediateAction(this, work).schedule(state);
+    return new QueueAction(this, work).schedule(state);
   }
 
   scheduleLater<T>(work: (x?: any) => Subscription<T> | void, delay: number, state?: any): Action {

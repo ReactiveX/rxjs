@@ -2,9 +2,9 @@ import {Operator} from '../../Operator';
 import {Observable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
 import {Scheduler} from '../../Scheduler';
-import {immediate} from '../../scheduler/immediate';
+import {queue} from '../../scheduler/queue';
 
-export function timeInterval<T>(scheduler: Scheduler = immediate): Observable<TimeInterval> {
+export function timeInterval<T>(scheduler: Scheduler = queue): Observable<TimeInterval> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }
 

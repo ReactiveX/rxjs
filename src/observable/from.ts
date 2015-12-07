@@ -7,7 +7,7 @@ import {SymbolShim} from '../util/SymbolShim';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn-support';
-import {immediate} from '../scheduler/immediate';
+import {queue} from '../scheduler/queue';
 
 const isArray = Array.isArray;
 
@@ -16,7 +16,7 @@ export class FromObservable<T> extends Observable<T> {
     super(null);
   }
 
-  static create<T>(ish: any, scheduler: Scheduler = immediate): Observable<T> {
+  static create<T>(ish: any, scheduler: Scheduler = queue): Observable<T> {
     if (ish) {
       if (isArray(ish)) {
         return new ArrayObservable(ish, scheduler);
@@ -38,7 +38,7 @@ export class FromObservable<T> extends Observable<T> {
   _subscribe(subscriber: Subscriber<T>) {
     const ish = this.ish;
     const scheduler = this.scheduler;
-    if (scheduler === immediate) {
+    if (scheduler === queue) {
       return ish[SymbolShim.observable]().subscribe(subscriber);
     } else {
       return ish[SymbolShim.observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));

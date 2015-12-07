@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Promise = require('promise');
 
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.switch()', function () {
   it.asDiagram('switch')('should switch a hot observable of cold observables', function () {
@@ -16,11 +16,11 @@ describe('Observable.prototype.switch()', function () {
   });
 
   it('should switch to each immediately-scheduled inner Observable', function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, immediateScheduler);
+    var a = Observable.of(1, 2, 3, queueScheduler);
+    var b = Observable.of(4, 5, 6, queueScheduler);
     var r = [1, 4, 5, 6];
     var i = 0;
-    Observable.of(a, b, immediateScheduler)
+    Observable.of(a, b, queueScheduler)
       .switch()
       .subscribe(function (x) {
         expect(x).toBe(r[i++]);

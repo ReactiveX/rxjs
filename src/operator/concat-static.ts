@@ -1,6 +1,6 @@
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
-import {immediate} from '../scheduler/immediate';
+import {queue} from '../scheduler/queue';
 import {MergeAllOperator} from './mergeAll-support';
 import {ArrayObservable} from '../observable/fromArray';
 import {isScheduler} from '../util/isScheduler';
@@ -13,7 +13,7 @@ import {isScheduler} from '../util/isScheduler';
  * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
  */
 export function concat<R>(...observables: Array<Observable<any> | Scheduler>): Observable<R> {
-  let scheduler: Scheduler = immediate;
+  let scheduler: Scheduler = queue;
   let args = <any[]>observables;
   if (isScheduler(args[observables.length - 1])) {
     scheduler = args.pop();

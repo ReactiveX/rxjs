@@ -1,7 +1,7 @@
 /* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.combineLatest', function () {
   it('should combineLatest the provided observables', function () {
@@ -17,11 +17,11 @@ describe('Observable.combineLatest', function () {
   });
 
   it('should combine an immediately-scheduled source with an immediately-scheduled second', function (done) {
-    var a = Observable.of(1, 2, 3, immediateScheduler);
-    var b = Observable.of(4, 5, 6, 7, 8, immediateScheduler);
+    var a = Observable.of(1, 2, 3, queueScheduler);
+    var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
     var r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
     var i = 0;
-    Observable.combineLatest(a, b, immediateScheduler).subscribe(function (vals) {
+    Observable.combineLatest(a, b, queueScheduler).subscribe(function (vals) {
       expect(vals).toDeepEqual(r[i++]);
     }, null, function () {
       expect(i).toEqual(r.length);

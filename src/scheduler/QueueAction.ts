@@ -2,7 +2,7 @@ import {Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {Action} from './Action';
 
-export class ImmediateAction<T> extends Subscription<T> implements Action {
+export class QueueAction<T> extends Subscription<T> implements Action {
 
   state: any;
 

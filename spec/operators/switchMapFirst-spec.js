@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Promise = require('promise');
 
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.switchMapFirst()', function () {
   it('should handle outer throw', function () {

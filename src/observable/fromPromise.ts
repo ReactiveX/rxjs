@@ -2,18 +2,18 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
-import {immediate} from '../scheduler/immediate';
+import {queue} from '../scheduler/queue';
 
 export class PromiseObservable<T> extends Observable<T> {
 
   _isScalar: boolean = false;
   value: T;
 
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = immediate): Observable<T> {
+  static create<T>(promise: Promise<T>, scheduler: Scheduler = queue): Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
-  constructor(private promise: Promise<T>, public scheduler: Scheduler = immediate) {
+  constructor(private promise: Promise<T>, public scheduler: Scheduler = queue) {
     super();
   }
 
@@ -21,7 +21,7 @@ export class PromiseObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
     const promise = this.promise;
 
-    if (scheduler === immediate) {
+    if (scheduler === queue) {
       if (this._isScalar) {
         subscriber.next(this.value);
         subscriber.complete();

@@ -1,7 +1,7 @@
 /* globals describe, it, expect, cold, hot, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
-var immediateScheduler = Rx.Scheduler.immediate;
+var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.switchMapTo()', function () {
   it('should switch a synchronous many outer to a synchronous many inner', function (done) {
