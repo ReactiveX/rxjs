@@ -107,4 +107,19 @@ describe('Observable.prototype.take()', function () {
     expect(function () { Observable.range(0,10).take(-1); })
       .toThrow(new Rx.ArgumentOutOfRangeError());
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var e1 = hot('---^--a--b-----c--d--e--|');
+    var unsub =     '         !            ';
+    var e1subs =    '^        !            ';
+    var expected =  '---a--b---            ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .take(42)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
