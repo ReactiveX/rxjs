@@ -81,4 +81,19 @@ describe('Observable.prototype.mapTo()', function () {
     expectObservable(r).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var a =   cold('--1--2--3--|');
+    var unsub =    '      !     ';
+    var asubs =    '^     !     ';
+    var expected = '--x--x-     ';
+
+    var r = a
+      .mergeMap(function (x) { return Observable.of(x); })
+      .mapTo('x')
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(r, unsub).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+  });
 });
