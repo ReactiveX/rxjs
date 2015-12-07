@@ -4,6 +4,7 @@ import {Observable} from './Observable';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {SubjectSubscription} from './subject/SubjectSubscription';
+import {rxSubscriber} from './symbol/rxSubscriber';
 
 const subscriptionAdd = Subscription.prototype.add;
 const subscriptionRemove = Subscription.prototype.remove;
@@ -19,6 +20,10 @@ const _subscriberComplete = Subscriber.prototype._complete;
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
   _subscriptions: Subscription<T>[];
   _unsubscribe: () => void;
+
+  [rxSubscriber]() {
+    return this;
+  }
 
   static create<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
     return new BidirectionalSubject(source, destination);

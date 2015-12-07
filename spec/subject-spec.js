@@ -19,6 +19,11 @@ describe('Subject', function () {
     subject.complete();
   });
 
+  it('should have the rxSubscriber Symbol', function () {
+    var subject = new Subject();
+    expect(subject[Rx.Symbol.rxSubscriber]()).toBe(subject);
+  });
+
   it('should pump values to multiple subscribers', function (done) {
     var subject = new Subject();
     var expected = ['foo', 'bar'];
