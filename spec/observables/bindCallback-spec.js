@@ -243,4 +243,28 @@ describe('Observable.bindCallback', function () {
     expect(results1).toEqual([42, 'done']);
     expect(results2).toEqual([42, 'done']);
   });
+
+  it('should not even call the callbackFn if immediately unsubscribed', function () {
+    var calls = 0;
+    function callback(datum, cb) {
+      calls++;
+      cb(datum);
+    }
+    var boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+    var results1 = [];
+
+    var source = boundCallback(42);
+
+    var subscription = source.subscribe(function (x) {
+      results1.push(x);
+    }, null, function () {
+      results1.push('done');
+    });
+
+    subscription.unsubscribe();
+
+    rxTestScheduler.flush();
+
+    expect(calls).toBe(0);
+  });
 });
