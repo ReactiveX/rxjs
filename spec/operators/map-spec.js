@@ -97,7 +97,7 @@ describe('Observable.prototype.map()', function () {
 
     var r = a.map(addDrama);
 
-    expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!', z: '3!'});
+    expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});
     expectSubscriptions(a.subscriptions).toBe(asubs);
   });
 
@@ -215,6 +215,21 @@ describe('Observable.prototype.map()', function () {
       .map(function (x) { return this.selector1(x);}, filterer);
 
     expectObservable(r).toBe(expected, values);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+  });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var a =   cold('--1--2--3--|');
+    var unsub =    '      !     ';
+    var asubs =    '^     !     ';
+    var expected = '--x--y-     ';
+
+    var r = a
+      .mergeMap(function (x) { return Observable.of(x); })
+      .map(addDrama)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});
     expectSubscriptions(a.subscriptions).toBe(asubs);
   });
 });
