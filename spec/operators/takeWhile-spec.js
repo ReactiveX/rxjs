@@ -167,4 +167,23 @@ describe('Observable.prototype.takeWhile()', function () {
     expectObservable(e1.takeWhile(predicate), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var e1 = hot('--a-^-b--c--d--e--|');
+    var unsub =      '-----!         ';
+    var e1subs =     '^    !         ';
+    var expected =   '--b---         ';
+
+    function predicate(value) {
+      return value !== 'd';
+    }
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .takeWhile(predicate)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
