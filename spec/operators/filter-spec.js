@@ -256,4 +256,19 @@ describe('Observable.prototype.filter()', function () {
         expect(true).toBe(false);
       });
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var source = hot('-1--2--^-3-4-5-6--7-8--9--|');
+    var subs =              '^           !       ';
+    var unsub =             '            !       ';
+    var expected =          '--3---5----7-       ';
+
+    var r = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .filter(isPrime)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(r, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
 });
