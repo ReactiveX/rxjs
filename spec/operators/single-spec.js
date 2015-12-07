@@ -1,5 +1,6 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
 
 describe('Observable.prototype.single()', function () {
   it('should raise error from empty predicate if observable does not emit', function () {
@@ -126,6 +127,21 @@ describe('Observable.prototype.single()', function () {
     };
 
     expectObservable(e1.single(predicate)).toBe(expected, {z: undefined});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var e1 =    hot('--a--b--c--|');
+    var unsub =     '   !        ';
+    var e1subs =    '^  !        ';
+    var expected =  '----        ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .single()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
