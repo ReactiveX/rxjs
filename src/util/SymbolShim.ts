@@ -1,57 +1,56 @@
 import {root} from './root';
 
-export class SymbolDefinition {
-  observable: symbol = null;
-  iterator: symbol = null;
+export function polyfillSymbol(root) {
+  const Symbol = ensureSymbol(root);
+  ensureIterator(Symbol, root);
+  ensureObservable(Symbol);
+  return Symbol;
+}
 
-  private applyObservable(): symbol {
-    const root = this.root;
-
-    if (!root.Symbol.observable) {
-      if (typeof root.Symbol.for === 'function') {
-        root.Symbol.observable = root.Symbol.for('observable');
-      } else {
-        root.Symbol.observable = '@@observable';
-      }
-    }
-
-    return root.Symbol.observable;
+export function ensureSymbol(root) {
+  if (!root.Symbol) {
+    root.Symbol = {
+      for: symbolForPolyfill
+    };
   }
+  return root.Symbol;
+}
 
-  private applyIterator(): symbol {
-    const root = this.root;
+export function symbolForPolyfill(key) {
+  return '@@' + key;
+}
 
-    if (!root.Symbol.iterator) {
-      if (typeof root.Symbol.for === 'function') {
-        root.Symbol.iterator = root.Symbol.for('iterator');
-      } else if (root.Set && typeof new root.Set()['@@iterator'] === 'function') {
-        // Bug for mozilla version
-        root.Symbol.iterator = '@@iterator';
-      } else if (root.Map) {
-        // es6-shim specific logic
-        let keys = Object.getOwnPropertyNames(root.Map.prototype);
-        for (let i = 0; i < keys.length; ++i) {
-          let key = keys[i];
-          if (key !== 'entries' && key !== 'size' && root.Map.prototype[key] === root.Map.prototype['entries']) {
-            root.Symbol.iterator = key;
-            break;
-          }
+export function ensureIterator(Symbol, root) {
+  if (!Symbol.iterator) {
+    if (typeof Symbol.for === 'function') {
+      Symbol.iterator = Symbol.for('iterator');
+    } else if (root.Set && typeof new root.Set()['@@iterator'] === 'function') {
+      // Bug for mozilla version
+      Symbol.iterator = '@@iterator';
+    } else if (root.Map) {
+      // es6-shim specific logic
+      let keys = Object.getOwnPropertyNames(root.Map.prototype);
+      for (let i = 0; i < keys.length; ++i) {
+        let key = keys[i];
+        if (key !== 'entries' && key !== 'size' && root.Map.prototype[key] === root.Map.prototype['entries']) {
+          Symbol.iterator = key;
+          break;
         }
-      } else {
-        root.Symbol.iterator = '@@iterator';
       }
+    } else {
+      Symbol.iterator = '@@iterator';
     }
-
-    return root.Symbol.iterator;
-  }
-
-  constructor(private root: any) {
-    if (!root.Symbol) {
-      root.Symbol = {};
-    }
-
-    this.observable = this.applyObservable();
-    this.iterator = this.applyIterator();
   }
 }
-export const SymbolShim = new SymbolDefinition(root);
+
+export function ensureObservable(Symbol) {
+  if (!Symbol.observable) {
+    if (typeof Symbol.for === 'function') {
+      Symbol.observable = Symbol.for('observable');
+    } else {
+      Symbol.observable = '@@observable';
+    }
+  }
+}
+
+export const SymbolShim = polyfillSymbol(root);
