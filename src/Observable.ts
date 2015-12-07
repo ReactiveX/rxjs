@@ -6,10 +6,11 @@ import {Subscription} from './Subscription';
 import {root} from './util/root';
 import {CoreOperators} from './CoreOperators';
 import {SymbolShim} from './util/SymbolShim';
-import {GroupedObservable} from './operator/groupBy-support';
-import {ConnectableObservable} from './observable/ConnectableObservable';
-import {Subject} from './Subject';
 import {Notification} from './Notification';
+
+import {Subject} from './ambient/Subject';
+import {GroupedObservable} from './ambient/GroupedObservable';
+import {ConnectableObservable} from './ambient/ConnectableObservable';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -89,7 +90,7 @@ export class Observable<T> implements CoreOperators<T>  {
     let subscriber: Subscriber<T>;
 
     if (observerOrNext && typeof observerOrNext === 'object') {
-      if (observerOrNext instanceof Subscriber || observerOrNext instanceof Subject) {
+      if (observerOrNext instanceof Subscriber) { //|| observerOrNext instanceof Subject) {
         subscriber = (<Subscriber<T>> observerOrNext);
       } else {
         subscriber = new Subscriber(<Observer<T>> observerOrNext);
@@ -255,3 +256,9 @@ export class Observable<T> implements CoreOperators<T>  {
   zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 }
+
+//let import occurs after Observable<T> is exported
+import {ArrayObservable} from './observable/fromArray';
+
+Observable.fromArray = ArrayObservable.create;
+Observable.of = ArrayObservable.of;

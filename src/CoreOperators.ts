@@ -1,9 +1,10 @@
-import {Observable} from './Observable';
 import {Scheduler} from './Scheduler';
-import {ConnectableObservable} from './observable/ConnectableObservable';
-import {Subject} from './Subject';
-import {GroupedObservable} from './operator/groupBy-support';
 import {Notification} from './Notification';
+
+import {Observable} from './ambient/Observable';
+import {Subject} from './ambient/Subject';
+import {GroupedObservable} from './ambient/GroupedObservable';
+import {ConnectableObservable} from './ambient/ConnectableObservable';
 
 export interface CoreOperators<T> {
   buffer?: (closingNotifier: Observable<any>) => Observable<T[]>;
