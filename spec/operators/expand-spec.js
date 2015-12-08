@@ -375,4 +375,34 @@ describe('Observable.prototype.expand()', function () {
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var values = {
+      a: 1,
+      b: 1 + 1, // a + a,
+      c: 2 + 2, // b + b,
+      d: 4 + 4, // c + c,
+      e: 8 + 8, // d + d
+    };
+    var e1 =   hot('(a|)', values);
+    var unsub =    '       !  ';
+    var e1subs =   '^      !  ';
+    var e2shape =  '---(z|)   ';
+    var expected = 'a--b--c-  ';
+
+    var project = function (x) {
+      if (x === 16) {
+        return Observable.empty();
+      }
+      return cold(e2shape, { z: x + x });
+    };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .expand(project)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
