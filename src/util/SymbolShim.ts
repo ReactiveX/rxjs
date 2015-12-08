@@ -14,9 +14,13 @@ export function ensureFor(Symbol) {
   }
 }
 
+let id = 0;
+
 export function ensureSymbol(root) {
   if (!root.Symbol) {
-    root.Symbol = {};
+    root.Symbol = function symbolFuncPolyfill(description) {
+      return `@@Symbol(${description}):${id++}`;
+    };
   }
   return root.Symbol;
 }

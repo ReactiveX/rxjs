@@ -5,7 +5,19 @@ var Rx = require('../../dist/cjs/Rx');
 var polyfillSymbol = SymbolShim.polyfillSymbol;
 var ensureIterator = SymbolShim.ensureIterator;
 
-describe('SymbolShim', function () {
+describe('SymbolShim.polyfillSymbol', function () {
+  it('should polyfill Symbol to be a function that returns a primitive that is unique', function () {
+    var Symbol = polyfillSymbol({ });
+
+    expect(typeof Symbol).toBe('function');
+    var x = Symbol('test');
+    var y = Symbol('test');
+    expect(x !== y).toBe(true); // should be obvious, but this is the important part.
+
+    expect(x).toBe('@@Symbol(test):0');
+    expect(y).toBe('@@Symbol(test):1');
+  });
+
   it('should setup symbol if root does not have it', function () {
     var root = {};
 
