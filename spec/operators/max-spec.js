@@ -76,6 +76,21 @@ describe('max', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = hot('--a--b--c--|', { a: 42, b: -1, c: 0 });
+    var subs =       '^     !     ';
+    var expected =   '-------     ';
+    var unsub =      '      !     ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .max()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, { x: 42 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should max a range() source observable', function (done) {
     Rx.Observable.range(1, 10000).max().subscribe(
       function (value) {
