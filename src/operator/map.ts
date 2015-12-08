@@ -3,7 +3,6 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {bindCallback} from '../util/bindCallback';
 
 /**
  * Similar to the well known `Array.prototype.map` function, this operator
@@ -18,30 +17,25 @@ export function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Obs
 }
 
 class MapOperator<T, R> implements Operator<T, R> {
-
-  project: (x: T, ix?: number) => R;
-
-  constructor(project: (x: T, ix?: number) => R, thisArg?: any) {
-    this.project = <(x: T, ix?: number) => R>bindCallback(project, thisArg, 2);
+  constructor(private project: (x: T, ix?: number) => R, private thisArg: any) {
   }
+
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new MapSubscriber(subscriber, this.project);
+    return new MapSubscriber(subscriber, this.project, this.thisArg);
   }
 }
 
 class MapSubscriber<T, R> extends Subscriber<T> {
-
   count: number = 0;
-  project: (x: T, ix?: number) => R;
 
   constructor(destination: Subscriber<R>,
-              project: (x: T, ix?: number) => R) {
+              private project: (x: T, ix?: number) => R,
+              private thisArg: any) {
     super(destination);
-    this.project = project;
   }
 
   _next(x) {
-    const result = tryCatch(this.project)(x, this.count++);
+    const result = tryCatch(this.project).call(this.thisArg || this, x, this.count++);
     if (result === errorObject) {
       this.error(errorObject.e);
     } else {
