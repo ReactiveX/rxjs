@@ -67,6 +67,21 @@ describe('toArray', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('--a--b----c-----d----e---|');
+    var e1subs =   '^       !                 ';
+    var expected = '---------                 ';
+    var unsub =    '        !                 ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .toArray()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should work with error', function () {
     var e1 = hot('-x-^--y--z--#', { x: 1, y: 2, z: 3 }, 'too bad');
     var e1subs =    '^        !';
