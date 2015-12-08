@@ -96,6 +96,34 @@ describe('Observable.prototype.publish()', function () {
     connection = published.connect();
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source =     cold('-1-2-3----4-|');
+    var sourceSubs =      '^        !   ';
+    var published = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .publish();
+    var subscriber1 = hot('a|           ').mergeMapTo(published);
+    var expected1   =     '-1-2-3----   ';
+    var subscriber2 = hot('    b|       ').mergeMapTo(published);
+    var expected2   =     '    -3----   ';
+    var subscriber3 = hot('        c|   ').mergeMapTo(published);
+    var expected3   =     '        --   ';
+    var unsub =           '         u   ';
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    // Set up unsubscription action
+    var connection;
+    expectObservable(hot(unsub).do(function () {
+      connection.unsubscribe();
+    })).toBe(unsub);
+
+    connection = published.connect();
+  });
+
   describe('with refCount()', function () {
     it('should connect when first subscriber subscribes', function () {
       var source =     cold(   '-1-2-3----4-|');

@@ -120,6 +120,28 @@ describe('Observable.prototype.bufferTime', function () {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 = hot('--1--^2--3---4---5--6--7---8----9------------|');
+    var subs =        '^               !                        ';
+                    // -------*------*------*------*------*----- creation interval
+                    // ----------|                               timespans
+                    //        ----------|
+                    //               ----------|
+    var expected =    '----------a------                        ';
+    var unsub =       '                !                        ';
+    var values = {
+      a: ['2', '3', '4']
+    };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .bufferTime(100, 70, rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
   it('should handle empty', function () {
     var e1 = cold( '|');
     var e1subs =   '(^!)';

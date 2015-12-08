@@ -99,6 +99,22 @@ describe('Observable.prototype.startWith()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('---a--b----c--d--|');
+    var e1subs =   '^        !        ';
+    var expected = 's--a--b---        ';
+    var unsub =    '         !        ';
+    var values = { s: 's', a: 'a', b: 'b' };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .startWith('s', rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should start with empty if given value is not specified', function () {
     var e1 =   hot('-a-|');
     var e1subs =   '^  !';

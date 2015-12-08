@@ -106,6 +106,32 @@ describe('Observable.prototype.mergeScan()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 = hot('--a--^--b--c--d--e--f--g--|');
+    var e1subs =      '^               !     ';
+    var expected =    '--------u--v--w--     ';
+    var unsub =       '                !     ';
+
+    var values = {
+      u: ['b'],
+      v: ['c'],
+      w: ['b', 'd'],
+      x: ['c', 'e'],
+      y: ['b', 'd', 'f'],
+      z: ['c', 'e', 'g'],
+    };
+
+    var source = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .mergeScan(function (acc, x) {
+        return Observable.of(acc.concat(x)).delay(50, rxTestScheduler);
+      }, [])
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(source, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should handle errors in the projection function', function () {
     var e1 = hot('--a--^--b--c--d--e--f--g--|');
     var e1subs =      '^        !';

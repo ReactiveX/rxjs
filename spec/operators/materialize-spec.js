@@ -51,6 +51,26 @@ describe('Observable.prototype.materialize()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('--a--b--c--|');
+    var e1subs =   '^     !     ';
+    var expected = '--w--x-     ';
+    var unsub =    '      !     ';
+
+    var expectedValue = {
+      w: Notification.createNext('a'),
+      x: Notification.createNext('b')
+    };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .materialize()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, expectedValue);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should materialize stream does not completes', function () {
     var e1 =   hot('-');
     var e1subs =   '^';

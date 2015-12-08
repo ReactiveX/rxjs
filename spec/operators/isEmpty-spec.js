@@ -56,4 +56,19 @@ describe('Observable.prototype.isEmpty()', function () {
     expectObservable(source.isEmpty(), unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = cold('-----------a--b--|');
+    var subs =        '^     !           ';
+    var expected =    '-------           ';
+    var unsub =       '      !           ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .isEmpty()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
 });

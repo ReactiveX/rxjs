@@ -109,6 +109,24 @@ describe('Observable.prototype.merge', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =    hot('--a-----b-----c----|  ');
+    var e1subs =    '^         !           ';
+    var e2 =    hot('-----d-----e-----f---|');
+    var e2subs =    '^         !           ';
+    var expected =  '--a--d--b--           ';
+    var unsub =     '          !           ';
+
+    var result = e1
+      .map(function (x) { return x; })
+      .merge(e2, rxTestScheduler)
+      .map(function (x) { return x; });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should merge empty and empty', function () {
     var e1 = cold('|');
     var e1subs = '(^!)';
