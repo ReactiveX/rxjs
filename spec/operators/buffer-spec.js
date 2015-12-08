@@ -131,6 +131,26 @@ describe('Observable.prototype.buffer()', function () {
     expectSubscriptions(a.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var subs =          '^             !                  ';
+    var b = hot('--------^--a-------b---cd|               ');
+    var expected =      '---a-------b---                  ';
+    var unsub =         '              !                  ';
+    var expectedValues = {
+      a: ['3'],
+      b: ['4', '5']
+    };
+
+    var result = a
+      .mergeMap(function (x) { return Observable.of(x); })
+      .buffer(b)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, expectedValues);
+    expectSubscriptions(a.subscriptions).toBe(subs);
+  });
+
   it('should work with non-empty and selector error', function () {
     // Buffer Boundaries onErrorSource (RxJS 4)
     var a = hot('--1--2--^--3-----#', {'3': 3}, new Error('too bad'));

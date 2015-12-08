@@ -127,6 +127,32 @@ describe('Observable.prototype.switchFirstMap()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var x = cold(     '--a--b--c--|                               ');
+    var xsubs =    '   ^          !                               ';
+    var y = cold(               '--d--e--f--|                     ');
+    var ysubs = [];
+    var z = cold(                                 '--g--h--i--|   ');
+    var zsubs =    '                               ^  !           ';
+    var e1 =   hot('---x---------y-----------------z-------------|');
+    var e1subs =   '^                                 !           ';
+    var expected = '-----a--b--c---------------------g-           ';
+    var unsub =    '                                  !           ';
+
+    var observableLookup = { x: x, y: y, z: z };
+
+    var result = e1
+      .mergeMap(function (i) { return Observable.of(i); })
+      .switchFirstMap(function (value) { return observableLookup[value]; })
+      .mergeMap(function (i) { return Observable.of(i); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(z.subscriptions).toBe(zsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should switch inner cold observables, inner never completes', function () {
     var x = cold(     '--a--b--c--|                              ');
     var xsubs =    '   ^          !                              ';

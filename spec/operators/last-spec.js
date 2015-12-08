@@ -62,6 +62,21 @@ describe('Observable.prototype.last()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =    hot('--a--b--c--d--|');
+    var e1subs =    '^      !       ';
+    var expected =  '--------       ';
+    var unsub =     '       !       ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .last()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should return a default value if no element found', function () {
     var e1 =  cold('|');
     var e1subs =   '(^!)';

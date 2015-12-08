@@ -64,6 +64,24 @@ describe('Observable.prototype.sample', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('----a-^--b----c----d----e----f----|          ');
+    var e1subs =         '^             !                        ';
+    var e2 =   hot(      '-----x----------x----------x----------|');
+    var e2subs =         '^             !                        ';
+    var expected =       '-----b---------                        ';
+    var unsub =          '              !                        ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .sample(e2)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should sample multiple times according to the notifier', function () {
     var e1 =   hot('----a----b----c----d----e----f----|  ');
     var e1subs =   '^                                 !  ';

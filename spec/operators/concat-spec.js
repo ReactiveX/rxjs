@@ -1,5 +1,6 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
+var Observable = Rx.Observable;
 
 describe('Observable.prototype.concat()', function () {
   it.asDiagram('concat')('should concatenate two cold observables', function () {
@@ -164,6 +165,24 @@ describe('Observable.prototype.concat()', function () {
     var expected =  '---a-a--a-----b-b     ';
 
     expectObservable(e1.concat(e2), unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   cold('---a-a--a|            ');
+    var e1subs =    '^        !            ';
+    var e2 =   cold(         '-----b-b--b-|');
+    var e2subs =    '         ^       !    ';
+    var expected =  '---a-a--a-----b-b-    ';
+    var unsub =     '                 !    ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .concat(e2)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });

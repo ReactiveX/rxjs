@@ -44,6 +44,22 @@ describe('Observable.prototype.sampleTime', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('----a-^--b----c----d----e----f----|');
+    var e1subs =         '^               !            ';
+    // timer              -----------!----------!---------
+    var expected =       '-----------c-----            ';
+    var unsub =          '                !            ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .sampleTime(110, rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should completes if source does not emits', function () {
     var e1 =  cold('|');
     var e1subs =   '(^!)';

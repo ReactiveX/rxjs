@@ -117,6 +117,35 @@ describe('Observable.prototype.windowToggle', function () {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
+    var e1subs =      '^              !                          ';
+    var e2 =     cold('--x-----------y--------z---|              ');
+    var e2subs =      '^              !                          ';
+    var close = [cold(  '---------------s--|                     '),
+      cold(                         '----(s|)                    '),
+      cold(                                  '---------------(s|)')];
+    var closeSubs =  ['  ^              !                        ',
+                      '              ^   !                       '];
+    var expected =    '--x-----------y-                          ';
+    var x = cold(       '--b---c---d----|                        ');
+    var y = cold(                   '----|                       ');
+    var unsub =       '               !                          ';
+    var values = { x: x, y: y };
+
+    var i = 0;
+    var result = e1
+      .mergeMap(function (val) { return Observable.of(val); })
+      .windowToggle(e2, function () { return close[i++]; })
+      .mergeMap(function (val) { return Observable.of(val); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(close[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(close[1].subscriptions).toBe(closeSubs[1]);
+  });
+
   it('should propagate error thrown from closingSelector', function () {
     var e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
     var e2 =     cold('--x-----------y--------z---|              ');

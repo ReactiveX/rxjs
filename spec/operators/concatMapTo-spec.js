@@ -144,6 +144,26 @@ describe('Observable.prototype.concatMapTo()', function () {
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+    var e1 =     hot('-a---b---c---d---| ');
+    var e1subs =     '^                 !';
+    var inner =  cold('--i-j-k-l-|       ', values);
+    var innersubs = [' ^         !       ',
+                     '           ^      !'];
+    var expected =   '---i-j-k-l---i-j-k-';
+    var unsub =      '                  !';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .concatMapTo(inner)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+  });
+
   it('should concatMapTo many outer to many inner, inner never completes', function () {
     var values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     var e1 =     hot('-a---b---c---d---|');

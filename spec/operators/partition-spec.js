@@ -187,6 +187,25 @@ describe('Observable.prototype.partition()', function () {
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =    hot('--a-b---a------d-|');
+    var e1subs =    '^      !          ';
+    var expected = ['--a-----          ',
+                    '----b---          '];
+    var unsub =     '       !          ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .partition(function (x) { return x === 'a'; })
+      .map(function (observable) {
+        return observable.mergeMap(function (x) { return Observable.of(x); });
+      });
+
+    expectObservable(result[0], unsub).toBe(expected[0]);
+    expectObservable(result[1], unsub).toBe(expected[1]);
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
   it('should throw without predicate', function () {
     var e1 = hot('--a-b---a------d----');
     expect(e1.partition).toThrow();
