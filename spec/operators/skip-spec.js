@@ -49,6 +49,21 @@ describe('Observable.prototype.skip()', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = hot('--a--b--c--d--e--|');
+    var subs =       '^         !       ';
+    var expected =   '--------c--       ';
+    var unsub =      '          !       ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .skip(2)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should raise error if skip count is more than actual number of emits and source raises error', function () {
     var source = hot('--a--b--c--d--#');
     var subs =       '^             !';
