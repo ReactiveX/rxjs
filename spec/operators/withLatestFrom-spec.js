@@ -50,6 +50,57 @@ describe('Observable.prototype.withLatestFrom()', function () {
     expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var e1 =   hot('--a--^---b---c---d-|');
+    var e1subs =        '^          !   ';
+    var e2 =   hot('--e--^-f---g---h------|');
+    var e2subs =        '^          !   ';
+    var e3 =   hot('--i--^-j---k---l------|');
+    var e3subs =        '^          !   ';
+    var expected =      '----x---y---   ';
+    var unsub =         '           !   ';
+    var values = {
+      x: 'bfj',
+      y: 'cgk',
+      z: 'dhl'
+    };
+    var project = function (a, b, c) { return a + b + c; };
+
+    var result = e1.withLatestFrom(e2, e3, project);
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
+  });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('--a--^---b---c---d-|');
+    var e1subs =        '^          !   ';
+    var e2 =   hot('--e--^-f---g---h------|');
+    var e2subs =        '^          !   ';
+    var e3 =   hot('--i--^-j---k---l------|');
+    var e3subs =        '^          !   ';
+    var expected =      '----x---y---   ';
+    var unsub =         '           !   ';
+    var values = {
+      x: 'bfj',
+      y: 'cgk',
+      z: 'dhl'
+    };
+    var project = function (a, b, c) { return a + b + c; };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .withLatestFrom(e2, e3, project)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
+  });
+
   it('should handle empty', function () {
     var e1 =   cold(    '|');
     var e1subs =        '(^!)';
