@@ -180,7 +180,7 @@ export class Observable<T> implements CoreOperators<T>  {
   concatAll: () => Observable<any>;
   concatMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   concatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  count: (predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
+  count: (predicate?: (value: T, index: number, source: Observable<T>) => boolean) => Observable<number>;
   dematerialize: () => Observable<any>;
   debounce: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
   debounceTime: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;

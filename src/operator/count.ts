@@ -5,7 +5,6 @@ import {Subscriber} from '../Subscriber';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {bindCallback} from '../util/bindCallback';
 
 /**
  * Returns an observable of a single number that represents the number of items that either:
@@ -23,37 +22,28 @@ import {bindCallback} from '../util/bindCallback';
  */
 export function count<T>(predicate?: (value: T,
                                       index: number,
-                                      source: Observable<T>) => boolean,
-                         thisArg?: any): Observable<number> {
-  return this.lift(new CountOperator(predicate, thisArg, this));
+                                      source: Observable<T>) => boolean): Observable<number> {
+  return this.lift(new CountOperator(predicate, this));
 }
 
 class CountOperator<T, R> implements Operator<T, R> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
               private source?: Observable<T>) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new CountSubscriber<T, R>(
-      subscriber, this.predicate, this.thisArg, this.source
-    );
+    return new CountSubscriber<T, R>(subscriber, this.predicate, this.source);
   }
 }
 
 class CountSubscriber<T, R> extends Subscriber<T> {
-  private predicate: Function;
   private count: number = 0;
   private index: number = 0;
 
   constructor(destination: Observer<R>,
-              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
+              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private source?: Observable<T>) {
     super(destination);
-    if (typeof predicate === 'function') {
-      this.predicate = bindCallback(predicate, thisArg, 3);
-    }
   }
 
   _next(value: T): void {
