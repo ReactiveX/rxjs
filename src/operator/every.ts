@@ -7,7 +7,6 @@ import {ErrorObservable} from '../observable/throw';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {bindCallback} from '../util/bindCallback';
 
 export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
                          thisArg?: any): Observable<boolean> {
@@ -47,18 +46,13 @@ class EveryOperator<T, R> implements Operator<T, R> {
 }
 
 class EverySubscriber<T, R> extends Subscriber<T> {
-  private predicate: Function = undefined;
   private index: number = 0;
 
   constructor(destination: Observer<R>,
-              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg?: any,
               private source?: Observable<T>) {
     super(destination);
-
-    if (typeof predicate === 'function') {
-      this.predicate = bindCallback(predicate, thisArg, 3);
-    }
   }
 
   private notifyComplete(everyValueMatch: boolean): void {
@@ -67,13 +61,11 @@ class EverySubscriber<T, R> extends Subscriber<T> {
   }
 
   _next(value: T): void {
-    const predicate = this.predicate;
+    const { predicate, thisArg, source } = this;
+    const tryCaught = tryCatch(predicate);
+    const index = this.index++;
+    let result = thisArg ? tryCaught.call(thisArg, value, index, source) : tryCaught(value, index, source);
 
-    if (predicate === undefined) {
-      this.destination.error(new TypeError('predicate must be a function'));
-    }
-
-    let result = tryCatch(predicate)(value, this.index++, this.source);
     if (result === errorObject) {
       this.destination.error(result.e);
     } else if (!result) {

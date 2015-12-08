@@ -47,16 +47,6 @@ describe('Observable.prototype.every()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should raise error if predicate is invalid (not a function)', function () {
-    var source = hot('--a--b--c--d--e--|');
-    var sourceSubs = '^ !';
-    var expected =   '--#';
-    var err = new TypeError('predicate must be a function');
-
-    expectObservable(source.every(123)).toBe(expected, undefined, err);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-  });
-
   it('should propagate error if predicate eventually throws', function () {
     var source = hot('--a--b--c--d--e--|');
     var sourceSubs = '^       !';
