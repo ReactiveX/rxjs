@@ -1,20 +1,13 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {bindCallback} from '../util/bindCallback';
 
-export function _finally<T>(finallySelector: () => void, thisArg?: any) {
-  return this.lift(new FinallyOperator(thisArg ?
-    <() => void> bindCallback(finallySelector, thisArg, 2) :
-    finallySelector));
+export function _finally<T>(finallySelector: () => void) {
+  return this.lift(new FinallyOperator(finallySelector));
 }
 
 class FinallyOperator<T, R> implements Operator<T, R> {
-
-  finallySelector: () => void;
-
-  constructor(finallySelector: () => void) {
-    this.finallySelector = finallySelector;
+  constructor(private finallySelector: () => void) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
