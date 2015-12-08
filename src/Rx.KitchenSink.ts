@@ -15,8 +15,8 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
   min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
   mergeScan?: <T, R>(project: (acc: R, x: T) => Observable<R>, seed: R, concurrent?: number) => Observable<R>;
-  switchFirst?: () => Observable<T>;
-  switchFirstMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
+  exhaust?: () => Observable<T>;
+  exhaustMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
                        projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
 }
 

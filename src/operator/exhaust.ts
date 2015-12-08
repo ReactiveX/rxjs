@@ -5,7 +5,7 @@ import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export function switchFirst<T>(): Observable<T> {
+export function exhaust<T>(): Observable<T> {
   return this.lift(new SwitchFirstOperator());
 }
 

@@ -5,7 +5,7 @@ var Promise = require('promise');
 var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
-describe('Observable.prototype.switchFirstMap()', function () {
+describe('Observable.prototype.exhaustMap()', function () {
   it('should handle outer throw', function () {
     var x =   cold('--a--b--c--|');
     var xsubs = [];
@@ -13,7 +13,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
     var e1subs =   '(^!)';
     var expected = '#';
 
-    var result = e1.switchFirstMap(function () { return x; });
+    var result = e1.exhaustMap(function () { return x; });
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -27,7 +27,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
     var e1subs =   '(^!)';
     var expected = '|';
 
-    var result = e1.switchFirstMap(function () { return x; });
+    var result = e1.exhaustMap(function () { return x; });
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -40,7 +40,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
     var e1subs =   '^';
     var expected = '-';
 
-    var result = e1.switchFirstMap(function () { return x; });
+    var result = e1.exhaustMap(function () { return x; });
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -52,7 +52,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
     var e1subs =   '^  !';
     var expected = '---#';
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       throw 'error';
     });
 
@@ -67,7 +67,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
     var e1subs =   '^    !                  ';
     var expected = '-----#                  ';
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return x;
     }, function () {
       throw 'error';
@@ -91,7 +91,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -116,7 +116,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -143,7 +143,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var result = e1
       .mergeMap(function (i) { return Observable.of(i); })
-      .switchFirstMap(function (value) { return observableLookup[value]; })
+      .exhaustMap(function (value) { return observableLookup[value]; })
       .mergeMap(function (i) { return Observable.of(i); });
 
     expectObservable(result, unsub).toBe(expected);
@@ -166,7 +166,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -188,7 +188,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -209,7 +209,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -232,7 +232,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -254,7 +254,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -275,7 +275,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -296,7 +296,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -317,7 +317,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -336,7 +336,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
 
     var observableLookup = { x: x };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     });
 
@@ -370,7 +370,7 @@ describe('Observable.prototype.switchFirstMap()', function () {
       n: ['z', 'n', 1, 3],
     };
 
-    var result = e1.switchFirstMap(function (value) {
+    var result = e1.exhaustMap(function (value) {
       return observableLookup[value];
     }, function (innerValue, outerValue, innerIndex, outerIndex) {
       return [innerValue, outerValue, innerIndex, outerIndex];

@@ -5,7 +5,7 @@ var Promise = require('promise');
 var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
-describe('Observable.prototype.switchFirst()', function () {
+describe('Observable.prototype.exhaust()', function () {
   it('should switch to first immediately-scheduled inner Observable', function () {
     var e1 = cold( '(ab|)');
     var e1subs =   '(^!)';
@@ -13,7 +13,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e2subs = [];
     var expected = '(ab|)';
 
-    expectObservable(Observable.of(e1, e2).switchFirst()).toBe(expected);
+    expectObservable(Observable.of(e1, e2).exhaust()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -23,7 +23,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1subs =   '(^!)';
     var expected = '#';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -32,7 +32,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1subs =   '(^!)';
     var expected = '|';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -41,7 +41,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1subs =   '^';
     var expected = '-';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -55,7 +55,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1 = hot(  '------x-------y-----z-------------|', { x: x, y: y, z: z });
     var expected = '--------a---b---c------g--h---i---|';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(z.subscriptions).toBe(zsubs);
@@ -70,7 +70,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var unsub =    '                !            ';
     var expected = '--------a---b---             ';
 
-    expectObservable(e1.switchFirst(), unsub).toBe(expected);
+    expectObservable(e1.exhaust(), unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
   });
@@ -86,7 +86,7 @@ describe('Observable.prototype.switchFirst()', function () {
 
     var result = e1
       .mergeMap(function (i) { return Observable.of(i); })
-      .switchFirst()
+      .exhaust()
       .mergeMap(function (i) { return Observable.of(i); });
 
     expectObservable(result, unsub).toBe(expected);
@@ -104,7 +104,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1 = hot(  '---x---y------z----------| ', { x: x, y: y, z: z });
     var expected = '-----a---b-------f--g---h--';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(z.subscriptions).toBe(zsubs);
@@ -118,7 +118,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1 = hot(  '------(xy)------------|', { x: x, y: y });
     var expected = '--------a---b---c-----|';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
   });
@@ -131,7 +131,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1 = hot(  '------x-------y------|       ', { x: x, y: y });
     var expected = '--------a---#                ';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
   });
@@ -144,7 +144,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1 = hot(  '------x-------y-------#      ', { x: x, y: y });
     var expected = '--------a---b---c-----#      ';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
   });
@@ -154,7 +154,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1subs =   '^     !';
     var expected = '------|';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -163,7 +163,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1subs =   '^';
     var expected = '-';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -173,7 +173,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var e1 = hot(  '------x---------------|', { x: x });
     var expected = '--------a---b---c-----|';
 
-    expectObservable(e1.switchFirst()).toBe(expected);
+    expectObservable(e1.exhaust()).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
   });
 
@@ -181,7 +181,7 @@ describe('Observable.prototype.switchFirst()', function () {
     var expected = [1];
 
     Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
-      .switchFirst()
+      .exhaust()
       .subscribe(function (x) {
         expect(x).toBe(expected.shift());
       }, null, function () {
@@ -192,7 +192,7 @@ describe('Observable.prototype.switchFirst()', function () {
 
   it('should handle an observable of promises, where one rejects', function (done) {
     Observable.of(Promise.reject(2), Promise.resolve(1))
-      .switchFirst()
+      .exhaust()
       .subscribe(function (x) {
         expect(false).toBe(true);
       }, function (err) {

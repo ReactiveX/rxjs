@@ -6,11 +6,11 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export function switchFirstMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
-                                         resultSelector?: (outerValue: T,
-                                                           innerValue: R,
-                                                           outerIndex: number,
-                                                           innerIndex: number) => R2): Observable<R> {
+export function exhaustMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
+                                     resultSelector?: (outerValue: T,
+                                                       innerValue: R,
+                                                       outerIndex: number,
+                                                       innerIndex: number) => R2): Observable<R> {
   return this.lift(new SwitchFirstMapOperator(project, resultSelector));
 }
 
