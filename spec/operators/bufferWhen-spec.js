@@ -117,6 +117,34 @@ describe('Observable.prototype.bufferWhen', function () {
     expectSubscriptions(closings[2].subscriptions).toBe([]);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
+    var subs =        '^                 !                       ';
+    var closings = [
+      cold(           '---------------(s|)                       '),
+      cold(                          '----------(s|)             '),
+      cold(                                    '-------------(s|)')];
+    var closeSubs =  ['^              !                          ',
+                      '               ^  !                       '];
+    var expected =    '---------------x---                       ';
+    var unsub =       '                  !                       ';
+    var values = {
+      x: ['b','c','d']
+    };
+
+    var i = 0;
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .bufferWhen(function () { return closings[i++]; })
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+    expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
+    expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
+    expectSubscriptions(closings[2].subscriptions).toBe([]);
+  });
+
   it('should propagate error thrown from closingSelector', function () {
     var e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
     var subs =        '^              !                          ';
