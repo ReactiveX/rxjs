@@ -115,6 +115,34 @@ describe('Observable.prototype.expand()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var values = {
+      a: 1,
+      b: 1 + 1, // a + a,
+      c: 2 + 2, // b + b,
+      d: 4 + 4, // c + c,
+      e: 8 + 8, // d + d
+    };
+    var e1 =   hot('(a|)', values);
+    var e1subs =   '^      !  ';
+    var e2shape =  '---(z|)   ';
+    var expected = 'a--b--c-  ';
+    var unsub =    '       !  ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .expand(function (x) {
+        if (x === 16) {
+          return Observable.empty();
+        }
+        return cold(e2shape, { z: x + x });
+      })
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should allow concurrent expansions', function () {
     var values = {
       a: 1,
