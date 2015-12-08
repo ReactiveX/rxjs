@@ -73,6 +73,25 @@ describe('Observable.prototype.reduce()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =     hot('--a--b--|');
+    var e1subs =     '^     !  ';
+    var expected =   '-------  ';
+    var unsub =      '      !  ';
+
+    var reduceFunction = function (o, x) {
+      return o + x;
+    };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .reduce(reduceFunction)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should raise error if source emits and raises error with seed', function () {
     var e1 =   hot('--a--b--#');
     var e1subs =   '^       !';
