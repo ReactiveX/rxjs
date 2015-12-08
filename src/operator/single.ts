@@ -5,42 +5,33 @@ import {Observer} from '../Observer';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {bindCallback} from '../util/bindCallback';
 import {EmptyError} from '../util/EmptyError';
 
 export function single<T>(predicate?: (value: T,
                                        index: number,
-                                       source: Observable<T>) => boolean,
-                          thisArg?: any): Observable<T> {
-  return this.lift(new SingleOperator(predicate, thisArg, this));
+                                       source: Observable<T>) => boolean): Observable<T> {
+  return this.lift(new SingleOperator(predicate, this));
 }
 
 class SingleOperator<T, R> implements Operator<T, R> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
               private source?: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new SingleSubscriber(subscriber, this.predicate, this.thisArg, this.source);
+    return new SingleSubscriber(subscriber, this.predicate, this.source);
   }
 }
 
 class SingleSubscriber<T> extends Subscriber<T> {
-  private predicate: Function;
   private seenValue: boolean = false;
   private singleValue: T;
   private index: number = 0;
 
   constructor(destination: Observer<T>,
-              predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
+              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private source?: Observable<T>) {
     super(destination);
-
-    if (typeof predicate === 'function') {
-      this.predicate = bindCallback(predicate, thisArg, 3);
-    }
   }
 
   private applySingleValue(value): void {
