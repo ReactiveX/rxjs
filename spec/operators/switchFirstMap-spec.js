@@ -5,7 +5,7 @@ var Promise = require('promise');
 var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
-describe('Observable.prototype.switchMapFirst()', function () {
+describe('Observable.prototype.switchFirstMap()', function () {
   it('should handle outer throw', function () {
     var x =   cold('--a--b--c--|');
     var xsubs = [];
@@ -13,7 +13,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
     var e1subs =   '(^!)';
     var expected = '#';
 
-    var result = e1.switchMapFirst(function () { return x; });
+    var result = e1.switchFirstMap(function () { return x; });
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -27,7 +27,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
     var e1subs =   '(^!)';
     var expected = '|';
 
-    var result = e1.switchMapFirst(function () { return x; });
+    var result = e1.switchFirstMap(function () { return x; });
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -40,7 +40,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
     var e1subs =   '^';
     var expected = '-';
 
-    var result = e1.switchMapFirst(function () { return x; });
+    var result = e1.switchFirstMap(function () { return x; });
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -52,7 +52,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
     var e1subs =   '^  !';
     var expected = '---#';
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       throw 'error';
     });
 
@@ -67,7 +67,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
     var e1subs =   '^    !                  ';
     var expected = '-----#                  ';
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return x;
     }, function () {
       throw 'error';
@@ -91,7 +91,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -116,7 +116,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -140,7 +140,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -162,7 +162,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -183,7 +183,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -206,7 +206,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y, z: z };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -228,7 +228,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -249,7 +249,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -270,7 +270,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -291,7 +291,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x, y: y };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -310,7 +310,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
 
     var observableLookup = { x: x };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     });
 
@@ -344,7 +344,7 @@ describe('Observable.prototype.switchMapFirst()', function () {
       n: ['z', 'n', 1, 3],
     };
 
-    var result = e1.switchMapFirst(function (value) {
+    var result = e1.switchFirstMap(function (value) {
       return observableLookup[value];
     }, function (innerValue, outerValue, innerIndex, outerIndex) {
       return [innerValue, outerValue, innerIndex, outerIndex];

@@ -6,15 +6,15 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export function switchMapFirst<T, R, R2>(project: (value: T, index: number) => Observable<R>,
+export function switchFirstMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
                                          resultSelector?: (outerValue: T,
                                                            innerValue: R,
                                                            outerIndex: number,
                                                            innerIndex: number) => R2): Observable<R> {
-  return this.lift(new SwitchMapFirstOperator(project, resultSelector));
+  return this.lift(new SwitchFirstMapOperator(project, resultSelector));
 }
 
-class SwitchMapFirstOperator<T, R, R2> implements Operator<T, R> {
+class SwitchFirstMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
               private resultSelector?: (outerValue: T,
                                         innerValue: R,
@@ -23,11 +23,11 @@ class SwitchMapFirstOperator<T, R, R2> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new SwitchMapFirstSubscriber(subscriber, this.project, this.resultSelector);
+    return new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector);
   }
 }
 
-class SwitchMapFirstSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
+class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private hasSubscription: boolean = false;
   private hasCompleted: boolean = false;
   private index: number = 0;

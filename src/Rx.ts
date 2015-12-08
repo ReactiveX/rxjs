@@ -87,7 +87,7 @@ import './add/operator/subscribeOn';
 import './add/operator/switch';
 import './add/operator/switchFirst';
 import './add/operator/switchMap';
-import './add/operator/switchMapFirst';
+import './add/operator/switchFirstMap';
 import './add/operator/switchMapTo';
 import './add/operator/take';
 import './add/operator/takeUntil';
