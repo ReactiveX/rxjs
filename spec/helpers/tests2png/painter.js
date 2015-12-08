@@ -1,3 +1,4 @@
+/*eslint-disable no-param-reassign, no-use-before-define*/
 var gm = require('gm');
 var _ = require('lodash');
 
@@ -66,6 +67,12 @@ function measureObservableArrow(maxFrame, streamData) {
   return {startX: startX, endX: endX};
 }
 
+function measureInclination(startX, endX, angle) {
+  var length = endX - startX;
+  var cotAngle = Math.cos(angle * TO_RAD) / Math.sin(angle * TO_RAD);
+  return (length / cotAngle);
+}
+
 function measureNestedStreamHeight(maxFrame, streamData) {
   var measurements = measureObservableArrow(maxFrame, streamData);
   var startX = measurements.startX;
@@ -76,22 +83,16 @@ function measureNestedStreamHeight(maxFrame, streamData) {
 function measureStreamHeight(maxFrame) {
   return function measureStreamHeightWithMaxFrame(streamData) {
     var maxMessageHeight = streamData.messages
-      .map(function(message) {
+      .map(function (message) {
         return isNestedStreamData(message) ?
           measureNestedStreamHeight(maxFrame, message.notification.value) + OBSERVABLE_HEIGHT * 0.25 :
           OBSERVABLE_HEIGHT * 0.5;
       })
-      .reduce(function(acc, curr) {
+      .reduce(function (acc, curr) {
         return curr > acc ? curr : acc;
       }, 0);
     return OBSERVABLE_HEIGHT * 0.5 + maxMessageHeight;
-  }
-}
-
-function measureInclination(startX, endX, angle) {
-  var length = endX - startX;
-  var cotAngle = Math.cos(angle * TO_RAD) / Math.sin(angle * TO_RAD);
-  return (length / cotAngle);
+  };
 }
 
 function drawObservableArrow(out, maxFrame, y, angle, streamData) {
@@ -241,7 +242,6 @@ function sanitizeHigherOrderInputStreams(inputStreams, outputStream) {
     });
   });
 }
-
 
 module.exports = function painter(inputStreams, operatorLabel, outputStream, filename) {
   var maxFrame = getMaxFrame(inputStreams.concat(outputStream));
