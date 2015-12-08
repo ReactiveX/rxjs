@@ -105,6 +105,21 @@ describe('Observable.prototype.throttleTime()', function () {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('-a--(bc)-------d----------------');
+    var subs =     '^                              !';
+    var expected = '-a-------------d----------------';
+    var unsub =    '                               !';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .throttleTime(50, rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
   it('should throttle values until source raises error', function () {
     var e1 =   hot('-a--(bc)-------d---------------#');
     var subs =     '^                              !';
