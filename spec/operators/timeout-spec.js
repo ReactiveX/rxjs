@@ -60,6 +60,21 @@ describe('Observable.prototype.timeout()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('--a--b--c---d--e--|');
+    var e1subs =   '^         !        ';
+    var expected = '--a--b--c--        ';
+    var unsub =    '          !        ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .timeout(50, null, rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should timeout after a specified timeout period between emit with default ' +
   'error while source emits', function () {
     var e1 =   hot('---a---b---c------d---e---|');
