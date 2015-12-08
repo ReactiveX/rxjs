@@ -25,7 +25,7 @@ install:
   - npm install && npm run lint
 
 script:
-  - npm test && node ./node_modules/markdown-doctest/bin/cmd.js && npm run cover #&& npm run check_circular_dependencies
+  - npm test && node ./node_modules/markdown-doctest/bin/cmd.js && npm run cover && npm run check_circular_dependencies
 
 after_script:
   - cat ./coverage/coverage-remapped.lcov  | ./node_modules/coveralls/bin/coveralls.js
