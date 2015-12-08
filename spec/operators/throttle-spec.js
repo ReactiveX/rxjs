@@ -67,6 +67,24 @@ describe('Observable.prototype.throttle()', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('-a-x-y-z-xyz-x-y-z----b--x-x-|');
+    var e1subs =   '^             !               ';
+    var e2 =  cold( '------------------|          ');
+    var e2subs =   ' ^            !               ';
+    var expected = '-a-------------               ';
+    var unsub =    '              !               ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .throttle(function () { return e2; })
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should handle a busy producer emitting a regular repeating sequence', function () {
     var e1 =   hot('abcdefabcdefabcdefabcdefa|');
     var e1subs =   '^                        !';
