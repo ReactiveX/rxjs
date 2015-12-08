@@ -135,6 +135,15 @@ describe('ScalarObservable', function () {
       expect(r).toBe(s);
     });
 
+    it('should reduce with custom thisArg', function () {
+      var s = new ScalarObservable(1);
+      var reducer = { add: function (a, b) { return a + b; } };
+      var reduceFunction = function (a, x) { return this.add(a, x); };
+      var r = s.reduce(reduceFunction, 1, reducer);
+      expect(r instanceof ScalarObservable).toBe(true);
+      expect(r.value).toBe(2);
+    });
+
     it('should return ErrorObservable if projection throws', function () {
       var s = new ScalarObservable(1);
       var r = s.reduce(function (a, x) { throw 'error'; }, 1);

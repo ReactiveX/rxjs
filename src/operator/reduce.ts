@@ -1,6 +1,6 @@
 import {Observable} from '../Observable';
 import {ReduceOperator} from './reduce-support';
 
-export function reduce<T, R>(project: (acc: R, x: T) => R, seed?: R): Observable<R> {
-  return this.lift(new ReduceOperator(project, seed));
+export function reduce<T, R>(project: (acc: R, x: T) => R, seed?: R, thisArg?: any): Observable<R> {
+  return this.lift(new ReduceOperator(project, seed, thisArg));
 }
