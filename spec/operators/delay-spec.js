@@ -87,6 +87,21 @@ describe('Observable.prototype.delay()', function () {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('---a---b----');
+    var e1subs =   '^       !   ';
+    var expected = '------a--   ';
+    var unsub =    '        !   ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .delay(30, rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should not complete when source never completes', function () {
     var e1 = Observable.never();
     var expected = '-';
