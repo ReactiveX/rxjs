@@ -110,11 +110,12 @@ export class Observable<T> implements CoreOperators<T>  {
   /**
    * @method forEach
    * @param {Function} next a handler for each value emitted by the observable
-   * @param {PromiseConstructor} PromiseCtor? a constructor function used to instantiate the Promise
+   * @param {any} [thisArg] a `this` context for the `next` handler function
+   * @param {PromiseConstructor} [PromiseCtor] a constructor function used to instantiate the Promise
    * @returns {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, PromiseCtor?: PromiseConstructor): Promise<void> {
+  forEach(next: (value: T) => void, thisArg: any, PromiseCtor?: PromiseConstructor): Promise<void> {
     if (!PromiseCtor) {
       if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
         PromiseCtor = root.Rx.config.Promise;
@@ -127,9 +128,27 @@ export class Observable<T> implements CoreOperators<T>  {
       throw new Error('no Promise impl found');
     }
 
-    return new PromiseCtor<void>((resolve, reject) => {
-      this.subscribe(next, reject, resolve);
-    });
+    let nextHandler;
+
+    if (thisArg) {
+      nextHandler = function nextHandlerFn(value: any): void {
+        const { thisArg, next } = <any>nextHandlerFn;
+        return next.call(thisArg, value);
+      };
+      nextHandler.thisArg = thisArg;
+      nextHandler.next = next;
+    } else {
+      nextHandler = next;
+    }
+
+    const promiseCallback = function promiseCallbackFn(resolve, reject) {
+      const { source, nextHandler } = <any>promiseCallbackFn;
+      source.subscribe(nextHandler, reject, resolve);
+    };
+    (<any>promiseCallback).source = this;
+    (<any>promiseCallback).nextHandler = nextHandler;
+
+    return new PromiseCtor<void>(promiseCallback);
   }
 
   _subscribe(subscriber: Subscriber<any>): Subscription<T> | Function | void {

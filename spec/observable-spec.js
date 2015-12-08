@@ -27,7 +27,7 @@ describe('Observable', function () {
       var expected = [1,2,3];
       var result = Observable.of(1,2,3).forEach(function (x) {
         expect(x).toBe(expected.shift());
-      }, Promise)
+      }, null, Promise)
       .then(done);
 
       expect(typeof result.then).toBe('function');
@@ -41,7 +41,7 @@ describe('Observable', function () {
       }, function (err) {
         expect(err).toBe('bad');
         done();
-      }, Promise);
+      }, null, Promise);
     });
 
     it('should allow Promise to be globally configured', function (done) {
@@ -59,6 +59,18 @@ describe('Observable', function () {
         expect(wasCalled).toBe(true);
         done();
       });
+    });
+
+    it('should accept a thisArg argument', function (done) {
+      var expected = [1,2,3];
+      var thisArg = {};
+      var result = Observable.of(1,2,3).forEach(function (x) {
+        expect(this).toBe(thisArg);
+        expect(x).toBe(expected.shift());
+      }, thisArg, Promise)
+      .then(done);
+
+      expect(typeof result.then).toBe('function');
     });
   });
 
