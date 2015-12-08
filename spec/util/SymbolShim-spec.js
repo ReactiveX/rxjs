@@ -25,6 +25,18 @@ describe('SymbolShim', function () {
     expect(test).toBe('@@test');
   });
 
+  it('should add a for method even if Symbol already exists but does not have for', function () {
+    var root = {
+      Symbol: {}
+    };
+    var result = polyfillSymbol(root);
+
+    expect(typeof result.for).toBe('function');
+
+    var test = result.for('test');
+    expect(test).toBe('@@test');
+  });
+
   describe('when symbols exists on root', function () {
     it('should use symbols from root', function () {
       var root = {
@@ -59,17 +71,15 @@ describe('SymbolShim', function () {
       expect(result.observable).toBe('@@observable');
     });
   });
-});
 
-describe('ensureIterator', function () {
-  it('should patch root using for symbol if exist', function () {
+  it('should patch root using Symbol.for if exist', function () {
     var root = {
       Symbol: {
         for: function (x) { return x; }
       }
     };
-    ensureIterator(root.Symbol, root);
-    expect(root.Symbol.iterator).toBe(root.Symbol.for('iterator'));
+    var result = polyfillSymbol(root);
+    expect(result.iterator).toBe(root.Symbol.for('iterator'));
   });
 
   it('should patch using Set for mozilla bug', function () {
@@ -82,8 +92,8 @@ describe('ensureIterator', function () {
       Symbol: {}
     };
 
-    ensureIterator(root.Symbol, root);
-    expect(root.Symbol.iterator).toBe('@@iterator');
+    var result = polyfillSymbol(root);
+    expect(result.iterator).toBe('@@iterator');
   });
 
   it('should patch using map for es6-shim', function () {
@@ -95,7 +105,7 @@ describe('ensureIterator', function () {
     root.Map.prototype.key = 'iteratorValue';
     root.Map.prototype.entries = 'iteratorValue';
 
-    ensureIterator(root.Symbol, root);
-    expect(root.Symbol.iterator).toBe('key');
+    var result = polyfillSymbol(root);
+    expect(result.iterator).toBe('key');
   });
 });

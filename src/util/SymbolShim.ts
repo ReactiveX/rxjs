@@ -4,14 +4,19 @@ export function polyfillSymbol(root) {
   const Symbol = ensureSymbol(root);
   ensureIterator(Symbol, root);
   ensureObservable(Symbol);
+  ensureFor(Symbol);
   return Symbol;
+}
+
+export function ensureFor(Symbol) {
+  if (!Symbol.for) {
+    Symbol.for = symbolForPolyfill;
+  }
 }
 
 export function ensureSymbol(root) {
   if (!root.Symbol) {
-    root.Symbol = {
-      for: symbolForPolyfill
-    };
+    root.Symbol = {};
   }
   return root.Symbol;
 }
