@@ -134,6 +134,23 @@ describe('Observable.prototype.window', function () {
     expectObservable(result, unsub).toBe(expected, expectedValues);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = hot('-1-2-^3-4-5-6-7-8-9-|         ');
+    var closings = hot('---^---x---x---x---x---x---|');
+    var expected =        'a---b----                ';
+    var a = cold(         '-3-4|                    ');
+    var b = cold(             '-5-6-                ');
+    var unsub =           '        !                ';
+    var expectedValues = { a: a, b: b };
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .window(closings)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, expectedValues);
+  });
+
   it('should make outer emit error when closing throws', function () {
     var source = hot('-1-2-^3-4-5-6-7-8-9-#         ');
     var subs =            '^   !                    ';
