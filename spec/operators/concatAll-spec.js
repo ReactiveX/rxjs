@@ -291,6 +291,24 @@ describe('Observable.prototype.concatAll()', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   cold('---a-a--a|            ');
+    var e1subs =    '^        !            ';
+    var e2 =   cold(         '-----b-b--b-|');
+    var e2subs =    '         ^       !    ';
+    var expected =  '---a-a--a-----b-b-    ';
+    var unsub =     '                 !    ';
+
+    var result = Observable.of(e1, e2)
+      .mergeMap(function (x) { return Observable.of(x); })
+      .concatAll()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should raise error from first source and does not emit from second source', function () {
     var e1 =   cold('--#');
     var e1subs =    '^ !';
