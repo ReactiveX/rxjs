@@ -570,4 +570,22 @@ describe('zip', function () {
       expect(vals).toDeepEqual(r[i++]);
     }, null, done);
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var a =    hot('---1---2---3---|');
+    var unsub =    '         !';
+    var asubs =    '^        !';
+    var b =    hot('--4--5--6--7--8--|');
+    var bsubs =    '^        !';
+    var expected = '---x---y--';
+
+    var r = a
+      .mergeMap(function (x) { return Observable.of(x); })
+      .zip(b)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(r, unsub).toBe(expected, { x: ['1', '4'], y: ['2', '5']});
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+    expectSubscriptions(b.subscriptions).toBe(bsubs);
+  });
 });
