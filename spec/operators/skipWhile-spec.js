@@ -160,23 +160,6 @@ describe('Observable.prototype.skipWhile()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should accept a thisArg', function () {
-    var source = hot('-1-^--2--3--4--5--6--|');
-    var sourceSubs =    '^                 !';
-    var expected =      '---------4--5--6--|';
-
-    function Skiper() {
-      this.doSkip = function (v) { return +v < 4; };
-    }
-
-    var skiper = new Skiper();
-
-    expectObservable(
-      source.skipWhile(function (v) { return this.doSkip(v); }, skiper)
-    ).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-  });
-
   it('should handle Observable.empty', function () {
     var source = cold('|');
     var subs =        '(^!)';
