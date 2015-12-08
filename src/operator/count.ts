@@ -16,7 +16,6 @@ import {errorObject} from '../util/errorObject';
  *   - `value`: the value from the source observable
  *   - `index`: the "index" of the value from the source observable
  *   - `source`: the source observable instance itself.
- * @param {any} [thisArg] the optional `this` context to use in the `predicate` function
  * @returns {Observable} an observable of one number that represents the count as described
  * above
  */
