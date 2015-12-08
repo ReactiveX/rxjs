@@ -34,6 +34,19 @@ describe('ScalarObservable', function () {
       expect(r.value).toBe('1!!!');
     });
 
+    it('should map using a custom thisArg', function () {
+      var s = new ScalarObservable(1);
+      var foo = 42;
+      var selector = function (x) {
+        expect(this).toEqual(foo);
+        return x + '!!!';
+      };
+      var r = s.map(selector, 42);
+
+      expect(r instanceof ScalarObservable).toBe(true);
+      expect(r.value).toBe('1!!!');
+    });
+
     it('should return an ErrorObservable if map errors', function () {
       var s = new ScalarObservable(1);
       var r = s.map(function (x) { throw 'bad!'; });
@@ -76,6 +89,20 @@ describe('ScalarObservable', function () {
     it('should return itself if the filter matches its value', function () {
       var s = new ScalarObservable(1);
       var r = s.filter(function (x) { return x === 1; });
+      expect(s).toBe(r);
+    });
+
+    it('should filter using a custom thisArg', function () {
+      var s = new ScalarObservable(1);
+      var filterer = {
+        filter1: function (x) { return x > 0; },
+        filter2: function (x) { return x === 1; }
+      };
+
+      var r = s
+        .filter(function (x) { return this.filter1(x); }, filterer)
+        .filter(function (x) { return this.filter2(x); }, filterer);
+
       expect(s).toBe(r);
     });
 
