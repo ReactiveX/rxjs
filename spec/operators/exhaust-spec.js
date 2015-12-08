@@ -1,5 +1,5 @@
 /* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Promise = require('promise');
 
 var Observable = Rx.Observable;
