@@ -13,6 +13,9 @@ import {errorObject} from '../util/errorObject';
  * @returns {Observable} a observable of projected values
  */
 export function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
+  if (typeof project !== 'function') {
+    throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
+  }
   return this.lift(new MapOperator(project, thisArg));
 }
 

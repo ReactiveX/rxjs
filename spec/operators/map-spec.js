@@ -19,6 +19,12 @@ describe('Observable.prototype.map()', function () {
     expectSubscriptions(a.subscriptions).toBe(asubs);
   });
 
+  it('should throw an error if not passed a function', function () {
+    expect(function () {
+      Observable.of(1, 2, 3).map('potato');
+    }).toThrow(new TypeError('argument is not a function. Are you looking for `mapTo()`?'));
+  });
+
   it('should map multiple values', function () {
     var a =   cold('--1--2--3--|');
     var asubs =    '^          !';
