@@ -122,4 +122,26 @@ describe('Observable.prototype.windowTime', function () {
 
     expectObservable(result, unsub).toBe(expected, values);
   });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
+    var sourcesubs =         '^             !             ';
+    //  100 frames            0---------1---------2------|
+    //  50                     ----|
+    //  50                               ----|
+    //  50                                         ----|
+    var expected =           'x---------y----             ';
+    var x = cold(            '---a-|                      ');
+    var y = cold(                      '--d--             ');
+    var unsub =              '              !             ';
+    var values = { x: x, y: y };
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .windowTime(50, 100, rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(sourcesubs);
+  });
 });
