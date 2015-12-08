@@ -240,7 +240,7 @@ export class Observable<T> implements CoreOperators<T>  {
   publishBehavior: (value: any) => ConnectableObservable<T>;
   publishReplay: (bufferSize?: number, windowTime?: number, scheduler?: Scheduler) => ConnectableObservable<T>;
   publishLast: () => ConnectableObservable<T>;
-  reduce: <R>(project: (acc: R, x: T) => R, seed?: R) => Observable<R>;
+  reduce: <R>(project: (acc: R, x: T) => R, seed?: R, thisArg?: any) => Observable<R>;
   repeat: (count?: number) => Observable<T>;
   retry: (count?: number) => Observable<T>;
   retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;

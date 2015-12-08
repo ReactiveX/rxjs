@@ -30,6 +30,23 @@ describe('Observable.prototype.reduce()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should reduce with custom thisArg', function () {
+    var e1 =     hot('--a--b--c--|');
+    var e1subs =     '^          !';
+    var expected =   '-----------(x|)';
+
+    var reducer = {
+      add: function (a, b) { return a + b; }
+    };
+    var reduceFunction = function (o, x) {
+      return this.add(o, x);
+    };
+    var r = e1.reduce(reduceFunction, '', reducer);
+
+    expectObservable(r).toBe(expected, {x: 'abc'});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should reduce with seed if source is empty', function () {
     var e1 = hot('--a--^-------|');
     var e1subs =      '^       !';

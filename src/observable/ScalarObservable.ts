@@ -75,11 +75,11 @@ proto.filter = function <T>(select: (x: T, ix?: number) => boolean, thisArg?: an
   }
 };
 
-proto.reduce = function <T, R>(project: (acc: R, x: T) => R, seed?: R): Observable<R> {
+proto.reduce = function <T, R>(project: (acc: R, x: T) => R, seed?: R, thisArg?: any): Observable<R> {
   if (typeof seed === 'undefined') {
     return <any>this;
   }
-  let result = tryCatch(project)(seed, this.value);
+  let result = tryCatch(project).call(thisArg || this, seed, this.value);
   if (result === errorObject) {
     return new ErrorObservable(errorObject.e);
   } else {
