@@ -258,3 +258,12 @@ export class Observable<T> implements CoreOperators<T>  {
   zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 }
+
+//import after Observable<T> is declared and exported
+import {ArrayObservable} from './observable/fromArray';
+
+Observable.fromArray = ArrayObservable.create;
+Observable.of = ArrayObservable.of;
+
+import {FromObservable} from './observable/from';
+Observable.from = FromObservable.create;
