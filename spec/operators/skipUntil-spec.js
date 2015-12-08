@@ -64,6 +64,24 @@ describe('Observable.prototype.skipUntil()', function () {
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =     hot('--a--b--c--d--e----|');
+    var e1subs =     '^        !          ';
+    var skip =   hot('-------------x--|   ');
+    var skipSubs =   '^        !          ';
+    var expected =  ('----------          ');
+    var unsub =      '         !          ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .skipUntil(skip)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(skip.subscriptions).toBe(skipSubs);
+  });
+
   it('should skip all element when another observable is empty', function () {
     var e1 =   hot('--a--b--c--d--e--|');
     var e1subs =   '^                !';
