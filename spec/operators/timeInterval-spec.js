@@ -68,6 +68,26 @@ describe('Observable.prototype.timeInterval()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('-a--b-----c---d---|');
+    var e1subs =   '^      !           ';
+    var expected = '-y--z---           ';
+    var unsub =    '       !           ';
+
+    var expectedValue = {
+      y: new Rx.TimeInterval('a', 10),
+      z: new Rx.TimeInterval('b', 30)
+    };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .timeInterval(rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, expectedValue);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should not completes if source never completes', function () {
     var e1 =  cold('-');
     var e1subs =   '^';
