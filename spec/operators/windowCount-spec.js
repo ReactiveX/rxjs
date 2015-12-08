@@ -102,4 +102,22 @@ describe('Observable.prototype.windowCount', function () {
 
     expectObservable(result, unsub).toBe(expected, values);
   });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = hot('^-a--b--c--d--|');
+    var expected =   'w-x--y--z-     ';
+    var w = cold(    '--a--(b|)      ');
+    var x = cold(      '---b--(c|)   ');
+    var y = cold(         '---c-     ');
+    var z = cold(            '--     ');
+    var unsub =      '         !     ';
+    var values = { w: w, x: x, y: y, z: z };
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .windowCount(2, 1)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+  });
 });
