@@ -92,6 +92,25 @@ describe('Observable.prototype.skipWhile()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = hot('--a--b-^-c--d--e--f--g--h--|');
+    var sourceSubs =        '^          !';
+    var expected =          '-----d--e---';
+    var unsub =             '           !';
+
+    var predicate = function (v, index) {
+      return index < 1;
+    };
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .skipWhile(predicate)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should skip using value with source throws', function () {
     var source = hot('--a--b-^-c--d--e--f--g--h--#');
     var sourceSubs =        '^                   !';
