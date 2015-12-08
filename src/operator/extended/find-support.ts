@@ -4,7 +4,6 @@ import {Subscriber} from '../../Subscriber';
 
 import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
-import {bindCallback} from '../../util/bindCallback';
 
 export class FindValueOperator<T, R> implements Operator<T, R> {
   constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
@@ -19,19 +18,14 @@ export class FindValueOperator<T, R> implements Operator<T, R> {
 }
 
 export class FindValueSubscriber<T> extends Subscriber<T> {
-  private predicate: Function;
   private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private source: Observable<T>,
               private yieldIndex: boolean,
               private thisArg?: any) {
     super(destination);
-
-    if (typeof predicate === 'function') {
-      this.predicate = bindCallback(predicate, thisArg, 3);
-    }
   }
 
   private notifyComplete(value: any): void {
@@ -42,10 +36,9 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
   }
 
   _next(value: T): void {
-    const predicate = this.predicate;
-
-    let index = this.index++;
-    let result = tryCatch(predicate)(value, index, this.source);
+    const { predicate, thisArg } = this;
+    const index = this.index++;
+    const result = tryCatch(predicate).call(thisArg || this, value, index, this.source);
     if (result === errorObject) {
       this.destination.error(result.e);
     } else if (result) {

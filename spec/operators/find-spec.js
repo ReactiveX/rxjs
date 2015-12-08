@@ -7,6 +7,12 @@ describe('Observable.prototype.find()', function () {
     return true;
   }
 
+  it('should throw if not provided a function', function () {
+    expect(function () {
+      Observable.of('yut', 'yee', 'sam').find('yee');
+    }).toThrow(new TypeError('predicate is not a function'));
+  });
+
   it('should not emit if source does not emit', function () {
     var source = hot('-');
     var subs =       '^';
