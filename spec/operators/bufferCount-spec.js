@@ -59,6 +59,25 @@ describe('Observable.prototype.bufferCount', function () {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var values = {
+      v: ['a', 'b', 'c'],
+      w: ['c', 'd', 'e']
+    };
+    var e1 =   hot('--a--b--c--d--e--f--g--h--i--|');
+    var subs =     '^                 !           ';
+    var expected = '--------v-----w----           ';
+    var unsub =    '                  !           ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .bufferCount(3, 2)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
   it('should raise error if source raise error before reaching specified buffer count', function () {
     var e1 =   hot('--a--b--c--d--#');
     var e1subs =   '^             !';
