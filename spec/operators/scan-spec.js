@@ -134,4 +134,27 @@ describe('Observable.prototype.scan()', function () {
     expectObservable(source, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 = hot('--a--^--b--c--d--e--f--g--|');
+    var e1subs =      '^             !       ';
+    var expected =    '---u--v--w--x--       ';
+    var unsub =       '              !       ';
+    var values = {
+      u: ['b'],
+      v: ['b', 'c'],
+      w: ['b', 'c', 'd'],
+      x: ['b', 'c', 'd', 'e'],
+      y: ['b', 'c', 'd', 'e', 'f'],
+      z: ['b', 'c', 'd', 'e', 'f', 'g']
+    };
+
+    var source = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .scan(function (acc, x) { return [].concat(acc, x); }, [])
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(source, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
