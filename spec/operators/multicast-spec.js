@@ -117,6 +117,34 @@ describe('Observable.prototype.multicast()', function () {
     connection = multicasted.connect();
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source =     cold('-1-2-3----4-|');
+    var sourceSubs =      '^        !   ';
+    var multicasted = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .multicast(function () { return new Subject(); });
+    var subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    var expected1   =     '-1-2-3----   ';
+    var subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    var expected2   =     '    -3----   ';
+    var subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    var expected3   =     '        --   ';
+    var unsub =           '         u   ';
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    // Set up unsubscription action
+    var connection;
+    expectObservable(hot(unsub).do(function () {
+      connection.unsubscribe();
+    })).toBe(unsub);
+
+    connection = multicasted.connect();
+  });
+
   it('should multicast an empty source', function () {
     var source = cold('|');
     var sourceSubs =  '(^!)';
