@@ -40,6 +40,21 @@ describe('Observable.prototype.single()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =    hot('--a--b--c--|');
+    var e1subs =    '^  !        ';
+    var expected =  '----        ';
+    var unsub =     '   !        ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .single()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should raise error from empty predicate if observable emits error', function () {
     var e1 =    hot('--a--b^--#');
     var e1subs =          '^  !';
