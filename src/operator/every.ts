@@ -14,7 +14,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
   let result;
 
   if (source._isScalar) {
-    result = tryCatch(predicate)(source.value, 0, source);
+    result = tryCatch(predicate).call(thisArg || this, source.value, 0, source);
     if (result === errorObject) {
       return new ErrorObservable(errorObject.e, source.scheduler);
     } else {
@@ -24,7 +24,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
 
   if (source instanceof ArrayObservable) {
     const array = (<ArrayObservable<T>>source).array;
-    let result = tryCatch((array, predicate) => array.every(<any>predicate))(array, predicate);
+    let result = tryCatch((array, predicate, thisArg) => array.every(<any>predicate, thisArg))(array, predicate, thisArg);
     if (result === errorObject) {
       return new ErrorObservable(errorObject.e, source.scheduler);
     } else {
@@ -49,8 +49,8 @@ class EverySubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
+              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private thisArg: any,
               private source?: Observable<T>) {
     super(destination);
   }
@@ -61,10 +61,7 @@ class EverySubscriber<T, R> extends Subscriber<T> {
   }
 
   _next(value: T): void {
-    const { predicate, thisArg, source } = this;
-    const tryCaught = tryCatch(predicate);
-    const index = this.index++;
-    let result = thisArg ? tryCaught.call(thisArg, value, index, source) : tryCaught(value, index, source);
+    const result = tryCatch(this.predicate).call(this.thisArg || this, value, this.index++, this.source);
 
     if (result === errorObject) {
       this.destination.error(result.e);

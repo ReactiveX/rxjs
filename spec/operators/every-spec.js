@@ -11,6 +11,44 @@ describe('Observable.prototype.every()', function () {
     return x % 5 === 0;
   }
 
+  it('should accept thisArg with scalar observables', function () {
+    var thisArg = {};
+    var result;
+
+    Observable.of(1).every(function () {
+      result = this;
+    }, thisArg).subscribe();
+
+    expect(result).toBe(thisArg);
+  });
+
+
+  it('should accept thisArg with array observables', function () {
+    var thisArg = {};
+    var result;
+
+    Observable.of(1,2,3,4).every(function () {
+      result = this;
+    }, thisArg).subscribe();
+
+    expect(result).toBe(thisArg);
+  });
+
+  it('should accept thisArg with ordinary observables', function () {
+    var thisArg = {};
+    var result;
+
+    Observable.create(function (observer) {
+      observer.next(1);
+      observer.complete();
+    })
+    .every(function () {
+      result = this;
+    }, thisArg).subscribe();
+
+    expect(result).toBe(thisArg);
+  });
+
   it('should emit true if source is empty', function () {
     var source = hot('-----|');
     var sourceSubs = '^    !';
