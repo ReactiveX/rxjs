@@ -131,6 +131,27 @@ describe('Observable.prototype.mergeAll()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var x = cold(     'a---b---c---|   ');
+    var xsubs =     '  ^         !     ';
+    var y = cold(        'd---e---f---|');
+    var ysubs =     '     ^      !     ';
+    var e1 =    hot('--x--y--|         ', { x: x, y: y });
+    var e1subs =    '^           !     ';
+    var expected =  '--a--db--ec--     ';
+    var unsub =     '            !     ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .mergeAll()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should merge parallel emissions', function () {
     var x = cold(     '----a----b----c---|');
     var xsubs =     '  ^                 !';
