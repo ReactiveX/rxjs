@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/observable/ConnectableObservable.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/observable/ConnectableObservable.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;../Observable&apos;;
+import { Subscription } from &apos;../Subscription&apos;;
+import { Subscriber } from &apos;../Subscriber&apos;;
+export class ConnectableObservable extends Observable {
+    constructor(source, subjectFactory) {
+        super();
+        this.source = source;
+        this.subjectFactory = subjectFactory;
+    }
+    _subscribe(subscriber) {
+        return this._getSubject().subscribe(subscriber);
+    }
+    _getSubject() {
+        const subject = this.subject;
+        if (subject &amp;&amp; !subject.isUnsubscribed) {
+            return subject;
+        }
+        return (this.subject = this.subjectFactory());
+    }
+    connect() {
+        const source = this.source;
+        let subscription = this.subscription;
+        if (subscription &amp;&amp; !subscription.isUnsubscribed) {
+            return subscription;
+        }
+        subscription = source.subscribe(this._getSubject());
+        subscription.add(new ConnectableSubscription(this));
+        return (this.subscription = subscription);
+    }
+    refCount() {
+        return new RefCountObservable(this);
+    }
+}
+class ConnectableSubscription extends Subscription {
+    constructor(connectable) {
+        super();
+        this.connectable = connectable;
+    }
+    _unsubscribe() {
+        const connectable = this.connectable;
+        connectable.subject = void 0;
+        connectable.subscription = void 0;
+        this.connectable = void 0;
+    }
+}
+class RefCountObservable extends Observable {
+    constructor(connectable, refCount = 0) {
+        super();
+        this.connectable = connectable;
+        this.refCount = refCount;
+    }
+    _subscribe(subscriber) {
+        const connectable = this.connectable;
+        const refCountSubscriber = new RefCountSubscriber(subscriber, this);
+        const subscription = connectable.subscribe(refCountSubscriber);
+        if (!subscription.isUnsubscribed &amp;&amp; ++this.refCount === 1) {
+            refCountSubscriber.connection = this.connection = connectable.connect();
+        }
+        return subscription;
+    }
+}
+class RefCountSubscriber extends Subscriber {
+    constructor(destination, refCountObservable) {
+        super(null);
+        this.destination = destination;
+        this.refCountObservable = refCountObservable;
+        this.connection = refCountObservable.connection;
+        destination.add(this);
+    }
+    _next(value) {
+        this.destination.next(value);
+    }
+    _error(err) {
+        this._resetConnectable();
+        this.destination.error(err);
+    }
+    _complete() {
+        this._resetConnectable();
+        this.destination.complete();
+    }
+    _resetConnectable() {
+        const observable = this.refCountObservable;
+        const obsConnection = observable.connection;
+        const subConnection = this.connection;
+        if (subConnection &amp;&amp; subConnection === obsConnection) {
+            observable.refCount = 0;
+            obsConnection.unsubscribe();
+            observable.connection = void 0;
+            this.unsubscribe();
+        }
+    }
+    _unsubscribe() {
+        const observable = this.refCountObservable;
+        if (observable.refCount === 0) {
+            return;
+        }
+        if (--observable.refCount === 0) {
+            const obsConnection = observable.connection;
+            const subConnection = this.connection;
+            if (subConnection &amp;&amp; subConnection === obsConnection) {
+                obsConnection.unsubscribe();
+                observable.connection = void 0;
+            }
+        }
+    }
+}
+//# sourceMappingURL=ConnectableObservable.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

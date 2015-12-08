@@ -564,24 +564,24 @@
       }
     },
     {
-      "type": "ExportDefaultDeclaration",
+      "type": "ExportNamedDeclaration",
       "declaration": {
         "type": "FunctionDeclaration",
         "id": {
           "type": "Identifier",
           "name": "tryCatch",
           "range": [
-            262,
-            270
+            254,
+            262
           ],
           "loc": {
             "start": {
               "line": 12,
-              "column": 24
+              "column": 16
             },
             "end": {
               "line": 12,
-              "column": 32
+              "column": 24
             }
           }
         },
@@ -590,17 +590,17 @@
             "type": "Identifier",
             "name": "fn",
             "range": [
-              271,
-              273
+              263,
+              265
             ],
             "loc": {
               "start": {
                 "line": 12,
-                "column": 33
+                "column": 25
               },
               "end": {
                 "line": 12,
-                "column": 35
+                "column": 27
               }
             }
           }
@@ -617,8 +617,8 @@
                   "type": "Identifier",
                   "name": "tryCatchTarget",
                   "range": [
-                    281,
-                    295
+                    273,
+                    287
                   ],
                   "loc": {
                     "start": {
@@ -635,8 +635,8 @@
                   "type": "Identifier",
                   "name": "fn",
                   "range": [
-                    298,
-                    300
+                    290,
+                    292
                   ],
                   "loc": {
                     "start": {
@@ -650,8 +650,8 @@
                   }
                 },
                 "range": [
-                  281,
-                  300
+                  273,
+                  292
                 ],
                 "loc": {
                   "start": {
@@ -665,8 +665,8 @@
                 }
               },
               "range": [
-                281,
-                301
+                273,
+                293
               ],
               "loc": {
                 "start": {
@@ -685,8 +685,8 @@
                 "type": "Identifier",
                 "name": "tryCatcher",
                 "range": [
-                  313,
-                  323
+                  305,
+                  315
                 ],
                 "loc": {
                   "start": {
@@ -700,8 +700,8 @@
                 }
               },
               "range": [
-                306,
-                324
+                298,
+                316
               ],
               "loc": {
                 "start": {
@@ -716,13 +716,13 @@
             }
           ],
           "range": [
-            275,
-            326
+            267,
+            318
           ],
           "loc": {
             "start": {
               "line": 12,
-              "column": 37
+              "column": 29
             },
             "end": {
               "line": 15,
@@ -733,13 +733,13 @@
         "generator": false,
         "expression": false,
         "range": [
-          253,
-          326
+          245,
+          318
         ],
         "loc": {
           "start": {
             "line": 12,
-            "column": 15
+            "column": 7
           },
           "end": {
             "line": 15,
@@ -749,9 +749,11 @@
         "leadingComments": [],
         "trailingComments": []
       },
+      "specifiers": [],
+      "source": null,
       "range": [
         238,
-        326
+        318
       ],
       "loc": {
         "start": {
@@ -767,8 +769,8 @@
     {
       "type": "EmptyStatement",
       "range": [
-        327,
-        328
+        319,
+        320
       ],
       "loc": {
         "start": {
@@ -779,13 +781,33 @@
           "line": 16,
           "column": 1
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=tryCatch.js.map",
+          "range": [
+            321,
+            357
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 36
+            }
+          }
+        }
+      ]
     }
   ],
   "sourceType": "module",
   "range": [
     0,
-    328
+    320
   ],
   "loc": {
     "start": {
@@ -797,5 +819,24 @@
       "column": 1
     }
   },
-  "comments": []
+  "comments": [
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=tryCatch.js.map",
+      "range": [
+        321,
+        357
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 36
+        }
+      }
+    }
+  ]
 }

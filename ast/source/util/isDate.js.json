@@ -2,24 +2,24 @@
   "type": "Program",
   "body": [
     {
-      "type": "ExportDefaultDeclaration",
+      "type": "ExportNamedDeclaration",
       "declaration": {
         "type": "FunctionDeclaration",
         "id": {
           "type": "Identifier",
           "name": "isDate",
           "range": [
-            24,
-            30
+            16,
+            22
           ],
           "loc": {
             "start": {
               "line": 1,
-              "column": 24
+              "column": 16
             },
             "end": {
               "line": 1,
-              "column": 30
+              "column": 22
             }
           }
         },
@@ -28,17 +28,17 @@
             "type": "Identifier",
             "name": "value",
             "range": [
-              31,
-              36
+              23,
+              28
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 31
+                "column": 23
               },
               "end": {
                 "line": 1,
-                "column": 36
+                "column": 28
               }
             }
           }
@@ -58,8 +58,8 @@
                     "type": "Identifier",
                     "name": "value",
                     "range": [
-                      51,
-                      56
+                      43,
+                      48
                     ],
                     "loc": {
                       "start": {
@@ -76,8 +76,8 @@
                     "type": "Identifier",
                     "name": "Date",
                     "range": [
-                      68,
-                      72
+                      60,
+                      64
                     ],
                     "loc": {
                       "start": {
@@ -91,8 +91,8 @@
                     }
                   },
                   "range": [
-                    51,
-                    72
+                    43,
+                    64
                   ],
                   "loc": {
                     "start": {
@@ -114,8 +114,8 @@
                       "type": "Identifier",
                       "name": "isNaN",
                       "range": [
-                        77,
-                        82
+                        69,
+                        74
                       ],
                       "loc": {
                         "start": {
@@ -136,8 +136,8 @@
                           "type": "Identifier",
                           "name": "value",
                           "range": [
-                            84,
-                            89
+                            76,
+                            81
                           ],
                           "loc": {
                             "start": {
@@ -152,8 +152,8 @@
                         },
                         "prefix": true,
                         "range": [
-                          83,
-                          89
+                          75,
+                          81
                         ],
                         "loc": {
                           "start": {
@@ -168,8 +168,8 @@
                       }
                     ],
                     "range": [
-                      77,
-                      90
+                      69,
+                      82
                     ],
                     "loc": {
                       "start": {
@@ -184,8 +184,8 @@
                   },
                   "prefix": true,
                   "range": [
-                    76,
-                    90
+                    68,
+                    82
                   ],
                   "loc": {
                     "start": {
@@ -199,8 +199,8 @@
                   }
                 },
                 "range": [
-                  51,
-                  90
+                  43,
+                  82
                 ],
                 "loc": {
                   "start": {
@@ -214,8 +214,8 @@
                 }
               },
               "range": [
-                44,
-                91
+                36,
+                83
               ],
               "loc": {
                 "start": {
@@ -230,13 +230,13 @@
             }
           ],
           "range": [
-            38,
-            93
+            30,
+            85
           ],
           "loc": {
             "start": {
               "line": 1,
-              "column": 38
+              "column": 30
             },
             "end": {
               "line": 3,
@@ -247,13 +247,13 @@
         "generator": false,
         "expression": false,
         "range": [
-          15,
-          93
+          7,
+          85
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 15
+            "column": 7
           },
           "end": {
             "line": 3,
@@ -261,11 +261,32 @@
           }
         },
         "leadingComments": [],
-        "trailingComments": []
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=isDate.js.map",
+            "range": [
+              86,
+              120
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 34
+              }
+            }
+          }
+        ]
       },
+      "specifiers": [],
+      "source": null,
       "range": [
         0,
-        93
+        85
       ],
       "loc": {
         "start": {
@@ -276,13 +297,33 @@
           "line": 3,
           "column": 1
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=isDate.js.map",
+          "range": [
+            86,
+            120
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 34
+            }
+          }
+        }
+      ]
     }
   ],
   "sourceType": "module",
   "range": [
     0,
-    93
+    85
   ],
   "loc": {
     "start": {
@@ -294,5 +335,24 @@
       "column": 1
     }
   },
-  "comments": []
+  "comments": [
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=isDate.js.map",
+      "range": [
+        86,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 34
+        }
+      }
+    }
+  ]
 }

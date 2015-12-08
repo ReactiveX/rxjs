@@ -1,116 +1,128 @@
 window.esdocSearchIndex = [
   [
+    "@reactivex/rxjs/es6/util/objectunsubscribederror.js~objectunsubscribederror",
+    "class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html",
+    "<span>ObjectUnsubscribedError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/util/ObjectUnsubscribedError.js</span>",
+    "class"
+  ],
+  [
     "@reactivex/rxjs/es6/observable.js~observable",
     "class/es6/Observable.js~Observable.html",
     "<span>Observable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Observable.js</span>",
     "class"
   ],
   [
-    "@reactivex/rxjs/es6/operators/buffer.js~buffer",
+    "@reactivex/rxjs/es6/operator/buffer.js~buffer",
     "function/index.html#static-function-buffer",
-    "<span>buffer</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/buffer.js</span>",
+    "<span>buffer</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/buffer.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/buffercount.js~buffercount",
+    "@reactivex/rxjs/es6/operator/buffercount.js~buffercount",
     "function/index.html#static-function-bufferCount",
-    "<span>bufferCount</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferCount.js</span>",
+    "<span>bufferCount</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/bufferCount.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/buffertime.js~buffertime",
+    "@reactivex/rxjs/es6/operator/buffertime.js~buffertime",
     "function/index.html#static-function-bufferTime",
-    "<span>bufferTime</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferTime.js</span>",
+    "<span>bufferTime</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/bufferTime.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/buffertoggle.js~buffertoggle",
+    "@reactivex/rxjs/es6/operator/buffertoggle.js~buffertoggle",
     "function/index.html#static-function-bufferToggle",
-    "<span>bufferToggle</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferToggle.js</span>",
+    "<span>bufferToggle</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/bufferToggle.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/bufferwhen.js~bufferwhen",
+    "@reactivex/rxjs/es6/operator/bufferwhen.js~bufferwhen",
     "function/index.html#static-function-bufferWhen",
-    "<span>bufferWhen</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/bufferWhen.js</span>",
+    "<span>bufferWhen</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/bufferWhen.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/combineall.js~combineall",
+    "@reactivex/rxjs/es6/operator/combineall.js~combineall",
     "function/index.html#static-function-combineAll",
-    "<span>combineAll</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/combineAll.js</span>",
+    "<span>combineAll</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/combineAll.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/combinelatest-static.js~combinelatest",
+    "@reactivex/rxjs/es6/operator/combinelatest-static.js~combinelatest",
     "function/index.html#static-function-combineLatest",
-    "<span>combineLatest</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/combineLatest-static.js</span>",
+    "<span>combineLatest</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/combineLatest-static.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/combinelatest.js~combinelatest",
+    "@reactivex/rxjs/es6/operator/combinelatest.js~combinelatest",
     "function/index.html#static-function-combineLatest",
-    "<span>combineLatest</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/combineLatest.js</span>",
+    "<span>combineLatest</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/combineLatest.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/concat-static.js~concat",
+    "@reactivex/rxjs/es6/operator/concat-static.js~concat",
     "function/index.html#static-function-concat",
-    "<span>concat</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concat-static.js</span>",
+    "<span>concat</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/concat-static.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/concat.js~concat",
+    "@reactivex/rxjs/es6/operator/concat.js~concat",
     "function/index.html#static-function-concat",
-    "<span>concat</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concat.js</span>",
+    "<span>concat</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/concat.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/concatall.js~concatall",
+    "@reactivex/rxjs/es6/operator/concatall.js~concatall",
     "function/index.html#static-function-concatAll",
-    "<span>concatAll</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concatAll.js</span>",
+    "<span>concatAll</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/concatAll.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/concatmap.js~concatmap",
+    "@reactivex/rxjs/es6/operator/concatmap.js~concatmap",
     "function/index.html#static-function-concatMap",
-    "<span>concatMap</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concatMap.js</span>",
+    "<span>concatMap</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/concatMap.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/concatmapto.js~concatmapto",
+    "@reactivex/rxjs/es6/operator/concatmapto.js~concatmapto",
     "function/index.html#static-function-concatMapTo",
-    "<span>concatMapTo</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/concatMapTo.js</span>",
+    "<span>concatMapTo</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/concatMapTo.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/count.js~count",
+    "@reactivex/rxjs/es6/operator/count.js~count",
     "function/index.html#static-function-count",
-    "<span>count</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/count.js</span>",
+    "<span>count</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/count.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/filter.js~filter",
+    "@reactivex/rxjs/es6/operator/filter.js~filter",
     "function/index.html#static-function-filter",
-    "<span>filter</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/filter.js</span>",
+    "<span>filter</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/filter.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/map.js~map",
+    "@reactivex/rxjs/es6/operator/map.js~map",
     "function/index.html#static-function-map",
-    "<span>map</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/map.js</span>",
+    "<span>map</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/map.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/mapto.js~mapto",
+    "@reactivex/rxjs/es6/operator/mapto.js~mapto",
     "function/index.html#static-function-mapTo",
-    "<span>mapTo</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/mapTo.js</span>",
+    "<span>mapTo</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/mapTo.js</span>",
     "function"
   ],
   [
-    "@reactivex/rxjs/es6/operators/withlatestfrom.js~withlatestfrom",
+    "@reactivex/rxjs/es6/symbol/rxsubscriber.js~rxsubscriber",
+    "variable/index.html#static-variable-rxSubscriber",
+    "<span>rxSubscriber</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/symbol/rxSubscriber.js</span>",
+    "variable"
+  ],
+  [
+    "@reactivex/rxjs/es6/operator/withlatestfrom.js~withlatestfrom",
     "function/index.html#static-function-withLatestFrom",
-    "<span>withLatestFrom</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operators/withLatestFrom.js</span>",
+    "<span>withLatestFrom</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/withLatestFrom.js</span>",
     "function"
   ],
   [
@@ -396,6 +408,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "builtinexternal/webapiexternal.js~audiocontext",
+    "external/index.html",
+    "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "external"
+  ],
+  [
     "builtinexternal/webapiexternal.js~canvasrenderingcontext2d",
     "external/index.html",
     "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
@@ -462,9 +480,9 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/observable.js~observable#[$$observable]",
-    "class/es6/Observable.js~Observable.html#instance-method-[$$observable]",
-    "es6/Observable.js~Observable#[$$observable]",
+    "es6/observable.js~observable#[symbolshim.observable]",
+    "class/es6/Observable.js~Observable.html#instance-method-[SymbolShim.observable]",
+    "es6/Observable.js~Observable#[SymbolShim.observable]",
     "method"
   ],
   [
@@ -546,729 +564,1431 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/observables/arrayobservable.js",
-    "file/es6/observables/ArrayObservable.js.html",
-    "es6/observables/ArrayObservable.js",
+    "es6/add/observable/bindcallback.js",
+    "file/es6/add/observable/bindCallback.js.html",
+    "es6/add/observable/bindCallback.js",
     "file"
   ],
   [
-    "es6/observables/connectableobservable.js",
-    "file/es6/observables/ConnectableObservable.js.html",
-    "es6/observables/ConnectableObservable.js",
+    "es6/add/observable/defer.js",
+    "file/es6/add/observable/defer.js.html",
+    "es6/add/observable/defer.js",
     "file"
   ],
   [
-    "es6/observables/deferobservable.js",
-    "file/es6/observables/DeferObservable.js.html",
-    "es6/observables/DeferObservable.js",
+    "es6/add/observable/empty.js",
+    "file/es6/add/observable/empty.js.html",
+    "es6/add/observable/empty.js",
     "file"
   ],
   [
-    "es6/observables/emptyobservable.js",
-    "file/es6/observables/EmptyObservable.js.html",
-    "es6/observables/EmptyObservable.js",
+    "es6/add/observable/forkjoin.js",
+    "file/es6/add/observable/forkJoin.js.html",
+    "es6/add/observable/forkJoin.js",
     "file"
   ],
   [
-    "es6/observables/errorobservable.js",
-    "file/es6/observables/ErrorObservable.js.html",
-    "es6/observables/ErrorObservable.js",
+    "es6/add/observable/from.js",
+    "file/es6/add/observable/from.js.html",
+    "es6/add/observable/from.js",
     "file"
   ],
   [
-    "es6/observables/forkjoinobservable.js",
-    "file/es6/observables/ForkJoinObservable.js.html",
-    "es6/observables/ForkJoinObservable.js",
+    "es6/add/observable/fromarray.js",
+    "file/es6/add/observable/fromArray.js.html",
+    "es6/add/observable/fromArray.js",
     "file"
   ],
   [
-    "es6/observables/fromeventobservable.js",
-    "file/es6/observables/FromEventObservable.js.html",
-    "es6/observables/FromEventObservable.js",
+    "es6/add/observable/fromevent.js",
+    "file/es6/add/observable/fromEvent.js.html",
+    "es6/add/observable/fromEvent.js",
     "file"
   ],
   [
-    "es6/observables/fromeventpatternobservable.js",
-    "file/es6/observables/FromEventPatternObservable.js.html",
-    "es6/observables/FromEventPatternObservable.js",
+    "es6/add/observable/fromeventpattern.js",
+    "file/es6/add/observable/fromEventPattern.js.html",
+    "es6/add/observable/fromEventPattern.js",
     "file"
   ],
   [
-    "es6/observables/fromobservable.js",
-    "file/es6/observables/FromObservable.js.html",
-    "es6/observables/FromObservable.js",
+    "es6/add/observable/frompromise.js",
+    "file/es6/add/observable/fromPromise.js.html",
+    "es6/add/observable/fromPromise.js",
     "file"
   ],
   [
-    "es6/observables/infiniteobservable.js",
-    "file/es6/observables/InfiniteObservable.js.html",
-    "es6/observables/InfiniteObservable.js",
+    "es6/add/observable/interval.js",
+    "file/es6/add/observable/interval.js.html",
+    "es6/add/observable/interval.js",
     "file"
   ],
   [
-    "es6/observables/intervalobservable.js",
-    "file/es6/observables/IntervalObservable.js.html",
-    "es6/observables/IntervalObservable.js",
+    "es6/add/observable/never.js",
+    "file/es6/add/observable/never.js.html",
+    "es6/add/observable/never.js",
     "file"
   ],
   [
-    "es6/observables/iteratorobservable.js",
-    "file/es6/observables/IteratorObservable.js.html",
-    "es6/observables/IteratorObservable.js",
+    "es6/add/observable/range.js",
+    "file/es6/add/observable/range.js.html",
+    "es6/add/observable/range.js",
     "file"
   ],
   [
-    "es6/observables/promiseobservable.js",
-    "file/es6/observables/PromiseObservable.js.html",
-    "es6/observables/PromiseObservable.js",
+    "es6/add/observable/throw.js",
+    "file/es6/add/observable/throw.js.html",
+    "es6/add/observable/throw.js",
     "file"
   ],
   [
-    "es6/observables/rangeobservable.js",
-    "file/es6/observables/RangeObservable.js.html",
-    "es6/observables/RangeObservable.js",
+    "es6/add/observable/timer.js",
+    "file/es6/add/observable/timer.js.html",
+    "es6/add/observable/timer.js",
     "file"
   ],
   [
-    "es6/observables/scalarobservable.js",
-    "file/es6/observables/ScalarObservable.js.html",
-    "es6/observables/ScalarObservable.js",
+    "es6/add/operator/buffer.js",
+    "file/es6/add/operator/buffer.js.html",
+    "es6/add/operator/buffer.js",
     "file"
   ],
   [
-    "es6/observables/subscribeonobservable.js",
-    "file/es6/observables/SubscribeOnObservable.js.html",
-    "es6/observables/SubscribeOnObservable.js",
+    "es6/add/operator/buffercount.js",
+    "file/es6/add/operator/bufferCount.js.html",
+    "es6/add/operator/bufferCount.js",
     "file"
   ],
   [
-    "es6/observables/timerobservable.js",
-    "file/es6/observables/TimerObservable.js.html",
-    "es6/observables/TimerObservable.js",
+    "es6/add/operator/buffertime.js",
+    "file/es6/add/operator/bufferTime.js.html",
+    "es6/add/operator/bufferTime.js",
     "file"
   ],
   [
-    "es6/operators/buffer.js",
-    "file/es6/operators/buffer.js.html",
-    "es6/operators/buffer.js",
+    "es6/add/operator/buffertoggle.js",
+    "file/es6/add/operator/bufferToggle.js.html",
+    "es6/add/operator/bufferToggle.js",
     "file"
   ],
   [
-    "es6/operators/buffercount.js",
-    "file/es6/operators/bufferCount.js.html",
-    "es6/operators/bufferCount.js",
+    "es6/add/operator/bufferwhen.js",
+    "file/es6/add/operator/bufferWhen.js.html",
+    "es6/add/operator/bufferWhen.js",
     "file"
   ],
   [
-    "es6/operators/buffertime.js",
-    "file/es6/operators/bufferTime.js.html",
-    "es6/operators/bufferTime.js",
+    "es6/add/operator/catch.js",
+    "file/es6/add/operator/catch.js.html",
+    "es6/add/operator/catch.js",
     "file"
   ],
   [
-    "es6/operators/buffertoggle.js",
-    "file/es6/operators/bufferToggle.js.html",
-    "es6/operators/bufferToggle.js",
+    "es6/add/operator/combineall.js",
+    "file/es6/add/operator/combineAll.js.html",
+    "es6/add/operator/combineAll.js",
     "file"
   ],
   [
-    "es6/operators/bufferwhen.js",
-    "file/es6/operators/bufferWhen.js.html",
-    "es6/operators/bufferWhen.js",
+    "es6/add/operator/combinelatest-static.js",
+    "file/es6/add/operator/combineLatest-static.js.html",
+    "es6/add/operator/combineLatest-static.js",
     "file"
   ],
   [
-    "es6/operators/catch.js",
-    "file/es6/operators/catch.js.html",
-    "es6/operators/catch.js",
+    "es6/add/operator/combinelatest.js",
+    "file/es6/add/operator/combineLatest.js.html",
+    "es6/add/operator/combineLatest.js",
     "file"
   ],
   [
-    "es6/operators/combineall.js",
-    "file/es6/operators/combineAll.js.html",
-    "es6/operators/combineAll.js",
+    "es6/add/operator/concat-static.js",
+    "file/es6/add/operator/concat-static.js.html",
+    "es6/add/operator/concat-static.js",
     "file"
   ],
   [
-    "es6/operators/combinelatest-static.js",
-    "file/es6/operators/combineLatest-static.js.html",
-    "es6/operators/combineLatest-static.js",
+    "es6/add/operator/concat.js",
+    "file/es6/add/operator/concat.js.html",
+    "es6/add/operator/concat.js",
     "file"
   ],
   [
-    "es6/operators/combinelatest-support.js",
-    "file/es6/operators/combineLatest-support.js.html",
-    "es6/operators/combineLatest-support.js",
+    "es6/add/operator/concatall.js",
+    "file/es6/add/operator/concatAll.js.html",
+    "es6/add/operator/concatAll.js",
     "file"
   ],
   [
-    "es6/operators/combinelatest.js",
-    "file/es6/operators/combineLatest.js.html",
-    "es6/operators/combineLatest.js",
+    "es6/add/operator/concatmap.js",
+    "file/es6/add/operator/concatMap.js.html",
+    "es6/add/operator/concatMap.js",
     "file"
   ],
   [
-    "es6/operators/concat-static.js",
-    "file/es6/operators/concat-static.js.html",
-    "es6/operators/concat-static.js",
+    "es6/add/operator/concatmapto.js",
+    "file/es6/add/operator/concatMapTo.js.html",
+    "es6/add/operator/concatMapTo.js",
     "file"
   ],
   [
-    "es6/operators/concat.js",
-    "file/es6/operators/concat.js.html",
-    "es6/operators/concat.js",
+    "es6/add/operator/count.js",
+    "file/es6/add/operator/count.js.html",
+    "es6/add/operator/count.js",
     "file"
   ],
   [
-    "es6/operators/concatall.js",
-    "file/es6/operators/concatAll.js.html",
-    "es6/operators/concatAll.js",
+    "es6/add/operator/debounce.js",
+    "file/es6/add/operator/debounce.js.html",
+    "es6/add/operator/debounce.js",
     "file"
   ],
   [
-    "es6/operators/concatmap.js",
-    "file/es6/operators/concatMap.js.html",
-    "es6/operators/concatMap.js",
+    "es6/add/operator/debouncetime.js",
+    "file/es6/add/operator/debounceTime.js.html",
+    "es6/add/operator/debounceTime.js",
     "file"
   ],
   [
-    "es6/operators/concatmapto.js",
-    "file/es6/operators/concatMapTo.js.html",
-    "es6/operators/concatMapTo.js",
+    "es6/add/operator/defaultifempty.js",
+    "file/es6/add/operator/defaultIfEmpty.js.html",
+    "es6/add/operator/defaultIfEmpty.js",
     "file"
   ],
   [
-    "es6/operators/count.js",
-    "file/es6/operators/count.js.html",
-    "es6/operators/count.js",
+    "es6/add/operator/delay.js",
+    "file/es6/add/operator/delay.js.html",
+    "es6/add/operator/delay.js",
     "file"
   ],
   [
-    "es6/operators/debounce.js",
-    "file/es6/operators/debounce.js.html",
-    "es6/operators/debounce.js",
+    "es6/add/operator/dematerialize.js",
+    "file/es6/add/operator/dematerialize.js.html",
+    "es6/add/operator/dematerialize.js",
     "file"
   ],
   [
-    "es6/operators/debouncetime.js",
-    "file/es6/operators/debounceTime.js.html",
-    "es6/operators/debounceTime.js",
+    "es6/add/operator/distinctuntilchanged.js",
+    "file/es6/add/operator/distinctUntilChanged.js.html",
+    "es6/add/operator/distinctUntilChanged.js",
     "file"
   ],
   [
-    "es6/operators/defaultifempty.js",
-    "file/es6/operators/defaultIfEmpty.js.html",
-    "es6/operators/defaultIfEmpty.js",
+    "es6/add/operator/do.js",
+    "file/es6/add/operator/do.js.html",
+    "es6/add/operator/do.js",
     "file"
   ],
   [
-    "es6/operators/delay.js",
-    "file/es6/operators/delay.js.html",
-    "es6/operators/delay.js",
+    "es6/add/operator/every.js",
+    "file/es6/add/operator/every.js.html",
+    "es6/add/operator/every.js",
     "file"
   ],
   [
-    "es6/operators/dematerialize.js",
-    "file/es6/operators/dematerialize.js.html",
-    "es6/operators/dematerialize.js",
+    "es6/add/operator/expand.js",
+    "file/es6/add/operator/expand.js.html",
+    "es6/add/operator/expand.js",
     "file"
   ],
   [
-    "es6/operators/distinctuntilchanged.js",
-    "file/es6/operators/distinctUntilChanged.js.html",
-    "es6/operators/distinctUntilChanged.js",
+    "es6/add/operator/extended/distinctuntilkeychanged.js",
+    "file/es6/add/operator/extended/distinctUntilKeyChanged.js.html",
+    "es6/add/operator/extended/distinctUntilKeyChanged.js",
     "file"
   ],
   [
-    "es6/operators/do.js",
-    "file/es6/operators/do.js.html",
-    "es6/operators/do.js",
+    "es6/add/operator/extended/elementat.js",
+    "file/es6/add/operator/extended/elementAt.js.html",
+    "es6/add/operator/extended/elementAt.js",
     "file"
   ],
   [
-    "es6/operators/every.js",
-    "file/es6/operators/every.js.html",
-    "es6/operators/every.js",
+    "es6/add/operator/extended/find.js",
+    "file/es6/add/operator/extended/find.js.html",
+    "es6/add/operator/extended/find.js",
     "file"
   ],
   [
-    "es6/operators/expand-support.js",
-    "file/es6/operators/expand-support.js.html",
-    "es6/operators/expand-support.js",
+    "es6/add/operator/extended/findindex.js",
+    "file/es6/add/operator/extended/findIndex.js.html",
+    "es6/add/operator/extended/findIndex.js",
     "file"
   ],
   [
-    "es6/operators/expand.js",
-    "file/es6/operators/expand.js.html",
-    "es6/operators/expand.js",
+    "es6/add/operator/extended/isempty.js",
+    "file/es6/add/operator/extended/isEmpty.js.html",
+    "es6/add/operator/extended/isEmpty.js",
     "file"
   ],
   [
-    "es6/operators/extended/distinctuntilkeychanged.js",
-    "file/es6/operators/extended/distinctUntilKeyChanged.js.html",
-    "es6/operators/extended/distinctUntilKeyChanged.js",
+    "es6/add/operator/extended/max.js",
+    "file/es6/add/operator/extended/max.js.html",
+    "es6/add/operator/extended/max.js",
     "file"
   ],
   [
-    "es6/operators/extended/elementat.js",
-    "file/es6/operators/extended/elementAt.js.html",
-    "es6/operators/extended/elementAt.js",
+    "es6/add/operator/extended/mergescan.js",
+    "file/es6/add/operator/extended/mergeScan.js.html",
+    "es6/add/operator/extended/mergeScan.js",
     "file"
   ],
   [
-    "es6/operators/extended/find-support.js",
-    "file/es6/operators/extended/find-support.js.html",
-    "es6/operators/extended/find-support.js",
+    "es6/add/operator/extended/min.js",
+    "file/es6/add/operator/extended/min.js.html",
+    "es6/add/operator/extended/min.js",
     "file"
   ],
   [
-    "es6/operators/extended/find.js",
-    "file/es6/operators/extended/find.js.html",
-    "es6/operators/extended/find.js",
+    "es6/add/operator/extended/timeinterval.js",
+    "file/es6/add/operator/extended/timeInterval.js.html",
+    "es6/add/operator/extended/timeInterval.js",
     "file"
   ],
   [
-    "es6/operators/extended/findindex.js",
-    "file/es6/operators/extended/findIndex.js.html",
-    "es6/operators/extended/findIndex.js",
+    "es6/add/operator/filter.js",
+    "file/es6/add/operator/filter.js.html",
+    "es6/add/operator/filter.js",
     "file"
   ],
   [
-    "es6/operators/extended/isempty.js",
-    "file/es6/operators/extended/isEmpty.js.html",
-    "es6/operators/extended/isEmpty.js",
+    "es6/add/operator/finally.js",
+    "file/es6/add/operator/finally.js.html",
+    "es6/add/operator/finally.js",
     "file"
   ],
   [
-    "es6/operators/extended/timeinterval.js",
-    "file/es6/operators/extended/timeInterval.js.html",
-    "es6/operators/extended/timeInterval.js",
+    "es6/add/operator/first.js",
+    "file/es6/add/operator/first.js.html",
+    "es6/add/operator/first.js",
     "file"
   ],
   [
-    "es6/operators/filter.js",
-    "file/es6/operators/filter.js.html",
-    "es6/operators/filter.js",
+    "es6/add/operator/groupby.js",
+    "file/es6/add/operator/groupBy.js.html",
+    "es6/add/operator/groupBy.js",
     "file"
   ],
   [
-    "es6/operators/finally.js",
-    "file/es6/operators/finally.js.html",
-    "es6/operators/finally.js",
+    "es6/add/operator/ignoreelements.js",
+    "file/es6/add/operator/ignoreElements.js.html",
+    "es6/add/operator/ignoreElements.js",
     "file"
   ],
   [
-    "es6/operators/first.js",
-    "file/es6/operators/first.js.html",
-    "es6/operators/first.js",
+    "es6/add/operator/last.js",
+    "file/es6/add/operator/last.js.html",
+    "es6/add/operator/last.js",
     "file"
   ],
   [
-    "es6/operators/groupby-support.js",
-    "file/es6/operators/groupBy-support.js.html",
-    "es6/operators/groupBy-support.js",
+    "es6/add/operator/map.js",
+    "file/es6/add/operator/map.js.html",
+    "es6/add/operator/map.js",
     "file"
   ],
   [
-    "es6/operators/groupby.js",
-    "file/es6/operators/groupBy.js.html",
-    "es6/operators/groupBy.js",
+    "es6/add/operator/mapto.js",
+    "file/es6/add/operator/mapTo.js.html",
+    "es6/add/operator/mapTo.js",
     "file"
   ],
   [
-    "es6/operators/ignoreelements.js",
-    "file/es6/operators/ignoreElements.js.html",
-    "es6/operators/ignoreElements.js",
+    "es6/add/operator/materialize.js",
+    "file/es6/add/operator/materialize.js.html",
+    "es6/add/operator/materialize.js",
     "file"
   ],
   [
-    "es6/operators/last.js",
-    "file/es6/operators/last.js.html",
-    "es6/operators/last.js",
+    "es6/add/operator/merge-static.js",
+    "file/es6/add/operator/merge-static.js.html",
+    "es6/add/operator/merge-static.js",
     "file"
   ],
   [
-    "es6/operators/map.js",
-    "file/es6/operators/map.js.html",
-    "es6/operators/map.js",
+    "es6/add/operator/merge.js",
+    "file/es6/add/operator/merge.js.html",
+    "es6/add/operator/merge.js",
     "file"
   ],
   [
-    "es6/operators/mapto.js",
-    "file/es6/operators/mapTo.js.html",
-    "es6/operators/mapTo.js",
+    "es6/add/operator/mergeall.js",
+    "file/es6/add/operator/mergeAll.js.html",
+    "es6/add/operator/mergeAll.js",
     "file"
   ],
   [
-    "es6/operators/materialize.js",
-    "file/es6/operators/materialize.js.html",
-    "es6/operators/materialize.js",
+    "es6/add/operator/mergemap.js",
+    "file/es6/add/operator/mergeMap.js.html",
+    "es6/add/operator/mergeMap.js",
     "file"
   ],
   [
-    "es6/operators/merge-static.js",
-    "file/es6/operators/merge-static.js.html",
-    "es6/operators/merge-static.js",
+    "es6/add/operator/mergemapto.js",
+    "file/es6/add/operator/mergeMapTo.js.html",
+    "es6/add/operator/mergeMapTo.js",
     "file"
   ],
   [
-    "es6/operators/merge.js",
-    "file/es6/operators/merge.js.html",
-    "es6/operators/merge.js",
+    "es6/add/operator/multicast.js",
+    "file/es6/add/operator/multicast.js.html",
+    "es6/add/operator/multicast.js",
     "file"
   ],
   [
-    "es6/operators/mergeall-support.js",
-    "file/es6/operators/mergeAll-support.js.html",
-    "es6/operators/mergeAll-support.js",
+    "es6/add/operator/observeon.js",
+    "file/es6/add/operator/observeOn.js.html",
+    "es6/add/operator/observeOn.js",
     "file"
   ],
   [
-    "es6/operators/mergeall.js",
-    "file/es6/operators/mergeAll.js.html",
-    "es6/operators/mergeAll.js",
+    "es6/add/operator/partition.js",
+    "file/es6/add/operator/partition.js.html",
+    "es6/add/operator/partition.js",
     "file"
   ],
   [
-    "es6/operators/mergemap-support.js",
-    "file/es6/operators/mergeMap-support.js.html",
-    "es6/operators/mergeMap-support.js",
+    "es6/add/operator/publish.js",
+    "file/es6/add/operator/publish.js.html",
+    "es6/add/operator/publish.js",
     "file"
   ],
   [
-    "es6/operators/mergemap.js",
-    "file/es6/operators/mergeMap.js.html",
-    "es6/operators/mergeMap.js",
+    "es6/add/operator/publishbehavior.js",
+    "file/es6/add/operator/publishBehavior.js.html",
+    "es6/add/operator/publishBehavior.js",
     "file"
   ],
   [
-    "es6/operators/mergemapto-support.js",
-    "file/es6/operators/mergeMapTo-support.js.html",
-    "es6/operators/mergeMapTo-support.js",
+    "es6/add/operator/publishlast.js",
+    "file/es6/add/operator/publishLast.js.html",
+    "es6/add/operator/publishLast.js",
     "file"
   ],
   [
-    "es6/operators/mergemapto.js",
-    "file/es6/operators/mergeMapTo.js.html",
-    "es6/operators/mergeMapTo.js",
+    "es6/add/operator/publishreplay.js",
+    "file/es6/add/operator/publishReplay.js.html",
+    "es6/add/operator/publishReplay.js",
     "file"
   ],
   [
-    "es6/operators/multicast.js",
-    "file/es6/operators/multicast.js.html",
-    "es6/operators/multicast.js",
+    "es6/add/operator/reduce.js",
+    "file/es6/add/operator/reduce.js.html",
+    "es6/add/operator/reduce.js",
     "file"
   ],
   [
-    "es6/operators/observeon-support.js",
-    "file/es6/operators/observeOn-support.js.html",
-    "es6/operators/observeOn-support.js",
+    "es6/add/operator/repeat.js",
+    "file/es6/add/operator/repeat.js.html",
+    "es6/add/operator/repeat.js",
     "file"
   ],
   [
-    "es6/operators/observeon.js",
-    "file/es6/operators/observeOn.js.html",
-    "es6/operators/observeOn.js",
+    "es6/add/operator/retry.js",
+    "file/es6/add/operator/retry.js.html",
+    "es6/add/operator/retry.js",
     "file"
   ],
   [
-    "es6/operators/partition.js",
-    "file/es6/operators/partition.js.html",
-    "es6/operators/partition.js",
+    "es6/add/operator/retrywhen.js",
+    "file/es6/add/operator/retryWhen.js.html",
+    "es6/add/operator/retryWhen.js",
     "file"
   ],
   [
-    "es6/operators/publish.js",
-    "file/es6/operators/publish.js.html",
-    "es6/operators/publish.js",
+    "es6/add/operator/sample.js",
+    "file/es6/add/operator/sample.js.html",
+    "es6/add/operator/sample.js",
     "file"
   ],
   [
-    "es6/operators/publishbehavior.js",
-    "file/es6/operators/publishBehavior.js.html",
-    "es6/operators/publishBehavior.js",
+    "es6/add/operator/sampletime.js",
+    "file/es6/add/operator/sampleTime.js.html",
+    "es6/add/operator/sampleTime.js",
     "file"
   ],
   [
-    "es6/operators/publishreplay.js",
-    "file/es6/operators/publishReplay.js.html",
-    "es6/operators/publishReplay.js",
+    "es6/add/operator/scan.js",
+    "file/es6/add/operator/scan.js.html",
+    "es6/add/operator/scan.js",
     "file"
   ],
   [
-    "es6/operators/reduce.js",
-    "file/es6/operators/reduce.js.html",
-    "es6/operators/reduce.js",
+    "es6/add/operator/share.js",
+    "file/es6/add/operator/share.js.html",
+    "es6/add/operator/share.js",
     "file"
   ],
   [
-    "es6/operators/repeat.js",
-    "file/es6/operators/repeat.js.html",
-    "es6/operators/repeat.js",
+    "es6/add/operator/single.js",
+    "file/es6/add/operator/single.js.html",
+    "es6/add/operator/single.js",
     "file"
   ],
   [
-    "es6/operators/retry.js",
-    "file/es6/operators/retry.js.html",
-    "es6/operators/retry.js",
+    "es6/add/operator/skip.js",
+    "file/es6/add/operator/skip.js.html",
+    "es6/add/operator/skip.js",
     "file"
   ],
   [
-    "es6/operators/retrywhen.js",
-    "file/es6/operators/retryWhen.js.html",
-    "es6/operators/retryWhen.js",
+    "es6/add/operator/skipuntil.js",
+    "file/es6/add/operator/skipUntil.js.html",
+    "es6/add/operator/skipUntil.js",
     "file"
   ],
   [
-    "es6/operators/sample.js",
-    "file/es6/operators/sample.js.html",
-    "es6/operators/sample.js",
+    "es6/add/operator/skipwhile.js",
+    "file/es6/add/operator/skipWhile.js.html",
+    "es6/add/operator/skipWhile.js",
     "file"
   ],
   [
-    "es6/operators/sampletime.js",
-    "file/es6/operators/sampleTime.js.html",
-    "es6/operators/sampleTime.js",
+    "es6/add/operator/startwith.js",
+    "file/es6/add/operator/startWith.js.html",
+    "es6/add/operator/startWith.js",
     "file"
   ],
   [
-    "es6/operators/scan.js",
-    "file/es6/operators/scan.js.html",
-    "es6/operators/scan.js",
+    "es6/add/operator/subscribeon.js",
+    "file/es6/add/operator/subscribeOn.js.html",
+    "es6/add/operator/subscribeOn.js",
     "file"
   ],
   [
-    "es6/operators/share.js",
-    "file/es6/operators/share.js.html",
-    "es6/operators/share.js",
+    "es6/add/operator/switch.js",
+    "file/es6/add/operator/switch.js.html",
+    "es6/add/operator/switch.js",
     "file"
   ],
   [
-    "es6/operators/sharereplay.js",
-    "file/es6/operators/shareReplay.js.html",
-    "es6/operators/shareReplay.js",
+    "es6/add/operator/switchfirst.js",
+    "file/es6/add/operator/switchFirst.js.html",
+    "es6/add/operator/switchFirst.js",
     "file"
   ],
   [
-    "es6/operators/single.js",
-    "file/es6/operators/single.js.html",
-    "es6/operators/single.js",
+    "es6/add/operator/switchfirstmap.js",
+    "file/es6/add/operator/switchFirstMap.js.html",
+    "es6/add/operator/switchFirstMap.js",
     "file"
   ],
   [
-    "es6/operators/skip.js",
-    "file/es6/operators/skip.js.html",
-    "es6/operators/skip.js",
+    "es6/add/operator/switchmap.js",
+    "file/es6/add/operator/switchMap.js.html",
+    "es6/add/operator/switchMap.js",
     "file"
   ],
   [
-    "es6/operators/skipuntil.js",
-    "file/es6/operators/skipUntil.js.html",
-    "es6/operators/skipUntil.js",
+    "es6/add/operator/switchmapto.js",
+    "file/es6/add/operator/switchMapTo.js.html",
+    "es6/add/operator/switchMapTo.js",
     "file"
   ],
   [
-    "es6/operators/startwith.js",
-    "file/es6/operators/startWith.js.html",
-    "es6/operators/startWith.js",
+    "es6/add/operator/take.js",
+    "file/es6/add/operator/take.js.html",
+    "es6/add/operator/take.js",
     "file"
   ],
   [
-    "es6/operators/subscribeon.js",
-    "file/es6/operators/subscribeOn.js.html",
-    "es6/operators/subscribeOn.js",
+    "es6/add/operator/takeuntil.js",
+    "file/es6/add/operator/takeUntil.js.html",
+    "es6/add/operator/takeUntil.js",
     "file"
   ],
   [
-    "es6/operators/switch.js",
-    "file/es6/operators/switch.js.html",
-    "es6/operators/switch.js",
+    "es6/add/operator/takewhile.js",
+    "file/es6/add/operator/takeWhile.js.html",
+    "es6/add/operator/takeWhile.js",
     "file"
   ],
   [
-    "es6/operators/switchmap.js",
-    "file/es6/operators/switchMap.js.html",
-    "es6/operators/switchMap.js",
+    "es6/add/operator/throttle.js",
+    "file/es6/add/operator/throttle.js.html",
+    "es6/add/operator/throttle.js",
     "file"
   ],
   [
-    "es6/operators/switchmapto.js",
-    "file/es6/operators/switchMapTo.js.html",
-    "es6/operators/switchMapTo.js",
+    "es6/add/operator/throttletime.js",
+    "file/es6/add/operator/throttleTime.js.html",
+    "es6/add/operator/throttleTime.js",
     "file"
   ],
   [
-    "es6/operators/take.js",
-    "file/es6/operators/take.js.html",
-    "es6/operators/take.js",
+    "es6/add/operator/timeout.js",
+    "file/es6/add/operator/timeout.js.html",
+    "es6/add/operator/timeout.js",
     "file"
   ],
   [
-    "es6/operators/takeuntil.js",
-    "file/es6/operators/takeUntil.js.html",
-    "es6/operators/takeUntil.js",
+    "es6/add/operator/timeoutwith.js",
+    "file/es6/add/operator/timeoutWith.js.html",
+    "es6/add/operator/timeoutWith.js",
     "file"
   ],
   [
-    "es6/operators/throttle.js",
-    "file/es6/operators/throttle.js.html",
-    "es6/operators/throttle.js",
+    "es6/add/operator/toarray.js",
+    "file/es6/add/operator/toArray.js.html",
+    "es6/add/operator/toArray.js",
     "file"
   ],
   [
-    "es6/operators/timeout.js",
-    "file/es6/operators/timeout.js.html",
-    "es6/operators/timeout.js",
+    "es6/add/operator/topromise.js",
+    "file/es6/add/operator/toPromise.js.html",
+    "es6/add/operator/toPromise.js",
     "file"
   ],
   [
-    "es6/operators/timeoutwith.js",
-    "file/es6/operators/timeoutWith.js.html",
-    "es6/operators/timeoutWith.js",
+    "es6/add/operator/window.js",
+    "file/es6/add/operator/window.js.html",
+    "es6/add/operator/window.js",
     "file"
   ],
   [
-    "es6/operators/toarray.js",
-    "file/es6/operators/toArray.js.html",
-    "es6/operators/toArray.js",
+    "es6/add/operator/windowcount.js",
+    "file/es6/add/operator/windowCount.js.html",
+    "es6/add/operator/windowCount.js",
     "file"
   ],
   [
-    "es6/operators/topromise.js",
-    "file/es6/operators/toPromise.js.html",
-    "es6/operators/toPromise.js",
+    "es6/add/operator/windowtime.js",
+    "file/es6/add/operator/windowTime.js.html",
+    "es6/add/operator/windowTime.js",
     "file"
   ],
   [
-    "es6/operators/window.js",
-    "file/es6/operators/window.js.html",
-    "es6/operators/window.js",
+    "es6/add/operator/windowtoggle.js",
+    "file/es6/add/operator/windowToggle.js.html",
+    "es6/add/operator/windowToggle.js",
     "file"
   ],
   [
-    "es6/operators/windowcount.js",
-    "file/es6/operators/windowCount.js.html",
-    "es6/operators/windowCount.js",
+    "es6/add/operator/windowwhen.js",
+    "file/es6/add/operator/windowWhen.js.html",
+    "es6/add/operator/windowWhen.js",
     "file"
   ],
   [
-    "es6/operators/windowtime.js",
-    "file/es6/operators/windowTime.js.html",
-    "es6/operators/windowTime.js",
+    "es6/add/operator/withlatestfrom.js",
+    "file/es6/add/operator/withLatestFrom.js.html",
+    "es6/add/operator/withLatestFrom.js",
     "file"
   ],
   [
-    "es6/operators/windowtoggle.js",
-    "file/es6/operators/windowToggle.js.html",
-    "es6/operators/windowToggle.js",
+    "es6/add/operator/zip-static.js",
+    "file/es6/add/operator/zip-static.js.html",
+    "es6/add/operator/zip-static.js",
     "file"
   ],
   [
-    "es6/operators/windowwhen.js",
-    "file/es6/operators/windowWhen.js.html",
-    "es6/operators/windowWhen.js",
+    "es6/add/operator/zip.js",
+    "file/es6/add/operator/zip.js.html",
+    "es6/add/operator/zip.js",
     "file"
   ],
   [
-    "es6/operators/withlatestfrom.js",
-    "file/es6/operators/withLatestFrom.js.html",
-    "es6/operators/withLatestFrom.js",
+    "es6/add/operator/zipall.js",
+    "file/es6/add/operator/zipAll.js.html",
+    "es6/add/operator/zipAll.js",
     "file"
   ],
   [
-    "es6/operators/zip-static.js",
-    "file/es6/operators/zip-static.js.html",
-    "es6/operators/zip-static.js",
+    "es6/observable/connectableobservable.js",
+    "file/es6/observable/ConnectableObservable.js.html",
+    "es6/observable/ConnectableObservable.js",
     "file"
   ],
   [
-    "es6/operators/zip-support.js",
-    "file/es6/operators/zip-support.js.html",
-    "es6/operators/zip-support.js",
+    "es6/observable/iteratorobservable.js",
+    "file/es6/observable/IteratorObservable.js.html",
+    "es6/observable/IteratorObservable.js",
     "file"
   ],
   [
-    "es6/operators/zip.js",
-    "file/es6/operators/zip.js.html",
-    "es6/operators/zip.js",
+    "es6/observable/scalarobservable.js",
+    "file/es6/observable/ScalarObservable.js.html",
+    "es6/observable/ScalarObservable.js",
     "file"
   ],
   [
-    "es6/operators/zipall.js",
-    "file/es6/operators/zipAll.js.html",
-    "es6/operators/zipAll.js",
+    "es6/observable/subscribeonobservable.js",
+    "file/es6/observable/SubscribeOnObservable.js.html",
+    "es6/observable/SubscribeOnObservable.js",
     "file"
   ],
   [
-    "es6/schedulers/action.js",
-    "file/es6/schedulers/Action.js.html",
-    "es6/schedulers/Action.js",
+    "es6/observable/bindcallback.js",
+    "file/es6/observable/bindCallback.js.html",
+    "es6/observable/bindCallback.js",
     "file"
   ],
   [
-    "es6/schedulers/futureaction.js",
-    "file/es6/schedulers/FutureAction.js.html",
-    "es6/schedulers/FutureAction.js",
+    "es6/observable/defer.js",
+    "file/es6/observable/defer.js.html",
+    "es6/observable/defer.js",
     "file"
   ],
   [
-    "es6/schedulers/immediateaction.js",
-    "file/es6/schedulers/ImmediateAction.js.html",
-    "es6/schedulers/ImmediateAction.js",
+    "es6/observable/empty.js",
+    "file/es6/observable/empty.js.html",
+    "es6/observable/empty.js",
     "file"
   ],
   [
-    "es6/schedulers/immediatescheduler.js",
-    "file/es6/schedulers/ImmediateScheduler.js.html",
-    "es6/schedulers/ImmediateScheduler.js",
+    "es6/observable/forkjoin.js",
+    "file/es6/observable/forkJoin.js.html",
+    "es6/observable/forkJoin.js",
     "file"
   ],
   [
-    "es6/schedulers/nexttickaction.js",
-    "file/es6/schedulers/NextTickAction.js.html",
-    "es6/schedulers/NextTickAction.js",
+    "es6/observable/from.js",
+    "file/es6/observable/from.js.html",
+    "es6/observable/from.js",
     "file"
   ],
   [
-    "es6/schedulers/nexttickscheduler.js",
-    "file/es6/schedulers/NextTickScheduler.js.html",
-    "es6/schedulers/NextTickScheduler.js",
+    "es6/observable/fromarray.js",
+    "file/es6/observable/fromArray.js.html",
+    "es6/observable/fromArray.js",
     "file"
   ],
   [
-    "es6/schedulers/virtualtimescheduler.js",
-    "file/es6/schedulers/VirtualTimeScheduler.js.html",
-    "es6/schedulers/VirtualTimeScheduler.js",
+    "es6/observable/fromevent.js",
+    "file/es6/observable/fromEvent.js.html",
+    "es6/observable/fromEvent.js",
     "file"
   ],
   [
-    "es6/schedulers/immediate.js",
-    "file/es6/schedulers/immediate.js.html",
-    "es6/schedulers/immediate.js",
+    "es6/observable/fromeventpattern.js",
+    "file/es6/observable/fromEventPattern.js.html",
+    "es6/observable/fromEventPattern.js",
     "file"
   ],
   [
-    "es6/schedulers/nexttick.js",
-    "file/es6/schedulers/nextTick.js.html",
-    "es6/schedulers/nextTick.js",
+    "es6/observable/frompromise.js",
+    "file/es6/observable/fromPromise.js.html",
+    "es6/observable/fromPromise.js",
     "file"
   ],
   [
-    "es6/subjects/behaviorsubject.js",
-    "file/es6/subjects/BehaviorSubject.js.html",
-    "es6/subjects/BehaviorSubject.js",
+    "es6/observable/interval.js",
+    "file/es6/observable/interval.js.html",
+    "es6/observable/interval.js",
     "file"
   ],
   [
-    "es6/subjects/replaysubject.js",
-    "file/es6/subjects/ReplaySubject.js.html",
-    "es6/subjects/ReplaySubject.js",
+    "es6/observable/never.js",
+    "file/es6/observable/never.js.html",
+    "es6/observable/never.js",
     "file"
   ],
   [
-    "es6/subjects/subjectsubscription.js",
-    "file/es6/subjects/SubjectSubscription.js.html",
-    "es6/subjects/SubjectSubscription.js",
+    "es6/observable/range.js",
+    "file/es6/observable/range.js.html",
+    "es6/observable/range.js",
+    "file"
+  ],
+  [
+    "es6/observable/throw.js",
+    "file/es6/observable/throw.js.html",
+    "es6/observable/throw.js",
+    "file"
+  ],
+  [
+    "es6/observable/timer.js",
+    "file/es6/observable/timer.js.html",
+    "es6/observable/timer.js",
+    "file"
+  ],
+  [
+    "es6/operator/buffer.js",
+    "file/es6/operator/buffer.js.html",
+    "es6/operator/buffer.js",
+    "file"
+  ],
+  [
+    "es6/operator/buffercount.js",
+    "file/es6/operator/bufferCount.js.html",
+    "es6/operator/bufferCount.js",
+    "file"
+  ],
+  [
+    "es6/operator/buffertime.js",
+    "file/es6/operator/bufferTime.js.html",
+    "es6/operator/bufferTime.js",
+    "file"
+  ],
+  [
+    "es6/operator/buffertoggle.js",
+    "file/es6/operator/bufferToggle.js.html",
+    "es6/operator/bufferToggle.js",
+    "file"
+  ],
+  [
+    "es6/operator/bufferwhen.js",
+    "file/es6/operator/bufferWhen.js.html",
+    "es6/operator/bufferWhen.js",
+    "file"
+  ],
+  [
+    "es6/operator/catch.js",
+    "file/es6/operator/catch.js.html",
+    "es6/operator/catch.js",
+    "file"
+  ],
+  [
+    "es6/operator/combineall.js",
+    "file/es6/operator/combineAll.js.html",
+    "es6/operator/combineAll.js",
+    "file"
+  ],
+  [
+    "es6/operator/combinelatest-static.js",
+    "file/es6/operator/combineLatest-static.js.html",
+    "es6/operator/combineLatest-static.js",
+    "file"
+  ],
+  [
+    "es6/operator/combinelatest-support.js",
+    "file/es6/operator/combineLatest-support.js.html",
+    "es6/operator/combineLatest-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/combinelatest.js",
+    "file/es6/operator/combineLatest.js.html",
+    "es6/operator/combineLatest.js",
+    "file"
+  ],
+  [
+    "es6/operator/concat-static.js",
+    "file/es6/operator/concat-static.js.html",
+    "es6/operator/concat-static.js",
+    "file"
+  ],
+  [
+    "es6/operator/concat.js",
+    "file/es6/operator/concat.js.html",
+    "es6/operator/concat.js",
+    "file"
+  ],
+  [
+    "es6/operator/concatall.js",
+    "file/es6/operator/concatAll.js.html",
+    "es6/operator/concatAll.js",
+    "file"
+  ],
+  [
+    "es6/operator/concatmap.js",
+    "file/es6/operator/concatMap.js.html",
+    "es6/operator/concatMap.js",
+    "file"
+  ],
+  [
+    "es6/operator/concatmapto.js",
+    "file/es6/operator/concatMapTo.js.html",
+    "es6/operator/concatMapTo.js",
+    "file"
+  ],
+  [
+    "es6/operator/count.js",
+    "file/es6/operator/count.js.html",
+    "es6/operator/count.js",
+    "file"
+  ],
+  [
+    "es6/operator/debounce.js",
+    "file/es6/operator/debounce.js.html",
+    "es6/operator/debounce.js",
+    "file"
+  ],
+  [
+    "es6/operator/debouncetime.js",
+    "file/es6/operator/debounceTime.js.html",
+    "es6/operator/debounceTime.js",
+    "file"
+  ],
+  [
+    "es6/operator/defaultifempty.js",
+    "file/es6/operator/defaultIfEmpty.js.html",
+    "es6/operator/defaultIfEmpty.js",
+    "file"
+  ],
+  [
+    "es6/operator/delay.js",
+    "file/es6/operator/delay.js.html",
+    "es6/operator/delay.js",
+    "file"
+  ],
+  [
+    "es6/operator/dematerialize.js",
+    "file/es6/operator/dematerialize.js.html",
+    "es6/operator/dematerialize.js",
+    "file"
+  ],
+  [
+    "es6/operator/distinctuntilchanged.js",
+    "file/es6/operator/distinctUntilChanged.js.html",
+    "es6/operator/distinctUntilChanged.js",
+    "file"
+  ],
+  [
+    "es6/operator/do.js",
+    "file/es6/operator/do.js.html",
+    "es6/operator/do.js",
+    "file"
+  ],
+  [
+    "es6/operator/every.js",
+    "file/es6/operator/every.js.html",
+    "es6/operator/every.js",
+    "file"
+  ],
+  [
+    "es6/operator/expand-support.js",
+    "file/es6/operator/expand-support.js.html",
+    "es6/operator/expand-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/expand.js",
+    "file/es6/operator/expand.js.html",
+    "es6/operator/expand.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/distinctuntilkeychanged.js",
+    "file/es6/operator/extended/distinctUntilKeyChanged.js.html",
+    "es6/operator/extended/distinctUntilKeyChanged.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/elementat.js",
+    "file/es6/operator/extended/elementAt.js.html",
+    "es6/operator/extended/elementAt.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/find-support.js",
+    "file/es6/operator/extended/find-support.js.html",
+    "es6/operator/extended/find-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/find.js",
+    "file/es6/operator/extended/find.js.html",
+    "es6/operator/extended/find.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/findindex.js",
+    "file/es6/operator/extended/findIndex.js.html",
+    "es6/operator/extended/findIndex.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/isempty.js",
+    "file/es6/operator/extended/isEmpty.js.html",
+    "es6/operator/extended/isEmpty.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/max.js",
+    "file/es6/operator/extended/max.js.html",
+    "es6/operator/extended/max.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/mergescan.js",
+    "file/es6/operator/extended/mergeScan.js.html",
+    "es6/operator/extended/mergeScan.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/min.js",
+    "file/es6/operator/extended/min.js.html",
+    "es6/operator/extended/min.js",
+    "file"
+  ],
+  [
+    "es6/operator/extended/timeinterval.js",
+    "file/es6/operator/extended/timeInterval.js.html",
+    "es6/operator/extended/timeInterval.js",
+    "file"
+  ],
+  [
+    "es6/operator/filter.js",
+    "file/es6/operator/filter.js.html",
+    "es6/operator/filter.js",
+    "file"
+  ],
+  [
+    "es6/operator/finally.js",
+    "file/es6/operator/finally.js.html",
+    "es6/operator/finally.js",
+    "file"
+  ],
+  [
+    "es6/operator/first.js",
+    "file/es6/operator/first.js.html",
+    "es6/operator/first.js",
+    "file"
+  ],
+  [
+    "es6/operator/groupby-support.js",
+    "file/es6/operator/groupBy-support.js.html",
+    "es6/operator/groupBy-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/groupby.js",
+    "file/es6/operator/groupBy.js.html",
+    "es6/operator/groupBy.js",
+    "file"
+  ],
+  [
+    "es6/operator/ignoreelements.js",
+    "file/es6/operator/ignoreElements.js.html",
+    "es6/operator/ignoreElements.js",
+    "file"
+  ],
+  [
+    "es6/operator/last.js",
+    "file/es6/operator/last.js.html",
+    "es6/operator/last.js",
+    "file"
+  ],
+  [
+    "es6/operator/map.js",
+    "file/es6/operator/map.js.html",
+    "es6/operator/map.js",
+    "file"
+  ],
+  [
+    "es6/operator/mapto.js",
+    "file/es6/operator/mapTo.js.html",
+    "es6/operator/mapTo.js",
+    "file"
+  ],
+  [
+    "es6/operator/materialize.js",
+    "file/es6/operator/materialize.js.html",
+    "es6/operator/materialize.js",
+    "file"
+  ],
+  [
+    "es6/operator/merge-static.js",
+    "file/es6/operator/merge-static.js.html",
+    "es6/operator/merge-static.js",
+    "file"
+  ],
+  [
+    "es6/operator/merge.js",
+    "file/es6/operator/merge.js.html",
+    "es6/operator/merge.js",
+    "file"
+  ],
+  [
+    "es6/operator/mergeall-support.js",
+    "file/es6/operator/mergeAll-support.js.html",
+    "es6/operator/mergeAll-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/mergeall.js",
+    "file/es6/operator/mergeAll.js.html",
+    "es6/operator/mergeAll.js",
+    "file"
+  ],
+  [
+    "es6/operator/mergemap-support.js",
+    "file/es6/operator/mergeMap-support.js.html",
+    "es6/operator/mergeMap-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/mergemap.js",
+    "file/es6/operator/mergeMap.js.html",
+    "es6/operator/mergeMap.js",
+    "file"
+  ],
+  [
+    "es6/operator/mergemapto-support.js",
+    "file/es6/operator/mergeMapTo-support.js.html",
+    "es6/operator/mergeMapTo-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/mergemapto.js",
+    "file/es6/operator/mergeMapTo.js.html",
+    "es6/operator/mergeMapTo.js",
+    "file"
+  ],
+  [
+    "es6/operator/multicast.js",
+    "file/es6/operator/multicast.js.html",
+    "es6/operator/multicast.js",
+    "file"
+  ],
+  [
+    "es6/operator/observeon-support.js",
+    "file/es6/operator/observeOn-support.js.html",
+    "es6/operator/observeOn-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/observeon.js",
+    "file/es6/operator/observeOn.js.html",
+    "es6/operator/observeOn.js",
+    "file"
+  ],
+  [
+    "es6/operator/partition.js",
+    "file/es6/operator/partition.js.html",
+    "es6/operator/partition.js",
+    "file"
+  ],
+  [
+    "es6/operator/publish.js",
+    "file/es6/operator/publish.js.html",
+    "es6/operator/publish.js",
+    "file"
+  ],
+  [
+    "es6/operator/publishbehavior.js",
+    "file/es6/operator/publishBehavior.js.html",
+    "es6/operator/publishBehavior.js",
+    "file"
+  ],
+  [
+    "es6/operator/publishlast.js",
+    "file/es6/operator/publishLast.js.html",
+    "es6/operator/publishLast.js",
+    "file"
+  ],
+  [
+    "es6/operator/publishreplay.js",
+    "file/es6/operator/publishReplay.js.html",
+    "es6/operator/publishReplay.js",
+    "file"
+  ],
+  [
+    "es6/operator/reduce-support.js",
+    "file/es6/operator/reduce-support.js.html",
+    "es6/operator/reduce-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/reduce.js",
+    "file/es6/operator/reduce.js.html",
+    "es6/operator/reduce.js",
+    "file"
+  ],
+  [
+    "es6/operator/repeat.js",
+    "file/es6/operator/repeat.js.html",
+    "es6/operator/repeat.js",
+    "file"
+  ],
+  [
+    "es6/operator/retry.js",
+    "file/es6/operator/retry.js.html",
+    "es6/operator/retry.js",
+    "file"
+  ],
+  [
+    "es6/operator/retrywhen.js",
+    "file/es6/operator/retryWhen.js.html",
+    "es6/operator/retryWhen.js",
+    "file"
+  ],
+  [
+    "es6/operator/sample.js",
+    "file/es6/operator/sample.js.html",
+    "es6/operator/sample.js",
+    "file"
+  ],
+  [
+    "es6/operator/sampletime.js",
+    "file/es6/operator/sampleTime.js.html",
+    "es6/operator/sampleTime.js",
+    "file"
+  ],
+  [
+    "es6/operator/scan.js",
+    "file/es6/operator/scan.js.html",
+    "es6/operator/scan.js",
+    "file"
+  ],
+  [
+    "es6/operator/share.js",
+    "file/es6/operator/share.js.html",
+    "es6/operator/share.js",
+    "file"
+  ],
+  [
+    "es6/operator/single.js",
+    "file/es6/operator/single.js.html",
+    "es6/operator/single.js",
+    "file"
+  ],
+  [
+    "es6/operator/skip.js",
+    "file/es6/operator/skip.js.html",
+    "es6/operator/skip.js",
+    "file"
+  ],
+  [
+    "es6/operator/skipuntil.js",
+    "file/es6/operator/skipUntil.js.html",
+    "es6/operator/skipUntil.js",
+    "file"
+  ],
+  [
+    "es6/operator/skipwhile.js",
+    "file/es6/operator/skipWhile.js.html",
+    "es6/operator/skipWhile.js",
+    "file"
+  ],
+  [
+    "es6/operator/startwith.js",
+    "file/es6/operator/startWith.js.html",
+    "es6/operator/startWith.js",
+    "file"
+  ],
+  [
+    "es6/operator/subscribeon.js",
+    "file/es6/operator/subscribeOn.js.html",
+    "es6/operator/subscribeOn.js",
+    "file"
+  ],
+  [
+    "es6/operator/switch.js",
+    "file/es6/operator/switch.js.html",
+    "es6/operator/switch.js",
+    "file"
+  ],
+  [
+    "es6/operator/switchfirst.js",
+    "file/es6/operator/switchFirst.js.html",
+    "es6/operator/switchFirst.js",
+    "file"
+  ],
+  [
+    "es6/operator/switchfirstmap.js",
+    "file/es6/operator/switchFirstMap.js.html",
+    "es6/operator/switchFirstMap.js",
+    "file"
+  ],
+  [
+    "es6/operator/switchmap.js",
+    "file/es6/operator/switchMap.js.html",
+    "es6/operator/switchMap.js",
+    "file"
+  ],
+  [
+    "es6/operator/switchmapto.js",
+    "file/es6/operator/switchMapTo.js.html",
+    "es6/operator/switchMapTo.js",
+    "file"
+  ],
+  [
+    "es6/operator/take.js",
+    "file/es6/operator/take.js.html",
+    "es6/operator/take.js",
+    "file"
+  ],
+  [
+    "es6/operator/takeuntil.js",
+    "file/es6/operator/takeUntil.js.html",
+    "es6/operator/takeUntil.js",
+    "file"
+  ],
+  [
+    "es6/operator/takewhile.js",
+    "file/es6/operator/takeWhile.js.html",
+    "es6/operator/takeWhile.js",
+    "file"
+  ],
+  [
+    "es6/operator/throttle.js",
+    "file/es6/operator/throttle.js.html",
+    "es6/operator/throttle.js",
+    "file"
+  ],
+  [
+    "es6/operator/throttletime.js",
+    "file/es6/operator/throttleTime.js.html",
+    "es6/operator/throttleTime.js",
+    "file"
+  ],
+  [
+    "es6/operator/timeout.js",
+    "file/es6/operator/timeout.js.html",
+    "es6/operator/timeout.js",
+    "file"
+  ],
+  [
+    "es6/operator/timeoutwith.js",
+    "file/es6/operator/timeoutWith.js.html",
+    "es6/operator/timeoutWith.js",
+    "file"
+  ],
+  [
+    "es6/operator/toarray.js",
+    "file/es6/operator/toArray.js.html",
+    "es6/operator/toArray.js",
+    "file"
+  ],
+  [
+    "es6/operator/topromise.js",
+    "file/es6/operator/toPromise.js.html",
+    "es6/operator/toPromise.js",
+    "file"
+  ],
+  [
+    "es6/operator/window.js",
+    "file/es6/operator/window.js.html",
+    "es6/operator/window.js",
+    "file"
+  ],
+  [
+    "es6/operator/windowcount.js",
+    "file/es6/operator/windowCount.js.html",
+    "es6/operator/windowCount.js",
+    "file"
+  ],
+  [
+    "es6/operator/windowtime.js",
+    "file/es6/operator/windowTime.js.html",
+    "es6/operator/windowTime.js",
+    "file"
+  ],
+  [
+    "es6/operator/windowtoggle.js",
+    "file/es6/operator/windowToggle.js.html",
+    "es6/operator/windowToggle.js",
+    "file"
+  ],
+  [
+    "es6/operator/windowwhen.js",
+    "file/es6/operator/windowWhen.js.html",
+    "es6/operator/windowWhen.js",
+    "file"
+  ],
+  [
+    "es6/operator/withlatestfrom.js",
+    "file/es6/operator/withLatestFrom.js.html",
+    "es6/operator/withLatestFrom.js",
+    "file"
+  ],
+  [
+    "es6/operator/zip-static.js",
+    "file/es6/operator/zip-static.js.html",
+    "es6/operator/zip-static.js",
+    "file"
+  ],
+  [
+    "es6/operator/zip-support.js",
+    "file/es6/operator/zip-support.js.html",
+    "es6/operator/zip-support.js",
+    "file"
+  ],
+  [
+    "es6/operator/zip.js",
+    "file/es6/operator/zip.js.html",
+    "es6/operator/zip.js",
+    "file"
+  ],
+  [
+    "es6/operator/zipall.js",
+    "file/es6/operator/zipAll.js.html",
+    "es6/operator/zipAll.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/action.js",
+    "file/es6/scheduler/Action.js.html",
+    "es6/scheduler/Action.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/asapaction.js",
+    "file/es6/scheduler/AsapAction.js.html",
+    "es6/scheduler/AsapAction.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/asapscheduler.js",
+    "file/es6/scheduler/AsapScheduler.js.html",
+    "es6/scheduler/AsapScheduler.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/futureaction.js",
+    "file/es6/scheduler/FutureAction.js.html",
+    "es6/scheduler/FutureAction.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/queueaction.js",
+    "file/es6/scheduler/QueueAction.js.html",
+    "es6/scheduler/QueueAction.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/queuescheduler.js",
+    "file/es6/scheduler/QueueScheduler.js.html",
+    "es6/scheduler/QueueScheduler.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/virtualtimescheduler.js",
+    "file/es6/scheduler/VirtualTimeScheduler.js.html",
+    "es6/scheduler/VirtualTimeScheduler.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/asap.js",
+    "file/es6/scheduler/asap.js.html",
+    "es6/scheduler/asap.js",
+    "file"
+  ],
+  [
+    "es6/scheduler/queue.js",
+    "file/es6/scheduler/queue.js.html",
+    "es6/scheduler/queue.js",
+    "file"
+  ],
+  [
+    "es6/subject/asyncsubject.js",
+    "file/es6/subject/AsyncSubject.js.html",
+    "es6/subject/AsyncSubject.js",
+    "file"
+  ],
+  [
+    "es6/subject/behaviorsubject.js",
+    "file/es6/subject/BehaviorSubject.js.html",
+    "es6/subject/BehaviorSubject.js",
+    "file"
+  ],
+  [
+    "es6/subject/replaysubject.js",
+    "file/es6/subject/ReplaySubject.js.html",
+    "es6/subject/ReplaySubject.js",
+    "file"
+  ],
+  [
+    "es6/subject/subjectsubscription.js",
+    "file/es6/subject/SubjectSubscription.js.html",
+    "es6/subject/SubjectSubscription.js",
+    "file"
+  ],
+  [
+    "es6/symbol/rxsubscriber.js",
+    "file/es6/symbol/rxSubscriber.js.html",
+    "es6/symbol/rxSubscriber.js",
     "file"
   ],
   [
@@ -1338,15 +2058,21 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/util/symbol_iterator.js",
-    "file/es6/util/Symbol_iterator.js.html",
-    "es6/util/Symbol_iterator.js",
+    "es6/util/mappolyfill.js",
+    "file/es6/util/MapPolyfill.js.html",
+    "es6/util/MapPolyfill.js",
     "file"
   ],
   [
-    "es6/util/symbol_observable.js",
-    "file/es6/util/Symbol_observable.js.html",
-    "es6/util/Symbol_observable.js",
+    "es6/util/objectunsubscribederror.js",
+    "file/es6/util/ObjectUnsubscribedError.js.html",
+    "es6/util/ObjectUnsubscribedError.js",
+    "file"
+  ],
+  [
+    "es6/util/symbolshim.js",
+    "file/es6/util/SymbolShim.js.html",
+    "es6/util/SymbolShim.js",
     "file"
   ],
   [
@@ -1368,6 +2094,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/util/isarray.js",
+    "file/es6/util/isArray.js.html",
+    "es6/util/isArray.js",
+    "file"
+  ],
+  [
     "es6/util/isdate.js",
     "file/es6/util/isDate.js.html",
     "es6/util/isDate.js",
@@ -1377,6 +2109,18 @@ window.esdocSearchIndex = [
     "es6/util/isnumeric.js",
     "file/es6/util/isNumeric.js.html",
     "es6/util/isNumeric.js",
+    "file"
+  ],
+  [
+    "es6/util/ispromise.js",
+    "file/es6/util/isPromise.js.html",
+    "es6/util/isPromise.js",
+    "file"
+  ],
+  [
+    "es6/util/isscheduler.js",
+    "file/es6/util/isScheduler.js.html",
+    "es6/util/isScheduler.js",
     "file"
   ],
   [

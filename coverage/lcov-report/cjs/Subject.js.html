@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for cjs/Subject.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">cjs/Subject.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(130 / 130)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">94.59% <small>(35 / 37)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(25 / 25)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(127 / 127)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">cjs/</a> &#187; Subject.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">846</span>
+<span class="cline-any cline-yes">846</span>
+<span class="cline-any cline-yes">846</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1895</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1893</span>
+<span class="cline-any cline-yes">31</span>
+<span class="cline-any cline-yes">31</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1862</span>
+<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1824</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1823</span>
+<span class="cline-any cline-yes">1823</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1544</span>
+<span class="cline-any cline-yes">1544</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5474</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5431</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">324</span>
+<span class="cline-any cline-yes">17</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">307</span>
+<span class="cline-any cline-yes">307</span>
+<span class="cline-any cline-yes">307</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1327</span>
+<span class="cline-any cline-yes">71</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1256</span>
+<span class="cline-any cline-yes">1256</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">4502</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">299</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">922</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">848</span>
+<span class="cline-any cline-yes">848</span>
+<span class="cline-any cline-yes">848</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">851</span>
+<span class="cline-any cline-yes">851</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
+    for (var p in b) <span class="missing-if-branch" title="else path not taken" >E</span>if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? <span class="branch-0 cbranch-no" title="branch not covered" >Object.create(b) </span>: (__.prototype = b.prototype, new __());
+};
+var Observable_1 = require('./Observable');
+var Subscriber_1 = require('./Subscriber');
+var Subscription_1 = require('./Subscription');
+var SubjectSubscription_1 = require('./subjects/SubjectSubscription');
+var subscriptionAdd = Subscription_1.Subscription.prototype.add;
+var subscriptionRemove = Subscription_1.Subscription.prototype.remove;
+var subscriptionUnsubscribe = Subscription_1.Subscription.prototype.unsubscribe;
+var subscriberNext = Subscriber_1.Subscriber.prototype.next;
+var subscriberError = Subscriber_1.Subscriber.prototype.error;
+var subscriberComplete = Subscriber_1.Subscriber.prototype.complete;
+var _subscriberNext = Subscriber_1.Subscriber.prototype._next;
+var _subscriberError = Subscriber_1.Subscriber.prototype._error;
+var _subscriberComplete = Subscriber_1.Subscriber.prototype._complete;
+var Subject = (function (_super) {
+    __extends(Subject, _super);
+    function Subject() {
+        _super.apply(this, arguments);
+        this.observers = [];
+        this.isUnsubscribed = false;
+        this.dispatching = false;
+        this.errorSignal = false;
+        this.completeSignal = false;
+    }
+    Subject.create = function (source, destination) {
+        return new BidirectionalSubject(source, destination);
+    };
+    Subject.prototype.lift = function (operator) {
+        var subject = new BidirectionalSubject(this, this.destination || this);
+        subject.operator = operator;
+        return subject;
+    };
+    Subject.prototype._subscribe = function (subscriber) {
+        if (subscriber.isUnsubscribed) {
+            return;
+        }
+        else if (this.errorSignal) {
+            subscriber.error(this.errorInstance);
+            return;
+        }
+        else if (this.completeSignal) {
+            subscriber.complete();
+            return;
+        }
+        else if (this.isUnsubscribed) {
+            throw new Error('Cannot subscribe to a disposed Subject.');
+        }
+        this.observers.push(subscriber);
+        return new SubjectSubscription_1.SubjectSubscription(this, subscriber);
+    };
+    Subject.prototype.add = function (subscription) {
+        subscriptionAdd.call(this, subscription);
+    };
+    Subject.prototype.remove = function (subscription) {
+        subscriptionRemove.call(this, subscription);
+    };
+    Subject.prototype.unsubscribe = function () {
+        this.observers = void 0;
+        subscriptionUnsubscribe.call(this);
+    };
+    Subject.prototype.next = function (value) {
+        if (this.isUnsubscribed) {
+            return;
+        }
+        this.dispatching = true;
+        this._next(value);
+        this.dispatching = false;
+        if (this.errorSignal) {
+            this.error(this.errorInstance);
+        }
+        else if (this.completeSignal) {
+            this.complete();
+        }
+    };
+    Subject.prototype.error = function (err) {
+        if (this.isUnsubscribed || this.completeSignal) {
+            return;
+        }
+        this.errorSignal = true;
+        this.errorInstance = err;
+        if (this.dispatching) {
+            return;
+        }
+        this._error(err);
+        this.unsubscribe();
+    };
+    Subject.prototype.complete = function () {
+        if (this.isUnsubscribed || this.errorSignal) {
+            return;
+        }
+        this.completeSignal = true;
+        if (this.dispatching) {
+            return;
+        }
+        this._complete();
+        this.unsubscribe();
+    };
+    Subject.prototype._next = function (value) {
+        var index = -1;
+        var observers = this.observers.slice(0);
+        var len = observers.length;
+        while (++index &lt; len) {
+            observers[index].next(value);
+        }
+    };
+    Subject.prototype._error = function (err) {
+        var index = -1;
+        var observers = this.observers;
+        var len = observers.length;
+        // optimization -- block next, complete, and unsubscribe while dispatching
+        this.observers = void 0;
+        this.isUnsubscribed = true;
+        while (++index &lt; len) {
+            observers[index].error(err);
+        }
+        this.isUnsubscribed = false;
+    };
+    Subject.prototype._complete = function () {
+        var index = -1;
+        var observers = this.observers;
+        var len = observers.length;
+        // optimization -- block next, complete, and unsubscribe while dispatching
+        this.observers = void 0; // optimization
+        this.isUnsubscribed = true;
+        while (++index &lt; len) {
+            observers[index].complete();
+        }
+        this.isUnsubscribed = false;
+    };
+    return Subject;
+})(Observable_1.Observable);
+exports.Subject = Subject;
+var BidirectionalSubject = (function (_super) {
+    __extends(BidirectionalSubject, _super);
+    function BidirectionalSubject(source, destination) {
+        _super.call(this);
+        this.source = source;
+        this.destination = destination;
+    }
+    BidirectionalSubject.prototype._subscribe = function (subscriber) {
+        var operator = this.operator;
+        return this.source._subscribe.call(this.source, operator ? operator.call(subscriber) : subscriber);
+    };
+    BidirectionalSubject.prototype.next = function (value) {
+        subscriberNext.call(this, value);
+    };
+    BidirectionalSubject.prototype.error = function (err) {
+        subscriberError.call(this, err);
+    };
+    BidirectionalSubject.prototype.complete = function () {
+        subscriberComplete.call(this);
+    };
+    BidirectionalSubject.prototype._next = function (value) {
+        _subscriberNext.call(this, value);
+    };
+    BidirectionalSubject.prototype._error = function (err) {
+        _subscriberError.call(this, err);
+    };
+    BidirectionalSubject.prototype._complete = function () {
+        _subscriberComplete.call(this);
+    };
+    return BidirectionalSubject;
+})(Subject);
+//# sourceMappingURL=Subject.js.map</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:02 GMT-0800 (PST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

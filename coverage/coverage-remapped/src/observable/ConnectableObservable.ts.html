@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/ConnectableObservable.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/observable/ConnectableObservable.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(90 / 90)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">96.15% <small>(25 / 26)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(19 / 19)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(80 / 80)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/observable/</a> &#187; ConnectableObservable.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93</span>
+<span class="cline-any cline-yes">93</span>
+<span class="cline-any cline-yes">93</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">245</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">357</span>
+<span class="cline-any cline-yes">357</span>
+<span class="cline-any cline-yes">187</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">170</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">120</span>
+<span class="cline-any cline-yes">120</span>
+<span class="cline-any cline-yes">120</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">112</span>
+<span class="cline-any cline-yes">112</span>
+<span class="cline-any cline-yes">112</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">112</span>
+<span class="cline-any cline-yes">112</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">104</span>
+<span class="cline-any cline-yes">104</span>
+<span class="cline-any cline-yes">104</span>
+<span class="cline-any cline-yes">104</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">80</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">69</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-yes">156</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">314</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">64</span>
+<span class="cline-any cline-yes">64</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">69</span>
+<span class="cline-any cline-yes">69</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">133</span>
+<span class="cline-any cline-yes">133</span>
+<span class="cline-any cline-yes">133</span>
+<span class="cline-any cline-yes">133</span>
+<span class="cline-any cline-yes">49</span>
+<span class="cline-any cline-yes">49</span>
+<span class="cline-any cline-yes">49</span>
+<span class="cline-any cline-yes">49</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">152</span>
+<span class="cline-any cline-yes">152</span>
+<span class="cline-any cline-yes">124</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-yes">17</span>
+<span class="cline-any cline-yes">17</span>
+<span class="cline-any cline-yes">17</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Subject} from '../Subject';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
+import {Subscriber} from '../Subscriber';
+&nbsp;
+export class ConnectableObservable&lt;T&gt; extends Observable&lt;T&gt; {
+&nbsp;
+  subject: Subject&lt;T&gt;;
+  subscription: Subscription&lt;T&gt;;
+&nbsp;
+  constructor(public source: Observable&lt;T&gt;,
+              protected subjectFactory: () =&gt; Subject&lt;T&gt;) {
+    super();
+  }
+&nbsp;
+  _subscribe(subscriber) {
+    return this._getSubject().subscribe(subscriber);
+  }
+&nbsp;
+  _getSubject() {
+    const subject = this.subject;
+    if (subject &amp;&amp; !subject.isUnsubscribed) {
+      return subject;
+    }
+    return (this.subject = this.subjectFactory());
+  }
+&nbsp;
+  connect(): Subscription&lt;T&gt; {
+    const source = this.source;
+    let subscription = this.subscription;
+    if (subscription &amp;&amp; !subscription.isUnsubscribed) {
+      return subscription;
+    }
+    subscription = source.subscribe(this._getSubject());
+    subscription.add(new ConnectableSubscription(this));
+    return (this.subscription = subscription);
+  }
+&nbsp;
+  refCount(): Observable&lt;T&gt; {
+    return new RefCountObservable(this);
+  }
+}
+&nbsp;
+class ConnectableSubscription&lt;T&gt; extends Subscription&lt;T&gt; {
+  constructor(protected connectable: ConnectableObservable&lt;T&gt;) {
+    super();
+  }
+&nbsp;
+  _unsubscribe() {
+    const connectable = this.connectable;
+    connectable.subject = void 0;
+    connectable.subscription = void 0;
+    this.connectable = void 0;
+  }
+}
+&nbsp;
+class RefCountObservable&lt;T&gt; extends Observable&lt;T&gt; {
+  connection: Subscription&lt;T&gt;;
+&nbsp;
+  constructor(protected connectable: ConnectableObservable&lt;T&gt;,
+              <span class="missing-if-branch" title="else path not taken" >E</span>public refCount: number = 0) {
+    super();
+  }
+&nbsp;
+  _subscribe(subscriber) {
+    const connectable = this.connectable;
+    const refCountSubscriber = new RefCountSubscriber(subscriber, this);
+    const subscription = connectable.subscribe(refCountSubscriber);
+    if (!subscription.isUnsubscribed &amp;&amp; ++this.refCount === 1) {
+      refCountSubscriber.connection = this.connection = connectable.connect();
+    }
+    return subscription;
+  }
+}
+&nbsp;
+class RefCountSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  connection: Subscription&lt;T&gt;;
+&nbsp;
+  constructor(public destination: Subscriber&lt;T&gt;,
+              private refCountObservable: RefCountObservable&lt;T&gt;) {
+    super(null);
+    this.connection = refCountObservable.connection;
+    destination.add(this);
+  }
+&nbsp;
+  _next(value: T) {
+    this.destination.next(value);
+  }
+&nbsp;
+  _error(err: any) {
+    this._resetConnectable();
+    this.destination.error(err);
+  }
+&nbsp;
+  _complete() {
+    this._resetConnectable();
+    this.destination.complete();
+  }
+&nbsp;
+  _resetConnectable() {
+    const observable = this.refCountObservable;
+    const obsConnection = observable.connection;
+    const subConnection = this.connection;
+    if (subConnection &amp;&amp; subConnection === obsConnection) {
+      observable.refCount = 0;
+      obsConnection.unsubscribe();
+      observable.connection = void 0;
+      this.unsubscribe();
+    }
+  }
+&nbsp;
+  _unsubscribe() {
+    const observable = this.refCountObservable;
+    if (observable.refCount === 0) {
+      return;
+    }
+    if (--observable.refCount === 0) {
+      const obsConnection = observable.connection;
+      const subConnection = this.connection;
+      if (subConnection &amp;&amp; subConnection === obsConnection) {
+        obsConnection.unsubscribe();
+        observable.connection = void 0;
+      }
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:16 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

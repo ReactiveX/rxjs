@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for cjs/Rx.KitchenSink.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">cjs/Rx.KitchenSink.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(132 / 132)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(132 / 132)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">cjs/</a> &#187; Rx.KitchenSink.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var Observable_1 = require('./Observable');
+exports.Observable = Observable_1.Observable;
+// statics
+/* tslint:disable:no-use-before-declare */
+require('./operators/combineLatest-static');
+require('./operators/concat-static');
+require('./operators/merge-static');
+require('./observable/defer');
+require('./observable/empty');
+require('./observable/forkJoin');
+require('./observable/from');
+require('./observable/fromArray');
+require('./observable/fromEvent');
+require('./observable/fromEventPattern');
+require('./observable/fromPromise');
+require('./observable/fromCallback');
+require('./observable/interval');
+require('./observable/never');
+require('./observable/range');
+require('./observable/throw');
+require('./observable/timer');
+require('./operators/zip-static');
+// Operators
+require('./operators/buffer');
+require('./operators/bufferCount');
+require('./operators/bufferTime');
+require('./operators/bufferToggle');
+require('./operators/bufferWhen');
+require('./operators/catch');
+require('./operators/combineAll');
+require('./operators/combineLatest');
+require('./operators/concat');
+require('./operators/concatAll');
+require('./operators/concatMap');
+require('./operators/concatMapTo');
+require('./operators/count');
+require('./operators/dematerialize');
+require('./operators/debounce');
+require('./operators/debounceTime');
+require('./operators/defaultIfEmpty');
+require('./operators/delay');
+require('./operators/distinctUntilChanged');
+require('./operators/extended/distinctUntilKeyChanged');
+require('./operators/do');
+require('./operators/extended/elementAt');
+require('./operators/expand');
+require('./operators/filter');
+require('./operators/extended/find');
+require('./operators/extended/findIndex');
+require('./operators/finally');
+require('./operators/first');
+require('./operators/groupBy');
+require('./operators/ignoreElements');
+require('./operators/extended/isEmpty');
+require('./operators/every');
+require('./operators/last');
+require('./operators/map');
+require('./operators/mapTo');
+require('./operators/materialize');
+require('./operators/extended/max');
+require('./operators/merge');
+require('./operators/mergeAll');
+require('./operators/mergeMap');
+require('./operators/mergeMapTo');
+require('./operators/extended/mergeScan');
+require('./operators/extended/min');
+require('./operators/multicast');
+require('./operators/observeOn');
+require('./operators/partition');
+require('./operators/publish');
+require('./operators/publishBehavior');
+require('./operators/publishReplay');
+require('./operators/reduce');
+require('./operators/repeat');
+require('./operators/retry');
+require('./operators/retryWhen');
+require('./operators/sample');
+require('./operators/sampleTime');
+require('./operators/scan');
+require('./operators/share');
+require('./operators/single');
+require('./operators/skip');
+require('./operators/skipUntil');
+require('./operators/skipWhile');
+require('./operators/startWith');
+require('./operators/subscribeOn');
+require('./operators/switch');
+require('./operators/switchMap');
+require('./operators/switchMapTo');
+require('./operators/take');
+require('./operators/takeUntil');
+require('./operators/takeWhile');
+require('./operators/throttle');
+require('./operators/throttleTime');
+require('./operators/extended/timeInterval');
+require('./operators/timeout');
+require('./operators/timeoutWith');
+require('./operators/toArray');
+require('./operators/toPromise');
+require('./operators/window');
+require('./operators/windowCount');
+require('./operators/windowTime');
+require('./operators/windowToggle');
+require('./operators/windowWhen');
+require('./operators/withLatestFrom');
+require('./operators/zip');
+require('./operators/zipAll');
+/* tslint:disable:no-unused-variable */
+var Subject_1 = require('./Subject');
+exports.Subject = Subject_1.Subject;
+var Subscription_1 = require('./Subscription');
+exports.Subscription = Subscription_1.Subscription;
+var Subscriber_1 = require('./Subscriber');
+exports.Subscriber = Subscriber_1.Subscriber;
+var ReplaySubject_1 = require('./subjects/ReplaySubject');
+exports.ReplaySubject = ReplaySubject_1.ReplaySubject;
+var BehaviorSubject_1 = require('./subjects/BehaviorSubject');
+exports.BehaviorSubject = BehaviorSubject_1.BehaviorSubject;
+var ConnectableObservable_1 = require('./observable/ConnectableObservable');
+exports.ConnectableObservable = ConnectableObservable_1.ConnectableObservable;
+var Notification_1 = require('./Notification');
+exports.Notification = Notification_1.Notification;
+var EmptyError_1 = require('./util/EmptyError');
+exports.EmptyError = EmptyError_1.EmptyError;
+var ArgumentOutOfRangeError_1 = require('./util/ArgumentOutOfRangeError');
+exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
+var nextTick_1 = require('./schedulers/nextTick');
+var immediate_1 = require('./schedulers/immediate');
+var timeInterval_1 = require('./operators/extended/timeInterval');
+exports.TimeInterval = timeInterval_1.TimeInterval;
+var TestScheduler_1 = require('./testing/TestScheduler');
+exports.TestScheduler = TestScheduler_1.TestScheduler;
+var VirtualTimeScheduler_1 = require('./schedulers/VirtualTimeScheduler');
+exports.VirtualTimeScheduler = VirtualTimeScheduler_1.VirtualTimeScheduler;
+/* tslint:enable:no-unused-variable */
+/* tslint:disable:no-var-keyword */
+var Scheduler = {
+    nextTick: nextTick_1.nextTick,
+    immediate: immediate_1.immediate
+};
+exports.Scheduler = Scheduler;
+/* tslint:enable:no-var-keyword */
+//# sourceMappingURL=Rx.KitchenSink.js.map</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:02 GMT-0800 (PST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,1709 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "ArrayObservable",
+            "range": [
+              9,
+              24
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 24
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "ArrayObservable",
+            "range": [
+              9,
+              24
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 24
+              }
+            }
+          },
+          "range": [
+            9,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 24
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../observable/fromArray",
+        "raw": "'../observable/fromArray'",
+        "range": [
+          32,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 32
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        }
+      },
+      "range": [
+        0,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "CombineLatestOperator",
+            "range": [
+              68,
+              89
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 30
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "CombineLatestOperator",
+            "range": [
+              68,
+              89
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 30
+              }
+            }
+          },
+          "range": [
+            68,
+            89
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 30
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./combineLatest-support",
+        "raw": "'./combineLatest-support'",
+        "range": [
+          97,
+          122
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 38
+          },
+          "end": {
+            "line": 2,
+            "column": 63
+          }
+        }
+      },
+      "range": [
+        59,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "isArray",
+            "range": [
+              133,
+              140
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 16
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "isArray",
+            "range": [
+              133,
+              140
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            133,
+            140
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../util/isArray",
+        "raw": "'../util/isArray'",
+        "range": [
+          148,
+          165
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 24
+          },
+          "end": {
+            "line": 3,
+            "column": 41
+          }
+        }
+      },
+      "range": [
+        124,
+        166
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 42
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Combines the values from this observable with values from observables passed as arguments. This is done by subscribing\n * to each observable, in order, and collecting an array of each of the most recent values any time any of the observables\n * emits, then either taking that array and passing it as arguments to an option `project` function and emitting the return\n * value of that, or just emitting the array of recent values directly if there is no `project` function.\n * @param {...Observable} observables the observables to combine the source with\n * @param {function} [project] an optional function to project the values from the combined recent values into a new value for emission.\n * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of\n * the most recent values from each observable.\n ",
+          "range": [
+            167,
+            1053
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "combineLatest",
+          "range": [
+            1070,
+            1083
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 16
+            },
+            "end": {
+              "line": 14,
+              "column": 29
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "RestElement",
+            "argument": {
+              "type": "Identifier",
+              "name": "observables",
+              "range": [
+                1087,
+                1098
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 33
+                },
+                "end": {
+                  "line": 14,
+                  "column": 44
+                }
+              }
+            },
+            "range": [
+              1084,
+              1098
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 30
+              },
+              "end": {
+                "line": 14,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "project",
+                    "range": [
+                      1110,
+                      1117
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 15,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 15,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "Literal",
+                    "value": null,
+                    "raw": "null",
+                    "range": [
+                      1120,
+                      1124
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 15,
+                        "column": 18
+                      },
+                      "end": {
+                        "line": 15,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "range": [
+                    1110,
+                    1124
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 15,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 22
+                    }
+                  }
+                }
+              ],
+              "kind": "let",
+              "range": [
+                1106,
+                1125
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 4
+                },
+                "end": {
+                  "line": 15,
+                  "column": 23
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                  "type": "UnaryExpression",
+                  "operator": "typeof",
+                  "argument": {
+                    "type": "MemberExpression",
+                    "computed": true,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "observables",
+                      "range": [
+                        1141,
+                        1152
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 15
+                        },
+                        "end": {
+                          "line": 16,
+                          "column": 26
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "BinaryExpression",
+                      "operator": "-",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "observables",
+                          "range": [
+                            1153,
+                            1164
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 16,
+                              "column": 27
+                            },
+                            "end": {
+                              "line": 16,
+                              "column": 38
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "length",
+                          "range": [
+                            1165,
+                            1171
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 16,
+                              "column": 39
+                            },
+                            "end": {
+                              "line": 16,
+                              "column": 45
+                            }
+                          }
+                        },
+                        "range": [
+                          1153,
+                          1171
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 16,
+                            "column": 27
+                          },
+                          "end": {
+                            "line": 16,
+                            "column": 45
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": 1,
+                        "raw": "1",
+                        "range": [
+                          1174,
+                          1175
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 16,
+                            "column": 48
+                          },
+                          "end": {
+                            "line": 16,
+                            "column": 49
+                          }
+                        }
+                      },
+                      "range": [
+                        1153,
+                        1175
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 27
+                        },
+                        "end": {
+                          "line": 16,
+                          "column": 49
+                        }
+                      }
+                    },
+                    "range": [
+                      1141,
+                      1176
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 16,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 16,
+                        "column": 50
+                      }
+                    }
+                  },
+                  "prefix": true,
+                  "range": [
+                    1134,
+                    1176
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 16,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 16,
+                      "column": 50
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": "function",
+                  "raw": "'function'",
+                  "range": [
+                    1181,
+                    1191
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 16,
+                      "column": 55
+                    },
+                    "end": {
+                      "line": 16,
+                      "column": 65
+                    }
+                  }
+                },
+                "range": [
+                  1134,
+                  1191
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 65
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "project",
+                        "range": [
+                          1203,
+                          1210
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 17,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 17,
+                            "column": 15
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "observables",
+                            "range": [
+                              1213,
+                              1224
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 17,
+                                "column": 18
+                              },
+                              "end": {
+                                "line": 17,
+                                "column": 29
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "pop",
+                            "range": [
+                              1225,
+                              1228
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 17,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 17,
+                                "column": 33
+                              }
+                            }
+                          },
+                          "range": [
+                            1213,
+                            1228
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 17,
+                              "column": 18
+                            },
+                            "end": {
+                              "line": 17,
+                              "column": 33
+                            }
+                          }
+                        },
+                        "arguments": [],
+                        "range": [
+                          1213,
+                          1230
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 17,
+                            "column": 18
+                          },
+                          "end": {
+                            "line": 17,
+                            "column": 35
+                          }
+                        }
+                      },
+                      "range": [
+                        1203,
+                        1230
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 35
+                        }
+                      }
+                    },
+                    "range": [
+                      1203,
+                      1231
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 17,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 17,
+                        "column": 36
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1193,
+                  1237
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 67
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                1130,
+                1237
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 4
+                },
+                "end": {
+                  "line": 18,
+                  "column": 5
+                }
+              },
+              "trailingComments": [
+                {
+                  "type": "Line",
+                  "value": " if the first and only other argument besides the resultSelector is an array",
+                  "range": [
+                    1242,
+                    1320
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 19,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 19,
+                      "column": 82
+                    }
+                  }
+                },
+                {
+                  "type": "Line",
+                  "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
+                  "range": [
+                    1325,
+                    1401
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 20,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 20,
+                      "column": 80
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "LogicalExpression",
+                "operator": "&&",
+                "left": {
+                  "type": "BinaryExpression",
+                  "operator": "===",
+                  "left": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "observables",
+                      "range": [
+                        1410,
+                        1421
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 21,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 21,
+                          "column": 19
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "length",
+                      "range": [
+                        1422,
+                        1428
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 21,
+                          "column": 20
+                        },
+                        "end": {
+                          "line": 21,
+                          "column": 26
+                        }
+                      }
+                    },
+                    "range": [
+                      1410,
+                      1428
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 21,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 21,
+                        "column": 26
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "Literal",
+                    "value": 1,
+                    "raw": "1",
+                    "range": [
+                      1433,
+                      1434
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 21,
+                        "column": 31
+                      },
+                      "end": {
+                        "line": 21,
+                        "column": 32
+                      }
+                    }
+                  },
+                  "range": [
+                    1410,
+                    1434
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 21,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 21,
+                      "column": 32
+                    }
+                  }
+                },
+                "right": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "isArray",
+                    "range": [
+                      1438,
+                      1445
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 21,
+                        "column": 36
+                      },
+                      "end": {
+                        "line": 21,
+                        "column": 43
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "MemberExpression",
+                      "computed": true,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "observables",
+                        "range": [
+                          1446,
+                          1457
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 44
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 55
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Literal",
+                        "value": 0,
+                        "raw": "0",
+                        "range": [
+                          1458,
+                          1459
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 56
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 57
+                          }
+                        }
+                      },
+                      "range": [
+                        1446,
+                        1460
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 21,
+                          "column": 44
+                        },
+                        "end": {
+                          "line": 21,
+                          "column": 58
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1438,
+                    1461
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 21,
+                      "column": 36
+                    },
+                    "end": {
+                      "line": 21,
+                      "column": 59
+                    }
+                  }
+                },
+                "range": [
+                  1410,
+                  1461
+                ],
+                "loc": {
+                  "start": {
+                    "line": 21,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 21,
+                    "column": 59
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "observables",
+                        "range": [
+                          1473,
+                          1484
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 22,
+                            "column": 19
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "MemberExpression",
+                        "computed": true,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "observables",
+                          "range": [
+                            1487,
+                            1498
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 22
+                            },
+                            "end": {
+                              "line": 22,
+                              "column": 33
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Literal",
+                          "value": 0,
+                          "raw": "0",
+                          "range": [
+                            1499,
+                            1500
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 34
+                            },
+                            "end": {
+                              "line": 22,
+                              "column": 35
+                            }
+                          }
+                        },
+                        "range": [
+                          1487,
+                          1501
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 22
+                          },
+                          "end": {
+                            "line": 22,
+                            "column": 36
+                          }
+                        }
+                      },
+                      "range": [
+                        1473,
+                        1501
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 22,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 22,
+                          "column": 36
+                        }
+                      }
+                    },
+                    "range": [
+                      1473,
+                      1502
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 22,
+                        "column": 37
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1463,
+                  1508
+                ],
+                "loc": {
+                  "start": {
+                    "line": 21,
+                    "column": 61
+                  },
+                  "end": {
+                    "line": 23,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                1406,
+                1508
+              ],
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 4
+                },
+                "end": {
+                  "line": 23,
+                  "column": 5
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Line",
+                  "value": " if the first and only other argument besides the resultSelector is an array",
+                  "range": [
+                    1242,
+                    1320
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 19,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 19,
+                      "column": 82
+                    }
+                  }
+                },
+                {
+                  "type": "Line",
+                  "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
+                  "range": [
+                    1325,
+                    1401
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 20,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 20,
+                      "column": 80
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "observables",
+                    "range": [
+                      1513,
+                      1524
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 24,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 24,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "unshift",
+                    "range": [
+                      1525,
+                      1532
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 24,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 24,
+                        "column": 23
+                      }
+                    }
+                  },
+                  "range": [
+                    1513,
+                    1532
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 24,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 24,
+                      "column": 23
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1533,
+                      1537
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 24,
+                        "column": 24
+                      },
+                      "end": {
+                        "line": 24,
+                        "column": 28
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1513,
+                  1538
+                ],
+                "loc": {
+                  "start": {
+                    "line": 24,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 24,
+                    "column": 29
+                  }
+                }
+              },
+              "range": [
+                1513,
+                1539
+              ],
+              "loc": {
+                "start": {
+                  "line": 24,
+                  "column": 4
+                },
+                "end": {
+                  "line": 24,
+                  "column": 30
+                }
+              }
+            },
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "ArrayObservable",
+                      "range": [
+                        1555,
+                        1570
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 15
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 30
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "observables",
+                        "range": [
+                          1571,
+                          1582
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 25,
+                            "column": 31
+                          },
+                          "end": {
+                            "line": 25,
+                            "column": 42
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1551,
+                      1583
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 25,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 43
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "lift",
+                    "range": [
+                      1584,
+                      1588
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 25,
+                        "column": 44
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 48
+                      }
+                    }
+                  },
+                  "range": [
+                    1551,
+                    1588
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 25,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 25,
+                      "column": 48
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "CombineLatestOperator",
+                      "range": [
+                        1593,
+                        1614
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 53
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 74
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "project",
+                        "range": [
+                          1615,
+                          1622
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 25,
+                            "column": 75
+                          },
+                          "end": {
+                            "line": 25,
+                            "column": 82
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1589,
+                      1623
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 25,
+                        "column": 49
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 83
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1551,
+                  1624
+                ],
+                "loc": {
+                  "start": {
+                    "line": 25,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 25,
+                    "column": 84
+                  }
+                }
+              },
+              "range": [
+                1544,
+                1625
+              ],
+              "loc": {
+                "start": {
+                  "line": 25,
+                  "column": 4
+                },
+                "end": {
+                  "line": 25,
+                  "column": 85
+                }
+              }
+            }
+          ],
+          "range": [
+            1100,
+            1627
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 46
+            },
+            "end": {
+              "line": 26,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1061,
+          1627
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 7
+          },
+          "end": {
+            "line": 26,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Combines the values from this observable with values from observables passed as arguments. This is done by subscribing\n * to each observable, in order, and collecting an array of each of the most recent values any time any of the observables\n * emits, then either taking that array and passing it as arguments to an option `project` function and emitting the return\n * value of that, or just emitting the array of recent values directly if there is no `project` function.\n * @param {...Observable} observables the observables to combine the source with\n * @param {function} [project] an optional function to project the values from the combined recent values into a new value for emission.\n * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of\n * the most recent values from each observable.\n ",
+            "range": [
+              167,
+              1053
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 13,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=combineLatest.js.map",
+            "range": [
+              1628,
+              1669
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 0
+              },
+              "end": {
+                "line": 27,
+                "column": 41
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1054,
+        1627
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Combines the values from this observable with values from observables passed as arguments. This is done by subscribing\n * to each observable, in order, and collecting an array of each of the most recent values any time any of the observables\n * emits, then either taking that array and passing it as arguments to an option `project` function and emitting the return\n * value of that, or just emitting the array of recent values directly if there is no `project` function.\n * @param {...Observable} observables the observables to combine the source with\n * @param {function} [project] an optional function to project the values from the combined recent values into a new value for emission.\n * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of\n * the most recent values from each observable.\n ",
+          "range": [
+            167,
+            1053
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=combineLatest.js.map",
+          "range": [
+            1628,
+            1669
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 0
+            },
+            "end": {
+              "line": 27,
+              "column": 41
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1627
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 26,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Combines the values from this observable with values from observables passed as arguments. This is done by subscribing\n * to each observable, in order, and collecting an array of each of the most recent values any time any of the observables\n * emits, then either taking that array and passing it as arguments to an option `project` function and emitting the return\n * value of that, or just emitting the array of recent values directly if there is no `project` function.\n * @param {...Observable} observables the observables to combine the source with\n * @param {function} [project] an optional function to project the values from the combined recent values into a new value for emission.\n * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of\n * the most recent values from each observable.\n ",
+      "range": [
+        167,
+        1053
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": " if the first and only other argument besides the resultSelector is an array",
+      "range": [
+        1242,
+        1320
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 82
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
+      "range": [
+        1325,
+        1401
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 80
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=combineLatest.js.map",
+      "range": [
+        1628,
+        1669
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 41
+        }
+      }
+    }
+  ]
+}

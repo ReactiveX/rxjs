@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observables/IteratorObservable.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">src/observables/IteratorObservable.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">47.06% <small>(56 / 119)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">16.67% <small>(11 / 66)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">41.18% <small>(7 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">49.07% <small>(53 / 108)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/observables/</a> &#187; IteratorObservable.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
+&nbsp;
+import {root} from '../util/root';
+import {$$iterator} from '../util/Symbol_iterator';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
+&nbsp;
+export class IteratorObservable&lt;T&gt; extends Observable&lt;T&gt; {
+&nbsp;
+<span class="fstat-no" title="function not covered" >  static create&lt;T&gt;(iterator: any,</span>
+                   project?: (x?: any, i?: number) =&gt; T,
+                   thisArg?: any,
+                   scheduler?: Scheduler) {
+<span class="cstat-no" title="statement not covered" >    if (iterator == null) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error('iterator cannot be null.');</span>
+    }
+<span class="cstat-no" title="statement not covered" >    if (project &amp;&amp; typeof project !== 'function') {</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error('When provided, `project` must be a function.');</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return new IteratorObservable(iterator, project, thisArg, scheduler);</span>
+  }
+&nbsp;
+  static dispatch(state) {
+&nbsp;
+    const { index, hasError, thisArg, project, iterator, subscriber } = state;
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (hasError) {
+<span class="cstat-no" title="statement not covered" >      subscriber.error(state.error);</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    let result = iterator.next();
+&nbsp;
+    if (result.done) {
+      subscriber.complete();
+      return;
+    }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (project) {
+<span class="cstat-no" title="statement not covered" >      result = tryCatch(project).call(thisArg, result.value, index);</span>
+<span class="cstat-no" title="statement not covered" >      if (result === errorObject) {</span>
+<span class="cstat-no" title="statement not covered" >        state.error = errorObject.e;</span>
+<span class="cstat-no" title="statement not covered" >        state.hasError = true;</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        subscriber.next(result);</span>
+<span class="cstat-no" title="statement not covered" >        state.index = index + 1;</span>
+      }
+    } else {
+      subscriber.next(result.value);
+      state.index = index + 1;
+    }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (subscriber.isUnsubscribed) {
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    (&lt;any&gt; this).schedule(state);
+  }
+&nbsp;
+  constructor(private iterator: any,
+              private project?: (x?: any, i?: number) =&gt; T,
+              private thisArg?: any,
+              private scheduler?: Scheduler) {
+    super();
+  }
+&nbsp;
+  _subscribe(subscriber) {
+&nbsp;
+    let index = 0;
+    const project = this.project;
+    const thisArg = this.thisArg;
+    const iterator = getIterator(Object(this.iterator));
+    const scheduler = this.scheduler;
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (scheduler) {
+      subscriber.add(scheduler.schedule(IteratorObservable.dispatch, 0, {
+        index, thisArg, project, iterator, subscriber
+      }));
+    } else {
+<span class="cstat-no" title="statement not covered" >      do {</span>
+<span class="cstat-no" title="statement not covered" >        let result = iterator.next();</span>
+<span class="cstat-no" title="statement not covered" >        if (result.done) {</span>
+<span class="cstat-no" title="statement not covered" >          subscriber.complete();</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+        } else <span class="cstat-no" title="statement not covered" >if (project) {</span>
+<span class="cstat-no" title="statement not covered" >          result = tryCatch(project).call(thisArg, result.value, index++);</span>
+<span class="cstat-no" title="statement not covered" >          if (result === errorObject) {</span>
+<span class="cstat-no" title="statement not covered" >            subscriber.error(errorObject.e);</span>
+<span class="cstat-no" title="statement not covered" >            break;</span>
+          }
+<span class="cstat-no" title="statement not covered" >          subscriber.next(result);</span>
+        } else {
+<span class="cstat-no" title="statement not covered" >          subscriber.next(result.value);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        if (subscriber.isUnsubscribed) {</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+        }
+      } while (true);
+    }
+  }
+}
+&nbsp;
+const maxSafeInteger = Math.pow(2, 53) - 1;
+&nbsp;
+class StringIterator {
+<span class="fstat-no" title="function not covered" >  constructor(private <span class="cstat-no" title="statement not covered" >str: string,</span></span>
+<span class="cstat-no" title="statement not covered" >              private <span class="cstat-no" title="statement not covered" >idx: number = 0,</span></span>
+<span class="cstat-no" title="statement not covered" >              private <span class="cstat-no" title="statement not covered" >len: number = str.length)</span></span> {
+  }
+<span class="fstat-no" title="function not covered" >  [$$iterator]() { <span class="cstat-no" title="statement not covered" ></span>return (this); </span>}
+<span class="fstat-no" title="function not covered" >  next() {</span>
+<span class="cstat-no" title="statement not covered" >    return this.idx &lt; this.len ? {</span>
+        done: false,
+        value: this.str.charAt(this.idx++)
+    } : {
+        done: true,
+        value: undefined
+    };
+  }
+}
+&nbsp;
+class ArrayIterator {
+<span class="fstat-no" title="function not covered" >  constructor(private <span class="cstat-no" title="statement not covered" >arr: Array&lt;any&gt;,</span></span>
+<span class="cstat-no" title="statement not covered" >              private <span class="cstat-no" title="statement not covered" >idx: number = 0,</span></span>
+<span class="cstat-no" title="statement not covered" >              private <span class="cstat-no" title="statement not covered" >len: number = toLength(arr))</span></span> {
+  }
+<span class="fstat-no" title="function not covered" >  [$$iterator]() { <span class="cstat-no" title="statement not covered" ></span>return this; </span>}
+<span class="fstat-no" title="function not covered" >  next() {</span>
+<span class="cstat-no" title="statement not covered" >    return this.idx &lt; this.len ? {</span>
+        done: false,
+        value: this.arr[this.idx++]
+    } : {
+        done: true,
+        value: undefined
+    };
+  }
+}
+&nbsp;
+function getIterator(o) {
+  const i = o[$$iterator];
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!i &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >typeof o === 'string')</span> {
+<span class="cstat-no" title="statement not covered" >    return new StringIterator(o);</span>
+  }
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!i &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >o.length !== undefined)</span> {
+<span class="cstat-no" title="statement not covered" >    return new ArrayIterator(o);</span>
+  }
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!i) {
+<span class="cstat-no" title="statement not covered" >    throw new TypeError('Object is not iterable');</span>
+  }
+  return o[$$iterator]();
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function toLength(o)</span> {
+<span class="cstat-no" title="statement not covered" >  let len = +o.length;</span>
+<span class="cstat-no" title="statement not covered" >  if (isNaN(len)) {</span>
+<span class="cstat-no" title="statement not covered" >      return 0;</span>
+  }
+<span class="cstat-no" title="statement not covered" >  if (len === 0 || !numberIsFinite(len)) {</span>
+<span class="cstat-no" title="statement not covered" >      return len;</span>
+  }
+<span class="cstat-no" title="statement not covered" >  len = sign(len) * Math.floor(Math.abs(len));</span>
+<span class="cstat-no" title="statement not covered" >  if (len &lt;= 0) {</span>
+<span class="cstat-no" title="statement not covered" >      return 0;</span>
+  }
+<span class="cstat-no" title="statement not covered" >  if (len &gt; maxSafeInteger) {</span>
+<span class="cstat-no" title="statement not covered" >      return maxSafeInteger;</span>
+  }
+<span class="cstat-no" title="statement not covered" >  return len;</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function numberIsFinite(value)</span> {
+<span class="cstat-no" title="statement not covered" >  return typeof value === 'number' &amp;&amp; root.isFinite(value);</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function sign(value)</span> {
+<span class="cstat-no" title="statement not covered" >  let valueAsNumber = +value;</span>
+<span class="cstat-no" title="statement not covered" >  if (valueAsNumber === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    return valueAsNumber;</span>
+  }
+<span class="cstat-no" title="statement not covered" >  if (isNaN(valueAsNumber)) {</span>
+<span class="cstat-no" title="statement not covered" >    return valueAsNumber;</span>
+  }
+<span class="cstat-no" title="statement not covered" >  return valueAsNumber &lt; 0 ? -1 : 1;</span>
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Nov 18 2015 14:52:44 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

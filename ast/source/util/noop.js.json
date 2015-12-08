@@ -2,24 +2,24 @@
   "type": "Program",
   "body": [
     {
-      "type": "ExportDefaultDeclaration",
+      "type": "ExportNamedDeclaration",
       "declaration": {
         "type": "FunctionDeclaration",
         "id": {
           "type": "Identifier",
           "name": "noop",
           "range": [
-            24,
-            28
+            46,
+            50
           ],
           "loc": {
             "start": {
-              "line": 1,
-              "column": 24
+              "line": 2,
+              "column": 16
             },
             "end": {
-              "line": 1,
-              "column": 28
+              "line": 2,
+              "column": 20
             }
           }
         },
@@ -28,42 +28,157 @@
           "type": "BlockStatement",
           "body": [],
           "range": [
-            31,
-            34
+            53,
+            56
           ],
           "loc": {
             "start": {
-              "line": 1,
-              "column": 31
+              "line": 2,
+              "column": 23
             },
             "end": {
-              "line": 1,
-              "column": 34
+              "line": 2,
+              "column": 26
             }
           }
         },
         "generator": false,
         "expression": false,
         "range": [
-          15,
-          34
+          37,
+          56
         ],
         "loc": {
           "start": {
-            "line": 1,
-            "column": 15
+            "line": 2,
+            "column": 7
           },
           "end": {
-            "line": 1,
-            "column": 34
+            "line": 2,
+            "column": 26
           }
         },
-        "leadingComments": [],
-        "trailingComments": []
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:disable:no-empty ",
+            "range": [
+              0,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=noop.js.map",
+            "range": [
+              57,
+              89
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 32
+              }
+            }
+          }
+        ]
       },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        30,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:disable:no-empty ",
+          "range": [
+            0,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=noop.js.map",
+          "range": [
+            57,
+            89
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 32
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    30,
+    56
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 26
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:disable:no-empty ",
       "range": [
         0,
-        34
+        29
       ],
       "loc": {
         "start": {
@@ -72,25 +187,27 @@
         },
         "end": {
           "line": 1,
-          "column": 34
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=noop.js.map",
+      "range": [
+        57,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 32
         }
       }
     }
-  ],
-  "sourceType": "module",
-  "range": [
-    0,
-    34
-  ],
-  "loc": {
-    "start": {
-      "line": 1,
-      "column": 0
-    },
-    "end": {
-      "line": 1,
-      "column": 34
-    }
-  },
-  "comments": []
+  ]
 }

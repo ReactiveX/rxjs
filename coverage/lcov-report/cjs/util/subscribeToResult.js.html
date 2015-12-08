@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for cjs/util/subscribeToResult.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header medium">
+    <h1>Code coverage report for <span class="entity">cjs/util/subscribeToResult.js</span></h1>
+    <h2>
+        Statements: <span class="metric">72.73% <small>(32 / 44)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">65.38% <small>(17 / 26)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">60% <small>(3 / 5)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">74.42% <small>(32 / 43)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">cjs/util/</a> &#187; subscribeToResult.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1379</span>
+<span class="cline-any cline-yes">1379</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1379</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1200</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">149</span>
+<span class="cline-any cline-yes">115</span>
+<span class="cline-any cline-yes">360</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">115</span>
+<span class="cline-any cline-yes">115</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var Observable_1 = require('../Observable');
+var Symbol_iterator_1 = require('../util/Symbol_iterator');
+var Symbol_observable_1 = require('../util/Symbol_observable');
+var InnerSubscriber_1 = require('../InnerSubscriber');
+var isArray = Array.isArray;
+function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
+    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (destination.isUnsubscribed) {
+<span class="cstat-no" title="statement not covered" >        return;</span>
+    }
+    if (result instanceof Observable_1.Observable) {
+        if (result._isScalar) {
+            destination.next(result.value);
+            destination.complete();
+            return;
+        }
+        else {
+            return result.subscribe(destination);
+        }
+    }
+    if (isArray(result)) {
+        for (var i = 0, len = result.length; i &lt; len &amp;&amp; !destination.isUnsubscribed; i++) {
+            destination.next(result[i]);
+        }
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!destination.isUnsubscribed) {
+            destination.complete();
+        }
+    }
+    else if (typeof result.then === 'function') {
+        result.then(function (x) {
+            if (!destination.isUnsubscribed) {
+                destination.next(x);
+                destination.complete();
+            }
+        }, function (err) { return destination.error(err); })
+            .then(null, <span class="fstat-no" title="function not covered" >function (err) {</span>
+            // Escaping the Promise trap: globally throw unhandled errors
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >throw err; </span>});</span>
+        });
+        return destination;
+    }
+    else <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof result[Symbol_iterator_1.$$iterator] === 'function') {
+<span class="cstat-no" title="statement not covered" >        for (var _i = 0, result_1 = result; _i &lt; result_1.length; _i++) {</span>
+<span class="cstat-no" title="statement not covered" >            var item = result_1[_i];</span>
+<span class="cstat-no" title="statement not covered" >            destination.next(item);</span>
+<span class="cstat-no" title="statement not covered" >            if (destination.isUnsubscribed) {</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            }
+        }
+<span class="cstat-no" title="statement not covered" >        if (!destination.isUnsubscribed) {</span>
+<span class="cstat-no" title="statement not covered" >            destination.complete();</span>
+        }
+    }
+    else <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof result[Symbol_observable_1.$$observable] === 'function') {
+        var obs = result[Symbol_observable_1.$$observable]();
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof obs.subscribe !== 'function') {
+<span class="cstat-no" title="statement not covered" >            destination.error('invalid observable');</span>
+        }
+        else {
+            return obs.subscribe(new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex));
+        }
+    }
+    else {
+<span class="cstat-no" title="statement not covered" >        destination.error(new TypeError('unknown type returned'));</span>
+    }
+}
+exports.subscribeToResult = subscribeToResult;
+//# sourceMappingURL=subscribeToResult.js.map</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:02 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

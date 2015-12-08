@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/operator/withLatestFrom.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/operator/withLatestFrom.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { tryCatch } from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
+import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+/**
+ * @param {Observable} observables the observables to get the latest values from.
+ * @param {Function} [project] optional projection function for merging values together. Receives all values in order
+ *  of observables passed. (e.g. `a.withLatestFrom(b, c, (a1, b1, c1) =&gt; a1 + b1 + c1)`). If this is not passed, arrays
+ *  will be returned.
+ * @description merges each value from an observable with the latest values from the other passed observables.
+ * All observables must emit at least one value before the resulting observable will emit
+ *
+ * #### example
+ * ```
+ * A.withLatestFrom(B, C)
+ *
+ *  A:     ----a-----------------b---------------c-----------|
+ *  B:     ---d----------------e--------------f---------|
+ *  C:     --x----------------y-------------z-------------|
+ * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
+ * ```
+ */
+export function withLatestFrom(...args) {
+    let project;
+    if (typeof args[args.length - 1] === &apos;function&apos;) {
+        project = args.pop();
+    }
+    const observables = args;
+    return this.lift(new WithLatestFromOperator(observables, project));
+}
+class WithLatestFromOperator {
+    constructor(observables, project) {
+        this.observables = observables;
+        this.project = project;
+    }
+    call(subscriber) {
+        return new WithLatestFromSubscriber(subscriber, this.observables, this.project);
+    }
+}
+class WithLatestFromSubscriber extends OuterSubscriber {
+    constructor(destination, observables, project) {
+        super(destination);
+        this.observables = observables;
+        this.project = project;
+        this.toRespond = [];
+        const len = observables.length;
+        this.values = new Array(len);
+        for (let i = 0; i &lt; len; i++) {
+            this.toRespond.push(i);
+        }
+        for (let i = 0; i &lt; len; i++) {
+            let observable = observables[i];
+            this.add(subscribeToResult(this, observable, observable, i));
+        }
+    }
+    notifyNext(observable, value, observableIndex, index) {
+        this.values[observableIndex] = value;
+        const toRespond = this.toRespond;
+        if (toRespond.length &gt; 0) {
+            const found = toRespond.indexOf(observableIndex);
+            if (found !== -1) {
+                toRespond.splice(found, 1);
+            }
+        }
+    }
+    notifyComplete() {
+        // noop
+    }
+    _next(value) {
+        if (this.toRespond.length === 0) {
+            const values = this.values;
+            const destination = this.destination;
+            const project = this.project;
+            const args = [value, ...values];
+            if (project) {
+                let result = tryCatch(this.project).apply(this, args);
+                if (result === errorObject) {
+                    destination.error(result.e);
+                }
+                else {
+                    destination.next(result);
+                }
+            }
+            else {
+                destination.next(args);
+            }
+        }
+    }
+}
+//# sourceMappingURL=withLatestFrom.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

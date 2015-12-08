@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operators/bufferTime.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/operators/bufferTime.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(72 / 72)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">64.29% <small>(9 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(14 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(69 / 69)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/operators/</a> &#187; bufferTime.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">56</span>
+<span class="cline-any cline-yes">56</span>
+<span class="cline-any cline-yes">56</span>
+<span class="cline-any cline-yes">68</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">37</span>
+<span class="cline-any cline-yes">37</span>
+<span class="cline-any cline-yes">37</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">25</span>
+<span class="cline-any cline-yes">25</span>
+<span class="cline-any cline-yes">25</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span></td><td class="text"><pre class="prettyprint lang-js">import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Scheduler} from '../Scheduler';
+import {Action} from '../schedulers/Action';
+import {nextTick} from '../schedulers/nextTick';
+&nbsp;
+/**
+ * buffers values from the source for a specific time period. Optionally allows new buffers to be set up at an interval.
+ * @param {number} the amount of time to fill each buffer for before emitting them and clearing them.
+ * @param {number} [bufferCreationInterval] the interval at which to start new buffers.
+ * @param {Scheduler} [scheduler] (optional, defaults to `nextTick` scheduler) The scheduler on which to schedule the
+ *  intervals that determine buffer boundaries.
+ * @returns {Observable&lt;T[]&gt;} an observable of arrays of buffered values.
+ */
+export function bufferTime&lt;T&gt;(bufferTimeSpan: number,
+                              <span class="missing-if-branch" title="if path not taken" >I</span>bufferCreationInterval: number = null,
+                              <span class="missing-if-branch" title="if path not taken" >I</span>scheduler: Scheduler = nextTick): Observable&lt;T[]&gt; {
+  return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
+}
+&nbsp;
+class BufferTimeOperator&lt;T, R&gt; implements Operator&lt;T, R&gt; {
+&nbsp;
+  constructor(private bufferTimeSpan: number,
+              private bufferCreationInterval: number,
+              private scheduler: Scheduler) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;T&gt;): Subscriber&lt;T&gt; {
+    return new BufferTimeSubscriber(
+      subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler
+    );
+  }
+}
+&nbsp;
+class BufferTimeSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private buffers: Array&lt;T[]&gt; = [];
+&nbsp;
+  constructor(destination: Subscriber&lt;T&gt;,
+              private bufferTimeSpan: number,
+              private bufferCreationInterval: number,
+              private scheduler: Scheduler) {
+    super(destination);
+    let buffer = this.openBuffer();
+    if (bufferCreationInterval !== null &amp;&amp; bufferCreationInterval &gt;= 0) {
+      const closeState = { subscriber: this, buffer };
+      const creationState = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+      this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
+      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
+    } else {
+      const timeSpanOnlyState = { subscriber: this, buffer, bufferTimeSpan };
+      this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+    }
+  }
+&nbsp;
+  _next(value: T) {
+    const buffers = this.buffers;
+    const len = buffers.length;
+    for (let i = 0; i &lt; len; i++) {
+      buffers[i].push(value);
+    }
+  }
+&nbsp;
+  _error(err) {
+    this.buffers.length = 0;
+    this.destination.error(err);
+  }
+&nbsp;
+  _complete() {
+    const buffers = this.buffers;
+    while (buffers.length &gt; 0) {
+      this.destination.next(buffers.shift());
+    }
+    this.destination.complete();
+  }
+&nbsp;
+  openBuffer(): T[] {
+    let buffer = [];
+    this.buffers.push(buffer);
+    return buffer;
+  }
+&nbsp;
+  closeBuffer(buffer: T[]) {
+    this.destination.next(buffer);
+    const buffers = this.buffers;
+    buffers.splice(buffers.indexOf(buffer), 1);
+  }
+}
+&nbsp;
+function dispatchBufferTimeSpanOnly(state) {
+  const subscriber: BufferTimeSubscriber&lt;any&gt; = state.subscriber;
+&nbsp;
+  const prevBuffer = state.buffer;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (prevBuffer) {
+    subscriber.closeBuffer(prevBuffer);
+  }
+&nbsp;
+  state.buffer = subscriber.openBuffer();
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.isUnsubscribed) {
+    (&lt;any&gt;this).schedule(state, state.bufferTimeSpan);
+  }
+}
+&nbsp;
+function dispatchBufferCreation(state) {
+  let { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
+  let buffer = subscriber.openBuffer();
+  let action = &lt;Action&gt;this;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.isUnsubscribed) {
+    action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
+    action.schedule(state, bufferCreationInterval);
+  }
+}
+&nbsp;
+function dispatchBufferClose({ subscriber, buffer }) {
+  subscriber.closeBuffer(buffer);
+}
+&nbsp;
+Observable.prototype.bufferTime = bufferTime;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:16 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

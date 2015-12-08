@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/Subject.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/Subject.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(121 / 121)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(30 / 30)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(22 / 22)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(116 / 116)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">src/</a> &#187; Subject.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2583</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2582</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">846</span>
+<span class="cline-any cline-yes">846</span>
+<span class="cline-any cline-yes">846</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1895</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1893</span>
+<span class="cline-any cline-yes">31</span>
+<span class="cline-any cline-yes">31</span>
+<span class="cline-any cline-yes">1862</span>
+<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-yes">1824</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1823</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1823</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1544</span>
+<span class="cline-any cline-yes">1544</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5474</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">5431</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">324</span>
+<span class="cline-any cline-yes">17</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">307</span>
+<span class="cline-any cline-yes">307</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">307</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1327</span>
+<span class="cline-any cline-yes">71</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1256</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1256</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5434</span>
+<span class="cline-any cline-yes">4502</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-yes">299</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">304</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-yes">922</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1230</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">848</span>
+<span class="cline-any cline-yes">848</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">851</span>
+<span class="cline-any cline-yes">851</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span></td><td class="text"><pre class="prettyprint lang-js">import {Operator} from './Operator';
+import {Observer} from './Observer';
+import {Observable} from './Observable';
+import {Subscriber} from './Subscriber';
+import {Subscription} from './Subscription';
+import {SubjectSubscription} from './subjects/SubjectSubscription';
+&nbsp;
+const subscriptionAdd = Subscription.prototype.add;
+const subscriptionRemove = Subscription.prototype.remove;
+const subscriptionUnsubscribe = Subscription.prototype.unsubscribe;
+&nbsp;
+const subscriberNext = Subscriber.prototype.next;
+const subscriberError = Subscriber.prototype.error;
+const subscriberComplete = Subscriber.prototype.complete;
+const _subscriberNext = Subscriber.prototype._next;
+const _subscriberError = Subscriber.prototype._error;
+const _subscriberComplete = Subscriber.prototype._complete;
+&nbsp;
+export class Subject&lt;T&gt; extends Observable&lt;T&gt; implements Observer&lt;T&gt;, Subscription&lt;T&gt; {
+  _subscriptions: Subscription&lt;T&gt;[];
+  _unsubscribe: () =&gt; void;
+&nbsp;
+  static create&lt;T&gt;(source: Observable&lt;T&gt;, destination: Observer&lt;T&gt;): Subject&lt;T&gt; {
+    return new BidirectionalSubject(source, destination);
+  }
+&nbsp;
+  protected destination: Observer&lt;T&gt;;
+&nbsp;
+  observers: Observer&lt;T&gt;[] = [];
+  isUnsubscribed: boolean = false;
+&nbsp;
+  dispatching: boolean = false;
+  errorSignal: boolean = false;
+  errorInstance: any;
+  completeSignal: boolean = false;
+&nbsp;
+  lift&lt;T, R&gt;(operator: Operator&lt;T, R&gt;): Observable&lt;T&gt; {
+    const subject = new BidirectionalSubject(this, this.destination || this);
+    subject.operator = operator;
+    return subject;
+  }
+&nbsp;
+  _subscribe(subscriber: Subscriber&lt;any&gt;): Subscription&lt;T&gt; {
+    if (subscriber.isUnsubscribed) {
+      return;
+    } else if (this.errorSignal) {
+      subscriber.error(this.errorInstance);
+      return;
+    } else if (this.completeSignal) {
+      subscriber.complete();
+      return;
+    } else if (this.isUnsubscribed) {
+      throw new Error('Cannot subscribe to a disposed Subject.');
+    }
+&nbsp;
+    this.observers.push(subscriber);
+&nbsp;
+    return new SubjectSubscription(this, subscriber);
+  }
+&nbsp;
+  add(subscription?) {
+    subscriptionAdd.call(this, subscription);
+  }
+&nbsp;
+  remove(subscription?) {
+    subscriptionRemove.call(this, subscription);
+  }
+&nbsp;
+  unsubscribe() {
+    this.observers = void 0;
+    subscriptionUnsubscribe.call(this);
+  }
+&nbsp;
+  next(value: T): void {
+    if (this.isUnsubscribed) {
+      return;
+    }
+&nbsp;
+    this.dispatching = true;
+    this._next(value);
+    this.dispatching = false;
+&nbsp;
+    if (this.errorSignal) {
+      this.error(this.errorInstance);
+    } else if (this.completeSignal) {
+      this.complete();
+    }
+  }
+&nbsp;
+  error(err?: any): void {
+    if (this.isUnsubscribed || this.completeSignal) {
+      return;
+    }
+&nbsp;
+    this.errorSignal = true;
+    this.errorInstance = err;
+&nbsp;
+    if (this.dispatching) {
+      return;
+    }
+&nbsp;
+    this._error(err);
+    this.unsubscribe();
+  }
+&nbsp;
+  complete(): void {
+    if (this.isUnsubscribed || this.errorSignal) {
+      return;
+    }
+&nbsp;
+    this.completeSignal = true;
+&nbsp;
+    if (this.dispatching) {
+      return;
+    }
+&nbsp;
+    this._complete();
+    this.unsubscribe();
+  }
+&nbsp;
+  _next(value: T): void {
+    let index = -1;
+    const observers = this.observers.slice(0);
+    const len = observers.length;
+&nbsp;
+    while (++index &lt; len) {
+      observers[index].next(value);
+    }
+  }
+&nbsp;
+  _error(err: any): void {
+    let index = -1;
+    const observers = this.observers;
+    const len = observers.length;
+&nbsp;
+    // optimization -- block next, complete, and unsubscribe while dispatching
+    this.observers = void 0;
+    this.isUnsubscribed = true;
+&nbsp;
+    while (++index &lt; len) {
+      observers[index].error(err);
+    }
+&nbsp;
+    this.isUnsubscribed = false;
+  }
+&nbsp;
+  _complete(): void {
+    let index = -1;
+    const observers = this.observers;
+    const len = observers.length;
+&nbsp;
+    // optimization -- block next, complete, and unsubscribe while dispatching
+    this.observers = void 0; // optimization
+    this.isUnsubscribed = true;
+&nbsp;
+    while (++index &lt; len) {
+      observers[index].complete();
+    }
+&nbsp;
+    this.isUnsubscribed = false;
+  }
+}
+&nbsp;
+class BidirectionalSubject&lt;T&gt; extends Subject&lt;T&gt; {
+  constructor(public source: Observable&lt;any&gt;, protected destination: Observer&lt;any&gt;) {
+    super();
+  }
+&nbsp;
+  _subscribe(subscriber: Subscriber&lt;T&gt;): Subscription&lt;T&gt; {
+    const operator = this.operator;
+    return this.source._subscribe.call(this.source, operator ? operator.call(subscriber) : subscriber);
+  }
+&nbsp;
+  next(value?: T): void {
+    subscriberNext.call(this, value);
+  }
+&nbsp;
+  error(err?: any): void {
+    subscriberError.call(this, err);
+  }
+&nbsp;
+  complete(): void {
+    subscriberComplete.call(this);
+  }
+&nbsp;
+  _next(value: T): void {
+    _subscriberNext.call(this, value);
+  }
+&nbsp;
+  _error(err: any): void {
+    _subscriberError.call(this, err);
+  }
+&nbsp;
+  _complete(): void {
+    _subscriberComplete.call(this);
+  }
+}</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:16 GMT-0800 (PST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/forkJoin.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/observable/forkJoin.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(65 / 65)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(20 / 20)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(10 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(60 / 60)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/observable/</a> &#187; forkJoin.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">65</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">76</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {PromiseObservable} from './fromPromise';
+import {EmptyObservable} from './empty';
+import {isPromise} from '../util/isPromise';
+import {isArray} from '../util/isArray';
+&nbsp;
+export class ForkJoinObservable&lt;T&gt; extends Observable&lt;T&gt; {
+  constructor(private sources: Array&lt;Observable&lt;any&gt; | Promise&lt;any&gt;&gt;,
+              private resultSelector?: (...values: Array&lt;any&gt;) =&gt; any) {
+    super();
+  }
+&nbsp;
+  static create(...sources: Array&lt;Observable&lt;any&gt; |
+                                  Array&lt;Observable&lt;any&gt;&gt; |
+                                  Promise&lt;any&gt; |
+                                  ((...values: Array&lt;any&gt;) =&gt; any)&gt;): Observable&lt;any&gt; {
+    if (sources === null || arguments.length === 0) {
+      return new EmptyObservable();
+    }
+&nbsp;
+    let resultSelector: (...values: Array&lt;any&gt;) =&gt; any = null;
+    if (typeof sources[sources.length - 1] === 'function') {
+      resultSelector = &lt;(...values: Array&lt;any&gt;) =&gt; any&gt;sources.pop();
+    }
+&nbsp;
+    // if the first and only other argument besides the resultSelector is an array
+    // assume it's been called with `forkJoin([obs1, obs2, obs3], resultSelector)`
+    if (sources.length === 1 &amp;&amp; isArray(sources[0])) {
+      sources = &lt;Array&lt;Observable&lt;any&gt;&gt;&gt;sources[0];
+    }
+&nbsp;
+    return new ForkJoinObservable(&lt;Array&lt;Observable&lt;any&gt; | Promise&lt;any&gt;&gt;&gt;sources, resultSelector);
+  }
+&nbsp;
+  _subscribe(subscriber: Subscriber&lt;any&gt;) {
+    const sources = this.sources;
+    const len = sources.length;
+&nbsp;
+    const context = { completed: 0, total: len, values: emptyArray(len), selector: this.resultSelector };
+    for (let i = 0; i &lt; len; i++) {
+      let source = sources[i];
+      if (isPromise(source)) {
+        source = new PromiseObservable(&lt;Promise&lt;any&gt;&gt;source);
+      }
+      (&lt;Observable&lt;any&gt;&gt;source).subscribe(new AllSubscriber(subscriber, i, context));
+    }
+  }
+}
+&nbsp;
+class AllSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private _value: any = null;
+&nbsp;
+  constructor(destination: Subscriber&lt;any&gt;,
+              private index: number,
+              private context: { completed: number,
+                                 total: number,
+                                 values: any[],
+                                 selector: (...values: Array&lt;any&gt;) =&gt; any }) {
+    super(destination);
+  }
+&nbsp;
+  _next(value: any): void {
+    this._value = value;
+  }
+&nbsp;
+  _complete(): void {
+    const destination = this.destination;
+&nbsp;
+    if (this._value == null) {
+      destination.complete();
+    }
+&nbsp;
+    const context = this.context;
+    context.completed++;
+    context.values[this.index] = this._value;
+    const values = context.values;
+&nbsp;
+    if (context.completed !== values.length) {
+      return;
+    }
+&nbsp;
+    if (values.every(hasValue)) {
+      let value = context.selector ? context.selector.apply(this, values) :
+                                     values;
+      destination.next(value);
+    }
+&nbsp;
+    destination.complete();
+  }
+}
+&nbsp;
+function hasValue(x: any): boolean {
+  return x !== null;
+}
+&nbsp;
+function emptyArray(len: number): any[] {
+  let arr = [];
+  for (let i = 0; i &lt; len; i++) {
+    arr.push(null);
+  }
+  return arr;
+}
+&nbsp;
+Observable.forkJoin = ForkJoinObservable.create;
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:16 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

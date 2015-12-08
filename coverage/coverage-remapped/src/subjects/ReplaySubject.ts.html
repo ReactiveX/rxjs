@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/subjects/ReplaySubject.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/subjects/ReplaySubject.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(48 / 48)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">88.89% <small>(16 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(43 / 43)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/subjects/</a> &#187; ReplaySubject.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29</span>
+<span class="cline-any cline-yes">29</span>
+<span class="cline-any cline-yes">29</span>
+<span class="cline-any cline-yes">29</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">105</span>
+<span class="cline-any cline-yes">105</span>
+<span class="cline-any cline-yes">105</span>
+<span class="cline-any cline-yes">105</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">67</span>
+<span class="cline-any cline-yes">67</span>
+<span class="cline-any cline-yes">67</span>
+<span class="cline-any cline-yes">67</span>
+<span class="cline-any cline-yes">71</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">67</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-yes">165</span>
+<span class="cline-any cline-yes">154</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-yes">53</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-yes">60</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">105</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Subject} from '../Subject';
+import {Scheduler} from '../Scheduler';
+import {immediate} from '../schedulers/immediate';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
+&nbsp;
+export class ReplaySubject&lt;T&gt; extends Subject&lt;T&gt; {
+  private bufferSize: number;
+  private _windowTime: number;
+  private scheduler: Scheduler;
+  private events: ReplayEvent&lt;T&gt;[] = [];
+&nbsp;
+  constructor(bufferSize: number = Number.POSITIVE_INFINITY,
+              windowTime: number = Number.POSITIVE_INFINITY,
+              scheduler?: Scheduler) {
+    super();
+    this.bufferSize = bufferSize &lt; 1 ? <span class="branch-0 cbranch-no" title="branch not covered" >1 </span>: bufferSize;
+    this._windowTime = windowTime &lt; 1 ? <span class="branch-0 cbranch-no" title="branch not covered" >1 </span>: windowTime;
+    this.scheduler = scheduler;
+  }
+&nbsp;
+  _next(value: T): void {
+    const now = this._getNow();
+    this.events.push(new ReplayEvent(now, value));
+    this._trimBufferThenGetEvents(now);
+    super._next(value);
+  }
+&nbsp;
+  _subscribe(subscriber: Subscriber&lt;any&gt;): Subscription&lt;T&gt; {
+    const events = this._trimBufferThenGetEvents(this._getNow());
+    let index = -1;
+    const len = events.length;
+    while (!subscriber.isUnsubscribed &amp;&amp; ++index &lt; len) {
+      subscriber.next(events[index].value);
+    }
+    return super._subscribe(subscriber);
+  }
+&nbsp;
+  private _getNow(): number {
+    return (this.scheduler || immediate).now();
+  }
+&nbsp;
+  private _trimBufferThenGetEvents(now): ReplayEvent&lt;T&gt;[] {
+    const bufferSize = this.bufferSize;
+    const _windowTime = this._windowTime;
+    const events = this.events;
+&nbsp;
+    let eventsCount = events.length;
+    let spliceCount = 0;
+&nbsp;
+    // Trim events that fall out of the time window.
+    // Start at the front of the list. Break early once
+    // we encounter an event that falls within the window.
+    while (spliceCount &lt; eventsCount) {
+      if ((now - events[spliceCount].time) &lt; _windowTime) {
+        break;
+      }
+      spliceCount += 1;
+    }
+&nbsp;
+    if (eventsCount &gt; bufferSize) {
+      spliceCount = Math.max(spliceCount, eventsCount - bufferSize);
+    }
+&nbsp;
+    if (spliceCount &gt; 0) {
+      events.splice(0, spliceCount);
+    }
+&nbsp;
+    return events;
+  }
+}
+&nbsp;
+class ReplayEvent&lt;T&gt; {
+  constructor(public time: number, public value: T) {
+  }
+}
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:16 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

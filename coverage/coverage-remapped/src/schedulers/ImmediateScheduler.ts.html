@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/schedulers/ImmediateScheduler.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/schedulers/ImmediateScheduler.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(25 / 25)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(8 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(6 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(23 / 23)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/schedulers/</a> &#187; ImmediateScheduler.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">167</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">452</span>
+<span class="cline-any cline-yes">328</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">124</span>
+<span class="cline-any cline-yes">124</span>
+<span class="cline-any cline-yes">124</span>
+<span class="cline-any cline-yes">457</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">124</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140</span>
+<span class="cline-any cline-yes">138</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">112</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">23</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span></td><td class="text"><pre class="prettyprint lang-js">import {Scheduler} from '../Scheduler';
+import {ImmediateAction} from './ImmediateAction';
+import {Subscription} from '../Subscription';
+import {FutureAction} from './FutureAction';
+import {Action} from './Action';
+&nbsp;
+export class ImmediateScheduler implements Scheduler {
+  actions: ImmediateAction&lt;any&gt;[] = [];
+  active: boolean = false;
+  scheduled: boolean = false;
+&nbsp;
+  now() {
+    return Date.now();
+  }
+&nbsp;
+  flush() {
+    if (this.active || this.scheduled) {
+      return;
+    }
+    this.active = true;
+    const actions = this.actions;
+    for (let action; action = actions.shift(); ) {
+      action.execute();
+    }
+    this.active = false;
+  }
+&nbsp;
+  schedule&lt;T&gt;(work: (x?: any) =&gt; Subscription&lt;T&gt; | void, delay: number = 0, state?: any): Subscription&lt;T&gt; {
+    return (delay &lt;= 0) ?
+      this.scheduleNow(work, state) :
+      this.scheduleLater(work, delay, state);
+  }
+&nbsp;
+  scheduleNow&lt;T&gt;(work: (x?: any) =&gt; Subscription&lt;T&gt; | void, state?: any): Action {
+    return new ImmediateAction(this, work).schedule(state);
+  }
+&nbsp;
+  scheduleLater&lt;T&gt;(work: (x?: any) =&gt; Subscription&lt;T&gt; | void, delay: number, state?: any): Action {
+    return new FutureAction(this, work).schedule(state, delay);
+  }
+}</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:16 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

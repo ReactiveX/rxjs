@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observables/TimerObservable.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/observables/TimerObservable.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(46 / 46)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">86.96% <small>(20 / 23)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(5 / 5)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(42 / 42)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/observables/</a> &#187; TimerObservable.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66</span>
+<span class="cline-any cline-yes">66</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66</span>
+<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">41</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {isNumeric} from '../util/isNumeric';
+import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
+import {nextTick} from '../schedulers/nextTick';
+import {isScheduler} from '../util/isScheduler';
+import {isDate} from '../util/isDate';
+&nbsp;
+export class TimerObservable&lt;T&gt; extends Observable&lt;T&gt; {
+&nbsp;
+  static create(<span class="missing-if-branch" title="if path not taken" >I</span>dueTime: number | Date = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable&lt;number&gt; {
+    return new TimerObservable(dueTime, period, scheduler);
+  }
+&nbsp;
+  static dispatch(state) {
+&nbsp;
+    const { index, period, subscriber } = state;
+    const action = (&lt;any&gt; this);
+&nbsp;
+    subscriber.next(index);
+&nbsp;
+    if (typeof period === 'undefined') {
+      subscriber.complete();
+      return;
+    } else if (subscriber.isUnsubscribed) {
+      return;
+    }
+&nbsp;
+    if (typeof action.delay === 'undefined') {
+      action.add(action.scheduler.schedule(TimerObservable.dispatch, period, {
+        index: index + 1, period, subscriber
+      }));
+    } else {
+      state.index = index + 1;
+      action.schedule(state, period);
+    }
+  }
+&nbsp;
+  _period: number;
+  private dueTime: number = 0;
+&nbsp;
+  constructor(<span class="missing-if-branch" title="if path not taken" >I</span>dueTime: number | Date = 0,
+              private period?: number | Scheduler,
+              private scheduler?: Scheduler) {
+    super();
+&nbsp;
+    if (isNumeric(period)) {
+      this._period = Number(period) &lt; 1 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >1 </span>|| Number(period);
+    } else if (isScheduler(period)) {
+      scheduler = &lt;Scheduler&gt; period;
+    }
+    if (!scheduler || typeof scheduler.schedule !== 'function') {
+      scheduler = nextTick;
+    }
+    this.scheduler = scheduler;
+&nbsp;
+    const absoluteDueTime = isDate(dueTime);
+    this.dueTime = absoluteDueTime ? (+dueTime - this.scheduler.now()) : &lt;number&gt;dueTime;
+  }
+&nbsp;
+  _subscribe(subscriber) {
+&nbsp;
+    const index = 0;
+    const period = this._period;
+    const dueTime = this.dueTime;
+    const scheduler = this.scheduler;
+&nbsp;
+    subscriber.add(scheduler.schedule(TimerObservable.dispatch, dueTime, { index, period, subscriber }));
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Nov 18 2015 14:52:44 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

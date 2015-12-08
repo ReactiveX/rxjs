@@ -1,0 +1,554 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "MergeMapOperator",
+            "range": [
+              9,
+              25
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 25
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "MergeMapOperator",
+            "range": [
+              9,
+              25
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 25
+              }
+            }
+          },
+          "range": [
+            9,
+            25
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 25
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./mergeMap-support",
+        "raw": "'./mergeMap-support'",
+        "range": [
+          33,
+          53
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 33
+          },
+          "end": {
+            "line": 1,
+            "column": 53
+          }
+        }
+      },
+      "range": [
+        0,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "mergeMap",
+          "range": [
+            71,
+            79
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 16
+            },
+            "end": {
+              "line": 2,
+              "column": 24
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "project",
+            "range": [
+              80,
+              87
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 25
+              },
+              "end": {
+                "line": 2,
+                "column": 32
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "resultSelector",
+            "range": [
+              89,
+              103
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 34
+              },
+              "end": {
+                "line": 2,
+                "column": 48
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "concurrent",
+              "range": [
+                105,
+                115
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 50
+                },
+                "end": {
+                  "line": 2,
+                  "column": 60
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  118,
+                  124
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 63
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 69
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  125,
+                  142
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 70
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 87
+                  }
+                }
+              },
+              "range": [
+                118,
+                142
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 63
+                },
+                "end": {
+                  "line": 2,
+                  "column": 87
+                }
+              }
+            },
+            "range": [
+              105,
+              142
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 50
+              },
+              "end": {
+                "line": 2,
+                "column": 87
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "ThisExpression",
+                    "range": [
+                      157,
+                      161
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "lift",
+                    "range": [
+                      162,
+                      166
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "range": [
+                    157,
+                    166
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 20
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "MergeMapOperator",
+                      "range": [
+                        171,
+                        187
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 25
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 41
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "project",
+                        "range": [
+                          188,
+                          195
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 42
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 49
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "resultSelector",
+                        "range": [
+                          197,
+                          211
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 51
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 65
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "concurrent",
+                        "range": [
+                          213,
+                          223
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 67
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 77
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      167,
+                      224
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 78
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  157,
+                  225
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 79
+                  }
+                }
+              },
+              "range": [
+                150,
+                226
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 80
+                }
+              }
+            }
+          ],
+          "range": [
+            144,
+            228
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 89
+            },
+            "end": {
+              "line": 4,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          62,
+          228
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 7
+          },
+          "end": {
+            "line": 4,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=mergeMap.js.map",
+            "range": [
+              229,
+              265
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 5,
+                "column": 36
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        55,
+        228
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=mergeMap.js.map",
+          "range": [
+            229,
+            265
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 36
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    228
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=mergeMap.js.map",
+      "range": [
+        229,
+        265
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 36
+        }
+      }
+    }
+  ]
+}

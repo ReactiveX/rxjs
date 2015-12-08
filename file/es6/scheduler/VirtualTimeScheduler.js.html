@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/scheduler/VirtualTimeScheduler.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/scheduler/VirtualTimeScheduler.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscription } from &apos;../Subscription&apos;;
+export class VirtualTimeScheduler {
+    constructor() {
+        this.actions = [];
+        this.active = false;
+        this.scheduled = false;
+        this.index = 0;
+        this.sorted = false;
+        this.frame = 0;
+        this.maxFrames = 750;
+    }
+    now() {
+        return this.frame;
+    }
+    flush() {
+        const actions = this.actions;
+        const maxFrames = this.maxFrames;
+        while (actions.length &gt; 0) {
+            let action = actions.shift();
+            this.frame = action.delay;
+            if (this.frame &lt;= maxFrames) {
+                action.execute();
+            }
+            else {
+                break;
+            }
+        }
+        actions.length = 0;
+        this.frame = 0;
+    }
+    addAction(action) {
+        const actions = this.actions;
+        actions.push(action);
+        actions.sort((a, b) =&gt; {
+            if (a.delay === b.delay) {
+                if (a.index === b.index) {
+                    return 0;
+                }
+                else if (a.index &gt; b.index) {
+                    return 1;
+                }
+                else {
+                    return -1;
+                }
+            }
+            else if (a.delay &gt; b.delay) {
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        });
+    }
+    schedule(work, delay = 0, state) {
+        this.sorted = false;
+        return new VirtualAction(this, work, this.index++).schedule(state, delay);
+    }
+}
+VirtualTimeScheduler.frameTimeFactor = 10;
+class VirtualAction extends Subscription {
+    constructor(scheduler, work, index) {
+        super();
+        this.scheduler = scheduler;
+        this.work = work;
+        this.index = index;
+        this.calls = 0;
+    }
+    schedule(state, delay = 0) {
+        if (this.isUnsubscribed) {
+            return this;
+        }
+        const scheduler = this.scheduler;
+        let action;
+        if (this.calls++ === 0) {
+            // the action is not being rescheduled.
+            action = this;
+        }
+        else {
+            // the action is being rescheduled, and we can&apos;t mutate the one in the actions list
+            // in the scheduler, so we&apos;ll create a new one.
+            action = new VirtualAction(scheduler, this.work, scheduler.index += 1);
+            this.add(action);
+        }
+        action.state = state;
+        action.delay = scheduler.frame + delay;
+        scheduler.addAction(action);
+        return this;
+    }
+    execute() {
+        if (this.isUnsubscribed) {
+            throw new Error(&apos;How did did we execute a canceled Action?&apos;);
+        }
+        this.work(this.state);
+    }
+    unsubscribe() {
+        const actions = this.scheduler.actions;
+        const index = actions.indexOf(this);
+        this.work = void 0;
+        this.state = void 0;
+        this.scheduler = void 0;
+        if (index !== -1) {
+            actions.splice(index, 1);
+        }
+        super.unsubscribe();
+    }
+}
+//# sourceMappingURL=VirtualTimeScheduler.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

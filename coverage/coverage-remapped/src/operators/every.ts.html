@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operators/every.ts</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/operators/every.ts</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(59 / 59)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(16 / 16)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(10 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(55 / 55)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">src/operators/</a> &#187; every.ts</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">13</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span></td><td class="text"><pre class="prettyprint lang-js">import {Operator} from '../Operator';
+import {Observer} from '../Observer';
+import {Observable} from '../Observable';
+import {ScalarObservable} from '../observable/ScalarObservable';
+import {ArrayObservable} from '../observable/fromArray';
+import {ErrorObservable} from '../observable/throw';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
+import {bindCallback} from '../util/bindCallback';
+&nbsp;
+export function every&lt;T&gt;(predicate: (value: T, index: number, source: Observable&lt;T&gt;) =&gt; boolean,
+                         thisArg?: any): Observable&lt;boolean&gt; {
+  const source = this;
+  let result;
+&nbsp;
+  if (source._isScalar) {
+    result = tryCatch(predicate)(source.value, 0, source);
+    if (result === errorObject) {
+      return new ErrorObservable(errorObject.e, source.scheduler);
+    } else {
+      return new ScalarObservable(result, source.scheduler);
+    }
+  }
+&nbsp;
+  if (source instanceof ArrayObservable) {
+    const array = (&lt;ArrayObservable&lt;T&gt;&gt;source).array;
+    let result = tryCatch((array, predicate) =&gt; array.every(&lt;any&gt;predicate))(array, predicate);
+    if (result === errorObject) {
+      return new ErrorObservable(errorObject.e, source.scheduler);
+    } else {
+      return new ScalarObservable(result, source.scheduler);
+    }
+  }
+  return source.lift(new EveryOperator(predicate, thisArg, source));
+}
+&nbsp;
+class EveryOperator&lt;T, R&gt; implements Operator&lt;T, R&gt; {
+  constructor(private predicate: (value: T, index: number, source: Observable&lt;T&gt;) =&gt; boolean,
+              private thisArg?: any,
+              private source?: Observable&lt;T&gt;) {
+  }
+&nbsp;
+  call(observer: Subscriber&lt;boolean&gt;): Subscriber&lt;T&gt; {
+    return new EverySubscriber(observer, this.predicate, this.thisArg, this.source);
+  }
+}
+&nbsp;
+class EverySubscriber&lt;T, R&gt; extends Subscriber&lt;T&gt; {
+  private predicate: Function = undefined;
+  private index: number = 0;
+&nbsp;
+  constructor(destination: Observer&lt;R&gt;,
+              predicate?: (value: T, index: number, source: Observable&lt;T&gt;) =&gt; boolean,
+              private thisArg?: any,
+              private source?: Observable&lt;T&gt;) {
+    super(destination);
+&nbsp;
+    if (typeof predicate === 'function') {
+      this.predicate = bindCallback(predicate, thisArg, 3);
+    }
+  }
+&nbsp;
+  private notifyComplete(everyValueMatch: boolean): void {
+    this.destination.next(everyValueMatch);
+    this.destination.complete();
+  }
+&nbsp;
+  _next(value: T): void {
+    const predicate = this.predicate;
+&nbsp;
+    if (predicate === undefined) {
+      this.destination.error(new TypeError('predicate must be a function'));
+    }
+&nbsp;
+    let result = tryCatch(predicate)(value, this.index++, this.source);
+    if (result === errorObject) {
+      this.destination.error(result.e);
+    } else if (!result) {
+      this.notifyComplete(false);
+    }
+  }
+&nbsp;
+  _complete(): void {
+    this.notifyComplete(true);
+  }
+}
+&nbsp;
+Observable.prototype.every = every;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 01 2015 11:52:16 GMT-0800 (PST)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

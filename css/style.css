@@ -69,7 +69,7 @@ del {
 
 p {
   margin-bottom: 15px;
-  line-height: 19px;
+  line-height: 1.5;
 }
 
 p > code {
@@ -145,29 +145,15 @@ li > code {
   top: 0;
   left: 0;
   box-sizing: border-box;
-  width: 200px;
+  width: 250px;
   height: 100%;
   padding-top: 40px;
   padding-left: 15px;
-  padding-bottom: 20px;
+  padding-bottom: 2em;
+  margin-top:1em;
   overflow-x: scroll;
   box-shadow: rgba(255, 255, 255, 1) -1px 0 0 inset;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.navigation h1 {
-  border: none;
-  font-size: 18px;
-}
-
-.navigation h2 {
-  margin: 15px 0 4px;
-  font-size: 16px;
-  border: none;
-}
-
-.navigation h2 a {
-  color: inherit;
 }
 
 .navigation ul {
@@ -177,6 +163,60 @@ li > code {
 .navigation li {
   list-style: none;
   margin: 4px 0;
+  white-space: nowrap;
+}
+
+.navigation .nav-dir-path {
+  margin-top: 0.7em;
+  margin-bottom: 0.25em;
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+.kind-class,
+.kind-interface,
+.kind-function,
+.kind-typedef,
+.kind-variable,
+.kind-external {
+  margin-left: 0.75em;
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-block;
+  text-align: center;
+  border-radius: 0.2em;
+  margin-right: 0.2em;
+  font-weight: bold;
+}
+
+.kind-class {
+  color: #009800;
+  background-color: #bfe5bf;
+}
+
+.kind-interface {
+  color: #fbca04;
+  background-color: #fef2c0;
+}
+
+.kind-function {
+  color: #6b0090;
+  background-color: #d6bdde;
+}
+
+.kind-variable {
+  color: #eb6420;
+  background-color: #fad8c7;
+}
+
+.kind-typedef {
+  color: #db001e;
+  background-color: #edbec3;
+}
+
+.kind-external {
+  color: #0738c3;
+  background-color: #bbcbea;
 }
 
 h1 .version,
@@ -187,7 +227,7 @@ h1 .url a {
 
 .content {
   margin-top: 40px;
-  margin-left: 200px;
+  margin-left: 250px;
   padding: 10px 50px 10px 20px;
 }
 
@@ -456,7 +496,7 @@ footer, .file-footer {
   font-weight: 100;
   font-size: 13px;
   margin-right: 50px;
-  margin-left: 220px;
+  margin-left: 270px;
   border-top: 1px solid #ddd;
   padding-top: 30px;
   margin-top: 20px;
@@ -749,6 +789,82 @@ h1 .esdoc-coverage {
   background: linear-gradient(to bottom, #4fc921 0%,#3eb810 100%);
 }
 
+.github-markdown .manual-toc {
+  padding-left: 0;
+}
+
+/** manual */
+
+.manual-root .navigation {
+  padding-left: 0;
+}
+
+.navigation .manual-toc-title {
+  margin: 0;
+  padding: 0.5em 0 0.5em 1em;
+  border: none;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.navigation .manual-toc-title:first-child {
+  margin-top: 0;
+}
+
+.navigation .manual-toc {
+  display: none;
+  margin-left: 0.5em;
+  margin-top: -0.25em;
+}
+
+.github-markdown .manual-toc-title a {
+  color: inherit;
+}
+
+.manual-breadcrumb-list {
+  font-size: 0.8em;
+  margin-bottom: 1em;
+}
+
+.manual-toc-title a:hover {
+  color: #039BE5;
+}
+
+.manual-toc li {
+  margin: 0.75em 0;
+  list-style-type: none;
+}
+
+.manual-toc .indent-h1 {
+  margin-left: 0;
+}
+.manual-toc .indent-h2 {
+  margin-left: 1em;
+}
+.manual-toc .indent-h3 {
+  margin-left: 3em;
+}
+.manual-toc .indent-h4 {
+  margin-left: 4em;
+}
+.manual-toc .indent-h5 {
+  margin-left: 5em;
+}
+
+.manual-nav li {
+  margin: 0.75em 0;
+}
+
+.manual-dot {
+  margin-left: 0.75em;
+  width: 0.6em;
+  height: 0.6em;
+  display: inline-block;
+  border-radius: 0.3em;
+  margin-right: 0.3em;
+  background-color: #bfe5bf;
+}
+
 /* github markdown */
 .github-markdown {
   font-size: 16px;
@@ -819,4 +935,10 @@ h1 .esdoc-coverage {
 
 .github-markdown table tr:nth-child(2n) {
   background-color: #f8f8f8;
+}
+
+/** badge(.svg) does not have border */
+.github-markdown img:not([src*=".svg"]) {
+  max-width: 100%;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
 }

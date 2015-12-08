@@ -1,0 +1,415 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "SymbolShim",
+            "range": [
+              9,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "SymbolShim",
+            "range": [
+              9,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            9,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../util/SymbolShim",
+        "raw": "'../util/SymbolShim'",
+        "range": [
+          27,
+          47
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 27
+          },
+          "end": {
+            "line": 1,
+            "column": 47
+          }
+        }
+      },
+      "range": [
+        0,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 48
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+          "range": [
+            49,
+            404
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "rxSubscriber",
+              "range": [
+                418,
+                430
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 13
+                },
+                "end": {
+                  "line": 8,
+                  "column": 25
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "SymbolShim",
+                  "range": [
+                    433,
+                    443
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 28
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 38
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "for",
+                  "range": [
+                    444,
+                    447
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 39
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 42
+                    }
+                  }
+                },
+                "range": [
+                  433,
+                  447
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 28
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 42
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "rxSubscriber",
+                  "raw": "'rxSubscriber'",
+                  "range": [
+                    448,
+                    462
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 43
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 57
+                    }
+                  }
+                }
+              ],
+              "range": [
+                433,
+                463
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 28
+                },
+                "end": {
+                  "line": 8,
+                  "column": 58
+                }
+              }
+            },
+            "range": [
+              418,
+              463
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 13
+              },
+              "end": {
+                "line": 8,
+                "column": 58
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          412,
+          464
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 7
+          },
+          "end": {
+            "line": 8,
+            "column": 59
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+            "range": [
+              49,
+              404
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 7,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=rxSubscriber.js.map",
+            "range": [
+              465,
+              505
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 0
+              },
+              "end": {
+                "line": 9,
+                "column": 40
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        405,
+        464
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 59
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+          "range": [
+            49,
+            404
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=rxSubscriber.js.map",
+          "range": [
+            465,
+            505
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 40
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    464
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 59
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+      "range": [
+        49,
+        404
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=rxSubscriber.js.map",
+      "range": [
+        465,
+        505
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 40
+        }
+      }
+    }
+  ]
+}

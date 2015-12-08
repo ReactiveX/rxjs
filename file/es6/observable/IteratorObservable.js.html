@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/observable/IteratorObservable.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/observable/IteratorObservable.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;../Observable&apos;;
+import { root } from &apos;../util/root&apos;;
+import { SymbolShim } from &apos;../util/SymbolShim&apos;;
+import { tryCatch } from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+export class IteratorObservable extends Observable {
+    constructor(iterator, project, thisArg, scheduler) {
+        super();
+        this.project = project;
+        this.thisArg = thisArg;
+        this.scheduler = scheduler;
+        if (iterator == null) {
+            throw new Error(&apos;iterator cannot be null.&apos;);
+        }
+        if (project &amp;&amp; typeof project !== &apos;function&apos;) {
+            throw new Error(&apos;When provided, `project` must be a function.&apos;);
+        }
+        this.iterator = getIterator(iterator);
+    }
+    static create(iterator, project, thisArg, scheduler) {
+        return new IteratorObservable(iterator, project, thisArg, scheduler);
+    }
+    static dispatch(state) {
+        const { index, hasError, thisArg, project, iterator, subscriber } = state;
+        if (hasError) {
+            subscriber.error(state.error);
+            return;
+        }
+        let result = iterator.next();
+        if (result.done) {
+            subscriber.complete();
+            return;
+        }
+        if (project) {
+            result = tryCatch(project).call(thisArg, result.value, index);
+            if (result === errorObject) {
+                state.error = errorObject.e;
+                state.hasError = true;
+            }
+            else {
+                subscriber.next(result);
+                state.index = index + 1;
+            }
+        }
+        else {
+            subscriber.next(result.value);
+            state.index = index + 1;
+        }
+        if (subscriber.isUnsubscribed) {
+            return;
+        }
+        this.schedule(state);
+    }
+    _subscribe(subscriber) {
+        let index = 0;
+        const { iterator, project, thisArg, scheduler } = this;
+        if (scheduler) {
+            subscriber.add(scheduler.schedule(IteratorObservable.dispatch, 0, {
+                index, thisArg, project, iterator, subscriber
+            }));
+        }
+        else {
+            do {
+                let result = iterator.next();
+                if (result.done) {
+                    subscriber.complete();
+                    break;
+                }
+                else if (project) {
+                    result = tryCatch(project).call(thisArg, result.value, index++);
+                    if (result === errorObject) {
+                        subscriber.error(errorObject.e);
+                        break;
+                    }
+                    subscriber.next(result);
+                }
+                else {
+                    subscriber.next(result.value);
+                }
+                if (subscriber.isUnsubscribed) {
+                    break;
+                }
+            } while (true);
+        }
+    }
+}
+class StringIterator {
+    constructor(str, idx = 0, len = str.length) {
+        this.str = str;
+        this.idx = idx;
+        this.len = len;
+    }
+    [SymbolShim.iterator]() { return (this); }
+    next() {
+        return this.idx &lt; this.len ? {
+            done: false,
+            value: this.str.charAt(this.idx++)
+        } : {
+            done: true,
+            value: undefined
+        };
+    }
+}
+class ArrayIterator {
+    constructor(arr, idx = 0, len = toLength(arr)) {
+        this.arr = arr;
+        this.idx = idx;
+        this.len = len;
+    }
+    [SymbolShim.iterator]() { return this; }
+    next() {
+        return this.idx &lt; this.len ? {
+            done: false,
+            value: this.arr[this.idx++]
+        } : {
+            done: true,
+            value: undefined
+        };
+    }
+}
+function getIterator(obj) {
+    const i = obj[SymbolShim.iterator];
+    if (!i &amp;&amp; typeof obj === &apos;string&apos;) {
+        return new StringIterator(obj);
+    }
+    if (!i &amp;&amp; obj.length !== undefined) {
+        return new ArrayIterator(obj);
+    }
+    if (!i) {
+        throw new TypeError(&apos;Object is not iterable&apos;);
+    }
+    return obj[SymbolShim.iterator]();
+}
+const maxSafeInteger = Math.pow(2, 53) - 1;
+function toLength(o) {
+    let len = +o.length;
+    if (isNaN(len)) {
+        return 0;
+    }
+    if (len === 0 || !numberIsFinite(len)) {
+        return len;
+    }
+    len = sign(len) * Math.floor(Math.abs(len));
+    if (len &lt;= 0) {
+        return 0;
+    }
+    if (len &gt; maxSafeInteger) {
+        return maxSafeInteger;
+    }
+    return len;
+}
+function numberIsFinite(value) {
+    return typeof value === &apos;number&apos; &amp;&amp; root.isFinite(value);
+}
+function sign(value) {
+    let valueAsNumber = +value;
+    if (valueAsNumber === 0) {
+        return valueAsNumber;
+    }
+    if (isNaN(valueAsNumber)) {
+        return valueAsNumber;
+    }
+    return valueAsNumber &lt; 0 ? -1 : 1;
+}
+//# sourceMappingURL=IteratorObservable.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
