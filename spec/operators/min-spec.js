@@ -167,6 +167,25 @@ describe('min', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 = hot('-x-^-a-b-c-d-e-f-g-|');
+    var e1subs =    '^      !         ';
+    var expected =  '--------         ';
+    var unsub =     '       !         ';
+
+    var predicate = function () {
+      return 42;
+    };
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .min(predicate)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, { w: 42 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should handle a constant predicate on observable with many values', function () {
     var e1 = hot('-x-^-a-b-c-d-e-f-g-|');
     var e1subs =    '^               !';
