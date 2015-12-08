@@ -197,4 +197,26 @@ describe('Observable.prototype.buffer()', function () {
     expectObservable(a.buffer(b).take(1)).toBe(expected, expectedValues);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
+
+  it('should not break unsubscription chain when unsubscribed explicitly', function () {
+    var s = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
+    var unsub =         '              !                  ';
+    var sSubs =         '^             !                  ';
+    var n = hot('--------^--a-------b---cd|               ');
+    var nSubs =         '^             !                  ';
+    var expected =      '---a-------b---                  ';
+    var expectedValues = {
+      a: ['3'],
+      b: ['4', '5']
+    };
+
+    var result = s
+      .mergeMap(function (x) { return Observable.of(x); })
+      .buffer(n)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, expectedValues);
+    expectSubscriptions(s.subscriptions).toBe(sSubs);
+    expectSubscriptions(n.subscriptions).toBe(nSubs);
+  });
 });
