@@ -138,6 +138,21 @@ describe('Observable.prototype.do()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 =   hot('--1--2--3--#');
+    var e1subs =   '^      !    ';
+    var expected = '--1--2--    ';
+    var unsub =    '       !    ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .do()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should mirror multiple values and complete', function () {
     var e1 =  cold('--1--2--3--|');
     var e1subs =   '^          !';
