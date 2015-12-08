@@ -79,6 +79,25 @@ describe('Observable.prototype.switch()', function () {
     expectSubscriptions(y.subscriptions).toBe(ysubs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var x = cold(        '--a---b---c--|         ');
+    var xsubs =    '      ^       !              ';
+    var y = cold(                '---d--e---f---|');
+    var ysubs =    '              ^ !            ';
+    var e1 = hot(  '------x-------y------|       ', { x: x, y: y });
+    var expected = '--------a---b----            ';
+    var unsub =    '                !            ';
+
+    var result = e1
+      .mergeMap(function (i) { return Observable.of(i); })
+      .switch()
+      .mergeMap(function (i) { return Observable.of(i); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+  });
+
   it('should handle a hot observable of observables, inner never completes', function () {
     var x = cold(        '--a---b---c--|          ');
     var xsubs =    '      ^       !               ';
