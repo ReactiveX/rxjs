@@ -133,6 +133,30 @@ describe('Observable.prototype.windowTime', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should dispose window Subjects if the outer is unsubscribed early', function () {
+    var source = hot('--a--b--c--d--e--f--g--h--|');
+    var sourceSubs = '^        !                 ';
+    var expected =   'x---------                 ';
+    var x = cold(    '--a--b--c-                 ');
+    var unsub =      '         !                 ';
+    var values = { x: x };
+
+    var window;
+    var result = source.windowTime(1000, 1000, rxTestScheduler)
+      .do(function (w) { window = w; });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    rxTestScheduler.schedule(function () {
+      try {
+        window.subscribe();
+      }
+      catch (err) {
+        expect(err.message).toBe('Cannot subscribe to a disposed Subject.');
+      }
+    }, 150);
+  });
+
   it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     var sourcesubs =         '^             !             ';
