@@ -18,7 +18,7 @@ class WindowToggleOperator<T, R, O> implements Operator<T, R> {
               private closingSelector: (openValue: O) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<Observable<T>>): Subscriber<T> {
     return new WindowToggleSubscriber<T, O>(
       subscriber, this.openings, this.closingSelector
     );
@@ -33,7 +33,7 @@ interface WindowContext<T> {
 class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   private contexts: Array<WindowContext<T>> = [];
 
-  constructor(destination: Subscriber<T>,
+  constructor(protected destination: Subscriber<Observable<T>>,
               private openings: Observable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
@@ -72,24 +72,29 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
     if (closingNotifier === errorObject) {
       this.error(closingNotifier.e);
     } else {
-      let context = {
-        window: new Subject<T>(),
-        subscription: new Subscription()
-      };
+      const destination = this.destination;
+      const window = new Subject<T>();
+      const subscription = new Subscription();
+      const context = { window, subscription };
       this.contexts.push(context);
-      this.destination.next(context.window);
       const subscriber = new WindowClosingNotifierSubscriber<T, O>(this, context);
-      const subscription = closingNotifier._subscribe(subscriber);
-      this.add(context.subscription.add(subscription));
+      const closingSubscription = closingNotifier._subscribe(subscriber);
+      subscription.add(closingSubscription);
+      destination.add(subscription);
+      destination.add(window);
+      destination.next(window);
     }
   }
 
   closeWindow(context: WindowContext<T>) {
     const { window, subscription } = context;
     const contexts = this.contexts;
+    const destination = this.destination;
+
     contexts.splice(contexts.indexOf(context), 1);
     window.complete();
-    this.remove(subscription);
+    destination.remove(subscription);
+    destination.remove(window);
     subscription.unsubscribe();
   }
 }
