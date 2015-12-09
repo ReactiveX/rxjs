@@ -47,7 +47,7 @@ export class Subscription<T> {
     }
   }
 
-  add(subscription: Subscription<T>|Function|void): void {
+  add(subscription: Subscription<any>|Function|void): void {
     // return early if:
     //  1. the subscription is null
     //  2. we're attempting to add our this
@@ -58,7 +58,7 @@ export class Subscription<T> {
       return;
     }
 
-    let sub = (<Subscription<T>> subscription);
+    let sub = (<Subscription<any>> subscription);
 
     switch (typeof subscription) {
       case 'function':
@@ -78,7 +78,7 @@ export class Subscription<T> {
     }
   }
 
-  remove(subscription: Subscription<T>): void {
+  remove(subscription: Subscription<any>): void {
 
     // return early if:
     //  1. the subscription is null
