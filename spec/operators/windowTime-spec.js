@@ -40,50 +40,58 @@ describe('Observable.prototype.windowTime', function () {
 
   it('should return a single empty window if source is empty', function () {
     var source =   cold('|');
+    var subs =          '(^!)';
     var expected =      '(w|)';
-    var w =         cold('|');
+    var w =        cold('|');
     var expectedValues = { w: w };
 
     var result = source.windowTime(50, 100, rxTestScheduler);
 
     expectObservable(result).toBe(expected, expectedValues);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should split a Just source into a single window identical to source', function () {
     var source =   cold('(a|)');
+    var subs =          '(^!)';
     var expected =      '(w|)';
-    var w =         cold('(a|)');
+    var w =        cold('(a|)');
     var expectedValues = { w: w };
 
     var result = source.windowTime(50, 100, rxTestScheduler);
 
     expectObservable(result).toBe(expected, expectedValues);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should be able to split a never Observable into timely empty windows', function () {
-    var source =    hot('^-----------');
-    var unsub =         '           !';
-    var expected =      'a--b--c--d--';
-    var a =        cold('---|        ');
-    var b =        cold(   '---|     ');
-    var c =        cold(      '---|  ');
-    var d =        cold(         '---');
+    var source =    hot('^----------');
+    var subs =          '^         !';
+    var expected =      'a--b--c--d-';
+    var a =        cold('---|       ');
+    var b =        cold(   '---|    ');
+    var c =        cold(      '---| ');
+    var d =        cold(         '--');
+    var unsub =         '          !';
     var expectedValues = { a: a, b: b, c: c, d: d };
 
     var result = source.windowTime(30, 30, rxTestScheduler);
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should emit an error-only window if outer is a simple throw-Observable', function () {
     var source =   cold('#');
+    var subs =          '(^!)';
     var expected =      '(w#)';
-    var w =         cold('#');
+    var w =        cold('#');
     var expectedValues = { w: w };
 
     var result = source.windowTime(50, 100, rxTestScheduler);
 
     expectObservable(result).toBe(expected, expectedValues);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should handle source Observable which eventually emits an error', function () {
@@ -108,19 +116,21 @@ describe('Observable.prototype.windowTime', function () {
   it('should emit windows given windowTimeSpan and windowCreationInterval, ' +
   'but outer is unsubscribed early', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
-    var unsub =              '              !             ';
+    var subs =               '^          !                ';
     //  100 frames            0---------1---------2------|
     //  50                     ----|
     //  50                               ----|
     //  50                                         ----|
-    var expected =           'x---------y----             ';
+    var expected =           'x---------y-                ';
     var x = cold(            '---a-|                      ');
-    var y = cold(                      '--d--             ');
+    var y = cold(                      '--                ');
+    var unsub =              '           !                ';
     var values = { x: x, y: y };
 
     var result = source.windowTime(50, 100, rxTestScheduler);
 
     expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
