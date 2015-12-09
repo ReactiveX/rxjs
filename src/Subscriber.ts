@@ -58,7 +58,7 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     }
   }
 
-  add(sub: Subscription<T> | Function | void): void {
+  add(sub: Subscription<any> | Function | void): void {
     // route add to the shared Subscription if it exists
     const _subscription = this._subscription;
     if (_subscription) {
@@ -68,7 +68,7 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     }
   }
 
-  remove(sub: Subscription<T>): void {
+  remove(sub: Subscription<any>): void {
     // route remove to the shared Subscription if it exists
     if (this._subscription) {
       this._subscription.remove(sub);
