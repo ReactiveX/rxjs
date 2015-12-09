@@ -38,35 +38,41 @@ describe('Observable.prototype.windowCount', function () {
 
   it('should return empty if source is empty', function () {
     var source = cold('|');
+    var subs =        '(^!)';
     var expected =    '(w|)';
-    var w =       cold('|');
+    var w =      cold('|');
     var values = { w: w };
 
     var result = source.windowCount(2, 1);
 
     expectObservable(result).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should return Never if source if Never', function () {
-    var source = cold('------');
-    var expected =    'w-----';
-    var w =      cold('------');
+    var source = cold('-');
+    var subs =        '^';
+    var expected =    'w';
+    var w =      cold('-');
     var expectedValues = { w: w };
 
     var result = source.windowCount(2, 1);
 
     expectObservable(result).toBe(expected, expectedValues);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should propagate error from a just-throw source', function () {
     var source =   cold('#');
+    var subs =          '(^!)';
     var expected =      '(w#)';
-    var w =         cold('#');
+    var w =        cold('#');
     var expectedValues = { w: w };
 
     var result = source.windowCount(2, 1);
 
     expectObservable(result).toBe(expected, expectedValues);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should raise error if source raises error', function () {
@@ -90,21 +96,24 @@ describe('Observable.prototype.windowCount', function () {
 
   it('should dispose of inner windows once outer is unsubscribed early', function () {
     var source = hot('^-a--b--c--d--|');
-    var unsub =      '         !     ';
+    var subs =       '^        !     ';
     var expected =   'w-x--y--z-     ';
     var w = cold(    '--a--(b|)      ');
     var x = cold(      '---b--(c|)   ');
     var y = cold(         '---c-     ');
     var z = cold(            '--     ');
+    var unsub =      '         !     ';
     var values = { w: w, x: x, y: y, z: z };
 
     var result = source.windowCount(2, 1);
 
     expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
     var source = hot('^-a--b--c--d--|');
+    var subs =       '^        !     ';
     var expected =   'w-x--y--z-     ';
     var w = cold(    '--a--(b|)      ');
     var x = cold(      '---b--(c|)   ');
@@ -119,5 +128,6 @@ describe('Observable.prototype.windowCount', function () {
       .mergeMap(function (i) { return Observable.of(i); });
 
     expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
