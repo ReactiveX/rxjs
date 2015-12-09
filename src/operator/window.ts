@@ -12,15 +12,16 @@ class WindowOperator<T, R> implements Operator<T, R> {
   constructor(private closingNotifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<Observable<T>>): Subscriber<T> {
     return new WindowSubscriber(subscriber, this.closingNotifier);
   }
 }
 
 class WindowSubscriber<T> extends Subscriber<T> {
-  private window: Subject<T> = new Subject<T>();
+  private window: Subject<T>;
 
-  constructor(destination: Subscriber<T>, private closingNotifier: Observable<any>) {
+  constructor(protected destination: Subscriber<Observable<T>>,
+              private closingNotifier: Observable<any>) {
     super(destination);
     this.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this)));
     this.openWindow();
@@ -45,7 +46,10 @@ class WindowSubscriber<T> extends Subscriber<T> {
     if (prevWindow) {
       prevWindow.complete();
     }
-    this.destination.next(this.window = new Subject<T>());
+    const destination = this.destination;
+    const newWindow = this.window = new Subject<T>();
+    destination.add(newWindow);
+    destination.next(newWindow);
   }
 }
 
