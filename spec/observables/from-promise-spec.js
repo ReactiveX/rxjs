@@ -109,24 +109,49 @@ describe('Observable.fromPromise', function () {
     });
   });
 
-  it('should globally throw unhandled errors', function (done) {
-    var invoked = false;
-    process.on('uncaughtException', function (reason, p) {
-      if (invoked) {
-        return;
-      }
-      invoked = true;
-      expect(reason).toBe('fail');
-      done();
-    });
+  if (typeof process === 'object' && Object.prototype.toString.call(process) === '[object process]') {
+    it('should globally throw unhandled errors on process', function (done) {
+      var invoked = false;
+      process.on('uncaughtException', function (reason, p) {
+        if (invoked) {
+          return;
+        }
+        invoked = true;
+        expect(reason).toBe('fail');
+        done();
+      });
 
-    Observable.fromPromise(Promise.reject('bad'))
-      .subscribe(
-        done.fail,
-        function (e) {
-          expect(e).toBe('bad');
-          throw 'fail';
-        },
-        done.fail);
-  });
+      Observable.fromPromise(Promise.reject('bad'))
+        .subscribe(
+          done.fail,
+          function (e) {
+            expect(e).toBe('bad');
+            throw 'fail';
+          },
+          done.fail);
+    });
+  } else if (typeof window === 'object' && Object.prototype.toString.call(window) === '[object global]') {
+    it('should globally throw unhandled errors on window', function (done) {
+      var invoked = false;
+      function onException(e) {
+        if (invoked) {
+          return;
+        }
+        invoked = true;
+        expect(e).toBe('Uncaught fail');
+        done();
+      }
+
+      window.onerror = onException;
+
+      Observable.fromPromise(Promise.reject('bad'))
+        .subscribe(
+          done.fail,
+          function (e) {
+            expect(e).toBe('bad');
+            throw 'fail';
+          },
+          done.fail);
+    });
+  }
 });
