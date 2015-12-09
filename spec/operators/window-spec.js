@@ -1,5 +1,5 @@
 /* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions, rxTestScheduler */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.window', function () {
@@ -195,6 +195,33 @@ describe('Observable.prototype.window', function () {
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
     expectSubscriptions(closings.subscriptions).toBe(closingSubs);
+  });
+
+  it('should dispose window Subjects if the outer is unsubscribed early', function () {
+    var virtualTimeScheduler = new Rx.VirtualTimeScheduler();
+    var source = new Rx.Subject();
+    var result = source.window(Observable.never());
+    var win;
+    var subscription;
+
+    virtualTimeScheduler.schedule(function () {
+      subscription = result.subscribe(function (w) { win = w; });
+    }, 0);
+    virtualTimeScheduler.schedule(function () { source.next('a'); }, 0);
+    virtualTimeScheduler.schedule(function () { source.next('b'); }, 10);
+    virtualTimeScheduler.schedule(function () { source.next('c'); }, 20);
+    virtualTimeScheduler.schedule(function () { subscription.unsubscribe(); }, 30);
+    virtualTimeScheduler.schedule(function () { source.next('d'); }, 40);
+    virtualTimeScheduler.schedule(function () { source.next('e'); }, 50);
+    virtualTimeScheduler.schedule(function () { source.next('f'); }, 60);
+    virtualTimeScheduler.schedule(function () { source.next('g'); }, 70);
+    virtualTimeScheduler.schedule(function () {
+      expect(function () {
+        win.subscribe();
+      }).toThrowError('Cannot subscribe to a disposed Subject.');
+    }, 80);
+
+    virtualTimeScheduler.flush();
   });
 
   it('should make outer emit error when closing throws', function () {
