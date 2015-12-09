@@ -19,7 +19,7 @@ class WindowTimeOperator<T, R> implements Operator<T, R> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<Observable<T>>): Subscriber<T> {
     return new WindowTimeSubscriber(
       subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler
     );
@@ -29,7 +29,7 @@ class WindowTimeOperator<T, R> implements Operator<T, R> {
 class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
 
-  constructor(destination: Subscriber<T>,
+  constructor(protected destination: Subscriber<Observable<T>>,
               private windowTimeSpan: number,
               private windowCreationInterval: number,
               private scheduler: Scheduler) {
@@ -72,9 +72,11 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   }
 
   openWindow(): Subject<T> {
-    let window = new Subject<T>();
+    const window = new Subject<T>();
     this.windows.push(window);
-    this.destination.next(window);
+    const destination = this.destination;
+    destination.add(window);
+    destination.next(window);
     return window;
   }
 
