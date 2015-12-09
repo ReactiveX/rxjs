@@ -22,7 +22,6 @@ describe('Observable.prototype.every()', function () {
     expect(result).toBe(thisArg);
   });
 
-
   it('should accept thisArg with array observables', function () {
     var thisArg = {};
     var result;
