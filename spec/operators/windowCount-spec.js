@@ -1,5 +1,5 @@
 /* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.windowCount', function () {
@@ -109,6 +109,33 @@ describe('Observable.prototype.windowCount', function () {
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should dispose window Subjects if the outer is unsubscribed early', function () {
+    var virtualTimeScheduler = new Rx.VirtualTimeScheduler();
+    var source = new Rx.Subject();
+    var result = source.windowCount(10, 10);
+    var win;
+    var subscription;
+
+    virtualTimeScheduler.schedule(function () {
+      subscription = result.subscribe(function (w) { win = w; });
+    }, 0);
+    virtualTimeScheduler.schedule(function () { source.next('a'); }, 0);
+    virtualTimeScheduler.schedule(function () { source.next('b'); }, 10);
+    virtualTimeScheduler.schedule(function () { source.next('c'); }, 20);
+    virtualTimeScheduler.schedule(function () { subscription.unsubscribe(); }, 30);
+    virtualTimeScheduler.schedule(function () { source.next('d'); }, 40);
+    virtualTimeScheduler.schedule(function () { source.next('e'); }, 50);
+    virtualTimeScheduler.schedule(function () { source.next('f'); }, 60);
+    virtualTimeScheduler.schedule(function () { source.next('g'); }, 70);
+    virtualTimeScheduler.schedule(function () {
+      expect(function () {
+        win.subscribe();
+      }).toThrowError('Cannot subscribe to a disposed Subject.');
+    }, 80);
+
+    virtualTimeScheduler.flush();
   });
 
   it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
