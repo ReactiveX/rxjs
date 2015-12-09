@@ -16,16 +16,17 @@ class WindowOperator<T, R> implements Operator<T, R> {
   constructor(private closingSelector: () => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<Observable<T>>): Subscriber<T> {
     return new WindowSubscriber(subscriber, this.closingSelector);
   }
 }
 
 class WindowSubscriber<T> extends Subscriber<T> {
-  private window: Subject<T> = new Subject<T>();
+  private window: Subject<T>;
   private closingNotification: Subscription<any>;
 
-  constructor(destination: Subscriber<T>, private closingSelector: () => Observable<any>) {
+  constructor(protected destination: Subscriber<Observable<T>>,
+              private closingSelector: () => Observable<any>) {
     super(destination);
     this.openWindow();
   }
@@ -70,16 +71,19 @@ class WindowSubscriber<T> extends Subscriber<T> {
       prevWindow.complete();
     }
 
-    this.destination.next(this.window = new Subject<T>());
+    const window = this.window = new Subject<T>();
+    this.destination.next(window);
 
-    let closingNotifier = tryCatch(this.closingSelector)();
+    const closingNotifier = tryCatch(this.closingSelector)();
     if (closingNotifier === errorObject) {
       const err = closingNotifier.e;
       this.destination.error(err);
       this.window.error(err);
     } else {
-      let closingNotification = this.closingNotification = new Subscription();
-      this.add(closingNotification.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this))));
+      const closingNotification = this.closingNotification = new Subscription();
+      closingNotification.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this)));
+      this.add(closingNotification);
+      this.add(window);
     }
   }
 }
