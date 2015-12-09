@@ -23,15 +23,18 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [ new Subject<T>() ];
   private count: number = 0;
 
-  constructor(destination: Subscriber<Observable<T>>,
+  constructor(protected destination: Subscriber<Observable<T>>,
               private windowSize: number,
               private startWindowEvery: number) {
     super(destination);
-    destination.next(this.windows[0]);
+    const firstWindow = this.windows[0];
+    destination.add(firstWindow);
+    destination.next(firstWindow);
   }
 
   _next(value: T) {
     const startWindowEvery = (this.startWindowEvery > 0) ? this.startWindowEvery : this.windowSize;
+    const destination = this.destination;
     const windowSize = this.windowSize;
     const windows = this.windows;
     const len = windows.length;
@@ -44,9 +47,10 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
       windows.shift().complete();
     }
     if (++this.count % startWindowEvery === 0) {
-      let window = new Subject<T>();
+      const window = new Subject<T>();
       windows.push(window);
-      this.destination.next(window);
+      destination.add(window);
+      destination.next(window);
     }
   }
 
