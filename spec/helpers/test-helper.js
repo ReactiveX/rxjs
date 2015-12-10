@@ -11,6 +11,7 @@ var marbleHelpers = require('./marble-testing');
 global.rxTestScheduler = null;
 global.cold = marbleHelpers.cold;
 global.hot = marbleHelpers.hot;
+global.time = marbleHelpers.time;
 global.expectObservable = marbleHelpers.expectObservable;
 global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 

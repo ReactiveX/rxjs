@@ -85,6 +85,21 @@ describe('TestScheduler', function () {
     });
   });
 
+  describe('createTime()', function () {
+    it('should parse a simple time marble string to a number', function () {
+      var scheduler = new TestScheduler();
+      var time = scheduler.createTime('-----|');
+      expect(time).toBe(50);
+    });
+
+    it('should throw if not given good marble input', function () {
+      var scheduler = new TestScheduler();
+      expect(function () {
+        var time = scheduler.createTime('-a-b-#');
+      }).toThrow();
+    });
+  });
+
   describe('createColdObservable()', function () {
     it('should create a cold observable', function () {
       var expected = ['A', 'B'];
@@ -148,6 +163,17 @@ describe('TestScheduler', function () {
         var source = hot('---^-a-b-|', { a: 1, b: 2 });
         expect(source instanceof Rx.Subject).toBe(true);
         expectObservable(source).toBe('--a-b-|', { a: 1, b: 2 });
+      });
+    });
+
+    describe('time()', function () {
+      it('should exist', function () {
+        expect(time).toBeDefined();
+        expect(typeof time).toBe('function');
+      });
+
+      it('should parse a simple time marble string to a number', function () {
+        expect(time('-----|')).toBe(50);
       });
     });
 
