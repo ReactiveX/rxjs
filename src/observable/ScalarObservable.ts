@@ -91,11 +91,11 @@ proto.scan = function <T, R>(project: (acc: R, x: T) => R, acc?: R): Observable<
   return this.reduce(project, acc);
 };
 
-proto.count = function <T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number> {
+proto.count = function <T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<number> {
   if (!predicate) {
     return new ScalarObservable(1);
   } else {
-    let result = tryCatch(predicate).call(thisArg || this, this.value, 0, this);
+    let result = tryCatch(predicate).call(this, this.value, 0, this);
     if (result === errorObject) {
       return new ErrorObservable(errorObject.e);
     } else {
