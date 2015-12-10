@@ -30,6 +30,33 @@ describe('Observable.prototype.elementAt', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should raise error if source is Empty Observable', function () {
+    var source = cold('|');
+    var subs =        '(^!)';
+    var expected =    '#';
+
+    expectObservable(source.elementAt(0)).toBe(expected, undefined, new Rx.ArgumentOutOfRangeError());
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should propagate error if source is Throw Observable', function () {
+    var source = cold('#');
+    var subs =        '(^!)';
+    var expected =    '#';
+
+    expectObservable(source.elementAt(0)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should return Never if source is Never Observable', function () {
+    var source = cold('-');
+    var subs =        '^';
+    var expected =    '-';
+
+    expectObservable(source.elementAt(0)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should throw if index is smaller than zero', function () {
     expect(function () { Observable.range(0,10).elementAt(-1); })
       .toThrow(new Rx.ArgumentOutOfRangeError());
