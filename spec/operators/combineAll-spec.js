@@ -130,6 +130,41 @@ describe('Observable.prototype.combineAll()', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var e1 =   hot('--a--^--b--c---d-| ');
+    var e1subs =        '^        !    ';
+    var e2 =   hot('---e-^---f--g---h-|');
+    var e2subs =        '^        !    ';
+    var expected =      '----x-yz--    ';
+    var unsub =         '         !    ';
+    var values = { x: 'bf', y: 'cf', z: 'cg' };
+
+    var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var e1 =   hot('--a--^--b--c---d-| ');
+    var e1subs =        '^        !    ';
+    var e2 =   hot('---e-^---f--g---h-|');
+    var e2subs =        '^        !    ';
+    var expected =      '----x-yz--    ';
+    var unsub =         '         !    ';
+    var values = { x: 'bf', y: 'cf', z: 'cg' };
+
+    var result = Observable.of(e1, e2)
+      .mergeMap(function (x) { return Observable.of(x); })
+      .combineAll(function (x, y) { return x + y; })
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should combine 3 observables', function () {
     var e1 =   hot('--a--^--b--c--|');
     var e1subs =        '^        !';
