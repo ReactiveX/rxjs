@@ -82,6 +82,43 @@ describe('Observable.prototype.dematerialize()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var values = {
+      a: Notification.createNext('w'),
+      b: Notification.createNext('x')
+    };
+
+    var e1 =   hot('--a--b--c--d--|', values);
+    var e1subs =   '^      !       ';
+    var expected = '--w--x--       ';
+    var unsub =    '       !       ';
+
+    var result = e1.dematerialize();
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var values = {
+      a: Notification.createNext('w'),
+      b: Notification.createNext('x')
+    };
+
+    var e1 =   hot('--a--b--c--d--|', values);
+    var e1subs =   '^      !       ';
+    var expected = '--w--x--       ';
+    var unsub =    '       !       ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .dematerialize()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should dematerialize and completes when stream compltes with complete notification', function () {
     var e1 =   hot('----(a|)', { a: Notification.createComplete() });
     var e1subs =   '^   !';
