@@ -19,11 +19,11 @@ import {combineLatest as combineLatestStatic} from './operator/combineLatest-sta
 import {concat as concatStatic} from './operator/concat-static';
 import {merge as mergeStatic} from './operator/merge-static';
 import {zip as zipStatic} from './operator/zip-static';
-import {BoundCallbackObservable} from './observable/bindCallback';
 import {DeferObservable} from './observable/defer';
 import {EmptyObservable} from './observable/empty';
 import {ForkJoinObservable} from './observable/forkJoin';
 import {FromObservable} from './observable/from';
+import {CallbackObservable} from './observable/fromCallback';
 import {ArrayObservable} from './observable/fromArray';
 import {FromEventObservable} from './observable/fromEvent';
 import {FromEventPatternObservable} from './observable/fromEventPattern';
@@ -178,7 +178,7 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
-  static bindCallback: typeof BoundCallbackObservable.create;
+  static bindCallback: typeof CallbackObservable.create;
   static combineLatest: typeof combineLatestStatic;
   static concat: typeof concatStatic;
   static defer: typeof DeferObservable.create;
@@ -206,9 +206,7 @@ export class Observable<T> implements CoreOperators<T>  {
   bufferWhen: (closingSelector: () => Observable<any>) => Observable<T[]>;
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
-  combineLatest: <R>(...observables: Array<Observable<any> |
-                                     Array<Observable<any>> |
-                                     ((...values: Array<any>) => R)>) => Observable<R>;
+  combineLatest: operator.operator_proto_combineLatest<T>;
   concat: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
   concatAll: () => Observable<any>;
   concatMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
@@ -269,9 +267,9 @@ export class Observable<T> implements CoreOperators<T>  {
   startWith: (x: T) => Observable<T>;
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   switch: <R>() => Observable<R>;
-  exhaust: <T>() => Observable<T>;
+  switchFirst: <T>() => Observable<T>;
   switchMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  exhaustMap: <T, R, R2>(project: (x: T, ix: number) => Observable<R>, rSelector?: (x: T, y: R, ix: number, iy: number) => R2) => Observable<R>;
+  switchFirstMap: <T, R, R2>(project: (x: T, ix: number) => Observable<R>, rSelector?: (x: T, y: R, ix: number, iy: number) => R2) => Observable<R>;
   switchMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
   take: (count: number) => Observable<T>;
   takeUntil: (notifier: Observable<any>) => Observable<T>;

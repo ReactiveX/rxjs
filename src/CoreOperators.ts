@@ -16,7 +16,7 @@ export interface CoreOperators<T> {
   bufferWhen?: (closingSelector: () => Observable<any>) => Observable<T[]>;
   catch?: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll?: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
-  combineLatest?: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
+  combineLatest: operator.operator_proto_combineLatest<T>;
   concat?: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
   concatAll?: () => Observable<T>;
   concatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;

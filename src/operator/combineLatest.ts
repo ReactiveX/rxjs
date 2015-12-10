@@ -2,6 +2,7 @@ import {Observable} from '../Observable';
 import {ArrayObservable} from '../observable/fromArray';
 import {CombineLatestOperator} from './combineLatest-support';
 import {isArray} from '../util/isArray';
+import {ObservableInput} from '../types';
 
 /**
  * Combines the values from this observable with values from observables passed as arguments. This is done by subscribing
@@ -13,10 +14,21 @@ import {isArray} from '../util/isArray';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export function combineLatest<R>(...observables: Array<Observable<any> |
+export function combineLatest<T, TResult>(project: (v1: T) => TResult): Observable<TResult>;
+export function combineLatest<T, TResult>(project: (v1: T) => TResult): Observable<TResult>;
+/*-- *compute 2-6* export function combineLatest<T, {|X|}>({|v|: ObservableInput<|X|>}): Observable<[T, {|X|}]>; --*/
+/*-- *compute 2-6* export function combineLatest<T, {|X|}>(array: [{ObservableInput<|X|>}]): Observable<[T, {|X|}]>; --*/
+/*-- *compute 2-6* export function combineLatest<T, {|X|}, TResult>({|v|: ObservableInput<|X|>},
+                                                                    project: (v1: T, {|v|: |X|}) => TResult): Observable<TResult>; --*/
+/*-- *compute 2-6* export function combineLatest<T, {|X|}, TResult>(array: [{ObservableInput<|X|>}],
+                                                                    project: (v1: T, {|v|: |X|}) => TResult): Observable<TResult>; --*/
+export function combineLatest<T, TResult>(array: ObservableInput<any>[], project?: Function): Observable<TResult[]>;
+export function combineLatest<T>(...observables: Array<ObservableInput<T>>): Observable<T[]>;
+export function combineLatest<T, R>(...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): Observable<R>;
+export function combineLatest<R>(...observables: Array<any | Observable<any> |
                                                        Array<Observable<any>> |
                                                        ((...values: Array<any>) => R)>): Observable<R> {
-  let project: (...values: Array<any>) => R =  null;
+  let project: (...values: Array<any>) => R = null;
   if (typeof observables[observables.length - 1] === 'function') {
     project = <(...values: Array<any>) => R>observables.pop();
   }
@@ -24,7 +36,7 @@ export function combineLatest<R>(...observables: Array<Observable<any> |
   // if the first and only other argument besides the resultSelector is an array
   // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
   if (observables.length === 1 && isArray(observables[0])) {
-    observables = <Array<Observable<any>>>observables[0];
+    observables = <any>observables[0];
   }
 
   observables.unshift(this);
