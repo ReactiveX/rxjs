@@ -47,4 +47,31 @@ describe('Observable.prototype.subscribeOn()', function () {
     expectObservable(e1.subscribeOn(rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
+
+  it('should allow unsubscribing early and explicitly', function () {
+    var e1 =    hot('--a--b--|');
+    var sub =       '^   !    ';
+    var expected =  '--a--    ';
+    var unsub =     '    !    ';
+
+    var result = e1.subscribeOn(rxTestScheduler);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(sub);
+  });
+
+  it('should not break unsubscription chains when the result is unsubscribed explicitly', function () {
+    var e1 =    hot('--a--b--|');
+    var sub =       '^   !    ';
+    var expected =  '--a--    ';
+    var unsub =     '    !    ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .subscribeOn(rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(sub);
+  });
 });
