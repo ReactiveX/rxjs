@@ -126,6 +126,35 @@ describe('Observable.prototype.distinctUntilKeyChanged()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var values = {a: {val: 1}, b: {val: 2}, c: {val: 3}, d: {val: 4}, e: {val: 5}};
+    var e1 =   hot('--a--b--b--d--a--e--|', values);
+    var e1subs =   '^         !          ';
+    var expected = '--a--b-----          ';
+    var unsub =    '          !          ';
+
+    var result = e1.distinctUntilKeyChanged('val');
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var values = {a: {val: 1}, b: {val: 2}, c: {val: 3}, d: {val: 4}, e: {val: 5}};
+    var e1 =   hot('--a--b--b--d--a--e--|', values);
+    var e1subs =   '^         !          ';
+    var expected = '--a--b-----          ';
+    var unsub =    '          !          ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .distinctUntilKeyChanged('val')
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should emit once if source elements are all same', function () {
     var values = {a: {val: 1}};
     var e1 =   hot('--a--a--a--a--a--a--|', values);
