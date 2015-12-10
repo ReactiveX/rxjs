@@ -48,6 +48,33 @@ describe('Observable.prototype.defaultIfEmpty()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var e1 =   hot('--a--b--|');
+    var e1subs =   '^   !    ';
+    var expected = '--a--    ';
+    var unsub =    '    !    ';
+
+    var result = e1.defaultIfEmpty('x');
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var e1 =   hot('--a--b--|');
+    var e1subs =   '^   !    ';
+    var expected = '--a--    ';
+    var unsub =    '    !    ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .defaultIfEmpty('x')
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should error if the Observable errors', function () {
     var e1 =  cold('#');
     var e1subs =   '(^!)';
