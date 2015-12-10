@@ -1,6 +1,7 @@
 import {Observable} from './Observable';
 export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
 export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T> | Array<T>;
+export type ObservableInput<T> = Observable<T> | Promise<T> | Iterator<T> | ArrayLike<T>;
 
 export type _Selector<T, TResult> = (value: T) => TResult;
 export type _IndexSelector<T, TResult> = (value: T, index: number) => TResult;
