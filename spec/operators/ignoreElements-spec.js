@@ -12,6 +12,33 @@ describe('Observable.prototype.ignoreElements', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var source = hot('--a--b--c--d--|');
+    var subs =       '^      !       ';
+    var expected =   '--------       ';
+    var unsub =      '       !       ';
+
+    var result = source.ignoreElements();
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should allow unsubscribing early and explicitly', function () {
+    var source = hot('--a--b--c--d--|');
+    var subs =       '^      !       ';
+    var expected =   '--------       ';
+    var unsub =      '       !       ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .ignoreElements()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should propagate errors from the source', function () {
     var source = hot('--a--#');
     var subs =       '^    !';
