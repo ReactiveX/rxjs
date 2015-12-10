@@ -211,7 +211,7 @@ export class Observable<T> implements CoreOperators<T>  {
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   finally: (finallySelector: () => void) => Observable<T>;
   first: <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-             resultSelector?: (value: T, index: number) => R, thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
+             resultSelector?: (value: T, index: number) => R, defaultValue?: any) => Observable<T> | Observable<R>;
   flatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                concurrent?: number) => Observable<R>;
@@ -222,7 +222,7 @@ export class Observable<T> implements CoreOperators<T>  {
   ignoreElements: () => Observable<T>;
   last: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,
-            thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
+            defaultValue?: any) => Observable<T> | Observable<R>;
   every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   map: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
@@ -251,7 +251,7 @@ export class Observable<T> implements CoreOperators<T>  {
   single: (predicate?: (value: T, index: number) => boolean) => Observable<T>;
   skip: (count: number) => Observable<T>;
   skipUntil: (notifier: Observable<any>) => Observable<T>;
-  skipWhile: (predicate: (x: T, index: number) => boolean, thisArg?: any) => Observable<T>;
+  skipWhile: (predicate: (x: T, index: number) => boolean) => Observable<T>;
   startWith: (x: T) => Observable<T>;
   subscribeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   switch: <R>() => Observable<R>;
