@@ -13,7 +13,7 @@ export class ScalarObservable<T> extends Observable<T> {
     return new ScalarObservable(value, scheduler);
   }
 
-  static dispatch(state): void {
+  static dispatch(state: any): void {
     const { done, value, subscriber } = state;
 
     if (done) {
@@ -72,7 +72,7 @@ proto.filter = function <T>(select: (x: T, ix?: number) => boolean, thisArg?: an
   } else if (result) {
     return this;
   } else {
-    return new EmptyObservable();
+    return new EmptyObservable<T>();
   }
 };
 
@@ -107,7 +107,7 @@ proto.count = function <T>(predicate?: (value: T, index: number, source: Observa
 
 proto.skip = function <T>(count: number): Observable<T> {
   if (count > 0) {
-    return new EmptyObservable();
+    return new EmptyObservable<T>();
   }
   return this;
 };
@@ -116,5 +116,5 @@ proto.take = function <T>(count: number): Observable<T> {
   if (count > 0) {
     return this;
   }
-  return new EmptyObservable();
+  return new EmptyObservable<T>();
 };

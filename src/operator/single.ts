@@ -7,13 +7,11 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
 
-export function single<T>(predicate?: (value: T,
-                                       index: number,
-                                       source: Observable<T>) => boolean): Observable<T> {
+export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T> {
   return this.lift(new SingleOperator(predicate, this));
 }
 
-class SingleOperator<T, R> implements Operator<T, R> {
+class SingleOperator<T> implements Operator<T, T> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private source?: Observable<T>) {
   }
@@ -34,7 +32,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  private applySingleValue(value): void {
+  private applySingleValue(value: T): void {
     if (this.seenValue) {
       this.destination.error('Sequence contains more than one element');
     } else {
@@ -50,7 +48,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
     if (predicate) {
       let result = tryCatch(predicate)(value, currentIndex, this.source);
       if (result === errorObject) {
-        this.destination.error(result.e);
+        this.destination.error(errorObject.e);
       } else if (result) {
         this.applySingleValue(value);
       }

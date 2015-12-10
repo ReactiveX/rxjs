@@ -9,7 +9,7 @@ import {rxSubscriber} from './symbol/rxSubscriber';
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
 
   static create<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
-    return new Subject(source, destination);
+    return new Subject<T>(source, destination);
   }
 
   constructor(source?: Observable<T>, destination?: Observer<T>) {
@@ -32,7 +32,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
     const subject = new Subject(this, this.destination || this);
     subject.operator = operator;
-    return subject;
+    return <any>subject;
   }
 
   add(subscription: Subscription|Function|void): void {

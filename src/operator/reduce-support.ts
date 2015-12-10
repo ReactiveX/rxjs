@@ -5,7 +5,7 @@ import {errorObject} from '../util/errorObject';
 
 export class ReduceOperator<T, R> implements Operator<T, R> {
 
-  constructor(private project: (acc: R, x: T) => R, private seed?: R) {
+  constructor(private project: (acc: R, value: T) => R, private seed?: R) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -15,19 +15,19 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
 
 export class ReduceSubscriber<T, R> extends Subscriber<T> {
 
-  acc: R;
+  acc: T | R;
   hasSeed: boolean;
   hasValue: boolean = false;
-  project: (acc: R, x: T) => R;
+  project: (acc: R, value: T) => R;
 
-  constructor(destination: Subscriber<T>, project: (acc: R, x: T) => R, seed?: R) {
+  constructor(destination: Subscriber<T>, project: (acc: R, value: T) => R, seed?: R) {
     super(destination);
     this.acc = seed;
     this.project = project;
     this.hasSeed = typeof seed !== 'undefined';
   }
 
-  _next(x) {
+  _next(x: T) {
     if (this.hasValue || (this.hasValue = this.hasSeed)) {
       const result = tryCatch(this.project).call(this, this.acc, x);
       if (result === errorObject) {

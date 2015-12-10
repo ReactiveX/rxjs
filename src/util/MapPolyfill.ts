@@ -1,14 +1,14 @@
 export class MapPolyfill {
   public size = 0;
-  private _values = [];
-  private _keys = [];
+  private _values: any[] = [];
+  private _keys: any[] = [];
 
-  get(key): any {
+  get(key: any) {
     const i = this._keys.indexOf(key);
     return i === -1 ? undefined : this._values[i];
   }
 
-  set(key, value): any {
+  set(key: any, value: any) {
     const i = this._keys.indexOf(key);
     if (i === -1) {
       this._keys.push(key);
@@ -20,7 +20,7 @@ export class MapPolyfill {
     return this;
   }
 
-  delete(key): boolean {
+  delete(key: any): boolean {
     const i = this._keys.indexOf(key);
     if (i === -1) { return false; }
     this._values.splice(i, 1);
@@ -29,7 +29,7 @@ export class MapPolyfill {
     return true;
   }
 
-  forEach(cb, thisArg): void {
+  forEach(cb: Function, thisArg: any) {
     for (let i = 0; i < this.size; i++) {
       cb.call(thisArg, this._values[i], this._keys[i]);
     }

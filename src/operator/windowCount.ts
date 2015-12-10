@@ -8,7 +8,7 @@ export function windowCount<T>(windowSize: number,
   return this.lift(new WindowCountOperator(windowSize, startWindowEvery));
 }
 
-class WindowCountOperator<T, R> implements Operator<T, R> {
+class WindowCountOperator<T> implements Operator<T, Observable<T>> {
 
   constructor(private windowSize: number,
               private startWindowEvery: number) {

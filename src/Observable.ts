@@ -51,7 +51,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
    * of a successful completion.
    */
-  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription|Function|void) {
+  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -66,7 +66,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Observable} a new cold observable
    * @description creates a new cold Observable by calling the Observable constructor
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription|Function|void) => {
+  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) => {
     return new Observable<T>(subscribe);
   };
 
@@ -77,8 +77,8 @@ export class Observable<T> implements CoreOperators<T>  {
    * @description creates a new Observable, with this Observable as the source, and the passed
    * operator defined as the new observable's operator.
    */
-  lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const observable = new Observable();
+  lift<T, R>(operator: Operator<T, R>): Observable<R> {
+    const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;
     return observable;
@@ -132,7 +132,7 @@ export class Observable<T> implements CoreOperators<T>  {
       throw new Error('no Promise impl found');
     }
 
-    let nextHandler;
+    let nextHandler: any;
 
     if (thisArg) {
       nextHandler = function nextHandlerFn(value: any): void {
@@ -145,7 +145,7 @@ export class Observable<T> implements CoreOperators<T>  {
       nextHandler = next;
     }
 
-    const promiseCallback = function promiseCallbackFn(resolve, reject) {
+    const promiseCallback = function promiseCallbackFn(resolve: Function, reject: Function) {
       const { source, nextHandler } = <any>promiseCallbackFn;
       source.subscribe(nextHandler, reject, resolve);
     };
@@ -212,9 +212,9 @@ export class Observable<T> implements CoreOperators<T>  {
                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                concurrent?: number) => Observable<R>;
   flatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy: <R>(keySelector: (value: T) => string,
+  groupBy: <K, R>(keySelector: (value: T) => string,
                elementSelector?: (value: T) => R,
-               durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
+               durationSelector?: (group: GroupedObservable<K, R>) => Observable<any>) => Observable<GroupedObservable<K, R>>;
   ignoreElements: () => Observable<T>;
   last: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,

@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
@@ -7,6 +6,7 @@ import {errorObject} from '../util/errorObject';
 import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
+import {Observable} from '../Observable';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
@@ -52,7 +52,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
       destination.next(value);
       let result = tryCatch(this.project)(value, index);
       if (result === errorObject) {
-        destination.error(result.e);
+        destination.error(errorObject.e);
       } else if (!this.scheduler) {
         this.subscribeToProjection(result, value, index);
       } else {
@@ -64,7 +64,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  private subscribeToProjection(result, value: T, index: number): void {
+  private subscribeToProjection(result: any, value: T, index: number): void {
     if (result._isScalar) {
       this._next(result.value);
     } else {

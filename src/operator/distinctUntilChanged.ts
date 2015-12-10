@@ -2,6 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Observable} from '../Observable';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
@@ -10,13 +11,15 @@ import {errorObject} from '../util/errorObject';
  * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.
  * @returns {Observable} an Observable that emits items from the source Observable with distinct values.
  */
-export function distinctUntilChanged<T>(compare?: (x: any, y: any) => boolean, keySelector?: (x: T) => any) {
-  return this.lift(new DistinctUntilChangedOperator(compare, keySelector));
+export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean): Observable<T>;
+export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T>;
+export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
+  return this.lift(new DistinctUntilChangedOperator<T, K>(compare, keySelector));
 }
 
-class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
-  constructor(private compare: (x: any, y: any) => boolean,
-              private keySelector: (x: T) => any) {
+class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
+  constructor(private compare: (x: K, y: K) => boolean,
+              private keySelector: (x: T) => K) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -24,13 +27,13 @@ class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
-  private key: any;
+class DistinctUntilChangedSubscriber<T, K> extends Subscriber<T> {
+  private key: K;
   private hasKey: boolean = false;
 
   constructor(destination: Subscriber<T>,
-              compare: (x: any, y: any) => boolean,
-              private keySelector: (x: T) => any) {
+              compare: (x: K, y: K) => boolean,
+              private keySelector: (x: T) => K) {
     super(destination);
     if (typeof compare === 'function') {
       this.compare = compare;

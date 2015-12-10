@@ -7,7 +7,7 @@ import {Subscriber} from '../Subscriber';
  * @param {any} defaultValue the default value used if source is empty; defaults to null.
  * @returns {Observable} an Observable of the items emitted by the where empty values are replaced by the specified default value or null.
  */
-export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T> | Observable<R> {
+export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 

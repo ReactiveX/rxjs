@@ -13,7 +13,7 @@ import {EmptyError} from '../util/EmptyError';
  */
 export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
                             resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: any): Observable<T> | Observable<R> {
+                            defaultValue?: R): Observable<T> | Observable<R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 

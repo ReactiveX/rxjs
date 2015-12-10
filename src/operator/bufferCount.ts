@@ -22,11 +22,11 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number = nu
   return this.lift(new BufferCountOperator(bufferSize, startBufferEvery));
 }
 
-class BufferCountOperator<T, R> implements Operator<T, R> {
+class BufferCountOperator<T> implements Operator<T, T[]> {
   constructor(private bufferSize: number, private startBufferEvery: number) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<T[]>): Subscriber<T> {
     return new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery);
   }
 }
@@ -35,7 +35,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [[]];
   private count: number = 0;
 
-  constructor(destination: Subscriber<T>, private bufferSize: number, private startBufferEvery: number) {
+  constructor(destination: Subscriber<T[]>, private bufferSize: number, private startBufferEvery: number) {
     super(destination);
   }
 

@@ -8,19 +8,17 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export function switchMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
-                                    resultSelector?: (outerValue: T,
-                                                      innerValue: R,
-                                                      outerIndex: number,
-                                                      innerIndex: number) => R2): Observable<R> {
+                                    resultSelector?: (
+                                             outerValue: T,
+                                             innerValue: R,
+                                             outerIndex: number,
+                                             innerIndex: number) => R2): Observable<R2> {
   return this.lift(new SwitchMapOperator(project, resultSelector));
 }
 
 class SwitchMapOperator<T, R, R2> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (outerValue: T,
-                                        innerValue: R,
-                                        outerIndex: number,
-                                        innerIndex: number) => R2) {
+              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -43,7 +41,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     const destination = this.destination;
     let result = tryCatch(this.project)(value, index);
     if (result === errorObject) {
-      destination.error(result.e);
+      destination.error(errorObject.e);
     } else {
       const innerSubscription = this.innerSubscription;
       if (innerSubscription) {

@@ -37,15 +37,15 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
     }
   } else if (isPromise(result)) {
     result.then(
-      (value) => {
+      (value: any) => {
         if (!destination.isUnsubscribed) {
           destination.next(value);
           destination.complete();
         }
       },
-      (err) => destination.error(err)
+      (err: any) => destination.error(err)
     )
-    .then(null, err => {
+    .then(null, (err: any) => {
       // Escaping the Promise trap: globally throw unhandled errors
       root.setTimeout(() => { throw err; });
     });

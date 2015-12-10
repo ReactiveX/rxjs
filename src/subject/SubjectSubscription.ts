@@ -2,10 +2,10 @@ import {Subject} from '../Subject';
 import {Observer} from '../Observer';
 import {Subscription} from '../Subscription';
 
-export class SubjectSubscription<T> extends Subscription {
+export class SubjectSubscription extends Subscription {
   isUnsubscribed: boolean = false;
 
-  constructor(public subject: Subject<T>, public observer: Observer<any>) {
+  constructor(public subject: Subject<any>, public observer: Observer<any>) {
     super();
   }
 

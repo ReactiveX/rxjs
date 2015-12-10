@@ -4,7 +4,7 @@ import {Observer} from '../Observer';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 
-export class ObserveOnOperator<T, R> implements Operator<T, R> {
+export class ObserveOnOperator<T> implements Operator<T, T> {
   constructor(private scheduler: Scheduler, private delay: number = 0) {
   }
 

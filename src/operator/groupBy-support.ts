@@ -27,8 +27,8 @@ export class RefCountSubscription extends Subscription {
   }
 }
 
-export class GroupedObservable<T> extends Observable<T> {
-  constructor(public key: string,
+export class GroupedObservable<K, T> extends Observable<T> {
+  constructor(public key: K,
               private groupSubject: Subject<T>,
               private refCountSubscription?: RefCountSubscription) {
     super();
@@ -61,4 +61,3 @@ export class InnerRefCountSubscription extends Subscription {
     }
   }
 }
-

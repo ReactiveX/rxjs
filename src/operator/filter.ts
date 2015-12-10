@@ -2,6 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Observable} from '../Observable';
 
 /**
  * Similar to the well-known `Array.prototype.filter` method, this operator filters values down to a set
@@ -12,12 +13,12 @@ import {errorObject} from '../util/errorObject';
  * @param {any} [thisArg] an optional argument to determine the value of `this` in the `select` function
  * @returns {Observable} an observable of values allowed by the select function
  */
-export function filter<T>(select: (x: T, ix?: number) => boolean, thisArg?: any) {
+export function filter<T>(select: (value: T, index: number) => boolean, thisArg?: any): Observable<T> {
   return this.lift(new FilterOperator(select, thisArg));
 }
 
-class FilterOperator<T, R> implements Operator<T, R> {
-  constructor(private select: (x: T, ix?: number) => boolean, private thisArg?: any) {
+class FilterOperator<T> implements Operator<T, T> {
+  constructor(private select: (value: T, index: number) => boolean, private thisArg?: any) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -28,14 +29,13 @@ class FilterOperator<T, R> implements Operator<T, R> {
 class FilterSubscriber<T> extends Subscriber<T> {
 
   count: number = 0;
-  select: (x: T, ix?: number) => boolean;
 
-  constructor(destination: Subscriber<T>, select: (x: T, ix?: number) => boolean, private thisArg: any) {
+  constructor(destination: Subscriber<T>, private select: (value: T, index: number) => boolean, private thisArg: any) {
     super(destination);
     this.select = select;
   }
 
-  _next(x) {
+  _next(x: T) {
     const result = tryCatch(this.select).call(this.thisArg || this, x, this.count++);
     if (result === errorObject) {
       this.destination.error(errorObject.e);

@@ -12,7 +12,7 @@ import {MergeAllOperator} from './mergeAll-support';
  * @params {Scheduler} [scheduler] an optional scheduler to schedule each observable subscription on.
  * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
  */
-export function concat<R>(...observables: (Observable<any> | Scheduler)[]): Observable<R> {
+export function concat<T, R>(...observables: Array<Observable<any> | Scheduler>): Observable<R> {
   let args = <any[]>observables;
   args.unshift(this);
 
@@ -21,5 +21,5 @@ export function concat<R>(...observables: (Observable<any> | Scheduler)[]): Obse
     scheduler = args.pop();
   }
 
-   return new ArrayObservable(args, scheduler).lift(new MergeAllOperator(1));
+   return new ArrayObservable(args, scheduler).lift<Observable<T>, R>(new MergeAllOperator<R>(1));
 }

@@ -7,6 +7,7 @@ import {isFunction} from '../util/isFunction';
 import {SymbolShim} from '../util/SymbolShim';
 import {errorObject} from '../util/errorObject';
 import {Subscription} from '../Subscription';
+import {Subscriber} from '../Subscriber';
 
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
@@ -18,7 +19,7 @@ export class IteratorObservable<T> extends Observable<T> {
     return new IteratorObservable(iterator, project, thisArg, scheduler);
   }
 
-  static dispatch(state) {
+  static dispatch(state: any) {
 
     const { index, hasError, thisArg, project, iterator, subscriber } = state;
 
@@ -83,7 +84,7 @@ export class IteratorObservable<T> extends Observable<T> {
     this.iterator = getIterator(iterator);
   }
 
-  _subscribe(subscriber): Subscription | Function | void {
+  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
 
     let index = 0;
     const { iterator, project, thisArg, scheduler } = this;
@@ -166,7 +167,7 @@ function getIterator(obj: any) {
 
 const maxSafeInteger = Math.pow(2, 53) - 1;
 
-function toLength(o) {
+function toLength(o: any) {
   let len = +o.length;
   if (isNaN(len)) {
       return 0;
@@ -184,11 +185,11 @@ function toLength(o) {
   return len;
 }
 
-function numberIsFinite(value) {
+function numberIsFinite(value: any) {
   return typeof value === 'number' && root.isFinite(value);
 }
 
-function sign(value) {
+function sign(value: any) {
   let valueAsNumber = +value;
   if (valueAsNumber === 0) {
     return valueAsNumber;

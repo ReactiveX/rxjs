@@ -13,10 +13,10 @@ import {isArray} from '../util/isArray';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export function combineLatest<R>(...observables: Array<Observable<any> |
+export function combineLatest<T, R>(...observables: Array<Observable<any> |
                                                        Array<Observable<any>> |
                                                        ((...values: Array<any>) => R)>): Observable<R> {
-  let project: (...values: Array<any>) => R =  null;
+  let project: (...values: Array<any>) => R = null;
   if (typeof observables[observables.length - 1] === 'function') {
     project = <(...values: Array<any>) => R>observables.pop();
   }
@@ -24,10 +24,10 @@ export function combineLatest<R>(...observables: Array<Observable<any> |
   // if the first and only other argument besides the resultSelector is an array
   // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
   if (observables.length === 1 && isArray(observables[0])) {
-    observables = <Array<Observable<any>>>observables[0];
+    observables = <any>observables[0];
   }
 
   observables.unshift(this);
 
-  return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
+  return new ArrayObservable(observables).lift<T, R>(new CombineLatestOperator<T, R>(project));
 }

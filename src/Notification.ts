@@ -47,7 +47,7 @@ export class Notification<T> {
       case 'E':
         return Observable.throw(this.exception);
       case 'C':
-        return Observable.empty();
+        return Observable.empty<T>();
     }
   }
 

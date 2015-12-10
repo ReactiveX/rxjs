@@ -5,11 +5,11 @@ import {Subscriber} from '../Subscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export function takeUntil<T>(notifier: Observable<any>) {
+export function takeUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new TakeUntilOperator(notifier));
 }
 
-class TakeUntilOperator<T, R> implements Operator<T, R> {
+class TakeUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
