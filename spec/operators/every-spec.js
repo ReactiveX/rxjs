@@ -84,6 +84,33 @@ describe('Observable.prototype.every()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var source = hot('--a--b--c--d--e--|', {a: 5, b: 10, c: 15});
+    var sourceSubs = '^      !          ';
+    var expected =   '--------          ';
+    var unsub =      '       !          ';
+
+    var result = source.every(predicate);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should not break unsubscription chains when result Observable is unsubscribed', function () {
+    var source = hot('--a--b--c--d--e--|', {a: 5, b: 10, c: 15});
+    var sourceSubs = '^      !          ';
+    var expected =   '--------          ';
+    var unsub =      '       !          ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .every(predicate)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should propagate error if predicate eventually throws', function () {
     var source = hot('--a--b--c--d--e--|');
     var sourceSubs = '^       !';
