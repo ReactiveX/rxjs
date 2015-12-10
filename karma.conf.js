@@ -2,6 +2,21 @@
 // Generated on Tue Dec 08 2015 23:01:01 GMT-0800 (Pacific Standard Time)
 
 module.exports = function (config) {
+  // Check out https://saucelabs.com/platforms for expanding browser coverage
+  var customLaunchers = {
+    sl_chrome: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      platform: 'Windows 10',
+      version: '46'
+    },
+    sl_firefox: {
+      base: 'SauceLabs',
+      browserName: 'firefox',
+      version: '30'
+    }
+  };
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -31,7 +46,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['dots','saucelabs'],
 
     // web server port
     port: 9876,
@@ -48,7 +63,8 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    customLaunchers: customLaunchers,
+    browsers: process.env.TRAVIS ? Object.keys(customLaunchers) : ['Chrome'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
@@ -56,6 +72,10 @@ module.exports = function (config) {
 
     // Concurrency level
     // how many browser should be started simultanous
-    concurrency: 1
+    concurrency: 1,
+
+    sauceLabs: {
+      testName: 'RxJS 5 browser test'
+    }
   });
 };
