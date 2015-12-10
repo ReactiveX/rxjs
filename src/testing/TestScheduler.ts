@@ -25,6 +25,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     super();
   }
 
+  createTime(marbles: string): number {
+    const indexOf: number = marbles.indexOf('|');
+    if (indexOf === -1) {
+      throw new Error('Marble diagram for time should have a completion marker "|"');
+    }
+    return indexOf * TestScheduler.frameTimeFactor;
+  }
+
   createColdObservable<T>(marbles: string, values?: any, error?: any): Observable<T> {
     if (marbles.indexOf('^') !== -1) {
       throw new Error('Cold observable cannot have subscription offset "^"');
