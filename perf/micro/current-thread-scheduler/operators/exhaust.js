@@ -13,16 +13,16 @@ module.exports = function (suite) {
     source.map(function () { return RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate); }),
     RxNew.Scheduler.immediate
   )
-    .switchFirst();
+    .exhaust();
 
   function _next(x) { }
   function _error(e) { }
   function _complete() { }
   return suite
-    .add('old switchFirst with current thread scheduler', function () {
+    .add('old exhaust with current thread scheduler', function () {
       oldMergeAllWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
     })
-    .add('new switchFirst with current thread scheduler', function () {
+    .add('new exhaust with current thread scheduler', function () {
       newMergeAllWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
     });
 };

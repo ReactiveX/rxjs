@@ -12,16 +12,16 @@ module.exports = function (suite) {
   var newMergeAllWithImmediateScheduler = RxNew.Observable.fromArray(
     source.map(function () { return RxNew.Observable.range(0, 25); })
   )
-    .switchFirst();
+    .exhaust();
 
   function _next(x) { }
   function _error(e) { }
   function _complete() { }
   return suite
-    .add('old switchFirst with immediate scheduler', function () {
+    .add('old exhaust with immediate scheduler', function () {
       oldMergeAllWithImmediateScheduler.subscribe(_next, _error, _complete);
     })
-    .add('new switchFirst with immediate scheduler', function () {
+    .add('new exhaust with immediate scheduler', function () {
       newMergeAllWithImmediateScheduler.subscribe(_next, _error, _complete);
     });
 };
