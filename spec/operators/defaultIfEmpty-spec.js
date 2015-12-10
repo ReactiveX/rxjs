@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.defaultIfEmpty()', function () {
+  it.asDiagram('defaultIfEmpty(\'x\')')('should return the argument if the Observable eventually completes empty', function () {
+    var e1 =   hot('--------|   ');
+    var e1subs =   '^       !   ';
+    var expected = '--------(x|)';
+
+    expectObservable(e1.defaultIfEmpty('x')).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should return the argument if Observable is empty', function () {
     var e1 =  cold('|');
     var e1subs =   '(^!)';
