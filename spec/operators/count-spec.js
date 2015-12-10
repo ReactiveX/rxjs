@@ -162,6 +162,33 @@ describe('count', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var e1 = hot('-1-^-2--3--4-|');
+    var e1subs =    '^     !    ';
+    var expected =  '-------    ';
+    var unsub =     '      !    ';
+
+    var result = e1.count(function (value) { return parseInt(value) < 10; });
+
+    expectObservable(result, unsub).toBe(expected, { w: 3 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var e1 = hot('-1-^-2--3--4-|');
+    var e1subs =    '^     !    ';
+    var expected =  '-------    ';
+    var unsub =     '      !    ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .count(function (value) { return parseInt(value) < 10; })
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected, { w: 3 });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should handle a match-all predicate on observable with many values', function () {
     var e1 = hot('-1-^-2--3--4-|');
     var e1subs =    '^         !';
