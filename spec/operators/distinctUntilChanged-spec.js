@@ -100,6 +100,33 @@ describe('Observable.prototype.distinctUntilChanged()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var e1 =   hot('--a--b--b--d--a--f--|');
+    var e1subs =   '^         !          ';
+    var expected = '--a--b-----          ';
+    var unsub =    '          !          ';
+
+    var result = e1.distinctUntilChanged();
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var e1 =   hot('--a--b--b--d--a--f--|');
+    var e1subs =   '^         !          ';
+    var expected = '--a--b-----          ';
+    var unsub =    '          !          ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .distinctUntilChanged()
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should emit once if source elements are all same', function () {
     var e1 =   hot('--a--a--a--a--a--a--|');
     var e1subs =   '^                   !';
