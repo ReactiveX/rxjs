@@ -35,9 +35,9 @@ export interface CoreOperators<T> {
                 projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                 concurrent?: number) => Observable<R>;
   flatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy?: <R>(keySelector: (value: T) => string,
+  groupBy?: <TKey, R>(keySelector: (value: T) => string,
                 elementSelector?: (value: T) => R,
-                durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
+                durationSelector?: (group: GroupedObservable<TKey, R>) => Observable<any>) => Observable<GroupedObservable<TKey, R>>;
   ignoreElements?: () => Observable<T>;
   last?: <R>(predicate?: (value: T, index: number) => boolean,
              resultSelector?: (value: T, index: number) => R,

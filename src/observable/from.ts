@@ -8,27 +8,29 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn-support';
 import {queue} from '../scheduler/queue';
+import {ObservableInput} from '../types';
 
-const isArray = Array.isArray;
+import {isPromise} from '../util/isPromise';
+import {isArray} from '../util/isArray';
 
 export class FromObservable<T> extends Observable<T> {
-  constructor(private ish: any, private scheduler: Scheduler) {
+  constructor(private ish: ObservableInput<T>, private scheduler: Scheduler) {
     super(null);
   }
 
-  static create<T>(ish: any, scheduler: Scheduler = queue): Observable<T> {
+  static create<T>(ish: ObservableInput<T>, scheduler: Scheduler = queue): Observable<T> {
     if (ish) {
       if (isArray(ish)) {
         return new ArrayObservable(ish, scheduler);
-      } else if (typeof ish.then === 'function') {
+      } else if (isPromise(ish)) {
         return new PromiseObservable(ish, scheduler);
       } else if (typeof ish[SymbolShim.observable] === 'function') {
         if (ish instanceof Observable) {
           return ish;
         }
-        return new FromObservable(ish, scheduler);
+        return new FromObservable<T>(<any>ish, scheduler);
       } else if (typeof ish[SymbolShim.iterator] === 'function') {
-        return new IteratorObservable(ish, null, null, scheduler);
+        return new IteratorObservable<T>(<any>ish, null, null, scheduler);
       }
     }
 

@@ -2,6 +2,7 @@ import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Subscriber} from '../Subscriber';
 
 export class FromEventPatternObservable<T, R> extends Observable<T> {
 
@@ -17,19 +18,19 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
     const addHandler = this.addHandler;
     const removeHandler = this.removeHandler;
     const selector = this.selector;
 
-    const handler = selector ? function(e) {
+    const handler = selector ? function(e: any) {
       let result = tryCatch(selector).apply(null, arguments);
       if (result === errorObject) {
         subscriber.error(result.e);
       } else {
         subscriber.next(result);
       }
-    } : function(e) { subscriber.next(e); };
+  } : function(e: any) { subscriber.next(e); };
 
     let result = tryCatch(addHandler)(handler);
     if (result === errorObject) {

@@ -6,17 +6,17 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>) {
+export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): Observable<T> {
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
-class RetryWhenOperator<T, R> implements Operator<T, R> {
+class RetryWhenOperator<T> implements Operator<T, T> {
   constructor(protected notifier: (errors: Observable<any>) => Observable<any>,
               protected source: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new FirstRetryWhenSubscriber<T>(subscriber, this.notifier, this.source);
+    return new FirstRetryWhenSubscriber(subscriber, this.notifier, this.source);
   }
 }
 
@@ -38,7 +38,7 @@ class FirstRetryWhenSubscriber<T> extends Subscriber<T> {
     this.destination.next(value);
   }
 
-  error(err?) {
+  error(err: any) {
     const destination = this.destination;
     if (!this.isUnsubscribed) {
       super.unsubscribe();

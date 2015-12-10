@@ -4,16 +4,17 @@ import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
+import {_IndexSelector, _PredicateObservable} from '../types';
 
-export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                            resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: any): Observable<T> | Observable<R> {
+export function first<T, R>(predicate?: _PredicateObservable<T>,
+                            resultSelector?: _IndexSelector<T, R>,
+                            defaultValue?: R): Observable<R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
 class FirstOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+  constructor(private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
               private defaultValue?: any,
               private source?: Observable<T>) {
   }
@@ -28,8 +29,8 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   private hasCompleted: boolean = false;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+              private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);
@@ -49,7 +50,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     if (passed) {
       if (resultSelector) {
         let result = tryCatch(resultSelector)(value, index);
-        if (result === errorObject) {
+        if (result as any === errorObject) {
           destination.error(errorObject.e);
           return;
         }

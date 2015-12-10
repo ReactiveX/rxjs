@@ -6,11 +6,11 @@ export function sample<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SampleOperator(notifier));
 }
 
-class SampleOperator<T, R> implements Operator<T, R> {
+class SampleOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<R>) {
+  call(subscriber: Subscriber<T>) {
     return new SampleSubscriber(subscriber, this.notifier);
   }
 }
@@ -19,7 +19,7 @@ class SampleSubscriber<T> extends Subscriber<T> {
   private lastValue: T;
   private hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>, private notifier: Observable<any>) {
+  constructor(destination: Subscriber<T>, private notifier: any) {
     super(destination);
     this.add(notifier._subscribe(new SampleNotificationSubscriber(this)));
   }

@@ -4,36 +4,36 @@ import {Subscriber} from '../../Subscriber';
 import {Scheduler} from '../../Scheduler';
 import {queue} from '../../scheduler/queue';
 
-export function timeInterval<T>(scheduler: Scheduler = queue): Observable<TimeInterval> {
+export function timeInterval<T>(scheduler: Scheduler = queue): Observable<TimeInterval<T>> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }
 
-export class TimeInterval {
-  constructor(public value: any, public interval: number) {
+export class TimeInterval<T> {
+  constructor(public value: T, public interval: number) {
 
   }
 };
 
-class TimeIntervalOperator<TimeInterval, R> implements Operator<TimeInterval, R> {
+class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
   constructor(private scheduler: Scheduler) {
 
   }
 
-  call(observer: Subscriber<TimeInterval>): Subscriber<TimeInterval> {
+  call(observer: Subscriber<TimeInterval<T>>): Subscriber<T> {
     return new TimeIntervalSubscriber(observer, this.scheduler);
   }
 }
 
-class TimeIntervalSubscriber<TimeInterval> extends Subscriber<TimeInterval> {
+class TimeIntervalSubscriber<T> extends Subscriber<T> {
   private lastTime: number = 0;
 
-  constructor(destination: Subscriber<TimeInterval>, private scheduler: Scheduler) {
+  constructor(destination: Subscriber<TimeInterval<T>>, private scheduler: Scheduler) {
     super(destination);
 
     this.lastTime = scheduler.now();
   }
 
-  _next(value: TimeInterval) {
+  _next(value: T) {
     let now = this.scheduler.now();
     let span = now - this.lastTime;
     this.lastTime = now;

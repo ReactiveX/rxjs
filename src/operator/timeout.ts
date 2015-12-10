@@ -3,24 +3,25 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {queue} from '../scheduler/queue';
 import {isDate} from '../util/isDate';
+import {Observable} from '../Observable';
 
-export function timeout(due: number|Date,
-                        errorToSend: any = null,
-                        scheduler: Scheduler = queue) {
+export function timeout<T>(due: number | Date,
+                           errorToSend: any = null,
+                           scheduler: Scheduler = queue): Observable<T> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : <number>due;
   return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
 }
 
-class TimeoutOperator<T, R> implements Operator<T, R> {
+class TimeoutOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
               private errorToSend: any,
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<R>) {
-    return new TimeoutSubscriber(
+  call(subscriber: Subscriber<T>) {
+    return new TimeoutSubscriber<T>(
       subscriber, this.absoluteTimeout, this.waitFor, this.errorToSend, this.scheduler
     );
   }
@@ -69,7 +70,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err) {
+  _error(err: any) {
     this.destination.error(err);
     this._hasCompleted = true;
   }

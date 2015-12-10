@@ -1,13 +1,14 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
 
-export class RangeObservable<T> extends Observable<T> {
+export class RangeObservable extends Observable<number> {
 
   static create(start: number = 0, end: number = 0, scheduler?: Scheduler): Observable<number> {
     return new RangeObservable(start, end, scheduler);
   }
 
-  static dispatch(state) {
+  static dispatch(state: any) {
 
     const { start, index, end, subscriber } = state;
 
@@ -39,7 +40,7 @@ export class RangeObservable<T> extends Observable<T> {
     this.scheduler = scheduler;
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<number>) {
 
     let index = 0;
     let start = this.start;

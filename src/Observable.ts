@@ -21,7 +21,7 @@ import {rxSubscriber} from'./symbol/rxSubscriber';
 export class Observable<T> implements CoreOperators<T>  {
   source: Observable<any>;
   operator: Operator<any, T>;
-  _isScalar: boolean = false;
+  _isScalar = false;
 
   /**
    * @constructor
@@ -30,7 +30,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
    * of a successful completion.
    */
-  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T>|Function|void) {
+  constructor(subscribe?: <R>(subscriber: Subscriber<R> | Function) => Subscription<T>) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -45,8 +45,8 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Observable} a new cold observable
    * @description creates a new cold Observable by calling the Observable constructor
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T>|Function|void) => {
-    return new Observable<T>(subscribe);
+  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R> | Function) => Subscription<T>) => {
+    return new Observable(subscribe);
   };
 
   /**
@@ -56,8 +56,8 @@ export class Observable<T> implements CoreOperators<T>  {
    * @description creates a new Observable, with this Observable as the source, and the passed
    * operator defined as the new observable's operator.
    */
-  lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const observable = new Observable();
+  lift<T, R>(operator: Operator<T, R>): Observable<R> {
+    const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;
     return observable;
@@ -98,7 +98,7 @@ export class Observable<T> implements CoreOperators<T>  {
         subscriber = new Subscriber(<Observer<T>> observerOrNext);
       }
     } else {
-      const next = <((x?) => void)> observerOrNext;
+      const next = <((x?: any) => void)> observerOrNext;
       subscriber = Subscriber.create(next, error, complete);
     }
 
@@ -115,7 +115,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, thisArg: any, PromiseCtor?: PromiseConstructor): Promise<void> {
+  forEach(next: (value: T) => void, thisArg: any, PromiseCtor?: PromiseConstructor): Promise<any> {
     if (!PromiseCtor) {
       if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
         PromiseCtor = root.Rx.config.Promise;
@@ -128,7 +128,7 @@ export class Observable<T> implements CoreOperators<T>  {
       throw new Error('no Promise impl found');
     }
 
-    let nextHandler;
+    let nextHandler: any;
 
     if (thisArg) {
       nextHandler = function nextHandlerFn(value: any): void {
@@ -141,17 +141,17 @@ export class Observable<T> implements CoreOperators<T>  {
       nextHandler = next;
     }
 
-    const promiseCallback = function promiseCallbackFn(resolve, reject) {
+    const promiseCallback = function promiseCallbackFn(resolve: Function, reject: Function) {
       const { source, nextHandler } = <any>promiseCallbackFn;
       source.subscribe(nextHandler, reject, resolve);
     };
     (<any>promiseCallback).source = this;
     (<any>promiseCallback).nextHandler = nextHandler;
 
-    return new PromiseCtor<void>(promiseCallback);
+    return new PromiseCtor(promiseCallback);
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription<T> | Function | void {
+  _subscribe(subscriber: Subscriber<any>): Subscription<T> | Function | any {
     return this.source._subscribe(this.operator.call(subscriber));
   }
 
@@ -216,9 +216,9 @@ export class Observable<T> implements CoreOperators<T>  {
                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                concurrent?: number) => Observable<R>;
   flatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy: <R>(keySelector: (value: T) => string,
+  groupBy: <TKey, R>(keySelector: (value: T) => string,
                elementSelector?: (value: T) => R,
-               durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
+               durationSelector?: (group: GroupedObservable<TKey, R>) => Observable<any>) => Observable<GroupedObservable<TKey, R>>;
   ignoreElements: () => Observable<T>;
   last: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,

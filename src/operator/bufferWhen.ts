@@ -15,12 +15,12 @@ export function bufferWhen<T>(closingSelector: () => Observable<any>): Observabl
   return this.lift(new BufferWhenOperator(closingSelector));
 }
 
-class BufferWhenOperator<T, R> implements Operator<T, R> {
+class BufferWhenOperator<T> implements Operator<T, T[]> {
 
   constructor(private closingSelector: () => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<T[]>): Subscriber<T> {
     return new BufferWhenSubscriber(subscriber, this.closingSelector);
   }
 }
@@ -29,7 +29,7 @@ class BufferWhenSubscriber<T> extends Subscriber<T> {
   private buffer: T[];
   private closingNotification: Subscription<any>;
 
-  constructor(destination: Subscriber<T>, private closingSelector: () => Observable<any>) {
+  constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
     super(destination);
     this.openBuffer();
   }
@@ -64,8 +64,8 @@ class BufferWhenSubscriber<T> extends Subscriber<T> {
     this.buffer = [];
 
     let closingNotifier = tryCatch(this.closingSelector)();
-    if (closingNotifier === errorObject) {
-      const err = closingNotifier.e;
+    if (closingNotifier as any === errorObject) {
+      const err = errorObject.e;
       this.buffer = null;
       this.destination.error(err);
     } else {
@@ -74,7 +74,7 @@ class BufferWhenSubscriber<T> extends Subscriber<T> {
   }
 }
 
-class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
+class BufferClosingNotifierSubscriber extends Subscriber<any> {
   constructor(private parent: BufferWhenSubscriber<any>) {
     super(null);
   }
@@ -83,7 +83,7 @@ class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
     this.parent.openBuffer();
   }
 
-  _error(err) {
+  _error(err: any) {
     this.parent.error(err);
   }
 

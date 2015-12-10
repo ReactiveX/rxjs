@@ -37,7 +37,7 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
-    const subscriber = new Subscriber<T>();
+    const subscriber = new Subscriber();
     subscriber._next = (typeof next === 'function') && tryOrOnError(next) || noop;
     subscriber._error = (typeof error === 'function') && error || throwError;
     subscriber._complete = (typeof complete === 'function') && complete || noop;
@@ -58,7 +58,7 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     }
   }
 
-  add(sub: Subscription<T> | Function | void): void {
+  add(sub: Subscription<T> | Function): void {
     // route add to the shared Subscription if it exists
     const _subscription = this._subscription;
     if (_subscription) {

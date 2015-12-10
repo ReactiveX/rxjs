@@ -9,7 +9,7 @@ export function debounceTime<T>(dueTime: number, scheduler: Scheduler = asap): O
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 
-class DebounceTimeOperator<T, R> implements Operator<T, R> {
+class DebounceTimeOperator<T> implements Operator<T, T> {
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
 
@@ -58,6 +58,6 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNext(subscriber) {
+function dispatchNext(subscriber: DebounceTimeSubscriber<any>) {
   subscriber.debouncedNext();
 }

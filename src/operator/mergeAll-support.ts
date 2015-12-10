@@ -5,7 +5,7 @@ import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export class MergeAllOperator<T, R> implements Operator<T, R> {
+export class MergeAllOperator<T> implements Operator<Observable<T>, T> {
   constructor(private concurrent: number) {
   }
 
@@ -14,22 +14,22 @@ export class MergeAllOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class MergeAllSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class MergeAllSubscriber<T> extends OuterSubscriber<Observable<T>, T> {
   private hasCompleted: boolean = false;
-  private buffer: Observable<any>[] = [];
+  private buffer: Observable<T>[] = [];
   private active: number = 0;
 
   constructor(destination: Observer<T>, private concurrent: number) {
     super(destination);
   }
 
-  _next(observable: any) {
+  _next(observable: Observable<T>) {
     if (this.active < this.concurrent) {
       if (observable._isScalar) {
-        this.destination.next(observable.value);
+        this.destination.next((observable as any).value);
       } else {
         this.active++;
-        this.add(subscribeToResult<T, R>(this, observable));
+        this.add(subscribeToResult<Observable<T>, T>(this, observable));
       }
     } else {
       this.buffer.push(observable);

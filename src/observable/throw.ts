@@ -4,7 +4,7 @@ import {Observable} from '../Observable';
 export class ErrorObservable<T> extends Observable<T> {
 
   static create<T>(error: T, scheduler?: Scheduler) {
-    return new ErrorObservable(error, scheduler);
+    return new ErrorObservable<T>(error, scheduler);
   }
 
   static dispatch({ error, subscriber }) {
@@ -15,7 +15,7 @@ export class ErrorObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: any) {
 
     const error = this.error;
     const scheduler = this.scheduler;

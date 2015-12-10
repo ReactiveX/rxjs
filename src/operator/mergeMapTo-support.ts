@@ -7,14 +7,15 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {InnerSubscriber} from '../InnerSubscriber';
+import {ObservableInput, _OuterInnerMapResultSelector} from '../types';
 
-export class MergeMapToOperator<T, R, R2> implements Operator<T, R> {
-  constructor(private ish: any,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+export class MergeMapToOperator<T, R, TResult> implements Operator<Observable<T>, TResult> {
+  constructor(private ish: ObservableInput<R>,
+              private resultSelector?: _OuterInnerMapResultSelector<T, R, TResult>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     }
 
-  call(observer: Subscriber<R>): Subscriber<T> {
+  call(observer: Subscriber<TResult>): Subscriber<T> {
     return new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent);
   }
 }
@@ -25,13 +26,12 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Subscriber<R>,
-              private ish: any,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+  constructor(destination: Subscriber<R2>,
+              private ish: ObservableInput<R>,
+              private resultSelector?: _OuterInnerMapResultSelector<T, R, R2>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
   }
-
   _next(value: any): void {
     if (this.active < this.concurrent) {
       const resultSelector = this.resultSelector;
@@ -65,7 +65,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     const { resultSelector, destination } = this;
     if (resultSelector) {
       const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
-      if (result === errorObject) {
+      if (result as any === errorObject) {
         destination.error(errorObject.e);
       } else {
         destination.next(result);

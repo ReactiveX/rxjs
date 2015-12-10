@@ -6,15 +6,16 @@ import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
 import {subscribeToResult} from '../../util/subscribeToResult';
 import {OuterSubscriber} from '../../OuterSubscriber';
+import {_MergeAccumulator} from '../../types';
 
-export function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>,
+export function mergeScan<T, R>(project: _MergeAccumulator<T, R>,
                                 seed: R,
-                                concurrent: number = Number.POSITIVE_INFINITY) {
+                                concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
   return this.lift(new MergeScanOperator(project, seed, concurrent));
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (acc: R, x: T) => Observable<R>,
+  constructor(private project: _MergeAccumulator<T, R>,
               private seed: R,
               private concurrent: number) {
   }
@@ -34,7 +35,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   protected index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private project: (acc: R, x: T) => Observable<R>,
+              private project: _MergeAccumulator<T, R>,
               private acc: R,
               private concurrent: number) {
     super(destination);
@@ -45,8 +46,8 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
       const index = this.index++;
       const ish = tryCatch(this.project)(this.acc, value);
       const destination = this.destination;
-      if (ish === errorObject) {
-        destination.error(ish.e);
+      if (ish as any === errorObject) {
+        destination.error(errorObject.e);
       } else {
         this.active++;
         this._innerSub(ish, value, index);

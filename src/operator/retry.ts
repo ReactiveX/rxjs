@@ -7,13 +7,13 @@ export function retry<T>(count: number = 0): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 
-class RetryOperator<T, R> implements Operator<T, R> {
+class RetryOperator<T> implements Operator<T, T> {
   constructor(private count: number,
               protected source: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new FirstRetrySubscriber<T>(subscriber, this.count, this.source);
+    return new FirstRetrySubscriber(subscriber, this.count, this.source);
   }
 }
 
@@ -32,7 +32,7 @@ class FirstRetrySubscriber<T> extends Subscriber<T> {
     this.destination.next(value);
   }
 
-  error(error?) {
+  error(error: any) {
     if (!this.isUnsubscribed) {
       this.unsubscribe();
       this.resubscribe();

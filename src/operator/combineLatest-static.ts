@@ -4,6 +4,7 @@ import {CombineLatestOperator} from './combineLatest-support';
 import {Scheduler} from '../Scheduler';
 import {isScheduler} from '../util/isScheduler';
 import {isArray} from '../util/isArray';
+import {_RestSelector} from '../types';
 
 /**
  * Combines the values from observables passed as arguments. This is done by subscribing
@@ -15,9 +16,9 @@ import {isArray} from '../util/isArray';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export function combineLatest<R>(...observables: Array<Observable<any> |
+export function combineLatest<T, R>(...observables: Array<any | Observable<any> |
                                                       Array<Observable<any>> |
-                                                      ((...values: Array<any>) => R) |
+                                                      _RestSelector<R> |
                                                       Scheduler>): Observable<R> {
   let project: (...values: Array<any>) => R =  null;
   let scheduler: Scheduler = null;
@@ -36,5 +37,5 @@ export function combineLatest<R>(...observables: Array<Observable<any> |
     observables = <Array<Observable<any>>>observables[0];
   }
 
-  return new ArrayObservable(observables, scheduler).lift(new CombineLatestOperator(project));
+  return new ArrayObservable(observables, scheduler).lift<T, R>(new CombineLatestOperator<T, R>(project));
 }

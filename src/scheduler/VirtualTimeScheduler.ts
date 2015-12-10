@@ -77,7 +77,7 @@ class VirtualAction<T> extends Subscription<T> implements Action {
       return this;
     }
     const scheduler = this.scheduler;
-    let action;
+    let action: Action;
     if (this.calls++ === 0) {
       // the action is not being rescheduled.
       action = this;

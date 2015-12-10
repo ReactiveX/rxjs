@@ -1,5 +1,5 @@
-import {Observable} from '../Observable';
 import {MergeMapOperator} from './mergeMap-support';
+import {_IndexSelector, ObservableInput, _OuterInnerMapResultSelector} from '../types';
 
 /**
  * Maps values from the source observable into new Observables, then merges them in a serialized fashion,
@@ -11,7 +11,7 @@ import {MergeMapOperator} from './mergeMap-support';
  *
  * @param {function} project a function to map incoming values into Observables to be concatenated. accepts
  * the `value` and the `index` as arguments.
- * @param {function} [projectResult] an optional result selector that is applied to values before they're
+ * @param {function} [resultSelector] an optional result selector that is applied to values before they're
  * merged into the returned observable. The arguments passed to this function are:
  * - `outerValue`: the value that came from the source
  * - `innerValue`: the value that came from the projected Observable
@@ -20,7 +20,7 @@ import {MergeMapOperator} from './mergeMap-support';
  * @returns {Observable} an observable of values merged from the projected Observables as they were subscribed to,
  * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.
  */
-export function concatMap<T, R>(project: (value: T, index: number) => Observable<any>,
-                                projectResult?: (outerValue: T, innerValue: any, outerIndex: number, innerIndex: number) => R) {
-  return this.lift(new MergeMapOperator(project, projectResult, 1));
+export function concatMap<T, R, TResult>(project: _IndexSelector<T, ObservableInput<R>>,
+                                         resultSelector?: _OuterInnerMapResultSelector<T, R, TResult>) {
+  return this.lift(new MergeMapOperator(project, resultSelector, 1));
 }

@@ -19,7 +19,7 @@ export class ZipOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new ZipSubscriber<T, R>(subscriber, this.project);
+    return new ZipSubscriber(subscriber, this.project);
   }
 }
 
@@ -27,7 +27,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   private index = 0;
   private values: any;
   private project: (...values: Array<any>) => R;
-  private iterators = [];
+  private iterators: LookAheadIterator<any>[] = [];
   private active = 0;
 
   constructor(destination: Subscriber<R>,
@@ -38,7 +38,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     this.values = values;
   }
 
-  _next(value) {
+  _next(value: any) {
     const iterators = this.iterators;
     const index = this.index++;
     if (isArray(value)) {
@@ -56,8 +56,8 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     this.active = len;
     for (let i = 0; i < len; i++) {
       let iterator = iterators[i];
-      if (iterator.stillUnsubscribed) {
-        iterator.subscribe(iterator, i);
+      if ((iterator as any).stillUnsubscribed) {
+        (iterator as any).subscribe(iterator, i);
       } else {
         this.active--; // not an observable
       }
@@ -85,7 +85,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     }
 
     let shouldComplete = false;
-    const args = [];
+    const args: any[] = [];
     for (let i = 0; i < len; i++) {
       let iterator = iterators[i];
       let result = iterator.next();
@@ -221,7 +221,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
     }
   }
 
-  notifyNext(outerValue, innerValue, outerIndex, innerIndex) {
+  notifyNext(outerValue: any, innerValue: any, outerIndex: any, innerIndex: any) {
     this.buffer.push(innerValue);
     this.parent.checkIterators();
   }

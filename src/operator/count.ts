@@ -5,6 +5,7 @@ import {Subscriber} from '../Subscriber';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_PredicateObservable} from '../types';
 
 /**
  * Returns an observable of a single number that represents the number of items that either:
@@ -19,28 +20,26 @@ import {errorObject} from '../util/errorObject';
  * @returns {Observable} an observable of one number that represents the count as described
  * above
  */
-export function count<T>(predicate?: (value: T,
-                                      index: number,
-                                      source: Observable<T>) => boolean): Observable<number> {
+export function count<T>(predicate?: _PredicateObservable<T>): Observable<number> {
   return this.lift(new CountOperator(predicate, this));
 }
 
-class CountOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+class CountOperator<T> implements Operator<T, number> {
+  constructor(private predicate?: _PredicateObservable<T>,
               private source?: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new CountSubscriber<T, R>(subscriber, this.predicate, this.source);
+  call(subscriber: Subscriber<number>): Subscriber<T> {
+    return new CountSubscriber(subscriber, this.predicate, this.source);
   }
 }
 
-class CountSubscriber<T, R> extends Subscriber<T> {
+class CountSubscriber<T> extends Subscriber<T> {
   private count: number = 0;
   private index: number = 0;
 
-  constructor(destination: Observer<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  constructor(destination: Observer<number>,
+              private predicate?: _PredicateObservable<T>,
               private source?: Observable<T>) {
     super(destination);
   }

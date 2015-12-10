@@ -6,5 +6,5 @@ export interface Operator<T, R> {
 }
 
 export function defaultCallFn<T, R>(observer: Observer<R>): Observer<T> {
-  return new Subscriber<T>(observer);
+  return new Subscriber(observer);
 }

@@ -6,15 +6,14 @@ import {Observer} from '../Observer';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
+import {_PredicateObservable} from '../types';
 
-export function single<T>(predicate?: (value: T,
-                                       index: number,
-                                       source: Observable<T>) => boolean): Observable<T> {
+export function single<T>(predicate?: _PredicateObservable<T>): Observable<T> {
   return this.lift(new SingleOperator(predicate, this));
 }
 
-class SingleOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+class SingleOperator<T> implements Operator<T, T> {
+  constructor(private predicate?: _PredicateObservable<T>,
               private source?: Observable<T>) {
   }
 
@@ -29,12 +28,12 @@ class SingleSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<T>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private predicate?: _PredicateObservable<T>,
               private source?: Observable<T>) {
     super(destination);
   }
 
-  private applySingleValue(value): void {
+  private applySingleValue(value: T): void {
     if (this.seenValue) {
       this.destination.error('Sequence contains more than one element');
     } else {
@@ -49,8 +48,8 @@ class SingleSubscriber<T> extends Subscriber<T> {
 
     if (predicate) {
       let result = tryCatch(predicate)(value, currentIndex, this.source);
-      if (result === errorObject) {
-        this.destination.error(result.e);
+      if (result as any === errorObject) {
+        this.destination.error(errorObject.e);
       } else if (result) {
         this.applySingleValue(value);
       }

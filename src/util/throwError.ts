@@ -1,1 +1,1 @@
-export function throwError(e) { throw e; }
+export function throwError(e: any) { throw e; }

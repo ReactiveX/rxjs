@@ -40,7 +40,7 @@ export class ReplaySubject<T> extends Subject<T> {
     return (this.scheduler || queue).now();
   }
 
-  private _trimBufferThenGetEvents(now): ReplayEvent<T>[] {
+  private _trimBufferThenGetEvents(now: number): ReplayEvent<T>[] {
     const bufferSize = this.bufferSize;
     const _windowTime = this._windowTime;
     const events = this.events;
@@ -74,4 +74,3 @@ class ReplayEvent<T> {
   constructor(public time: number, public value: T) {
   }
 }
-

@@ -7,14 +7,14 @@ export function materialize<T>(): Observable<Notification<T>> {
   return this.lift(new MaterializeOperator());
 }
 
-class MaterializeOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+class MaterializeOperator<T> implements Operator<T, Notification<T>> {
+  call(subscriber: Subscriber<Notification<T>>): Subscriber<T> {
     return new MaterializeSubscriber(subscriber);
   }
 }
 
 class MaterializeSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>) {
+  constructor(destination: Subscriber<Notification<T>>) {
     super(destination);
   }
 

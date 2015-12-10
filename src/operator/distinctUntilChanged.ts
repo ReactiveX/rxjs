@@ -2,13 +2,15 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Observable} from '../Observable';
+import {_Comparer} from '../types';
 
-export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean) {
+export function distinctUntilChanged<T>(compare?: _Comparer<T, boolean>): Observable<T> {
   return this.lift(new DistinctUntilChangedOperator(compare));
 }
 
-class DistinctUntilChangedOperator<T, R> implements Operator<T, R> {
-  constructor(private compare: (x: T, y: T) => boolean) {
+class DistinctUntilChangedOperator<T> implements Operator<T, T> {
+  constructor(private compare: _Comparer<T, boolean>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -20,7 +22,7 @@ class DistinctUntilChangedSubscriber<T> extends Subscriber<T> {
   private value: T;
   private hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>, compare: (x: T, y: T) => boolean) {
+  constructor(destination: Subscriber<T>, compare: _Comparer<T, boolean>) {
     super(destination);
     if (typeof compare === 'function') {
       this.compare = compare;

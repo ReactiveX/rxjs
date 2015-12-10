@@ -3,8 +3,9 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_Accumulator} from '../types';
 
-export function scan<T, R>(accumulator: (acc: R, x: T) => R, seed?: T | R): Observable<R> {
+export function scan<T, R>(accumulator: _Accumulator<T, R>, seed?: T | R): Observable<R> {
   return this.lift(new ScanOperator(accumulator, seed));
 }
 

@@ -3,13 +3,14 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_IndexPredicate} from '../types';
 
-export function skipWhile<T>(predicate: (x: T, index: number) => boolean): Observable<T> {
+export function skipWhile<T>(predicate: _IndexPredicate<T>): Observable<T> {
   return this.lift(new SkipWhileOperator(predicate));
 }
 
 class SkipWhileOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate: (x: T, index: number) => boolean) {
+  constructor(private predicate: _IndexPredicate<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -22,7 +23,7 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              private predicate: (x: T, index: number) => boolean) {
+              private predicate: _IndexPredicate<T>) {
     super(destination);
   }
 
@@ -31,8 +32,8 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
     if (this.skipping === true) {
       const index = this.index++;
       const result = tryCatch(this.predicate)(value, index);
-      if (result === errorObject) {
-        destination.error(result.e);
+      if (result as any === errorObject) {
+        destination.error(errorObject.e);
       } else {
         this.skipping = Boolean(result);
       }

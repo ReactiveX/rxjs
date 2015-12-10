@@ -1,10 +1,11 @@
 import {Subject} from '../Subject';
 import {ConnectableObservable} from '../observable/ConnectableObservable';
+import {_Factory} from '../types';
 
-export function multicast<T>(subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) {
-  let subjectFactory: () => Subject<T>;
+export function multicast<T>(subjectOrSubjectFactory: Subject<T> | _Factory<Subject<T>>): ConnectableObservable<T> {
+  let subjectFactory: _Factory<Subject<T>>;
   if (typeof subjectOrSubjectFactory === 'function') {
-    subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;
+    subjectFactory = <_Factory<Subject<T>>>subjectOrSubjectFactory;
   } else {
     subjectFactory = function subjectFactory() {
       return <Subject<T>>subjectOrSubjectFactory;

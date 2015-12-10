@@ -4,9 +4,10 @@ import {Subscriber} from '../../Subscriber';
 
 import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
+import {_PredicateObservable} from '../../types';
 
-export class FindValueOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+export class FindValueOperator<T> implements Operator<T, T> {
+  constructor(private predicate: _PredicateObservable<T>,
               private source: Observable<T>,
               private yieldIndex: boolean,
               private thisArg?: any) {
@@ -21,7 +22,7 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private predicate: _PredicateObservable<T>,
               private source: Observable<T>,
               private yieldIndex: boolean,
               private thisArg?: any) {

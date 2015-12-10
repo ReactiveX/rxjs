@@ -5,6 +5,7 @@ import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
 import {SubscriptionLoggable} from './SubscriptionLoggable';
 import {applyMixins} from '../util/applyMixins';
+import {Subscriber} from '../Subscriber';
 
 export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
@@ -14,7 +15,7 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
 
   constructor(public messages: TestMessage[],
               scheduler: Scheduler) {
-    super(function (subscriber) {
+    super(function (subscriber: Subscriber<any>) {
       const observable: ColdObservable<T> = this;
       const index = observable.logSubscribedFrame();
       subscriber.add(new Subscription(() => {
@@ -26,7 +27,7 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
     this.scheduler = scheduler;
   }
 
-  scheduleMessages(subscriber) {
+  scheduleMessages(subscriber: Subscriber<any>) {
     const messagesLength = this.messages.length;
     for (let i = 0; i < messagesLength; i++) {
       let message = this.messages[i];

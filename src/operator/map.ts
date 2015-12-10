@@ -3,6 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_IndexSelector} from '../types';
 
 /**
  * Similar to the well known `Array.prototype.map` function, this operator
@@ -12,7 +13,7 @@ import {errorObject} from '../util/errorObject';
  * @param {any} [thisArg] an optional argument to define what `this` is in the project function
  * @returns {Observable} a observable of projected values
  */
-export function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Observable<R> {
+export function map<T, R>(project: _IndexSelector<T, R>, thisArg?: any): Observable<R> {
   if (typeof project !== 'function') {
     throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
   }
@@ -20,7 +21,7 @@ export function map<T, R>(project: (x: T, ix?: number) => R, thisArg?: any): Obs
 }
 
 class MapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (x: T, ix?: number) => R, private thisArg: any) {
+  constructor(private project: _IndexSelector<T, R>, private thisArg: any) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -32,12 +33,12 @@ class MapSubscriber<T, R> extends Subscriber<T> {
   count: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private project: (x: T, ix?: number) => R,
+              private project: _IndexSelector<T, R>,
               private thisArg: any) {
     super(destination);
   }
 
-  _next(x) {
+  _next(x: T) {
     const result = tryCatch(this.project).call(this.thisArg || this, x, this.count++);
     if (result === errorObject) {
       this.error(errorObject.e);

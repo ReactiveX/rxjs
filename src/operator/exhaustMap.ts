@@ -5,36 +5,31 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
+import {_IndexSelector, ObservableInput, _OuterInnerMapResultSelector} from '../types';
 
-export function exhaustMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
-                                     resultSelector?: (outerValue: T,
-                                                       innerValue: R,
-                                                       outerIndex: number,
-                                                       innerIndex: number) => R2): Observable<R> {
+export function exhaustMap<T, R, TResult>(project: _IndexSelector<T, ObservableInput<R>>,
+                                          resultSelector?: _OuterInnerMapResultSelector<T, R, TResult>): Observable<TResult> {
   return this.lift(new SwitchFirstMapOperator(project, resultSelector));
 }
 
-class SwitchFirstMapOperator<T, R, R2> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (outerValue: T,
-                                        innerValue: R,
-                                        outerIndex: number,
-                                        innerIndex: number) => R2) {
+class SwitchFirstMapOperator<T, R, TResult> implements Operator<T, TResult> {
+  constructor(private project: _IndexSelector<T, ObservableInput<R>>,
+              private resultSelector?: _OuterInnerMapResultSelector<T, R, TResult>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<TResult>): Subscriber<T> {
     return new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector);
   }
 }
 
-class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
+class SwitchFirstMapSubscriber<T, R, TResult> extends OuterSubscriber<T, R> {
   private hasSubscription: boolean = false;
   private hasCompleted: boolean = false;
   private index: number = 0;
 
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
+  constructor(destination: Subscriber<TResult>,
+              private project: _IndexSelector<T, ObservableInput<R>>,
+              private resultSelector?: _OuterInnerMapResultSelector<T, R, TResult>) {
     super(destination);
   }
 
@@ -43,8 +38,8 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
       const index = this.index++;
       const destination = this.destination;
       let result = tryCatch(this.project)(value, index);
-      if (result === errorObject) {
-        destination.error(result.e);
+      if (result as any === errorObject) {
+        destination.error(errorObject.e);
       } else {
         this.hasSubscription = true;
         this.add(subscribeToResult(this, result, value, index));
@@ -63,7 +58,7 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     const { resultSelector, destination } = this;
     if (resultSelector) {
       const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
-      if (result === errorObject) {
+      if (result as any === errorObject) {
         destination.error(errorObject.e);
       } else {
         destination.next(result);

@@ -7,7 +7,7 @@ export function window<T>(closingNotifier: Observable<any>): Observable<Observab
   return this.lift(new WindowOperator(closingNotifier));
 }
 
-class WindowOperator<T, R> implements Operator<T, R> {
+class WindowOperator<T> implements Operator<T, Observable<T>> {
 
   constructor(private closingNotifier: Observable<any>) {
   }
@@ -53,7 +53,7 @@ class WindowSubscriber<T> extends Subscriber<T> {
   }
 }
 
-class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
+class WindowClosingNotifierSubscriber extends Subscriber<any> {
   constructor(private parent: WindowSubscriber<any>) {
     super(null);
   }

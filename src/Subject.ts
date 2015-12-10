@@ -26,7 +26,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   }
 
   static create<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
-    return new BidirectionalSubject(source, destination);
+    return new BidirectionalSubject<T>(source, destination);
   }
 
   protected destination: Observer<T>;
@@ -40,7 +40,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   completeSignal: boolean = false;
 
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const subject = new BidirectionalSubject(this, this.destination || this);
+    const subject = new BidirectionalSubject<T>(this, this.destination || this);
     subject.operator = operator;
     return subject;
   }
@@ -63,11 +63,11 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     return new SubjectSubscription(this, subscriber);
   }
 
-  add(subscription?) {
+  add(subscription?: Subscription<T>) {
     subscriptionAdd.call(this, subscription);
   }
 
-  remove(subscription?) {
+  remove(subscription?: Subscription<T>) {
     subscriptionRemove.call(this, subscription);
   }
 

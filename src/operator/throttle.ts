@@ -7,13 +7,14 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {isPromise} from '../util/isPromise';
 import {errorObject} from '../util/errorObject';
+import {ObservableOrPromise, _Selector} from '../types';
 
-export function throttle<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function throttle<T>(durationSelector: _Selector<T, ObservableOrPromise<number>>): Observable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
 }
 
-class ThrottleOperator<T, R> implements Operator<T, R> {
-  constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+class ThrottleOperator<T> implements Operator<T, T> {
+  constructor(private durationSelector: (value: T) => ObservableOrPromise<any>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -25,7 +26,7 @@ class ThrottleSubscriber<T> extends Subscriber<T> {
   private throttled: Subscription<any>;
 
   constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+              private durationSelector: _Selector<T, ObservableOrPromise<number>>) {
     super(destination);
   }
 
@@ -33,14 +34,15 @@ class ThrottleSubscriber<T> extends Subscriber<T> {
     if (!this.throttled) {
       const destination = this.destination;
       let duration = tryCatch(this.durationSelector)(value);
-      if (duration === errorObject) {
+      if (duration as any === errorObject) {
         destination.error(errorObject.e);
         return;
       }
       if (isPromise(duration)) {
-        duration = PromiseObservable.create(duration);
+        duration = PromiseObservable.create(duration as Promise<number>);
       }
-      this.add(this.throttled = duration._subscribe(new ThrottleDurationSelectorSubscriber(this)));
+
+      this.add(this.throttled = (duration as Observable<number>)._subscribe(new ThrottleDurationSelectorSubscriber(this)));
       destination.next(value);
     }
   }
@@ -74,7 +76,7 @@ class ThrottleDurationSelectorSubscriber<T> extends Subscriber<T> {
     this.parent.clearThrottle();
   }
 
-  _error(err): void {
+  _error(err: any): void {
     this.parent.error(err);
   }
 
