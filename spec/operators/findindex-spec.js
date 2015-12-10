@@ -54,6 +54,33 @@ describe('Observable.prototype.findIndex()', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var source = hot('--a--b--c--|');
+    var subs =       '^     !     ';
+    var expected =   '-------     ';
+    var unsub =      '      !     ';
+
+    var result = source.findIndex(function (value) { return value === 'z'; });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var source = hot('--a--b--c--|');
+    var subs =       '^     !     ';
+    var expected =   '-------     ';
+    var unsub =      '      !     ';
+
+    var result = source
+      .mergeMap(function (x) { return Observable.of(x); })
+      .findIndex(function (value) { return value === 'z'; })
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should raise if source raise error while element does not match with predicate', function () {
     var source = hot('--a--b--#');
     var subs =       '^       !';
