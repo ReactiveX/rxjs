@@ -151,30 +151,27 @@ describe('Observable.prototype.windowWhen', function () {
   });
 
   it('should dispose window Subjects if the outer is unsubscribed early', function () {
-    var virtualTimeScheduler = new Rx.VirtualTimeScheduler();
-    var source = new Rx.Subject();
-    var result = source.windowWhen(function () { return Observable.never(); });
-    var win;
-    var subscription;
+    var source = hot('--a--b--c--d--e--f--g--h--|');
+    var open =  cold('o-------------------------|');
+    var sourceSubs = '^        !                 ';
+    var expected =   'x---------                 ';
+    var x = cold(    '--a--b--c-                 ');
+    var unsub =      '         !                 ';
+    var late =  time('---------------|           ');
+    var values = { x: x };
 
-    virtualTimeScheduler.schedule(function () {
-      subscription = result.subscribe(function (w) { win = w; });
-    }, 0);
-    virtualTimeScheduler.schedule(function () { source.next('a'); }, 0);
-    virtualTimeScheduler.schedule(function () { source.next('b'); }, 10);
-    virtualTimeScheduler.schedule(function () { source.next('c'); }, 20);
-    virtualTimeScheduler.schedule(function () { subscription.unsubscribe(); }, 30);
-    virtualTimeScheduler.schedule(function () { source.next('d'); }, 40);
-    virtualTimeScheduler.schedule(function () { source.next('e'); }, 50);
-    virtualTimeScheduler.schedule(function () { source.next('f'); }, 60);
-    virtualTimeScheduler.schedule(function () { source.next('g'); }, 70);
-    virtualTimeScheduler.schedule(function () {
+    var window;
+    var result = source
+      .windowWhen(function () { return Observable.never(); })
+      .do(function (w) { window = w; });
+
+    expectObservable(result, unsub).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    rxTestScheduler.schedule(function () {
       expect(function () {
-        win.subscribe();
+        window.subscribe();
       }).toThrowError('Cannot subscribe to a disposed Subject.');
-    }, 80);
-
-    virtualTimeScheduler.flush();
+    }, late);
   });
 
   it('should propagate error thrown from closingSelector', function () {
