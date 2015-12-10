@@ -161,7 +161,7 @@ describe('Observable.prototype.distinctUntilKeyChanged()', function () {
     var e1subs =   '^                   !';
     var expected = '--a-----------------|';
 
-    expectObservable(e1.distinctUntilChanged()).toBe(expected, values);
+    expectObservable(e1.distinctUntilKeyChanged('val')).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
