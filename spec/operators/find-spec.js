@@ -46,6 +46,35 @@ describe('Observable.prototype.find()', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should return matching element from source emits multiple elements', function () {
+    var source = hot('--a--b---c-|');
+    var subs =       '^    !';
+    var expected =   '-----(b|)';
+
+    var predicate = function (value) {
+      return value === 'b';
+    };
+
+    expectObservable(source.find(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should work with a custom thisArg', function () {
+    var source = hot('--a--b---c-|');
+    var subs =       '^    !';
+    var expected =   '-----(b|)';
+
+    var finder = {
+      target: 'b'
+    };
+    var predicate = function (value) {
+      return value === this.target;
+    };
+
+    expectObservable(source.find(predicate, finder)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should return undefined if element does not match with predicate', function () {
     var source = hot('--a--b--c--|');
     var subs =       '^          !';
