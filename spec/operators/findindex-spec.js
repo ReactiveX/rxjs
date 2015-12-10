@@ -41,6 +41,34 @@ describe('Observable.prototype.findIndex()', function () {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('should return index of matching element from source emits multiple elements', function () {
+    var source = hot('--a--b---c-|', { b: 7 });
+    var subs =       '^    !';
+    var expected =   '-----(x|)';
+
+    var predicate = function (value) {
+      return value === 7;
+    };
+
+    expectObservable(source.findIndex(predicate)).toBe(expected, { x: 1 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should work with a custom thisArg', function () {
+    var sourceValues = { b: 7 };
+    var source = hot('--a--b---c-|', sourceValues);
+    var subs =       '^    !';
+    var expected =   '-----(x|)';
+
+    var predicate = function (value) {
+      return value === this.b;
+    };
+    var result = source.findIndex(predicate, sourceValues);
+
+    expectObservable(result).toBe(expected, { x: 1 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should return negative index if element does not match with predicate', function () {
     var source = hot('--a--b--c--|');
     var subs =       '^          !';
