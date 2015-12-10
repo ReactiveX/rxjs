@@ -3,3 +3,5 @@ import {elementAt} from '../../../operator/extended/elementAt';
 import {KitchenSinkOperators} from '../../../Rx.KitchenSink';
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 observableProto.elementAt = elementAt;
+
+export var _void: void;

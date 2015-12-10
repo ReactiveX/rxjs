@@ -3,3 +3,5 @@ import {distinctUntilKeyChanged} from '../../../operator/extended/distinctUntilK
 import {KitchenSinkOperators} from '../../../Rx.KitchenSink';
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
+
+export var _void: void;
