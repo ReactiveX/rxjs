@@ -57,6 +57,33 @@ describe('Observable.prototype.debounceTime()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow unsubscribing early and explicitly', function () {
+    var e1 =   hot('--a--bc--d----|');
+    var e1subs =   '^      !       ';
+    var expected = '----a---       ';
+    var unsub =    '       !       ';
+
+    var result = e1.debounceTime(20, rxTestScheduler);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains when unsubscribed explicitly', function () {
+    var e1 =   hot('--a--bc--d----|');
+    var e1subs =   '^      !       ';
+    var expected = '----a---       ';
+    var unsub =    '       !       ';
+
+    var result = e1
+      .mergeMap(function (x) { return Observable.of(x); })
+      .debounceTime(20, rxTestScheduler)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should debounce and does not complete when source does not completes', function () {
     var e1 =   hot('-a--(bc)-----------d-------');
     var e1subs =   '^                          ';
