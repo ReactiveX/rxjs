@@ -109,7 +109,7 @@ describe('Observable.prototype.distinctUntilChanged()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should emit once if comparer returns true always regardless of source emits', function () {
+  it('should emit once if comparator returns true always regardless of source emits', function () {
     var e1 =   hot('--a--b--c--d--e--f--|');
     var e1subs =   '^                   !';
     var expected = '--a-----------------|';
@@ -118,7 +118,7 @@ describe('Observable.prototype.distinctUntilChanged()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should emit all if comparer returns false always regardless of source emits', function () {
+  it('should emit all if comparator returns false always regardless of source emits', function () {
     var e1 =   hot('--a--a--a--a--a--a--|');
     var e1subs =   '^                   !';
     var expected = '--a--a--a--a--a--a--|';
@@ -127,30 +127,60 @@ describe('Observable.prototype.distinctUntilChanged()', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should distinguish values by selector', function () {
+  it('should distinguish values by comparator', function () {
     var e1 =   hot('--a--b--c--d--e--f--|', {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6});
     var e1subs =   '^                   !';
     var expected = '--a-----c-----e-----|';
-    var selector = function (x, y) {
+    var comparator = function (x, y) {
       return y % 2 === 0;
     };
 
-    expectObservable(e1.distinctUntilChanged(selector)).toBe(expected, {a: 1, c: 3, e: 5});
+    expectObservable(e1.distinctUntilChanged(comparator)).toBe(expected, {a: 1, c: 3, e: 5});
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should raises error when comparer throws', function () {
+  it('should raises error when comparator throws', function () {
     var e1 =   hot('--a--b--c--d--e--f--|');
     var e1subs =   '^          !         ';
     var expected = '--a--b--c--#         ';
-    var selector = function (x, y) {
+    var comparator = function (x, y) {
       if (y === 'd') {
         throw 'error';
       }
       return x === y;
     };
 
-    expectObservable(e1.distinctUntilChanged(selector)).toBe(expected);
+    expectObservable(e1.distinctUntilChanged(comparator)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should use the keySelector to pick comparator values', function () {
+    var e1 =   hot('--a--b--c--d--e--f--|', {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6});
+    var e1subs =   '^                   !';
+    var expected = '--a--b-----d-----f--|';
+    var comparator = function (x, y) {
+      return y % 2 === 1;
+    };
+    var keySelector = function (x) {
+      return x % 2;
+    };
+
+    expectObservable(e1.distinctUntilChanged(comparator, keySelector)).toBe(expected, {a: 1, b: 2, d: 4, f: 6});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should raises error when keySelector throws', function () {
+    var e1 =   hot('--a--b--c--d--e--f--|');
+    var e1subs =   '^          !         ';
+    var expected = '--a--b--c--#         ';
+    var keySelector = function (x) {
+      if (x === 'd') {
+        throw 'error';
+      }
+      return x;
+    };
+
+    expectObservable(e1.distinctUntilChanged(null, keySelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
