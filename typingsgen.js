@@ -21,10 +21,12 @@ for (var i = 0; i < contents.length; i++) {
     var fileContent;
 
     if (fs.existsSync('./src/operator/' + filename + '.ts')) {
-        fileContent = fs.readFileSync('./src/operator/' + filename + '.ts').toString();
+        fileContent = fs.readFileSync('./src/operator/' + filename + '.ts').toString('utf8');
     } else {
-        fileContent = fs.readFileSync('./src/operator/extended/' + filename + '.ts').toString();
+        fileContent = fs.readFileSync('./src/operator/extended/' + filename + '.ts').toString('utf8');
     }
+	
+	fileContent = computeTypingsFor(fileContent);
 
     var methods = [];
 
@@ -64,3 +66,53 @@ var typingsContent = fs.readFileSync('./src/operator-typings.ts').toString();
 fileResult = '/* ||| MARKER ||| */\n' + fileResult + '/* ||| MARKER ||| */';
 typingsContent = typingsContent.replace(/(\/\* \|\|\| MARKER \|\|\| \*\/[\s|\S]*?\/\* \|\|\| MARKER \|\|\| \*\/)/, fileResult);
 fs.writeFileSync('./src/operator-typings.ts', typingsContent);
+
+
+function computeTypingsFor(s) {
+	var captureRegex = /\/\*\-\-([\s|\S]*?)-\-\*\//g;
+	var computeNumberRegex = /\*compute (\d.*?)?\*/;
+	var tokenRegex = /\{.*?\}/g;
+
+	s = s.replace(captureRegex, function(capture) {
+		capture = capture.trim();
+		capture = capture.substr(3, capture.length - 3 * 2);
+		var compute = computeNumberRegex.exec(capture);
+		if (compute) {
+			compute = compute[1] || '6';
+		} else {
+			compute = '6';
+		}
+		var range = compute.split('-');
+		if (range.length === 1) {
+			var start = 1;
+			var end = range[0];
+		} else {
+			var start = range[0];
+			var end = range[1];
+		}
+		
+		capture = capture.replace(computeNumberRegex, '').trim();
+		
+		var tokenResult;
+		var results = [];
+		for (var number = start; number <= end; number++) {
+			var res = capture.replace(tokenRegex, function(capture, index, str) {
+				var items = [];
+				capture = capture.substr(1, capture.length - 2);
+				for (var i = start; i <= number; i++) {
+					var typeName = 'T' + (i === 1 ? '' : i);
+					items.push(capture.replace(/\|X\|/g, typeName).replace(/\|v\|/g, 'v' + i));
+				}
+				
+				return items.join(', ');
+			});
+			results.push(res);
+		}
+		
+		return results.join('\n');
+	});
+	
+	return s;
+}
+
+
