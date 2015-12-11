@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable, hot, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 
 var ReplaySubject = Rx.ReplaySubject;
@@ -22,9 +22,11 @@ describe('ReplaySubject', function () {
     subject.subscribe(function (x) {
       expect(x).toBe(expects[i++]);
       if (i === 3) {
-        done();
+        subject.complete();
       }
-    });
+    }, function (e) {
+      done.fail('should not be called');
+    }, done);
   });
 
   it('should replay values and complete', function (done) {
@@ -66,9 +68,11 @@ describe('ReplaySubject', function () {
     subject.subscribe(function (x) {
       expect(x).toBe(expects[i++]);
       if (i === 2) {
-        done();
+        subject.complete();
       }
-    });
+    }, function (e) {
+      done.fail('should not be called');
+    }, done);
   });
 
   describe('with bufferSize=2', function () {
