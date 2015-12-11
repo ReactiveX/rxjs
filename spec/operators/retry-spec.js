@@ -189,4 +189,21 @@ describe('Observable.prototype.retry()', function () {
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
+
+  it('should retry a synchronous source (multicasted and refCounted) multiple times', function (done) {
+    var expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
+
+    Observable.of(1, 2, 3).concat(Observable.throw('bad!'))
+      .multicast(function () { return new Rx.Subject(); })
+      .refCount()
+      .retry(4)
+      .subscribe(
+        function (x) { expect(x).toBe(expected.shift()); },
+        function (err) {
+          expect(err).toBe('bad!');
+          expect(expected.length).toBe(0);
+          done();
+        },
+        done.fail);
+  });
 });
