@@ -4,6 +4,9 @@ import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {GroupedObservable} from './operator/groupBy-support';
 import {Notification} from './Notification';
+/* tslint:disable */
+import * as operator from './operator-typings';
+/* tslint:enable */
 
 export interface CoreOperators<T> {
   buffer?: (closingNotifier: Observable<any>) => Observable<T[]>;

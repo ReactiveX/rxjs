@@ -12,6 +12,28 @@ import {Subject} from './Subject';
 import {Notification} from './Notification';
 import {rxSubscriber} from'./symbol/rxSubscriber';
 
+/* tslint:disable */
+import * as operator from './operator-typings';
+/* tslint:enable */
+import {combineLatest as combineLatestStatic} from './operator/combineLatest-static';
+import {concat as concatStatic} from './operator/concat-static';
+import {merge as mergeStatic} from './operator/merge-static';
+import {zip as zipStatic} from './operator/zip-static';
+import {BoundCallbackObservable} from './observable/bindCallback';
+import {DeferObservable} from './observable/defer';
+import {EmptyObservable} from './observable/empty';
+import {ForkJoinObservable} from './observable/forkJoin';
+import {FromObservable} from './observable/from';
+import {ArrayObservable} from './observable/fromArray';
+import {FromEventObservable} from './observable/fromEvent';
+import {FromEventPatternObservable} from './observable/fromEventPattern';
+import {PromiseObservable} from './observable/fromPromise';
+import {IntervalObservable} from './observable/interval';
+import {TimerObservable} from './observable/timer';
+import {RangeObservable} from './observable/range';
+import {InfiniteObservable} from './observable/never';
+import {ErrorObservable} from './observable/throw';
+
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
@@ -156,33 +178,25 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
-  static bindCallback: <T>(callbackFunc: Function, selector?: Function, scheduler?: Scheduler) => Function;
-  static combineLatest: <T>(...observables: Array<Observable<any> |
-                                                  Array<Observable<any>> |
-                                                  ((...values: Array<any>) => T) |
-                                                  Scheduler>) => Observable<T>;
-  static concat: <T>(...observables: Array<Observable<any> | Scheduler>) => Observable<T>;
-  static defer: <T>(observableFactory: () => Observable<T>) => Observable<T>;
-  static empty: <T>(scheduler?: Scheduler) => Observable<T>;
-  static forkJoin: (...sources: Array<Observable<any> |
-                                      Array<Observable<any>> |
-                                      Promise<any> |
-                                      ((...values: Array<any>) => any)>) => Observable<any>;
-  static from: <T>(iterable: any, scheduler?: Scheduler) => Observable<T>;
-  static fromArray: <T>(array: T[], scheduler?: Scheduler) => Observable<T>;
-  static fromEvent: <T>(element: any, eventName: string, selector?: (...args: Array<any>) => T) => Observable<T>;
-  static fromEventPattern: <T>(addHandler: (handler: Function) => void,
-                               removeHandler: (handler: Function) => void,
-                               selector?: (...args: Array<any>) => T) => Observable<T>;
-  static fromPromise: <T>(promise: Promise<T>, scheduler?: Scheduler) => Observable<T>;
-  static interval: (interval: number, scheduler?: Scheduler) => Observable<number>;
-  static merge: <T>(...observables: Array<Observable<any> | Scheduler | number>) => Observable<T>;
-  static never: <T>() => Observable<T>;
-  static of: <T>(...values: Array<T | Scheduler>) => Observable<T>;
-  static range: (start: number, end: number, scheduler?: Scheduler) => Observable<number>;
-  static throw: <T>(error: T) => Observable<T>;
-  static timer: (dueTime?: number | Date, period?: number | Scheduler, scheduler?: Scheduler) => Observable<number>;
-  static zip: <T>(...observables: Array<Observable<any> | ((...values: Array<any>) => T)>) => Observable<T>;
+  static bindCallback: typeof BoundCallbackObservable.create;
+  static combineLatest: typeof combineLatestStatic;
+  static concat: typeof concatStatic;
+  static defer: typeof DeferObservable.create;
+  static empty: typeof EmptyObservable.create;
+  static forkJoin: typeof ForkJoinObservable.create;
+  static from: typeof FromObservable.create;
+  static fromArray: typeof ArrayObservable.create;
+  static fromEvent: typeof FromEventObservable.create;
+  static fromEventPattern: typeof FromEventPatternObservable.create;
+  static fromPromise: typeof PromiseObservable.create;
+  static interval: typeof IntervalObservable.create;
+  static merge: typeof mergeStatic;
+  static never: typeof InfiniteObservable.create;
+  static of: typeof ArrayObservable.of;
+  static range: typeof RangeObservable.create;
+  static throw: typeof ErrorObservable.create;
+  static timer: typeof TimerObservable.create;
+  static zip: typeof zipStatic;
 
   // core operators
   buffer: (closingNotifier: Observable<any>) => Observable<T[]>;
