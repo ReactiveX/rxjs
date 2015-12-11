@@ -47,6 +47,22 @@ describe('Observable.concat', function () {
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
   });
 
+  it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
+    var inner =  cold('--i-j-k-l-|     ');
+    var innersubs =  ['^         !     ',
+                      '          ^    !'];
+    var expected =    '--i-j-k-l---i-j-';
+    var unsub =       '               !';
+
+    var innerWrapped = inner.mergeMap(function (x) { return Observable.of(x); });
+    var result = Observable
+      .concat(innerWrapped, innerWrapped, innerWrapped, innerWrapped)
+      .mergeMap(function (x) { return Observable.of(x); });
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+  });
+
   it('should complete without emit if both sources are empty', function () {
     var e1 =   cold('--|');
     var e1subs =    '^ !';
