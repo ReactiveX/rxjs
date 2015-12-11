@@ -262,4 +262,20 @@ describe('Observable.prototype.repeat()', function () {
 
     expectObservable(e1.repeat(2)).toBe(expected);
   });
+
+  it('should repeat a synchronous source (multicasted and refCounted) multiple times', function (done) {
+    var expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
+
+    Observable.of(1, 2, 3)
+      .multicast(function () { return new Rx.Subject(); })
+      .refCount()
+      .repeat(5)
+      .subscribe(
+        function (x) { expect(x).toBe(expected.shift()); },
+        done.fail,
+        function () {
+          expect(expected.length).toBe(0);
+          done();
+        });
+  });
 });
