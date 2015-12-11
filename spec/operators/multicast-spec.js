@@ -219,21 +219,53 @@ describe('Observable.prototype.multicast()', function () {
       function subjectFactory() { return new Subject(); }
       var source = cold('(123#)');
       var multicasted = source.multicast(subjectFactory).refCount();
-      var subscribe1 =  's         ';
-      var expected1 =   '(123123#) ';
-      var subscribe2 =  ' s        ';
-      var expected2 =   ' (123123#)';
+      var subscribe1 =  's               ';
+      var expected1 =   '(123123123123#) ';
+      var subscribe2 =  ' s              ';
+      var expected2 =   ' (123123123123#)';
       var sourceSubs = ['(^!)',
                         '(^!)',
+                        '(^!)',
+                        '(^!)',
+                        ' (^!)',
+                        ' (^!)',
                         ' (^!)',
                         ' (^!)'];
 
       expectObservable(hot(subscribe1).do(function () {
-        expectObservable(multicasted.retry(1)).toBe(expected1);
+        expectObservable(multicasted.retry(3)).toBe(expected1);
       })).toBe(subscribe1);
 
       expectObservable(hot(subscribe2).do(function () {
-        expectObservable(multicasted.retry(1)).toBe(expected2);
+        expectObservable(multicasted.retry(3)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should be retryable with ReplaySubject and cold source is synchronous', function () {
+      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      var source = cold('(123#)');
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =  's               ';
+      var expected1 =   '(123123123123#) ';
+      var subscribe2 =  ' s              ';
+      var expected2 =   ' (123123123123#)';
+      var sourceSubs = ['(^!)',
+                        '(^!)',
+                        '(^!)',
+                        '(^!)',
+                        ' (^!)',
+                        ' (^!)',
+                        ' (^!)',
+                        ' (^!)'];
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.retry(3)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.retry(3)).toBe(expected2);
       })).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -243,21 +275,57 @@ describe('Observable.prototype.multicast()', function () {
       function subjectFactory() { return new Subject(); }
       var source = cold('(123|)');
       var multicasted = source.multicast(subjectFactory).refCount();
-      var subscribe1 =  's         ';
-      var expected1 =   '(123123|) ';
-      var subscribe2 =  ' s        ';
-      var expected2 =   ' (123123|)';
+      var subscribe1 =  's                  ';
+      var expected1 =   '(123123123123123|) ';
+      var subscribe2 =  ' s                 ';
+      var expected2 =   ' (123123123123123|)';
       var sourceSubs = ['(^!)',
                         '(^!)',
+                        '(^!)',
+                        '(^!)',
+                        '(^!)',
+                        ' (^!)',
+                        ' (^!)',
+                        ' (^!)',
                         ' (^!)',
                         ' (^!)'];
 
       expectObservable(hot(subscribe1).do(function () {
-        expectObservable(multicasted.repeat(2)).toBe(expected1);
+        expectObservable(multicasted.repeat(5)).toBe(expected1);
       })).toBe(subscribe1);
 
       expectObservable(hot(subscribe2).do(function () {
-        expectObservable(multicasted.repeat(2)).toBe(expected2);
+        expectObservable(multicasted.repeat(5)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should be repeatable with ReplaySubject and cold source is synchronous', function () {
+      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      var source = cold('(123|)');
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =  's                  ';
+      var expected1 =   '(123123123123123|) ';
+      var subscribe2 =  ' s                 ';
+      var expected2 =   ' (123123123123123|)';
+      var sourceSubs = ['(^!)',
+                        '(^!)',
+                        '(^!)',
+                        '(^!)',
+                        '(^!)',
+                        ' (^!)',
+                        ' (^!)',
+                        ' (^!)',
+                        ' (^!)',
+                        ' (^!)'];
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.repeat(5)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.repeat(5)).toBe(expected2);
       })).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -286,6 +354,29 @@ describe('Observable.prototype.multicast()', function () {
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
 
+    it('should be retryable using a ReplaySubject', function () {
+      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      var source =     cold('-1-2-3----4-#                        ');
+      var sourceSubs =     ['^           !                        ',
+                            '            ^           !            ',
+                            '                        ^           !'];
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =      's                                    ';
+      var expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-#';
+      var subscribe2 =      '    s                                ';
+      var expected2 =       '    23----4--1-2-3----4--1-2-3----4-#';
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.retry(2)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.retry(2)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
     it('should be repeatable', function () {
       function subjectFactory() { return new Subject(); }
       var source =     cold('-1-2-3----4-|                        ');
@@ -297,6 +388,29 @@ describe('Observable.prototype.multicast()', function () {
       var expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
       var subscribe2 =      '    s                                ';
       var expected2 =       '    -3----4--1-2-3----4--1-2-3----4-|';
+
+      expectObservable(hot(subscribe1).do(function () {
+        expectObservable(multicasted.repeat(3)).toBe(expected1);
+      })).toBe(subscribe1);
+
+      expectObservable(hot(subscribe2).do(function () {
+        expectObservable(multicasted.repeat(3)).toBe(expected2);
+      })).toBe(subscribe2);
+
+      expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+
+    it('should be repeatable using a ReplaySubject', function () {
+      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      var source =     cold('-1-2-3----4-|                        ');
+      var sourceSubs =     ['^           !                        ',
+                            '            ^           !            ',
+                            '                        ^           !'];
+      var multicasted = source.multicast(subjectFactory).refCount();
+      var subscribe1 =      's                                    ';
+      var expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
+      var subscribe2 =      '    s                                ';
+      var expected2 =       '    23----4--1-2-3----4--1-2-3----4-|';
 
       expectObservable(hot(subscribe1).do(function () {
         expectObservable(multicasted.repeat(3)).toBe(expected1);
