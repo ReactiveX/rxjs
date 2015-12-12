@@ -12,7 +12,7 @@ describe('Observable.range', function () {
     expect(results).toEqual([12, 13, 14, 15]);
   });
 
-  it('should accept a scheduler' , function (done) {
+  it('should accept a scheduler', function (done) {
     var expected = [12, 13, 14, 15];
     spyOn(asap, 'schedule').and.callThrough();
 
@@ -24,7 +24,9 @@ describe('Observable.range', function () {
       expect(asap.schedule).toHaveBeenCalled();
       var exp = expected.shift();
       expect(x).toBe(exp);
-    }, done.throw, done);
+    }, function (x) {
+      done.fail('should not be called');
+    }, done);
   });
 });
 

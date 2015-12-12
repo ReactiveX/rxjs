@@ -50,8 +50,9 @@ describe('Observable.of', function () {
     Observable.of(42).subscribe(function (x) {
       expect(++calls).toBe(1);
       expect(x).toBe(42);
-      done();
-    });
+    }, function (x) {
+      done.fail('should not be called');
+    }, done);
   });
 
   it('should handle an Observable as the only value', function () {

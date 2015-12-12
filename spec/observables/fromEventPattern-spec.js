@@ -61,11 +61,12 @@ describe('Observable.fromEventPattern', function () {
       return a + b + '!';
     };
 
-    Observable.fromEventPattern(addHandler, removeHandler, selector)
+    Observable.fromEventPattern(addHandler, removeHandler, selector).take(1)
       .subscribe(function (x) {
         expect(x).toBe('testme!');
-        done();
-      });
+      }, function (e) {
+        done.fail('should not be called');
+      }, done);
 
     trigger('test', 'me');
   });
@@ -89,10 +90,13 @@ describe('Observable.fromEventPattern', function () {
     };
 
     Observable.fromEventPattern(addHandler, removeHandler, selector)
-      .subscribe(function () { },
-      function (err) {
+      .subscribe(function (x) {
+        done.fail('should not be called');
+      }, function (err) {
         expect(err).toBe('bad');
         done();
+      }, function () {
+        done.fail('should not be called');
       });
 
     trigger('test');
