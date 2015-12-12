@@ -15,6 +15,7 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
   inspectTime?: (delay: number, scheduler?: IScheduler) => Observable<T>;
   max?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
+  pairwise?: <R>() => Observable<R>;
   timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
   mergeScan?: <T, R>(project: (acc: R, x: T) => Observable<R>, seed: R, concurrent?: number) => Observable<R>;
   exhaust?: () => Observable<T>;
@@ -93,6 +94,7 @@ import './add/operator/mergeScan';
 import './add/operator/min';
 import './add/operator/multicast';
 import './add/operator/observeOn';
+import './add/operator/pairwise';
 import './add/operator/partition';
 import './add/operator/publish';
 import './add/operator/publishBehavior';
