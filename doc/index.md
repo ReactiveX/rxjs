@@ -57,6 +57,7 @@
 - [mergeAll](function/index.html#static-function-mergeAll)
 - [multicast](function/index.html#static-function-multicast)
 - [observeOn](function/index.html#static-function-observeOn)
+- [pairwise](function/index.html#static-function-pairwise)
 - [partition](function/index.html#static-function-partition)
 - [publish](function/index.html#static-function-publish)
 - [publishBehavior](function/index.html#static-function-publishBehavior)
