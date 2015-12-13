@@ -1,7 +1,8 @@
 import {FindValueOperator} from './find-support';
 import {Observable} from '../../Observable';
+import {_PredicateObservable} from '../../types';
 
-export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<T> {
+export function find<T>(predicate: _PredicateObservable<T>, thisArg?: any): Observable<T> {
   if (typeof predicate !== 'function') {
     throw new TypeError('predicate is not a function');
   }

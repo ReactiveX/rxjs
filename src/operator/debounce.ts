@@ -7,13 +7,14 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {isPromise} from '../util/isPromise';
 import {errorObject} from '../util/errorObject';
+import {ObservableOrPromise, _Selector} from '../types';
 
-export function debounce<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function debounce<T>(durationSelector: _Selector<T, ObservableOrPromise<number>>): Observable<T> {
   return this.lift(new DebounceOperator(durationSelector));
 }
 
-class DebounceOperator<T, R> implements Operator<T, R> {
-  constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+class DebounceOperator<T> implements Operator<T, T> {
+  constructor(private durationSelector: _Selector<T, ObservableOrPromise<number>>) {
   }
 
   call(observer: Subscriber<T>): Subscriber<T> {
@@ -30,7 +31,7 @@ class DebounceSubscriber<T> extends Subscriber<T> {
   }
 
   constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+              private durationSelector: _Selector<T, ObservableOrPromise<number>>) {
     super(destination);
   }
 
@@ -39,16 +40,16 @@ class DebounceSubscriber<T> extends Subscriber<T> {
     const currentIndex = ++this._index;
     let debounce = tryCatch(this.durationSelector)(value);
 
-    if (debounce === errorObject) {
+    if (debounce as any === errorObject) {
       destination.error(errorObject.e);
     } else {
       if (isPromise(debounce)) {
-        debounce = PromiseObservable.create(debounce);
+        debounce = PromiseObservable.create(debounce as Promise<number>);
       }
 
       this.lastValue = value;
       this.clearDebounce();
-      this.add(this.debouncedSubscription = debounce._subscribe(new DurationSelectorSubscriber(this, currentIndex)));
+      this.add(this.debouncedSubscription = (debounce as Observable<number>)._subscribe(new DurationSelectorSubscriber(this, currentIndex)));
     }
   }
 
@@ -76,8 +77,8 @@ class DebounceSubscriber<T> extends Subscriber<T> {
   }
 }
 
-class DurationSelectorSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: DebounceSubscriber<any>,
+class DurationSelectorSubscriber<T> extends Subscriber<number> {
+  constructor(private parent: DebounceSubscriber<T>,
               private currentIndex: number) {
     super(null);
   }
@@ -93,11 +94,11 @@ class DurationSelectorSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(unused: T) {
+  _next(unused: number) {
      this.debounceNext();
   }
 
-  _error(err) {
+  _error(err: any) {
     this.parent.error(err);
   }
 

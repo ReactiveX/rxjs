@@ -5,18 +5,20 @@ import {root} from '../util/root';
 import {SymbolShim} from '../util/SymbolShim';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Subscriber} from '../Subscriber';
+import {_IndexSelector} from '../types';
 
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
 
   static create<T>(iterator: any,
-                   project?: (x?: any, i?: number) => T,
+                   project?: _IndexSelector<any, T>,
                    thisArg?: any,
                    scheduler?: Scheduler) {
     return new IteratorObservable(iterator, project, thisArg, scheduler);
   }
 
-  static dispatch(state) {
+  static dispatch(state: any) {
 
     const { index, hasError, thisArg, project, iterator, subscriber } = state;
 
@@ -54,7 +56,7 @@ export class IteratorObservable<T> extends Observable<T> {
   }
 
   constructor(iterator: any,
-              private project?: (x?: any, i?: number) => T,
+              private project?: _IndexSelector<any, T>,
               private thisArg?: any,
               private scheduler?: Scheduler) {
     super();
@@ -67,7 +69,7 @@ export class IteratorObservable<T> extends Observable<T> {
     this.iterator = getIterator(iterator);
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
 
     let index = 0;
     const { iterator, project, thisArg, scheduler } = this;
@@ -150,7 +152,7 @@ function getIterator(obj: any) {
 
 const maxSafeInteger = Math.pow(2, 53) - 1;
 
-function toLength(o) {
+function toLength(o: any) {
   let len = +o.length;
   if (isNaN(len)) {
       return 0;
@@ -168,11 +170,11 @@ function toLength(o) {
   return len;
 }
 
-function numberIsFinite(value) {
+function numberIsFinite(value: any) {
   return typeof value === 'number' && root.isFinite(value);
 }
 
-function sign(value) {
+function sign(value: any) {
   let valueAsNumber = +value;
   if (valueAsNumber === 0) {
     return valueAsNumber;

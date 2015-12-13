@@ -1,8 +1,9 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
 
-export function ignoreElements() {
+export function ignoreElements<T>(): Observable<T> {
   return this.lift(new IgnoreElementsOperator());
 };
 

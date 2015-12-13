@@ -7,16 +7,15 @@ import {ErrorObservable} from '../observable/throw';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_PredicateObservable} from '../types';
 
-export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
+export function every<T>(predicate: _PredicateObservable<T>,
                          thisArg?: any): Observable<boolean> {
   const source = this;
-  let result;
-
   if (source._isScalar) {
-    result = tryCatch(predicate).call(thisArg || this, source.value, 0, source);
-    if (result === errorObject) {
-      return new ErrorObservable(errorObject.e, source.scheduler);
+    let result: boolean = tryCatch(predicate).call(thisArg || this, source.value, 0, source);
+    if (result as any === errorObject) {
+      return new ErrorObservable<any>(errorObject.e, source.scheduler);
     } else {
       return new ScalarObservable(result, source.scheduler);
     }
@@ -24,9 +23,10 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
 
   if (source instanceof ArrayObservable) {
     const array = (<ArrayObservable<T>>source).array;
-    let result = tryCatch((array, predicate, thisArg) => array.every(<any>predicate, thisArg))(array, predicate, thisArg);
-    if (result === errorObject) {
-      return new ErrorObservable(errorObject.e, source.scheduler);
+    let result = tryCatch((array: T[], predicate: _PredicateObservable<T>, thisArg: any) =>
+                                    array.every(<any>predicate, thisArg))(array, predicate, thisArg);
+    if (result as any === errorObject) {
+      return new ErrorObservable<any>(errorObject.e, source.scheduler);
     } else {
       return new ScalarObservable(result, source.scheduler);
     }

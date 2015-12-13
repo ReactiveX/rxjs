@@ -3,13 +3,14 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_IndexPredicate} from '../types';
 
-export function takeWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
+export function takeWhile<T>(predicate: _IndexPredicate<T>): Observable<T> {
   return this.lift(new TakeWhileOperator(predicate));
 }
 
-class TakeWhileOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate: (value: T, index: number) => boolean) {
+class TakeWhileOperator<T> implements Operator<T, T> {
+  constructor(private predicate: _IndexPredicate<T>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -21,7 +22,7 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number) => boolean) {
+              private predicate: _IndexPredicate<T>) {
     super(destination);
   }
 
@@ -29,8 +30,8 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
     const destination = this.destination;
     const result = tryCatch(this.predicate)(value, this.index++);
 
-    if (result == errorObject) {
-      destination.error(result.e);
+    if (result as any == errorObject) {
+      destination.error(errorObject.e);
     } else if (Boolean(result)) {
       destination.next(value);
     } else {

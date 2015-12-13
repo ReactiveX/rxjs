@@ -4,19 +4,19 @@ import {PromiseObservable} from './fromPromise';
 import {EmptyObservable} from './empty';
 import {isPromise} from '../util/isPromise';
 import {isArray} from '../util/isArray';
+import {_RestSelector, ObservableOrPromise} from '../types';
 
 export class ForkJoinObservable<T> extends Observable<T> {
-  constructor(private sources: Array<Observable<any> | Promise<any>>,
-              private resultSelector?: (...values: Array<any>) => any) {
+  constructor(private sources: Array<ObservableOrPromise<any>>,
+              private resultSelector?: _RestSelector<T>) {
     super();
   }
 
-  static create(...sources: Array<Observable<any> |
+  static create<T>(...sources: Array<ObservableOrPromise<any> |
                                   Array<Observable<any>> |
-                                  Promise<any> |
-                                  ((...values: Array<any>) => any)>): Observable<any> {
+                                  _RestSelector<any>>): Observable<T> {
     if (sources === null || arguments.length === 0) {
-      return new EmptyObservable();
+      return new EmptyObservable<T>();
     }
 
     let resultSelector: (...values: Array<any>) => any = null;
@@ -30,7 +30,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
       sources = <Array<Observable<any>>>sources[0];
     }
 
-    return new ForkJoinObservable(<Array<Observable<any> | Promise<any>>>sources, resultSelector);
+    return new ForkJoinObservable(<Array<ObservableOrPromise<any>>>sources, resultSelector);
   }
 
   _subscribe(subscriber: Subscriber<any>) {
@@ -49,18 +49,18 @@ export class ForkJoinObservable<T> extends Observable<T> {
 }
 
 class AllSubscriber<T> extends Subscriber<T> {
-  private _value: any = null;
+  private _value: T = null;
 
   constructor(destination: Subscriber<any>,
               private index: number,
               private context: { completed: number,
                                  total: number,
                                  values: any[],
-                                 selector: (...values: Array<any>) => any }) {
+                                 selector: _RestSelector<any> }) {
     super(destination);
   }
 
-  _next(value: any): void {
+  _next(value: T): void {
     this._value = value;
   }
 
@@ -95,7 +95,7 @@ function hasValue(x: any): boolean {
 }
 
 function emptyArray(len: number): any[] {
-  let arr = [];
+  let arr: any[] = [];
   for (let i = 0; i < len; i++) {
     arr.push(null);
   }

@@ -1,10 +1,11 @@
 import {Scheduler} from '../Scheduler';
+import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 
 export class EmptyObservable<T> extends Observable<T> {
 
   static create<T>(scheduler?: Scheduler): Observable<T> {
-    return new EmptyObservable(scheduler);
+    return new EmptyObservable<T>(scheduler);
   }
 
   static dispatch({ subscriber }) {
@@ -15,7 +16,7 @@ export class EmptyObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
 
     const scheduler = this.scheduler;
 

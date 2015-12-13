@@ -5,7 +5,7 @@ import {MergeAllOperator} from './mergeAll-support';
 import {queue} from '../scheduler/queue';
 import {isScheduler} from '../util/isScheduler';
 
-export function merge<R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {
+export function merge<T, R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {
  let concurrent = Number.POSITIVE_INFINITY;
  let scheduler: Scheduler = queue;
   let last: any = observables[observables.length - 1];
@@ -22,5 +22,5 @@ export function merge<R>(...observables: Array<Observable<any> | Scheduler | num
     return <Observable<R>>observables[0];
   }
 
-  return new ArrayObservable(observables, scheduler).lift(new MergeAllOperator(concurrent));
+  return new ArrayObservable<Observable<T>>(<any>observables, scheduler).lift<Observable<T>, R>(new MergeAllOperator<R>(concurrent));
 }

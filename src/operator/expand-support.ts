@@ -1,5 +1,4 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
@@ -7,9 +6,10 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
+import {_IndexSelector, ObservableInput} from '../types';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => Observable<R>,
+  constructor(private project: _IndexSelector<T, ObservableInput<R>>,
               private concurrent: number,
               private scheduler: Scheduler) {
   }
@@ -26,7 +26,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private buffer: any[];
 
   constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => Observable<R>,
+              private project: _IndexSelector<T, ObservableInput<R>>,
               private concurrent: number,
               private scheduler: Scheduler) {
     super(destination);
@@ -51,8 +51,8 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (this.active < this.concurrent) {
       destination.next(value);
       let result = tryCatch(this.project)(value, index);
-      if (result === errorObject) {
-        destination.error(result.e);
+      if (result as any === errorObject) {
+        destination.error(errorObject.e);
       } else if (!this.scheduler) {
         this.subscribeToProjection(result, value, index);
       } else {
@@ -64,7 +64,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  private subscribeToProjection(result, value: T, index: number): void {
+  private subscribeToProjection(result: any, value: T, index: number): void {
     if (result._isScalar) {
       this._next(result.value);
     } else {

@@ -13,7 +13,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
     return this._getSubject().subscribe(subscriber);
   }
 
@@ -62,9 +62,9 @@ class RefCountObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
     const connectable = this.connectable;
-    const refCountSubscriber = new RefCountSubscriber(subscriber, this);
+    const refCountSubscriber: RefCountSubscriber<T> = new RefCountSubscriber(subscriber, this);
     const subscription = connectable.subscribe(refCountSubscriber);
     if (!subscription.isUnsubscribed && ++this.refCount === 1) {
       refCountSubscriber.connection = this.connection = connectable.connect();

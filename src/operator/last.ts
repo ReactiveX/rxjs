@@ -4,16 +4,17 @@ import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
+import {_IndexSelector, _PredicateObservable} from '../types';
 
-export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                           resultSelector?: (value: T, index: number) => R,
-                           defaultValue?: any): Observable<T> | Observable<R> {
+export function last<T, R>(predicate?: _PredicateObservable<T>,
+                           resultSelector?: _IndexSelector<T, R>,
+                           defaultValue?: R): Observable<R> {
   return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 
 class LastOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+  constructor(private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
               private defaultValue?: any,
               private source?: Observable<T>) {
   }
@@ -24,13 +25,13 @@ class LastOperator<T, R> implements Operator<T, R> {
 }
 
 class LastSubscriber<T, R> extends Subscriber<T> {
-  private lastValue: T;
+  private lastValue: T | R;
   private hasValue: boolean = false;
   private index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+              private predicate?: _PredicateObservable<T>,
+              private resultSelector?: _IndexSelector<T, R>,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);
@@ -46,7 +47,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
 
     if (predicate) {
       let found = tryCatch(predicate)(value, index, this.source);
-      if (found === errorObject) {
+      if (found as any === errorObject) {
         destination.error(errorObject.e);
         return;
       }
@@ -54,7 +55,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
       if (found) {
         if (resultSelector) {
           let result = tryCatch(resultSelector)(value, index);
-          if (result === errorObject) {
+          if (result as any === errorObject) {
             destination.error(errorObject.e);
             return;
           }

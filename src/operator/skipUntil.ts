@@ -6,7 +6,7 @@ export function skipUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SkipUntilOperator(notifier));
 }
 
-class SkipUntilOperator<T, R> implements Operator<T, R> {
+class SkipUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
@@ -66,7 +66,7 @@ class NotificationSubscriber<T> extends Subscriber<T> {
     this.hasValue = true;
   }
 
-  _error(err) {
+  _error(err: any) {
     this.parent.error(err);
     this.hasValue = true;
   }

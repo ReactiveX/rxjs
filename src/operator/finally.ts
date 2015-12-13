@@ -1,12 +1,13 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
+import {Observable} from '../Observable';
 
-export function _finally<T>(finallySelector: () => void) {
+export function _finally<T>(finallySelector: () => void): Observable<T> {
   return this.lift(new FinallyOperator(finallySelector));
 }
 
-class FinallyOperator<T, R> implements Operator<T, R> {
+class FinallyOperator<T> implements Operator<T, T> {
   constructor(private finallySelector: () => void) {
   }
 

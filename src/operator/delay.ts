@@ -4,15 +4,16 @@ import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 import {queue} from '../scheduler/queue';
 import {isDate} from '../util/isDate';
+import {Observable} from '../Observable';
 
 export function delay<T>(delay: number|Date,
-                         scheduler: Scheduler = queue) {
+                         scheduler: Scheduler = queue): Observable<T> {
   const absoluteDelay = isDate(delay);
   const delayFor = absoluteDelay ? (+delay - scheduler.now()) : <number>delay;
   return this.lift(new DelayOperator(delayFor, scheduler));
 }
 
-class DelayOperator<T, R> implements Operator<T, R> {
+class DelayOperator<T> implements Operator<T, T> {
   constructor(private delay: number,
               private scheduler: Scheduler) {
   }
@@ -27,7 +28,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
   private active: boolean = false;
   private errored: boolean = false;
 
-  private static dispatch(state): void {
+  private static dispatch(state: any): void {
     const source = state.source;
     const queue = source.queue;
     const scheduler = state.scheduler;
@@ -64,7 +65,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }
 
     const scheduler = this.scheduler;
-    const message = new DelayMessage<T>(scheduler.now() + this.delay, notification);
+    const message = new DelayMessage(scheduler.now() + this.delay, notification);
     this.queue.push(message);
 
     if (this.active === false) {
@@ -76,7 +77,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     this.scheduleNotification(Notification.createNext(value));
   }
 
-  _error(err) {
+  _error(err: any) {
     this.errored = true;
     this.queue = [];
     this.destination.error(err);

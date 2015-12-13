@@ -9,17 +9,17 @@ import {errorObject} from '../util/errorObject';
 
 export function windowToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
-  return this.lift(new WindowToggleOperator<T, T, O>(openings, closingSelector));
+  return this.lift(new WindowToggleOperator(openings, closingSelector));
 }
 
-class WindowToggleOperator<T, R, O> implements Operator<T, R> {
+class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
 
   constructor(private openings: Observable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
   }
 
   call(subscriber: Subscriber<Observable<T>>): Subscriber<T> {
-    return new WindowToggleSubscriber<T, O>(
+    return new WindowToggleSubscriber(
       subscriber, this.openings, this.closingSelector
     );
   }
@@ -69,15 +69,15 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
   openWindow(value: O) {
     const closingSelector = this.closingSelector;
     let closingNotifier = tryCatch(closingSelector)(value);
-    if (closingNotifier === errorObject) {
-      this.error(closingNotifier.e);
+    if (closingNotifier as any === errorObject) {
+      this.error(errorObject.e);
     } else {
       const destination = this.destination;
       const window = new Subject<T>();
-      const subscription = new Subscription();
+      const subscription = new Subscription<T>();
       const context = { window, subscription };
       this.contexts.push(context);
-      const subscriber = new WindowClosingNotifierSubscriber<T, O>(this, context);
+      const subscriber = new WindowClosingNotifierSubscriber(this, context);
       const closingSubscription = closingNotifier._subscribe(subscriber);
       subscription.add(closingSubscription);
       destination.add(subscription);
@@ -109,7 +109,7 @@ class WindowClosingNotifierSubscriber<T, O> extends Subscriber<T> {
     this.parent.closeWindow(this.windowContext);
   }
 
-  _error(err) {
+  _error(err: any) {
     this.parent.error(err);
   }
 
@@ -127,7 +127,7 @@ class WindowToggleOpeningsSubscriber<T> extends Subscriber<T> {
     this.parent.openWindow(value);
   }
 
-  _error(err) {
+  _error(err: any) {
     this.parent.error(err);
   }
 

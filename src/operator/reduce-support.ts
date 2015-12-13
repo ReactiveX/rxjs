@@ -2,10 +2,11 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {_Accumulator} from '../types';
 
 export class ReduceOperator<T, R> implements Operator<T, R> {
 
-  constructor(private project: (acc: R, x: T) => R, private seed?: R) {
+  constructor(private project: _Accumulator<T, R>, private seed?: R) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -15,19 +16,19 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
 
 export class ReduceSubscriber<T, R> extends Subscriber<T> {
 
-  acc: R;
+  acc: T | R;
   hasSeed: boolean;
   hasValue: boolean = false;
-  project: (acc: R, x: T) => R;
+  project: _Accumulator<T, R>;
 
-  constructor(destination: Subscriber<T>, project: (acc: R, x: T) => R, seed?: R) {
+  constructor(destination: Subscriber<T>, project: _Accumulator<T, R>, seed?: R) {
     super(destination);
     this.acc = seed;
     this.project = project;
     this.hasSeed = typeof seed !== 'undefined';
   }
 
-  _next(x) {
+  _next(x: T) {
     if (this.hasValue || (this.hasValue = this.hasSeed)) {
       const result = tryCatch(this.project).call(this, this.acc, x);
       if (result === errorObject) {

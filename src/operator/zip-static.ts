@@ -7,5 +7,5 @@ export function zip<T, R>(...observables: Array<Observable<any> | ((...values: A
   if (typeof project === 'function') {
     observables.pop();
   }
-  return new ArrayObservable(observables).lift(new ZipOperator(project));
+  return new ArrayObservable(observables).lift<T, R>(new ZipOperator<T, R>(project));
 }

@@ -4,12 +4,12 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {asap} from '../scheduler/asap';
 
-export class IntervalObservable<T> extends Observable<T> {
+export class IntervalObservable extends Observable<number> {
   static create(period: number = 0, scheduler: Scheduler = asap): Observable<number> {
     return new IntervalObservable(period, scheduler);
   }
 
-  static dispatch(state): void {
+  static dispatch(state: any): void {
     const { index, subscriber, period } = state;
 
     subscriber.next(index);
@@ -33,7 +33,7 @@ export class IntervalObservable<T> extends Observable<T> {
     }
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  _subscribe(subscriber: Subscriber<number>) {
     const index = 0;
     const period = this.period;
     const scheduler = this.scheduler;

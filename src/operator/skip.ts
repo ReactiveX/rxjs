@@ -1,11 +1,12 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
 
-export function skip(total) {
+export function skip<T>(total: number): Observable<T> {
   return this.lift(new SkipOperator(total));
 }
 
-class SkipOperator<T, R> implements Operator<T, R> {
+class SkipOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
   }
 
@@ -21,7 +22,7 @@ class SkipSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(x) {
+  _next(x: T) {
     if (++this.count > this.total) {
       this.destination.next(x);
     }

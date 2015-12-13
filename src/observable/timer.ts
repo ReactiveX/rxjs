@@ -4,14 +4,15 @@ import {Observable} from '../Observable';
 import {asap} from '../scheduler/asap';
 import {isScheduler} from '../util/isScheduler';
 import {isDate} from '../util/isDate';
+import {Subscriber} from '../Subscriber';
 
-export class TimerObservable<T> extends Observable<T> {
+export class TimerObservable extends Observable<number> {
 
   static create(dueTime: number | Date = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
     return new TimerObservable(dueTime, period, scheduler);
   }
 
-  static dispatch(state) {
+  static dispatch(state: any) {
 
     const { index, period, subscriber } = state;
     const action = (<any> this);
@@ -57,7 +58,7 @@ export class TimerObservable<T> extends Observable<T> {
     this.dueTime = absoluteDueTime ? (+dueTime - this.scheduler.now()) : <number>dueTime;
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<number>) {
 
     const index = 0;
     const period = this._period;

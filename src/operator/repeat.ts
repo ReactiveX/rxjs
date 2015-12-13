@@ -6,13 +6,13 @@ import {Subscription} from '../Subscription';
 
 export function repeat<T>(count: number = -1): Observable<T> {
   if (count === 0) {
-    return new EmptyObservable();
+    return new EmptyObservable<T>();
   } else {
     return this.lift(new RepeatOperator(count, this));
   }
 }
 
-class RepeatOperator<T, R> implements Operator<T, R> {
+class RepeatOperator<T> implements Operator<T, T> {
   constructor(private count: number,
               private source: Observable<T>) {
   }
