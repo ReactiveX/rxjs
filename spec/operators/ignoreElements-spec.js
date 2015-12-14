@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.ignoreElements', function () {
-  it('should ignore all the elements of the source', function () {
+  it.asDiagram('ignoreElements')('should ignore all the elements of the source', function () {
     var source = hot('--a--b--c--d--|');
     var subs =       '^             !';
     var expected =   '--------------|';

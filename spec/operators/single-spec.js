@@ -3,6 +3,16 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.single()', function () {
+  it.asDiagram('single')('should raise error from empty predicate if observable emits multiple time', function () {
+    var e1 =    hot('--a--b--c--|');
+    var e1subs =    '^    !      ';
+    var expected =  '-----#      ';
+    var errorMsg = 'Sequence contains more than one element';
+
+    expectObservable(e1.single()).toBe(expected, null, errorMsg);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should raise error from empty predicate if observable does not emit', function () {
     var e1 = hot('--a--^--|');
     var e1subs =      '^  !';
@@ -18,15 +28,6 @@ describe('Observable.prototype.single()', function () {
     var expected =  '-----(a|)';
 
     expectObservable(e1.single()).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should raise error from empty predicate if observable emits multiple time', function () {
-    var e1 =    hot('--a--b--c--|');
-    var e1subs =    '^    !      ';
-    var expected =  '-----#      ';
-
-    expectObservable(e1.single()).toBe(expected, null, 'Sequence contains more than one element');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

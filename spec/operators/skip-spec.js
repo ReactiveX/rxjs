@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.skip()', function () {
-  it('should skip values before a total', function () {
+  it.asDiagram('skip(3)')('should skip values before a total', function () {
     var source = hot('--a--b--c--d--e--|');
     var subs =       '^                !';
     var expected =   '-----------d--e--|';

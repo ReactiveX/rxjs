@@ -4,6 +4,28 @@ var Observable = Rx.Observable;
 var Notification = Rx.Notification;
 
 describe('Observable.prototype.dematerialize()', function () {
+  it.asDiagram('dematerialize')('should dematerialize an Observable', function () {
+    var values = {
+      a: '{x}',
+      b: '{y}',
+      c: '{z}',
+      d: '|'
+    };
+
+    var e1 =   hot('--a--b--c--d-|', values);
+    var expected = '--x--y--z--|';
+
+    var result = e1.map(function (x) {
+      if (x === '|') {
+        return Notification.createComplete();
+      } else {
+        return Notification.createNext(x.replace('{', '').replace('}', ''));
+      }
+    }).dematerialize();
+
+    expectObservable(result).toBe(expected);
+  });
+
   it('should dematerialize a happy stream', function () {
     var values = {
       a: Notification.createNext('w'),

@@ -4,6 +4,18 @@ var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.combineLatest', function () {
+  it.asDiagram('combineLatest')('should combine events from two cold observables', function () {
+    var e1 =   hot('-a--b-----c-d-e-|');
+    var e2 =   hot('--1--2-3-4---|   ');
+    var expected = '--A-BC-D-EF-G-H-|';
+
+    var result = e1.combineLatest(e2, function (a, b) { return String(a) + String(b); });
+
+    expectObservable(result).toBe(expected, {
+      A: 'a1', B: 'b1', C: 'b2', D: 'b3', E: 'b4', F: 'c4', G: 'd4', H: 'e4'
+    });
+  });
+
   it('should work with two nevers', function () {
     var e1 = cold( '-');
     var e1subs =   '^';

@@ -4,6 +4,20 @@ var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.merge', function () {
+  it.asDiagram('merge')('should handle merging two hot observables', function () {
+    var e1 =    hot('--a-----b-----c----|');
+    var e1subs =    '^                  !';
+    var e2 =    hot('-----d-----e-----f---|');
+    var e2subs =    '^                    !';
+    var expected =  '--a--d--b--e--c--f---|';
+
+    var result = e1.merge(e2, rxTestScheduler);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should merge a source with a second', function (done) {
     var a = Observable.of(1, 2, 3);
     var b = Observable.of(4, 5, 6, 7, 8);
@@ -22,20 +36,6 @@ describe('Observable.prototype.merge', function () {
     a.merge(b, queueScheduler).subscribe(function (val) {
       expect(val).toBe(r[i++]);
     }, null, done);
-  });
-
-  it('should handle merging two hot observables', function () {
-    var e1 =    hot('--a-----b-----c----|');
-    var e1subs =    '^                  !';
-    var e2 =    hot('-----d-----e-----f---|');
-    var e2subs =    '^                    !';
-    var expected =  '--a--d--b--e--c--f---|';
-
-    var result = e1.merge(e2, rxTestScheduler);
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should merge cold and cold', function () {

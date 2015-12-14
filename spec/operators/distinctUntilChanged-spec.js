@@ -3,6 +3,13 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.distinctUntilChanged()', function () {
+  it.asDiagram('distinctUntilChanged')('should distinguish between values', function () {
+    var e1 =   hot('-1--2-2----1-3-|');
+    var expected = '-1--2------1-3-|';
+
+    expectObservable(e1.distinctUntilChanged()).toBe(expected);
+  });
+
   it('should distinguish between values', function () {
     var e1 =   hot('--a--a--a--b--b--a--|');
     var e1subs =   '^                   !';

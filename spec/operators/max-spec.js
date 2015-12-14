@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('max', function () {
+  it.asDiagram('max')('should find the max of values of an observable', function () {
+    var source = hot('--a--b--c--|', { a: 42, b: -1, c: 3 });
+    var subs =       '^          !';
+    var expected =   '-----------(x|)';
+
+    expectObservable(source.max()).toBe(expected, { x: 42 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should be never when source is never', function () {
     var e1 =  cold('-');
     var e1subs =   '^';
@@ -46,15 +55,6 @@ describe('max', function () {
 
     expectObservable(e1.max()).toBe(expected, { w: 42 });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should max the values of an observable', function () {
-    var source = hot('--a--b--c--|', { a: 42, b: -1, c: 0 });
-    var subs =       '^          !';
-    var expected =   '-----------(x|)';
-
-    expectObservable(source.max()).toBe(expected, { x: 42 });
-    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should max the values of an ongoing hot observable', function () {

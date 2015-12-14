@@ -3,12 +3,12 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.skipUntil()', function () {
-  it('should skip values until another observable notifies', function () {
+  it.asDiagram('skipUntil')('should skip values until another observable notifies', function () {
     var e1 =     hot('--a--b--c--d--e----|');
     var e1subs =     '^                  !';
-    var skip =   hot('-------------x--|   ');
+    var skip =   hot('---------x------|   ');
     var skipSubs =   '^               !   ';
-    var expected =  ('--------------e----|');
+    var expected =  ('-----------d--e----|');
 
     expectObservable(e1.skipUntil(skip)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

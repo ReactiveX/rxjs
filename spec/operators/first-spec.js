@@ -2,19 +2,19 @@
 var Rx = require('../../dist/cjs/Rx');
 
 describe('Observable.prototype.first()', function () {
-  it('should take the first value of an observable with one value', function () {
-    var e1 =   hot('---(a|)');
-    var expected = '---(a|)';
-    var sub =      '^  !';
+  it.asDiagram('first')('should take the first value of an observable with many values', function () {
+    var e1 =   hot('-----a--b--c---d---|');
+    var expected = '-----(a|)           ';
+    var sub =      '^    !              ';
 
     expectObservable(e1.first()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it('should take the first value of an observable with many values', function () {
-    var e1 = hot('--a--^--b----c---d--|');
-    var expected =    '---(b|)';
-    var sub =         '^  !';
+  it('should take the first value of an observable with one value', function () {
+    var e1 =   hot('---(a|)');
+    var expected = '---(a|)';
+    var sub =      '^  !';
 
     expectObservable(e1.first()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);

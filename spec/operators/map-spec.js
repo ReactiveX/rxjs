@@ -8,6 +8,17 @@ var identity = function (x) { return x; };
 var throwError = function () { throw new Error(); };
 
 describe('Observable.prototype.map()', function () {
+  it.asDiagram('map(x => 10 * x)')('should map multiple values', function () {
+    var a =   cold('--1--2--3--|');
+    var asubs =    '^          !';
+    var expected = '--x--y--z--|';
+
+    var r = a.map(function (x) { return 10 * x; });
+
+    expectObservable(r).toBe(expected, {x: 10, y: 20, z: 30});
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+  });
+
   it('should map one value', function () {
     var a =   cold('--x--|', {x: 42});
     var asubs =    '^    !';

@@ -7,6 +7,18 @@ describe('Observable.prototype.findIndex()', function () {
     return true;
   }
 
+  it.asDiagram('findIndex(x => x % 5 === 0)')('should return matching element from source emits single element', function () {
+    var values = {a: 3, b: 9, c: 15, d: 20};
+    var source = hot('---a--b--c--d---|', values);
+    var subs =       '^        !       ';
+    var expected =   '---------(x|)    ';
+
+    var predicate = function (x) { return x % 5 === 0; };
+
+    expectObservable(source.findIndex(predicate)).toBe(expected, { x: 2 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should not emit if source does not emit', function () {
     var source = hot('-');
     var subs =       '^';

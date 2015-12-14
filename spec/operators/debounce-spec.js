@@ -9,6 +9,16 @@ describe('Observable.prototype.debounce()', function () {
     };
   }
 
+  it.asDiagram('debounce')('should debounce values by a specified cold Observable', function () {
+    var e1 =   hot('-a--bc--d---|');
+    var e2 =  cold('--|          ');
+    var expected = '---a---c--d-|';
+
+    var result = e1.debounce(function () { return e2; });
+
+    expectObservable(result).toBe(expected);
+  });
+
   it('should delay all element by selector observable', function () {
     var e1 =   hot('--a--b--c--d---------|');
     var e1subs =   '^                    !';

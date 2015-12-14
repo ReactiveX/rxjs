@@ -3,6 +3,23 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.scan()', function () {
+  it.asDiagram('scan((acc, curr) => acc + curr, 0)')('should scan', function () {
+    var values = {
+      a: 1, b: 3, c: 5,
+      x: 1, y: 4, z: 9
+    };
+    var e1 =     hot('--a--b--c--|', values);
+    var e1subs =     '^          !';
+    var expected =   '--x--y--z--|';
+
+    var scanFunction = function (o, x) {
+      return o + x;
+    };
+
+    expectObservable(e1.scan(scanFunction, 0)).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should scan things', function () {
     var e1 = hot('--a--^--b--c--d--e--f--g--|');
     var e1subs =      '^                    !';

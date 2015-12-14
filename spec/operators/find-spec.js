@@ -7,6 +7,18 @@ describe('Observable.prototype.find()', function () {
     return true;
   }
 
+  it.asDiagram('find(x => x % 5 === 0)')('should return matching element from source emits single element', function () {
+    var values = {a: 3, b: 9, c: 15, d: 20};
+    var source = hot('---a--b--c--d---|', values);
+    var subs =       '^        !       ';
+    var expected =   '---------(c|)    ';
+
+    var predicate = function (x) { return x % 5 === 0; };
+
+    expectObservable(source.find(predicate)).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should throw if not provided a function', function () {
     expect(function () {
       Observable.of('yut', 'yee', 'sam').find('yee');

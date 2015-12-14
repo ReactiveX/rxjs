@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.delay()', function () {
-  it.asDiagram('delay')('should delay by specified timeframe', function () {
+  it.asDiagram('delay(20)')('should delay by specified timeframe', function () {
     var e1 =   hot('---a--b--|  ');
     var t =   time(   '--|      ');
     var expected = '-----a--b--|';
