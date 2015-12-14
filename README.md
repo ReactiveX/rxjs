@@ -12,6 +12,7 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 - [Contribution Guidelines](CONTRIBUTING.md)
 - [Maintainer Guidelines](doc/maintainer-guidelines.md)
 - [Creating Operators](doc/operator-creation.md)
+- [Migrating From RxJS 4 to RxJS 5](MIGRATION.md)
 
 ## Important
 
