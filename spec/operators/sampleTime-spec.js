@@ -23,7 +23,7 @@ describe('Observable.prototype.sampleTime', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should sample ifnew value has arrived, even if it is the same value', function () {
+  it('should sample if new value has arrived, even if it is the same value', function () {
     var e1 =   hot('----a-^--b----c----------c---f----|');
     var e1subs =         '^                           !';
     var expected =       '-----------c----------c-----|';
