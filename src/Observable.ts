@@ -220,6 +220,7 @@ export class Observable<T> implements CoreOperators<T>  {
                elementSelector?: (value: T) => R,
                durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
   ignoreElements: () => Observable<T>;
+  inspect: (notifier: Observable<any>) => Observable<T>;
   last: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,
             thisArg?: any, defaultValue?: any) => Observable<T> | Observable<R>;
@@ -244,7 +245,6 @@ export class Observable<T> implements CoreOperators<T>  {
   repeat: (count?: number) => Observable<T>;
   retry: (count?: number) => Observable<T>;
   retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
-  sample: (notifier: Observable<any>) => Observable<T>;
   sampleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
   scan: <R>(accumulator: (acc: R, x: T) => R, seed?: T | R) => Observable<R>;
   share: () => Observable<T>;

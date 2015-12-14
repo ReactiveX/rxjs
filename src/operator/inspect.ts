@@ -2,20 +2,20 @@ import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 
-export function sample<T>(notifier: Observable<any>): Observable<T> {
-  return this.lift(new SampleOperator(notifier));
+export function inspect<T>(notifier: Observable<any>): Observable<T> {
+  return this.lift(new InspectOperator(notifier));
 }
 
-class SampleOperator<T, R> implements Operator<T, R> {
+class InspectOperator<T, R> implements Operator<T, R> {
   constructor(private notifier: Observable<any>) {
   }
 
   call(subscriber: Subscriber<R>) {
-    return new SampleSubscriber(subscriber, this.notifier);
+    return new InspectSubscriber(subscriber, this.notifier);
   }
 }
 
-class SampleSubscriber<T> extends Subscriber<T> {
+class InspectSubscriber<T> extends Subscriber<T> {
   private lastValue: T;
   private hasValue: boolean = false;
 
@@ -37,7 +37,7 @@ class SampleSubscriber<T> extends Subscriber<T> {
 }
 
 class SampleNotificationSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: SampleSubscriber<T>) {
+  constructor(private parent: InspectSubscriber<T>) {
     super(null);
   }
 
