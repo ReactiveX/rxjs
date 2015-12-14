@@ -3,7 +3,7 @@ var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
   var oldWindowCountWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).windowWithCount(5);
-  var newWindowCountWithCurrentThreadScheduler = RxNew.Observable.range(0, 25).windowCount(5);
+  var newWindowCountWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue).windowCount(5);
 
   function _next(x) { }
   function _error(e) { }

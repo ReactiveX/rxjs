@@ -4,8 +4,8 @@ var RxNew = require('../../../../index');
 module.exports = function (suite) {
   var oldConcatWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread)
     .concat(RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread));
-  var newConcatWithCurrentThreadScheduler = RxNew.Observable.range(0, 25)
-    .concat(RxNew.Observable.range(0, 25));
+  var newConcatWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue)
+    .concat(RxNew.Observable.range(0, 25, RxNew.Scheduler.queue));
 
   function _next(x) { }
   function _error(e) { }

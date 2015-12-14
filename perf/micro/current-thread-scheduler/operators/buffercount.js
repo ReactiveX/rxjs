@@ -3,7 +3,7 @@ var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
   var oldBufferCountWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).bufferWithCount(5);
-  var newBufferCountWithCurrentThreadScheduler = RxNew.Observable.range(0, 25).bufferCount(5);
+  var newBufferCountWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue).bufferCount(5);
 
   function _next(x) { }
   function _error(e) { }
