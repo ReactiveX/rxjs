@@ -102,6 +102,7 @@ import './add/operator/reduce';
 import './add/operator/repeat';
 import './add/operator/retry';
 import './add/operator/retryWhen';
+import './add/operator/sample';
 import './add/operator/scan';
 import './add/operator/share';
 import './add/operator/single';

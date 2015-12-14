@@ -62,6 +62,7 @@ export interface CoreOperators<T> {
   repeat?: (count?: number) => Observable<T>;
   retry?: (count?: number) => Observable<T>;
   retryWhen?: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
+  sample?: (notifier: Observable<any>) => Observable<T>;
   scan?: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   share?: () => Observable<T>;
   single?: (predicate?: (value: T, index: number) => boolean) => Observable<T>;
