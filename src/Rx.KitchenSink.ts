@@ -84,7 +84,7 @@ import './add/operator/last';
 import './add/operator/map';
 import './add/operator/mapTo';
 import './add/operator/materialize';
-import './add/operator/extended/max';
+import './add/operator/max';
 import './add/operator/merge';
 import './add/operator/mergeAll';
 import './add/operator/mergeMap';

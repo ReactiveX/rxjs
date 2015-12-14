@@ -1,5 +1,5 @@
-import {Observable} from '../../Observable';
-import {ReduceOperator} from '../reduce-support';
+import {Observable} from '../Observable';
+import {ReduceOperator} from './reduce-support';
 
 export function max<T, R>(comparer?: (x: R, y: T) => R): Observable<R> {
   const max = (typeof comparer === 'function')
