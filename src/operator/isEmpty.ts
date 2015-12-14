@@ -1,5 +1,5 @@
-import {Operator} from '../../Operator';
-import {Subscriber} from '../../Subscriber';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
 
 export function isEmpty() {
   return this.lift(new IsEmptyOperator());

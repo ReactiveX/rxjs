@@ -78,7 +78,7 @@ import './add/operator/groupBy';
 import './add/operator/ignoreElements';
 import './add/operator/inspect';
 import './add/operator/inspectTime';
-import './add/operator/extended/isEmpty';
+import './add/operator/isEmpty';
 import './add/operator/every';
 import './add/operator/last';
 import './add/operator/map';
