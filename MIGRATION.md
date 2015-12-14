@@ -57,26 +57,95 @@ enabling "composite" subscription behavior.
 
 To reduce polymorphism and get better performance out of operators, some operators have been split into more than one operator:
 
-||RxJS 4|RxJS 5|
-|---|---|---|
-|`map`|`map(project: function, thisArg?: any)`|`map(project: function, thisArg?: any)`|
-||`map(value: any)`|`mapTo(value: any)`|
-|`flatMap`|`flatMap(project: function, resultSelector?: function)`|`flatMapTo(project: function, resultSelector?: function)`|
-||`flatMap(value: Observable, resultSelector?: function)`|`flatMapTo(value: Observable, resultSelector?: function)`|
-|`switchMap` (aka `flatMapLatest`)|`flatMapLatest(project: function, resultSelector?: function)`|`switchMapTo(project: function, resultSelector?: function)`|
-||`flatMapLatest(value: Observable, resultSelector?: function)`|`switchMapTo(value: Observable, resultSelector?: function)`|
-|`concatMap`|`concatMap(project: function, resultSelector?: function)`|`concatMapTo(project: function, resultSelector?: function)`|
-||`concatMap(value: Observable, resultSelector?: function)`|`concatMapTo(value: Observable, resultSelector?: function)`|
-|`buffer`|`buffer(closings: Observable)`|`buffer(closings: Observable)`|
-||`buffer(closingNotifierFactory: function)`|`bufferWhen(closingNotifierFactory: function)`|
-||`buffer(openings: Observable, closingSelector?: function)`|`bufferToggle(openings: Observable, closingSelector?: function)`|
-|`window`|`window(closings: Observable)`|`window(closings: Observable)`|
-||`window(closingNotifierFactory: function)`|`windowWhen(closingNotifierFactory: function)`|
-||`window(openings: Observable, closingSelector?: function)`|`windowToggle(openings: Observable, closingSelector?: function)`|
-|`debounce`|`debounce(durationSelector: Observable)`|`debounce(durationSelector: Observable)`|
-||`debounce(delay: number, scheduler?: Scheduler)`|`debounceTime(delay: number, scheduler?: Scheduler)`|
-|`throttle`|`throttle(durationSelector: Observable)`|`throttle(durationSelector: Observable)`|
-||`throttle(delay: number, scheduler?: Scheduler)`|`throttleTime(delay: number, scheduler?: Scheduler)`|
+<table>
+  <thead>
+   <tr>
+    <th><th>
+    <th>RxJS 4</th>
+    <th>RxJS 5</th>
+   </tr>
+  </thead>
+</table>
+<tr>
+  <td rowspan="2">`map`</td>
+  <td>`map(project: function, thisArg?: any)`</td>
+  <td>`map(project: function, thisArg?: any)`</td>
+</tr>
+<tr>
+  <td>`map(value: any)`</td>
+  <td>`mapTo(value: any)`</td>
+</tr>
+<tr>
+  <td rowspan="2">`flatMap`</td>
+  <td>`flatMap(project: function, resultSelector?: function)`</td>
+  <td>`flatMapTo(project: function, resultSelector?: function)`</td>
+</tr>
+<tr>
+  <td>`flatMap(value: Observable, resultSelector?: function)`</td>
+  <td>`flatMapTo(value: Observable, resultSelector?: function)`</td>
+</tr>
+<tr>
+  <td rowspan="2">`switchMap` (aka `flatMapLatest`)</td>
+  <td>`flatMapLatest(project: function, resultSelector?: function)`</td>
+  <td>`switchMapTo(project: function, resultSelector?: function)`</td>
+</tr>
+<tr>
+  <td>`flatMapLatest(value: Observable, resultSelector?: function)`</td>
+  <td>`switchMapTo(value: Observable, resultSelector?: function)`</td>
+</tr>
+<tr>
+  <td rowspan="2">`concatMap`</td>
+  <td>`concatMap(project: function, resultSelector?: function)`</td>
+  <td>`concatMapTo(project: function, resultSelector?: function)`</td>
+</tr>
+<tr>
+  <td>`concatMap(value: Observable, resultSelector?: function)`</td>
+  <td>`concatMapTo(value: Observable, resultSelector?: function)`</td>
+</tr>
+<tr>
+  <td rowspan="3">`buffer`</td>
+  <td>`buffer(closings: Observable)`</td>
+  <td>`buffer(closings: Observable)`</td>
+</tr>
+<tr>
+  <td>`buffer(closingNotifierFactory: function)`</td>
+  <td>`bufferWhen(closingNotifierFactory: function)`</td>
+</tr>
+<tr>
+  <td>`buffer(openings: Observable, closingSelector?: function)`</td>
+  <td>`bufferToggle(openings: Observable, closingSelector?: function)`</td>
+</tr>
+<tr>
+  <td rowspan="3">`window`</td>
+  <td>`window(closings: Observable)`</td>
+  <td>`window(closings: Observable)`</td>
+</tr>
+<tr>
+  <td>`window(closingNotifierFactory: function)`</td>
+  <td>`windowWhen(closingNotifierFactory: function)`</td>
+</tr>
+<tr>
+  <td>`window(openings: Observable, closingSelector?: function)`</td>
+  <td>`windowToggle(openings: Observable, closingSelector?: function)`</td>
+</tr>
+<tr>
+  <td rowspan="2">`debounce`</td>
+  <td>`debounce(durationSelector: Observable)`</td>
+  <td>`debounce(durationSelector: Observable)`</td>
+</tr>
+<tr>
+  <td>`debounce(delay: number, scheduler?: Scheduler)`</td>
+  <td>`debounceTime(delay: number, scheduler?: Scheduler)`</td>
+</tr>
+<tr>
+  <td rowspan="2">`throttle`</td>
+  <td>`throttle(durationSelector: Observable)`</td>
+  <td>`throttle(durationSelector: Observable)`</td>
+</tr>
+<tr>
+  <td>`throttle(delay: number, scheduler?: Scheduler)`</td>
+  <td>`throttleTime(delay: number, scheduler?: Scheduler)`</td>
+</tr>
 
 
 ## Schedulers Renamed
