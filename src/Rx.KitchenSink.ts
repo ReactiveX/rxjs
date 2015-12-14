@@ -89,7 +89,7 @@ import './add/operator/merge';
 import './add/operator/mergeAll';
 import './add/operator/mergeMap';
 import './add/operator/mergeMapTo';
-import './add/operator/extended/mergeScan';
+import './add/operator/mergeScan';
 import './add/operator/extended/min';
 import './add/operator/multicast';
 import './add/operator/observeOn';
