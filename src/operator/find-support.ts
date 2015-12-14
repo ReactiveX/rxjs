@@ -1,9 +1,9 @@
-import {Operator} from '../../Operator';
-import {Observable} from '../../Observable';
-import {Subscriber} from '../../Subscriber';
+import {Operator} from '../Operator';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
 
-import {tryCatch} from '../../util/tryCatch';
-import {errorObject} from '../../util/errorObject';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
 
 export class FindValueOperator<T, R> implements Operator<T, R> {
   constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,

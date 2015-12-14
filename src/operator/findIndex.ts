@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable} from '../Observable';
 import {FindValueOperator} from './find-support';
 
 export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number> {
