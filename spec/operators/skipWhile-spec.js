@@ -3,6 +3,19 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.skipWhile()', function () {
+  it.asDiagram('skipWhile(x => x < 4)')('should skip all elements until predicate is false', function () {
+    var source = hot('-1-^2--3--4--5--6--|');
+    var sourceSubs =    '^               !';
+    var expected =      '-------4--5--6--|';
+
+    var predicate = function (v) {
+      return +v < 4;
+    };
+
+    expectObservable(source.skipWhile(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should skip all elements with a true predicate', function () {
     var source = hot('-1-^2--3--4--5--6--|');
     var sourceSubs =    '^               !';
@@ -36,19 +49,6 @@ describe('Observable.prototype.skipWhile()', function () {
     var expected =      '-2--3--4--5--6--|';
 
     expectObservable(source.skipWhile(function () { return undefined; })).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-  });
-
-  it('should skip all elements until predicate is false', function () {
-    var source = hot('-1-^2--3--4--5--6--|');
-    var sourceSubs =    '^               !';
-    var expected =      '-------4--5--6--|';
-
-    var predicate = function (v) {
-      return +v < 4;
-    };
-
-    expectObservable(source.skipWhile(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 

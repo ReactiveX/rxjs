@@ -3,6 +3,34 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.retryWhen()', function () {
+  it.asDiagram('retryWhen')('should handle a source with eventual error using a hot notifier', function () {
+    var source =  cold('-1--2--#');
+    var subs =        ['^      !                     ',
+                       '             ^      !        ',
+                       '                          ^ !'];
+    var notifier = hot('-------------r------------r-|');
+    var expected =     '-1--2---------1--2---------1|';
+
+    var result = source.retryWhen(function (errors) { return notifier; });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should handle a source with eventual error using a hot notifier that raises error', function () {
+    var source = cold( '-1--2--#');
+    var subs =        ['^      !                    ',
+                       '           ^      !           ',
+                       '                   ^      !   '];
+    var notifier = hot('-----------r-------r---------#');
+    var expected =     '-1--2-------1--2----1--2-----#';
+
+    var result = source.retryWhen(function (errors) { return notifier; });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should retry when notified via returned notifier on thrown error', function (done) {
     var retried = false;
     var expected = [1, 2, 1, 2];
@@ -187,20 +215,6 @@ describe('Observable.prototype.retryWhen()', function () {
     var subs =          '^        !';
     var notifier = cold(         '|');
     var expected =      '---b--c--|';
-
-    var result = source.retryWhen(function (errors) { return notifier; });
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
-  });
-
-  it('should handle a source with eventual error using a hot notifier', function () {
-    var source = cold( '-1--2--#');
-    var subs =        ['^      !                    ',
-                       '         ^      !           ',
-                       '                 ^      !   '];
-    var notifier = hot('---------r-------r---------#');
-    var expected =     '-1--2-----1--2----1--2-----#';
 
     var result = source.retryWhen(function (errors) { return notifier; });
 

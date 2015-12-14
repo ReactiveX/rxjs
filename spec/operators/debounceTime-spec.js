@@ -3,6 +3,13 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.debounceTime()', function () {
+  it.asDiagram('debounceTime(20)')('should debounce values by 20 time units', function () {
+    var e1 =   hot('-a--bc--d---|');
+    var expected = '---a---c--d-|';
+
+    expectObservable(e1.debounceTime(20, rxTestScheduler)).toBe(expected);
+  });
+
   it('should delay all element by the specified time', function () {
     var e1 =   hot('-a--------b------c----|');
     var e1subs =   '^                     !';

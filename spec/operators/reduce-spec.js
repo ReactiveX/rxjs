@@ -3,8 +3,11 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.reduce()', function () {
-  it('should reduce', function () {
-    var e1 =     hot('--a--b--c--|');
+  it.asDiagram('reduce((acc, curr) => acc + curr, 0)')('should reduce', function () {
+    var values = {
+      a: 1, b: 3, c: 5, x: 9
+    };
+    var e1 =     hot('--a--b--c--|', values);
     var e1subs =     '^          !';
     var expected =   '-----------(x|)';
 
@@ -12,7 +15,7 @@ describe('Observable.prototype.reduce()', function () {
       return o + x;
     };
 
-    expectObservable(e1.reduce(reduceFunction, '')).toBe(expected, {x: 'abc'});
+    expectObservable(e1.reduce(reduceFunction, 0)).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

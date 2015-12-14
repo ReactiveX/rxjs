@@ -3,6 +3,16 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.do()', function () {
+  it.asDiagram('do(x => console.log(x))')('should mirror multiple values and complete', function () {
+    var e1 =  cold('--1--2--3--|');
+    var e1subs =   '^          !';
+    var expected = '--1--2--3--|';
+
+    var result = e1.do();
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should next with a callback', function () {
     var value = null;
     Observable.of(42).do(function (x) {

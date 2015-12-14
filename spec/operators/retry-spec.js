@@ -3,6 +3,19 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.retry()', function () {
+  it.asDiagram('retry(2)')('should handle a basic source that emits next then errors, count=3', function () {
+    var source = cold('--1-2-3-#');
+    var subs =       ['^       !                ',
+                      '        ^       !        ',
+                      '                ^       !'];
+    var expected =    '--1-2-3---1-2-3---1-2-3-#';
+
+    var result = source.retry(2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should retry a number of times, without error, then complete', function (done) {
     var errors = 0;
     var retries = 2;
@@ -143,20 +156,6 @@ describe('Observable.prototype.retry()', function () {
     var result = source.retry();
 
     expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
-  });
-
-  it('should handle a basic source that emits next then errors, count=3', function () {
-    var source = cold('--1-2-3-#');
-    var subs =       ['^       !                        ',
-                      '        ^       !                ',
-                      '                ^       !        ',
-                      '                        ^       !'];
-    var expected =    '--1-2-3---1-2-3---1-2-3---1-2-3-#';
-
-    var result = source.retry(3);
-
-    expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 

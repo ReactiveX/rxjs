@@ -3,6 +3,16 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.catch()', function () {
+  it.asDiagram('catch')('should catch error and replace with a cold Observable', function () {
+    var e1 =   hot('--a--b--#        ');
+    var e2 =  cold('-1-2-3-|         ');
+    var expected = '--a--b---1-2-3-|)';
+
+    var result = e1.catch(function (err) { return e2; });
+
+    expectObservable(result).toBe(expected);
+  });
+
   it('should catch error and replace it with Observable.of()', function () {
     var e1 =   hot('--a--b--c--------|');
     var subs =     '^       !';

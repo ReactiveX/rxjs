@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.repeat()', function () {
-  it('should resubscribe count number of times', function () {
+  it.asDiagram('repeat(3)')('should resubscribe count number of times', function () {
     var e1 =   cold('--a--b--|                ');
     var subs =     ['^       !                ',
                     '        ^       !        ',

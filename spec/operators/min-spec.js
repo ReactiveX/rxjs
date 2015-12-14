@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('min', function () {
+  it.asDiagram('min')('should min the values of an observable', function () {
+    var source = hot('--a--b--c--|', { a: 42, b: -1, c: 3 });
+    var subs =       '^          !';
+    var expected =   '-----------(x|)';
+
+    expectObservable(source.min()).toBe(expected, { x: -1 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should be never when source is never', function () {
     var e1 =  cold('-');
     var e1subs =   '^';
@@ -46,15 +55,6 @@ describe('min', function () {
 
     expectObservable(e1.min()).toBe(expected, { w: 42 });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should min the values of an observable', function () {
-    var source = hot('--a--b--c--|', { a: 42, b: -1, c: 0 });
-    var subs =       '^          !';
-    var expected =   '-----------(x|)';
-
-    expectObservable(source.min()).toBe(expected, { x: -1 });
-    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should min the values of an ongoing hot observable', function () {

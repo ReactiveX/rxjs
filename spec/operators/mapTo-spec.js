@@ -6,21 +6,21 @@ var Observable = Rx.Observable;
 var throwError = function () { throw new Error(); };
 
 describe('Observable.prototype.mapTo()', function () {
+  it.asDiagram('mapTo(\'a\')')('should map multiple values', function () {
+    var a =   cold('--1--2--3--|');
+    var asubs =    '^          !';
+    var expected = '--a--a--a--|';
+
+    expectObservable(a.mapTo('a')).toBe(expected);
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+  });
+
   it('should map one value', function () {
     var a =   cold('--7--|');
     var asubs =    '^    !';
     var expected = '--y--|';
 
     expectObservable(a.mapTo('y')).toBe(expected);
-    expectSubscriptions(a.subscriptions).toBe(asubs);
-  });
-
-  it('should map multiple values', function () {
-    var a =   cold('--1--2--3--|');
-    var asubs =    '^          !';
-    var expected = '--x--x--x--|';
-
-    expectObservable(a.mapTo('x')).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
   });
 

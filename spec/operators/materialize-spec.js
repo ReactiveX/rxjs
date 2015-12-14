@@ -4,6 +4,24 @@ var Observable = Rx.Observable;
 var Notification = Rx.Notification;
 
 describe('Observable.prototype.materialize()', function () {
+  it.asDiagram('materialize')('should materialize an Observable', function () {
+    var e1 =   hot('--x--y--z--|');
+    var expected = '--a--b--c--(d|)';
+    var values = { a: '{x}', b: '{y}', c: '{z}', d: '|' };
+
+    var result = e1
+      .materialize()
+      .map(function (x) {
+        if (x.kind === 'C') {
+          return '|';
+        } else {
+          return '{' + x.value + '}';
+        }
+      });
+
+    expectObservable(result).toBe(expected, values);
+  });
+
   it('should materialize a happy stream', function () {
     var e1 =   hot('--a--b--c--|');
     var e1subs =   '^          !';

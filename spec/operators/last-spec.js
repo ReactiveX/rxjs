@@ -3,10 +3,10 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.last()', function () {
-  it('should take the last value of an observable', function () {
-    var e1 = hot('--a--^--b--c--|');
-    var e1subs =      '^        !';
-    var expected =    '---------(c|)';
+  it.asDiagram('last')('should take the last value of an observable', function () {
+    var e1 =   hot('--a----b--c--|');
+    var e1subs =   '^            !';
+    var expected = '-------------(c|)';
 
     expectObservable(e1.last()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

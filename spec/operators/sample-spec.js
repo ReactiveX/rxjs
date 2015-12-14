@@ -3,12 +3,12 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.sample', function () {
-  it('should get samples when the notifier emits', function () {
-    var e1 =   hot('----a-^--b----c----d----e----f----|          ');
-    var e1subs =         '^                           !          ';
-    var e2 =   hot(      '-----x----------x----------x----------|');
-    var e2subs =         '^                           !          ';
-    var expected =       '-----b----------d----------f|          ';
+  it.asDiagram('sample')('should get samples when the notifier emits', function () {
+    var e1 =   hot('---a----b---c----------d-----|   ');
+    var e1subs =   '^                            !   ';
+    var e2 =   hot('-----x----------x---x------x---|');
+    var e2subs =   '^                            !   ';
+    var expected = '-----a----------c----------d-|   ';
 
     expectObservable(e1.sample(e2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

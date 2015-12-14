@@ -16,7 +16,7 @@ describe('Observable.prototype.filter()', function () {
     return true;
   }
 
-  it('should filter out even values', function () {
+  it.asDiagram('filter(x => x % 2 === 1)')('should filter out even values', function () {
     var source = hot('--0--1--2--3--4--|');
     var subs =       '^                !';
     var expected =   '-----1-----3-----|';

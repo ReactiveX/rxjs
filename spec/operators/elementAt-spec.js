@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.elementAt', function () {
+  it.asDiagram('elementAt(2)')('should return last element by zero-based index', function () {
+    var source = hot('--a--b--c-d---|');
+    var subs =       '^       !      ';
+    var expected =   '--------(c|)   ';
+
+    expectObservable(source.elementAt(2)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should return first element by zero-based index', function () {
     var source = hot('--a--b--c--|');
     var subs =       '^ !';

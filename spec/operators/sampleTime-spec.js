@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.sampleTime', function () {
-  it('should get samples on a delay', function () {
+  it.asDiagram('sampleTime(110)')('should get samples on a delay', function () {
     var e1 =   hot('----a-^--b----c----d----e----f----|');
     var e1subs =         '^                           !';
     var expected =       '-----------c----------e-----|';
