@@ -8,7 +8,7 @@ module.exports = function fromArray(suite) {
   }
 
   var oldFromArrayWithCurrentThreadScheduler = RxOld.Observable.fromArray(args, RxOld.Scheduler.currentThread);
-  var newFromArrayWithCurrentThreadScheduler = RxNew.Observable.fromArray(args, RxNew.Scheduler.immediate);
+  var newFromArrayWithCurrentThreadScheduler = RxNew.Observable.fromArray(args, RxNew.Scheduler.queue);
 
   function _next(x) { }
   function _error(e) { }

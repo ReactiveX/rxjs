@@ -10,7 +10,7 @@ module.exports = function (suite) {
     return x + x;
   }
   var oldSelectWithCurrentThreadScheduler = RxOld.Observable.range(0, 50).map(square).map(double);
-  var newSelectWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.immediate).map(square).map(double);
+  var newSelectWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.queue).map(square).map(double);
 
   function _next(x) { }
   function _error(e) { }

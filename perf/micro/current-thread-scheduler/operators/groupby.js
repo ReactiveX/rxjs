@@ -12,7 +12,7 @@ module.exports = function (suite) {
 
   var oldGroupByWithCurrentThreadScheduler = RxOld.Observable.fromArray(source, RxOld.Scheduler.currentThread)
     .groupBy(group);
-  var newGroupByWithCurrentThreadScheduler = RxNew.Observable.fromArray(source, RxNew.Scheduler.immediate)
+  var newGroupByWithCurrentThreadScheduler = RxNew.Observable.fromArray(source, RxNew.Scheduler.queue)
     .groupBy(group);
 
   function _next(x) { }

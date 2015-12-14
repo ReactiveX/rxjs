@@ -4,8 +4,8 @@ var RxNew = require('../../../../index');
 module.exports = function (suite) {
   var oldMergeWithCurrentThreadScheduler = RxOld.Observable.range(0, 250, RxOld.Scheduler.currentThread)
     .merge(RxOld.Observable.range(0, 250, RxOld.Scheduler.currentThread));
-  var newMergeWithCurrentThreadScheduler = RxNew.Observable.range(0, 250, RxNew.Scheduler.immediate)
-    .merge(RxNew.Observable.range(0, 250, RxNew.Scheduler.immediate));
+  var newMergeWithCurrentThreadScheduler = RxNew.Observable.range(0, 250, RxNew.Scheduler.queue)
+    .merge(RxNew.Observable.range(0, 250, RxNew.Scheduler.queue));
 
   function _next(x) { }
   function _error(e) { }

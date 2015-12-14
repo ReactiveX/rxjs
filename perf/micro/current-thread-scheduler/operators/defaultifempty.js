@@ -3,7 +3,7 @@ var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
   var oldDefaultIfEmptyWithCurrentThreadScheduler = RxOld.Observable.empty(RxOld.Scheduler.currentThread).defaultIfEmpty(25);
-  var newDefaultIfEmptyWithCurrentThreadScheduler = RxNew.Observable.empty(RxNew.Scheduler.immediate).defaultIfEmpty(25);
+  var newDefaultIfEmptyWithCurrentThreadScheduler = RxNew.Observable.empty(RxNew.Scheduler.queue).defaultIfEmpty(25);
 
   function _next(x) { }
   function _error(e) { }

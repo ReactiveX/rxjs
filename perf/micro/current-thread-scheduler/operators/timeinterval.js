@@ -4,8 +4,8 @@ var RxNew = require('../../../../index');
 module.exports = function (suite) {
   var oldTimeIntervalWithCurrentThreadScheduler = RxOld.Observable.interval(25, RxOld.Scheduler.currentThread)
     .take(5).timeInterval(RxOld.Scheduler.currentThread);
-  var newTimeIntervalWithCurrentThreadScheduler = RxNew.Observable.interval(25, RxNew.Scheduler.immediate)
-    .take(5).timeInterval(RxNew.Scheduler.immediate);
+  var newTimeIntervalWithCurrentThreadScheduler = RxNew.Observable.interval(25, RxNew.Scheduler.queue)
+    .take(5).timeInterval(RxNew.Scheduler.queue);
 
   function _next(x) { }
   function _error(e) { }

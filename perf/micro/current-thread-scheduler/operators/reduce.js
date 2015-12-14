@@ -6,7 +6,7 @@ module.exports = function (suite) {
     return x + x;
   }
   var oldReduceWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).reduce(add);
-  var newReduceWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate).reduce(add);
+  var newReduceWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue).reduce(add);
 
   function _next(x) { }
   function _error(e) { }

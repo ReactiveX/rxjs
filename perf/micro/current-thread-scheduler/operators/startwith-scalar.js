@@ -4,8 +4,8 @@ var RxNew = require('../../../../index');
 module.exports = function (suite) {
   var oldStartWithWithCurrentThreadScheduler = RxOld.Observable.of(25, RxOld.Scheduler.currentThread)
     .startWith(RxOld.Scheduler.currentThread, 5);
-  var newStartWithWithCurrentThreadScheduler = RxNew.Observable.of(25, RxNew.Scheduler.immediate)
-    .startWith(5, RxNew.Scheduler.immediate);
+  var newStartWithWithCurrentThreadScheduler = RxNew.Observable.of(25, RxNew.Scheduler.queue)
+    .startWith(5, RxNew.Scheduler.queue);
 
   function _next(x) { }
   function _error(e) { }

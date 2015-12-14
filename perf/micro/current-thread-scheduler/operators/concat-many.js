@@ -6,9 +6,9 @@ module.exports = function (suite) {
     .concatMap(function (x) {
       return RxOld.Observable.range(x, 25, RxOld.Scheduler.currentThread);
     });
-  var newConcatMapWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate)
+  var newConcatMapWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue)
     .concatMap(function (x) {
-      return RxNew.Observable.range(x, 25, RxNew.Scheduler.immediate);
+      return RxNew.Observable.range(x, 25, RxNew.Scheduler.queue);
     });
 
   function _next(x) { }

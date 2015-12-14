@@ -17,6 +17,6 @@ module.exports = function fromWithString(suite) {
       RxOld.Observable.from(argStr, null, null, RxOld.Scheduler.currentThread).subscribe(_next, _error, _complete);
     })
     .add('new from (string) with current thread scheduler', function () {
-      RxNew.Observable.from(argStr, null, null, RxNew.Scheduler.immediate).subscribe(_next, _error, _complete);
+      RxNew.Observable.from(argStr, null, null, RxNew.Scheduler.queue).subscribe(_next, _error, _complete);
     });
 };

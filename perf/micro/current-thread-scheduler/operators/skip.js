@@ -3,7 +3,7 @@ var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
   var oldSkipWithCurrentThreadScheduler = RxOld.Observable.range(0, 50, RxOld.Scheduler.currentThread).skip(25);
-  var newSkipWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.immediate).skip(25);
+  var newSkipWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.queue).skip(25);
 
   function _next(x) { }
   function _error(e) { }

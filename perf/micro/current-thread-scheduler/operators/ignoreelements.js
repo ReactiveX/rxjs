@@ -3,7 +3,7 @@ var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
   var oldIgnoreElementsWithCurrentThreadScheduler = RxOld.Observable.range(0, 50, RxOld.Scheduler.currentThread).ignoreElements();
-  var newIgnoreElementsWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.immediate).ignoreElements();
+  var newIgnoreElementsWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.queue).ignoreElements();
 
   function _next(x) { }
   function _error(e) { }

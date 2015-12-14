@@ -10,8 +10,8 @@ module.exports = function (suite) {
   )
     .switch();
   var newSwitchWithCurrentThreadScheduler = RxNew.Observable.fromArray(
-    source.map(function () { return RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate); }),
-    RxNew.Scheduler.immediate
+    source.map(function () { return RxNew.Observable.range(0, 25, RxNew.Scheduler.queue); }),
+    RxNew.Scheduler.queue
   )
     .switch();
 

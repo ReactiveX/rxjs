@@ -11,7 +11,7 @@ module.exports = function (suite) {
 
   var oldFilterWithCurrentThreadScheduler = RxOld.Observable.range(0, 50, RxOld.Scheduler.currentThread)
     .filter(divByTwo).filter(divByTen);
-  var newFilterWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.immediate)
+  var newFilterWithCurrentThreadScheduler = RxNew.Observable.range(0, 50, RxNew.Scheduler.queue)
     .filter(divByTwo).filter(divByTen);
 
   function _next(x) { }

@@ -3,7 +3,7 @@ var RxNew = require('../../../../index');
 
 module.exports = function empty(suite) {
   var oldEmptyWithCurrentThreadScheduler = RxOld.Observable.empty(RxOld.Scheduler.currentThread);
-  var newEmptyWithCurrentThreadScheduler = RxNew.Observable.empty(RxNew.Scheduler.immediate);
+  var newEmptyWithCurrentThreadScheduler = RxNew.Observable.empty(RxNew.Scheduler.queue);
 
   function _next(x) { }
   function _error(e) { }

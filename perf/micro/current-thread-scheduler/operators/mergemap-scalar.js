@@ -6,7 +6,7 @@ module.exports = function (suite) {
     .flatMap(function (x) {
       return RxOld.Observable.return(x, RxOld.Scheduler.currentThread);
     });
-  var newMergeMapWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate)
+  var newMergeMapWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue)
     .mergeMap(function (x) {
       return RxNew.Observable.of(x);
     });

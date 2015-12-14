@@ -11,8 +11,8 @@ module.exports = function (suite) {
     add
   );
   var newCombineLatestWithCurrentThreadScheduler = RxNew.Observable.combineLatest(
-    RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate),
-    RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate),
+    RxNew.Observable.range(0, 25, RxNew.Scheduler.queue),
+    RxNew.Observable.range(0, 25, RxNew.Scheduler.queue),
     add
   );
 

@@ -8,7 +8,7 @@ module.exports = function of(suite) {
   }
 
   var oldOfWithCurrentThreadScheduler = RxOld.Observable.of.apply(null, args.concat(RxOld.Scheduler.currentThread));
-  var newOfWithCurrentThreadScheduler = RxNew.Observable.of.apply(null, args.concat(RxNew.Scheduler.immediate));
+  var newOfWithCurrentThreadScheduler = RxNew.Observable.of.apply(null, args.concat(RxNew.Scheduler.queue));
 
   // add tests
   function _next(x) { }

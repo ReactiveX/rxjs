@@ -3,7 +3,7 @@ var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
   var oldTakeWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread).take(5);
-  var newTakeWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate).take(5);
+  var newTakeWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue).take(5);
 
   function _next(x) { }
   function _error(e) { }

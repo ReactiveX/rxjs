@@ -5,7 +5,7 @@ module.exports = function range(suite) {
   // add tests
 
   var oldRangeWithCurrentThreadScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread);
-  var newRangeWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.immediate);
+  var newRangeWithCurrentThreadScheduler = RxNew.Observable.range(0, 25, RxNew.Scheduler.queue);
 
   function _next(x) { }
   function _error(e) { }
