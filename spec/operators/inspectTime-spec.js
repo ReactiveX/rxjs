@@ -13,6 +13,16 @@ describe('Observable.prototype.inspectTime', function () {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should get inspect the same value each time even if a new one did not arrive', function () {
+    var e1 =   hot('----a-^--b----c--------------f----|');
+    var e1subs =         '^                           !';
+    var expected =       '-----------c----------c-----|';
+    // timer              -----------!----------!---------
+
+    expectObservable(e1.inspectTime(110, rxTestScheduler)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should inspect nothing if source has not nexted by time of inspect', function () {
     var e1 =   hot('----a-^-------------b-------------|');
     var e1subs =         '^                           !';
