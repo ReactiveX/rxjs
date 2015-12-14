@@ -2,24 +2,24 @@
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
-describe('Observable.prototype.sampleTime', function () {
-  it('should get samples on a delay', function () {
+describe('Observable.prototype.inspectTime', function () {
+  it('should get inspections on a delay', function () {
     var e1 =   hot('----a-^--b----c----d----e----f----|');
     var e1subs =         '^                           !';
     var expected =       '-----------c----------e-----|';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.sampleTime(110, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.inspectTime(110, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should sample nothing if source has not nexted by time of sample', function () {
+  it('should inspect nothing if source has not nexted by time of inspect', function () {
     var e1 =   hot('----a-^-------------b-------------|');
     var e1subs =         '^                           !';
     var expected =       '----------------------b-----|';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.sampleTime(110, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.inspectTime(110, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -29,7 +29,7 @@ describe('Observable.prototype.sampleTime', function () {
     var expected =       '-----------c------#';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.sampleTime(110, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.inspectTime(110, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -40,7 +40,7 @@ describe('Observable.prototype.sampleTime', function () {
     var expected =       '-----------c-----            ';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.sampleTime(110, rxTestScheduler), unsub).toBe(expected);
+    expectObservable(e1.inspectTime(110, rxTestScheduler), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -53,7 +53,7 @@ describe('Observable.prototype.sampleTime', function () {
 
     var result = e1
       .mergeMap(function (x) { return Observable.of(x); })
-      .sampleTime(110, rxTestScheduler)
+      .inspectTime(110, rxTestScheduler)
       .mergeMap(function (x) { return Observable.of(x); });
 
     expectObservable(result, unsub).toBe(expected);
@@ -65,7 +65,7 @@ describe('Observable.prototype.sampleTime', function () {
     var e1subs =   '(^!)';
     var expected = '|';
 
-    expectObservable(e1.sampleTime(60, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.inspectTime(60, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -74,7 +74,7 @@ describe('Observable.prototype.sampleTime', function () {
     var e1subs =   '(^!)';
     var expected = '#';
 
-    expectObservable(e1.sampleTime(60, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.inspectTime(60, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -83,7 +83,7 @@ describe('Observable.prototype.sampleTime', function () {
     var e1subs =   '^';
     var expected = '-';
 
-    expectObservable(e1.sampleTime(60, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.inspectTime(60, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

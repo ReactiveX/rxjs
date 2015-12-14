@@ -4,20 +4,20 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {asap} from '../scheduler/asap';
 
-export function sampleTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
-  return this.lift(new SampleTimeOperator(delay, scheduler));
+export function inspectTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
+  return this.lift(new InspectTimeOperator(delay, scheduler));
 }
 
-class SampleTimeOperator<T, R> implements Operator<T, R> {
+class InspectTimeOperator<T, R> implements Operator<T, R> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 
   call(subscriber: Subscriber<R>) {
-    return new SampleTimeSubscriber(subscriber, this.delay, this.scheduler);
+    return new InspectTimeSubscriber(subscriber, this.delay, this.scheduler);
   }
 }
 
-class SampleTimeSubscriber<T> extends Subscriber<T> {
+class InspectTimeSubscriber<T> extends Subscriber<T> {
   lastValue: T;
   hasValue: boolean = false;
 

@@ -40,6 +40,7 @@ export interface CoreOperators<T> {
                 durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
   ignoreElements?: () => Observable<T>;
   inspect?: (notifier: Observable<any>) => Observable<T>;
+  inspectTime?: (delay: number, scheduler?: Scheduler) => Observable<T>;
   last?: <R>(predicate?: (value: T, index: number) => boolean,
              resultSelector?: (value: T, index: number) => R,
              defaultValue?: any) => Observable<T> | Observable<R>;
@@ -63,7 +64,6 @@ export interface CoreOperators<T> {
   repeat?: (count?: number) => Observable<T>;
   retry?: (count?: number) => Observable<T>;
   retryWhen?: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
-  sampleTime?: (delay: number, scheduler?: Scheduler) => Observable<T>;
   scan?: <R>(project: (acc: R, x: T) => R, acc?: R) => Observable<R>;
   share?: () => Observable<T>;
   single?: (predicate?: (value: T, index: number) => boolean) => Observable<T>;
