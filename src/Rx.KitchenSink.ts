@@ -11,6 +11,8 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
   distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean) => Observable<T>;
   find?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<T>;
   findIndex?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
+  inspect?: (notifier: Observable<any>) => Observable<T>;
+  inspectTime?: (delay: number, scheduler?: IScheduler) => Observable<T>;
   max?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
   timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;

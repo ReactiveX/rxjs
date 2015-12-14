@@ -1,5 +1,5 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, cold, hot, rxTestScheduler */
-var Rx = require('../../dist/cjs/Rx');
+var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.inspectTime', function () {
