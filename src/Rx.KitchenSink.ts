@@ -90,7 +90,7 @@ import './add/operator/mergeAll';
 import './add/operator/mergeMap';
 import './add/operator/mergeMapTo';
 import './add/operator/mergeScan';
-import './add/operator/extended/min';
+import './add/operator/min';
 import './add/operator/multicast';
 import './add/operator/observeOn';
 import './add/operator/partition';
