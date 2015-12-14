@@ -1,6 +1,6 @@
-import {Operator} from '../../Operator';
-import {Subscriber} from '../../Subscriber';
-import {ArgumentOutOfRangeError} from '../../util/ArgumentOutOfRangeError';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 
 export function elementAt(index: number, defaultValue?: any) {
   return this.lift(new ElementAtOperator(index, defaultValue));

@@ -65,7 +65,7 @@ import './add/operator/delay';
 import './add/operator/distinctUntilChanged';
 import './add/operator/distinctUntilKeyChanged';
 import './add/operator/do';
-import './add/operator/extended/elementAt';
+import './add/operator/elementAt';
 import './add/operator/exhaust';
 import './add/operator/exhaustMap';
 import './add/operator/expand';
