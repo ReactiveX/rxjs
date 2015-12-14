@@ -63,7 +63,7 @@ import './add/operator/debounceTime';
 import './add/operator/defaultIfEmpty';
 import './add/operator/delay';
 import './add/operator/distinctUntilChanged';
-import './add/operator/extended/distinctUntilKeyChanged';
+import './add/operator/distinctUntilKeyChanged';
 import './add/operator/do';
 import './add/operator/extended/elementAt';
 import './add/operator/exhaust';
