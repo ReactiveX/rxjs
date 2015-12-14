@@ -51,6 +51,6 @@ class SampleNotificationSubscriber<T> extends Subscriber<T> {
   }
 
   _complete() {
-    //noop
+    this.parent.notifyNext();
   }
 }

@@ -15,12 +15,36 @@ describe('Observable.prototype.sample', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should sample nothing if source has not nexted yet', function () {
-    var e1 =   hot('----a-^-------b----|');
+  it('should sample nothing if source has not nexted at all', function () {
+    var e1 =   hot('----a-^------------|');
     var e1subs =         '^            !';
     var e2 =   hot(      '-----x-------|');
     var e2subs =         '^            !';
     var expected =       '-------------|';
+
+    expectObservable(e1.sample(e2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should sample nothing if source has nexted after all notifications, but notifier does not complete', function () {
+    var e1 =   hot('----a-^------b-----|');
+    var e1subs =         '^            !';
+    var e2 =   hot(      '-----x--------');
+    var e2subs =         '^            !';
+    var expected =       '-------------|';
+
+    expectObservable(e1.sample(e2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should sample when the notifier completes', function () {
+    var e1 =   hot('----a-^------b----------|');
+    var e1subs =         '^                 !';
+    var e2 =   hot(      '-----x-----|');
+    var e2subs =         '^          !';
+    var expected =       '-----------b------|';
 
     expectObservable(e1.sample(e2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
