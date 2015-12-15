@@ -10,7 +10,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
-  static dispatch<T>({ source, subscriber }): Subscription<T> {
+  static dispatch<T>({ source, subscriber }): Subscription {
     return source.subscribe(subscriber);
   }
 

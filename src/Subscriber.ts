@@ -6,8 +6,8 @@ import {Observer} from './Observer';
 import {Subscription} from './Subscription';
 import {rxSubscriber} from './symbol/rxSubscriber';
 
-export class Subscriber<T> extends Subscription<T> implements Observer<T> {
-  protected _subscription: Subscription<T>;
+export class Subscriber<T> extends Subscription implements Observer<T> {
+  protected _subscription: Subscription;
   protected _isUnsubscribed: boolean = false;
 
   [rxSubscriber]() {
@@ -54,11 +54,11 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     if (subscription) {
       this._subscription = subscription;
     } else if (destination instanceof Subscriber) {
-      this._subscription = (<Subscription<T>> destination);
+      this._subscription = (<Subscription> destination);
     }
   }
 
-  add(sub: Subscription<any> | Function | void): void {
+  add(sub: Subscription | Function | void): void {
     // route add to the shared Subscription if it exists
     const _subscription = this._subscription;
     if (_subscription) {
@@ -68,7 +68,7 @@ export class Subscriber<T> extends Subscription<T> implements Observer<T> {
     }
   }
 
-  remove(sub: Subscription<any>): void {
+  remove(sub: Subscription): void {
     // route remove to the shared Subscription if it exists
     if (this._subscription) {
       this._subscription.remove(sub);

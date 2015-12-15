@@ -27,7 +27,7 @@ class WindowToggleOperator<T, R, O> implements Operator<T, R> {
 
 interface WindowContext<T> {
   window: Subject<T>;
-  subscription: Subscription<T>;
+  subscription: Subscription;
 }
 
 class WindowToggleSubscriber<T, O> extends Subscriber<T> {
@@ -101,7 +101,7 @@ class WindowToggleSubscriber<T, O> extends Subscriber<T> {
 
 class WindowClosingNotifierSubscriber<T, O> extends Subscriber<T> {
   constructor(private parent: WindowToggleSubscriber<T, O>,
-              private windowContext: { window: Subject<T>, subscription: Subscription<T> }) {
+              private windowContext: { window: Subject<T>, subscription: Subscription }) {
     super(null);
   }
 

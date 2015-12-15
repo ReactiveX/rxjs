@@ -10,7 +10,7 @@ const isArray = Array.isArray;
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
                                         outerValue?: T,
-                                        outerIndex?: number): Subscription<T> {
+                                        outerIndex?: number): Subscription {
   let destination: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
   if (destination.isUnsubscribed) {

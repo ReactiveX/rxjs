@@ -77,7 +77,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
     destination.next(innerValue);
   }
 
-  notifyComplete(innerSub: Subscription<T>): void {
+  notifyComplete(innerSub: Subscription): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

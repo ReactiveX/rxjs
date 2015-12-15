@@ -45,7 +45,7 @@ class SwitchFirstSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.destination.error(err);
   }
 
-  notifyComplete(innerSub: Subscription<T>): void {
+  notifyComplete(innerSub: Subscription): void {
     this.remove(innerSub);
     this.hasSubscription = false;
     if (this.hasCompleted) {

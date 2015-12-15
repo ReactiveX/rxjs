@@ -55,19 +55,19 @@ export class VirtualTimeScheduler implements Scheduler {
     });
   }
 
-  schedule<T>(work: (x?: any) => Subscription<T> | void, delay: number = 0, state?: any): Subscription<T> {
+  schedule<T>(work: (x?: any) => Subscription | void, delay: number = 0, state?: any): Subscription {
     this.sorted = false;
     return new VirtualAction(this, work, this.index++).schedule(state, delay);
   }
 }
 
-class VirtualAction<T> extends Subscription<T> implements Action {
+class VirtualAction<T> extends Subscription implements Action {
   state: any;
   delay: number;
   calls = 0;
 
   constructor(public scheduler: VirtualTimeScheduler,
-              public work: (x?: any) => Subscription<T> | void,
+              public work: (x?: any) => Subscription | void,
               public index: number) {
     super();
   }

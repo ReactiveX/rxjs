@@ -32,7 +32,7 @@ class CatchOperator<T, R> implements Operator<T, R> {
 }
 
 class CatchSubscriber<T> extends Subscriber<T> {
-  private lastSubscription: Subscription<T>;
+  private lastSubscription: Subscription;
 
   constructor(public destination: Subscriber<T>,
               private selector: (err: any, caught: Observable<any>) => Observable<any>,

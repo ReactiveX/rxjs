@@ -2,12 +2,12 @@ import {Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {Action} from './Action';
 
-export class QueueAction<T> extends Subscription<T> implements Action {
+export class QueueAction<T> extends Subscription implements Action {
 
   state: any;
 
   constructor(public scheduler: Scheduler,
-              public work: (x?: any) => Subscription<T> | void) {
+              public work: (x?: any) => Subscription | void) {
     super();
   }
 

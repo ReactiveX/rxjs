@@ -23,7 +23,7 @@ class WindowOperator<T, R> implements Operator<T, R> {
 
 class WindowSubscriber<T> extends Subscriber<T> {
   private window: Subject<T>;
-  private closingNotification: Subscription<any>;
+  private closingNotification: Subscription;
 
   constructor(protected destination: Subscriber<Observable<T>>,
               private closingSelector: () => Observable<any>) {

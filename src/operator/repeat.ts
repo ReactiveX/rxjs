@@ -23,7 +23,7 @@ class RepeatOperator<T, R> implements Operator<T, R> {
 }
 
 class FirstRepeatSubscriber<T> extends Subscriber<T> {
-  private lastSubscription: Subscription<T>;
+  private lastSubscription: Subscription;
 
   constructor(public destination: Subscriber<T>,
               private count: number,

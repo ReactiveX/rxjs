@@ -19,7 +19,7 @@ class DebounceTimeOperator<T, R> implements Operator<T, R> {
 }
 
 class DebounceTimeSubscriber<T> extends Subscriber<T> {
-  private debouncedSubscription: Subscription<any> = null;
+  private debouncedSubscription: Subscription = null;
   private lastValue: T = null;
   private hasValue: boolean = false;
 

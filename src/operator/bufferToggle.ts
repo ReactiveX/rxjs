@@ -31,7 +31,7 @@ class BufferToggleOperator<T, R, O> implements Operator<T, R> {
 
 interface BufferContext<T> {
   buffer: T[];
-  subscription: Subscription<T>;
+  subscription: Subscription;
 }
 
 class BufferToggleSubscriber<T, O> extends Subscriber<T> {

@@ -18,7 +18,7 @@ class ThrottleTimeOperator<T, R> implements Operator<T, R> {
 }
 
 class ThrottleTimeSubscriber<T> extends Subscriber<T> {
-  private throttled: Subscription<any>;
+  private throttled: Subscription;
 
   constructor(destination: Subscriber<T>,
               private delay: number,

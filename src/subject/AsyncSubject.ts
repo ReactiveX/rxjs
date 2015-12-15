@@ -11,7 +11,7 @@ export class AsyncSubject<T> extends Subject<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription<T> {
+  _subscribe(subscriber: Subscriber<any>): Subscription {
     if (this.completeSignal && this._hasNext) {
       subscriber.next(this._value);
     }

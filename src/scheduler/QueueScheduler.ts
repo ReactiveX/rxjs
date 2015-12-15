@@ -25,17 +25,17 @@ export class QueueScheduler implements Scheduler {
     this.active = false;
   }
 
-  schedule<T>(work: (x?: any) => Subscription<T> | void, delay: number = 0, state?: any): Subscription<T> {
+  schedule<T>(work: (x?: any) => Subscription | void, delay: number = 0, state?: any): Subscription {
     return (delay <= 0) ?
       this.scheduleNow(work, state) :
       this.scheduleLater(work, delay, state);
   }
 
-  scheduleNow<T>(work: (x?: any) => Subscription<T> | void, state?: any): Action {
+  scheduleNow<T>(work: (x?: any) => Subscription | void, state?: any): Action {
     return new QueueAction(this, work).schedule(state);
   }
 
-  scheduleLater<T>(work: (x?: any) => Subscription<T> | void, delay: number, state?: any): Action {
+  scheduleLater<T>(work: (x?: any) => Subscription | void, delay: number, state?: any): Action {
     return new FutureAction(this, work).schedule(state, delay);
   }
 }
