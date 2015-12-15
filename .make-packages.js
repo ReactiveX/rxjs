@@ -31,6 +31,17 @@ fs.writeFileSync('dist/cjs/bundles/Rx.js', fs.readFileSync('dist/global/Rx.js').
 fs.writeFileSync('dist/cjs/bundles/Rx.min.js', fs.readFileSync('dist/global/Rx.min.js').toString());
 fs.writeFileSync('dist/cjs/bundles/Rx.min.js.map', fs.readFileSync('dist/global/Rx.min.js.map').toString());
 
+// ES6 Package
 fs.writeFileSync('dist/es6/package.json', JSON.stringify(es6Pkg, null, 2));
 fs.writeFileSync('dist/es6/LICENSE.txt', fs.readFileSync('./LICENSE.txt').toString());
 fs.writeFileSync('dist/es6/README.md', fs.readFileSync('./README.md').toString());
+
+// Add licenses to tops of bundles
+addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.umd.js');
+addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.umd.min.js');
+addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.js');
+addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.min.js');
+addLicenseToFile('LICENSE.txt', 'dist/global/Rx.umd.js');
+addLicenseToFile('LICENSE.txt', 'dist/global/Rx.umd.min.js');
+addLicenseToFile('LICENSE.txt', 'dist/global/Rx.js');
+addLicenseToFile('LICENSE.txt', 'dist/global/Rx.min.js');
