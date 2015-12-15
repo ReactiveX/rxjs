@@ -1,6 +1,6 @@
 import {errorObject} from './errorObject';
 
-let tryCatchTarget;
+let tryCatchTarget: Function;
 
 function tryCatcher(): any {
   try {
