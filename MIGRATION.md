@@ -59,93 +59,95 @@ To reduce polymorphism and get better performance out of operators, some operato
 
 <table>
   <thead>
-   <tr>
-    <th><th>
-    <th>RxJS 4</th>
-    <th>RxJS 5</th>
-   </tr>
+    <tr>
+      <th><th>
+      <th>RxJS 4</th>
+      <th>RxJS 5</th>
+    </tr>
   </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">`map`</td>
+      <td>`map(project: function, thisArg?: any)`</td>
+      <td>`map(project: function, thisArg?: any)`</td>
+    </tr>
+    <tr>
+      <td>`map(value: any)`</td>
+      <td>`mapTo(value: any)`</td>
+    </tr>
+    <tr>
+      <td rowspan="2">`flatMap`</td>
+      <td>`flatMap(project: function, resultSelector?: function)`</td>
+      <td>`flatMapTo(project: function, resultSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td>`flatMap(value: Observable, resultSelector?: function)`</td>
+      <td>`flatMapTo(value: Observable, resultSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td rowspan="2">`switchMap` (aka `flatMapLatest`)</td>
+      <td>`flatMapLatest(project: function, resultSelector?: function)`</td>
+      <td>`switchMapTo(project: function, resultSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td>`flatMapLatest(value: Observable, resultSelector?: function)`</td>
+      <td>`switchMapTo(value: Observable, resultSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td rowspan="2">`concatMap`</td>
+      <td>`concatMap(project: function, resultSelector?: function)`</td>
+      <td>`concatMapTo(project: function, resultSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td>`concatMap(value: Observable, resultSelector?: function)`</td>
+      <td>`concatMapTo(value: Observable, resultSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td rowspan="3">`buffer`</td>
+      <td>`buffer(closings: Observable)`</td>
+      <td>`buffer(closings: Observable)`</td>
+    </tr>
+    <tr>
+      <td>`buffer(closingNotifierFactory: function)`</td>
+      <td>`bufferWhen(closingNotifierFactory: function)`</td>
+    </tr>
+    <tr>
+      <td>`buffer(openings: Observable, closingSelector?: function)`</td>
+      <td>`bufferToggle(openings: Observable, closingSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td rowspan="3">`window`</td>
+      <td>`window(closings: Observable)`</td>
+      <td>`window(closings: Observable)`</td>
+    </tr>
+    <tr>
+      <td>`window(closingNotifierFactory: function)`</td>
+      <td>`windowWhen(closingNotifierFactory: function)`</td>
+    </tr>
+    <tr>
+      <td>`window(openings: Observable, closingSelector?: function)`</td>
+      <td>`windowToggle(openings: Observable, closingSelector?: function)`</td>
+    </tr>
+    <tr>
+      <td rowspan="2">`debounce`</td>
+      <td>`debounce(durationSelector: Observable)`</td>
+      <td>`debounce(durationSelector: Observable)`</td>
+    </tr>
+    <tr>
+      <td>`debounce(delay: number, scheduler?: Scheduler)`</td>
+      <td>`debounceTime(delay: number, scheduler?: Scheduler)`</td>
+    </tr>
+    <tr>
+      <td rowspan="2">`throttle`</td>
+      <td>`throttle(durationSelector: Observable)`</td>
+      <td>`throttle(durationSelector: Observable)`</td>
+    </tr>
+    <tr>
+      <td>`throttle(delay: number, scheduler?: Scheduler)`</td>
+      <td>`throttleTime(delay: number, scheduler?: Scheduler)`</td>
+    </tr>
+  </tbody>
 </table>
-<tr>
-  <td rowspan="2">`map`</td>
-  <td>`map(project: function, thisArg?: any)`</td>
-  <td>`map(project: function, thisArg?: any)`</td>
-</tr>
-<tr>
-  <td>`map(value: any)`</td>
-  <td>`mapTo(value: any)`</td>
-</tr>
-<tr>
-  <td rowspan="2">`flatMap`</td>
-  <td>`flatMap(project: function, resultSelector?: function)`</td>
-  <td>`flatMapTo(project: function, resultSelector?: function)`</td>
-</tr>
-<tr>
-  <td>`flatMap(value: Observable, resultSelector?: function)`</td>
-  <td>`flatMapTo(value: Observable, resultSelector?: function)`</td>
-</tr>
-<tr>
-  <td rowspan="2">`switchMap` (aka `flatMapLatest`)</td>
-  <td>`flatMapLatest(project: function, resultSelector?: function)`</td>
-  <td>`switchMapTo(project: function, resultSelector?: function)`</td>
-</tr>
-<tr>
-  <td>`flatMapLatest(value: Observable, resultSelector?: function)`</td>
-  <td>`switchMapTo(value: Observable, resultSelector?: function)`</td>
-</tr>
-<tr>
-  <td rowspan="2">`concatMap`</td>
-  <td>`concatMap(project: function, resultSelector?: function)`</td>
-  <td>`concatMapTo(project: function, resultSelector?: function)`</td>
-</tr>
-<tr>
-  <td>`concatMap(value: Observable, resultSelector?: function)`</td>
-  <td>`concatMapTo(value: Observable, resultSelector?: function)`</td>
-</tr>
-<tr>
-  <td rowspan="3">`buffer`</td>
-  <td>`buffer(closings: Observable)`</td>
-  <td>`buffer(closings: Observable)`</td>
-</tr>
-<tr>
-  <td>`buffer(closingNotifierFactory: function)`</td>
-  <td>`bufferWhen(closingNotifierFactory: function)`</td>
-</tr>
-<tr>
-  <td>`buffer(openings: Observable, closingSelector?: function)`</td>
-  <td>`bufferToggle(openings: Observable, closingSelector?: function)`</td>
-</tr>
-<tr>
-  <td rowspan="3">`window`</td>
-  <td>`window(closings: Observable)`</td>
-  <td>`window(closings: Observable)`</td>
-</tr>
-<tr>
-  <td>`window(closingNotifierFactory: function)`</td>
-  <td>`windowWhen(closingNotifierFactory: function)`</td>
-</tr>
-<tr>
-  <td>`window(openings: Observable, closingSelector?: function)`</td>
-  <td>`windowToggle(openings: Observable, closingSelector?: function)`</td>
-</tr>
-<tr>
-  <td rowspan="2">`debounce`</td>
-  <td>`debounce(durationSelector: Observable)`</td>
-  <td>`debounce(durationSelector: Observable)`</td>
-</tr>
-<tr>
-  <td>`debounce(delay: number, scheduler?: Scheduler)`</td>
-  <td>`debounceTime(delay: number, scheduler?: Scheduler)`</td>
-</tr>
-<tr>
-  <td rowspan="2">`throttle`</td>
-  <td>`throttle(durationSelector: Observable)`</td>
-  <td>`throttle(durationSelector: Observable)`</td>
-</tr>
-<tr>
-  <td>`throttle(delay: number, scheduler?: Scheduler)`</td>
-  <td>`throttleTime(delay: number, scheduler?: Scheduler)`</td>
-</tr>
 
 
 ## Schedulers Renamed
