@@ -2,6 +2,13 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 
+/**
+ * Returns an Observable that emits the item at the specified index in the source Observable.
+ * If default is given, missing indices will output this value on next; otherwise, outputs error.
+ * @param {number} index the index of the value to be retrieved.
+ * @param {any} [defaultValue] the default value returned for missing indices.
+ * @returns {Observable} an Observable that emits a single item, if it is found. Otherwise, will emit the default value if given.
+ */
 export function elementAt(index: number, defaultValue?: any) {
   return this.lift(new ElementAtOperator(index, defaultValue));
 }
