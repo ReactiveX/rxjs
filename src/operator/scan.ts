@@ -4,6 +4,14 @@ import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+/**
+ * Returns an Observable that applies a specified accumulator function to each item emitted by the source Observable.
+ * If a seed value is specified, then that value will be used as the initial value for the accumulator.
+ * If no seed value is specified, the first item of the source is used as the seed.
+ * @param {function} accumulator The accumulator function called on each item.
+ * @param {any} [seed] The initial accumulator value.
+ * @returns {Obervable} An observable of the accumulated values.
+ */
 export function scan<T, R>(accumulator: (acc: R, x: T) => R, seed?: T | R): Observable<R> {
   return this.lift(new ScanOperator(accumulator, seed));
 }
