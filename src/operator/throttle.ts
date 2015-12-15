@@ -22,7 +22,7 @@ class ThrottleOperator<T, R> implements Operator<T, R> {
 }
 
 class ThrottleSubscriber<T> extends Subscriber<T> {
-  private throttled: Subscription<any>;
+  private throttled: Subscription;
 
   constructor(destination: Subscriber<T>,
               private durationSelector: (value: T) => Observable<any> | Promise<any>) {

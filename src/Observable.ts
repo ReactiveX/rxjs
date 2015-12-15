@@ -30,7 +30,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
    * of a successful completion.
    */
-  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T>|Function|void) {
+  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription|Function|void) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -45,7 +45,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Observable} a new cold observable
    * @description creates a new cold Observable by calling the Observable constructor
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription<T>|Function|void) => {
+  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription|Function|void) => {
     return new Observable<T>(subscribe);
   };
 
@@ -85,7 +85,7 @@ export class Observable<T> implements CoreOperators<T>  {
    */
   subscribe(observerOrNext?: Observer<T> | ((value: T) => void),
             error?: (error: T) => void,
-            complete?: () => void): Subscription<T> {
+            complete?: () => void): Subscription {
 
     let subscriber: Subscriber<T>;
 
@@ -151,7 +151,7 @@ export class Observable<T> implements CoreOperators<T>  {
     return new PromiseCtor<void>(promiseCallback);
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription<T> | Function | void {
+  _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
     return this.source._subscribe(this.operator.call(subscriber));
   }
 

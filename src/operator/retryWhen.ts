@@ -21,8 +21,8 @@ class RetryWhenOperator<T, R> implements Operator<T, R> {
 }
 
 class FirstRetryWhenSubscriber<T> extends Subscriber<T> {
-  lastSubscription: Subscription<T>;
-  notificationSubscription: Subscription<T>;
+  lastSubscription: Subscription;
+  notificationSubscription: Subscription;
   errors: Subject<any>;
   retryNotifications: Observable<any>;
 

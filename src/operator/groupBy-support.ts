@@ -3,8 +3,8 @@ import {Subject} from '../Subject';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 
-export class RefCountSubscription<T> extends Subscription<T> {
-  primary: Subscription<T>;
+export class RefCountSubscription<T> extends Subscription {
+  primary: Subscription;
   attemptedToUnsubscribePrimary: boolean = false;
   count: number = 0;
 
@@ -12,7 +12,7 @@ export class RefCountSubscription<T> extends Subscription<T> {
     super();
   }
 
-  setPrimary(subscription: Subscription<T>) {
+  setPrimary(subscription: Subscription) {
     this.primary = subscription;
   }
 
@@ -44,7 +44,7 @@ export class GroupedObservable<T> extends Observable<T> {
   }
 }
 
-export class InnerRefCountSubscription<T> extends Subscription<T> {
+export class InnerRefCountSubscription<T> extends Subscription {
   constructor(private parent: RefCountSubscription<T>) {
     super();
     parent.count++;

@@ -6,7 +6,7 @@ import {Subscriber} from '../Subscriber';
 export class ConnectableObservable<T> extends Observable<T> {
 
   subject: Subject<T>;
-  subscription: Subscription<T>;
+  subscription: Subscription;
 
   constructor(public source: Observable<T>,
               protected subjectFactory: () => Subject<T>) {
@@ -25,7 +25,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     return (this.subject = this.subjectFactory());
   }
 
-  connect(): Subscription<T> {
+  connect(): Subscription {
     const source = this.source;
     let subscription = this.subscription;
     if (subscription && !subscription.isUnsubscribed) {
@@ -41,7 +41,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
-class ConnectableSubscription<T> extends Subscription<T> {
+class ConnectableSubscription<T> extends Subscription {
   constructor(protected connectable: ConnectableObservable<T>) {
     super();
   }
@@ -55,7 +55,7 @@ class ConnectableSubscription<T> extends Subscription<T> {
 }
 
 class RefCountObservable<T> extends Observable<T> {
-  connection: Subscription<T>;
+  connection: Subscription;
 
   constructor(protected connectable: ConnectableObservable<T>,
               public refCount: number = 0) {
@@ -74,7 +74,7 @@ class RefCountObservable<T> extends Observable<T> {
 }
 
 class RefCountSubscriber<T> extends Subscriber<T> {
-  connection: Subscription<T>;
+  connection: Subscription;
 
   constructor(public destination: Subscriber<T>,
               private refCountObservable: RefCountObservable<T>) {

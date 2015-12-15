@@ -9,7 +9,7 @@ export class FutureAction<T> extends QueueAction<T> {
   delay: number;
 
   constructor(public scheduler: QueueScheduler,
-              public work: (x?: any) => Subscription<T> | void) {
+              public work: (x?: any) => Subscription | void) {
     super(scheduler, work);
   }
 

@@ -43,7 +43,7 @@ export class MergeAllSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(innerSub: Subscription<T>) {
+  notifyComplete(innerSub: Subscription) {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

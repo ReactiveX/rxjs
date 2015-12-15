@@ -17,8 +17,8 @@ const _subscriberNext = Subscriber.prototype._next;
 const _subscriberError = Subscriber.prototype._error;
 const _subscriberComplete = Subscriber.prototype._complete;
 
-export class Subject<T> extends Observable<T> implements Observer<T>, Subscription<T> {
-  _subscriptions: Subscription<T>[];
+export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
+  _subscriptions: Subscription[];
   _unsubscribe: () => void;
 
   [rxSubscriber]() {
@@ -45,7 +45,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     return subject;
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription<T> {
+  _subscribe(subscriber: Subscriber<any>): Subscription {
     if (subscriber.isUnsubscribed) {
       return;
     } else if (this.errorSignal) {
@@ -171,7 +171,7 @@ class BidirectionalSubject<T> extends Subject<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription<T> {
+  _subscribe(subscriber: Subscriber<T>): Subscription {
     const operator = this.operator;
     return this.source._subscribe.call(this.source, operator ? operator.call(subscriber) : subscriber);
   }

@@ -31,7 +31,7 @@ class TimeoutWithOperator<T, R> implements Operator<T, R> {
 }
 
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private timeoutSubscription: Subscription<T> = undefined;
+  private timeoutSubscription: Subscription = undefined;
   private index: number = 0;
   private _previousIndex: number = 0;
   get previousIndex(): number {

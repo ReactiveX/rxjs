@@ -1,14 +1,14 @@
 import {noop} from './util/noop';
 
-export class Subscription<T> {
-  public static EMPTY: Subscription<void> = (function(empty){
+export class Subscription {
+  public static EMPTY: Subscription = (function(empty){
     empty.isUnsubscribed = true;
     return empty;
-  }(new Subscription<void>()));
+  }(new Subscription()));
 
   isUnsubscribed: boolean = false;
 
-  _subscriptions: Subscription<any>[];
+  _subscriptions: Subscription[];
 
   _unsubscribe(): void {
     noop();
@@ -47,7 +47,7 @@ export class Subscription<T> {
     }
   }
 
-  add(subscription: Subscription<any>|Function|void): void {
+  add(subscription: Subscription|Function|void): void {
     // return early if:
     //  1. the subscription is null
     //  2. we're attempting to add our this
@@ -58,11 +58,11 @@ export class Subscription<T> {
       return;
     }
 
-    let sub = (<Subscription<any>> subscription);
+    let sub = (<Subscription> subscription);
 
     switch (typeof subscription) {
       case 'function':
-        sub = new Subscription<void>(<(() => void) > subscription);
+        sub = new Subscription(<(() => void) > subscription);
       case 'object':
         if (sub.isUnsubscribed || typeof sub.unsubscribe !== 'function') {
           break;
@@ -78,7 +78,7 @@ export class Subscription<T> {
     }
   }
 
-  remove(subscription: Subscription<any>): void {
+  remove(subscription: Subscription): void {
 
     // return early if:
     //  1. the subscription is null

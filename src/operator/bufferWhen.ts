@@ -27,7 +27,7 @@ class BufferWhenOperator<T, R> implements Operator<T, R> {
 
 class BufferWhenSubscriber<T> extends Subscriber<T> {
   private buffer: T[];
-  private closingNotification: Subscription<any>;
+  private closingNotification: Subscription;
 
   constructor(destination: Subscriber<T>, private closingSelector: () => Observable<any>) {
     super(destination);

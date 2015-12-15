@@ -29,7 +29,7 @@ class SwitchMapToOperator<T, R, R2> implements Operator<T, R> {
 }
 
 class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
-  private innerSubscription: Subscription<T>;
+  private innerSubscription: Subscription;
   private hasCompleted = false;
   index: number = 0;
 
@@ -56,7 +56,7 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(innerSub: Subscription<R>) {
+  notifyComplete(innerSub: Subscription) {
     this.remove(innerSub);
     const prevSubscription = this.innerSubscription;
     if (prevSubscription) {

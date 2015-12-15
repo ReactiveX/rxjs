@@ -22,7 +22,7 @@ class DebounceOperator<T, R> implements Operator<T, R> {
 }
 
 class DebounceSubscriber<T> extends Subscriber<T> {
-  private debouncedSubscription: Subscription<any> = null;
+  private debouncedSubscription: Subscription = null;
   private lastValue: any = null;
   private _index: number = 0;
   get index() {
