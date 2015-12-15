@@ -25,6 +25,7 @@ So what was once `subject.onNext("hi")` is now `subject.next("hi")`.
 
 To meet the Observable spec (goal 3) `dispose` had to be renamed to `unsubscribe`.
 
+<!-- skip-example -->
 ```js
 var subscription = myObservable.subscribe(doSomething);
 // RxJS 4: subscription.dispose();
