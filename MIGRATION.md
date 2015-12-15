@@ -4,7 +4,7 @@ RxJS 5 is a ground-up rewrite of RxJS that actually began development when RxJS 
 three basic goals:
 
 1. Better performance
-2. Better debuggability
+2. Better debugging
 3. Compliance with the [ES7 Observable Spec](https://github.com/zenparsing/es-observable)
 
 Meeting the above goals meant breaking changes to the RxJS API, and a complete rewrite means that we had opportunity
