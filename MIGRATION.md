@@ -60,7 +60,7 @@ To reduce polymorphism and get better performance out of operators, some operato
 <table>
   <thead>
     <tr>
-      <th><th>
+      <th></th>
       <th>RxJS 4</th>
       <th>RxJS 5</th>
     </tr>
