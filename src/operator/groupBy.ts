@@ -36,7 +36,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
   private groups = null;
 
   constructor(destination: Subscriber<R>,
-              private refCountSubscription: RefCountSubscription<T>,
+              private refCountSubscription: RefCountSubscription,
               private keySelector: (value: T) => string,
               private elementSelector?: (value: T) => R,
               private durationSelector?: (grouped: GroupedObservable<R>) => Observable<any>) {
