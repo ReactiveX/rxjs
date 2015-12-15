@@ -67,84 +67,84 @@ To reduce polymorphism and get better performance out of operators, some operato
   </thead>
   <tbody>
     <tr>
-      <td rowspan="2">`map`</td>
-      <td>`map(project: function, thisArg?: any)`</td>
-      <td>`map(project: function, thisArg?: any)`</td>
+      <td rowspan="2"><code>map</code></td>
+      <td><code>map(project: function, thisArg?: any)</code></td>
+      <td><code>map(project: function, thisArg?: any)</code></td>
     </tr>
     <tr>
-      <td>`map(value: any)`</td>
-      <td>`mapTo(value: any)`</td>
+      <td><code>map(value: any)</code></td>
+      <td><code>mapTo(value: any)</code></td>
     </tr>
     <tr>
-      <td rowspan="2">`flatMap`</td>
-      <td>`flatMap(project: function, resultSelector?: function)`</td>
-      <td>`flatMapTo(project: function, resultSelector?: function)`</td>
+      <td rowspan="2"><code>flatMap</code></td>
+      <td><code>flatMap(project: function, resultSelector?: function)</code></td>
+      <td><code>flatMapTo(project: function, resultSelector?: function)</code></td>
     </tr>
     <tr>
-      <td>`flatMap(value: Observable, resultSelector?: function)`</td>
-      <td>`flatMapTo(value: Observable, resultSelector?: function)`</td>
+      <td><code>flatMap(value: Observable, resultSelector?: function)</code></td>
+      <td><code>flatMapTo(value: Observable, resultSelector?: function)</code></td>
     </tr>
     <tr>
-      <td rowspan="2">`switchMap` (aka `flatMapLatest`)</td>
-      <td>`flatMapLatest(project: function, resultSelector?: function)`</td>
-      <td>`switchMapTo(project: function, resultSelector?: function)`</td>
+      <td rowspan="2"><code>switchMap</code> (aka <code>flatMapLatest</code>)</td>
+      <td><code>flatMapLatest(project: function, resultSelector?: function)</code></td>
+      <td><code>switchMapTo(project: function, resultSelector?: function)</code></td>
     </tr>
     <tr>
-      <td>`flatMapLatest(value: Observable, resultSelector?: function)`</td>
-      <td>`switchMapTo(value: Observable, resultSelector?: function)`</td>
+      <td><code>flatMapLatest(value: Observable, resultSelector?: function)</code></td>
+      <td><code>switchMapTo(value: Observable, resultSelector?: function)</code></td>
     </tr>
     <tr>
-      <td rowspan="2">`concatMap`</td>
-      <td>`concatMap(project: function, resultSelector?: function)`</td>
-      <td>`concatMapTo(project: function, resultSelector?: function)`</td>
+      <td rowspan="2"><code>concatMap</code></td>
+      <td><code>concatMap(project: function, resultSelector?: function)</code></td>
+      <td><code>concatMapTo(project: function, resultSelector?: function)</code></td>
     </tr>
     <tr>
-      <td>`concatMap(value: Observable, resultSelector?: function)`</td>
-      <td>`concatMapTo(value: Observable, resultSelector?: function)`</td>
+      <td><code>concatMap(value: Observable, resultSelector?: function)</code></td>
+      <td><code>concatMapTo(value: Observable, resultSelector?: function)</code></td>
     </tr>
     <tr>
-      <td rowspan="3">`buffer`</td>
-      <td>`buffer(closings: Observable)`</td>
-      <td>`buffer(closings: Observable)`</td>
+      <td rowspan="3"><code>buffer</code></td>
+      <td><code>buffer(closings: Observable)</code></td>
+      <td><code>buffer(closings: Observable)</code></td>
     </tr>
     <tr>
-      <td>`buffer(closingNotifierFactory: function)`</td>
-      <td>`bufferWhen(closingNotifierFactory: function)`</td>
+      <td><code>buffer(closingNotifierFactory: function)</code></td>
+      <td><code>bufferWhen(closingNotifierFactory: function)</code></td>
     </tr>
     <tr>
-      <td>`buffer(openings: Observable, closingSelector?: function)`</td>
-      <td>`bufferToggle(openings: Observable, closingSelector?: function)`</td>
+      <td><code>buffer(openings: Observable, closingSelector?: function)</code></td>
+      <td><code>bufferToggle(openings: Observable, closingSelector?: function)</code></td>
     </tr>
     <tr>
-      <td rowspan="3">`window`</td>
-      <td>`window(closings: Observable)`</td>
-      <td>`window(closings: Observable)`</td>
+      <td rowspan="3"><code>window</code></td>
+      <td><code>window(closings: Observable)</code></td>
+      <td><code>window(closings: Observable)</code></td>
     </tr>
     <tr>
-      <td>`window(closingNotifierFactory: function)`</td>
-      <td>`windowWhen(closingNotifierFactory: function)`</td>
+      <td><code>window(closingNotifierFactory: function)</code></td>
+      <td><code>windowWhen(closingNotifierFactory: function)</code></td>
     </tr>
     <tr>
-      <td>`window(openings: Observable, closingSelector?: function)`</td>
-      <td>`windowToggle(openings: Observable, closingSelector?: function)`</td>
+      <td><code>window(openings: Observable, closingSelector?: function)</code></td>
+      <td><code>windowToggle(openings: Observable, closingSelector?: function)</code></td>
     </tr>
     <tr>
-      <td rowspan="2">`debounce`</td>
-      <td>`debounce(durationSelector: Observable)`</td>
-      <td>`debounce(durationSelector: Observable)`</td>
+      <td rowspan="2"><code>debounce</code></td>
+      <td><code>debounce(durationSelector: Observable)</code></td>
+      <td><code>debounce(durationSelector: Observable)</code></td>
     </tr>
     <tr>
-      <td>`debounce(delay: number, scheduler?: Scheduler)`</td>
-      <td>`debounceTime(delay: number, scheduler?: Scheduler)`</td>
+      <td><code>debounce(delay: number, scheduler?: Scheduler)</code></td>
+      <td><code>debounceTime(delay: number, scheduler?: Scheduler)</code></td>
     </tr>
     <tr>
-      <td rowspan="2">`throttle`</td>
-      <td>`throttle(durationSelector: Observable)`</td>
-      <td>`throttle(durationSelector: Observable)`</td>
+      <td rowspan="2"><code>throttle</code></td>
+      <td><code>throttle(durationSelector: Observable)</code></td>
+      <td><code>throttle(durationSelector: Observable)</code></td>
     </tr>
     <tr>
-      <td>`throttle(delay: number, scheduler?: Scheduler)`</td>
-      <td>`throttleTime(delay: number, scheduler?: Scheduler)`</td>
+      <td><code>throttle(delay: number, scheduler?: Scheduler)</code></td>
+      <td><code>throttleTime(delay: number, scheduler?: Scheduler)</code></td>
     </tr>
   </tbody>
 </table>
