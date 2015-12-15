@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/ReactiveX/RxJS/badge.svg?branch=master&service=github)](https://coveralls.io/github/ReactiveX/RxJS?branch=master)
 [![npm version](https://badge.fury.io/js/%40reactivex%2Frxjs.svg)](http://badge.fury.io/js/%40reactivex%2Frxjs)
 
-# RxJS 5 (alpha)
+# RxJS 5 (beta)
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is intended to supersede it once this is ready. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
