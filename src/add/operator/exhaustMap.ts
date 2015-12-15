@@ -1,5 +1,7 @@
 import {Observable} from '../../Observable';
 import {exhaustMap} from '../../operator/exhaustMap';
-Observable.prototype.exhaustMap = exhaustMap;
+import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
+observableProto.exhaustMap = exhaustMap;
 
 export var _void: void;
