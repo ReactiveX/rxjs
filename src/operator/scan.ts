@@ -4,6 +4,13 @@ import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+/**
+ * Applies an accumulator function to each input. Optional seed value is used as the initial value if supplied; otherwise, the first input is used.
+ * For aggregation with no intermediate results, see Observable.aggregate
+ * @param {Function} accumulator An accumulator function called on each input.
+ * @param {Any} [seed] The initial accumulator value.
+ * @returns {Obervable<R>} An observable of the accumulated values.
+ */
 export function scan<T, R>(accumulator: (acc: R, x: T) => R, seed?: T | R): Observable<R> {
   return this.lift(new ScanOperator(accumulator, seed));
 }
