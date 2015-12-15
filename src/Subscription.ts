@@ -28,13 +28,12 @@ export class Subscription<T> {
 
     this.isUnsubscribed = true;
 
-    const unsubscribe = this._unsubscribe;
     const subscriptions = this._subscriptions;
 
     this._subscriptions = void 0;
 
-    if (unsubscribe) {
-      unsubscribe.call(this);
+    if (this._unsubscribe) {
+      this._unsubscribe.call(this);
     }
 
     if (subscriptions != null) {
