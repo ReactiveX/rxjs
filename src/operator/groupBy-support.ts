@@ -44,7 +44,7 @@ export class GroupedObservable<T> extends Observable<T> {
   }
 }
 
-export class InnerRefCountSubscription<T> extends Subscription {
+export class InnerRefCountSubscription extends Subscription {
   constructor(private parent: RefCountSubscription) {
     super();
     parent.count++;
