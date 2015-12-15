@@ -17,7 +17,7 @@ Observers and Subjects alike) has changed.
 
 - `observer.onNext(value)` -> `observer.next(value)`
 - `observer.onError(err)` -> `observer.error(err)`
-- `observer.onCompleted()` -> `observer.completed()`
+- `observer.onCompleted()` -> `observer.complete()`
 
 So what was once `subject.onNext("hi")` is now `subject.next("hi")`.
 
