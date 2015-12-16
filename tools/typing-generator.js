@@ -30,8 +30,6 @@ for (var i = 0; i < contents.length; i++) {
     } else {
       if (fs.existsSync('./src/operator/' + filename + '.ts')) {
         fileContent = fs.readFileSync('./src/operator/' + filename + '.ts').toString('utf8');
-      } else {
-        fileContent = fs.readFileSync('./src/operator/extended/' + filename + '.ts').toString('utf8');
       }
     }
 
@@ -65,11 +63,15 @@ for (var i = 0; i < contents.length; i++) {
           .replace(/([\w|\d]*?)\: (\w*) = [\w|\d|\.|\-]*/g, '$1?: $2');
 
         if (method[method.length - 1] === ';' || method[method.length - 1] === '{') {
-          method = method.substr(0, method.length - 1).trim();
+          method = method.replace(/(,\s){2}/g, ', ').substr(0, method.length - 1).trim();
         }
 
         if (!_static) {
           method = method.replace(/^<T>/, '').replace(/^<T, /, '<');
+        }
+        method = method.replace(/^<>/, '');
+        if (method.indexOf(';') === -1) {
+          method += ';';
         }
         methods.push(method);
       }
@@ -99,7 +101,7 @@ for (var i in observables) {
   var value = observables[i];
   fileResult += '  export module ' + value.type + ' {\n';
   fileResult += '    export interface ' + value.name + ' {\n';
-  fileResult += '      ' + value.methods.join(';\n      ') + ';\n';
+  fileResult += '      ' + value.methods.join('\n      ') + '\n';
   fileResult += '    }\n';
   fileResult += '  }\n';
 }
@@ -110,7 +112,7 @@ for (var i in operators) {
   var value = operators[i];
   fileResult += '  export module ' + value.type + ' {\n';
   fileResult += '    export interface ' + value.name + ' {\n';
-  fileResult += '      ' + value.methods.join(';\n      ') + ';\n';
+  fileResult += '      ' + value.methods.join('\n      ') + '\n';
   fileResult += '    }\n';
   fileResult += '  }\n';
 }
@@ -124,10 +126,11 @@ fs.writeFileSync('./src/typings-generated.ts', typingsContent);
 
 function computeTypingsFor(s) {
   var captureRegex = /\/\*\-\-([\s|\S]*?)-\-\*\//g;
-  var computeNumberRegex = /\*compute (\d.*?)?\*/;
+  var computeNumberRegex = /\*compute (\d.*?)?(x\d.*?)?\*/;
   var tokenRegex = /\{.*?\}/g;
 
   s = s.replace(captureRegex, function(capture) {
+    var start, end;
     capture = capture.trim();
     capture = capture.substr(3, capture.length - 3 * 2);
     var compute = computeNumberRegex.exec(capture);
@@ -138,30 +141,34 @@ function computeTypingsFor(s) {
     }
     var range = compute.split('-');
     if (range.length === 1) {
-      var start = 1;
-      var end = range[0];
+      start = 1;
+      end = +range[0];
     } else {
-      var start = range[0];
-      var end = range[1];
+      start = +range[0];
+      end = +range[1];
     }
 
     capture = capture.replace(computeNumberRegex, '').trim();
 
-    var tokenResult;
     var results = [];
     for (var number = start; number <= end; number++) {
       var res = capture.replace(tokenRegex, function(capture, index, str) {
         var items = [];
         capture = capture.substr(1, capture.length - 2);
-        var union = capture.indexOf('|U|') > -1;
-        for (var i = start; i <= number; i++) {
-          var typeName = 'T' + (i === 1 ? '' : i);
-          items.push(capture
-            .replace(/\|U\|/g, typeName)
-            .replace(/\|X\|/g, typeName)
-            .replace(/\|v\|/g, 'v' + i)
-          );
-        }
+        var union = capture.indexOf('$X$') > -1;
+
+        for (var x = start; x <= number; x++) {
+            if (x === 0) {
+              continue;
+            }
+            var xTypeName = 'T' + (x === 1 ? '' : x);
+            var r = capture
+              .replace(/\|X\|/g, xTypeName)
+              .replace(/\$X\$/g, xTypeName)
+              .replace(/\|x\|/g, 'x' + x);
+
+            items.push(r);
+          }
 
         return items.join(union ? ' | ' : ', ');
       });

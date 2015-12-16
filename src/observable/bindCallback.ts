@@ -9,6 +9,24 @@ import {AsyncSubject} from '../subject/AsyncSubject';
 export class BoundCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
+  /*-- *compute 0-6* static create<{|X|, }TResult>(
+                                    callbackFunc: ({|x|: |X|, }callback: (result: TResult) => any) => any
+                                ): ({|x|: |X|}) => Observable<TResult>; --*/
+  /*-- *compute 0-6* static create<{|X|, }TResult>(callbackFunc: ({|x|: |X|, }callback: (result: TResult) => any) => any,
+                                                 selector: any,
+                                                 scheduler: Scheduler): ({|x|: |X|}) => Observable<TResult>; --*/
+  /*-- *compute 0-6* static create<{|X|}>(callbackFunc: ({|x|: |X|, }
+                                                  callback: (...args: any[]) => any) => any): ({|x|: |X|}) => Observable<any[]>; --*/
+  /*-- *compute 0-6* static create<{|X|, }TResult>(callbackFunc: ({|x|: |X|, }callback: (...args: any[]) => any) => any,
+                                                   selector: (...args: any[]) => TResult,
+                                                   scheduler?: Scheduler): ({|x|: |X|}) => Observable<TResult>; --*/
+  static create<T>(callbackFunc: Function): (...args: any[]) => Observable<T>;
+  static create<T>(callbackFunc: Function,
+                   selector: void,
+                   scheduler: Scheduler): (...args: any[]) => Observable<T>;
+  static create<T>(callbackFunc: Function,
+                   selector?: (...args: any[]) => T,
+                   scheduler?: Scheduler): (...args: any[]) => Observable<T>;
   static create<T>(callbackFunc: Function,
                    selector: Function | void = undefined,
                    scheduler?: Scheduler): (...args: any[]) => Observable<T> {
