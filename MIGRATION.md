@@ -10,6 +10,16 @@ three basic goals:
 Meeting the above goals meant breaking changes to the RxJS API, and a complete rewrite means that we had opportunity
 to change/fix/correct things we've wanted to correct about RxJS in general.
 
+## Key Component Classes Are Recomposed
+
+They are similar to other language implementations of ReactiveX (e.g. RxJava).
+
+|RxJS 4|RxJS 5| remarks |
+|---|---|---|
+|`Observer`|`Subscriber` implements `Observer`| `Observer` is an interface now |
+|`IDisposable`|`Subscription`|`Subscription` is a class, not an interface.|
+
+
 ## Observer Interface Changes (also Subjects)
 
 Due to wanting to comply with the ES7 Observable Spec (goal 3 above), the Observer interface (as implemented by
