@@ -37,6 +37,8 @@ import {ErrorObservable} from './observable/ErrorObservable';
 import {AjaxCreationMethod} from './observable/dom/AjaxObservable';
 import {WebSocketSubject} from './observable/dom/WebSocketSubject';
 
+import {CombineLatestSignature} from './operator/combineLatest';
+
 export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
 export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T>;
 export type ObservableInput<T> = ObservableOrPromise<T> | ArrayOrIterator<T>;
@@ -191,9 +193,7 @@ export class Observable<T> implements CoreOperators<T>  {
   bufferWhen: (closingSelector: () => Observable<any>) => Observable<T[]>;
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
-  combineLatest: <R>(...observables: Array<Observable<any> |
-                                     Array<Observable<any>> |
-                                     ((...values: Array<any>) => R)>) => Observable<R>;
+  combineLatest: CombineLatestSignature<T>;
   concat: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
   concatAll: () => Observable<any>;
   concatMap: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
