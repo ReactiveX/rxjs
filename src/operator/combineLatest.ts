@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, ObservableInput} from '../Observable';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {isArray} from '../util/isArray';
 import {Scheduler} from '../Scheduler';
@@ -19,8 +19,8 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export function combineLatest<T, R>(...observables: Array<Observable<any> |
-                                                       Array<Observable<any>> |
+export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
+                                                       Array<ObservableInput<any>> |
                                                        ((...values: Array<any>) => R)>): Observable<R> {
   let project: (...values: Array<any>) => R = null;
   if (typeof observables[observables.length - 1] === 'function') {
@@ -38,6 +38,27 @@ export function combineLatest<T, R>(...observables: Array<Observable<any> |
   return new ArrayObservable(observables).lift<T, R>(new CombineLatestOperator<T, R>(project));
 }
 
+/* tslint:disable:max-line-length */
+export interface CombineLatestSignature<T> {
+  <T2>(v2: ObservableInput<T2>): Observable<[T, T2]>;
+  <T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
+  <T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
+  <T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
+  <T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+
+  <R>(project: (v1: T) => R): Observable<R>;
+  <T2, R>(v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): Observable<R>;
+  <T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): Observable<R>;
+  <T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): Observable<R>;
+  <T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): Observable<R>;
+  <T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): Observable<R>;
+
+  <R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
+  <R>(array: ObservableInput<any>[]): Observable<R>;
+  <R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R): Observable<R>;
+}
+/* tslint:enable:max-line-length */
+
 /**
  * Combines the values from observables passed as arguments. This is done by subscribing
  * to each observable, in order, and collecting an array of each of the most recent values any time any of the observables
@@ -48,8 +69,25 @@ export function combineLatest<T, R>(...observables: Array<Observable<any> |
  * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
  */
-export function combineLatestStatic<T, R>(...observables: Array<any | Observable<any> |
-                                                    Array<Observable<any>> |
+/* tslint:disable:max-line-length */
+export function combineLatestStatic<T>(v1: ObservableInput<T>): Observable<[T]>;
+export function combineLatestStatic<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
+export function combineLatestStatic<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
+export function combineLatestStatic<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
+export function combineLatestStatic<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
+export function combineLatestStatic<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+export function combineLatestStatic<T, R>(v1: ObservableInput<T>, project: (v1: T) => R): Observable<R>;
+export function combineLatestStatic<T, T2, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): Observable<R>;
+export function combineLatestStatic<T, T2, T3, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): Observable<R>;
+export function combineLatestStatic<T, T2, T3, T4, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): Observable<R>;
+export function combineLatestStatic<T, T2, T3, T4, T5, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): Observable<R>;
+export function combineLatestStatic<T, T2, T3, T4, T5, T6, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): Observable<R>;
+export function combineLatestStatic<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
+export function combineLatestStatic<R>(array: ObservableInput<any>[]): Observable<R>;
+export function combineLatestStatic<R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R): Observable<R>;
+/* tslint:enable:max-line-length */
+export function combineLatestStatic<T, R>(...observables: Array<any | ObservableInput<any> |
+                                                    Array<ObservableInput<any>> |
                                                     (((...values: Array<any>) => R)) |
                                                     Scheduler>): Observable<R> {
   let project: (...values: Array<any>) => R =  null;
