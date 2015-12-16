@@ -20,7 +20,8 @@ class DebounceTimeOperator<T, R> implements Operator<T, R> {
 
 class DebounceTimeSubscriber<T> extends Subscriber<T> {
   private debouncedSubscription: Subscription<any> = null;
-  private lastValue: any = null;
+  private lastValue: T = null;
+  private hasValue: boolean = false;
 
   constructor(destination: Subscriber<T>,
               private dueTime: number,
@@ -31,6 +32,7 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
   _next(value: T) {
     this.clearDebounce();
     this.lastValue = value;
+    this.hasValue = true;
     this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
   }
 
@@ -41,9 +43,11 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
 
   debouncedNext(): void {
     this.clearDebounce();
-    if (this.lastValue != null) {
+
+    if (this.hasValue) {
       this.destination.next(this.lastValue);
       this.lastValue = null;
+      this.hasValue = false;
     }
   }
 
