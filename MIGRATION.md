@@ -42,27 +42,81 @@ var subscription = myObservable.subscribe(doSomething);
 subscription.unsubscribe();
 ```
 
-
 ## Subscription: All Subscriptions Are "Composite"
 
 In RxJS 4, there was the idea of a `CompositeSubscription`. Now all Subscriptions are "composite".
 Subscription objects have an `add` and `remove` method on them useful for adding and removing subscriptions
 enabling "composite" subscription behavior.
 
-
-
-## Operators Renamed
+## Operators Renamed or Removed
 
 |RxJS 4|RxJS 5|
 |---|---|
-|`flatMap`|`mergeMap` or `flatMap`(alias)|
-|`flatMapLatest`|`switchMap`|
-|`bufferWithTime`|`bufferTime`|
 |`bufferWithCount`|`bufferCount`|
+|`bufferWithTime`|`bufferTime`|
+|`flatMap` or `selectMany`|`mergeMap` or `flatMap`(alias)|
+|`flatMapFirst`|`exhaustMap`|
+|`flatMapLatest`|`switchMap`|
+|`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
+|`publishValue`|`publishBehavior`|
+|`replay`|`publishReplay`|
+|`select`|`map`|
+|`selectConcat`|`concatMap`|
+|`switchFirst`|`exhaust`|
+|`tap`|`do`|
 |`windowWithTime`|`windowTime`|
 |`windowWithCount`|`windowCount`|
-|`switchFirst`|`exhaustFirst`|
-|`switchFirstMap`|`exhaustFirstMap`|
+|`where`|`filter`|
+|`amb`|`-`|
+|`and`|`-`|
+|`asObservable`|`-`|
+|`average`|`-`|
+|`controlled`|`-`|
+|`delaySubscription`|`-`|
+|`distinct`|`-`|
+|`doWhile`|`-`|
+|`extend`|`-`|
+|`groupByUntil`|`-`|
+|`groupJoin`|`-`|
+|`includes`|`-`|
+|`indexOf`|`-`|
+|`join`|`-`|
+|`jortSort`|`-`|
+|`jortSortUntil`|`-`|
+|`lastIndexOf`|`-`|
+|`let`|`-`|
+|`manySelect`|`-`|
+|`maxBy`|`-`|
+|`minBy`|`-`|
+|`onErrorResumeNext`|`-`|
+|`pausable`|`-`|
+|`pausableBuffered`|`-`|
+|`pluck`|`-`|
+|`shareReplay`|`-`|
+|`shareValue`|`-`|
+|`selectConcatObserver` or `concatMapObserver`|`-`|
+|`selectManyObserver` or `flatMapObserver`|`-`|
+|`sequenceEqual`|`-`|
+|`singleInstance`|`-`|
+|`skipLast`|`-`|
+|`skipLastWithTime`|`-`|
+|`skipUntilWithTime`|`-`|
+|`slice`|`-`|
+|`some`|`-`|
+|`sum`|`-`|
+|`takeLast`|`-`|
+|`takeLastBuffer`|`-`|
+|`takeLastBufferWithTime`|`-`|
+|`takeLastWithTime`|`-`|
+|`takeUntilWithTime`|`-`|
+|`tapOnNext`|`-`|
+|`tapOnError`|`-`|
+|`tapOnCompleted`|`-`|
+|`timestamp`|`-`|
+|`toMap`|`-`|
+|`toSet`|`-`|
+|`transduce`|`-`|
+|`windowWithTimeOrCount`|`-`|
 
 ## Operator Splits
 
@@ -89,7 +143,7 @@ To reduce polymorphism and get better performance out of operators, some operato
     <tr>
       <td rowspan="2"><code>flatMap</code></td>
       <td><code>flatMap(project: function, resultSelector?: function)</code></td>
-      <td><code>flatMapTo(project: function, resultSelector?: function)</code></td>
+      <td><code>flatMap(project: function, resultSelector?: function)</code></td>
     </tr>
     <tr>
       <td><code>flatMap(value: Observable, resultSelector?: function)</code></td>
@@ -98,7 +152,7 @@ To reduce polymorphism and get better performance out of operators, some operato
     <tr>
       <td rowspan="2"><code>switchMap</code> (aka <code>flatMapLatest</code>)</td>
       <td><code>flatMapLatest(project: function, resultSelector?: function)</code></td>
-      <td><code>switchMapTo(project: function, resultSelector?: function)</code></td>
+      <td><code>switchMap(project: function, resultSelector?: function)</code></td>
     </tr>
     <tr>
       <td><code>flatMapLatest(value: Observable, resultSelector?: function)</code></td>
@@ -107,7 +161,7 @@ To reduce polymorphism and get better performance out of operators, some operato
     <tr>
       <td rowspan="2"><code>concatMap</code></td>
       <td><code>concatMap(project: function, resultSelector?: function)</code></td>
-      <td><code>concatMapTo(project: function, resultSelector?: function)</code></td>
+      <td><code>concatMap(project: function, resultSelector?: function)</code></td>
     </tr>
     <tr>
       <td><code>concatMap(value: Observable, resultSelector?: function)</code></td>
