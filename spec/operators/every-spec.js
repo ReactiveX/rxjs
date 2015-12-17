@@ -11,6 +11,15 @@ describe('Observable.prototype.every()', function () {
     return x % 5 === 0;
   }
 
+  it.asDiagram('every(x => x % 5 === 0)')('should return false if only some of element matches with predicate', function () {
+    var source = hot('--a--b--c--d--e--|', {a: 5, b: 10, c: 15, d: 18, e: 20});
+    var sourceSubs = '^          !      ';
+    var expected =   '-----------(F|)   ';
+
+    expectObservable(source.every(predicate)).toBe(expected, {F: false});
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should accept thisArg with scalar observables', function () {
     var thisArg = {};
     var result;

@@ -115,9 +115,23 @@ function drawObservableArrow(out, maxFrame, y, angle, streamData) {
   return out;
 }
 
+function stringifyContent(content) {
+  var string = content;
+  if (Array.isArray(content)) {
+    string = '[' + content.join(',') + ']';
+  }
+  else if (typeof content === 'boolean') {
+    return content ? 'true' : 'false';
+  }
+  else if (typeof content === 'object') {
+    string = JSON.stringify(content).replace(/"/g, '');
+  }
+  return String('"' + string + '"');
+}
+
 function drawMarble(out, x, y, inclination, content) {
   out = out.stroke('#000000', 3);
-  out = out.fill(stringToColor(String(content)));
+  out = out.fill(stringToColor(stringifyContent(content)));
   out = out.drawEllipse(x, y + inclination, MARBLE_RADIUS, MARBLE_RADIUS, 0, 360);
 
   out = out.strokeWidth(-1);
@@ -127,7 +141,7 @@ function drawMarble(out, x, y, inclination, content) {
     'translate ' + (x - CANVAS_WIDTH * 0.5) + ',' + (y + inclination - canvasHeight * 0.5),
     'gravity Center',
     'text 0,0',
-    String('"' + content + '"'));
+    stringifyContent(content));
   return out;
 }
 
@@ -217,7 +231,7 @@ function drawOperator(out, label, y) {
     'translate 0,' + (y + OPERATOR_HEIGHT * 0.5 - canvasHeight * 0.5),
     'gravity Center',
     'text 0,0',
-    String('"' + label + '"'));
+    stringifyContent(label));
   return out;
 }
 

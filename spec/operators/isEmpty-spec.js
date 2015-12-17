@@ -2,7 +2,7 @@
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 
 describe('Observable.prototype.isEmpty()', function () {
-  it('should return true if source is empty', function () {
+  it.asDiagram('isEmpty')('should return true if source is empty', function () {
     var source = hot('-----|');
     var subs =       '^    !';
     var expected =   '-----(T|)';
