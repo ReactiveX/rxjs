@@ -3,6 +3,17 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.takeWhile()', function () {
+  it.asDiagram('takeWhile(x => x < 4)')('should take all elements until predicate is false', function () {
+    var source = hot('-1-^2--3--4--5--6--|');
+    var sourceSubs =    '^      !         ';
+    var expected =      '-2--3--|         ';
+
+    var result = source.takeWhile(function (v) { return +v < 4; });
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should take all elements with predicate returns true', function () {
     var e1 = hot('--a-^-b--c--d--e--|');
     var e1subs =     '^             !';

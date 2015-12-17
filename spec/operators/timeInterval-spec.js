@@ -3,6 +3,19 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.timeInterval()', function () {
+  it.asDiagram('timeInterval')('should record the time interval between source elements', function () {
+    var e1 = hot('--a--^b-c-----d--e--|');
+    var e1subs =      '^              !';
+    var expected =    '-w-x-----y--z--|';
+    var expectedValue = { w: 10, x: 20, y: 60, z: 30 };
+
+    var result = e1.timeInterval(rxTestScheduler)
+      .map(function (x) { return x.interval; });
+
+    expectObservable(result).toBe(expected, expectedValue);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should record interval if source emit elements', function () {
     var e1 = hot('--a--^b--c----d---e--|');
     var e1subs =      '^               !';

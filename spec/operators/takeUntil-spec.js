@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.takeUntil()', function () {
-  it('should take values until notifier emits', function () {
+  it.asDiagram('takeUntil')('should take values until notifier emits', function () {
     var e1 =     hot('--a--b--c--d--e--f--g--|');
     var e1subs =     '^            !          ';
     var e2 =     hot('-------------z--|       ');

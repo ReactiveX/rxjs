@@ -4,6 +4,16 @@ var Observable = Rx.Observable;
 var Promise = require('promise');
 
 describe('Observable.prototype.withLatestFrom()', function () {
+  it.asDiagram('withLatestFrom')('should combine events from cold observables', function () {
+    var e1 =   hot('-a--b-----c-d-e-|');
+    var e2 =   hot('--1--2-3-4---|   ');
+    var expected = '----B-----C-D-E-|';
+
+    var result = e1.withLatestFrom(e2, function (a, b) { return String(a) + String(b); });
+
+    expectObservable(result).toBe(expected, { B: 'b1', C: 'c4', D: 'd4', E: 'e4' });
+  });
+
   it('should merge the value with the latest values from the other observables into arrays', function () {
     var e1 =   hot('--a--^---b---c---d-|');
     var e1subs =        '^             !';

@@ -4,8 +4,8 @@ var Observable = Rx.Observable;
 var Scheduler = Rx.Scheduler;
 
 describe('Observable.prototype.throttle()', function () {
-  it('should simply mirror the source if values are not emitted often enough', function () {
-    var e1 =   hot('-a--------b-----c----|');
+  it.asDiagram('throttle')('should immediately emit the first value in each time window', function () {
+    var e1 =   hot('-a-xy-----b--x--cxxx-|');
     var e1subs =   '^                    !';
     var e2 =  cold( '----|                ');
     var e2subs =  [' ^   !                ',
@@ -20,8 +20,8 @@ describe('Observable.prototype.throttle()', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should immediately emit the first value in each time window', function () {
-    var e1 =   hot('-a-xy-----b--x--cxxx-|');
+  it('should simply mirror the source if values are not emitted often enough', function () {
+    var e1 =   hot('-a--------b-----c----|');
     var e1subs =   '^                    !';
     var e2 =  cold( '----|                ');
     var e2subs =  [' ^   !                ',

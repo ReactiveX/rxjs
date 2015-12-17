@@ -4,6 +4,17 @@ var Observable = Rx.Observable;
 var Scheduler = Rx.Scheduler;
 
 describe('Observable.prototype.throttleTime()', function () {
+  it.asDiagram('throttleTime(50)')('should immediately emit the first value in each time window', function () {
+    var e1 =   hot('-a-x-y----b---x-cx---|');
+    var subs =     '^                    !';
+    var expected = '-a--------b-----c----|';
+
+    var result = e1.throttleTime(50, rxTestScheduler);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
   it('should throttle events by 50 time units', function (done) {
     Observable.of(1, 2, 3).throttleTime(50)
       .subscribe(function (x) {
@@ -25,15 +36,6 @@ describe('Observable.prototype.throttleTime()', function () {
 
   it('should simply mirror the source if values are not emitted often enough', function () {
     var e1 =   hot('-a--------b-----c----|');
-    var subs =     '^                    !';
-    var expected = '-a--------b-----c----|';
-
-    expectObservable(e1.throttleTime(50, rxTestScheduler)).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(subs);
-  });
-
-  it('should immediately emit the first value in each time window', function () {
-    var e1 =   hot('-a-x-y----b---x-cx---|');
     var subs =     '^                    !';
     var expected = '-a--------b-----c----|';
 

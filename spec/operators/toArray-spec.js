@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('toArray', function () {
+  it.asDiagram('toArray')('should reduce the values of an observable into an array', function () {
+    var e1 =   hot('---a--b--|');
+    var e1subs =   '^        !';
+    var expected = '---------(w|)';
+
+    expectObservable(e1.toArray()).toBe(expected, { w: ['a', 'b'] });
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should be never when source is never', function () {
     var e1 =  cold('-');
     var e1subs =   '^';
@@ -45,15 +54,6 @@ describe('toArray', function () {
     var expected =  '------(w|)';
 
     expectObservable(e1.toArray()).toBe(expected, { w: ['y'] });
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should reduce the values of an observable into an array', function () {
-    var e1 = hot('-x-^--y--z--|');
-    var e1subs =    '^        !';
-    var expected =  '---------(w|)';
-
-    expectObservable(e1.toArray()).toBe(expected, { w: ['y', 'z'] });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

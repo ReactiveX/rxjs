@@ -3,12 +3,12 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.timeoutWith()', function () {
-  it('should timeout after a specified period then subscribe to the passed observable', function () {
-    var e1 =  cold('-');
-    var e1subs =   '^    !           ';
-    var e2 =       cold('--x--y--z--|');
-    var e2subs =   '     ^          !';
-    var expected = '-------x--y--z--|';
+  it.asDiagram('timeoutWith(50)')('should timeout after a specified period then subscribe to the passed observable', function () {
+    var e1 =  cold('-------a--b--|');
+    var e1subs =   '^    !        ';
+    var e2 =       cold('x-y-z-|  ');
+    var e2subs =   '     ^     !  ';
+    var expected = '-----x-y-z-|  ';
 
     var result = e1.timeoutWith(50, e2, rxTestScheduler);
 

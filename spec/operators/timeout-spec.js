@@ -5,10 +5,10 @@ var Observable = Rx.Observable;
 describe('Observable.prototype.timeout()', function () {
   var defaultTimeoutError = new Error('timeout');
 
-  it('should timeout after a specified timeout period', function () {
-    var e1 =  cold('-');
-    var e1subs =   '^    !';
-    var expected = '-----#';
+  it.asDiagram('timeout(50)')('should timeout after a specified timeout period', function () {
+    var e1 =  cold('-------a--b--|');
+    var e1subs =   '^    !        ';
+    var expected = '-----#        ';
 
     var result = e1.timeout(50, null, rxTestScheduler);
 
