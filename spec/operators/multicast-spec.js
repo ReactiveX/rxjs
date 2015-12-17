@@ -4,6 +4,18 @@ var Observable = Rx.Observable;
 var Subject = Rx.Subject;
 
 describe('Observable.prototype.multicast()', function () {
+  it.asDiagram('multicast(() => new Subject())')('should mirror a simple source Observable', function () {
+    var source = cold('--1-2---3-4--5-|');
+    var sourceSubs =  '^              !';
+    var multicasted = source.multicast(function () { return new Subject(); });
+    var expected =    '--1-2---3-4--5-|';
+
+    expectObservable(multicasted).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+
+    multicasted.connect();
+  });
+
   it('should accept Subjects', function (done) {
     var expected = [1,2,3,4];
 
@@ -28,18 +40,6 @@ describe('Observable.prototype.multicast()', function () {
         done);
 
     connectable.connect();
-  });
-
-  it('should mirror a simple source Observable', function () {
-    var source = cold('--1-2---3-4--5-|');
-    var sourceSubs =  '^              !';
-    var multicasted = source.multicast(function () { return new Subject(); });
-    var expected =    '--1-2---3-4--5-|';
-
-    expectObservable(multicasted).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-
-    multicasted.connect();
   });
 
   it('should do nothing if connect is not called, despite subscriptions', function () {

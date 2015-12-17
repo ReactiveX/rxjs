@@ -3,7 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.subscribeOn()', function () {
-  it('should subscribe on specified scheduler', function () {
+  it.asDiagram('subscribeOn(scheduler)')('should subscribe on specified scheduler', function () {
     var e1 =   hot('--a--b--|');
     var expected = '--a--b--|';
     var sub =      '^       !';

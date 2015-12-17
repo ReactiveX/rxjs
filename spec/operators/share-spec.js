@@ -4,6 +4,17 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.share()', function () {
+  it.asDiagram('share')('should mirror a simple source Observable', function () {
+    var source = cold('--1-2---3-4--5-|');
+    var sourceSubs =  '^              !';
+    var expected =    '--1-2---3-4--5-|';
+
+    var shared = source.share();
+
+    expectObservable(shared).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should share a single subscription', function () {
     var subscriptionCount = 0;
     var obs = new Observable(function (observer) {
@@ -18,17 +29,6 @@ describe('Observable.prototype.share()', function () {
     source.subscribe();
 
     expect(subscriptionCount).toBe(1);
-  });
-
-  it('should mirror a simple source Observable', function () {
-    var source = hot('--0--^-1-2---3-4--5-|');
-    var sourceSubs =      '^              !';
-    var expected =        '--1-2---3-4--5-|';
-
-    var shared = source.share();
-
-    expectObservable(shared).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
   it('should not change the output of the observable when error', function () {

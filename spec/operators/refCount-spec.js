@@ -5,6 +5,18 @@ var Subject = Rx.Subject;
 var Observer = Rx.Observer;
 
 describe('Observable.prototype.publish().refCount()', function () {
+  it.asDiagram('refCount')('should turn a multicasted Observable an automatically ' +
+  '(dis)connecting hot one', function () {
+    var source = cold('--1-2---3-4--5-|');
+    var sourceSubs =  '^              !';
+    var expected =    '--1-2---3-4--5-|';
+
+    var result = source.publish().refCount();
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should count references', function () {
     var source = Observable.never().publish().refCount();
 
