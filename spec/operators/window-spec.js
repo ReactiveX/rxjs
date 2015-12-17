@@ -3,15 +3,15 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.window', function () {
-  it('should emit windows that close and reopen', function () {
-    var source =   hot('---a---b---c---d---e---f---g---h---i---|       ');
-    var sourceSubs =   '^                                      !       ';
-    var closings = hot('-------------X------------X-------------------|');
-    var closingSubs =  '^                                      !       ';
-    var expected =     'x------------y------------z------------|       ';
-    var x = cold(      '---a---b---c-|                                 ');
-    var y = cold(                   '--d---e---f--|                    ');
-    var z = cold(                                '-g---h---i---|       ');
+  it.asDiagram('window')('should emit windows that close and reopen', function () {
+    var source =   hot('---a---b---c---d---e---f---g---h---i---|    ');
+    var sourceSubs =   '^                                      !    ';
+    var closings = hot('-------------w------------w----------------|');
+    var closingSubs =  '^                                      !    ';
+    var expected =     'x------------y------------z------------|    ';
+    var x = cold(      '---a---b---c-|                              ');
+    var y = cold(                   '--d---e---f--|                 ');
+    var z = cold(                                '-g---h---i---|    ');
     var expectedValues = { x: x, y: y, z: z };
 
     var result = source.window(closings);
