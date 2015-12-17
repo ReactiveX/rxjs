@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions, rxTestScheduler */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions, rxTestScheduler, time*/
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
@@ -6,6 +6,7 @@ describe('Observable.prototype.windowTime', function () {
   it('should emit windows given windowTimeSpan', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     var subs =               '^                          !';
+    var timeSpan = time(     '----------|');
     //  100 frames            0---------1---------2------|
     var expected =           'x---------y---------z------|';
     var x = cold(            '---a--b--c|                 ');
@@ -13,7 +14,7 @@ describe('Observable.prototype.windowTime', function () {
     var z = cold(                                '-g--h--|');
     var values = { x: x, y: y, z: z };
 
-    var result = source.windowTime(100, null, rxTestScheduler);
+    var result = source.windowTime(timeSpan, null, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -22,6 +23,8 @@ describe('Observable.prototype.windowTime', function () {
   it('should emit windows given windowTimeSpan and windowCreationInterval', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     var subs =               '^                          !';
+    var timeSpan = time(     '-----|');
+    var interval = time(               '----------|');
     //  100 frames            0---------1---------2------|
     //  50                     ----|
     //  50                               ----|
@@ -32,7 +35,7 @@ describe('Observable.prototype.windowTime', function () {
     var z = cold(                                '-g--h|  ');
     var values = { x: x, y: y, z: z };
 
-    var result = source.windowTime(50, 100, rxTestScheduler);
+    var result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -44,8 +47,10 @@ describe('Observable.prototype.windowTime', function () {
     var expected =      '(w|)';
     var w =        cold('|');
     var expectedValues = { w: w };
+    var timeSpan = time('-----|');
+    var interval = time('----------|');
 
-    var result = source.windowTime(50, 100, rxTestScheduler);
+    var result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -57,8 +62,10 @@ describe('Observable.prototype.windowTime', function () {
     var expected =      '(w|)';
     var w =        cold('(a|)');
     var expectedValues = { w: w };
+    var timeSpan = time('-----|');
+    var interval = time('----------|');
 
-    var result = source.windowTime(50, 100, rxTestScheduler);
+    var result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -68,6 +75,8 @@ describe('Observable.prototype.windowTime', function () {
     var source =    hot('^----------');
     var subs =          '^         !';
     var expected =      'a--b--c--d-';
+    var timeSpan = time('---|');
+    var interval = time(   '---|');
     var a =        cold('---|       ');
     var b =        cold(   '---|    ');
     var c =        cold(      '---| ');
@@ -75,7 +84,7 @@ describe('Observable.prototype.windowTime', function () {
     var unsub =         '          !';
     var expectedValues = { a: a, b: b, c: c, d: d };
 
-    var result = source.windowTime(30, 30, rxTestScheduler);
+    var result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -87,8 +96,10 @@ describe('Observable.prototype.windowTime', function () {
     var expected =      '(w#)';
     var w =        cold('#');
     var expectedValues = { w: w };
+    var timeSpan = time('-----|');
+    var interval = time('----------|');
 
-    var result = source.windowTime(50, 100, rxTestScheduler);
+    var result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -97,6 +108,8 @@ describe('Observable.prototype.windowTime', function () {
   it('should handle source Observable which eventually emits an error', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--#');
     var subs =               '^                          !';
+    var timeSpan = time(     '-----|');
+    var interval = time(               '----------|');
     //  100 frames            0---------1---------2------|
     //  50                     ----|
     //  50                               ----|
@@ -107,7 +120,7 @@ describe('Observable.prototype.windowTime', function () {
     var z = cold(                                '-g--h|  ');
     var values = { x: x, y: y, z: z };
 
-    var result = source.windowTime(50, 100, rxTestScheduler);
+    var result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -117,6 +130,8 @@ describe('Observable.prototype.windowTime', function () {
   'but outer is unsubscribed early', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     var subs =               '^          !                ';
+    var timeSpan = time(     '-----|');
+    var interval = time(               '----------|');
     //  100 frames            0---------1---------2------|
     //  50                     ----|
     //  50                               ----|
@@ -127,7 +142,7 @@ describe('Observable.prototype.windowTime', function () {
     var unsub =              '           !                ';
     var values = { x: x, y: y };
 
-    var result = source.windowTime(50, 100, rxTestScheduler);
+    var result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -160,6 +175,8 @@ describe('Observable.prototype.windowTime', function () {
   it('should not break unsubscription chains when result is unsubscribed explicitly', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     var sourcesubs =         '^             !             ';
+    var timeSpan = time(     '-----|');
+    var interval = time(               '----------|');
     //  100 frames            0---------1---------2------|
     //  50                     ----|
     //  50                               ----|
@@ -172,7 +189,7 @@ describe('Observable.prototype.windowTime', function () {
 
     var result = source
       .mergeMap(function (i) { return Observable.of(i); })
-      .windowTime(50, 100, rxTestScheduler)
+      .windowTime(timeSpan, interval, rxTestScheduler)
       .mergeMap(function (i) { return Observable.of(i); });
 
     expectObservable(result, unsub).toBe(expected, values);
