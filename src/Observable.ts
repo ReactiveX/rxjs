@@ -27,6 +27,7 @@ import {FromEventPatternObservable} from './observable/fromEventPattern';
 import {PromiseObservable} from './observable/fromPromise';
 import {IntervalObservable} from './observable/interval';
 import {TimerObservable} from './observable/timer';
+import {race as raceStatic} from './operator/race-static';
 import {RangeObservable} from './observable/range';
 import {InfiniteObservable} from './observable/never';
 import {ErrorObservable} from './observable/throw';
@@ -175,6 +176,7 @@ export class Observable<T> implements CoreOperators<T>  {
   static merge: typeof mergeStatic;
   static never: typeof InfiniteObservable.create;
   static of: typeof ArrayObservable.of;
+  static race: typeof raceStatic;
   static range: typeof RangeObservable.create;
   static throw: typeof ErrorObservable.create;
   static timer: typeof TimerObservable.create;
@@ -238,6 +240,7 @@ export class Observable<T> implements CoreOperators<T>  {
   publishBehavior: (value: any) => ConnectableObservable<T>;
   publishReplay: (bufferSize?: number, windowTime?: number, scheduler?: Scheduler) => ConnectableObservable<T>;
   publishLast: () => ConnectableObservable<T>;
+  race: (...observables: Array<Observable<any>>) => Observable<any>;
   reduce: <R>(project: (acc: R, x: T) => R, seed?: R) => Observable<R>;
   repeat: (count?: number) => Observable<T>;
   retry: (count?: number) => Observable<T>;
