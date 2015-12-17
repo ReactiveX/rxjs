@@ -3,6 +3,15 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.take()', function () {
+  it.asDiagram('take(2)')('should take two values of an observable with many values', function () {
+    var e1 =  cold('--a-----b----c---d--|');
+    var e1subs =   '^       !            ';
+    var expected = '--a-----(b|)         ';
+
+    expectObservable(e1.take(2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should work with empty', function () {
     var e1 =  cold('|');
     var e1subs =   '(^!)';
@@ -45,15 +54,6 @@ describe('Observable.prototype.take()', function () {
     var expected =    '---(b|)         ';
 
     expectObservable(e1.take(1)).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should take two values of an observable with many values', function () {
-    var e1 = hot('--a--^--b----c---d--|');
-    var e1subs =      '^       !       ';
-    var expected =    '---b----(c|)    ';
-
-    expectObservable(e1.take(2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
