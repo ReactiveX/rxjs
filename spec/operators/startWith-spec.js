@@ -5,6 +5,15 @@ var Observable = Rx.Observable;
 describe('Observable.prototype.startWith()', function () {
   var defaultStartValue = 'x';
 
+  it.asDiagram('startWith(s)')('should prepend to a cold Observable', function () {
+    var e1 =  cold('---a--b--c--|');
+    var e1subs =   '^           !';
+    var expected = 's--a--b--c--|';
+
+    expectObservable(e1.startWith('s')).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should start an observable with given value', function () {
     var e1 =   hot('--a--|');
     var e1subs =   '^    !';
