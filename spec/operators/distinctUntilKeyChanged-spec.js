@@ -3,6 +3,16 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.distinctUntilKeyChanged()', function () {
+  it.asDiagram('distinctUntilKeyChanged(\'k\')')('should distinguish between values', function () {
+    var values = {a: {k: 1}, b: {k: 2}, c: {k: 3}};
+    var e1 =   hot('-a--b-b----a-c-|', values);
+    var expected = '-a--b------a-c-|';
+
+    var result = e1.distinctUntilKeyChanged('k');
+
+    expectObservable(result).toBe(expected, values);
+  });
+
   it('should distinguish between values', function () {
     var values = {a: {val: 1}, b: {val: 2}};
     var e1 =   hot('--a--a--a--b--b--a--|', values);
