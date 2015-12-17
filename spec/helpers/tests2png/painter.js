@@ -14,7 +14,9 @@ var SIN_45 = 0.707106;
 var NESTED_STREAM_ANGLE = 18; // degrees
 var TO_RAD = (Math.PI / 180);
 var MESSAGES_WIDTH = (CANVAS_WIDTH - 2 * CANVAS_PADDING - OBSERVABLE_END_PADDING);
+var BLACK_COLOR = '#101010';
 var COLORS = ['#3EA1CB', '#FFCB46', '#FF6946', '#82D736'];
+var SPECIAL_COLOR = '#1010F0';
 
 function getMaxFrame(allStreams) {
   var allStreamsLen = allStreams.length;
@@ -43,6 +45,26 @@ function isNestedStreamData(message) {
   return message.notification.kind === 'N' &&
     message.notification.value &&
     message.notification.value.messages;
+}
+
+function areEqualStreamData(leftStreamData, rightStreamData) {
+  if (leftStreamData.messages.length !== rightStreamData.messages.length) {
+    return false;
+  }
+  for (var i = 0; i < leftStreamData.messages.length; i++) {
+    var left = leftStreamData.messages[i];
+    var right = rightStreamData.messages[i];
+    if (left.frame !== right.frame) {
+      return false;
+    }
+    if (left.notification.kind !== right.notification.kind) {
+      return false;
+    }
+    if (left.notification.value !== right.notification.value) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function measureObservableArrow(maxFrame, streamData) {
@@ -95,12 +117,16 @@ function measureStreamHeight(maxFrame) {
   };
 }
 
-function drawObservableArrow(out, maxFrame, y, angle, streamData) {
+function drawObservableArrow(out, maxFrame, y, angle, streamData, isSpecial) {
   var measurements = measureObservableArrow(maxFrame, streamData);
   var startX = measurements.startX;
   var endX = measurements.endX;
 
-  out = out.stroke('#000000', 3);
+  var outlineColor = BLACK_COLOR;
+  if (isSpecial) {
+    outlineColor = SPECIAL_COLOR;
+  }
+  out = out.stroke(outlineColor, 3);
   var inclination = measureInclination(startX, endX, angle);
   out = out.drawLine(startX, y, endX, y + inclination);
   out = out.draw(
@@ -129,13 +155,17 @@ function stringifyContent(content) {
   return String('"' + string + '"');
 }
 
-function drawMarble(out, x, y, inclination, content) {
-  out = out.stroke('#000000', 3);
+function drawMarble(out, x, y, inclination, content, isSpecial) {
+  var outlineColor = BLACK_COLOR;
+  if (isSpecial) {
+    outlineColor = SPECIAL_COLOR;
+  }
+  out = out.stroke(outlineColor, 3);
   out = out.fill(stringToColor(stringifyContent(content)));
   out = out.drawEllipse(x, y + inclination, MARBLE_RADIUS, MARBLE_RADIUS, 0, 360);
 
   out = out.strokeWidth(-1);
-  out = out.fill('#000000');
+  out = out.fill(outlineColor);
   out = out.font('helvetica', 28);
   out = out.draw(
     'translate ' + (x - CANVAS_WIDTH * 0.5) + ',' + (y + inclination - canvasHeight * 0.5),
@@ -145,9 +175,13 @@ function drawMarble(out, x, y, inclination, content) {
   return out;
 }
 
-function drawError(out, x, y, startX, angle) {
+function drawError(out, x, y, startX, angle, isSpecial) {
   var inclination = measureInclination(startX, x, angle);
-  out = out.stroke('#000000', 3);
+  var outlineColor = BLACK_COLOR;
+  if (isSpecial) {
+    outlineColor = SPECIAL_COLOR;
+  }
+  out = out.stroke(outlineColor, 3);
   out = out.draw(
     'translate', String(x) + ',' + String(y + inclination),
     'rotate ' + String(angle),
@@ -160,7 +194,7 @@ function drawError(out, x, y, startX, angle) {
   return out;
 }
 
-function drawComplete(out, x, y, maxFrame, angle, streamData) {
+function drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial) {
   var startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
   var isOverlapping = streamData.messages.some(function (msg) {
@@ -168,9 +202,13 @@ function drawComplete(out, x, y, maxFrame, angle, streamData) {
     var msgX = startX + MESSAGES_WIDTH * (msg.frame / maxFrame);
     return Math.abs(msgX - x) < MARBLE_RADIUS;
   });
+  var outlineColor = BLACK_COLOR;
+  if (isSpecial) {
+    outlineColor = SPECIAL_COLOR;
+  }
   var inclination = measureInclination(startX, x, angle);
   var radius = isOverlapping ? 1.8 * MARBLE_RADIUS : MARBLE_RADIUS;
-  out = out.stroke('#000000', 3);
+  out = out.stroke(outlineColor, 3);
   out = out.draw(
     'translate', String(x) + ',' + String(y + inclination),
     'rotate ' + String(angle),
@@ -182,12 +220,12 @@ function drawComplete(out, x, y, maxFrame, angle, streamData) {
 
 function drawNestedObservable(out, maxFrame, y, streamData) {
   var angle = NESTED_STREAM_ANGLE;
-  out = drawObservableArrow(out, maxFrame, y, angle, streamData);
-  out = drawObservableMessages(out, maxFrame, y, angle, streamData);
+  out = drawObservableArrow(out, maxFrame, y, angle, streamData, false);
+  out = drawObservableMessages(out, maxFrame, y, angle, streamData, false);
   return out;
 }
 
-function drawObservableMessages(out, maxFrame, y, angle, streamData) {
+function drawObservableMessages(out, maxFrame, y, angle, streamData, isSpecial) {
   var startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
 
@@ -199,33 +237,33 @@ function drawObservableMessages(out, maxFrame, y, angle, streamData) {
       if (isNestedStreamData(message)) {
         out = drawNestedObservable(out, maxFrame, y, message.notification.value);
       } else {
-        out = drawMarble(out, x, y, inclination, message.notification.value);
+        out = drawMarble(out, x, y, inclination, message.notification.value, isSpecial);
       }
       break;
-    case 'E': out = drawError(out, x, y, startX, angle); break;
-    case 'C': out = drawComplete(out, x, y, maxFrame, angle, streamData); break;
+    case 'E': out = drawError(out, x, y, startX, angle, isSpecial); break;
+    case 'C': out = drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial); break;
     default: break;
     }
   });
   return out;
 }
 
-function drawObservable(out, maxFrame, y, streamData) {
+function drawObservable(out, maxFrame, y, streamData, isSpecial) {
   var offsetY = OBSERVABLE_HEIGHT * 0.5;
   var angle = 0;
-  out = drawObservableArrow(out, maxFrame, y + offsetY, angle, streamData);
-  out = drawObservableMessages(out, maxFrame, y + offsetY, angle, streamData);
+  out = drawObservableArrow(out, maxFrame, y + offsetY, angle, streamData, isSpecial);
+  out = drawObservableMessages(out, maxFrame, y + offsetY, angle, streamData, isSpecial);
   return out;
 }
 
 function drawOperator(out, label, y) {
-  out = out.stroke('#000000', 3);
+  out = out.stroke(BLACK_COLOR, 3);
   out = out.fill('#FFFFFF00');
   out = out.drawRectangle(
     CANVAS_PADDING, y,
     CANVAS_WIDTH - CANVAS_PADDING, y + OPERATOR_HEIGHT);
   out = out.strokeWidth(-1);
-  out = out.fill('#000000');
+  out = out.fill(BLACK_COLOR);
   out = out.font('helvetica', 54);
   out = out.draw(
     'translate 0,' + (y + OPERATOR_HEIGHT * 0.5 - canvasHeight * 0.5),
@@ -269,12 +307,13 @@ module.exports = function painter(inputStreams, operatorLabel, outputStream, fil
   var out;
   out = gm(CANVAS_WIDTH, canvasHeight, '#ffffff');
   inputStreams.forEach(function (streamData) {
-    out = drawObservable(out, maxFrame, heightSoFar, streamData);
+    out = drawObservable(out, maxFrame, heightSoFar, streamData, false);
     heightSoFar += measureStreamHeight(maxFrame)(streamData);
   });
   out = drawOperator(out, operatorLabel, heightSoFar);
   heightSoFar += OPERATOR_HEIGHT;
-  out = drawObservable(out, maxFrame, heightSoFar, outputStream);
+  var isSpecialOutputStream = areEqualStreamData(inputStreams[0], outputStream);
+  out = drawObservable(out, maxFrame, heightSoFar, outputStream, isSpecialOutputStream);
 
   out.write('./img/' + filename + '.png', function (err) {
     if (err) {

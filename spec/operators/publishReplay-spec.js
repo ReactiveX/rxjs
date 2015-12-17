@@ -3,12 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.publishReplay()', function () {
-  it('should return a ConnectableObservable', function () {
-    var source = Observable.of(1).publishReplay();
-    expect(source instanceof Rx.ConnectableObservable).toBe(true);
-  });
-
-  it('should mirror a simple source Observable', function () {
+  it.asDiagram('publishReplay(1)')('should mirror a simple source Observable', function () {
     var source = cold('--1-2---3-4--5-|');
     var sourceSubs =  '^              !';
     var published = source.publishReplay(1);
@@ -18,6 +13,11 @@ describe('Observable.prototype.publishReplay()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     published.connect();
+  });
+
+  it('should return a ConnectableObservable', function () {
+    var source = Observable.of(1).publishReplay();
+    expect(source instanceof Rx.ConnectableObservable).toBe(true);
   });
 
   it('should do nothing if connect is not called, despite subscriptions', function () {

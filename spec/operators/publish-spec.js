@@ -4,12 +4,7 @@ var Observable = Rx.Observable;
 var Subject = Rx.Subject;
 
 describe('Observable.prototype.publish()', function () {
-  it('should return a ConnectableObservable', function () {
-    var source = Observable.of(1).publish();
-    expect(source instanceof Rx.ConnectableObservable).toBe(true);
-  });
-
-  it('should mirror a simple source Observable', function () {
+  it.asDiagram('publish')('should mirror a simple source Observable', function () {
     var source = cold('--1-2---3-4--5-|');
     var sourceSubs =  '^              !';
     var published = source.publish();
@@ -19,6 +14,11 @@ describe('Observable.prototype.publish()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     published.connect();
+  });
+
+  it('should return a ConnectableObservable', function () {
+    var source = Observable.of(1).publish();
+    expect(source instanceof Rx.ConnectableObservable).toBe(true);
   });
 
   it('should do nothing if connect is not called, despite subscriptions', function () {

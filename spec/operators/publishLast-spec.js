@@ -4,13 +4,7 @@ var Observable = Rx.Observable;
 var Subject = Rx.Subject;
 
 describe('Observable.prototype.publishLast()', function () {
-  it('should return a ConnectableObservable', function () {
-    var source = Observable.of(1).publishLast();
-
-    expect(source instanceof Rx.ConnectableObservable).toBe(true);
-  });
-
-  it('should emit last notification of a simple source Observable', function () {
+  it.asDiagram('publishLast')('should emit last notification of a simple source Observable', function () {
     var source = cold('--1-2---3-4--5-|');
     var sourceSubs =  '^              !';
     var published = source.publishLast();
@@ -20,6 +14,12 @@ describe('Observable.prototype.publishLast()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     published.connect();
+  });
+
+  it('should return a ConnectableObservable', function () {
+    var source = Observable.of(1).publishLast();
+
+    expect(source instanceof Rx.ConnectableObservable).toBe(true);
   });
 
   it('should do nothing if connect is not called, despite subscriptions', function () {
