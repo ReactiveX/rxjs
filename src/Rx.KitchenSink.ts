@@ -26,6 +26,7 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
 import './add/operator/combineLatest-static';
 import './add/operator/concat-static';
 import './add/operator/merge-static';
+import './add/operator/race-static';
 import './add/observable/bindCallback';
 import './add/observable/defer';
 import './add/observable/empty';
@@ -96,6 +97,7 @@ import './add/operator/publish';
 import './add/operator/publishBehavior';
 import './add/operator/publishReplay';
 import './add/operator/publishLast';
+import './add/operator/race';
 import './add/operator/reduce';
 import './add/operator/repeat';
 import './add/operator/retry';
