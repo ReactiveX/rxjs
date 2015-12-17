@@ -3,6 +3,31 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.windowToggle', function () {
+  it.asDiagram('windowToggle')('should emit windows governed by openings and closings', function () {
+    var source = hot('--1--2--^-a--b--c--d--e--f--g--h-|');
+    var subs =               '^                        !';
+    var e2 = cold(           '----w--------w--------w--|');
+    var e2subs =             '^                        !';
+    var e3 = cold(               '-----|                ');
+    //                                     -----(c|)
+    //                                              -----(c|)
+    var e3subs = [           '    ^    !                ', // eslint-disable-line array-bracket-spacing
+                             '             ^    !       ',
+                             '                      ^  !'];
+    var expected =           '----x--------y--------z--|';
+    var x = cold(                '-b--c|                ');
+    var y = cold(                         '-e--f|       ');
+    var z = cold(                                  '-h-|');
+    var values = { x: x, y: y, z: z };
+
+    var result = source.windowToggle(e2, function () { return e3; });
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    expectSubscriptions(e3.subscriptions).toBe(e3subs);
+  });
+
   it('should emit windows that are opened by an observable from the first argument ' +
     'and closed by an observable returned by the function in the second argument',
   function () {

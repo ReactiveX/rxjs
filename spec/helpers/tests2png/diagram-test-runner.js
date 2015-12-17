@@ -53,6 +53,17 @@ function postProcessOutputMessage(msg) {
       messages: msg.notification.value,
       subscription: {start: msg.frame, end: '100%'},
     };
+    var completionFrame = msg.notification.value.messages
+      .reduce(function (prev, x) {
+        if (x.notification && x.notification.kind === 'C' && x.frame > prev) {
+          return x.frame;
+        } else {
+          return prev;
+        }
+      }, -1);
+    if (completionFrame > -1) {
+      msg.notification.value.subscription.end = msg.frame + completionFrame;
+    }
   }
   return msg;
 }

@@ -3,6 +3,22 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.windowCount', function () {
+  it.asDiagram('windowCount(3)')('should emit windows with count 3, no skip specified', function () {
+    var source =   hot('---a---b---c---d---e---f---g---h---i---|');
+    var sourceSubs =   '^                                      !';
+    var expected =     'x----------y-----------z-----------w---|';
+    var x = cold(      '---a---b---(c|)                         ');
+    var y = cold(                 '----d---e---(f|)             ');
+    var z = cold(                             '----g---h---(i|) ');
+    var w = cold(                                         '----|');
+    var expectedValues = { x: x, y: y, z: z, w: w };
+
+    var result = source.windowCount(3);
+
+    expectObservable(result).toBe(expected, expectedValues);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should emit windows with count 2 and skip 1', function () {
     var source = hot('^-a--b--c--d--|');
     var subs =       '^             !';

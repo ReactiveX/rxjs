@@ -3,10 +3,10 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.windowWhen', function () {
-  it('should emit windows that close and reopen', function () {
+  it.asDiagram('windowWhen')('should emit windows that close and reopen', function () {
     var e1 = hot('--a--^--b--c--d--e--f--g--h--i--|');
     var e1subs =      '^                          !';
-    var e2 = cold(    '-----------(x|)             ');
+    var e2 = cold(    '-----------|                ');
     var e2subs =     ['^          !                ',
                       '           ^          !     ',
                       '                      ^    !'];

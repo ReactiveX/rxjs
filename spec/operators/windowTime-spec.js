@@ -3,6 +3,26 @@ var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.windowTime', function () {
+  it.asDiagram('windowTime(50, 100)')('should emit windows given windowTimeSpan ' +
+  'and windowCreationInterval', function () {
+    var source = hot('--1--2--^-a--b--c--d--e---f--g--h-|');
+    var subs =               '^                         !';
+    //  100 frames            0---------1---------2-----|
+    //  50                     ----|
+    //  50                               ----|
+    //  50                                         ----|
+    var expected =           'x---------y---------z-----|';
+    var x = cold(            '--a--(b|)                  ');
+    var y = cold(                      '-d--e|           ');
+    var z = cold(                                '-g--h| ');
+    var values = { x: x, y: y, z: z };
+
+    var result = source.windowTime(50, 100, rxTestScheduler);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
   it('should emit windows given windowTimeSpan', function () {
     var source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     var subs =               '^                          !';
