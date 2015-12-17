@@ -230,7 +230,13 @@ function drawObservableMessages(out, maxFrame, y, angle, streamData, isSpecial) 
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
 
   streamData.messages.slice().reverse().forEach(function (message) {
+    if (message.frame < 0) { // ignore messages with negative frames
+      return;
+    }
     var x = startX + MESSAGES_WIDTH * (message.frame / maxFrame);
+    if (x - MARBLE_RADIUS < 0) { // out of screen, on the left
+      x += MARBLE_RADIUS;
+    }
     var inclination = measureInclination(startX, x, angle);
     switch (message.notification.kind) {
     case 'N':

@@ -3,12 +3,7 @@ var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.publishBehavior()', function () {
-  it('should return a ConnectableObservable', function () {
-    var source = Observable.of(1).publishBehavior(1);
-    expect(source instanceof Rx.ConnectableObservable).toBe(true);
-  });
-
-  it('should mirror a simple source Observable', function () {
+  it.asDiagram('publishBehavior(0)')('should mirror a simple source Observable', function () {
     var source = cold('--1-2---3-4--5-|');
     var sourceSubs =  '^              !';
     var published = source.publishBehavior('0');
@@ -18,6 +13,11 @@ describe('Observable.prototype.publishBehavior()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     published.connect();
+  });
+
+  it('should return a ConnectableObservable', function () {
+    var source = Observable.of(1).publishBehavior(1);
+    expect(source instanceof Rx.ConnectableObservable).toBe(true);
   });
 
   it('should only emit default value if connect is not called, despite subscriptions', function () {
