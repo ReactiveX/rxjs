@@ -324,7 +324,7 @@ module.exports = function painter(inputStreams, operatorLabel, outputStreams, fi
     heightSoFar += measureStreamHeight(maxFrame)(streamData);
   });
 
-  out.write('./img/' + filename + '.png', function (err) {
+  out.write(filename, function (err) {
     if (err) {
       return console.error(arguments);
     }
