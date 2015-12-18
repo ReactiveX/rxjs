@@ -80,13 +80,13 @@ global.it.asDiagram = function asDiagram(operatorLabel) {
   return function specFnWithPainter(description, specFn) {
     if (specFn.length === 0) {
       glit(description, function () {
-        var outputStream;
+        var outputStreams = [];
         global.rxTestScheduler = new Rx.TestScheduler(function (actual) {
           if (Array.isArray(actual) && typeof actual[0].frame === 'number') {
-            outputStream = {
+            outputStreams.push({
               messages: actual.map(postProcessOutputMessage),
               subscription: {start: 0, end: '100%'}
-            };
+            });
           }
           return true;
         });
@@ -95,7 +95,7 @@ global.it.asDiagram = function asDiagram(operatorLabel) {
         global.rxTestScheduler.flush();
         inputStreams = updateInputStreamsPostFlush(inputStreams, rxTestScheduler);
         var filename = makeFilename(operatorLabel);
-        painter(inputStreams, operatorLabel, outputStream, filename);
+        painter(inputStreams, operatorLabel, outputStreams, filename);
         console.log('Painted img/' + filename + '.png');
       });
     } else {
