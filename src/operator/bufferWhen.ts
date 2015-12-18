@@ -9,9 +9,14 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
- * Opens a buffer immediately, then closes the buffer when the observable returned by calling `closingSelector` emits a value.
- * It that immediately opens a new buffer and repeats the process
- * @param {function} a function that takes no arguments and returns an Observable that signals buffer closure
+ * Opens a buffer immediately, then closes the buffer when the observable
+ * returned by calling `closingSelector` emits a value. It that immediately
+ * opens a new buffer and repeats the process.
+ *
+ * <img src="./img/bufferWhen.png" width="100%">
+ *
+ * @param {function} closingSelector a function that takes no arguments and
+ * returns an Observable that signals buffer closure.
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
 export function bufferWhen<T>(closingSelector: () => Observable<any>): Observable<T[]> {

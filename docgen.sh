@@ -1,9 +1,11 @@
+#!/usr/bin/env bash
 #
 # Generates documentation and pushes it up to the site
 # WARNING: Do NOT run this script unless you have remote `upstream` set properly
 #
 rm -rf tmp/docs
 npm run build_es6
+npm run tests2png
 ./node_modules/.bin/esdoc -c esdoc.json
 git checkout gh-pages
 git fetch upstream
