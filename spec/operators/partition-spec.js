@@ -9,6 +9,19 @@ describe('Observable.prototype.partition()', function () {
     }
   }
 
+  it.asDiagram('partition(x => x % 2 === 1)')('should partition an observable of ' +
+  'integers into even and odd', function () {
+    var e1 =    hot('--1-2---3------4--5---6--|');
+    var e1subs =    '^                        !';
+    var expected = ['--1-----3---------5------|',
+                    '----2----------4------6--|'];
+
+    var result = e1.partition(function (x) { return x % 2 === 1; });
+
+    expectObservableArray(result, expected);
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
   it('should partition an observable into two using a predicate', function () {
     var e1 =    hot('--a-b---a------d--a---c--|');
     var e1subs =    '^                        !';

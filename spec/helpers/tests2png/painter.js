@@ -279,10 +279,10 @@ function drawOperator(out, label, y) {
   return out;
 }
 
-function sanitizeHigherOrderInputStreams(inputStreams, outputStream) {
+function sanitizeHigherOrderInputStreams(inputStreams, outputStreams) {
   // Remove cold inputStreams which are already nested in some higher order stream
   return inputStreams.filter(function (inputStream) {
-    return !inputStreams.concat([outputStream]).some(function (otherStream) {
+    return !inputStreams.concat(outputStreams).some(function (otherStream) {
       return otherStream.messages.some(function (msg) {
         var passes = isNestedStreamData(msg) &&
           inputStream.cold &&
@@ -301,13 +301,13 @@ function sanitizeHigherOrderInputStreams(inputStreams, outputStream) {
   });
 }
 
-module.exports = function painter(inputStreams, operatorLabel, outputStream, filename) {
-  var maxFrame = getMaxFrame(inputStreams.concat(outputStream));
-  inputStreams = sanitizeHigherOrderInputStreams(inputStreams, outputStream);
-  var inputStreamsHeight = inputStreams
+module.exports = function painter(inputStreams, operatorLabel, outputStreams, filename) {
+  var maxFrame = getMaxFrame(inputStreams.concat(outputStreams));
+  inputStreams = sanitizeHigherOrderInputStreams(inputStreams, outputStreams);
+  var allStreamsHeight = inputStreams.concat(outputStreams)
     .map(measureStreamHeight(maxFrame))
     .reduce(function (x, y) { return x + y; }, 0);
-  canvasHeight = inputStreamsHeight + OPERATOR_HEIGHT + measureStreamHeight(maxFrame)(outputStream);
+  canvasHeight = allStreamsHeight + OPERATOR_HEIGHT;
 
   var heightSoFar = 0;
   var out;
@@ -318,8 +318,11 @@ module.exports = function painter(inputStreams, operatorLabel, outputStream, fil
   });
   out = drawOperator(out, operatorLabel, heightSoFar);
   heightSoFar += OPERATOR_HEIGHT;
-  var isSpecialOutputStream = areEqualStreamData(inputStreams[0], outputStream);
-  out = drawObservable(out, maxFrame, heightSoFar, outputStream, isSpecialOutputStream);
+  outputStreams.forEach(function (streamData) {
+    var isSpecial = areEqualStreamData(inputStreams[0], streamData);
+    out = drawObservable(out, maxFrame, heightSoFar, streamData, isSpecial);
+    heightSoFar += measureStreamHeight(maxFrame)(streamData);
+  });
 
   out.write('./img/' + filename + '.png', function (err) {
     if (err) {
