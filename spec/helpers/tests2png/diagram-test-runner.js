@@ -69,7 +69,7 @@ function postProcessOutputMessage(msg) {
 }
 
 function makeFilename(operatorLabel) {
-  return /^(\w+)/.exec(operatorLabel)[1];
+  return /^(\w+)/.exec(operatorLabel)[1] + '.png';
 }
 
 var glit = global.it;
@@ -94,9 +94,9 @@ global.it.asDiagram = function asDiagram(operatorLabel) {
         var inputStreams = getInputStreams(global.rxTestScheduler);
         global.rxTestScheduler.flush();
         inputStreams = updateInputStreamsPostFlush(inputStreams, rxTestScheduler);
-        var filename = makeFilename(operatorLabel);
+        var filename = './tmp/docs/img/' + makeFilename(operatorLabel);
         painter(inputStreams, operatorLabel, outputStreams, filename);
-        console.log('Painted img/' + filename + '.png');
+        console.log('Painted ' + filename);
       });
     } else {
       throw new Error('Cannot generate PNG marble diagram for async test ' + description);
