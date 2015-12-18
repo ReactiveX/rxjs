@@ -24,6 +24,7 @@ interface OperatorWrapper {
   aliases?: string[];
   newFileContents?: string;
   srcFileContents?: string;
+  kitchenSinkFileContents?: string;
 }
 
 enum MethodType { Observable, Operator }
@@ -61,16 +62,15 @@ const AliasMethodOverrides = {
 function generateNewOperatorFileContents (op:OperatorWrapper): OperatorWrapper {
   var baseObject = op.isExtended ? 'observableProto' : 'Observable';
   var optPrototype = op.isStatic || op.isExtended ? '' : 'prototype.';
-  var levelsUp = op.isExtended ? '../../../' : '../../';
-  var imports = `import {Observable} from '${levelsUp}Observable';
-import {${op.exportedFnName}} from '${levelsUp}operator/${op.path.replace('.ts','')}';
-${op.isExtended ? 'import {KitchenSinkOperators} from \'../../../Rx.KitchenSink\';' : ''}`;
-  var extendedProto = `${op.isExtended ? 'const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);' : ''}`
+  var imports = `import {Observable} from '../../Observable';
+import {${op.exportedFnName}} from '../../operator/${op.path.replace('.ts','')}';
+${op.isExtended ? 'import {KitchenSinkOperators} from \'../../Rx.KitchenSink\';' : ''}`;
+  var extendedProto = 'const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);'
   var patch = op.aliases.map((alias) => {
     return `${baseObject}.${optPrototype}${alias} = ${op.exportedFnName};`;
   }).join('\n');
 
-  var contents = `${imports}${extendedProto ? '\n' +extendedProto + '\n' : ''}${patch}
+  var contents = `${imports}${op.isExtended ? '\n' +extendedProto + '\n' : ''}${patch}
 `;
 
   return Object.assign({}, op, {
@@ -100,7 +100,8 @@ function checkStatic (op:OperatorWrapper):OperatorWrapper {
 }
 
 function checkExtended (op:OperatorWrapper): OperatorWrapper {
-  return Object.assign({}, op, {isExtended: /(extended\/)/g.test(op.path)})
+  const extended = op.kitchenSinkFileContents.indexOf(op.memberName + '?') > -1;
+  return Object.assign({}, op, {isExtended: extended})
 }
 
 function getOperatorName (op:OperatorWrapper): OperatorWrapper {
@@ -148,15 +149,16 @@ function checkForCreate (op: OperatorWrapper): boolean {
 }
 
 if (process.argv.find((v) => v === '--exec')) {
-  mkdirp('./src/add/operator/extended', () => {
+  mkdirp('./src/add/operator', () => {
+    const kitchenSinkContents = fs.readFileSync('./src/Rx.KitchenSink.ts');
     fs.readdirSync('./src/operator')
-      .concat(fs.readdirSync('./src/operator/extended').map(o => `extended/${o}`))
       .filter(o => o.endsWith('.ts'))
       // Create base Operator object
       .map(o => {
         return {
           path: o,
-          methodType: MethodType.Operator
+          methodType: MethodType.Operator,
+          kitchenSinkFileContents: kitchenSinkContents
         };
       })
       .map(loadSrcFile)
@@ -164,8 +166,6 @@ if (process.argv.find((v) => v === '--exec')) {
       .filter(op => {
         return /export function ([A-Z]*)/i.exec(op.srcFileContents);
       })
-      // Mark operator as extended, if applicable
-      .map(checkExtended)
       /**
       * Check if the operator should be static, assuming the path contains -static.
       **/
@@ -176,6 +176,8 @@ if (process.argv.find((v) => v === '--exec')) {
       .map(getNameOnOperatorProto)
       // Get any special-case aliases that should be applied
       .map(getAliases)
+      // Mark operator as extended, if applicable
+      .map(checkExtended)
       .map(generateNewOperatorFileContents)
       .forEach(writeToDisk);
     // Repeat the process for src/observable/*
