@@ -59,6 +59,14 @@ const AliasMethodOverrides = {
   }
 };
 
+/**
+ * Temporary hack to enable typescript to properly export type definitions.
+ * More information on:
+ *   - https://github.com/ReactiveX/RxJS/issues/1010
+ *   - https://github.com/Microsoft/TypeScript/issues/6022
+ **/
+const typescriptHack = 'export var _void: void;'
+
 function generateNewOperatorFileContents (op:OperatorWrapper): OperatorWrapper {
   var baseObject = op.isExtended ? 'observableProto' : 'Observable';
   var optPrototype = op.isStatic || op.isExtended ? '' : 'prototype.';
@@ -71,7 +79,8 @@ ${op.isExtended ? 'import {KitchenSinkOperators} from \'../../Rx.KitchenSink\';'
   }).join('\n');
 
   var contents = `${imports}${op.isExtended ? '\n' +extendedProto + '\n' : ''}${patch}
-`;
+
+${typescriptHack}`;
 
   return Object.assign({}, op, {
     newFileContents: contents
@@ -88,7 +97,8 @@ import {${op.exportedClassName}} from '../../observable/${op.path.replace('.ts',
 
   var contents = `${imports}
 ${patch}
-`;
+
+${typescriptHack}`;
 
   return Object.assign({}, op, {
     newFileContents: contents
