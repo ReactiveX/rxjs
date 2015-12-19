@@ -1,6 +1,6 @@
 //Fail timeouts faster
 //Individual suites/specs should specify longer timeouts if needed.
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 500;
 
 var _ = require('lodash');
 var root = require('../../dist/cjs/util/root').root;

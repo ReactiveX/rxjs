@@ -2,6 +2,7 @@ import {Observer} from './Observer';
 import {Operator} from './Operator';
 import {Scheduler} from './Scheduler';
 import {Subscriber} from './Subscriber';
+import {AutoDetachSubscriber} from './AutoDetachSubscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
 import {CoreOperators} from './CoreOperators';
@@ -95,11 +96,11 @@ export class Observable<T> implements CoreOperators<T>  {
       } else if (observerOrNext[rxSubscriber]) {
         subscriber = observerOrNext[rxSubscriber]();
       } else {
-        subscriber = new Subscriber(<Observer<T>> observerOrNext);
+        subscriber = new AutoDetachSubscriber(<Observer<T>> observerOrNext);
       }
     } else {
       const next = <((x?) => void)> observerOrNext;
-      subscriber = Subscriber.create(next, error, complete);
+      subscriber = AutoDetachSubscriber.create(next, error, complete);
     }
 
     subscriber.add(this._subscribe(subscriber));

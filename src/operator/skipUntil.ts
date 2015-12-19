@@ -41,17 +41,6 @@ class SkipUntilSubscriber<T> extends Subscriber<T> {
     }
     this.notificationSubscriber.unsubscribe();
   }
-
-  unsubscribe() {
-    if (this._isUnsubscribed) {
-      return;
-    } else if (this._subscription) {
-      this._subscription.unsubscribe();
-      this._isUnsubscribed = true;
-    } else {
-      super.unsubscribe();
-    }
-  }
 }
 
 class NotificationSubscriber<T> extends Subscriber<T> {
