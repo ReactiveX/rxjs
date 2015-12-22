@@ -42,12 +42,14 @@ const SpecialCasePrototypes = {
   'switch.ts': 'switch',
   'do.ts': 'do',
   'finally.ts': 'finally',
-  'catch.ts': 'catch'
+  'catch.ts': 'catch',
+  'let.ts': 'let'
 };
 
 const AdditionalAliases = {
   'mergeMap.ts': ['flatMap'],
-  'fromArray.ts': ['of']
+  'fromArray.ts': ['of'],
+  'let.ts': ['letBind']
 };
 
 const AliasMethodOverrides = {

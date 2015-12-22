@@ -223,6 +223,8 @@ export class Observable<T> implements CoreOperators<T>  {
   last: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,
             defaultValue?: any) => Observable<T> | Observable<R>;
+  let: <T, R>(func: (selector: Observable<T>) => Observable<R>) => Observable<R>;
+  letBind: <T, R>(func: (selector: Observable<T>) => Observable<R>) => Observable<R>;
   every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   map: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
