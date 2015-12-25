@@ -1,14 +1,14 @@
+import {asap} from '../scheduler/asap';
+import {isDate} from '../util/isDate';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
-import {queue} from '../scheduler/queue';
-import {isDate} from '../util/isDate';
 
 export function delay<T>(delay: number|Date,
-                         scheduler: Scheduler = queue) {
+                         scheduler: Scheduler = asap) {
   const absoluteDelay = isDate(delay);
-  const delayFor = absoluteDelay ? (+delay - scheduler.now()) : <number>delay;
+  const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(<number>delay);
   return this.lift(new DelayOperator(delayFor, scheduler));
 }
 

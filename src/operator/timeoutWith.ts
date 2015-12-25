@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {queue} from '../scheduler/queue';
+import {asap} from '../scheduler/asap';
 import {Subscription} from '../Subscription';
 import {Observable} from '../Observable';
 import {isDate} from '../util/isDate';
@@ -10,9 +10,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
 
 export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: Observable<R>,
-                                  scheduler: Scheduler = queue): Observable<T> | Observable<R> {
+                                  scheduler: Scheduler = asap): Observable<T> | Observable<R> {
   let absoluteTimeout = isDate(due);
-  let waitFor = absoluteTimeout ? (+due - scheduler.now()) : <number>due;
+  let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
 }
 

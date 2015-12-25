@@ -3,17 +3,16 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {queue} from '../scheduler/queue';
 
 export class PromiseObservable<T> extends Observable<T> {
 
   public value: T;
 
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = queue): Observable<T> {
+  static create<T>(promise: Promise<T>, scheduler: Scheduler = null): Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
-  constructor(private promise: Promise<T>, public scheduler: Scheduler = queue) {
+  constructor(private promise: Promise<T>, public scheduler: Scheduler = null) {
     super();
   }
 
@@ -21,7 +20,7 @@ export class PromiseObservable<T> extends Observable<T> {
     const promise = this.promise;
     const scheduler = this.scheduler;
 
-    if (scheduler === queue) {
+    if (scheduler == null) {
       if (this._isScalar) {
         if (!subscriber.isUnsubscribed) {
           subscriber.next(this.value);
