@@ -10,7 +10,7 @@ import {GroupedObservable} from './operator/groupBy-support';
 import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {Notification} from './Notification';
-import {rxSubscriber} from'./symbol/rxSubscriber';
+import {toSubscriber} from './util/toSubscriber';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -19,9 +19,11 @@ import {rxSubscriber} from'./symbol/rxSubscriber';
  * @class Observable<T>
  */
 export class Observable<T> implements CoreOperators<T>  {
-  source: Observable<any>;
-  operator: Operator<any, T>;
-  _isScalar: boolean = false;
+
+  public _isScalar: boolean = false;
+
+  protected source: Observable<any>;
+  protected operator: Operator<any, T>;
 
   /**
    * @constructor
@@ -78,22 +80,14 @@ export class Observable<T> implements CoreOperators<T>  {
             error?: (error: T) => void,
             complete?: () => void): Subscription {
 
-    let subscriber: Subscriber<T>;
+    const { operator } = this;
+    const subscriber = toSubscriber(observerOrNext, error, complete);
 
-    if (observerOrNext && typeof observerOrNext === 'object') {
-      if (observerOrNext instanceof Subscriber) {
-        subscriber = (<Subscriber<T>> observerOrNext);
-      } else if (observerOrNext[rxSubscriber]) {
-        subscriber = observerOrNext[rxSubscriber]();
-      } else {
-        subscriber = new Subscriber(<Observer<T>> observerOrNext);
-      }
+    if (operator) {
+      subscriber.add(this._subscribe(this.operator.call(subscriber)));
     } else {
-      const next = <((x?) => void)> observerOrNext;
-      subscriber = Subscriber.create(next, error, complete);
+      subscriber.add(this._subscribe(subscriber));
     }
-
-    subscriber.add(this._subscribe(subscriber));
 
     return subscriber;
   }
@@ -143,7 +137,7 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
-    return this.source._subscribe(this.operator.call(subscriber));
+    return this.source.subscribe(subscriber);
   }
 
   // static method stubs
