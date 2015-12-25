@@ -2,12 +2,11 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {ArrayObservable} from '../observable/fromArray';
 import {MergeAllOperator} from './mergeAll-support';
-import {queue} from '../scheduler/queue';
 import {isScheduler} from '../util/isScheduler';
 
 export function merge<R>(...observables: Array<Observable<any> | Scheduler | number>): Observable<R> {
  let concurrent = Number.POSITIVE_INFINITY;
- let scheduler: Scheduler = queue;
+ let scheduler: Scheduler = null;
   let last: any = observables[observables.length - 1];
   if (isScheduler(last)) {
     scheduler = <Scheduler>observables.pop();

@@ -9,8 +9,6 @@ import {SymbolShim} from '../util/SymbolShim';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn-support';
-import {queue} from '../scheduler/queue';
-
 
 export class FromObservable<T> extends Observable<T> {
   constructor(private ish: any, private scheduler: Scheduler) {
@@ -39,7 +37,7 @@ export class FromObservable<T> extends Observable<T> {
   _subscribe(subscriber: Subscriber<T>) {
     const ish = this.ish;
     const scheduler = this.scheduler;
-    if (scheduler === queue) {
+    if (scheduler == null) {
       return ish[SymbolShim.observable]().subscribe(subscriber);
     } else {
       return ish[SymbolShim.observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
