@@ -3,7 +3,7 @@ import {Scheduler} from '../Scheduler';
 import {queue} from '../scheduler/queue';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {ObserveOnSubscriber} from '../operator/ObserveOn-support';
+import {ObserveOnSubscriber} from '../operator/observeOn-support';
 
 export class ReplaySubject<T> extends Subject<T> {
   private events: ReplayEvent<T>[] = [];
