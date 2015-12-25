@@ -59,10 +59,6 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
-    this.destination.error(err);
-  }
-
   _complete() {
     const destination = this.destination;
     const buffers = this.buffers;
@@ -72,6 +68,6 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
         destination.next(buffer);
       }
     }
-    destination.complete();
+    super._complete();
   }
 }

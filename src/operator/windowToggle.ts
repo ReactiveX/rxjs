@@ -7,6 +7,9 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+
 export function windowToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowToggleOperator<T, T, O>(openings, closingSelector));
@@ -19,7 +22,7 @@ class WindowToggleOperator<T, R, O> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<Observable<T>>): Subscriber<T> {
-    return new WindowToggleSubscriber<T, O>(
+    return new WindowToggleSubscriber<T, R, O>(
       subscriber, this.openings, this.closingSelector
     );
   }
@@ -30,108 +33,117 @@ interface WindowContext<T> {
   subscription: Subscription;
 }
 
-class WindowToggleSubscriber<T, O> extends Subscriber<T> {
-  private contexts: Array<WindowContext<T>> = [];
+class WindowToggleSubscriber<T, R, O> extends OuterSubscriber<T, R> {
+  private contexts: WindowContext<T>[] = [];
+  private openSubscription: Subscription;
 
-  constructor(protected destination: Subscriber<Observable<T>>,
+  constructor(destination: Subscriber<Observable<T>>,
               private openings: Observable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
-    this.add(this.openings._subscribe(new WindowToggleOpeningsSubscriber(this)));
+    this.add(this.openSubscription = subscribeToResult(this, openings, openings));
   }
 
   _next(value: T) {
-    const contexts = this.contexts;
-    const len = contexts.length;
-    for (let i = 0; i < len; i++) {
-      contexts[i].window.next(value);
+    const { contexts } = this;
+    if (contexts) {
+      const len = contexts.length;
+      for (let i = 0; i < len; i++) {
+        contexts[i].window.next(value);
+      }
     }
   }
 
   _error(err: any) {
-    const contexts = this.contexts;
-    while (contexts.length > 0) {
-      contexts.shift().window.error(err);
+
+    const { contexts } = this;
+    this.contexts = null;
+
+    if (contexts) {
+      const len = contexts.length;
+      let index = -1;
+
+      while (++index < len) {
+        const context = contexts[index];
+        context.window.error(err);
+        context.subscription.unsubscribe();
+      }
     }
-    this.destination.error(err);
+
+    super._error(err);
   }
 
   _complete() {
-    const contexts = this.contexts;
-    while (contexts.length > 0) {
-      const context = contexts.shift();
-      context.window.complete();
-      context.subscription.unsubscribe();
+    const { contexts } = this;
+    this.contexts = null;
+    if (contexts) {
+      const len = contexts.length;
+      let index = -1;
+      while (++index < len) {
+        const context = contexts[index];
+        context.window.complete();
+        context.subscription.unsubscribe();
+      }
     }
-    this.destination.complete();
+    super._complete();
   }
 
-  openWindow(value: O) {
-    const closingSelector = this.closingSelector;
-    let closingNotifier = tryCatch(closingSelector)(value);
-    if (closingNotifier === errorObject) {
-      this.error(closingNotifier.e);
+  _unsubscribe() {
+    const { contexts } = this;
+    this.contexts = null;
+    if (contexts) {
+      const len = contexts.length;
+      let index = -1;
+      while (++index < len) {
+        const context = contexts[index];
+        context.window.unsubscribe();
+        context.subscription.unsubscribe();
+      }
+    }
+  }
+
+  notifyNext(outerValue: any, innerValue: any, outerIndex: number, innerIndex: number): void {
+
+    if (outerValue === this.openings) {
+
+      const { closingSelector } = this;
+      const closingNotifier = tryCatch(closingSelector)(innerValue);
+
+      if (closingNotifier === errorObject) {
+        return this.error(errorObject.e);
+      } else {
+
+        const window = new Subject<T>();
+        const subscription = new Subscription();
+        const context = { window, subscription };
+        this.contexts.push(context);
+        const innerSubscription = subscribeToResult(this, closingNotifier, context);
+        (<any> innerSubscription).context = context;
+        subscription.add(innerSubscription);
+
+        this.destination.next(window);
+      }
     } else {
-      const destination = this.destination;
-      const window = new Subject<T>();
-      const subscription = new Subscription();
-      const context = { window, subscription };
-      this.contexts.push(context);
-      const subscriber = new WindowClosingNotifierSubscriber<T, O>(this, context);
-      const closingSubscription = closingNotifier._subscribe(subscriber);
-      subscription.add(closingSubscription);
-      destination.add(subscription);
-      destination.add(window);
-      destination.next(window);
+      this.closeWindow(this.contexts.indexOf(outerValue));
     }
   }
 
-  closeWindow(context: WindowContext<T>) {
+  notifyError(err: any): void {
+    this.error(err);
+  }
+
+  notifyComplete(inner: Subscription): void {
+    if (inner !== this.openSubscription) {
+      this.closeWindow(this.contexts.indexOf((<any> inner).context));
+    }
+  }
+
+  closeWindow(index: number) {
+    const { contexts } = this;
+    const context = contexts[index];
     const { window, subscription } = context;
-    const contexts = this.contexts;
-    const destination = this.destination;
-
-    contexts.splice(contexts.indexOf(context), 1);
+    contexts.splice(index, 1);
     window.complete();
-    destination.remove(subscription);
-    destination.remove(window);
     subscription.unsubscribe();
-  }
-}
-
-class WindowClosingNotifierSubscriber<T, O> extends Subscriber<T> {
-  constructor(private parent: WindowToggleSubscriber<T, O>,
-              private windowContext: { window: Subject<T>, subscription: Subscription }) {
-    super(null);
-  }
-
-  _next() {
-    this.parent.closeWindow(this.windowContext);
-  }
-
-  _error(err) {
-    this.parent.error(err);
-  }
-
-  _complete() {
-    this.parent.closeWindow(this.windowContext);
-  }
-}
-
-class WindowToggleOpeningsSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: WindowToggleSubscriber<any, T>) {
-    super();
-  }
-
-  _next(value: T) {
-    this.parent.openWindow(value);
-  }
-
-  _error(err) {
-    this.parent.error(err);
-  }
-
-  _complete() {
-    // noop
   }
 }

@@ -81,7 +81,7 @@ class WindowSubscriber<T> extends Subscriber<T> {
       this.window.error(err);
     } else {
       const closingNotification = this.closingNotification = new Subscription();
-      closingNotification.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this)));
+      closingNotification.add(closingNotifier.subscribe(new WindowClosingNotifierSubscriber(this)));
       this.add(closingNotification);
       this.add(window);
     }

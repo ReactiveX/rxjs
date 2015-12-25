@@ -1,12 +1,12 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
-import {PromiseObservable} from '../observable/fromPromise';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
-import {isPromise} from '../util/isPromise';
 import {errorObject} from '../util/errorObject';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
 export function throttle<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
@@ -21,64 +21,40 @@ class ThrottleOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class ThrottleSubscriber<T> extends Subscriber<T> {
+class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private throttled: Subscription;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: Subscriber<any>,
               private durationSelector: (value: T) => Observable<any> | Promise<any>) {
     super(destination);
   }
 
   _next(value: T): void {
     if (!this.throttled) {
-      const destination = this.destination;
-      let duration = tryCatch(this.durationSelector)(value);
+      const duration = tryCatch(this.durationSelector)(value);
       if (duration === errorObject) {
-        destination.error(errorObject.e);
-        return;
+        this.destination.error(errorObject.e);
+      } else {
+        this.add(this.throttled = subscribeToResult(this, duration));
+        this.destination.next(value);
       }
-      if (isPromise(duration)) {
-        duration = PromiseObservable.create(duration);
-      }
-      this.add(this.throttled = duration._subscribe(new ThrottleDurationSelectorSubscriber(this)));
-      destination.next(value);
     }
   }
 
-  _error(err: any): void {
-    this.clearThrottle();
-    super._error(err);
-  }
-
-  _complete(): void {
-    this.clearThrottle();
-    super._complete();
-  }
-
-  clearThrottle(): void {
+  _unsubscribe() {
     const throttled = this.throttled;
     if (throttled) {
-      throttled.unsubscribe();
       this.remove(throttled);
       this.throttled = null;
+      throttled.unsubscribe();
     }
   }
-}
 
-class ThrottleDurationSelectorSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: ThrottleSubscriber<any>) {
-    super(null);
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+    this._unsubscribe();
   }
 
-  _next(unused: T): void {
-    this.parent.clearThrottle();
-  }
-
-  _error(err): void {
-    this.parent.error(err);
-  }
-
-  _complete(): void {
-    this.parent.clearThrottle();
+  notifyComplete(): void {
+    this._unsubscribe();
   }
 }

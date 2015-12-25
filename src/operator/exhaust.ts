@@ -37,14 +37,6 @@ class SwitchFirstSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: any): void {
-    this.destination.next(innerValue);
-  }
-
-  notifyError(err: any): void {
-    this.destination.error(err);
-  }
-
   notifyComplete(innerSub: Subscription): void {
     this.remove(innerSub);
     this.hasSubscription = false;

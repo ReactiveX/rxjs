@@ -6,6 +6,9 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>) {
   return this.lift(new RetryWhenOperator(notifier, this));
 }
@@ -15,123 +18,81 @@ class RetryWhenOperator<T, R> implements Operator<T, R> {
               protected source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new FirstRetryWhenSubscriber<T>(subscriber, this.notifier, this.source);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new RetryWhenSubscriber(subscriber, this.notifier, this.source);
   }
 }
 
-class FirstRetryWhenSubscriber<T> extends Subscriber<T> {
-  lastSubscription: Subscription;
-  notificationSubscription: Subscription;
-  errors: Subject<any>;
-  retryNotifications: Observable<any>;
+class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  constructor(public destination: Subscriber<T>,
-              public notifier: (errors: Observable<any>) => Observable<any>,
-              public source: Observable<T>) {
-    super();
-    destination.add(this);
-    this.lastSubscription = this;
+  private errors: Subject<any>;
+  private retries: Observable<any>;
+  private retriesSubscription: Subscription;
+
+  constructor(destination: Subscriber<R>,
+              private notifier: (errors: Observable<any>) => Observable<any>,
+              private source: Observable<T>) {
+    super(destination);
   }
 
-  _next(value: T) {
-    this.destination.next(value);
-  }
+  error(err: any) {
+    if (!this.isStopped) {
 
-  error(err?) {
-    const destination = this.destination;
-    if (!this.isUnsubscribed) {
-      super.unsubscribe();
-      if (!this.retryNotifications) {
-        this.errors = new Subject();
-        const notifications = tryCatch(this.notifier).call(this, this.errors);
-        if (notifications === errorObject) {
-          destination.error(errorObject.e);
-        } else {
-          this.retryNotifications = notifications;
-          const notificationSubscriber = new RetryNotificationSubscriber(this);
-          this.notificationSubscription = notifications.subscribe(notificationSubscriber);
-          destination.add(this.notificationSubscription);
+      let errors = this.errors;
+      let retries: any = this.retries;
+      let retriesSubscription = this.retriesSubscription;
+
+      if (!retries) {
+        errors = new Subject();
+        retries = tryCatch(this.notifier)(errors);
+        if (retries === errorObject) {
+          return super.error(errorObject.e);
         }
+        retriesSubscription = subscribeToResult(this, retries);
+      } else {
+        this.errors = null;
+        this.retriesSubscription = null;
       }
-      this.errors.next(err);
+
+      this.unsubscribe();
+      this.isUnsubscribed = false;
+
+      this.errors = errors;
+      this.retries = retries;
+      this.retriesSubscription = retriesSubscription;
+
+      errors.next(err);
     }
   }
 
-  destinationError(err: any) {
-    this.tearDown();
-    this.destination.error(err);
-  }
-
-  _complete() {
-    this.destinationComplete();
-  }
-
-  destinationComplete() {
-    this.tearDown();
-    this.destination.complete();
-  }
-
-  unsubscribe() {
-    const lastSubscription = this.lastSubscription;
-    if (lastSubscription === this) {
-      super.unsubscribe();
-    } else {
-      this.tearDown();
+  _unsubscribe() {
+    const { errors, retriesSubscription } = this;
+    if (errors) {
+      errors.unsubscribe();
+      this.errors = null;
     }
-  }
-
-  tearDown() {
-    super.unsubscribe();
-    this.lastSubscription.unsubscribe();
-    const notificationSubscription = this.notificationSubscription;
-    if (notificationSubscription) {
-      notificationSubscription.unsubscribe();
+    if (retriesSubscription) {
+      retriesSubscription.unsubscribe();
+      this.retriesSubscription = null;
     }
+    this.retries = null;
   }
 
-  resubscribe() {
-    const { destination, lastSubscription } = this;
-    destination.remove(lastSubscription);
-    lastSubscription.unsubscribe();
-    const nextSubscriber = new MoreRetryWhenSubscriber(this);
-    this.lastSubscription = this.source.subscribe(nextSubscriber);
-    destination.add(this.lastSubscription);
-  }
-}
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
 
-class MoreRetryWhenSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: FirstRetryWhenSubscriber<T>) {
-    super(null);
-  }
+    const { errors, retries, retriesSubscription } = this;
+    this.errors = null;
+    this.retries = null;
+    this.retriesSubscription = null;
 
-  _next(value: T) {
-    this.parent.destination.next(value);
-  }
+    this.unsubscribe();
+    this.isStopped = false;
+    this.isUnsubscribed = false;
 
-  _error(err: any) {
-    this.parent.errors.next(err);
-  }
+    this.errors = errors;
+    this.retries = retries;
+    this.retriesSubscription = retriesSubscription;
 
-  _complete() {
-    this.parent.destinationComplete();
-  }
-}
-
-class RetryNotificationSubscriber<T> extends Subscriber<T> {
-  constructor(public parent: FirstRetryWhenSubscriber<any>) {
-    super(null);
-  }
-
-  _next(value: T) {
-    this.parent.resubscribe();
-  }
-
-  _error(err: any) {
-    this.parent.destinationError(err);
-  }
-
-  _complete() {
-    this.parent.destinationComplete();
+    this.source.subscribe(this);
   }
 }

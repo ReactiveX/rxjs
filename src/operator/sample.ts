@@ -1,6 +1,9 @@
-import {Observable} from '../Observable';
 import {Operator} from '../Operator';
+import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
+
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
 export function sample<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SampleOperator(notifier));
@@ -15,42 +18,32 @@ class SampleOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class SampleSubscriber<T> extends Subscriber<T> {
-  private lastValue: T;
+class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
+  private value: T;
   private hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>, private notifier: Observable<any>) {
+  constructor(destination: Subscriber<any>, notifier: Observable<any>) {
     super(destination);
-    this.add(notifier._subscribe(new SampleNotificationSubscriber(this)));
+    this.add(subscribeToResult(this, notifier));
   }
 
   _next(value: T) {
-    this.lastValue = value;
+    this.value = value;
     this.hasValue = true;
   }
 
-  notifyNext() {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+    this.emitValue();
+  }
+
+  notifyComplete(): void {
+    this.emitValue();
+  }
+
+  emitValue() {
     if (this.hasValue) {
       this.hasValue = false;
-      this.destination.next(this.lastValue);
+      this.destination.next(this.value);
     }
-  }
-}
-
-class SampleNotificationSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: SampleSubscriber<T>) {
-    super(null);
-  }
-
-  _next() {
-    this.parent.notifyNext();
-  }
-
-  _error(err: any) {
-    this.parent.error(err);
-  }
-
-  _complete() {
-    this.parent.notifyNext();
   }
 }

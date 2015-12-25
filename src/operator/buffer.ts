@@ -2,6 +2,9 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+
 /**
  * buffers the incoming observable values until the passed `closingNotifier` emits a value, at which point
  * it emits the buffer on the returned observable and starts a new buffer internally, awaiting the
@@ -24,53 +27,21 @@ class BufferOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class BufferSubscriber<T> extends Subscriber<T> {
+class BufferSubscriber<T, R> extends OuterSubscriber<T, R> {
   private buffer: T[] = [];
-  private notifierSubscriber: BufferClosingNotifierSubscriber<any> = null;
 
   constructor(destination: Subscriber<T>, closingNotifier: Observable<any>) {
     super(destination);
-    this.notifierSubscriber = new BufferClosingNotifierSubscriber(this);
-    this.add(closingNotifier._subscribe(this.notifierSubscriber));
+    this.add(subscribeToResult(this, closingNotifier));
   }
 
   _next(value: T) {
     this.buffer.push(value);
   }
 
-  _error(err: any) {
-    this.destination.error(err);
-  }
-
-  _complete() {
-    this.destination.complete();
-  }
-
-  flushBuffer() {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
     const buffer = this.buffer;
     this.buffer = [];
     this.destination.next(buffer);
-
-    if (this.isUnsubscribed) {
-      this.notifierSubscriber.unsubscribe();
-    }
-  }
-}
-
-class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: BufferSubscriber<any>) {
-    super(null);
-  }
-
-  _next(value: T) {
-    this.parent.flushBuffer();
-  }
-
-  _error(err: any) {
-    this.parent.error(err);
-  }
-
-  _complete() {
-    this.parent.complete();
   }
 }

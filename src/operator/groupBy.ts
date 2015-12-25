@@ -69,7 +69,7 @@ class GroupBySubscriber<T, R> extends Subscriber<T> {
           if (duration === errorObject) {
             this.error(duration.e);
           } else {
-            this.add(duration._subscribe(new GroupDurationSubscriber(key, group, this)));
+            this.add(duration.subscribe(new GroupDurationSubscriber(key, group, this)));
           }
         }
 

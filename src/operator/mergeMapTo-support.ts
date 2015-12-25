@@ -4,9 +4,9 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
-import {InnerSubscriber} from '../InnerSubscriber';
 
 export class MergeMapToOperator<T, R, R2> implements Operator<T, R> {
   constructor(private ish: any,
@@ -79,7 +79,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     this.destination.error(err);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+  notifyComplete(innerSub: Subscription): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

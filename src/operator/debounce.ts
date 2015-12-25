@@ -1,12 +1,13 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
-import {PromiseObservable} from '../observable/fromPromise';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
-import {isPromise} from '../util/isPromise';
 import {errorObject} from '../util/errorObject';
+
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
 export function debounce<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
   return this.lift(new DebounceOperator(durationSelector));
@@ -16,92 +17,67 @@ class DebounceOperator<T, R> implements Operator<T, R> {
   constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
   }
 
-  call(observer: Subscriber<T>): Subscriber<T> {
-    return new DebounceSubscriber(observer, this.durationSelector);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new DebounceSubscriber(subscriber, this.durationSelector);
   }
 }
 
-class DebounceSubscriber<T> extends Subscriber<T> {
-  private debouncedSubscription: Subscription = null;
-  private lastValue: any = null;
-  private _index: number = 0;
-  get index() {
-    return this._index;
-  }
+class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+  private value: T;
+  private hasValue: boolean = false;
+  private durationSubscription: Subscription = null;
+
+  constructor(destination: Subscriber<R>,
+              private durationSelector: (value: T) => any) {
     super(destination);
   }
 
   _next(value: T) {
-    const destination = this.destination;
-    const currentIndex = ++this._index;
-    let debounce = tryCatch(this.durationSelector)(value);
+    let subscription = this.durationSubscription;
+    const duration = tryCatch(this.durationSelector)(value);
 
-    if (debounce === errorObject) {
-      destination.error(errorObject.e);
+    if (duration === errorObject) {
+      this.destination.error(errorObject.e);
     } else {
-      if (isPromise(debounce)) {
-        debounce = PromiseObservable.create(debounce);
+      this.value = value;
+      this.hasValue = true;
+      if (subscription) {
+        subscription.unsubscribe();
+        this.remove(subscription);
       }
-
-      this.lastValue = value;
-      this.clearDebounce();
-      this.add(this.debouncedSubscription = debounce._subscribe(new DurationSelectorSubscriber(this, currentIndex)));
+      subscription = subscribeToResult(this, duration);
+      if (!subscription.isUnsubscribed) {
+        this.add(this.durationSubscription = subscription);
+      }
     }
   }
 
   _complete() {
-    this.debouncedNext();
+    this.emitValue();
     this.destination.complete();
   }
 
-  debouncedNext(): void {
-    this.clearDebounce();
-    if (this.lastValue != null) {
-      this.destination.next(this.lastValue);
-      this.lastValue = null;
-    }
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+    this.emitValue();
   }
 
-  private clearDebounce(): void {
-    const debouncedSubscription = this.debouncedSubscription;
-
-    if (debouncedSubscription) {
-      debouncedSubscription.unsubscribe();
-      this.remove(debouncedSubscription);
-      this.debouncedSubscription = null;
-    }
-  }
-}
-
-class DurationSelectorSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: DebounceSubscriber<any>,
-              private currentIndex: number) {
-    super(null);
+  notifyComplete(): void {
+    this.emitValue();
   }
 
-  private debounceNext(): void {
-    const parent = this.parent;
-
-    if (this.currentIndex === parent.index) {
-      parent.debouncedNext();
-      if (!this.isUnsubscribed) {
-        this.unsubscribe();
+  emitValue() {
+    if (this.hasValue) {
+      const value = this.value;
+      const subscription = this.durationSubscription;
+      if (subscription) {
+        this.durationSubscription = null;
+        subscription.unsubscribe();
+        this.remove(subscription);
       }
+      this.value = null;
+      this.hasValue = false;
+      super._next(value);
     }
-  }
-
-  _next(unused: T) {
-     this.debounceNext();
-  }
-
-  _error(err) {
-    this.parent.error(err);
-  }
-
-  _complete() {
-    this.debounceNext();
   }
 }
