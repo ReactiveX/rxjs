@@ -1,17 +1,19 @@
+import {root} from '../util/root';
+import {isObject} from '../util/isObject';
+import {tryCatch} from '../util/tryCatch';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-
-import {root} from '../util/root';
+import {isFunction} from '../util/isFunction';
 import {SymbolShim} from '../util/SymbolShim';
-import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Subscription} from '../Subscription';
 
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
 
   static create<T>(iterator: any,
-                   project?: (x?: any, i?: number) => T,
-                   thisArg?: any,
+                   project?: ((x?: any, i?: number) => T) | any,
+                   thisArg?: any | Scheduler,
                    scheduler?: Scheduler) {
     return new IteratorObservable(iterator, project, thisArg, scheduler);
   }
@@ -53,17 +55,31 @@ export class IteratorObservable<T> extends Observable<T> {
     (<any> this).schedule(state);
   }
 
+  private thisArg: any;
+  private project: (x?: any, i?: number) => T;
+  private scheduler: Scheduler;
+
   constructor(iterator: any,
-              private project?: (x?: any, i?: number) => T,
-              private thisArg?: any,
-              private scheduler?: Scheduler) {
+              project?: ((x?: any, i?: number) => T) | any,
+              thisArg?: any | Scheduler,
+              scheduler?: Scheduler) {
     super();
+
     if (iterator == null) {
       throw new Error('iterator cannot be null.');
     }
-    if (project && typeof project !== 'function') {
+
+    if (isObject(project)) {
+      this.thisArg = project;
+      this.scheduler = thisArg;
+    } else if (isFunction(project)) {
+      this.project = project;
+      this.thisArg = thisArg;
+      this.scheduler = scheduler;
+    } else if (project != null) {
       throw new Error('When provided, `project` must be a function.');
     }
+
     this.iterator = getIterator(iterator);
   }
 

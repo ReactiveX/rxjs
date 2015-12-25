@@ -15,7 +15,7 @@ export class ArrayObservable<T> extends Observable<T> {
     if (isScheduler(scheduler)) {
       array.pop();
     } else {
-      scheduler = void 0;
+      scheduler = null;
     }
 
     const len = array.length;

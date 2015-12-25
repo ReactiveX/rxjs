@@ -29,9 +29,8 @@ class SwitchMapOperator<T, R, R2> implements Operator<T, R> {
 }
 
 class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
-  private innerSubscription: Subscription;
-  private hasCompleted = false;
   private index: number = 0;
+  private innerSubscription: Subscription;
 
   constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => Observable<R>,

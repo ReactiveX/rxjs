@@ -90,7 +90,7 @@ class WindowSubscriber<T> extends Subscriber<T> {
 
 class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
   constructor(private parent: WindowSubscriber<any>) {
-    super(null);
+    super();
   }
 
   _next() {

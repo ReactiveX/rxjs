@@ -29,9 +29,8 @@ class SwitchMapToOperator<T, R, R2> implements Operator<T, R> {
 }
 
 class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
+  private index: number = 0;
   private innerSubscription: Subscription;
-  private hasCompleted = false;
-  index: number = 0;
 
   constructor(destination: Subscriber<R>,
               private inner: Observable<R>,
@@ -40,12 +39,11 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
 
   _next(value: any) {
-    const index = this.index++;
     const innerSubscription = this.innerSubscription;
     if (innerSubscription) {
       innerSubscription.unsubscribe();
     }
-    this.add(this.innerSubscription = subscribeToResult(this, this.inner, value, index));
+    this.add(this.innerSubscription = subscribeToResult(this, this.inner, value, this.index++));
   }
 
   _complete() {

@@ -120,7 +120,7 @@ class GroupDurationSubscriber<T> extends Subscriber<T> {
   constructor(private key: string,
               private group: Subject<T>,
               private parent: GroupBySubscriber<any, T>) {
-    super(null);
+    super();
   }
 
   _next(value: T): void {
