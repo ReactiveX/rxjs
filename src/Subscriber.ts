@@ -1,129 +1,118 @@
 import {noop} from './util/noop';
 import {throwError} from './util/throwError';
 import {tryOrOnError} from './util/tryOrOnError';
+import {tryOrThrowError} from './util/tryOrThrowError';
 
 import {Observer} from './Observer';
 import {Subscription} from './Subscription';
 import {rxSubscriber} from './symbol/rxSubscriber';
+import {empty as emptyObserver} from './Observer';
 
 export class Subscriber<T> extends Subscription implements Observer<T> {
-  protected _subscription: Subscription;
-  protected _isUnsubscribed: boolean = false;
-
-  [rxSubscriber]() {
-    return this;
-  }
-
-  get isUnsubscribed(): boolean {
-    const subscription = this._subscription;
-    if (subscription) {
-      // route to the shared Subscription if it exists
-      return this._isUnsubscribed || subscription.isUnsubscribed;
-    } else {
-      return this._isUnsubscribed;
-    }
-  }
-
-  set isUnsubscribed(value: boolean) {
-    const subscription = this._subscription;
-    if (subscription) {
-      // route to the shared Subscription if it exists
-      subscription.isUnsubscribed = Boolean(value);
-    } else {
-      this._isUnsubscribed = Boolean(value);
-    }
-  }
 
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
-    const subscriber = new Subscriber<T>();
-    subscriber._next = (typeof next === 'function') && tryOrOnError(next) || noop;
-    subscriber._error = (typeof error === 'function') && error || throwError;
-    subscriber._complete = (typeof complete === 'function') && complete || noop;
-    return subscriber;
+    return new SafeSubscriber<T>(next, error, complete);
   }
 
-  constructor(protected destination?: Observer<any>) {
+  protected isStopped: boolean = false;
+  protected destination: Observer<any>;
+
+  constructor(destination: Observer<any> = emptyObserver) {
     super();
 
-    if (!this.destination) {
+    this.destination = destination;
+
+    if (!destination ||
+        (destination instanceof Subscriber) ||
+        (destination === emptyObserver)) {
       return;
     }
-    const subscription = (<any> destination)._subscription;
-    if (subscription) {
-      this._subscription = subscription;
-    } else if (destination instanceof Subscriber) {
-      this._subscription = (<Subscription> destination);
-    }
-  }
 
-  add(sub: Subscription | Function | void): void {
-    // route add to the shared Subscription if it exists
-    const _subscription = this._subscription;
-    if (_subscription) {
-      _subscription.add(sub);
-    } else {
-      super.add(sub);
-    }
-  }
-
-  remove(sub: Subscription): void {
-    // route remove to the shared Subscription if it exists
-    if (this._subscription) {
-      this._subscription.remove(sub);
-    } else {
-      super.remove(sub);
-    }
-  }
-
-  unsubscribe(): void {
-    if (this._isUnsubscribed) {
-      return;
-    } else if (this._subscription) {
-      this._isUnsubscribed = true;
-    } else {
-      super.unsubscribe();
-    }
-  }
-
-  _next(value: T): void {
-    const destination = this.destination;
-    if (destination.next) {
-      destination.next(value);
-    }
-  }
-
-  _error(err: any): void {
-    const destination = this.destination;
-    if (destination.error) {
-      destination.error(err);
-    }
-  }
-
-  _complete(): void {
-    const destination = this.destination;
-    if (destination.complete) {
-      destination.complete();
-    }
+    if (typeof destination.next !== 'function') { destination.next = noop; }
+    if (typeof destination.error !== 'function') { destination.error = throwError; }
+    if (typeof destination.complete !== 'function') { destination.complete = noop; }
   }
 
   next(value?: T): void {
-    if (!this.isUnsubscribed) {
+    if (!this.isStopped) {
       this._next(value);
     }
   }
 
   error(err?: any): void {
-    if (!this.isUnsubscribed) {
+    if (!this.isStopped) {
+      this.isStopped = true;
       this._error(err);
+    }
+  }
+
+  complete(): void {
+    if (!this.isStopped) {
+      this.isStopped = true;
+      this._complete();
+    }
+  }
+
+  unsubscribe(): void {
+    if (this.isUnsubscribed) {
+      return;
+    }
+    this.isStopped = true;
+    super.unsubscribe();
+  }
+
+  _next(value: T): void {
+    this.destination.next(value);
+  }
+
+  _error(err: any): void {
+    this.destination.error(err);
+    this.unsubscribe();
+  }
+
+  _complete(): void {
+    this.destination.complete();
+    this.unsubscribe();
+  }
+
+  [rxSubscriber]() {
+    return this;
+  }
+}
+
+class SafeSubscriber<T> extends Subscriber<T> {
+
+  constructor(next?: (x?: T) => void,
+              error?: (e?: any) => void,
+              complete?: () => void) {
+    super();
+    this._next = (typeof next === 'function') && tryOrOnError(next) || null;
+    this._error = (typeof error === 'function') && tryOrThrowError(error) || throwError;
+    this._complete = (typeof complete === 'function') && tryOrThrowError(complete) || null;
+  }
+
+  next(value?: T): void {
+    if (!this.isStopped && this._next) {
+      this._next(value);
+    }
+  }
+
+  error(err?: any): void {
+    if (!this.isStopped) {
+      if (this._error) {
+        this._error(err);
+      }
       this.unsubscribe();
     }
   }
 
   complete(): void {
-    if (!this.isUnsubscribed) {
-      this._complete();
+    if (!this.isStopped) {
+      if (this._complete) {
+        this._complete();
+      }
       this.unsubscribe();
     }
   }
