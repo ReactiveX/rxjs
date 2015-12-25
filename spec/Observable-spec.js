@@ -121,13 +121,6 @@ describe('Observable', function () {
       expect(unsubscribeCalled).toBe(true);
     });
 
-    it('should return the given subject when called with a Subject', function () {
-      var source = Observable.of(42);
-      var subject = new Rx.Subject();
-      var subscriber = source.subscribe(subject);
-      expect(subscriber).toBe(subject);
-    });
-
     describe('when called with an anonymous observer', function () {
       it('should accept an anonymous observer with just a next function', function () {
         Observable.of(1).subscribe({

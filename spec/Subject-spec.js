@@ -21,7 +21,7 @@ describe('Subject', function () {
 
   it('should have the rxSubscriber Symbol', function () {
     var subject = new Subject();
-    expect(subject[Rx.Symbol.rxSubscriber]()).toBe(subject);
+    expect(typeof subject[Rx.Symbol.rxSubscriber]).toBe('function');
   });
 
   it('should pump values to multiple subscribers', function (done) {

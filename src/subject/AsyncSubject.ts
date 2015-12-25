@@ -3,25 +3,20 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class AsyncSubject<T> extends Subject<T> {
-  _value: T = void 0;
-  _hasNext: boolean = false;
-  _isScalar: boolean = false;
+  value: T = null;
+  hasNext: boolean = false;
 
-  constructor () {
-    super();
-  }
-
-  _subscribe(subscriber: Subscriber<any>): Subscription {
-    if (this.completeSignal && this._hasNext) {
-      subscriber.next(this._value);
+  _subscribe(subscriber: Subscriber<any>): Subscription|Function|void {
+    if (this.hasCompleted && this.hasNext) {
+      subscriber.next(this.value);
     }
 
     return super._subscribe(subscriber);
   }
 
   _next(value: T): void {
-    this._value = value;
-    this._hasNext = true;
+    this.value = value;
+    this.hasNext = true;
   }
 
   _complete(): void {
@@ -29,14 +24,14 @@ export class AsyncSubject<T> extends Subject<T> {
     const observers = this.observers;
     const len = observers.length;
 
-    // optimization -- block next, complete, and unsubscribe while dispatching
-    this.observers = void 0; // optimization
+    // optimization to block our SubjectSubscriptions from
+    // splicing themselves out of the observers list one by one.
     this.isUnsubscribed = true;
 
-    if (this._hasNext) {
+    if (this.hasNext) {
       while (++index < len) {
         let o = observers[index];
-        o.next(this._value);
+        o.next(this.value);
         o.complete();
       }
     } else {
@@ -46,5 +41,7 @@ export class AsyncSubject<T> extends Subject<T> {
     }
 
     this.isUnsubscribed = false;
+
+    this.unsubscribe();
   }
 }

@@ -3,20 +3,21 @@ import {Scheduler} from '../Scheduler';
 import {queue} from '../scheduler/queue';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
+import {ObserveOnSubscriber} from '../operator/ObserveOn-support';
 
 export class ReplaySubject<T> extends Subject<T> {
-  private bufferSize: number;
-  private _windowTime: number;
-  private scheduler: Scheduler;
   private events: ReplayEvent<T>[] = [];
+  private scheduler: Scheduler;
+  private bufferSize: number;
+  private windowSize: number;
 
   constructor(bufferSize: number = Number.POSITIVE_INFINITY,
-              windowTime: number = Number.POSITIVE_INFINITY,
+              windowSize: number = Number.POSITIVE_INFINITY,
               scheduler?: Scheduler) {
     super();
-    this.bufferSize = bufferSize < 1 ? 1 : bufferSize;
-    this._windowTime = windowTime < 1 ? 1 : windowTime;
     this.scheduler = scheduler;
+    this.bufferSize = bufferSize < 1 ? 1 : bufferSize;
+    this.windowSize = windowSize < 1 ? 1 : windowSize;
   }
 
   _next(value: T): void {
@@ -26,11 +27,17 @@ export class ReplaySubject<T> extends Subject<T> {
     super._next(value);
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription {
+  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     const events = this._trimBufferThenGetEvents(this._getNow());
+    const scheduler = this.scheduler;
+
+    if (scheduler) {
+      subscriber.add(subscriber = new ObserveOnSubscriber<T>(subscriber, scheduler));
+    }
+
     let index = -1;
     const len = events.length;
-    while (!subscriber.isUnsubscribed && ++index < len) {
+    while (++index < len && !subscriber.isUnsubscribed) {
       subscriber.next(events[index].value);
     }
     return super._subscribe(subscriber);
@@ -42,7 +49,7 @@ export class ReplaySubject<T> extends Subject<T> {
 
   private _trimBufferThenGetEvents(now): ReplayEvent<T>[] {
     const bufferSize = this.bufferSize;
-    const _windowTime = this._windowTime;
+    const windowSize = this.windowSize;
     const events = this.events;
 
     let eventsCount = events.length;
@@ -52,7 +59,7 @@ export class ReplaySubject<T> extends Subject<T> {
     // Start at the front of the list. Break early once
     // we encounter an event that falls within the window.
     while (spliceCount < eventsCount) {
-      if ((now - events[spliceCount].time) < _windowTime) {
+      if ((now - events[spliceCount].time) < windowSize) {
         break;
       }
       spliceCount += 1;
@@ -74,4 +81,3 @@ class ReplayEvent<T> {
   constructor(public time: number, public value: T) {
   }
 }
-
