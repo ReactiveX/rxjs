@@ -1,6 +1,7 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -35,14 +36,14 @@ export class ScalarObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     const value = this.value;
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(ScalarObservable.dispatch, 0, {
+      return scheduler.schedule(ScalarObservable.dispatch, 0, {
         done: false, value, subscriber
-      }));
+      });
     } else {
       subscriber.next(value);
       if (!subscriber.isUnsubscribed) {

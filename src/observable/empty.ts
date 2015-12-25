@@ -1,5 +1,6 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
 
 export class EmptyObservable<T> extends Observable<T> {
 
@@ -15,12 +16,12 @@ export class EmptyObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber): Subscription | Function | void {
 
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(EmptyObservable.dispatch, 0, { subscriber }));
+      return scheduler.schedule(EmptyObservable.dispatch, 0, { subscriber });
     } else {
       subscriber.complete();
     }

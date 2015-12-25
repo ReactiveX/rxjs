@@ -83,15 +83,15 @@ export class IteratorObservable<T> extends Observable<T> {
     this.iterator = getIterator(iterator);
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber): Subscription | Function | void {
 
     let index = 0;
     const { iterator, project, thisArg, scheduler } = this;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(IteratorObservable.dispatch, 0, {
+      return scheduler.schedule(IteratorObservable.dispatch, 0, {
         index, thisArg, project, iterator, subscriber
-      }));
+      });
     } else {
       do {
         let result = iterator.next();
