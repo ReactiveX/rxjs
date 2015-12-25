@@ -1,4 +1,6 @@
-import {noop} from './util/noop';
+import {isArray} from './util/isArray';
+import {isObject} from './util/isObject';
+import {isFunction} from './util/isFunction';
 
 export class Subscription {
   public static EMPTY: Subscription = (function(empty){
@@ -6,17 +8,11 @@ export class Subscription {
     return empty;
   }(new Subscription()));
 
-  isUnsubscribed: boolean = false;
-
-  _subscriptions: Subscription[];
-
-  _unsubscribe(): void {
-    noop();
-  }
+  public isUnsubscribed: boolean = false;
 
   constructor(_unsubscribe?: () => void) {
     if (_unsubscribe) {
-      this._unsubscribe = _unsubscribe;
+      (<any> this)._unsubscribe = _unsubscribe;
     }
   }
 
@@ -28,21 +24,24 @@ export class Subscription {
 
     this.isUnsubscribed = true;
 
-    const unsubscribe = this._unsubscribe;
-    const subscriptions = this._subscriptions;
+    const { _unsubscribe, _subscriptions } = (<any> this);
 
-    this._subscriptions = void 0;
+    (<any> this)._subscriptions = null;
 
-    if (unsubscribe) {
-      unsubscribe.call(this);
+    if (isFunction(_unsubscribe)) {
+      _unsubscribe.call(this);
     }
 
-    if (subscriptions != null) {
+    if (isArray(_subscriptions)) {
+
       let index = -1;
-      const len = subscriptions.length;
+      const len = _subscriptions.length;
 
       while (++index < len) {
-        subscriptions[index].unsubscribe();
+        const subscription = _subscriptions[index];
+        if (isObject(subscription)) {
+          subscription.unsubscribe();
+        }
       }
     }
   }
@@ -69,8 +68,7 @@ export class Subscription {
         } else if (this.isUnsubscribed) {
             sub.unsubscribe();
         } else {
-          const subscriptions = this._subscriptions || (this._subscriptions = []);
-          subscriptions.push(sub);
+          ((<any> this)._subscriptions || ((<any> this)._subscriptions = [])).push(sub);
         }
         break;
       default:
@@ -90,7 +88,7 @@ export class Subscription {
       return;
     }
 
-    const subscriptions = this._subscriptions;
+    const subscriptions = (<any> this)._subscriptions;
 
     if (subscriptions) {
       const subscriptionIndex = subscriptions.indexOf(subscription);
