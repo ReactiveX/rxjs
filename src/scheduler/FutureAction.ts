@@ -1,22 +1,34 @@
-import {Subscription} from '../Subscription';
-import {QueueScheduler} from './QueueScheduler';
+import {root} from '../util/root';
 import {Action} from './Action';
-import {QueueAction} from './QueueAction';
+import {Scheduler} from '../Scheduler';
+import {Subscription} from '../Subscription';
 
-export class FutureAction<T> extends QueueAction<T> {
+export class FutureAction<T> extends Subscription implements Action {
 
-  id: any;
-  delay: number;
+  public id: any;
+  public state: any;
+  public delay: number;
 
-  constructor(public scheduler: QueueScheduler,
+  constructor(public scheduler: Scheduler,
               public work: (x?: any) => Subscription | void) {
-    super(scheduler, work);
+    super();
+  }
+
+  execute() {
+    if (this.isUnsubscribed) {
+      throw new Error('How did did we execute a canceled Action?');
+    }
+    this.work(this.state);
   }
 
   schedule(state?: any, delay: number = 0): Action {
     if (this.isUnsubscribed) {
       return this;
     }
+    return this._schedule(state, delay);
+  }
+
+  _schedule(state?: any, delay: number = 0): Action {
 
     this.delay = delay;
     this.state = state;
@@ -24,26 +36,36 @@ export class FutureAction<T> extends QueueAction<T> {
 
     if (id != null) {
       this.id = undefined;
-      clearTimeout(id);
+      root.clearTimeout(id);
     }
 
-    const scheduler = this.scheduler;
-
-    this.id = setTimeout(() => {
-      this.id = void 0;
+    this.id = root.setTimeout(() => {
+      this.id = null;
+      const {scheduler} = this;
       scheduler.actions.push(this);
       scheduler.flush();
-    }, this.delay);
+    }, delay);
 
     return this;
   }
 
-  unsubscribe() {
-    const id = this.id;
+  _unsubscribe() {
+
+    const {id, scheduler} = this;
+    const {actions} = scheduler;
+    const index = actions.indexOf(this);
+
     if (id != null) {
-      this.id = void 0;
-      clearTimeout(id);
+      this.id = null;
+      root.clearTimeout(id);
     }
-    super.unsubscribe();
+
+    if (index !== -1) {
+      actions.splice(index, 1);
+    }
+
+    this.work = null;
+    this.state = null;
+    this.scheduler = null;
   }
 }

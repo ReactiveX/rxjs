@@ -1,49 +1,16 @@
-import {Subscription} from '../Subscription';
-import {Scheduler} from '../Scheduler';
 import {Action} from './Action';
+import {FutureAction} from './FutureAction';
 
-export class QueueAction<T> extends Subscription implements Action {
-
-  state: any;
-
-  constructor(public scheduler: Scheduler,
-              public work: (x?: any) => Subscription | void) {
-    super();
-  }
-
-  schedule(state?: any): Action {
-    if (this.isUnsubscribed) {
-      return this;
+export class QueueAction<T> extends FutureAction<T> {
+  _schedule(state?: any, delay: number = 0): Action {
+    if (delay > 0) {
+      return super._schedule(state, delay);
     }
-
+    this.delay = delay;
     this.state = state;
     const scheduler = this.scheduler;
     scheduler.actions.push(this);
     scheduler.flush();
     return this;
-  }
-
-  execute() {
-    if (this.isUnsubscribed) {
-      throw new Error('How did did we execute a canceled Action?');
-    }
-    this.work(this.state);
-  }
-
-  unsubscribe() {
-
-    const scheduler = this.scheduler;
-    const actions = scheduler.actions;
-    const index = actions.indexOf(this);
-
-    this.work = void 0;
-    this.state = void 0;
-    this.scheduler = void 0;
-
-    if (index !== -1) {
-      actions.splice(index, 1);
-    }
-
-    super.unsubscribe();
   }
 }

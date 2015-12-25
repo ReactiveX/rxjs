@@ -1,47 +1,39 @@
-import {Immediate} from '../util/Immediate';
-import {QueueAction} from './QueueAction';
 import {Action} from './Action';
+import {Immediate} from '../util/Immediate';
+import {FutureAction} from './FutureAction';
 
-export class AsapAction<T> extends QueueAction<T> {
-  private id: any;
+export class AsapAction<T> extends FutureAction<T> {
 
-  schedule(state?: any): Action {
-    if (this.isUnsubscribed) {
-      return this;
+  _schedule(state?: any, delay: number = 0): Action {
+    if (delay > 0) {
+      return super._schedule(state, delay);
     }
-
+    this.delay = delay;
     this.state = state;
-
-    const scheduler = this.scheduler;
-
+    const {scheduler} = this;
     scheduler.actions.push(this);
-
-    if (!scheduler.scheduled) {
-      scheduler.scheduled = true;
-      this.id = Immediate.setImmediate(() => {
-        this.id = null;
-        this.scheduler.scheduled = false;
-        this.scheduler.flush();
+    if (!scheduler.scheduledId) {
+      scheduler.scheduledId = Immediate.setImmediate(() => {
+        scheduler.scheduledId = null;
+        scheduler.flush();
       });
     }
-
     return this;
   }
 
-  unsubscribe(): void {
-    const id = this.id;
-    const scheduler = this.scheduler;
+  _unsubscribe(): void {
 
-    super.unsubscribe();
+    const {scheduler} = this;
+    const {scheduledId, actions} = scheduler;
 
-    if (scheduler.actions.length === 0) {
+    super._unsubscribe();
+
+    if (actions.length === 0) {
       scheduler.active = false;
-      scheduler.scheduled = false;
-    }
-
-    if (id) {
-      this.id = null;
-      Immediate.clearImmediate(id);
+      if (scheduledId != null) {
+        scheduler.scheduledId = null;
+        Immediate.clearImmediate(scheduledId);
+      }
     }
   }
 }
