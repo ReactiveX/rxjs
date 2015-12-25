@@ -5,16 +5,14 @@ import {throwError} from '../util/throwError';
 import {ObjectUnsubscribedError} from '../util/ObjectUnsubscribedError';
 
 export class BehaviorSubject<T> extends Subject<T> {
-  private _hasError: boolean = false;
-  private _err: any;
 
   constructor(private _value: T) {
     super();
   }
 
   getValue(): T {
-    if (this._hasError) {
-      throwError(this._err);
+    if (this.hasErrored) {
+      throwError(this.errorValue);
     } else if (this.isUnsubscribed) {
       throwError(new ObjectUnsubscribedError());
     } else {
@@ -26,11 +24,9 @@ export class BehaviorSubject<T> extends Subject<T> {
     return this.getValue();
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription {
+  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     const subscription = super._subscribe(subscriber);
-    if (!subscription) {
-      return;
-    } else if (!subscription.isUnsubscribed) {
+    if (subscription && !(<Subscription> subscription).isUnsubscribed) {
       subscriber.next(this._value);
     }
     return subscription;
@@ -41,7 +37,7 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   _error(err: any): void {
-    this._hasError = true;
-    super._error(this._err = err);
+    this.hasErrored = true;
+    super._error(this.errorValue = err);
   }
 }
