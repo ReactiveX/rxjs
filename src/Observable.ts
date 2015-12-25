@@ -64,15 +64,6 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   /**
-   * @method Symbol.observable
-   * @returns {Observable} this instance of the observable
-   * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
-   */
-  [SymbolShim.observable]() {
-    return this;
-  }
-
-  /**
    * @method subscribe
    * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called,
    *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
@@ -274,4 +265,13 @@ export class Observable<T> implements CoreOperators<T>  {
   withLatestFrom: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
+
+  /**
+   * @method Symbol.observable
+   * @returns {Observable} this instance of the observable
+   * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
+   */
+  [SymbolShim.observable]() {
+    return this;
+  }
 }
