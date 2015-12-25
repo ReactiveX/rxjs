@@ -1,5 +1,6 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
 
 export class ErrorObservable<T> extends Observable<T> {
 
@@ -15,15 +16,15 @@ export class ErrorObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber): Subscription | Function | void {
 
     const error = this.error;
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(ErrorObservable.dispatch, 0, {
+      return scheduler.schedule(ErrorObservable.dispatch, 0, {
         error, subscriber
-      }));
+      });
     } else {
       subscriber.error(error);
     }

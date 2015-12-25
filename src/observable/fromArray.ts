@@ -3,6 +3,7 @@ import {Observable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './empty';
 import {isScheduler} from '../util/isScheduler';
+import {Subscription} from '../Subscription';
 
 export class ArrayObservable<T> extends Observable<T> {
 
@@ -59,7 +60,7 @@ export class ArrayObservable<T> extends Observable<T> {
     }
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber): Subscription | Function | void {
 
     let index = 0;
     const array = this.array;
@@ -67,9 +68,9 @@ export class ArrayObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(ArrayObservable.dispatch, 0, {
+      return scheduler.schedule(ArrayObservable.dispatch, 0, {
         array, index, count, subscriber
-      }));
+      });
     } else {
       for (let i = 0; i < count && !subscriber.isUnsubscribed; i++) {
         subscriber.next(array[i]);

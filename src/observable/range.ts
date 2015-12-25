@@ -1,5 +1,6 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
 
 export class RangeObservable<T> extends Observable<T> {
 
@@ -39,7 +40,7 @@ export class RangeObservable<T> extends Observable<T> {
     this.scheduler = scheduler;
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber): Subscription | Function | void {
 
     let index = 0;
     let start = this.start;
@@ -47,9 +48,9 @@ export class RangeObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     if (scheduler) {
-      subscriber.add(scheduler.schedule(RangeObservable.dispatch, 0, {
+      return scheduler.schedule(RangeObservable.dispatch, 0, {
         index, end, start, subscriber
-      }));
+      });
     } else {
       do {
         if (index++ >= end) {

@@ -59,13 +59,13 @@ export class BoundCallbackObservable<T> extends Observable<T> {
       }
       return subject.subscribe(subscriber);
     } else {
-      subscriber.add(scheduler.schedule(dispatch, 0, { source: this, subscriber }));
-      return subscriber;
+      return scheduler.schedule(dispatch, 0, { source: this, subscriber });
     }
   }
 }
 
 function dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Subscriber<T> }) {
+  const self = (<Subscription> this);
   const { source, subscriber } = state;
   const { callbackFunc, args, scheduler } = source;
   let subject = source.subject;
@@ -79,13 +79,13 @@ function dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Su
       if (selector) {
         const result = tryCatch(selector).apply(this, innerArgs);
         if (result === errorObject) {
-          subject.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
+          self.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
         } else {
-          subject.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
+          self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
         }
       } else {
         const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
-        subject.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
+        self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
       }
     };
     // use named function to pass values in without closure
@@ -97,7 +97,7 @@ function dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Su
     }
   }
 
-  (<any>this).add(subject.subscribe(subscriber));
+  self.add(subject.subscribe(subscriber));
 }
 
 function dispatchNext({ value, subject }) {
