@@ -1,11 +1,12 @@
+import {root} from './root';
+import {isArray} from './isArray';
+import {isPromise} from './isPromise';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {SymbolShim} from '../util/SymbolShim';
 import {Subscription} from '../Subscription';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
-
-const isArray = Array.isArray;
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -34,16 +35,19 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
     if (!destination.isUnsubscribed) {
       destination.complete();
     }
-  } else if (typeof result.then === 'function') {
-    result.then(x => {
-      if (!destination.isUnsubscribed) {
-        destination.next(x);
-        destination.complete();
-      }
-    }, err => destination.error(err))
+  } else if (isPromise(result)) {
+    result.then(
+      (value) => {
+        if (!destination.isUnsubscribed) {
+          destination.next(value);
+          destination.complete();
+        }
+      },
+      (err) => destination.error(err)
+    )
     .then(null, err => {
       // Escaping the Promise trap: globally throw unhandled errors
-      setTimeout(() => { throw err; });
+      root.setTimeout(() => { throw err; });
     });
     return destination;
   } else if (typeof result[SymbolShim.iterator] === 'function') {

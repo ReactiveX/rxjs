@@ -1,13 +1,13 @@
+import {root} from '../util/root';
+import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
 import {queue} from '../scheduler/queue';
 
 export class PromiseObservable<T> extends Observable<T> {
 
-  _isScalar: boolean = false;
-  value: T;
+  public value: T;
 
   static create<T>(promise: Promise<T>, scheduler: Scheduler = queue): Observable<T> {
     return new PromiseObservable(promise, scheduler);
@@ -17,52 +17,74 @@ export class PromiseObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
-    const scheduler = this.scheduler;
+  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     const promise = this.promise;
+    const scheduler = this.scheduler;
 
     if (scheduler === queue) {
       if (this._isScalar) {
-        subscriber.next(this.value);
-        subscriber.complete();
-      } else {
-        promise.then(value => {
-          this._isScalar = true;
-          this.value = value;
-          subscriber.next(value);
+        if (!subscriber.isUnsubscribed) {
+          subscriber.next(this.value);
           subscriber.complete();
-        }, err => subscriber.error(err))
+        }
+      } else {
+        promise.then(
+          (value) => {
+            this.value = value;
+            this._isScalar = true;
+            if (!subscriber.isUnsubscribed) {
+              subscriber.next(value);
+              subscriber.complete();
+            }
+          },
+          (err) => {
+            if (!subscriber.isUnsubscribed) {
+              subscriber.error(err);
+            }
+          }
+        )
         .then(null, err => {
           // escape the promise trap, throw unhandled errors
-          setTimeout(() => { throw err; });
+          root.setTimeout(() => { throw err; });
         });
       }
     } else {
-      let subscription = new Subscription();
       if (this._isScalar) {
-        const value = this.value;
-        subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
+        if (!subscriber.isUnsubscribed) {
+          return scheduler.schedule(dispatchNext, 0, { value: this.value, subscriber });
+        }
       } else {
-        promise.then(value => {
-          this._isScalar = true;
-          this.value = value;
-          subscription.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
-        }, err => subscription.add(scheduler.schedule(dispatchError, 0, { err, subscriber })))
-        .then(null, err => {
-          // escape the promise trap, throw unhandled errors
-          scheduler.schedule(() => { throw err; });
-        });
+        promise.then(
+          (value) => {
+            this.value = value;
+            this._isScalar = true;
+            if (!subscriber.isUnsubscribed) {
+              subscriber.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
+            }
+          },
+          (err) => {
+            if (!subscriber.isUnsubscribed) {
+              subscriber.add(scheduler.schedule(dispatchError, 0, { err, subscriber }));
+            }
+          })
+          .then(null, (err) => {
+            // escape the promise trap, throw unhandled errors
+            root.setTimeout(() => { throw err; });
+          });
       }
-      return subscription;
     }
   }
 }
 
 function dispatchNext({ value, subscriber }) {
-  subscriber.next(value);
-  subscriber.complete();
+  if (!subscriber.isUnsubscribed) {
+    subscriber.next(value);
+    subscriber.complete();
+  }
 }
 
 function dispatchError({ err, subscriber }) {
-  subscriber.error(err);
+  if (!subscriber.isUnsubscribed) {
+    subscriber.error(err);
+  }
 }
