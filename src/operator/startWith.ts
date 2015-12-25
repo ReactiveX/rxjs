@@ -11,7 +11,7 @@ export function startWith<T>(...array: (T | Scheduler)[]): Observable<T> {
   if (isScheduler(scheduler)) {
     array.pop();
   } else {
-    scheduler = void 0;
+    scheduler = null;
   }
 
   const len = array.length;

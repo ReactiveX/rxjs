@@ -16,8 +16,8 @@ class SwitchFirstOperator<T, R> implements Operator<T, R> {
 }
 
 class SwitchFirstSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private hasSubscription: boolean = false;
   private hasCompleted: boolean = false;
+  private hasSubscription: boolean = false;
 
   constructor(destination: Subscriber<R>) {
     super(destination);

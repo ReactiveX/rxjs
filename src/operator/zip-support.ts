@@ -1,3 +1,4 @@
+import {isArray} from '../util/isArray';
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
 import {Observable} from '../Observable';
@@ -7,8 +8,6 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {SymbolShim} from '../util/SymbolShim';
-
-const isArray = Array.isArray;
 
 export class ZipOperator<T, R> implements Operator<T, R> {
 

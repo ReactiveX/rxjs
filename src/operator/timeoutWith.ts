@@ -47,7 +47,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
               private waitFor: number,
               private withObservable: Observable<any>,
               private scheduler: Scheduler) {
-    super(null);
+    super();
     destination.add(this);
     this.scheduleTimeout();
   }

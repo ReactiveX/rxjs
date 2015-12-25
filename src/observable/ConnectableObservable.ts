@@ -1,7 +1,7 @@
 import {Subject} from '../Subject';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 
 export class ConnectableObservable<T> extends Observable<T> {
 
@@ -48,9 +48,9 @@ class ConnectableSubscription<T> extends Subscription {
 
   _unsubscribe() {
     const connectable = this.connectable;
-    connectable.subject = void 0;
-    connectable.subscription = void 0;
-    this.connectable = void 0;
+    connectable.subject = null;
+    connectable.subscription = null;
+    this.connectable = null;
   }
 }
 
@@ -104,7 +104,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     if (subConnection && subConnection === obsConnection) {
       observable.refCount = 0;
       obsConnection.unsubscribe();
-      observable.connection = void 0;
+      observable.connection = null;
       this.unsubscribe();
     }
   }
@@ -119,7 +119,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
       const subConnection = this.connection;
       if (subConnection && subConnection === obsConnection) {
         obsConnection.unsubscribe();
-        observable.connection = void 0;
+        observable.connection = null;
       }
     }
   }
