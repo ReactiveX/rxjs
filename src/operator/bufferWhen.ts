@@ -5,6 +5,9 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+
 /**
  * Opens a buffer immediately, then closes the buffer when the observable returned by calling `closingSelector` emits a value.
  * It that immediately opens a new buffer and repeats the process
@@ -25,9 +28,10 @@ class BufferWhenOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class BufferWhenSubscriber<T> extends Subscriber<T> {
+class BufferWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private buffer: T[];
-  private closingNotification: Subscription;
+  private subscribing: boolean = false;
+  private closingSubscription: Subscription;
 
   constructor(destination: Subscriber<T>, private closingSelector: () => Observable<any>) {
     super(destination);
@@ -38,56 +42,58 @@ class BufferWhenSubscriber<T> extends Subscriber<T> {
     this.buffer.push(value);
   }
 
-  _error(err: any) {
-    this.buffer = null;
-    this.destination.error(err);
-  }
-
   _complete() {
-    const buffer = this.buffer;
-    this.destination.next(buffer);
-    this.buffer = null;
-    this.destination.complete();
-  }
-
-  openBuffer() {
-    const prevClosingNotification = this.closingNotification;
-    if (prevClosingNotification) {
-      this.remove(prevClosingNotification);
-      prevClosingNotification.unsubscribe();
-    }
-
     const buffer = this.buffer;
     if (buffer) {
       this.destination.next(buffer);
     }
-    this.buffer = [];
+    super._complete();
+  }
 
-    let closingNotifier = tryCatch(this.closingSelector)();
-    if (closingNotifier === errorObject) {
-      const err = closingNotifier.e;
-      this.buffer = null;
-      this.destination.error(err);
+  _unsubscribe() {
+    this.buffer = null;
+    this.subscribing = false;
+  }
+
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+    this.openBuffer();
+  }
+
+  notifyComplete(): void {
+    if (this.subscribing) {
+      this.complete();
     } else {
-      this.add(this.closingNotification = closingNotifier._subscribe(new BufferClosingNotifierSubscriber(this)));
+      this.openBuffer();
     }
   }
-}
 
-class BufferClosingNotifierSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: BufferWhenSubscriber<any>) {
-    super(null);
-  }
+  openBuffer() {
 
-  _next() {
-    this.parent.openBuffer();
-  }
+    let { closingSubscription } = this;
 
-  _error(err) {
-    this.parent.error(err);
-  }
+    if (closingSubscription) {
+      this.remove(closingSubscription);
+      closingSubscription.unsubscribe();
+    }
 
-  _complete() {
-    this.parent.openBuffer();
+    const buffer = this.buffer;
+    if (this.buffer) {
+      this.destination.next(buffer);
+    }
+
+    this.buffer = [];
+
+    const closingNotifier = tryCatch(this.closingSelector)();
+
+    if (closingNotifier === errorObject) {
+      this.error(errorObject.e);
+    } else {
+      closingSubscription = new Subscription();
+      this.closingSubscription = closingSubscription;
+      this.add(closingSubscription);
+      this.subscribing = true;
+      closingSubscription.add(subscribeToResult(this, closingNotifier));
+      this.subscribing = false;
+    }
   }
 }

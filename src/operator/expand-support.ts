@@ -4,8 +4,8 @@ import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
+import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
@@ -80,7 +80,11 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(innerSub?: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+    this._next(innerValue);
+  }
+
+  notifyComplete(innerSub: Subscription): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;
@@ -90,9 +94,5 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (this.hasCompleted && this.active === 0) {
       this.destination.complete();
     }
-  }
-
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
-    this._next(innerValue);
   }
 }

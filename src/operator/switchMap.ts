@@ -54,28 +54,22 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
 
   _complete(): void {
-    const innerSubscription = this.innerSubscription;
-    this.hasCompleted = true;
+    const {innerSubscription} = this;
     if (!innerSubscription || innerSubscription.isUnsubscribed) {
-      this.destination.complete();
+      super._complete();
     }
+  }
+
+  _unsubscribe() {
+    this.innerSubscription = null;
   }
 
   notifyComplete(innerSub: Subscription): void {
     this.remove(innerSub);
-    const prevSubscription = this.innerSubscription;
-    if (prevSubscription) {
-      prevSubscription.unsubscribe();
-    }
     this.innerSubscription = null;
-
-    if (this.hasCompleted) {
-      this.destination.complete();
+    if (this.isStopped) {
+      super._complete();
     }
-  }
-
-  notifyError(err: any): void {
-    this.destination.error(err);
   }
 
   notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {

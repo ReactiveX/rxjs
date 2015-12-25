@@ -2,6 +2,9 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+
 export function skipUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SkipUntilOperator(notifier));
 }
@@ -10,68 +13,44 @@ class SkipUntilOperator<T, R> implements Operator<T, R> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<R>): Subscriber<T> {
     return new SkipUntilSubscriber(subscriber, this.notifier);
   }
 }
 
-class SkipUntilSubscriber<T> extends Subscriber<T> {
-  private notificationSubscriber: NotificationSubscriber<any> = null;
+class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  constructor(destination: Subscriber<T>,
-              private notifier: Observable<any>) {
+  private hasValue: boolean = false;
+  private isInnerStopped: boolean = false;
+
+  constructor(destination: Subscriber<any>,
+              notifier: Observable<any>) {
     super(destination);
-    this.notificationSubscriber = new NotificationSubscriber(this);
-    this.add(this.notifier.subscribe(this.notificationSubscriber));
+    this.add(subscribeToResult(this, notifier));
   }
 
   _next(value: T) {
-    if (this.notificationSubscriber.hasValue) {
-      this.destination.next(value);
+    if (this.hasValue) {
+      super._next(value);
     }
-  }
-
-  _error(err: any) {
-    this.destination.error(err);
   }
 
   _complete() {
-    if (this.notificationSubscriber.hasCompleted) {
-      this.destination.complete();
-    }
-    this.notificationSubscriber.unsubscribe();
-  }
-
-  unsubscribe() {
-    if (this._isUnsubscribed) {
-      return;
-    } else if (this._subscription) {
-      this._subscription.unsubscribe();
-      this._isUnsubscribed = true;
+    if (this.isInnerStopped) {
+      super._complete();
     } else {
-      super.unsubscribe();
+      this.unsubscribe();
     }
   }
-}
 
-class NotificationSubscriber<T> extends Subscriber<T> {
-  hasValue: boolean = false;
-  hasCompleted: boolean = false;
-
-  constructor(private parent: SkipUntilSubscriber<any>) {
-    super(null);
-  }
-
-  _next(unused: T) {
+  notifyNext(): void {
     this.hasValue = true;
   }
 
-  _error(err) {
-    this.parent.error(err);
-    this.hasValue = true;
-  }
-
-  _complete() {
-    this.hasCompleted = true;
+  notifyComplete(): void {
+    this.isInnerStopped = true;
+    if (this.isStopped) {
+      super._complete();
+    }
   }
 }

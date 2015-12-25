@@ -62,15 +62,19 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
 
   _error(err) {
     this.buffers.length = 0;
-    this.destination.error(err);
+    super._error(err);
   }
 
   _complete() {
-    const buffers = this.buffers;
+    const { buffers, destination } = this;
     while (buffers.length > 0) {
-      this.destination.next(buffers.shift());
+      destination.next(buffers.shift());
     }
-    this.destination.complete();
+    super._complete();
+  }
+
+  _unsubscribe() {
+    this.buffers = null;
   }
 
   openBuffer(): T[] {

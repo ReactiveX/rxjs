@@ -21,10 +21,23 @@ var glit = global.it;
 
 global.it = function (description, cb, timeout) {
   if (cb.length === 0) {
-    glit(description, function () {
+    glit(description, function (done) {
       global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
-      cb();
-      global.rxTestScheduler.flush();
+      var error;
+      var errorHappened = false;
+      try {
+        cb();
+        global.rxTestScheduler.flush();
+      } catch (e) {
+        errorHappened = true;
+        error = e;
+      } finally {
+        if (errorHappened) {
+          setTimeout(function () { done.fail(error); });
+        } else {
+          setTimeout(function () { done(); });
+        }
+      }
     });
   } else {
     glit.apply(this, arguments);
@@ -39,10 +52,23 @@ var glfit = global.fit;
 
 global.fit = function (description, cb, timeout) {
   if (cb.length === 0) {
-    glfit(description, function () {
+    glfit(description, function (done) {
       global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
-      cb();
-      global.rxTestScheduler.flush();
+      var error;
+      var errorHappened = false;
+      try {
+        cb();
+        global.rxTestScheduler.flush();
+      } catch (e) {
+        errorHappened = true;
+        error = e;
+      } finally {
+        if (errorHappened) {
+          setTimeout(function () { done.fail(error); });
+        } else {
+          setTimeout(function () { done(); });
+        }
+      }
     });
   } else {
     glfit.apply(this, arguments);

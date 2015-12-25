@@ -56,7 +56,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     for (let i = 0; i < len; i++) {
       let iterator = iterators[i];
       if (iterator.stillUnsubscribed) {
-        iterator.subscribe(iterator, i);
+        this.add(iterator.subscribe(iterator, i));
       } else {
         this.active--; // not an observable
       }
@@ -226,6 +226,6 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
   }
 
   subscribe(value: any, index: number) {
-    this.add(subscribeToResult<any, any>(this, this.observable, this, index));
+    return subscribeToResult<any, any>(this, this.observable, this, index);
   }
 }

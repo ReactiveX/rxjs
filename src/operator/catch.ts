@@ -1,7 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -14,10 +13,9 @@ import {errorObject} from '../util/errorObject';
  *  catch `selector` function.
  */
 export function _catch<T>(selector: (err: any, caught: Observable<any>) => Observable<any>): Observable<T> {
-  let catchOperator = new CatchOperator(selector);
-  let caught = this.lift(catchOperator);
-  catchOperator.caught = caught;
-  return caught;
+  const operator = new CatchOperator(selector);
+  const caught = this.lift(operator);
+  return (operator.caught = caught);
 }
 
 class CatchOperator<T, R> implements Operator<T, R> {
@@ -26,42 +24,30 @@ class CatchOperator<T, R> implements Operator<T, R> {
   constructor(private selector: (err: any, caught: Observable<any>) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<R>): Subscriber<T> {
     return new CatchSubscriber(subscriber, this.selector, this.caught);
   }
 }
 
 class CatchSubscriber<T> extends Subscriber<T> {
-  private lastSubscription: Subscription;
 
-  constructor(public destination: Subscriber<T>,
+  constructor(destination: Subscriber<any>,
               private selector: (err: any, caught: Observable<any>) => Observable<any>,
               private caught: Observable<any>) {
-    super(null);
-    this.lastSubscription = this;
-    this.destination.add(this);
+    super(destination);
   }
 
-  _next(value: T) {
-    this.destination.next(value);
-  }
-
-  _error(err) {
-    const result = tryCatch(this.selector)(err, this.caught);
-    if (result === errorObject) {
-      this.destination.error(errorObject.e);
-    } else {
-      this.lastSubscription.unsubscribe();
-      this.lastSubscription = result.subscribe(this.destination);
+  error(err) {
+    if (!this.isStopped) {
+      const result = tryCatch(this.selector)(err, this.caught);
+      if (result === errorObject) {
+        super.error(errorObject.e);
+      } else {
+        const { destination } = this;
+        this.unsubscribe();
+        (<any> destination).remove(this);
+        result.subscribe(this.destination);
+      }
     }
-  }
-
-  _complete() {
-    this.lastSubscription.unsubscribe();
-    this.destination.complete();
-  }
-
-  _unsubscribe() {
-    this.lastSubscription.unsubscribe();
   }
 }

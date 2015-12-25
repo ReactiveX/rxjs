@@ -1,83 +1,38 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
 
-export function retry<T>(count: number = 0): Observable<T> {
+export function retry<T>(count: number = -1): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 
 class RetryOperator<T, R> implements Operator<T, R> {
   constructor(private count: number,
-              protected source: Observable<T>) {
+              private source: Observable<T>) {
   }
-
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new FirstRetrySubscriber<T>(subscriber, this.count, this.source);
+  call(subscriber: Subscriber<R>): Subscriber<T> {
+    return new RetrySubscriber(subscriber, this.count, this.source);
   }
 }
 
-class FirstRetrySubscriber<T> extends Subscriber<T> {
-  private lastSubscription: Subscription;
-
-  constructor(public destination: Subscriber<T>,
+class RetrySubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<any>,
               private count: number,
               private source: Observable<T>) {
-    super();
-    destination.add(this);
-    this.lastSubscription = this;
+    super(destination);
   }
-
-  _next(value: T) {
-    this.destination.next(value);
-  }
-
-  error(error?) {
-    if (!this.isUnsubscribed) {
+  error(err: any) {
+    if (!this.isStopped) {
+      const { source, count } = this;
+      if (count === 0) {
+        return super.error(err);
+      } else if (count > -1) {
+        this.count = count - 1;
+      }
       this.unsubscribe();
-      this.resubscribe();
+      this.isStopped = false;
+      this.isUnsubscribed = false;
+      source.subscribe(this);
     }
-  }
-
-  _complete() {
-    this.unsubscribe();
-    this.destination.complete();
-  }
-
-  resubscribe(retried: number = 0) {
-    const { lastSubscription, destination } = this;
-    destination.remove(lastSubscription);
-    lastSubscription.unsubscribe();
-    const nextSubscriber = new RetryMoreSubscriber(this, this.count, retried + 1);
-    this.lastSubscription = this.source.subscribe(nextSubscriber);
-    destination.add(this.lastSubscription);
-  }
-}
-
-class RetryMoreSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: FirstRetrySubscriber<T>,
-              private count: number,
-              private retried: number = 0) {
-    super(null);
-  }
-
-  _next(value: T) {
-    this.parent.destination.next(value);
-  }
-
-  _error(err: any) {
-    const parent = this.parent;
-    const retried = this.retried;
-    const count = this.count;
-
-    if (count && retried === count) {
-      parent.destination.error(err);
-    } else {
-      parent.resubscribe(retried);
-    }
-  }
-
-  _complete() {
-    this.parent.destination.complete();
   }
 }
