@@ -1,13 +1,11 @@
-import {QueueScheduler} from './QueueScheduler';
-import {Subscription} from '../Subscription';
 import {Action} from './Action';
 import {AsapAction} from './AsapAction';
-import {QueueAction} from './QueueAction';
+import {Subscription} from '../Subscription';
+import {QueueScheduler} from './QueueScheduler';
 
 export class AsapScheduler extends QueueScheduler {
+  public scheduledId: number = null;
   scheduleNow<T>(work: (x?: any) => Subscription, state?: any): Action {
-    return (this.scheduled ?
-      new QueueAction(this, work) :
-      new AsapAction(this, work)).schedule(state);
+    return new AsapAction(this, work).schedule(state);
   }
 }

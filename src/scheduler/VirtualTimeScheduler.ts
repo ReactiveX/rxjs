@@ -5,7 +5,7 @@ import {Action} from './Action';
 export class VirtualTimeScheduler implements Scheduler {
   actions: Action[] = [];
   active: boolean = false;
-  scheduled: boolean = false;
+  scheduledId: number = null;
   index: number = 0;
   sorted: boolean = false;
   frame: number = 0;

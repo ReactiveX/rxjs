@@ -5,16 +5,16 @@ import {FutureAction} from './FutureAction';
 import {Action} from './Action';
 
 export class QueueScheduler implements Scheduler {
-  actions: QueueAction<any>[] = [];
-  active: boolean = false;
-  scheduled: boolean = false;
+  public active: boolean = false;
+  public actions: QueueAction<any>[] = [];
+  public scheduledId: number = null;
 
   now() {
     return Date.now();
   }
 
   flush() {
-    if (this.active || this.scheduled) {
+    if (this.active || this.scheduledId) {
       return;
     }
     this.active = true;
