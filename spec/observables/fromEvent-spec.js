@@ -127,4 +127,75 @@ describe('Observable.fromEvent', function () {
 
     send('test');
   });
+
+  it('should not fail if no event arguments are passed and the selector does not return', function (done) {
+    var send;
+    var obj = {
+      on: function (name, handler) {
+        send = handler;
+      },
+      off: function () {
+      }
+    };
+
+    function selector() {
+    }
+
+    Observable.fromEvent(obj, 'click', selector).take(1)
+      .subscribe(function (e) {
+        expect(e).toBeUndefined();
+      }, function (err) {
+        done.fail('should not be called');
+      }, done);
+
+    send();
+  });
+
+  it('should return a value from the selector if no event arguments are passed', function (done) {
+    var send;
+    var obj = {
+      on: function (name, handler) {
+        send = handler;
+      },
+      off: function () {
+      }
+    };
+
+    function selector() {
+      return 'no arguments';
+    }
+
+    Observable.fromEvent(obj, 'click', selector).take(1)
+      .subscribe(function (e) {
+        expect(e).toBe('no arguments');
+      }, function (err) {
+        done.fail('should not be called');
+      }, done);
+
+    send();
+  });
+
+  it('should pass multiple arguments to selector from event emitter', function (done) {
+    var send;
+    var obj = {
+      on: function (name, handler) {
+        send = handler;
+      },
+      off: function () {
+      }
+    };
+
+    function selector(x, y, z) {
+      return [].slice.call(arguments);
+    }
+
+    Observable.fromEvent(obj, 'click', selector).take(1)
+      .subscribe(function (e) {
+        expect(e).toEqual([1,2,3]);
+      }, function (err) {
+        done.fail('should not be called');
+      }, done);
+
+    send(1, 2, 3);
+  });
 });
