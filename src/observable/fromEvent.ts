@@ -39,8 +39,8 @@ export class FromEventObservable<T, R> extends Observable<T> {
     const sourceObj = this.sourceObj;
     const eventName = this.eventName;
     const selector = this.selector;
-    let handler = selector ? (e) => {
-      let result = tryCatch(selector)(e);
+    let handler = selector ? (...args) => {
+      let result = tryCatch(selector)(...args);
       if (result === errorObject) {
         subscriber.error(result.e);
       } else {
