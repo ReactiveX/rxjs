@@ -207,6 +207,9 @@ export class Observable<T> implements CoreOperators<T>  {
   delay: (delay: number, scheduler?: Scheduler) => Observable<T>;
   distinctUntilChanged: (compare?: (x: T, y: T) => boolean) => Observable<T>;
   do: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
+  doOnNext: (next: (x: T) => void) => Observable<T>;
+  doOnError: (error: (e: any) => void) => Observable<T>;
+  doOnCompleted: (complete: () => void) => Observable<T>;
   expand: <R>(project: (x: T, ix: number) => Observable<R>, concurrent: number, scheduler: Scheduler) => Observable<R>;
   filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   finally: (finallySelector: () => void) => Observable<T>;
