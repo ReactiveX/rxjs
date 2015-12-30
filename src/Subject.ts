@@ -123,7 +123,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     this._complete();
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     if (this.destination) {
       this.destination.next(value);
     } else {
@@ -137,7 +137,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     }
   }
 
-  _error(err: any): void {
+  protected _error(err: any): void {
     if (this.destination) {
       this.destination.error(err);
     } else {
@@ -160,7 +160,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     if (this.destination) {
       this.destination.complete();
     } else {

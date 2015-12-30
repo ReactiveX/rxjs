@@ -14,12 +14,12 @@ export class AsyncSubject<T> extends Subject<T> {
     return super._subscribe(subscriber);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.value = value;
     this.hasNext = true;
   }
 
-  _complete(): void {
+  protected _complete(): void {
     let index = -1;
     const observers = this.observers;
     const len = observers.length;
