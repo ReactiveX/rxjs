@@ -161,6 +161,11 @@ export class Observable<T> implements CoreOperators<T>  {
     return this.source.subscribe(subscriber);
   }
 
+  static get: <T>(url: string | any) => Observable<any>;
+  static post: <T>(url: string | any, body?: any) => Observable<any>;
+  static ajax: <T>(options: string | any) => Observable<any>;
+  static getJSON: <T>(url: string | any) => Observable<any>;
+
   // static method stubs
   static ajax: AjaxCreationMethod;
   static bindCallback: typeof BoundCallbackObservable.create;
