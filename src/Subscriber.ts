@@ -63,16 +63,16 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     super.unsubscribe();
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.destination.next(value);
   }
 
-  _error(err: any): void {
+  protected _error(err: any): void {
     this.destination.error(err);
     this.unsubscribe();
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.destination.complete();
     this.unsubscribe();
   }
