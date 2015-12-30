@@ -25,7 +25,7 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const destination = this.destination;
     const result = tryCatch(this.predicate)(value, this.index++);
 

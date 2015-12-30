@@ -37,7 +37,7 @@ class MapSubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     const result = tryCatch(this.project).call(this.thisArg || this, x, this.count++);
     if (result === errorObject) {
       this.error(errorObject.e);

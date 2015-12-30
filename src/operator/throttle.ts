@@ -29,7 +29,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     if (!this.throttled) {
       const duration = tryCatch(this.durationSelector)(value);
       if (duration === errorObject) {

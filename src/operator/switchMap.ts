@@ -36,7 +36,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const index = this.index++;
     const destination = this.destination;
     let result = tryCatch(this.project)(value, index);
@@ -51,7 +51,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const {innerSubscription} = this;
     if (!innerSubscription || innerSubscription.isUnsubscribed) {
       super._complete();

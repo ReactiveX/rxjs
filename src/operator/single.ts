@@ -41,7 +41,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const predicate = this.predicate;
     const currentIndex = this.index++;
 
@@ -57,7 +57,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
 
     if (this.index > 0) {

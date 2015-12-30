@@ -33,14 +33,14 @@ class ElementAtSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     if (this.index-- === 0) {
       this.destination.next(x);
       this.destination.complete();
     }
   }
 
-  _complete() {
+  protected _complete() {
     const destination = this.destination;
     if (this.index >= 0) {
       if (typeof this.defaultValue !== 'undefined') {

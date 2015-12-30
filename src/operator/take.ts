@@ -31,7 +31,7 @@ class TakeSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const total = this.total;
     if (++this.count <= total) {
       this.destination.next(value);

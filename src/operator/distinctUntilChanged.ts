@@ -44,7 +44,7 @@ class DistinctUntilChangedSubscriber<T, K> extends Subscriber<T> {
     return x === y;
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
 
     const keySelector = this.keySelector;
     let key: any = value;

@@ -23,13 +23,13 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.unsubscribeInner();
     this.active++;
     this.add(this.innerSubscription = subscribeToResult(this, value));
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (this.active === 0) {
       this.destination.complete();

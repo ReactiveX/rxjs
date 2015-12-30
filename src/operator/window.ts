@@ -27,16 +27,16 @@ class WindowSubscriber<T> extends Subscriber<T> {
     this.openWindow();
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.window.next(value);
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this.window.error(err);
     this.destination.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     this.window.complete();
     this.destination.complete();
   }
@@ -51,6 +51,14 @@ class WindowSubscriber<T> extends Subscriber<T> {
     destination.add(newWindow);
     destination.next(newWindow);
   }
+
+  errorWindow(err: any) {
+    this._error(err);
+  }
+
+  completeWindow() {
+    this._complete();
+  }
 }
 
 class WindowClosingNotifierSubscriber extends Subscriber<any> {
@@ -58,15 +66,15 @@ class WindowClosingNotifierSubscriber extends Subscriber<any> {
     super();
   }
 
-  _next() {
+  protected _next() {
     this.parent.openWindow();
   }
 
-  _error(err: any) {
-    this.parent._error(err);
+  protected _error(err: any) {
+    this.parent.errorWindow(err);
   }
 
-  _complete() {
-    this.parent._complete();
+  protected _complete() {
+    this.parent.completeWindow();
   }
 }

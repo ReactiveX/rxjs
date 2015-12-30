@@ -27,7 +27,7 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     if (!this.throttled) {
       this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { subscriber: this }));
       this.destination.next(value);

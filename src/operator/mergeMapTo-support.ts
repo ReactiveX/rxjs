@@ -31,7 +31,8 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
   }
-  _next(value: any): void {
+
+  protected _next(value: any): void {
     if (this.active < this.concurrent) {
       const resultSelector = this.resultSelector;
       const index = this.index++;
@@ -53,7 +54,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult<T, R>(this, ish, value, index));
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (this.active === 0 && this.buffer.length === 0) {
       this.destination.complete();

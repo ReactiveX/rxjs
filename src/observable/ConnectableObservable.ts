@@ -83,16 +83,16 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     destination.add(this);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.destination.next(value);
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this._resetConnectable();
     this.destination.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     this._resetConnectable();
     this.destination.complete();
   }

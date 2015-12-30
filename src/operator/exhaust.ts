@@ -30,14 +30,14 @@ class SwitchFirstSubscriber<T> extends OuterSubscriber<T, T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     if (!this.hasSubscription) {
       this.hasSubscription = true;
       this.add(subscribeToResult(this, value));
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (!this.hasSubscription) {
       this.destination.complete();

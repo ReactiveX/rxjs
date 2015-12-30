@@ -43,7 +43,7 @@ class CountSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const predicate = this.predicate;
     let passed: any = true;
     if (predicate) {
@@ -58,7 +58,7 @@ class CountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.destination.next(this.count);
     this.destination.complete();
   }

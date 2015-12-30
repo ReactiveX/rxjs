@@ -22,7 +22,7 @@ class SkipSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     if (++this.count > this.total) {
       this.destination.next(x);
     }

@@ -41,7 +41,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const { destination, predicate, resultSelector } = this;
     const index = this.index++;
     let passed: any = true;
@@ -68,7 +68,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
     if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
       destination.next(this.defaultValue);

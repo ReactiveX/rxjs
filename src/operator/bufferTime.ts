@@ -59,7 +59,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const buffers = this.buffers;
     const len = buffers.length;
     for (let i = 0; i < len; i++) {
@@ -67,12 +67,12 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this.buffers.length = 0;
     super._error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const { buffers, destination } = this;
     while (buffers.length > 0) {
       destination.next(buffers.shift());

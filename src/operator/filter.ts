@@ -35,7 +35,7 @@ class FilterSubscriber<T> extends Subscriber<T> {
     this.select = select;
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     const result = tryCatch(this.select).call(this.thisArg || this, x, this.count++);
     if (result === errorObject) {
       this.destination.error(errorObject.e);

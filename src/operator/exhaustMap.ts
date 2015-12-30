@@ -43,7 +43,7 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     if (!this.hasSubscription) {
       const index = this.index++;
       const destination = this.destination;
@@ -57,7 +57,7 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (!this.hasSubscription) {
       this.destination.complete();

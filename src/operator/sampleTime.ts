@@ -26,7 +26,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
     this.add(scheduler.schedule(dispatchNotification, delay, { subscriber: this, delay }));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.lastValue = value;
     this.hasValue = true;
   }

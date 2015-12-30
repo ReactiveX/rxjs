@@ -59,11 +59,11 @@ class AllSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this._value = value;
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
 
     if (this._value == null) {

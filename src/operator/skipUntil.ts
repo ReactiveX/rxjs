@@ -29,13 +29,13 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult(this, notifier));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     if (this.hasValue) {
       super._next(value);
     }
   }
 
-  _complete() {
+  protected _complete() {
     if (this.isInnerStopped) {
       super._complete();
     } else {

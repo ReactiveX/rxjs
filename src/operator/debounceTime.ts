@@ -41,14 +41,14 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.clearDebounce();
     this.lastValue = value;
     this.hasValue = true;
     this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
   }
 
-  _complete() {
+  protected _complete() {
     this.debouncedNext();
     this.destination.complete();
   }

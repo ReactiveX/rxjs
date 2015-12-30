@@ -47,7 +47,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const windows = this.windows;
     const len = windows.length;
     for (let i = 0; i < len; i++) {
@@ -55,7 +55,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     const windows = this.windows;
     while (windows.length > 0) {
       windows.shift().error(err);
@@ -63,7 +63,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     this.destination.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const windows = this.windows;
     while (windows.length > 0) {
       windows.shift().complete();

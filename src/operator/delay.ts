@@ -80,17 +80,17 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.scheduleNotification(Notification.createNext(value));
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this.errored = true;
     this.queue = [];
     this.destination.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     this.scheduleNotification(Notification.createComplete());
   }
 }

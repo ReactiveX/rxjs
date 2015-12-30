@@ -30,15 +30,15 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
                                       new ObserveOnMessage(notification, this.destination)));
    }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.scheduleMessage(Notification.createNext(value));
   }
 
-  _error(err: any): void {
+  protected _error(err: any): void {
     this.scheduleMessage(Notification.createError(err));
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.scheduleMessage(Notification.createComplete());
   }
 }

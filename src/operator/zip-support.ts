@@ -37,7 +37,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     this.values = values;
   }
 
-  _next(value: any) {
+  protected _next(value: any) {
     const iterators = this.iterators;
     const index = this.index++;
     if (isArray(value)) {
@@ -49,7 +49,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  protected _complete() {
     const iterators = this.iterators;
     const len = iterators.length;
     this.active = len;

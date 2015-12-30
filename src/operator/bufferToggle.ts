@@ -50,7 +50,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
     this.add(this.openings.subscribe(new BufferToggleOpeningsSubscriber(this)));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const contexts = this.contexts;
     const len = contexts.length;
     for (let i = 0; i < len; i++) {
@@ -58,7 +58,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     const contexts = this.contexts;
     while (contexts.length > 0) {
       const context = contexts.shift();
@@ -70,7 +70,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
     super._error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const contexts = this.contexts;
     while (contexts.length > 0) {
       const context = contexts.shift();
@@ -121,15 +121,15 @@ class BufferToggleOpeningsSubscriber<T, O> extends Subscriber<O> {
     super(null);
   }
 
-  _next(value: O) {
+  protected _next(value: O) {
     this.parent.openBuffer(value);
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this.parent.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     // noop
   }
 }
@@ -140,15 +140,15 @@ class BufferToggleClosingsSubscriber<T> extends Subscriber<any> {
     super(null);
   }
 
-  _next() {
+  protected _next() {
     this.parent.closeBuffer(this.context);
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this.parent.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     this.parent.closeBuffer(this.context);
   }
 }
