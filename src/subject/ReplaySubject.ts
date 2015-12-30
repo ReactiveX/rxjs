@@ -20,7 +20,7 @@ export class ReplaySubject<T> extends Subject<T> {
     this.windowSize = windowSize < 1 ? 1 : windowSize;
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const now = this._getNow();
     this.events.push(new ReplayEvent(now, value));
     this._trimBufferThenGetEvents(now);
