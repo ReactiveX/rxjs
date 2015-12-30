@@ -39,7 +39,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const count = (this.count += 1);
     const destination = this.destination;
     const bufferSize = this.bufferSize;
@@ -66,7 +66,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  protected _complete() {
     const destination = this.destination;
     const buffers = this.buffers;
     while (buffers.length > 0) {

@@ -44,7 +44,7 @@ class WindowToggleSubscriber<T, R, O> extends OuterSubscriber<T, R> {
     this.add(this.openSubscription = subscribeToResult(this, openings, openings));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const { contexts } = this;
     if (contexts) {
       const len = contexts.length;
@@ -54,7 +54,7 @@ class WindowToggleSubscriber<T, R, O> extends OuterSubscriber<T, R> {
     }
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
 
     const { contexts } = this;
     this.contexts = null;
@@ -73,7 +73,7 @@ class WindowToggleSubscriber<T, R, O> extends OuterSubscriber<T, R> {
     super._error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const { contexts } = this;
     this.contexts = null;
     if (contexts) {

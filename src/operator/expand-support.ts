@@ -39,7 +39,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     subscriber.subscribeToProjection(result, value, index);
   }
 
-  _next(value: any): void {
+  protected _next(value: any): void {
     const destination = this.destination;
 
     if (destination.isUnsubscribed) {
@@ -73,7 +73,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (this.hasCompleted && this.active === 0) {
       this.destination.complete();

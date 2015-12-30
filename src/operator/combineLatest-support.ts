@@ -25,13 +25,13 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(observable: any) {
+  protected _next(observable: any) {
     const toRespond = this.toRespond;
     toRespond.push(toRespond.length);
     this.observables.push(observable);
   }
 
-  _complete() {
+  protected _complete() {
     const observables = this.observables;
     const len = observables.length;
     if (len === 0) {

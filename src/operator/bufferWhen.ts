@@ -43,11 +43,11 @@ class BufferWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.openBuffer();
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.buffer.push(value);
   }
 
-  _complete() {
+  protected _complete() {
     const buffer = this.buffer;
     if (buffer) {
       this.destination.next(buffer);

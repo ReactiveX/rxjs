@@ -65,7 +65,7 @@ class EverySubscriber<T, R> extends Subscriber<T> {
     this.destination.complete();
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const result = tryCatch(this.predicate).call(this.thisArg || this, value, this.index++, this.source);
 
     if (result === errorObject) {
@@ -75,7 +75,7 @@ class EverySubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.notifyComplete(true);
   }
 }

@@ -43,7 +43,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     let subscription = this.durationSubscription;
     const duration = tryCatch(this.durationSelector)(value);
 
@@ -63,7 +63,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete() {
+  protected _complete() {
     this.emitValue();
     this.destination.complete();
   }

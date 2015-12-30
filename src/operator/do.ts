@@ -58,7 +58,7 @@ class DoSubscriber<T> extends Subscriber<T> {
     this.__complete = complete;
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     const result = tryCatch(this.__next)(x);
     if (result === errorObject) {
       this.destination.error(errorObject.e);
@@ -67,7 +67,7 @@ class DoSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(e: any) {
+  protected _error(e: any) {
     const result = tryCatch(this.__error)(e);
     if (result === errorObject) {
       this.destination.error(errorObject.e);
@@ -76,7 +76,7 @@ class DoSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  protected _complete() {
     const result = tryCatch(this.__complete)();
     if (result === errorObject) {
       this.destination.error(errorObject.e);

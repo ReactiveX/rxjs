@@ -27,7 +27,7 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult(this, notifier));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.value = value;
     this.hasValue = true;
   }

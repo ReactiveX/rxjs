@@ -18,17 +18,17 @@ class MaterializeSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.destination.next(Notification.createNext(value));
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     const destination = this.destination;
     destination.next(Notification.createError(err));
     destination.complete();
   }
 
-  _complete() {
+  protected _complete() {
     const destination = this.destination;
     destination.next(Notification.createComplete());
     destination.complete();

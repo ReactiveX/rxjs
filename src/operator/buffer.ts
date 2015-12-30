@@ -40,7 +40,7 @@ class BufferSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult(this, closingNotifier));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.buffer.push(value);
   }
 

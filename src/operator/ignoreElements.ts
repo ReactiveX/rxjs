@@ -14,7 +14,7 @@ class IgnoreElementsOperator<T, R> implements Operator<T, R> {
 }
 
 class IgnoreElementsSubscriber<T> extends Subscriber<T> {
-  _next(unused: T): void {
+  protected _next(unused: T): void {
     noop();
   }
 }

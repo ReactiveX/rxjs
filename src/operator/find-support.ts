@@ -35,7 +35,7 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
     destination.complete();
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const { predicate, thisArg } = this;
     const index = this.index++;
     const result = tryCatch(predicate).call(thisArg || this, value, index, this.source);
@@ -46,7 +46,7 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.notifyComplete(this.yieldIndex ? -1 : undefined);
   }
 }

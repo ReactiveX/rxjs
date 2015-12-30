@@ -33,7 +33,7 @@ class MapToSubscriber<T, R> extends Subscriber<T> {
     this.value = value;
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     this.destination.next(this.value);
   }
 }

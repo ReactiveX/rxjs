@@ -36,7 +36,7 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: any) {
+  protected _next(value: any) {
     const innerSubscription = this.innerSubscription;
     if (innerSubscription) {
       innerSubscription.unsubscribe();
@@ -44,7 +44,7 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     this.add(this.innerSubscription = subscribeToResult(this, this.inner, value, this.index++));
   }
 
-  _complete() {
+  protected _complete() {
     const {innerSubscription} = this;
     if (!innerSubscription || innerSubscription.isUnsubscribed) {
       super._complete();

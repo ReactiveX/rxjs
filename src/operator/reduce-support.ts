@@ -27,7 +27,7 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
     this.hasSeed = typeof seed !== 'undefined';
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     if (this.hasValue || (this.hasValue = this.hasSeed)) {
       const result = tryCatch(this.project).call(this, this.acc, x);
       if (result === errorObject) {
@@ -41,7 +41,7 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete() {
+  protected _complete() {
     if (this.hasValue || this.hasSeed) {
       this.destination.next(this.acc);
     }

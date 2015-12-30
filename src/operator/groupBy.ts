@@ -45,7 +45,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> {
     this.add(destination);
   }
 
-  _next(x: T): void {
+  protected _next(x: T): void {
     let key = tryCatch(this.keySelector)(x);
     if (key === errorObject) {
       this.error(errorObject.e);
@@ -89,7 +89,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> {
     }
   }
 
-  _error(err: any): void {
+  protected _error(err: any): void {
     const groups = this.groups;
     if (groups) {
       groups.forEach((group, key) => {
@@ -100,7 +100,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> {
     this.destination.error(err);
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const groups = this.groups;
     if (groups) {
       groups.forEach((group, key) => {
@@ -123,17 +123,17 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
     super();
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.group.complete();
     this.parent.removeGroup(this.key);
   }
 
-  _error(err: any): void {
+  protected _error(err: any): void {
     this.group.error(err);
     this.parent.removeGroup(this.key);
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.group.complete();
     this.parent.removeGroup(this.key);
   }

@@ -32,7 +32,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     destination.next(firstWindow);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const startWindowEvery = (this.startWindowEvery > 0) ? this.startWindowEvery : this.windowSize;
     const destination = this.destination;
     const windowSize = this.windowSize;
@@ -54,7 +54,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     const windows = this.windows;
     while (windows.length > 0) {
       windows.shift().error(err);
@@ -62,7 +62,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     this.destination.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const windows = this.windows;
     while (windows.length > 0) {
       windows.shift().complete();

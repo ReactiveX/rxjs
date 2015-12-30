@@ -62,7 +62,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     this._previousIndex = currentIndex;
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.destination.next(value);
 
     if (!this.absoluteTimeout) {
@@ -70,12 +70,12 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this.destination.error(err);
     this._hasCompleted = true;
   }
 
-  _complete() {
+  protected _complete() {
     this.destination.complete();
     this._hasCompleted = true;
   }

@@ -28,12 +28,12 @@ class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.isEmpty = false;
     this.destination.next(value);
   }
 
-  _complete(): void {
+  protected _complete(): void {
     if (this.isEmpty) {
       this.destination.next(this.defaultValue);
     }

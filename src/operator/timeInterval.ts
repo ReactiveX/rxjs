@@ -33,7 +33,7 @@ class TimeIntervalSubscriber<T> extends Subscriber<T> {
     this.lastTime = scheduler.now();
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     let now = this.scheduler.now();
     let span = now - this.lastTime;
     this.lastTime = now;

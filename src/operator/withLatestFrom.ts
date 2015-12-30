@@ -79,7 +79,7 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
     // noop
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     if (this.toRespond.length === 0) {
       const values = this.values;
       const destination = this.destination;

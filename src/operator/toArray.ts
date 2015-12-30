@@ -20,11 +20,11 @@ class ToArraySubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(x: T) {
+  protected _next(x: T) {
     this.array.push(x);
   }
 
-  _complete() {
+  protected _complete() {
     this.destination.next(this.array);
     this.destination.complete();
   }
