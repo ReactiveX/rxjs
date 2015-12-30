@@ -123,15 +123,18 @@ import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {asap} from './scheduler/asap';
 import {queue} from './scheduler/queue';
+import {animationFrame} from './scheduler/animationFrame';
 import {AsapScheduler} from './scheduler/AsapScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
+import {AnimationFrameScheduler} from './scheduler/AnimationFrameScheduler';
 import {rxSubscriber} from './symbol/rxSubscriber';
 /* tslint:enable:no-unused-variable */
 
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
   asap,
-  queue
+  queue,
+  animationFrame
 };
 
 var Symbol = {
