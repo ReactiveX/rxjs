@@ -32,11 +32,11 @@ export class BehaviorSubject<T> extends Subject<T> {
     return subscription;
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     super._next(this._value = value);
   }
 
-  _error(err: any): void {
+  protected _error(err: any): void {
     this.hasErrored = true;
     super._error(this.errorValue = err);
   }
