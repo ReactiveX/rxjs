@@ -4,7 +4,7 @@ import {rxSubscriber} from '../symbol/rxSubscriber';
 
 export function toSubscriber<T>(
   next?: Observer<T> | ((value: T) => void),
-  error?: (error: T) => void,
+  error?: (error: any) => void,
   complete?: () => void): Subscriber<T> {
 
   if (next && typeof next === 'object') {

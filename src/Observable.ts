@@ -97,7 +97,7 @@ export class Observable<T> implements CoreOperators<T>  {
    *  executes the observable's subscriber function, which will take action to set up the underlying data stream
    */
   subscribe(observerOrNext?: Observer<T> | ((value: T) => void),
-            error?: (error: T) => void,
+            error?: (error: any) => void,
             complete?: () => void): Subscription {
 
     const { operator } = this;
