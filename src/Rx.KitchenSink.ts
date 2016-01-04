@@ -133,6 +133,7 @@ import './add/operator/zip';
 import './add/operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
+import {Observer} from './Observer';
 import {Subscription} from './Subscription';
 import {Subscriber} from './Subscriber';
 import {AsyncSubject} from './subject/AsyncSubject';
@@ -168,6 +169,7 @@ export {
     Subject,
     Scheduler,
     Observable,
+    Observer,
     Subscriber,
     Subscription,
     AsyncSubject,
