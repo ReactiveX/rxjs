@@ -492,4 +492,20 @@ describe('Subject', function () {
 
     source.subscribe(subject);
   });
+
+  it('should be usable as an Observer of a finite delayed Observable', function (done) {
+    var source = Rx.Observable.of(1, 2, 3).delay(50);
+    var subject = new Rx.Subject();
+
+    var expected = [1, 2, 3];
+
+    subject.subscribe(
+      function (x) {
+        expect(x).toBe(expected.shift());
+      },
+      done.fail,
+      done);
+
+    source.subscribe(subject);
+  });
 });
