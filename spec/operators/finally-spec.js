@@ -44,4 +44,29 @@ describe('Observable.prototype.finally()', function () {
     disposed = true;
     subscription.unsubscribe();
   });
+
+  it('should call finally when synchronously subscribing to and unsubscribing ' +
+  'from a shared Observable', function (done) {
+    Observable.interval(50)
+      .finally(done)
+      .share()
+      .subscribe()
+      .unsubscribe();
+  });
+
+  it('should call two finally instances in succession on a shared Observable', function (done) {
+    var invoked = 0;
+    function checkFinally() {
+      invoked += 1;
+      if (invoked === 2) {
+        done();
+      }
+    }
+
+    Observable.of(1, 2, 3)
+      .finally(checkFinally)
+      .finally(checkFinally)
+      .share()
+      .subscribe();
+  });
 });
