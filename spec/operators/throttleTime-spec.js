@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, expectSubscription, hot, cold */
+/* globals describe, it, expect, expectObservable, expectSubscription, hot, cold, rxTestScheduler, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var Scheduler = Rx.Scheduler;
@@ -11,16 +11,18 @@ describe('Observable.prototype.throttleTime()', function () {
       }, null, done);
   });
 
-  it('should throttle events multiple times', function (done) {
+  it('should throttle events multiple times', function () {
     var expected = ['1-0', '2-0'];
     Observable.concat(
-      Observable.timer(0, 10).take(3).map(function (x) { return '1-' + x; }),
-      Observable.timer(80, 10).take(5).map(function (x) { return '2-' + x; })
+      Observable.timer(0, 10, rxTestScheduler).take(3).map(function (x) { return '1-' + x; }),
+      Observable.timer(80, 10, rxTestScheduler).take(5).map(function (x) { return '2-' + x; })
       )
-      .throttleTime(50)
+      .throttleTime(50, rxTestScheduler)
       .subscribe(function (x) {
         expect(x).toBe(expected.shift());
-      }, null, done);
+      });
+
+    rxTestScheduler.flush();
   });
 
   it('should simply mirror the source if values are not emitted often enough', function () {
