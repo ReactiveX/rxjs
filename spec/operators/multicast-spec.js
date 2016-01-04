@@ -502,10 +502,32 @@ describe('Observable.prototype.multicast()', function () {
 
       source.connect();
     });
+
+    it('should not throw `cannot subscribe to a disposed subject` when used in ' +
+    'a switchMap', function (done) {
+      var source = Observable.of(1, 2, 3)
+        .multicast(function () { return new Subject(); })
+        .refCount();
+
+      var expected = ['a1', 'a2', 'a3', 'b1', 'b2', 'b3', 'c1', 'c2', 'c3'];
+
+      Observable.of('a', 'b', 'c')
+        .switchMap(function (letter) {
+          return source.map(function (number) {
+            return String(letter + number);
+          });
+        })
+        .subscribe(function (x) {
+          expect(x).toBe(expected.shift());
+        }, done.fail, function () {
+          expect(expected.length).toBe(0);
+          done();
+        });
+    });
   });
 
   describe('when given a subject', function () {
-    it('it should NOT allow you to reconnect by subscribing again', function (done) {
+    it('should NOT allow you to reconnect by subscribing again', function (done) {
       var expected = [1, 2, 3, 4];
       var i = 0;
 
@@ -524,6 +546,28 @@ describe('Observable.prototype.multicast()', function () {
         });
 
       source.connect();
+    });
+
+    it('should not throw `cannot subscribe to a disposed subject` when used in ' +
+    'a switchMap', function (done) {
+      var source = Observable.of(1, 2, 3)
+        .multicast(new Subject())
+        .refCount();
+
+      var expected = ['a1', 'a2', 'a3'];
+
+      Observable.of('a', 'b', 'c')
+        .switchMap(function (letter) {
+          return source.map(function (number) {
+            return String(letter + number);
+          });
+        })
+        .subscribe(function (x) {
+          expect(x).toBe(expected.shift());
+        }, done.fail, function () {
+          expect(expected.length).toBe(0);
+          done();
+        });
     });
   });
 });
