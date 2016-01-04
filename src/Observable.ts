@@ -31,6 +31,25 @@ import {RangeObservable} from './observable/range';
 import {InfiniteObservable} from './observable/never';
 import {ErrorObservable} from './observable/throw';
 
+import {combineLatest as combineLatestStatic} from './operator/combineLatest-static';
+import {concat as concatStatic} from './operator/concat-static';
+import {merge as mergeStatic} from './operator/merge-static';
+import {zip as zipStatic} from './operator/zip-static';
+import {BoundCallbackObservable} from './observable/bindCallback';
+import {DeferObservable} from './observable/defer';
+import {EmptyObservable} from './observable/empty';
+import {ForkJoinObservable} from './observable/forkJoin';
+import {FromObservable} from './observable/from';
+import {ArrayObservable} from './observable/fromArray';
+import {FromEventObservable} from './observable/fromEvent';
+import {FromEventPatternObservable} from './observable/fromEventPattern';
+import {PromiseObservable} from './observable/fromPromise';
+import {IntervalObservable} from './observable/interval';
+import {TimerObservable} from './observable/timer';
+import {RangeObservable} from './observable/range';
+import {InfiniteObservable} from './observable/never';
+import {ErrorObservable} from './observable/throw';
+
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
