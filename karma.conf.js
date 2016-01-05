@@ -7,13 +7,50 @@ module.exports = function (config) {
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
-      platform: 'Windows 10',
-      version: '46'
+      version: '47'
+    },
+    sl_chrome_beta: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      version: 'beta'
+    },
+    sl_chrome_dev: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      version: 'dev'
     },
     sl_firefox: {
       base: 'SauceLabs',
       browserName: 'firefox',
-      version: '30'
+      version: '42'
+    },
+    sl_firefox_beta: {
+      base: 'SauceLabs',
+      browserName: 'firefox',
+      version: 'beta'
+    },
+    sl_firefox_dev: {
+      base: 'SauceLabs',
+      browserName: 'firefox',
+      version: 'dev'
+    },
+    sl_safari9: {
+      base: 'SauceLabs',
+      browserName: 'safari',
+      platform: 'OS X 10.11',
+      version: '9.0'
+    },
+    sl_ios9: {
+      base: 'SauceLabs',
+      browserName: 'iphone',
+      platform: 'OS X 10.10',
+      version: '9.1'
+    },
+    sl_android5: {
+      base: 'SauceLabs',
+      browserName: 'android',
+      platform: 'Linux',
+      version: '5.1'
     }
   };
 
@@ -75,7 +112,12 @@ module.exports = function (config) {
     concurrency: 1,
 
     sauceLabs: {
-      testName: 'RxJS 5 browser test'
+      testName: 'RxJS 5 browser test',
+      options: {
+        'command-timeout': 600,
+        'idle-timeout': 600,
+        'max-duration': 5400
+      }
     }
   });
 };
