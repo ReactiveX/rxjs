@@ -134,7 +134,6 @@ export class AjaxObservable<T> extends Observable<T> {
         xhr.onprogress = onProgress;
       }
       xhr.onerror = onError;
-      xhr.onabort = onAbort;
     }
 
     const contentType = headers['Content-Type'] ||
@@ -190,14 +189,6 @@ export class AjaxObservable<T> extends Observable<T> {
         progressSubscriber.error(e);
       }
       subscriber.error(normalizeError(e, xhr, 'error'));
-    }
-
-    function onAbort(e) {
-      done = true;
-      if (progressSubscriber) {
-        progressSubscriber.error(e);
-      }
-      subscriber.error(normalizeError(e, xhr, 'abort'));
     }
 
     function onReadyStateChange(e) {
