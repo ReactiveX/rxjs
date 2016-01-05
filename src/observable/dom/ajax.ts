@@ -14,14 +14,14 @@ interface AjaxSettings {
   headers?: Object;
   timeout?: number;
   password?: string;
-  emitType?: string,
+  emitType?: string;
   hasContent?: boolean;
   responseType?: string;
   crossDomain?: boolean;
   createXHR?: () => XMLHttpRequest;
   normalizeError?: (e: any, xhr: any, type: any) => any;
   normalizeSuccess?: (e: any, xhr: any, settings: any) => any;
-  progressSubscriber?: Subscriber<any>
+  progressSubscriber?: Subscriber<any>;
 }
 
   /**
@@ -64,7 +64,7 @@ export class AjaxObservable<T> extends Observable<T> {
       responseType: 'text',
       timeout: 0,
       createXHR: function() {
-        return this.crossDomain ? getCORSRequest() : getXMLHttpRequest()
+        return this.crossDomain ? getCORSRequest() : getXMLHttpRequest();
       },
       normalizeError: normalizeAjaxErrorEvent,
       normalizeSuccess: normalizeAjaxSuccessEvent
@@ -225,22 +225,23 @@ export class AjaxObservable<T> extends Observable<T> {
   }
 }
 
-
 // Gets the proper XMLHttpRequest for support for older IE
 function getXMLHttpRequest() {
   if (root.XMLHttpRequest) {
     return new root.XMLHttpRequest();
   } else {
-    var progId;
+    let progId;
     try {
-      var progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
-      for(var i = 0; i < 3; i++) {
+      let progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
+      for (let i = 0; i < 3; i++) {
         try {
           progId = progIds[i];
           if (new root.ActiveXObject(progId)) {
             break;
           }
-        } catch(e) { }
+        } catch (e) {
+          // noop
+        }
       }
       return new root.ActiveXObject(progId);
     } catch (e) {
@@ -251,7 +252,7 @@ function getXMLHttpRequest() {
 
 // Get CORS support even for older IE
 function getCORSRequest() {
-  var xhr = new root.XMLHttpRequest();
+  let xhr = new root.XMLHttpRequest();
   if ('withCredentials' in xhr) {
     xhr.withCredentials = true;
     return xhr;

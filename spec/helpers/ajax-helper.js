@@ -1,9 +1,9 @@
 var jasmineCore = require('jasmine-core');
 
 // jasmine-ajax need this
-global.getJasmineRequireObj = function() {
+global.getJasmineRequireObj = function () {
   return jasmineCore;
-}
+};
 
 // XMLHttpRequest in node
 global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
