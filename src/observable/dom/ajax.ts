@@ -64,7 +64,7 @@ export class AjaxObservable<T> extends Observable<T> {
       responseType: 'text',
       timeout: 0,
       createXHR: function() {
-        return this.crossDomain ? getCORSRequest() : getXMLHttpRequest();
+        return this.crossDomain ? getCORSRequest() : new root.XMLHttpRequest();
       },
       normalizeError: normalizeAjaxErrorEvent,
       normalizeSuccess: normalizeAjaxSuccessEvent
@@ -221,31 +221,6 @@ export class AjaxObservable<T> extends Observable<T> {
       } else {
         subscriber.error(normalizeError(e, xhr, 'error'));
       }
-    }
-  }
-}
-
-// Gets the proper XMLHttpRequest for support for older IE
-function getXMLHttpRequest() {
-  if (root.XMLHttpRequest) {
-    return new root.XMLHttpRequest();
-  } else {
-    let progId;
-    try {
-      let progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
-      for (let i = 0; i < 3; i++) {
-        try {
-          progId = progIds[i];
-          if (new root.ActiveXObject(progId)) {
-            break;
-          }
-        } catch (e) {
-          // noop
-        }
-      }
-      return new root.ActiveXObject(progId);
-    } catch (e) {
-      throw new Error('XMLHttpRequest is not supported by your browser');
     }
   }
 }
