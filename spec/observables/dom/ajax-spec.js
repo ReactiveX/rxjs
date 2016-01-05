@@ -5,15 +5,15 @@ var Observable = Rx.Observable;
 function noop() { }
 
 describe('Observable.ajax', function () {
-  beforeEach(function() {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should succeed', function() {
+  it('should succeed on 200', function () {
     var expected = { foo: 'bar' };
     var doneFn = jasmine.createSpy("success");
 
@@ -38,18 +38,18 @@ describe('Observable.ajax', function () {
     expect(doneFn).toHaveBeenCalledWith(expected);
   });
 
-  it('should fail', function() {
+  it('should fail on 404', function () {
     var expected = JSON.stringify({ foo: 'bar' });
     var errorFn = jasmine.createSpy("success");
 
     Rx.Observable
       .ajax({
         url: '/flibbertyJibbet',
-        normalizeError: function(e, xhr, type) {
+        normalizeError: function (e, xhr, type) {
           return xhr.response || xhr.responseText;
         }
       })
-      .subscribe(function() {}, errorFn, function () {
+      .subscribe(function () {}, errorFn, function () {
         throw 'should not have been called';
       });
 
@@ -63,14 +63,41 @@ describe('Observable.ajax', function () {
     });
 
     expect(errorFn).toHaveBeenCalledWith(expected);
-  })
+  });
 
-  it('should succeed no settings', function() {
+  it('should fail on 300', function () {
+    var expected = JSON.stringify({ foo: 'bar' });
+    var errorFn = jasmine.createSpy("success");
+
+    Rx.Observable
+      .ajax({
+        url: '/flibbertyJibbet',
+        normalizeError: function (e, xhr, type) {
+          return xhr.response || xhr.responseText;
+        }
+      })
+      .subscribe(function () {}, errorFn, function () {
+        throw 'should not have been called';
+      });
+
+    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+    expect(errorFn).not.toHaveBeenCalled();
+
+    jasmine.Ajax.requests.mostRecent().respondWith({
+      'status': 300,
+      'contentType': 'text/plain',
+      'responseText': expected
+    });
+
+    expect(errorFn).toHaveBeenCalledWith(expected);
+  });
+
+  it('should succeed no settings', function () {
     var expected = JSON.stringify({ foo: 'bar' });
 
     Rx.Observable
         .ajax('/flibbertyJibbet')
-        .subscribe(function(x) {
+        .subscribe(function (x) {
           expect(x.status).toBe(200);
           expect(x.xhr.method).toBe('GET');
           expect(x.xhr.responseText).toBe(expected);
@@ -86,14 +113,14 @@ describe('Observable.ajax', function () {
     });
   });
 
-  it('should fail no settings', function() {
+  it('should fail no settings', function () {
     var expected = JSON.stringify({ foo: 'bar' });
 
     Rx.Observable
         .ajax('/flibbertyJibbet')
-        .subscribe(function() {
+        .subscribe(function () {
           throw 'should not have been called';
-        }, function(x) {
+        }, function (x) {
           expect(x.status).toBe(500);
           expect(x.xhr.method).toBe('GET');
           expect(x.xhr.responseText).toBe(expected);

@@ -209,7 +209,7 @@ export class AjaxObservable<T> extends Observable<T> {
     function processResponse(xhr, e) {
       done = true;
       const status: any = xhr.status === 1223 ? 204 : xhr.status;
-      if ((status >= 200 && status <= 300) || (status === 0) || (status === '')) {
+      if ((status >= 200 && status < 300) || (status === 0) || (status === '')) {
         if (emitType === 'json') {
           subscriber.next(normalizeSuccess(e, xhr, settings).response);
         } else {
