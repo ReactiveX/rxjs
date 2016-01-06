@@ -128,6 +128,7 @@ import {AsapScheduler} from './scheduler/AsapScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
 import {AnimationFrameScheduler} from './scheduler/AnimationFrameScheduler';
 import {rxSubscriber} from './symbol/rxSubscriber';
+import {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observable/dom/ajax';
 /* tslint:enable:no-unused-variable */
 
 /* tslint:disable:no-var-keyword */
@@ -143,18 +144,21 @@ var Symbol = {
 /* tslint:enable:no-var-keyword */
 
 export {
-    Subject,
-    Scheduler,
-    Observable,
-    Subscriber,
-    Subscription,
-    Symbol,
-    AsyncSubject,
-    ReplaySubject,
-    BehaviorSubject,
-    ConnectableObservable,
-    Notification,
-    EmptyError,
-    ArgumentOutOfRangeError,
-    ObjectUnsubscribedError
+  AjaxResponse,
+  AjaxError,
+  AjaxTimeoutError,
+  Subject,
+  Scheduler,
+  Observable,
+  Subscriber,
+  Subscription,
+  Symbol,
+  AsyncSubject,
+  ReplaySubject,
+  BehaviorSubject,
+  ConnectableObservable,
+  Notification,
+  EmptyError,
+  ArgumentOutOfRangeError,
+  ObjectUnsubscribedError
 };

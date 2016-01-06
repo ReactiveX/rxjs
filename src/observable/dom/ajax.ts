@@ -5,7 +5,7 @@ import {Observable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
 import {Subscription} from '../../Subscription';
 
-interface AjaxSettings {
+export interface AjaxRequest {
   url?: string;
   body?: any;
   user?: string;
@@ -14,24 +14,38 @@ interface AjaxSettings {
   headers?: Object;
   timeout?: number;
   password?: string;
-  emitType?: string;
   hasContent?: boolean;
-  responseType?: string;
   crossDomain?: boolean;
   createXHR?: () => XMLHttpRequest;
-  normalizeError?: (e: any, xhr: any, type: any) => any;
-  normalizeSuccess?: (e: any, xhr: any, settings: any) => any;
   progressSubscriber?: Subscriber<any>;
+  resultSelector?: <T>(response: AjaxResponse) => T;
+  responseType?: string;
 }
 
+const createXHRDefault = (): XMLHttpRequest => {
+  let xhr = new root.XMLHttpRequest();
+  if (this.crossDomain) {
+    if ('withCredentials' in xhr) {
+      xhr.withCredentials = true;
+      return xhr;
+    } else if (!!root.XDomainRequest) {
+      return new root.XDomainRequest();
+    } else {
+      throw new Error('CORS is not supported by your browser');
+    }
+  } else {
+    return xhr;
+  }
+};
+
   /**
-   * Creates an observable for an Ajax request with either a settings object with url, headers, etc or a string for a URL.
+   * Creates an observable for an Ajax request with either a request object with url, headers, etc or a string for a URL.
    *
    * @example
    *   source = Rx.Observable.ajax('/products');
    *   source = Rx.Observable.ajax( url: 'products', method: 'GET' });
    *
-   * @param {Object} settings Can be one of the following:
+   * @param {Object} request Can be one of the following:
    *
    *  A string of the URL to make the Ajax call.
    *  An object with the following properties
@@ -41,72 +55,92 @@ interface AjaxSettings {
    *   - async: Whether the request is async
    *   - headers: Optional headers
    *   - crossDomain: true if a cross domain request, else false
-   *
+   *   - createXHR: a function to override if you need to use an alternate XMLHttpRequest implementation.
+   *   - resultSelector: a function to use to alter the output value type of the Observable. Gets {AjaxResponse} as an argument
    * @returns {Observable} An observable sequence containing the XMLHttpRequest.
   */
 export class AjaxObservable<T> extends Observable<T> {
-
   static create<T>(options: string | any): Observable<T> {
     return new AjaxObservable(options);
   }
 
-  private settings: AjaxSettings;
+  private request: AjaxRequest;
 
   constructor(options: string | any) {
     super();
 
-    const settings: AjaxSettings = {
-      method: 'GET',
-      crossDomain: false,
+    const request: AjaxRequest = {
       async: true,
+      createXHR: createXHRDefault,
+      crossDomain: false,
       headers: {},
-      emitType: 'text',
-      responseType: 'text',
-      timeout: 0,
-      createXHR: function() {
-        return this.crossDomain ? getCORSRequest() : new root.XMLHttpRequest();
-      },
-      normalizeError: normalizeAjaxErrorEvent,
-      normalizeSuccess: normalizeAjaxSuccessEvent
+      method: 'GET',
+      responseType: 'json',
+      timeout: 0
     };
 
     if (typeof options === 'string') {
-      settings.url = options;
+      request.url = options;
     } else {
       for (const prop in options) {
         if (options.hasOwnProperty(prop)) {
-          settings[prop] = options[prop];
+          request[prop] = options[prop];
         }
       }
     }
 
-    if (!settings.crossDomain && !settings.headers['X-Requested-With']) {
-      settings.headers['X-Requested-With'] = 'XMLHttpRequest';
+    if (!request.crossDomain && !request.headers['X-Requested-With']) {
+      request.headers['X-Requested-With'] = 'XMLHttpRequest';
     }
 
-    settings.hasContent = settings.body !== undefined;
+    request.hasContent = request.body !== undefined;
 
-    this.settings = settings;
+    this.request = request;
   }
 
   _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+    return new AjaxSubscriber(subscriber, this.request);
+  }
+}
 
-    let done = false;
-    const {settings} = this;
-    const {
-      createXHR, user, password, timeout, method,
-      url, async, headers, hasContent, body, emitType,
-      normalizeError, normalizeSuccess, progressSubscriber
-    } = settings;
+export class AjaxSubscriber<T> extends Subscriber<Event> {
+  xhr: XMLHttpRequest;
+  resultSelector: (response: AjaxResponse) => T;
+  done: boolean = false;
 
-    let result: any = tryCatch(createXHR).call(settings);
-
-    if (result === errorObject) {
-      return subscriber.error(errorObject.e);
+  constructor(destination: Subscriber<T>, public request: AjaxRequest) {
+    super(destination);
+    this.resultSelector = request.resultSelector;
+    this.xhr = this.createXHR();
+    if (this.xhr) {
+      this.send();
     }
+  }
 
-    const xhr: XMLHttpRequest = (<XMLHttpRequest> result);
+  next(e: Event): void {
+    this.done = true;
+    const { resultSelector, xhr, request, destination } = this;
+    const response = new AjaxResponse(e, xhr, request);
 
+    if (resultSelector) {
+      const result = tryCatch(resultSelector)(response);
+      if (result === errorObject) {
+        this.error(errorObject.e);
+      } else {
+        destination.next(result);
+      }
+    } else {
+      destination.next(response);
+    }
+  }
+
+  private send() {
+    const {
+      request: { user, method, url, async, password },
+      xhr
+    } = this;
+
+    let result;
     if (user) {
       result = tryCatch(xhr.open).call(xhr, method, url, async, user, password);
     } else {
@@ -114,133 +148,154 @@ export class AjaxObservable<T> extends Observable<T> {
     }
 
     if (result === errorObject) {
-      return subscriber.error(errorObject.e);
+      return this.error(errorObject.e);
     }
+  }
 
-    for (const header in headers) {
-      if (headers.hasOwnProperty(header)) {
-        xhr.setRequestHeader(header, headers[header]);
-      }
-    }
+  private createXHR(): XMLHttpRequest {
+    const request = this.request;
+    const createXHR = request.createXHR;
+    const xhr = tryCatch(createXHR).call(request);
 
-    xhr.timeout = timeout;
-    xhr.ontimeout = onTimeout;
-
-    if (!xhr.upload || ('withCredentials' in xhr) || !root.XDomainRequest) {
-      xhr.onreadystatechange = onReadyStateChange;
+    if (xhr === errorObject) {
+      this.error(errorObject.e);
     } else {
-      xhr.onload = onLoad;
-      if (progressSubscriber) {
-        xhr.onprogress = onProgress;
-      }
-      xhr.onerror = onError;
+      xhr.timeout = request.timeout;
+      xhr.responseType = request.responseType;
+      this.setupEvents(xhr, request);
+      return xhr;
     }
+  }
 
-    const contentType = headers['Content-Type'] ||
-      headers['Content-type'] ||
-      headers['content-type'];
+  private setupEvents(xhr: XMLHttpRequest, request: AjaxRequest) {
+    const progressSubscriber = request.progressSubscriber;
 
-    if (hasContent &&
-       (contentType === 'application/x-www-form-urlencoded') &&
-       (typeof body !== 'string')) {
-      const newBody = [];
-      for (const prop in body) {
-        if (body.hasOwnProperty(prop)) {
-          newBody.push(`${prop}=${body[prop]}`);
-        }
-      }
-      settings.body = newBody.join('&');
-    }
-
-    result = tryCatch(xhr.send).call(xhr, hasContent && settings.body || null);
-
-    if (result === errorObject) {
-      return subscriber.error(errorObject.e);
-    }
-
-    return new Subscription(() => {
-      if (!done && xhr.readyState !== 4) {
-        xhr.abort();
-      }
-    });
-
-    function onTimeout(e) {
+    xhr.ontimeout = function xhrTimeout(e) {
+      const {subscriber, progressSubscriber, request } = (<any>xhrTimeout);
       if (progressSubscriber) {
         progressSubscriber.error(e);
       }
-      subscriber.error(normalizeError(e, xhr, 'timeout'));
-    }
+      subscriber.error(new AjaxTimeoutError(this, request)); //TODO: Make betterer.
+    };
+    (<any>xhr.ontimeout).request = request;
+    (<any>xhr.ontimeout).subscriber = this;
+    (<any>xhr.ontimeout).progressSubscriber = progressSubscriber;
 
-    function onLoad(e) {
+    if (xhr.upload && 'withCredentials' in xhr && root.XDomainRequest) {
       if (progressSubscriber) {
-        progressSubscriber.next(e);
-        progressSubscriber.complete();
+        xhr.onprogress = function xhrProgress(e) {
+          const { progressSubscriber } = (<any>xhrProgress);
+          progressSubscriber.next(e);
+        };
+        (<any>xhr.onprogress).progressSubscriber = progressSubscriber;
       }
-      processResponse(xhr, e);
-    }
 
-    function onProgress(e) {
-      progressSubscriber.next(e);
-    }
-
-    function onError(e) {
-      done = true;
-      if (progressSubscriber) {
-        progressSubscriber.error(e);
-      }
-      subscriber.error(normalizeError(e, xhr, 'error'));
-    }
-
-    function onReadyStateChange(e) {
-      if (xhr.readyState === 4) {
-        processResponse(xhr, e);
-      }
-    }
-
-    function processResponse(xhr, e) {
-      done = true;
-      const status: any = xhr.status === 1223 ? 204 : xhr.status;
-      if ((status >= 200 && status < 300) || (status === 0) || (status === '')) {
-        if (emitType === 'json') {
-          subscriber.next(normalizeSuccess(e, xhr, settings).response);
-        } else {
-          subscriber.next(normalizeSuccess(e, xhr, settings));
+      xhr.onerror = function xhrError(e) {
+        const { progressSubscriber, subscriber, request } = (<any>xhrError);
+        if (progressSubscriber) {
+          progressSubscriber.error(e);
         }
-        if (!subscriber.isUnsubscribed) {
+        subscriber.error(new AjaxError('ajax error', this, request));
+      };
+      (<any>xhr.onerror).request = request;
+      (<any>xhr.onerror).subscriber = this;
+      (<any>xhr.onerror).progressSubscriber = progressSubscriber;
+    }
+
+    xhr.onreadystatechange = function xhrReadyStateChange(e) {
+      const { subscriber, progressSubscriber, request } = (<any>xhrReadyStateChange);
+      if (this.readyState === 4) {
+        // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
+        let status: number = this.status === 1223 ? 204 : this.status;
+
+        // fix status code when it is 0 (0 status is undocumented).
+        // Occurs when accessing file resources or on Android 4.1 stock browser
+        // while retrieving files from application cache.
+        if (status === 0) {
+          status = (this.response || this.responseText) ? 200 : 0;
+        }
+
+        if (200 <= status && status < 300) {
+          if (progressSubscriber) {
+            progressSubscriber.complete();
+          }
+          subscriber.next(e);
           subscriber.complete();
+        } else {
+          if (progressSubscriber) {
+            progressSubscriber.error(e);
+          }
+          subscriber.error(new AjaxError('ajax error ' + status, this, request));
         }
-      } else {
-        subscriber.error(normalizeError(e, xhr, 'error'));
       }
+    };
+    (<any>xhr.onreadystatechange).subscriber = this;
+    (<any>xhr.onreadystatechange).progressSubscriber = progressSubscriber;
+    (<any>xhr.onreadystatechange).request = request;
+  }
+
+  unsubscribe() {
+    const { done, xhr } = this;
+    if (!done && xhr && xhr.readyState !== 4) {
+      xhr.abort();
     }
+    super.unsubscribe();
   }
 }
 
-// Get CORS support even for older IE
-function getCORSRequest() {
-  let xhr = new root.XMLHttpRequest();
-  if ('withCredentials' in xhr) {
-    xhr.withCredentials = true;
-    return xhr;
-  } else if (!!root.XDomainRequest) {
-    return new root.XDomainRequest();
-  } else {
-    throw new Error('CORS is not supported by your browser');
+/** A normalized AJAX response */
+export class AjaxResponse {
+  /** {number} the HTTP status code */
+  status: number;
+
+  /** {string|ArrayBuffer|object|any} the response data */
+  response: any;
+
+  /** {string} the raw responseText */
+  responseText: string;
+
+  /** {string} the responsType (e.g. 'json' or 'array-buffer') */
+  responseType: string;
+
+  /** {Document} an XML Document from the response */
+  responseXML: Document;
+
+  constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
+    this.status = xhr.status;
+    const responseType = xhr.responseType;
+    let response = ('response' in xhr) ? xhr.response : xhr.responseText;
+    if (responseType === 'json') {
+      response = JSON.parse(response || '');
+    }
+    this.responseText = xhr.responseText;
+    this.responseType = responseType;
+    this.responseXML = xhr.responseXML;
+    this.response = response;
   }
 }
 
-function normalizeAjaxSuccessEvent(originalEvent, xhr, settings) {
-  let { status, response } = xhr;
-  const { responseType } = settings;
-  if (!('response' in xhr)) {
-    response = xhr.responseText;
+/** A normalized AJAX error */
+export class AjaxError extends Error {
+  /** {XMLHttpRequest} the XHR instance associated with the error */
+  xhr: XMLHttpRequest;
+
+  /** {AjaxRequest} the AjaxRequest associated with the error */
+  request: AjaxRequest;
+
+  /** {number} the HTTP status code */
+  status: number;
+
+  constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
+    super(message);
+    this.message = message;
+    this.xhr = xhr;
+    this.request = request;
+    this.status = xhr.status;
   }
-  if (responseType === 'json') {
-    response = JSON.parse(response || '');
-  }
-  return { xhr, status, response, responseType, originalEvent };
 }
 
-function normalizeAjaxErrorEvent(originalEvent, xhr, type) {
-  return { xhr, type, status: xhr.status, originalEvent };
+export class AjaxTimeoutError extends AjaxError {
+  constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
+    super('ajax timeout', xhr, request);
+  }
 }
