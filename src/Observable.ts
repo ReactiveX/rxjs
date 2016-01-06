@@ -17,6 +17,7 @@ import {concat as concatStatic} from './operator/concat-static';
 import {merge as mergeStatic} from './operator/merge-static';
 import {zip as zipStatic} from './operator/zip-static';
 import {BoundCallbackObservable} from './observable/bindCallback';
+import {BoundNodeCallbackObservable} from './observable/bindNodeCallback';
 import {DeferObservable} from './observable/defer';
 import {EmptyObservable} from './observable/empty';
 import {ForkJoinObservable} from './observable/forkJoin';
@@ -161,6 +162,7 @@ export class Observable<T> implements CoreOperators<T>  {
 
   // static method stubs
   static bindCallback: typeof BoundCallbackObservable.create;
+  static bindNodeCallback: typeof BoundNodeCallbackObservable.create;
   static combineLatest: typeof combineLatestStatic;
   static concat: typeof concatStatic;
   static defer: typeof DeferObservable.create;
