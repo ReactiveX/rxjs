@@ -30,6 +30,7 @@ import {TimerObservable} from './observable/timer';
 import {RangeObservable} from './observable/range';
 import {InfiniteObservable} from './observable/never';
 import {ErrorObservable} from './observable/throw';
+import {AjaxCreationMethod} from './observable/dom/ajax';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -160,6 +161,7 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
+  static ajax: AjaxCreationMethod;
   static bindCallback: typeof BoundCallbackObservable.create;
   static combineLatest: typeof combineLatestStatic;
   static concat: typeof concatStatic;
