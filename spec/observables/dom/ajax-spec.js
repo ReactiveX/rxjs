@@ -240,4 +240,66 @@ describe('Observable.ajax', function () {
        'responseText': expected
     });
   });
+
+  describe('ajax.get', function () {
+    it('should succeed on 200', function () {
+      var expected = 'some response';
+      var result;
+      var complete = false;
+
+      Rx.Observable
+        .ajax.get('/flibbertyJibbet')
+        .subscribe(function(x) {
+          result = x;
+        }, function () {
+          throw 'should not have been called';
+        }, function () {
+          complete = true;
+        });
+
+      expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+
+      jasmine.Ajax.requests.mostRecent().respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': expected
+      });
+
+      expect(result).toBe(expected);
+      expect(complete).toBe(true);
+    });
+
+
+    it('should succeed on 200 with a resultSelector', function () {
+      var expected = 'hahahahaha';
+      var result, innerResult;
+      var complete = false;
+
+      Rx.Observable
+        .ajax.get('/flibbertyJibbet', function (x) {
+          innerResult = x;
+          return x.response.toUpperCase();
+        })
+        .subscribe(function(x) {
+          result = x;
+        }, function () {
+          throw 'should not have been called';
+        }, function () {
+          complete = true;
+        });
+
+      expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+
+      jasmine.Ajax.requests.mostRecent().respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': expected
+      });
+
+      expect(innerResult.xhr).toBeDefined();
+      expect(innerResult.response).toBe(expected);
+      expect(result).toBe('HAHAHAHAHA');
+      expect(complete).toBe(true);
+    });
+  });
 });

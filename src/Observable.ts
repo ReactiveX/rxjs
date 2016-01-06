@@ -30,6 +30,7 @@ import {TimerObservable} from './observable/timer';
 import {RangeObservable} from './observable/range';
 import {InfiniteObservable} from './observable/never';
 import {ErrorObservable} from './observable/throw';
+import {AjaxCreationMethod} from './observable/dom/ajax';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -159,12 +160,8 @@ export class Observable<T> implements CoreOperators<T>  {
     return this.source.subscribe(subscriber);
   }
 
-  static get: <T>(url: string | any) => Observable<any>;
-  static post: <T>(url: string | any, body?: any) => Observable<any>;
-  static ajax: <T>(options: string | any) => Observable<any>;
-  static getJSON: <T>(url: string | any) => Observable<any>;
-
   // static method stubs
+  static ajax: AjaxCreationMethod;
   static bindCallback: typeof BoundCallbackObservable.create;
   static combineLatest: typeof combineLatestStatic;
   static concat: typeof concatStatic;
