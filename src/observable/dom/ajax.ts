@@ -198,6 +198,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     if (result === errorObject) {
       return this.error(errorObject.e);
     }
+
+    xhr.send();
   }
 
   private createXHR(): XMLHttpRequest {
