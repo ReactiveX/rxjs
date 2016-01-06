@@ -27,10 +27,7 @@ import './add/observable/throw';
 import './add/observable/timer';
 import './add/operator/zip-static';
 
-import './add/observable/dom/get';
-import './add/observable/dom/post';
 import './add/observable/dom/ajax';
-import './add/observable/dom/getJSON';
 
 //operators
 import './add/operator/buffer';

@@ -38,6 +38,39 @@ const createXHRDefault = (): XMLHttpRequest => {
   }
 };
 
+export interface AjaxCreationMethod {
+  (): <T>(urlOrRequest: string | AjaxRequest) => Observable<T>;
+  get: <T>(url: string, resultSelector?: (response: AjaxResponse) => T, headers?: Object) => Observable<T>;
+  post: <T>(url: string, body?: any, headers?: Object) => Observable<T>;
+  put: <T>(url: string, body?: any, headers?: Object) => Observable<T>;
+  delete: <T>(url: string, headers?: Object) => Observable<T>;
+  getJSON: <T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object) => Observable<R>;
+}
+
+function defaultGetResultSelector<T>(response: AjaxResponse): T {
+  return response.response;
+}
+
+export function ajaxGet<T>(url: string, resultSelector: (response: AjaxResponse) => T = defaultGetResultSelector, headers: Object = null) {
+  return new AjaxObservable<T>({ method: 'GET', url, resultSelector, headers });
+};
+
+export function ajaxPost<T>(url: string, body?: any, headers?: Object): Observable<T> {
+  return new AjaxObservable<T>({ method: 'POST', url, body, headers });
+};
+
+export function ajaxDelete<T>(url: string, headers?: Object): Observable<T> {
+  return new AjaxObservable<T>({ method: 'DELETE', url, headers });
+};
+
+export function ajaxPut<T>(url: string, body?: any, headers?: Object): Observable<T> {
+  return new AjaxObservable<T>({ method: 'PUT', url, body, headers });
+};
+
+export function ajaxGetJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R> {
+  const finalResultSelector = resultSelector ? (res: AjaxResponse) => resultSelector(res.response) : null;
+  return new AjaxObservable<R>({ method: 'GET', url, responseType: 'json', resultSelector: finalResultSelector, headers });
+};
   /**
    * Creates an observable for an Ajax request with either a request object with url, headers, etc or a string for a URL.
    *
@@ -60,13 +93,27 @@ const createXHRDefault = (): XMLHttpRequest => {
    * @returns {Observable} An observable sequence containing the XMLHttpRequest.
   */
 export class AjaxObservable<T> extends Observable<T> {
-  static create<T>(options: string | any): Observable<T> {
+  static create: AjaxCreationMethod = (() => {
+    const create: any = (urlOrRequest: string | AjaxRequest) => {
+      return new AjaxObservable(urlOrRequest);
+    };
+
+    create.get = ajaxGet;
+    create.post = ajaxPost;
+    create.delete = ajaxDelete;
+    create.put = ajaxPut;
+    create.getJSON = ajaxGetJSON;
+
+    return <AjaxCreationMethod>create;
+  })();
+
+  static create2<T>(options: string | AjaxRequest): Observable<T> {
     return new AjaxObservable(options);
   }
 
   private request: AjaxRequest;
 
-  constructor(options: string | any) {
+  constructor(options: string | AjaxRequest) {
     super();
 
     const request: AjaxRequest = {
@@ -88,6 +135,7 @@ export class AjaxObservable<T> extends Observable<T> {
         }
       }
     }
+    request.headers = request.headers || {};
 
     if (!request.crossDomain && !request.headers['X-Requested-With']) {
       request.headers['X-Requested-With'] = 'XMLHttpRequest';
