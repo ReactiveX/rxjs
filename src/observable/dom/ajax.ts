@@ -4,6 +4,7 @@ import {errorObject} from '../../util/errorObject';
 import {Observable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
 import {Subscription} from '../../Subscription';
+import {assign} from '../../util/assign';
 
 export interface AjaxRequest {
   url?: string;
@@ -56,7 +57,11 @@ export function ajaxGet<T>(url: string, resultSelector: (response: AjaxResponse)
 };
 
 export function ajaxPost<T>(url: string, body?: any, headers?: Object): Observable<T> {
-  return new AjaxObservable<T>({ method: 'POST', url, body, headers });
+  let finalHeaders = { 'Content-Type': 'application/json' };
+  if (headers) {
+    assign(finalHeaders, headers);
+  }
+  return new AjaxObservable<T>({ method: 'POST', url, body, headers: finalHeaders });
 };
 
 export function ajaxDelete<T>(url: string, headers?: Object): Observable<T> {
@@ -64,7 +69,11 @@ export function ajaxDelete<T>(url: string, headers?: Object): Observable<T> {
 };
 
 export function ajaxPut<T>(url: string, body?: any, headers?: Object): Observable<T> {
-  return new AjaxObservable<T>({ method: 'PUT', url, body, headers });
+  let finalHeaders = { 'Content-Type': 'application/json' };
+  if (headers) {
+    assign(finalHeaders, headers);
+  }
+  return new AjaxObservable<T>({ method: 'PUT', url, body, headers: finalHeaders });
 };
 
 export function ajaxGetJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R> {
@@ -159,7 +168,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   constructor(destination: Subscriber<T>, public request: AjaxRequest) {
     super(destination);
     this.resultSelector = request.resultSelector;
-    this.xhr = this.createXHR();
+    this.xhr = this.openXHR();
     if (this.xhr) {
       this.send();
     }
@@ -200,16 +209,37 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     }
   }
 
-  private createXHR(): XMLHttpRequest {
-    const request = this.request;
-    const createXHR = request.createXHR;
+  private openXHR(): XMLHttpRequest {
+    const {
+      request,
+      request: { user, method, url, async, password, headers, timeout, responseType, createXHR },
+    } = this;
+
+    // create XHR
     const xhr = tryCatch(createXHR).call(request);
 
     if (xhr === errorObject) {
       this.error(errorObject.e);
     } else {
-      xhr.timeout = request.timeout;
-      xhr.responseType = request.responseType;
+      // open XHR
+      let result;
+      if (user) {
+        result = tryCatch(xhr.open).call(xhr, method, url, async, user, password);
+      } else {
+        result = tryCatch(xhr.open).call(xhr, method, url, async);
+      }
+
+      // headers must be set after XHR is open
+      if (headers) {
+        for (let key in headers) {
+          xhr.setRequestHeader(key, headers[key]);
+        }
+      }
+
+      // likewise these should be set after XHR is open.
+      xhr.timeout = timeout;
+      xhr.responseType = responseType;
+
       this.setupEvents(xhr, request);
       return xhr;
     }

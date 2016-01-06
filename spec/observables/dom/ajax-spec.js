@@ -15,6 +15,36 @@ describe('Observable.ajax', function () {
     jasmine.Ajax.uninstall();
   });
 
+  it('should set headers', function () {
+    Rx.Observable.ajax({
+      url: '/omgwee',
+      headers: {
+        'One': 'for the money',
+        'Two': 'for the show',
+        'Three': 'to get ready',
+        'Now': 'go, cat! go!'
+      }
+    }).subscribe(function (x) {
+
+    });
+
+    var request = jasmine.Ajax.requests.mostRecent();
+
+    request.respondWith({
+      'status': 200,
+      'contentType': 'text/plain',
+      'responseText': ''
+    });
+
+    expect(request.requestHeaders).toEqual({
+      'One': 'for the money',
+      'Two': 'for the show',
+      'Three': 'to get ready',
+      'Now': 'go, cat! go!',
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+  });
+
   it('should have an optional resultSelector', function () {
     var expected = 'avast ye swabs!';
     var result;
