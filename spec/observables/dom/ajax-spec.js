@@ -8,11 +8,11 @@ function noop() {
 
 describe('Observable.ajax', function () {
   beforeEach(function () {
-    jasmine.Ajax.install();
+    setupMockXHR();
   });
 
   afterEach(function () {
-    jasmine.Ajax.uninstall();
+    teardownMockXHR();
   });
 
   it('should set headers', function () {
@@ -26,7 +26,7 @@ describe('Observable.ajax', function () {
     })
     .subscribe();
 
-    var request = jasmine.Ajax.requests.mostRecent();
+    var request = XMLHttpRequest.mostRecent();
 
     expect(request.url).toBe('/talk-to-me-goose');
     expect(request.requestHeaders).toEqual({
@@ -52,15 +52,13 @@ describe('Observable.ajax', function () {
       })
       .subscribe(function(x) {
         result = x;
-      }, function () {
-        throw 'should not have been called';
-      }, function () {
+      }, null, function () {
         complete = true;
       });
 
-    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+    expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
 
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    XMLHttpRequest.mostRecent().respondWith({
       'status': 200,
       'contentType': 'application/json',
       'responseText': expected
@@ -90,9 +88,9 @@ describe('Observable.ajax', function () {
         throw 'should not complete';
       });
 
-    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+    expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
 
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    XMLHttpRequest.mostRecent().respondWith({
       'status': 200,
       'contentType': 'application/json',
       'responseText': expected
@@ -135,15 +133,13 @@ describe('Observable.ajax', function () {
       })
       .subscribe(function(x) {
         result = x;
-      }, function () {
-        throw 'should not have been called';
-      }, function () {
+      }, null, function () {
         complete = true;
       });
 
-    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+    expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
 
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    XMLHttpRequest.mostRecent().respondWith({
       'status': 200,
       'contentType': 'application/json',
       'responseText': JSON.stringify(expected)
@@ -162,10 +158,10 @@ describe('Observable.ajax', function () {
         url: '/flibbertyJibbet',
         normalizeError: function (e, xhr, type) {
           return xhr.response || xhr.responseText;
-        }
+        },
+        responseType: 'text'
       })
       .subscribe(function (x) {
-        console.log(x);
         throw 'should not next';
       }, function (x) {
         error = x;
@@ -173,9 +169,9 @@ describe('Observable.ajax', function () {
         throw 'should not complete';
       });
 
-    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+    expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
 
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    XMLHttpRequest.mostRecent().respondWith({
       'status': 404,
       'contentType': 'text/plain',
       'responseText': 'Wee! I am text!'
@@ -195,10 +191,10 @@ describe('Observable.ajax', function () {
         url: '/flibbertyJibbet',
         normalizeError: function (e, xhr, type) {
           return xhr.response || xhr.responseText;
-        }
+        },
+        responseType: 'text'
       })
       .subscribe(function (x) {
-        console.log(x);
         throw 'should not next';
       }, function (x) {
         error = x;
@@ -206,9 +202,9 @@ describe('Observable.ajax', function () {
         throw 'should not complete';
       });
 
-    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+    expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
 
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    XMLHttpRequest.mostRecent().respondWith({
       'status': 300,
       'contentType': 'text/plain',
       'responseText': 'Wee! I am text!'
@@ -232,8 +228,8 @@ describe('Observable.ajax', function () {
           throw 'should not have been called';
         });
 
-    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
+    XMLHttpRequest.mostRecent().respondWith({
        'status': 200,
        'contentType': 'text/plain',
        'responseText': expected
@@ -255,8 +251,8 @@ describe('Observable.ajax', function () {
           throw 'should not have been called';
         });
 
-    expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
+    XMLHttpRequest.mostRecent().respondWith({
        'status': 500,
        'contentType': 'text/plain',
        'responseText': expected
@@ -265,7 +261,7 @@ describe('Observable.ajax', function () {
 
   describe('ajax.get', function () {
     it('should succeed on 200', function () {
-      var expected = 'some response';
+      var expected = { foo: 'bar' };
       var result;
       var complete = false;
 
@@ -273,55 +269,89 @@ describe('Observable.ajax', function () {
         .ajax.get('/flibbertyJibbet')
         .subscribe(function(x) {
           result = x;
-        }, function () {
-          throw 'should not have been called';
-        }, function () {
+        }, null, function () {
           complete = true;
         });
 
-      expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+      var request = XMLHttpRequest.mostRecent();
 
-      jasmine.Ajax.requests.mostRecent().respondWith({
+      expect(request.url).toBe('/flibbertyJibbet');
+
+      request.respondWith({
         'status': 200,
         'contentType': 'application/json',
-        'responseText': expected
+        'responseText': JSON.stringify(expected)
       });
 
-      expect(result).toBe(expected);
+      expect(result).toEqual(expected);
       expect(complete).toBe(true);
     });
 
 
     it('should succeed on 200 with a resultSelector', function () {
-      var expected = 'hahahahaha';
+      var expected = { larf: 'hahahahaha' };
       var result, innerResult;
       var complete = false;
 
       Rx.Observable
         .ajax.get('/flibbertyJibbet', function (x) {
           innerResult = x;
-          return x.response.toUpperCase();
+          return x.response.larf.toUpperCase();
         })
         .subscribe(function(x) {
           result = x;
-        }, function () {
-          throw 'should not have been called';
-        }, function () {
+        }, null , function () {
           complete = true;
         });
 
-      expect(jasmine.Ajax.requests.mostRecent().url).toBe('/flibbertyJibbet');
+      expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
 
-      jasmine.Ajax.requests.mostRecent().respondWith({
+      XMLHttpRequest.mostRecent().respondWith({
         'status': 200,
         'contentType': 'application/json',
-        'responseText': expected
+        'responseText': JSON.stringify(expected)
       });
 
       expect(innerResult.xhr).toBeDefined();
-      expect(innerResult.response).toBe(expected);
+      expect(innerResult.response).toEqual({ larf: 'hahahahaha' });
       expect(result).toBe('HAHAHAHAHA');
       expect(complete).toBe(true);
     });
   });
+
+  describe('ajax.post', function () {
+    it('should succeed on 200', function () {
+      var expected = { foo: 'bar', hi: 'there you' };
+      var result;
+      var complete = false;
+
+      Rx.Observable
+        .ajax.post('/flibbertyJibbet', expected)
+        .subscribe(function(x) {
+          result = x;
+        }, null , function () {
+          complete = true;
+        });
+
+      var request = XMLHttpRequest.mostRecent();
+
+      expect(request.method).toBe('POST');
+      expect(request.url).toBe('/flibbertyJibbet');
+      expect(request.requestHeaders).toEqual({
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      })
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify(expected)
+      });
+
+      expect(request.data).toEqual('foo=bar&hi=there%20you');
+      expect(result.response).toEqual(expected);
+      expect(complete).toBe(true);
+    });
+  });
 });
+
