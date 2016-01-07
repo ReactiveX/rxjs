@@ -4,6 +4,18 @@ var Observable = Rx.Observable;
 var Promise = require('promise');
 
 describe('Observable.prototype.concatAll()', function () {
+  it.asDiagram('concatAll')('should concat an observable of observables', function () {
+    var x = cold(    '----a------b------|                 ');
+    var y = cold(                      '---c-d---|        ');
+    var z = cold(                               '---e--f-|');
+    var outer = hot('-x---y----z------|              ', { x: x, y: y, z: z });
+    var expected =  '-----a------b---------c-d------e--f-|';
+
+    var result = outer.concatAll();
+
+    expectObservable(result).toBe(expected);
+  });
+
   it('should concat sources from promise', function (done) {
     var sources = Rx.Observable.fromArray([
       new Promise(function (res) { res(0); }),
@@ -59,15 +71,6 @@ describe('Observable.prototype.concatAll()', function () {
       Rx.Observable.of('c')
     ]);
     var expected = '(a#)';
-
-    expectObservable(e1.concatAll()).toBe(expected);
-  });
-
-  it('should concat a hot observable of observables', function () {
-    var x = cold(     'a---b---c---|');
-    var y = cold(        'd---e---f---|');
-    var e1 =    hot('--x--y--|', { x: x, y: y });
-    var expected =  '--a---b---c---d---e---f---|';
 
     expectObservable(e1.concatAll()).toBe(expected);
   });
