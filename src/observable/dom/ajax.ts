@@ -152,9 +152,9 @@ export class AjaxObservable<T> extends Observable<T> {
 }
 
 export class AjaxSubscriber<T> extends Subscriber<Event> {
-  xhr: XMLHttpRequest;
-  resultSelector: (response: AjaxResponse) => T;
-  done: boolean = false;
+  private xhr: XMLHttpRequest;
+  private resultSelector: (response: AjaxResponse) => T;
+  private done: boolean = false;
 
   constructor(destination: Subscriber<T>, public request: AjaxRequest) {
     super(destination);
