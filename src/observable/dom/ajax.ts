@@ -113,7 +113,7 @@ export class AjaxObservable<T> extends Observable<T> {
 
   private request: AjaxRequest;
 
-  constructor(options: string | AjaxRequest) {
+  constructor(urlOrRequest: string | AjaxRequest) {
     super();
 
     const request: AjaxRequest = {
@@ -126,22 +126,15 @@ export class AjaxObservable<T> extends Observable<T> {
       timeout: 0
     };
 
-    if (typeof options === 'string') {
-      request.url = options;
+    if (typeof urlOrRequest === 'string') {
+      request.url = urlOrRequest;
     } else {
-      for (const prop in options) {
-        if (options.hasOwnProperty(prop)) {
-          request[prop] = options[prop];
+      for (const prop in urlOrRequest) {
+        if (urlOrRequest.hasOwnProperty(prop)) {
+          request[prop] = urlOrRequest[prop];
         }
       }
     }
-    request.headers = request.headers || {};
-
-    if (!request.crossDomain && !request.headers['X-Requested-With']) {
-      request.headers['X-Requested-With'] = 'XMLHttpRequest';
-    }
-
-    request.hasContent = request.body !== undefined;
 
     this.request = request;
   }
@@ -158,6 +151,22 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
   constructor(destination: Subscriber<T>, public request: AjaxRequest) {
     super(destination);
+
+    const headers = request.headers = request.headers || {};
+
+    // force CORS if requested
+    if (!request.crossDomain && !headers['X-Requested-With']) {
+      headers['X-Requested-With'] = 'XMLHttpRequest';
+    }
+
+    // ensure content type is set
+    if (!('Content-Type' in headers)) {
+      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    }
+
+    // properly serialize body
+    request.body = this.serializeBody(request.body, request.headers['Content-Type']);
+
     this.resultSelector = request.resultSelector;
     this.send();
   }
@@ -182,12 +191,12 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private send(): XMLHttpRequest {
     const {
       request,
-      request: { user, method, url, async, password, headers }
+      request: { user, method, url, async, password, headers, body }
     } = this;
     const createXHR = request.createXHR;
-    const xhr = tryCatch(createXHR).call(request);
+    const xhr: XMLHttpRequest = tryCatch(createXHR).call(request);
 
-    if (xhr === errorObject) {
+    if (<any>xhr === errorObject) {
       this.error(errorObject.e);
     } else {
       this.xhr = xhr;
@@ -210,17 +219,39 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       xhr.responseType = request.responseType;
 
       // set headers
-      this.setupHeaders(xhr, headers);
+      this.setHeaders(xhr, headers);
 
       // now set up the events
       this.setupEvents(xhr, request);
 
       // finally send the request
-      xhr.send();
+      if (body) {
+        xhr.send(body);
+      } else {
+        xhr.send();
+      }
     }
   }
 
-  private setupHeaders(xhr: XMLHttpRequest, headers: Object) {
+  private serializeBody(body: any, contentType: string) {
+    if (!body || typeof body === 'string') {
+      return body;
+    }
+
+    const splitIndex = contentType.indexOf(';');
+    if (splitIndex !== -1) {
+      contentType = contentType.substring(0, splitIndex);
+    }
+
+    switch (contentType) {
+      case 'application/x-www-form-urlencoded':
+        return Object.keys(body).map(key => `${key}=${encodeURI(body[key])}`).join('&');
+      case 'application/json':
+        return JSON.stringify(body);
+    }
+  }
+
+  private setHeaders(xhr: XMLHttpRequest, headers: Object) {
     for (let key in headers) {
       if (headers.hasOwnProperty(key)) {
         xhr.setRequestHeader(key, headers[key]);
@@ -324,9 +355,15 @@ export class AjaxResponse {
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
     const responseType = xhr.responseType;
-    let response = ('response' in xhr) ? xhr.response : xhr.responseText;
-    if (responseType === 'json') {
-      response = JSON.parse(response || '');
+    let response;
+    if ('response' in xhr) {
+      response = xhr.response;
+    } else {
+      if (request.responseType === 'json') {
+        response = JSON.parse(xhr.responseText);
+      } else {
+        response = xhr.responseText;
+      }
     }
     this.responseText = xhr.responseText;
     this.responseType = responseType;
