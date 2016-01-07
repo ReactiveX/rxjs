@@ -1,6 +1,7 @@
 /*eslint-disable no-param-reassign, no-use-before-define*/
 var gm = require('gm');
 var _ = require('lodash');
+var Color = require('color');
 
 var CANVAS_WIDTH = 1280;
 var canvasHeight;
@@ -10,6 +11,8 @@ var OPERATOR_HEIGHT = 140;
 var ARROW_HEAD_SIZE = 18;
 var OBSERVABLE_END_PADDING = 5 * ARROW_HEAD_SIZE;
 var MARBLE_RADIUS = 32;
+var COMPLETE_HEIGHT = MARBLE_RADIUS;
+var TALLER_COMPLETE_HEIGHT = 1.8 * MARBLE_RADIUS;
 var SIN_45 = 0.707106;
 var NESTED_STREAM_ANGLE = 18; // degrees
 var TO_RAD = (Math.PI / 180);
@@ -17,6 +20,11 @@ var MESSAGES_WIDTH = (CANVAS_WIDTH - 2 * CANVAS_PADDING - OBSERVABLE_END_PADDING
 var BLACK_COLOR = '#101010';
 var COLORS = ['#3EA1CB', '#FFCB46', '#FF6946', '#82D736'];
 var SPECIAL_COLOR = '#1010F0';
+var MESSAGE_OVERLAP_HEIGHT = TALLER_COMPLETE_HEIGHT;
+
+function colorToGhostColor(hex) {
+  return Color(hex).mix(Color('white')).hexString();
+}
 
 function getMaxFrame(allStreams) {
   var allStreamsLen = allStreams.length;
@@ -102,13 +110,28 @@ function measureNestedStreamHeight(maxFrame, streamData) {
   return measureInclination(startX, endX, NESTED_STREAM_ANGLE);
 }
 
+function amountPriorOverlaps(message, messageIndex, otherMessages) {
+  return otherMessages.reduce(function (acc, otherMessage, otherIndex) {
+    if (otherIndex < messageIndex
+    && otherMessage.frame === message.frame
+    && message.notification.kind === 'N'
+    && otherMessage.notification.kind === 'N') {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+}
+
 function measureStreamHeight(maxFrame) {
   return function measureStreamHeightWithMaxFrame(streamData) {
-    var maxMessageHeight = streamData.messages
-      .map(function (message) {
-        return isNestedStreamData(message) ?
-          measureNestedStreamHeight(maxFrame, message.notification.value) + OBSERVABLE_HEIGHT * 0.25 :
+    var messages = streamData.messages;
+    var maxMessageHeight = messages
+      .map(function (msg, index) {
+        var height = isNestedStreamData(msg) ?
+          measureNestedStreamHeight(maxFrame, msg.notification.value) + OBSERVABLE_HEIGHT * 0.25 :
           OBSERVABLE_HEIGHT * 0.5;
+        var overlapHeightBonus = amountPriorOverlaps(msg, index, messages) * MESSAGE_OVERLAP_HEIGHT;
+        return height + overlapHeightBonus;
       })
       .reduce(function (acc, curr) {
         return curr > acc ? curr : acc;
@@ -125,6 +148,9 @@ function drawObservableArrow(out, maxFrame, y, angle, streamData, isSpecial) {
   var outlineColor = BLACK_COLOR;
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
+  }
+  if (streamData.isGhost) {
+    outlineColor = colorToGhostColor(outlineColor);
   }
   out = out.stroke(outlineColor, 3);
   var inclination = measureInclination(startX, endX, angle);
@@ -155,13 +181,18 @@ function stringifyContent(content) {
   return String('"' + string + '"');
 }
 
-function drawMarble(out, x, y, inclination, content, isSpecial) {
+function drawMarble(out, x, y, inclination, content, isSpecial, isGhost) {
+  var fillColor = stringToColor(stringifyContent(content));
   var outlineColor = BLACK_COLOR;
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
   }
+  if (isGhost) {
+    outlineColor = colorToGhostColor(outlineColor);
+    fillColor = colorToGhostColor(fillColor);
+  }
   out = out.stroke(outlineColor, 3);
-  out = out.fill(stringToColor(stringifyContent(content)));
+  out = out.fill(fillColor);
   out = out.drawEllipse(x, y + inclination, MARBLE_RADIUS, MARBLE_RADIUS, 0, 360);
 
   out = out.strokeWidth(-1);
@@ -175,11 +206,14 @@ function drawMarble(out, x, y, inclination, content, isSpecial) {
   return out;
 }
 
-function drawError(out, x, y, startX, angle, isSpecial) {
+function drawError(out, x, y, startX, angle, isSpecial, isGhost) {
   var inclination = measureInclination(startX, x, angle);
   var outlineColor = BLACK_COLOR;
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
+  }
+  if (isGhost) {
+    outlineColor = colorToGhostColor(outlineColor);
   }
   out = out.stroke(outlineColor, 3);
   out = out.draw(
@@ -194,7 +228,7 @@ function drawError(out, x, y, startX, angle, isSpecial) {
   return out;
 }
 
-function drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial) {
+function drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial, isGhost) {
   var startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
   var isOverlapping = streamData.messages.some(function (msg) {
@@ -206,8 +240,11 @@ function drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial) {
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
   }
+  if (isGhost) {
+    outlineColor = colorToGhostColor(outlineColor);
+  }
   var inclination = measureInclination(startX, x, angle);
-  var radius = isOverlapping ? 1.8 * MARBLE_RADIUS : MARBLE_RADIUS;
+  var radius = isOverlapping ? TALLER_COMPLETE_HEIGHT : COMPLETE_HEIGHT;
   out = out.stroke(outlineColor, 3);
   out = out.draw(
     'translate', String(x) + ',' + String(y + inclination),
@@ -225,29 +262,32 @@ function drawNestedObservable(out, maxFrame, y, streamData) {
   return out;
 }
 
-function drawObservableMessages(out, maxFrame, y, angle, streamData, isSpecial) {
+function drawObservableMessages(out, maxFrame, baseY, angle, streamData, isSpecial) {
   var startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
+  var messages = streamData.messages;
 
-  streamData.messages.slice().reverse().forEach(function (message) {
+  messages.slice().reverse().forEach(function (message, reversedIndex) {
     if (message.frame < 0) { // ignore messages with negative frames
       return;
     }
+    var index = messages.length - reversedIndex - 1;
     var x = startX + MESSAGES_WIDTH * (message.frame / maxFrame);
     if (x - MARBLE_RADIUS < 0) { // out of screen, on the left
       x += MARBLE_RADIUS;
     }
+    var y = baseY + amountPriorOverlaps(message, index, messages) * MESSAGE_OVERLAP_HEIGHT;
     var inclination = measureInclination(startX, x, angle);
     switch (message.notification.kind) {
     case 'N':
       if (isNestedStreamData(message)) {
         out = drawNestedObservable(out, maxFrame, y, message.notification.value);
       } else {
-        out = drawMarble(out, x, y, inclination, message.notification.value, isSpecial);
+        out = drawMarble(out, x, y, inclination, message.notification.value, isSpecial, streamData.isGhost);
       }
       break;
-    case 'E': out = drawError(out, x, y, startX, angle, isSpecial); break;
-    case 'C': out = drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial); break;
+    case 'E': out = drawError(out, x, y, startX, angle, isSpecial, streamData.isGhost); break;
+    case 'C': out = drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial, streamData.isGhost); break;
     default: break;
     }
   });
@@ -279,8 +319,8 @@ function drawOperator(out, label, y) {
   return out;
 }
 
-function sanitizeHigherOrderInputStreams(inputStreams, outputStreams) {
-  // Remove cold inputStreams which are already nested in some higher order stream
+// Remove cold inputStreams which are already nested in some higher order stream
+function removeDuplicateInputs(inputStreams, outputStreams) {
   return inputStreams.filter(function (inputStream) {
     return !inputStreams.concat(outputStreams).some(function (otherStream) {
       return otherStream.messages.some(function (msg) {
@@ -301,9 +341,45 @@ function sanitizeHigherOrderInputStreams(inputStreams, outputStreams) {
   });
 }
 
+// For every inner stream in a higher order stream, create its ghost version
+// A ghost stream is a reference to an Observable that has not yet executed,
+// and is painted as a semi-transparent stream.
+function addGhostInnerInputs(inputStreams) {
+  for (var i = 0; i < inputStreams.length; i++) {
+    var inputStream = inputStreams[i];
+    for (var j = 0; j < inputStream.messages.length; j++) {
+      var message = inputStream.messages[j];
+      if (isNestedStreamData(message) && typeof message.isGhost !== 'boolean') {
+        var referenceTime = message.frame;
+        var subscriptionTime = message.notification.value.subscription.start;
+        if (referenceTime !== subscriptionTime) {
+          message.isGhost = false;
+          message.notification.value.isGhost = false;
+          message.frame = subscriptionTime;
+
+          var ghost = _.cloneDeep(message);
+          ghost.isGhost = true;
+          ghost.notification.value.isGhost = true;
+          ghost.frame = referenceTime;
+          ghost.notification.value.subscription.start = referenceTime;
+          ghost.notification.value.subscription.end -= subscriptionTime - referenceTime;
+          inputStream.messages.push(ghost);
+        }
+      }
+    }
+  }
+  return inputStreams;
+}
+
+function sanitizeHigherOrderInputStreams(inputStreams, outputStreams) {
+  var newInputStreams = removeDuplicateInputs(inputStreams, outputStreams);
+  newInputStreams = addGhostInnerInputs(newInputStreams);
+  return newInputStreams;
+}
+
 module.exports = function painter(inputStreams, operatorLabel, outputStreams, filename) {
-  var maxFrame = getMaxFrame(inputStreams.concat(outputStreams));
   inputStreams = sanitizeHigherOrderInputStreams(inputStreams, outputStreams);
+  var maxFrame = getMaxFrame(inputStreams.concat(outputStreams));
   var allStreamsHeight = inputStreams.concat(outputStreams)
     .map(measureStreamHeight(maxFrame))
     .reduce(function (x, y) { return x + y; }, 0);
