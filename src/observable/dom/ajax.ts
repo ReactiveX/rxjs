@@ -159,10 +159,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   constructor(destination: Subscriber<T>, public request: AjaxRequest) {
     super(destination);
     this.resultSelector = request.resultSelector;
-    this.xhr = this.createXHR();
-    if (this.xhr) {
-      this.send();
-    }
+    this.send();
   }
 
   next(e: Event): void {
@@ -182,38 +179,41 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     }
   }
 
-  private send() {
+  private send(): XMLHttpRequest {
     const {
-      request: { user, method, url, async, password },
-      xhr
+      request,
+      request: { user, method, url, async, password }
     } = this;
-
-    let result;
-    if (user) {
-      result = tryCatch(xhr.open).call(xhr, method, url, async, user, password);
-    } else {
-      result = tryCatch(xhr.open).call(xhr, method, url, async);
-    }
-
-    if (result === errorObject) {
-      return this.error(errorObject.e);
-    }
-
-    xhr.send();
-  }
-
-  private createXHR(): XMLHttpRequest {
-    const request = this.request;
     const createXHR = request.createXHR;
     const xhr = tryCatch(createXHR).call(request);
 
     if (xhr === errorObject) {
       this.error(errorObject.e);
     } else {
+      this.xhr = xhr;
+
+      // open XHR first
+      let result;
+      if (user) {
+        result = tryCatch(xhr.open).call(xhr, method, url, async, user, password);
+      } else {
+        result = tryCatch(xhr.open).call(xhr, method, url, async);
+      }
+
+      if (result === errorObject) {
+        this.error(errorObject.e);
+        return;
+      }
+
+      // timeout and responseType can be set once the XHR is open
       xhr.timeout = request.timeout;
       xhr.responseType = request.responseType;
+
+      // now set up the events
       this.setupEvents(xhr, request);
-      return xhr;
+
+      // finally send the request
+      xhr.send();
     }
   }
 
