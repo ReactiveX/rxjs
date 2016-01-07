@@ -15,6 +15,28 @@ describe('Observable.ajax', function () {
     jasmine.Ajax.uninstall();
   });
 
+  it('should set headers', function () {
+    Rx.Observable.ajax({
+      url: '/talk-to-me-goose',
+      headers: {
+        'Content-Type': 'kenny/loggins',
+        'Fly-Into-The': 'Dangah Zone!',
+        'Take-A-Ride-Into-The': 'Danger ZoooOoone!'
+      }
+    })
+    .subscribe();
+
+    var request = jasmine.Ajax.requests.mostRecent();
+
+    expect(request.url).toBe('/talk-to-me-goose');
+    expect(request.requestHeaders).toEqual({
+      'Content-Type': 'kenny/loggins',
+      'Fly-Into-The': 'Dangah Zone!',
+      'Take-A-Ride-Into-The': 'Danger ZoooOoone!',
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+  });
+
   it('should have an optional resultSelector', function () {
     var expected = 'avast ye swabs!';
     var result;

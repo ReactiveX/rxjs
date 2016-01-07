@@ -182,7 +182,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private send(): XMLHttpRequest {
     const {
       request,
-      request: { user, method, url, async, password }
+      request: { user, method, url, async, password, headers }
     } = this;
     const createXHR = request.createXHR;
     const xhr = tryCatch(createXHR).call(request);
@@ -209,11 +209,22 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       xhr.timeout = request.timeout;
       xhr.responseType = request.responseType;
 
+      // set headers
+      this.setupHeaders(xhr, headers);
+
       // now set up the events
       this.setupEvents(xhr, request);
 
       // finally send the request
       xhr.send();
+    }
+  }
+
+  private setupHeaders(xhr: XMLHttpRequest, headers: Object) {
+    for (let key in headers) {
+      if (headers.hasOwnProperty(key)) {
+        xhr.setRequestHeader(key, headers[key]);
+      }
     }
   }
 
