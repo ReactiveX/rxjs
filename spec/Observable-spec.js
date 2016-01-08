@@ -35,8 +35,8 @@ describe('Observable', function () {
 
     it('should reject promise when in error', function (done) {
       Observable.throw('bad').forEach(function (x) {
-        throw 'should not be called';
-      }).then(function () {
+        done.fail('should not be called');
+      }, null, Promise).then(function () {
         done.fail('should not complete');
       }, function (err) {
         expect(err).toBe('bad');

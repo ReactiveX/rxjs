@@ -1,6 +1,7 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+var Promise = require('promise');
 
 describe('Observable.prototype.debounce()', function () {
   function getTimerSelector(x) {
