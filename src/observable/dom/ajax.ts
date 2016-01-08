@@ -107,10 +107,6 @@ export class AjaxObservable<T> extends Observable<T> {
     return <AjaxCreationMethod>create;
   })();
 
-  static create2<T>(options: string | AjaxRequest): Observable<T> {
-    return new AjaxObservable(options);
-  }
-
   private request: AjaxRequest;
 
   constructor(urlOrRequest: string | AjaxRequest) {
