@@ -1,6 +1,7 @@
 /* globals describe, it, expect, lowerCaseO, hot, expectObservable */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+var Promise = require('promise');
 
 describe('Observable.forkJoin', function () {
   it('should join the last values of the provided observables into an array', function () {

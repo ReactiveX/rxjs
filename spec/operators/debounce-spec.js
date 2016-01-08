@@ -1,6 +1,7 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+var Promise = require('promise');
 
 describe('Observable.prototype.debounce()', function () {
   function getTimerSelector(x) {
@@ -357,12 +358,13 @@ describe('Observable.prototype.debounce()', function () {
     e1.debounce(function () {
       return new Promise(function (resolve) { resolve(42); });
     }).subscribe(function (x) {
-      expect(x).toEqual(expected.shift()); },
-      function () { throw 'should not be called'; },
-      function () {
-        expect(expected.length).toBe(0);
-        done();
-      });
+      expect(x).toEqual(expected.shift());
+    }, function (err) {
+      done.fail('should not be called');
+    }, function () {
+      expect(expected.length).toBe(0);
+      done();
+    });
   });
 
   it('should raises error when promise rejects', function (done) {

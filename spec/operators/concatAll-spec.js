@@ -1,6 +1,7 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+var Promise = require('promise');
 
 describe('Observable.prototype.concatAll()', function () {
   it('should concat sources from promise', function (done) {
