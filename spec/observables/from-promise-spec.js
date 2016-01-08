@@ -1,6 +1,7 @@
 /* globals describe, it, expect */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+var Promise = require('promise');
 
 describe('Observable.fromPromise', function () {
   it('should emit one value from a resolved promise', function (done) {
