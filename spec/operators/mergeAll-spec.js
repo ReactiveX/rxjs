@@ -1,6 +1,7 @@
-/* globals describe, it, expect, expectObservable, hot, cold */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
+var Promise = require('promise');
 
 describe('Observable.prototype.mergeAll()', function () {
   it.asDiagram('mergeAll')('should merge a hot observable of cold observables', function () {

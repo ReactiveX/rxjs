@@ -1,7 +1,8 @@
-/* globals describe, it, expect, expectObservable, expectSubscription, hot, cold */
+/* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var Scheduler = Rx.Scheduler;
+var Promise = require('promise');
 
 describe('Observable.prototype.throttle()', function () {
   it.asDiagram('throttle')('should immediately emit the first value in each time window', function () {
