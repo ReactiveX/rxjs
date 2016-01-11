@@ -6,6 +6,16 @@ var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.exhaust()', function () {
+  it.asDiagram('exhaust')('should handle a hot observable of hot observables', function () {
+    var x =   cold(      '--a---b---c--|               ');
+    var y =   cold(              '---d--e---f---|      ');
+    var z =   cold(                    '---g--h---i---|');
+    var e1 = hot(  '------x-------y-----z-------------|', { x: x, y: y, z: z });
+    var expected = '--------a---b---c------g--h---i---|';
+
+    expectObservable(e1.exhaust()).toBe(expected);
+  });
+
   it('should switch to first immediately-scheduled inner Observable', function () {
     var e1 = cold( '(ab|)');
     var e1subs =   '(^!)';
