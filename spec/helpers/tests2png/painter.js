@@ -351,6 +351,14 @@ function addGhostInnerInputs(inputStreams) {
       var message = inputStream.messages[j];
       if (isNestedStreamData(message) && typeof message.isGhost !== 'boolean') {
         var referenceTime = message.frame;
+        if (!message.notification.value.subscription) {
+          // There was no subscription at all, so this nested Observable is ghost
+          message.isGhost = true;
+          message.notification.value.isGhost = true;
+          message.frame = referenceTime;
+          message.notification.value.subscription = { start: referenceTime, end: 0 };
+          continue;
+        }
         var subscriptionTime = message.notification.value.subscription.start;
         if (referenceTime !== subscriptionTime) {
           message.isGhost = false;
