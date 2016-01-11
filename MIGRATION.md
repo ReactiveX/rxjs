@@ -52,6 +52,7 @@ enabling "composite" subscription behavior.
 
 |RxJS 4|RxJS 5|
 |---|---|
+|`amb`|`race`|
 |`bufferWithCount`|`bufferCount`|
 |`bufferWithTime`|`bufferTime`|
 |`flatMap` or `selectMany`|`mergeMap` or `flatMap`(alias)|
@@ -67,7 +68,6 @@ enabling "composite" subscription behavior.
 |`windowWithTime`|`windowTime`|
 |`windowWithCount`|`windowCount`|
 |`where`|`filter`|
-|`amb`|`-`|
 |`and`|`-`|
 |`asObservable`|`-`|
 |`average`|`-`|
@@ -84,7 +84,6 @@ enabling "composite" subscription behavior.
 |`jortSort`|`-`|
 |`jortSortUntil`|`-`|
 |`lastIndexOf`|`-`|
-|`let`|`-`|
 |`manySelect`|`-`|
 |`maxBy`|`-`|
 |`minBy`|`-`|
