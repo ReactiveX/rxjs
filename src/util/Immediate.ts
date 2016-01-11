@@ -20,9 +20,9 @@ export class ImmediateDefinition {
   currentlyRunningATask: boolean;
 
   constructor(private root: any) {
-    if (root.setImmediate) {
-      this.setImmediate = root.setImmediate;
-      this.clearImmediate = root.clearImmediate;
+    if (root.setImmediate && typeof root.setImmediate === 'function') {
+      this.setImmediate = root.setImmediate.bind(root);
+      this.clearImmediate = root.clearImmediate.bind(root);
     } else {
       this.nextHandle = 1;
       this.tasksByHandle = {};
