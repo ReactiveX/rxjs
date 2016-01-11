@@ -93,6 +93,7 @@ import './add/operator/multicast';
 import './add/operator/observeOn';
 import './add/operator/pairwise';
 import './add/operator/partition';
+import './add/operator/pluck';
 import './add/operator/publish';
 import './add/operator/publishBehavior';
 import './add/operator/publishReplay';
