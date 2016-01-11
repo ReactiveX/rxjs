@@ -47,9 +47,9 @@ class DoOperator<T> implements Operator<T, T> {
 
 class DoSubscriber<T> extends Subscriber<T> {
 
-  __next: (x: T) => void;
-  __error: (e: any) => void;
-  __complete: () => void;
+  private __next: (x: T) => void;
+  private __error: (e: any) => void;
+  private __complete: () => void;
 
   constructor(destination: Subscriber<T>, next: (x: T) => void, error: (e: any) => void, complete: () => void) {
     super(destination);
