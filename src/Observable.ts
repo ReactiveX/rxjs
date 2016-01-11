@@ -240,6 +240,7 @@ export class Observable<T> implements CoreOperators<T>  {
   multicast: (subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) => ConnectableObservable<T>;
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   partition: (predicate: (x: T) => boolean) => Observable<T>[];
+  pluck: (...properties: string[]) => Observable<any>;
   publish: () => ConnectableObservable<T>;
   publishBehavior: (value: any) => ConnectableObservable<T>;
   publishReplay: (bufferSize?: number, windowTime?: number, scheduler?: Scheduler) => ConnectableObservable<T>;

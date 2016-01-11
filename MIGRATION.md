@@ -90,7 +90,6 @@ enabling "composite" subscription behavior.
 |`onErrorResumeNext`|`-`|
 |`pausable`|`-`|
 |`pausableBuffered`|`-`|
-|`pluck`|`-`|
 |`shareReplay`|`-`|
 |`shareValue`|`-`|
 |`selectConcatObserver` or `concatMapObserver`|`-`|
