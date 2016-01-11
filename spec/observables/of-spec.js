@@ -1,6 +1,5 @@
 /* globals describe, it, expect, expectObservable, rxTestScheduler */
 var ArrayObservable = require('../../dist/cjs/observable/fromArray').ArrayObservable;
-var ScalarObservable = require('../../dist/cjs/observable/ScalarObservable').ScalarObservable;
 var EmptyObservable = require('../../dist/cjs/observable/empty').EmptyObservable;
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
@@ -18,16 +17,6 @@ describe('Observable.of', function () {
       function () {
         done();
       });
-  });
-
-  it('should return a scalar observable if only passed one value', function () {
-    var obs = Observable.of('one');
-    expect(obs instanceof ScalarObservable).toBe(true);
-  });
-
-  it('should return a scalar observable if only passed one value and a scheduler', function () {
-    var obs = Observable.of('one', Rx.Scheduler.queue);
-    expect(obs instanceof ScalarObservable).toBe(true);
   });
 
   it('should return an array observable if passed many values', function () {
@@ -60,7 +49,6 @@ describe('Observable.of', function () {
       Observable.of('a', 'b', 'c', rxTestScheduler),
       rxTestScheduler
     );
-    expect(source instanceof ScalarObservable).toBe(true);
     var result = source.concatAll();
     expectObservable(result).toBe('(abc|)');
   });
