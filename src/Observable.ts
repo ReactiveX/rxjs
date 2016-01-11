@@ -16,7 +16,6 @@ import {combineLatest as combineLatestStatic} from './operator/combineLatest-sta
 import {concat as concatStatic} from './operator/concat-static';
 import {merge as mergeStatic} from './operator/merge-static';
 import {zip as zipStatic} from './operator/zip-static';
-import {BoundCallbackObservable} from './observable/bindCallback';
 import {DeferObservable} from './observable/defer';
 import {EmptyObservable} from './observable/empty';
 import {ForkJoinObservable} from './observable/forkJoin';
@@ -31,6 +30,8 @@ import {race as raceStatic} from './operator/race-static';
 import {RangeObservable} from './observable/range';
 import {InfiniteObservable} from './observable/never';
 import {ErrorObservable} from './observable/throw';
+
+import {observable} from './typings-generated';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -161,7 +162,7 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
-  static bindCallback: typeof BoundCallbackObservable.create;
+  static bindCallback: observable.create.bindCallback;
   static combineLatest: typeof combineLatestStatic;
   static concat: typeof concatStatic;
   static defer: typeof DeferObservable.create;
