@@ -28,6 +28,7 @@ import './add/observable/timer';
 import './add/operator/zip-static';
 
 import './add/observable/dom/ajax';
+import './add/observable/dom/webSocket';
 
 //operators
 import './add/operator/buffer';

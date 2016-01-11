@@ -8,9 +8,9 @@ import {rxSubscriber} from './symbol/rxSubscriber';
 
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
 
-  static create<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
+  static create: Function = <T>(source: Observable<T>, destination: Observer<T>): Subject<T> => {
     return new Subject<T>(source, destination);
-  }
+  };
 
   constructor(source?: Observable<T>, destination?: Observer<T>) {
     super();
@@ -127,13 +127,17 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     if (this.destination) {
       this.destination.next(value);
     } else {
-      let index = -1;
-      const observers = this.observers.slice(0);
-      const len = observers.length;
+      this._finalNext(value);
+    }
+  }
 
-      while (++index < len) {
-        observers[index].next(value);
-      }
+  protected _finalNext(value: T): void {
+    let index = -1;
+    const observers = this.observers.slice(0);
+    const len = observers.length;
+
+    while (++index < len) {
+      observers[index].next(value);
     }
   }
 
@@ -141,46 +145,54 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     if (this.destination) {
       this.destination.error(err);
     } else {
-      let index = -1;
-      const observers = this.observers;
-      const len = observers.length;
-
-      // optimization to block our SubjectSubscriptions from
-      // splicing themselves out of the observers list one by one.
-      this.observers = null;
-      this.isUnsubscribed = true;
-
-      while (++index < len) {
-        observers[index].error(err);
-      }
-
-      this.isUnsubscribed = false;
-
-      this.unsubscribe();
+      this._finalError(err);
     }
+  }
+
+  protected _finalError(err: any): void {
+    let index = -1;
+    const observers = this.observers;
+    const len = observers.length;
+
+    // optimization to block our SubjectSubscriptions from
+    // splicing themselves out of the observers list one by one.
+    this.observers = null;
+    this.isUnsubscribed = true;
+
+    while (++index < len) {
+      observers[index].error(err);
+    }
+
+    this.isUnsubscribed = false;
+
+    this.unsubscribe();
   }
 
   protected _complete(): void {
     if (this.destination) {
       this.destination.complete();
     } else {
-      let index = -1;
-      const observers = this.observers;
-      const len = observers.length;
-
-      // optimization to block our SubjectSubscriptions from
-      // splicing themselves out of the observers list one by one.
-      this.observers = null;
-      this.isUnsubscribed = true;
-
-      while (++index < len) {
-        observers[index].complete();
-      }
-
-      this.isUnsubscribed = false;
-
-      this.unsubscribe();
+      this._finalComplete();
     }
+  }
+
+  protected _finalComplete(): void {
+    let index = -1;
+    const observers = this.observers;
+    const len = observers.length;
+
+    // optimization to block our SubjectSubscriptions from
+    // splicing themselves out of the observers list one by one.
+    this.observers = null;
+    this.isUnsubscribed = true;
+
+    while (++index < len) {
+      observers[index].complete();
+    }
+
+    this.isUnsubscribed = false;
+
+    this.unsubscribe();
   }
 
   [rxSubscriber]() {

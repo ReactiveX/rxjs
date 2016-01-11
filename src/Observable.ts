@@ -32,6 +32,7 @@ import {RangeObservable} from './observable/range';
 import {InfiniteObservable} from './observable/never';
 import {ErrorObservable} from './observable/throw';
 import {AjaxCreationMethod} from './observable/dom/ajax';
+import {WebSocketSubject} from './observable/dom/webSocket';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -187,6 +188,7 @@ export class Observable<T> implements CoreOperators<T>  {
   static range: typeof RangeObservable.create;
   static throw: typeof ErrorObservable.create;
   static timer: typeof TimerObservable.create;
+  static webSocket: typeof WebSocketSubject.create;
   static zip: typeof zipStatic;
 
   // core operators
