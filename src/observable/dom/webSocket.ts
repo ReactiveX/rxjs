@@ -109,7 +109,18 @@ export class WebSocketSubject<T> extends Subject<T> {
 
         self.destination = Subscriber.create(
           (x) => socket.readyState === 1 && socket.send(x),
-          (e) => socket.close(e),
+          (e) => {
+            const closingObserver = self.closingObserver;
+            if (closingObserver) {
+              closingObserver.next(undefined);
+            }
+            if (e && e.code) {
+              socket.close(e.code, e.reason);
+            } else {
+              self._finalError(new TypeError('WebSocketSubject.error must be called with an object with an error code, ' +
+                'and an optional reason: { code: number, reason: string }'));
+            }
+          },
           ( ) => {
             const closingObserver = self.closingObserver;
             if (closingObserver) {

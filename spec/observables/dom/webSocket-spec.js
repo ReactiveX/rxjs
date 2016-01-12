@@ -15,7 +15,7 @@ describe('Observable.webSocket', function () {
     teardownMockWebSocket();
   });
 
-  it ('should send a message', function () {
+  it('should send and receive messages', function () {
     var messageReceived = false;
     var subject = Observable.webSocket('ws://mysocket');
 
@@ -27,6 +27,7 @@ describe('Observable.webSocket', function () {
     });
 
     var socket = MockWebSocket.lastSocket();
+    expect(socket.url).toBe('ws://mysocket');
 
     socket.open();
     expect(socket.lastMessageSent()).toBe('ping');
@@ -35,7 +36,7 @@ describe('Observable.webSocket', function () {
     expect(messageReceived).toBe(true);
   });
 
-  it ('receive multiple messages', function () {
+  it('receive multiple messages', function () {
     var expected = ['what', 'do', 'you', 'do', 'with', 'a', 'drunken', 'sailor?'];
     var results = [];
     var subject = Observable.webSocket('ws://mysocket');
@@ -55,7 +56,7 @@ describe('Observable.webSocket', function () {
     expect(results).toEqual(expected);
   });
 
-  it ('should queue messages prior to subscription', function () {
+  it('should queue messages prior to subscription', function () {
     var expected = ['make', 'him', 'walk', 'the', 'plank'];
     var subject = Observable.webSocket('ws://mysocket');
 
@@ -75,7 +76,7 @@ describe('Observable.webSocket', function () {
     expect(socket.sent.length).toBe(expected.length);
   });
 
-  it('should send messages immediately if alreayd open', function () {
+  it('should send messages immediately if already open', function () {
     var subject = Observable.webSocket('ws://mysocket');
     subject.subscribe();
     var socket = MockWebSocket.lastSocket();
@@ -103,7 +104,20 @@ describe('Observable.webSocket', function () {
     expect(socket.readyState).toBe(3); // closed
   });
 
-  it('should allow resubscription after closure', function () {
+  it('should close the socket with a code and a reason when errored', function () {
+    var subject = Observable.webSocket('ws://mysocket');
+    subject.subscribe();
+    var socket = MockWebSocket.lastSocket();
+    socket.open();
+
+    spyOn(socket, 'close').and.callThrough();
+    expect(socket.close).not.toHaveBeenCalled();
+
+    subject.error({ code: 1337, reason: 'Too bad, so sad :('});
+    expect(socket.close).toHaveBeenCalledWith(1337, 'Too bad, so sad :(');
+  });
+
+  it('should allow resubscription after closure via complete', function () {
     var subject = Observable.webSocket('ws://mysocket');
     subject.subscribe();
     var socket1 = MockWebSocket.lastSocket();
@@ -117,6 +131,22 @@ describe('Observable.webSocket', function () {
 
     expect(socket2).not.toBe(socket1);
     expect(socket2.lastMessageSent()).toBe('a mariner yer not. yarrr.');
+  });
+
+  it('should allow resubscription after closure via error', function () {
+    var subject = Observable.webSocket('ws://mysocket');
+    subject.subscribe();
+    var socket1 = MockWebSocket.lastSocket();
+    socket1.open();
+    subject.error({ code: 1337 });
+
+    subject.next('yo-ho! yo-ho!');
+    subject.subscribe();
+    var socket2 = MockWebSocket.lastSocket();
+    socket2.open();
+
+    expect(socket2).not.toBe(socket1);
+    expect(socket2.lastMessageSent()).toBe('yo-ho! yo-ho!');
   });
 });
 
@@ -143,6 +173,15 @@ MockWebSocket.prototype = {
   lastMessageSent: function () {
     var sent = this.sent;
     return sent.length > 0 ? sent[sent.length - 1] : undefined;
+  },
+
+  closeDirty: function (code, reason) {
+    if (this.readyState < 2) {
+      this.readyState = 2;
+      this.closeCode = code;
+      this.closeReason = reason;
+      this.triggerClose({ wasClean: false });
+    }
   },
 
   triggerClose: function (e) {
@@ -176,7 +215,7 @@ MockWebSocket.prototype = {
       this.readyState = 2;
       this.closeCode = code;
       this.closeReason = reason;
-      this.triggerClose({ wasClean: (!code || code === 1000) });
+      this.triggerClose({ wasClean: true });
     }
   },
 
