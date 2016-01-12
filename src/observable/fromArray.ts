@@ -1,6 +1,5 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './empty';
 import {Subscriber} from '../Subscriber';
 import {isScheduler} from '../util/isScheduler';
@@ -21,10 +20,8 @@ export class ArrayObservable<T> extends Observable<T> {
     }
 
     const len = array.length;
-    if (len > 1) {
+    if (len > 0) {
       return new ArrayObservable<T>(<any>array, scheduler);
-    } else if (len === 1) {
-      return new ScalarObservable<T>(<any>array[0], scheduler);
     } else {
       return new EmptyObservable<T>(scheduler);
     }
