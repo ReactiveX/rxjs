@@ -303,6 +303,45 @@ describe('Observable.webSocket', function () {
       expect(closes[1]).toBe(expected[1]);
     });
   });
+
+  describe('multiplex', function () {
+    it('should multiplex over the websocket', function () {
+      var results = [];
+      var subject = Observable.webSocket('ws://websocket');
+      var source = subject.multiplex(function () {
+        return { sub: 'foo'};
+      }, function () {
+        return { unsub: 'foo' };
+      }, function (value) {
+        return value.name === 'foo';
+      });
+
+      var sub = source.subscribe(function (x) {
+        results.push(x.value);
+      });
+      var socket = MockWebSocket.lastSocket();
+      socket.open();
+
+      expect(socket.lastMessageSent()).toEqual({ sub: 'foo' });
+
+      [1, 2, 3, 4, 5].map(function (x) {
+        return {
+          name: x % 3 === 0 ? 'bar' : 'foo',
+          value: x
+        };
+      }).forEach(function (x) {
+        socket.triggerMessage(JSON.stringify(x));
+      });
+
+      expect(results).toEqual([1, 2, 4, 5]);
+
+      spyOn(socket, 'close').and.callThrough();
+      sub.unsubscribe();
+      expect(socket.lastMessageSent()).toEqual({ unsub: 'foo' });
+
+      expect(socket.close).toHaveBeenCalled();
+    });
+  });
 });
 
 var sockets = [];

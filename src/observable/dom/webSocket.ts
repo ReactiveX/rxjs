@@ -65,8 +65,38 @@ export class WebSocketSubject<T> extends Subject<T> {
     return sock;
   }
 
-  multiplex(subMsg: any, unsubMsg: any, messageFilter: (value: T) => boolean) {
-    return this.lift(new MultiplexOperator(this, subMsg, unsubMsg, messageFilter));
+  // TODO: factor this out to be a proper Operator/Subscriber implementation and eliminate closures
+  multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
+    const self = this;
+    return new Observable(observer => {
+      const result = tryCatch(subMsg)();
+      if (result === errorObject) {
+        observer.error(errorObject.e);
+      } else {
+        self.next(result);
+      }
+
+      const subscription = self.subscribe(x => {
+        const result = tryCatch(messageFilter)(x);
+        if (result === errorObject) {
+          observer.error(errorObject.e);
+        } else if (result) {
+          observer.next(x);
+        }
+      },
+        err => observer.error(err),
+        () => observer.complete());
+
+      return () => {
+        const result = tryCatch(unsubMsg)();
+        if (result === errorObject) {
+          observer.error(errorObject.e);
+        } else {
+          self.next(result);
+        }
+        subscription.unsubscribe();
+      };
+    });
   }
 
   _unsubscribe() {
@@ -157,12 +187,11 @@ export class WebSocketSubject<T> extends Subject<T> {
           self._finalNext(result);
         }
       };
-      return subscription;
     }
 
     return new Subscription(() => {
       subscription.unsubscribe();
-      if (this.observers.length === 0) {
+      if (!this.observers || this.observers.length === 0) {
         const { socket } = this;
         if (socket && socket.readyState < 2) {
           socket.close();
@@ -172,44 +201,5 @@ export class WebSocketSubject<T> extends Subject<T> {
         this.destination = new ReplaySubject();
       }
     });
-  }
-}
-
-export class MultiplexOperator<T, R> implements Operator<T, R> {
-  constructor(private socketSubject: WebSocketSubject<T>,
-              private subscribeMessage: any,
-              private unsubscribeMessage,
-              private messageFilter: (data: any) => R) {
-                // noop
-              }
-
-  call(subscriber: Subscriber<R>) {
-    return new MultiplexSubscriber(subscriber, this.socketSubject, this.subscribeMessage, this.unsubscribeMessage, this.messageFilter);
-  }
-}
-
-export class MultiplexSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>,
-              private socketSubject: WebSocketSubject<any>,
-              private subscribeMessage: any,
-              private unsubscribeMessage: any,
-              private messageFilter: (data: any) => T) {
-                super(destination);
-
-                socketSubject.next(subscribeMessage);
-              }
-
-  next(value: any) {
-    const pass = tryCatch(this.messageFilter)(value);
-    if (pass === errorObject) {
-      this.destination.error(errorObject.e);
-    } else if (pass) {
-      this.destination.next(value);
-    }
-  }
-
-  unsubscribe() {
-    this.socketSubject.next(this.unsubscribeMessage);
-    super.unsubscribe();
   }
 }
