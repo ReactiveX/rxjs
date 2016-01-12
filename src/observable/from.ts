@@ -26,7 +26,7 @@ export class FromObservable<T> extends Observable<T> {
         return new ArrayObservable(ish, scheduler);
       } else if (isPromise(ish)) {
         return new PromiseObservable(ish, scheduler);
-      } else if (typeof ish[SymbolShim.iterator] === 'function') {
+      } else if (typeof ish[SymbolShim.iterator] === 'function' || typeof ish === 'string') {
         return new IteratorObservable<T>(<any>ish, null, null, scheduler);
       }
     }
