@@ -96,7 +96,7 @@ export class WebSocketSubject<T> extends Subject<T> {
     }
 
     if (self.url && !self.socket) {
-      const socket = new WebSocket(self.url);
+      const socket = self.protocol ? new WebSocket(self.url, self.protocol) : new WebSocket(self.url);
       self.socket = socket;
 
       socket.onopen = (e) => {
@@ -151,7 +151,7 @@ export class WebSocketSubject<T> extends Subject<T> {
 
       socket.onmessage = (e: MessageEvent) => {
         const result = tryCatch(self.resultSelector)(e);
-        if (result === errorObject.e) {
+        if (result === errorObject) {
           self._finalError(errorObject.e);
         } else {
           self._finalNext(result);
