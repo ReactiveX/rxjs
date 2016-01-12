@@ -70,17 +70,26 @@ export class WebSocketSubject<T> extends Subject<T> {
   }
 
   _unsubscribe() {
+    this.socket = null;
     this.source = null;
+    this.destination = new ReplaySubject();
     this.isStopped = false;
+    this.hasErrored = false;
+    this.hasCompleted = false;
     this.observers = null;
     this.isUnsubscribed = false;
   }
 
   _subscribe(subscriber: Subscriber<T>) {
+    if (!this.observers) {
+      this.observers = [];
+    }
+
     const subscription = <Subscription>super._subscribe(subscriber);
     // HACK: For some reason transpilation wasn't honoring this in arrow functions below
     // Doesn't seem right, need to reinvestigate.
     const self = this;
+    const WebSocket = this.WebSocketCtor;
 
     if (self.source || !subscription || (<Subscription>subscription).isUnsubscribed) {
       return subscription;

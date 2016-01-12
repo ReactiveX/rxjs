@@ -152,15 +152,17 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   protected _finalError(err: any): void {
     let index = -1;
     const observers = this.observers;
-    const len = observers.length;
 
     // optimization to block our SubjectSubscriptions from
     // splicing themselves out of the observers list one by one.
     this.observers = null;
     this.isUnsubscribed = true;
 
-    while (++index < len) {
-      observers[index].error(err);
+    if (observers) {
+      const len = observers.length;
+      while (++index < len) {
+        observers[index].error(err);
+      }
     }
 
     this.isUnsubscribed = false;
@@ -179,15 +181,17 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   protected _finalComplete(): void {
     let index = -1;
     const observers = this.observers;
-    const len = observers.length;
 
     // optimization to block our SubjectSubscriptions from
     // splicing themselves out of the observers list one by one.
     this.observers = null;
     this.isUnsubscribed = true;
 
-    while (++index < len) {
-      observers[index].complete();
+    if (observers) {
+      const len = observers.length;
+      while (++index < len) {
+        observers[index].complete();
+      }
     }
 
     this.isUnsubscribed = false;

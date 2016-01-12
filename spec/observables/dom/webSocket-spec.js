@@ -34,6 +34,90 @@ describe('Observable.webSocket', function () {
     socket.triggerMessage('pong');
     expect(messageReceived).toBe(true);
   });
+
+  it ('receive multiple messages', function () {
+    var expected = ['what', 'do', 'you', 'do', 'with', 'a', 'drunken', 'sailor?'];
+    var results = [];
+    var subject = Observable.webSocket('ws://mysocket');
+
+    subject.subscribe(function (x) {
+      results.push(x);
+    });
+
+    var socket = MockWebSocket.lastSocket();
+
+    socket.open();
+
+    expected.forEach(function (x) {
+      socket.triggerMessage(x);
+    });
+
+    expect(results).toEqual(expected);
+  });
+
+  it ('should queue messages prior to subscription', function () {
+    var expected = ['make', 'him', 'walk', 'the', 'plank'];
+    var subject = Observable.webSocket('ws://mysocket');
+
+    expected.forEach(function (x) {
+      subject.next(x);
+    });
+
+    var socket = MockWebSocket.lastSocket();
+    expect(socket).not.toBeDefined();
+
+    subject.subscribe();
+
+    socket = MockWebSocket.lastSocket();
+    expect(socket.sent.length).toBe(0);
+
+    socket.open();
+    expect(socket.sent.length).toBe(expected.length);
+  });
+
+  it('should send messages immediately if alreayd open', function () {
+    var subject = Observable.webSocket('ws://mysocket');
+    subject.subscribe();
+    var socket = MockWebSocket.lastSocket();
+    socket.open();
+
+    subject.next('avast!');
+    expect(socket.lastMessageSent()).toBe('avast!');
+    subject.next('ye swab!');
+    expect(socket.lastMessageSent()).toBe('ye swab!');
+  });
+
+  it('should close the socket when completed', function () {
+    var subject = Observable.webSocket('ws://mysocket');
+    subject.subscribe();
+    var socket = MockWebSocket.lastSocket();
+    socket.open();
+
+    expect(socket.readyState).toBe(1); // open
+
+    spyOn(socket, 'close').and.callThrough();
+    expect(socket.close).not.toHaveBeenCalled();
+
+    subject.complete();
+    expect(socket.close).toHaveBeenCalled();
+    expect(socket.readyState).toBe(3); // closed
+  });
+
+  it('should allow resubscription after closure', function () {
+    var subject = Observable.webSocket('ws://mysocket');
+    subject.subscribe();
+    var socket1 = MockWebSocket.lastSocket();
+    socket1.open();
+    subject.complete();
+
+    subject.next('a mariner yer not. yarrr.');
+    subject.subscribe();
+    var socket2 = MockWebSocket.lastSocket();
+    socket2.open();
+
+    expect(socket2).not.toBe(socket1);
+    expect(socket2.lastMessageSent()).toBe('a mariner yer not. yarrr.');
+  });
 });
 
 var sockets = [];
@@ -44,7 +128,7 @@ function MockWebSocket(url, protocol) {
   this.protocol = protocol;
   this.sent = [];
   this.handlers = {};
-  this.readyState = 1;
+  this.readyState = 0;
 }
 
 MockWebSocket.lastSocket = function () {
@@ -92,7 +176,7 @@ MockWebSocket.prototype = {
       this.readyState = 2;
       this.closeCode = code;
       this.closeReason = reason;
-      this.triggerClose();
+      this.triggerClose({ wasClean: (!code || code === 1000) });
     }
   },
 
