@@ -202,6 +202,7 @@ if (process.argv.find((v) => v === '--exec')) {
     // Repeat the process for src/observable/*
     mkdirp('./src/add/observable', () => {
       fs.readdirSync('./src/observable')
+        .filter(o => o.endsWith('.ts'))
         .map(o => {
           return {
             path: o,
