@@ -150,7 +150,7 @@ export class Observable<T> implements CoreOperators<T>  {
     });
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
     return this.source.subscribe(subscriber);
   }
 

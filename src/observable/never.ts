@@ -11,7 +11,7 @@ export class InfiniteObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>): void {
+  protected _subscribe(subscriber: Subscriber<T>): void {
     noop();
   }
 }

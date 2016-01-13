@@ -24,7 +24,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T | T[]>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T | T[]>): Subscription {
     const callbackFunc = this.callbackFunc;
     const args = this.args;
     const scheduler = this.scheduler;

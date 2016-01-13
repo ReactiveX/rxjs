@@ -41,7 +41,7 @@ export class RangeObservable extends Observable<number> {
     this.scheduler = scheduler;
   }
 
-  _subscribe(subscriber: Subscriber<number>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<number>): Subscription | Function | void {
     let index = 0;
     let start = this.start;
     const end = this.end;

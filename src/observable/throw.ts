@@ -16,7 +16,7 @@ export class ErrorObservable extends Observable<any> {
     super();
   }
 
-  _subscribe(subscriber: any): Subscription | Function | void {
+  protected _subscribe(subscriber: any): Subscription | Function | void {
     const error = this.error;
     const scheduler = this.scheduler;
 

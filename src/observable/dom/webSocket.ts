@@ -110,7 +110,7 @@ export class WebSocketSubject<T> extends Subject<T> {
     this.isUnsubscribed = false;
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     if (!this.observers) {
       this.observers = [];
     }

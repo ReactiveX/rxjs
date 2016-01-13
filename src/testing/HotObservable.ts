@@ -19,7 +19,7 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
     this.scheduler = scheduler;
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
     const subject: HotObservable<T> = this;
     const index = subject.logSubscribedFrame();
     subscriber.add(new Subscription(() => {

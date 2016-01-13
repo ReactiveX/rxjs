@@ -36,7 +36,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
     return new ForkJoinObservable(<Array<Observable<any> | Promise<any>>>sources, resultSelector);
   }
 
-  _subscribe(subscriber: Subscriber<any>) {
+  protected _subscribe(subscriber: Subscriber<any>) {
     const sources = this.sources;
     const len = sources.length;
 

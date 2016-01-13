@@ -27,7 +27,7 @@ export class ReplaySubject<T> extends Subject<T> {
     super._next(value);
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     const events = this._trimBufferThenGetEvents(this._getNow());
     const scheduler = this.scheduler;
 

@@ -6,7 +6,7 @@ export class AsyncSubject<T> extends Subject<T> {
   value: T = null;
   hasNext: boolean = false;
 
-  _subscribe(subscriber: Subscriber<any>): Subscription|Function|void {
+  protected _subscribe(subscriber: Subscriber<any>): Subscription|Function|void {
     if (this.hasCompleted && this.hasNext) {
       subscriber.next(this.value);
     }

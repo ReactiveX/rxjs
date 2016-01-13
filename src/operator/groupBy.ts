@@ -22,7 +22,7 @@ export class GroupByObservable<T, K, R> extends Observable<GroupedObservable<K, 
     super();
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription {
+  protected _subscribe(subscriber: Subscriber<any>): Subscription {
     const refCountSubscription = new RefCountSubscription();
     const groupBySubscriber = new GroupBySubscriber(
       subscriber, refCountSubscription, this.keySelector, this.elementSelector, this.durationSelector

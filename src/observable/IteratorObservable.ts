@@ -84,7 +84,7 @@ export class IteratorObservable<T> extends Observable<T> {
     this.iterator = getIterator(iterator);
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
 
     let index = 0;
     const { iterator, project, thisArg, scheduler } = this;
