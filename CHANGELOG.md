@@ -1,3 +1,54 @@
+<a name="5.0.0-beta.1"></a>
+# [5.0.0-beta.1](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.0...v5.0.0-beta.1) (2016-01-13)
+
+
+### Bug Fixes
+
+* **ajax:** ensure post sending values ([7aae0a3](https://github.com/ReactiveX/RxJS/commit/7aae0a3))
+* **ajax:** ensure that headers are set properly ([1100bdd](https://github.com/ReactiveX/RxJS/commit/1100bdd))
+* **ajax:** ensure XHR props are set after open ([4a6a579](https://github.com/ReactiveX/RxJS/commit/4a6a579))
+* **ajax:** ensure XHR send is being called ([c569e3e](https://github.com/ReactiveX/RxJS/commit/c569e3e))
+* **ajax:** remove unnecessary onAbort handling ([ed8240e](https://github.com/ReactiveX/RxJS/commit/ed8240e))
+* **ajax:** response properly based off responseType ([b2a27a2](https://github.com/ReactiveX/RxJS/commit/b2a27a2))
+* **ajax:** should no longer succeed on 300 status ([4d4fa32](https://github.com/ReactiveX/RxJS/commit/4d4fa32))
+* **animationFrame:** req/cancel animationFrame has to be called within the context of root. ([30a11ee](https://github.com/ReactiveX/RxJS/commit/30a11ee))
+* **debounceTime:** align value emit behavior as same as RxJS4 ([5ee11e0](https://github.com/ReactiveX/RxJS/commit/5ee11e0)), closes [#1081](https://github.com/ReactiveX/RxJS/issues/1081)
+* **distinctUntilChanged:** implement optional keySelector ([f6a897c](https://github.com/ReactiveX/RxJS/commit/f6a897c))
+* **fromEvent:** added spread operator for emitters that pass multiple arguments ([3f8eabb](https://github.com/ReactiveX/RxJS/commit/3f8eabb))
+* **fromObservable:** expand compatibility for iterating string source ([8f7924f](https://github.com/ReactiveX/RxJS/commit/8f7924f)), closes [#1147](https://github.com/ReactiveX/RxJS/issues/1147)
+* **Immediate:** update setImmediate compatibility on IE ([39e6c0e](https://github.com/ReactiveX/RxJS/commit/39e6c0e)), closes [#1163](https://github.com/ReactiveX/RxJS/issues/1163)
+* **inspect:** remove inspect and inspectTime operators ([17341a4](https://github.com/ReactiveX/RxJS/commit/17341a4))
+* **Readme:** update link to bundle on npmcdn ([44a8ca7](https://github.com/ReactiveX/RxJS/commit/44a8ca7))
+* **ReplaySubject:** Fix case-sensitive import. ([de31f32](https://github.com/ReactiveX/RxJS/commit/de31f32))
+* **ScalarObservable:** fix issue where scalar map fired twice ([c18c42e](https://github.com/ReactiveX/RxJS/commit/c18c42e)), closes [#1142](https://github.com/ReactiveX/RxJS/issues/1142) [#1140](https://github.com/ReactiveX/RxJS/issues/1140)
+* **scheduling:** Fixes bugs in scheduled actions. ([e050f01](https://github.com/ReactiveX/RxJS/commit/e050f01))
+* **Subscriber:** errors in nextHandler no longer propagate to errorHandler ([f42eed2](https://github.com/ReactiveX/RxJS/commit/f42eed2)), closes [#1135](https://github.com/ReactiveX/RxJS/issues/1135)
+* **WebSocketSubject:** ensure error codes passed to WebSocket close method ([3b1655e](https://github.com/ReactiveX/RxJS/commit/3b1655e))
+* **WebSocketSubject:** ensure WebSocketSubject can be resubscribed ([861a0c1](https://github.com/ReactiveX/RxJS/commit/861a0c1))
+* **WebSocketSubject:** resultSelector and protocols specifications work properly ([580f69a](https://github.com/ReactiveX/RxJS/commit/580f69a))
+
+### Features
+
+* **ajax:** add resultSelector and improve perf ([6df755f](https://github.com/ReactiveX/RxJS/commit/6df755f))
+* **ajax:** adds ajax methods from rx-dom. ([2ca4236](https://github.com/ReactiveX/RxJS/commit/2ca4236))
+* **bindNodeCallback:** add Observable.bindNodeCallback ([497bb0d](https://github.com/ReactiveX/RxJS/commit/497bb0d)), closes [#736](https://github.com/ReactiveX/RxJS/issues/736)
+* **Observable:** add let to allow fluent style query building ([5a2014c](https://github.com/ReactiveX/RxJS/commit/5a2014c))
+* **Observable:** add pairwise operator ([1432e59](https://github.com/ReactiveX/RxJS/commit/1432e59))
+* **Operator:** Expose the Operator interface to library consumers ([29aa3af](https://github.com/ReactiveX/RxJS/commit/29aa3af))
+* **pluck:** add pluck operator ([8026906](https://github.com/ReactiveX/RxJS/commit/8026906)), closes [#1134](https://github.com/ReactiveX/RxJS/issues/1134)
+* **race:** add race operator ([ee3b593](https://github.com/ReactiveX/RxJS/commit/ee3b593))
+* **scheduler:** adds animationFrame scheduler. ([e637b78](https://github.com/ReactiveX/RxJS/commit/e637b78))
+* **WebSocketSubject:** add basic WebSocketSubject implementation ([58cd806](https://github.com/ReactiveX/RxJS/commit/58cd806))
+* **WebSocketSubject.multiplex:** add multiplex operator to WebSocketSubject ([904d617](https://github.com/ReactiveX/RxJS/commit/904d617))
+
+
+### BREAKING CHANGES
+
+* inspect: `inspect` and `inspectTime` were removed. Use `withLatestFrom` instead.
+* Subscriber/Observable: errors thrown in nextHandlers by consumer code will no longer propagate to the errorHandler.
+
+
+
 <a name="5.0.0-beta.0"></a>
 # [5.0.0-beta.0](https://github.com/ReactiveX/RxJS/compare/5.0.0-alpha.14...v5.0.0-beta.0) (2015-12-15)
 
