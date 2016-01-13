@@ -8,7 +8,7 @@ import {isArray} from '../util/isArray';
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @returns {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  */
-export function race<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {
+export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1) {
