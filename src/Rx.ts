@@ -93,6 +93,7 @@ import './add/operator/switch';
 import './add/operator/switchMap';
 import './add/operator/switchMapTo';
 import './add/operator/take';
+import './add/operator/takeLast';
 import './add/operator/takeUntil';
 import './add/operator/takeWhile';
 import './add/operator/throttle';
