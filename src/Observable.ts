@@ -11,6 +11,8 @@ import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {Notification} from './Notification';
 import {toSubscriber} from './util/toSubscriber';
+import {tryCatch} from './util/tryCatch';
+import {errorObject} from './util/errorObject';
 
 import {combineLatest as combineLatestStatic} from './operator/combineLatest-static';
 import {concat as concatStatic} from './operator/concat-static';
@@ -136,27 +138,16 @@ export class Observable<T> implements CoreOperators<T>  {
       throw new Error('no Promise impl found');
     }
 
-    let nextHandler: any;
+    const source = this;
 
-    if (thisArg) {
-      nextHandler = function nextHandlerFn(value: any): void {
-        const { thisArg, next } = <any>nextHandlerFn;
-        return next.call(thisArg, value);
-      };
-      nextHandler.thisArg = thisArg;
-      nextHandler.next = next;
-    } else {
-      nextHandler = next;
-    }
-
-    const promiseCallback = function promiseCallbackFn(resolve: Function, reject: Function) {
-      const { source, nextHandler } = <any>promiseCallbackFn;
-      source.subscribe(nextHandler, reject, resolve);
-    };
-    (<any>promiseCallback).source = this;
-    (<any>promiseCallback).nextHandler = nextHandler;
-
-    return new PromiseCtor<void>(promiseCallback);
+    return new PromiseCtor<void>((resolve, reject) => {
+      source.subscribe((value: T) => {
+        const result: any = tryCatch(next).call(thisArg, value);
+        if (result === errorObject) {
+          reject(errorObject.e);
+        }
+      }, reject, resolve);
+    });
   }
 
   _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {

@@ -72,6 +72,21 @@ describe('Observable', function () {
 
       expect(typeof result.then).toBe('function');
     });
+
+    it('should reject promise if nextHandler throws', function (done) {
+      var results = [];
+      Observable.of(1,2,3).forEach(function (x) {
+        if (x === 3) {
+          throw new Error('NO THREES!');
+        };
+        results.push(x);
+      })
+      .then(done.fail, function (err) {
+        expect(err).toEqual(new Error('NO THREES!'));
+        expect(results).toEqual([1,2]);
+      })
+      .then(done);
+    });
   });
 
   describe('subscribe', function () {
