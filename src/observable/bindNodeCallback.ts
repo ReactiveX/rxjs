@@ -12,13 +12,13 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   static create<T>(callbackFunc: Function,
                    selector: Function = undefined,
                    scheduler?: Scheduler): Function {
-    return (...args): Observable<T> => {
+    return (...args: any[]): Observable<T> => {
       return new BoundNodeCallbackObservable(callbackFunc, selector, args, scheduler);
     };
   }
 
   constructor(private callbackFunc: Function,
-              private selector,
+              private selector: Function,
               private args: any[],
               public scheduler: Scheduler) {
     super();
@@ -33,7 +33,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
     if (!scheduler) {
       if (!subject) {
         subject = this.subject = new AsyncSubject<T>();
-        const handler = function handlerFn(...innerArgs) {
+        const handler = function handlerFn(...innerArgs: any[]) {
           const source = (<any>handlerFn).source;
           const { selector, subject } = source;
           const err = innerArgs.shift();
@@ -77,7 +77,7 @@ function dispatch<T>(state: { source: BoundNodeCallbackObservable<T>, subscriber
   if (!subject) {
     subject = source.subject = new AsyncSubject<T>();
 
-    const handler = function handlerFn(...innerArgs) {
+    const handler = function handlerFn(...innerArgs: any[]) {
       const source = (<any>handlerFn).source;
       const { selector, subject } = source;
       const err = innerArgs.shift();
