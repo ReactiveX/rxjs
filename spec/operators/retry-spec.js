@@ -24,7 +24,7 @@ describe('Observable.prototype.retry()', function () {
       observer.complete();
     })
       .map(function (x) {
-        if ((errors += 1) < retries) {
+        if (++errors < retries) {
           throw 'bad';
         }
         errors = 0;
@@ -72,7 +72,7 @@ describe('Observable.prototype.retry()', function () {
       observer.complete();
     })
       .map(function (x) {
-        if ((errors += 1) < retries) {
+        if (++errors < retries) {
           throw 'bad';
         }
         errors = 0;
