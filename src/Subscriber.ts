@@ -1,6 +1,5 @@
 import {noop} from './util/noop';
 import {throwError} from './util/throwError';
-import {tryOrOnError} from './util/tryOrOnError';
 import {tryOrThrowError} from './util/tryOrThrowError';
 
 import {Observer} from './Observer';
@@ -88,7 +87,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
-    this._next = (typeof next === 'function') && tryOrOnError(next) || null;
+    this._next = (typeof next === 'function') && tryOrThrowError(next) || null;
     this._error = (typeof error === 'function') && tryOrThrowError(error) || throwError;
     this._complete = (typeof complete === 'function') && tryOrThrowError(complete) || null;
   }
