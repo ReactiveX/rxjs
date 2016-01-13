@@ -1,13 +1,13 @@
 import {Subject} from '../../Subject';
 import {Subscriber} from '../../Subscriber';
 import {Observable} from '../../Observable';
+import {Operator} from '../../Operator';
 import {Subscription} from '../../Subscription';
 import {root} from '../../util/root';
 import {ReplaySubject} from '../../subject/ReplaySubject';
 import {Observer} from '../../Observer';
 import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
-import {Operator} from '../../Operator';
 import {assign} from '../../util/assign';
 
 export interface WebSocketSubjectConfig {
@@ -27,7 +27,7 @@ export class WebSocketSubject<T> extends Subject<T> {
   openObserver: Observer<Event>;
   closeObserver: Observer<CloseEvent>;
   closingObserver: Observer<void>;
-  WebSocketCtor: { new(url: string, protocol?: string|Array<string>)};
+  WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
 
   resultSelector(e: MessageEvent) {
     return JSON.parse(e.data);
@@ -59,8 +59,8 @@ export class WebSocketSubject<T> extends Subject<T> {
     }
   }
 
-  lift(operator) {
-    const sock = new WebSocketSubject(this, this.destination);
+  lift<R>(operator: Operator<T, R>) {
+    const sock: WebSocketSubject<T> = new WebSocketSubject(this, this.destination);
     sock.operator = operator;
     return sock;
   }
@@ -68,7 +68,7 @@ export class WebSocketSubject<T> extends Subject<T> {
   // TODO: factor this out to be a proper Operator/Subscriber implementation and eliminate closures
   multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
     const self = this;
-    return new Observable(observer => {
+    return new Observable((observer: Observer<any>) => {
       const result = tryCatch(subMsg)();
       if (result === errorObject) {
         observer.error(errorObject.e);
@@ -76,7 +76,7 @@ export class WebSocketSubject<T> extends Subject<T> {
         self.next(result);
       }
 
-      const subscription = self.subscribe(x => {
+      let subscription = self.subscribe(x => {
         const result = tryCatch(messageFilter)(x);
         if (result === errorObject) {
           observer.error(errorObject.e);
@@ -129,7 +129,7 @@ export class WebSocketSubject<T> extends Subject<T> {
       const socket = self.protocol ? new WebSocket(self.url, self.protocol) : new WebSocket(self.url);
       self.socket = socket;
 
-      socket.onopen = (e) => {
+      socket.onopen = (e: Event) => {
         const openObserver = self.openObserver;
         if (openObserver) {
           openObserver.next(e);
@@ -165,7 +165,7 @@ export class WebSocketSubject<T> extends Subject<T> {
         }
       };
 
-      socket.onerror = (e) => self.error(e);
+      socket.onerror = (e: Event) => self.error(e);
 
       socket.onclose = (e: CloseEvent) => {
         const closeObserver = self.closeObserver;

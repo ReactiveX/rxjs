@@ -198,7 +198,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       this.xhr = xhr;
 
       // open XHR first
-      let result;
+      let result: any;
       if (user) {
         result = tryCatch(xhr.open).call(xhr, method, url, async, user, password);
       } else {
@@ -351,7 +351,7 @@ export class AjaxResponse {
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
     const responseType = xhr.responseType;
-    let response;
+    let response: any;
     if ('response' in xhr) {
       response = xhr.response;
     } else {
