@@ -59,6 +59,8 @@ enabling "composite" subscription behavior.
 |`flatMapFirst`|`exhaustMap`|
 |`flatMapLatest`|`switchMap`|
 |`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
+|`fromCallback`|`bindCallback`|
+|`fromNodeCallback`|`bindNodeCallback`|
 |`publishValue`|`publishBehavior`|
 |`replay`|`publishReplay`|
 |`select`|`map`|
