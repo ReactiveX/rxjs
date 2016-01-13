@@ -68,7 +68,7 @@ export function ajaxPut<T>(url: string, body?: any, headers?: Object): Observabl
 };
 
 export function ajaxGetJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R> {
-  const finalResultSelector = resultSelector ? (res: AjaxResponse) => resultSelector(res.response) : null;
+  const finalResultSelector = resultSelector ? (res: AjaxResponse) => resultSelector(res.response) : (res: AjaxResponse) => res.response;
   return new AjaxObservable<R>({ method: 'GET', url, responseType: 'json', resultSelector: finalResultSelector, headers });
 };
   /**
@@ -336,35 +336,34 @@ export class AjaxResponse {
   /** {number} the HTTP status code */
   status: number;
 
-  /** {string|ArrayBuffer|object|any} the response data */
+  /** {string|ArrayBuffer|Document|object|any} the response data */
   response: any;
 
   /** {string} the raw responseText */
   responseText: string;
 
-  /** {string} the responsType (e.g. 'json' or 'array-buffer') */
+  /** {string} the responsType (e.g. 'json', 'arraybuffer', or 'xml') */
   responseType: string;
-
-  /** {Document} an XML Document from the response */
-  responseXML: Document;
 
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
-    const responseType = xhr.responseType;
-    let response: any;
-    if ('response' in xhr) {
-      response = xhr.response;
-    } else {
-      if (request.responseType === 'json') {
-        response = JSON.parse(xhr.responseText);
-      } else {
-        response = xhr.responseText;
-      }
+    this.responseType = xhr.responseType;
+    switch (this.responseType) {
+      case 'json':
+        if ('response' in xhr) {
+          this.response = xhr.response;
+        } else {
+          this.response = JSON.parse(xhr.responseText || '');
+        }
+        break;
+      case 'xml':
+        this.response = xhr.responseXML;
+        break;
+      case 'text':
+      default:
+        this.response = ('response' in xhr) ? xhr.response : xhr.responseText;
+        break;
     }
-    this.responseText = xhr.responseText;
-    this.responseType = responseType;
-    this.responseXML = xhr.responseXML;
-    this.response = response;
   }
 }
 

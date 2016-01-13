@@ -47,7 +47,7 @@ describe('Observable.ajax', function () {
         url: '/flibbertyJibbet',
         responseType: 'text',
         resultSelector: function (res) {
-          return res.responseText;
+          return res.response;
         }
       })
       .subscribe(function(x) {
