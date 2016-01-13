@@ -295,12 +295,14 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       if (this.readyState === 4) {
         // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
         let status: number = this.status === 1223 ? 204 : this.status;
+        let response: any = (this.responseType === 'text' ?  (
+          this.response || this.responseText) : this.response);
 
         // fix status code when it is 0 (0 status is undocumented).
         // Occurs when accessing file resources or on Android 4.1 stock browser
         // while retrieving files from application cache.
         if (status === 0) {
-          status = (this.response || this.responseText) ? 200 : 0;
+          status = response ? 200 : 0;
         }
 
         if (200 <= status && status < 300) {
