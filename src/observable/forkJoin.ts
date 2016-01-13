@@ -29,6 +29,10 @@ export class ForkJoinObservable<T> extends Observable<T> {
       sources = <Array<Observable<any>>>sources[0];
     }
 
+    if (sources.length === 0) {
+      return new EmptyObservable<T>();
+    }
+
     return new ForkJoinObservable(<Array<Observable<any> | Promise<any>>>sources, resultSelector);
   }
 
