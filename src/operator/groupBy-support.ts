@@ -34,7 +34,7 @@ export class GroupedObservable<K, T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     const subscription = new Subscription();
     if (this.refCountSubscription && !this.refCountSubscription.isUnsubscribed) {
       subscription.add(new InnerRefCountSubscription(this.refCountSubscription));

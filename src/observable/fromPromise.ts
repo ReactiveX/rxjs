@@ -16,7 +16,7 @@ export class PromiseObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     const promise = this.promise;
     const scheduler = this.scheduler;
 

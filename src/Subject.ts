@@ -47,7 +47,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     Subscription.prototype.unsubscribe.call(this);
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     if (this.source) {
       return this.source.subscribe(subscriber);
     } else {
@@ -69,7 +69,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     }
   }
 
-  _unsubscribe(): void {
+  protected _unsubscribe(): void {
     this.source = null;
     this.isStopped = true;
     this.observers = null;

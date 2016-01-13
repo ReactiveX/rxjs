@@ -17,7 +17,7 @@ export class EmptyObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
 
     const scheduler = this.scheduler;
 

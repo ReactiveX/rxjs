@@ -13,7 +13,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     return this._getSubject().subscribe(subscriber);
   }
 

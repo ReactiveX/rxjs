@@ -35,7 +35,7 @@ export class FromEventObservable<T, R> extends Observable<T> {
     subscriber.add(new Subscription(unsubscribe));
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     const sourceObj = this.sourceObj;
     const eventName = this.eventName;
     const selector = this.selector;

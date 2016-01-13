@@ -13,7 +13,7 @@ export class DeferObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     const result = tryCatch(this.observableFactory)();
     if (result === errorObject) {
       subscriber.error(errorObject.e);

@@ -24,7 +24,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     return this.getValue();
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     const subscription = super._subscribe(subscriber);
     if (subscription && !(<Subscription> subscription).isUnsubscribed) {
       subscriber.next(this._value);

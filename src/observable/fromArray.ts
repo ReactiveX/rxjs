@@ -61,7 +61,7 @@ export class ArrayObservable<T> extends Observable<T> {
     }
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     let index = 0;
     const array = this.array;
     const count = array.length;

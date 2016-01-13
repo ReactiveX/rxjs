@@ -34,7 +34,7 @@ export class FromObservable<T> extends Observable<T> {
     throw new TypeError((ish !== null && typeof ish || ish) + ' is not observable');
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     const ish = this.ish;
     const scheduler = this.scheduler;
     if (scheduler == null) {

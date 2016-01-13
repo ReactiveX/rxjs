@@ -159,7 +159,7 @@ export class Observable<T> implements CoreOperators<T>  {
     return new PromiseCtor<void>(promiseCallback);
   }
 
-  _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
     return this.source.subscribe(subscriber);
   }
 

@@ -55,7 +55,7 @@ export class TimerObservable extends Observable<number> {
       (<number> dueTime);
   }
 
-  _subscribe(subscriber: Subscriber<number>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<number>): Subscription | Function | void {
     const index = 0;
     const { period, dueTime, scheduler } = this;
 

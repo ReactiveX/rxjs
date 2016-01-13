@@ -135,7 +135,7 @@ export class AjaxObservable<T> extends Observable<T> {
     this.request = request;
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
     return new AjaxSubscriber(subscriber, this.request);
   }
 }

@@ -18,7 +18,7 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     const addHandler = this.addHandler;
     const removeHandler = this.removeHandler;
     const selector = this.selector;
