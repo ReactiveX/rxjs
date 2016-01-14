@@ -2,6 +2,10 @@ import {Observable} from '../Observable';
 import {multicast} from './multicast';
 import {Subject} from '../Subject';
 
+function shareSubjectFactory() {
+  return new Subject();
+}
+
 /**
  * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
  * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
@@ -12,10 +16,6 @@ import {Subject} from '../Subject';
  *
  * @returns {Observable<T>} an Observable that upon connection causes the source Observable to emit items to its Observers
  */
-function shareSubjectFactory() {
-  return new Subject();
-}
-
 export function share<T>(): Observable<T> {
   return multicast.call(this, shareSubjectFactory).refCount();
 };
