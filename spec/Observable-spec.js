@@ -146,7 +146,7 @@ describe('Observable', function () {
       expect(unsubscribeCalled).toBe(true);
     });
 
-    it('should not run unsubscription logic when an error is thrown sending messages synchronously', function () {
+    it('should run unsubscription logic when an error is thrown sending messages synchronously', function () {
       var messageError = false;
       var messageErrorValue = false;
       var unsubscribeCalled = false;
@@ -167,7 +167,7 @@ describe('Observable', function () {
       }
 
       expect(sub).toBe(undefined);
-      expect(unsubscribeCalled).toBe(false);
+      expect(unsubscribeCalled).toBe(true);
       expect(messageError).toBe(true);
       expect(messageErrorValue).toBe('boo!');
     });
@@ -195,7 +195,7 @@ describe('Observable', function () {
 
       expect(sub).toBe(undefined);
       expect(subscriber.isUnsubscribed).toBe(true);
-      expect(unsubscribeCalled).toBe(false);
+      expect(unsubscribeCalled).toBe(true);
       expect(messageError).toBe(true);
       expect(messageErrorValue).toBe('boo!');
     });
@@ -268,7 +268,7 @@ describe('Observable', function () {
         }
 
         expect(sub).toBe(undefined);
-        expect(unsubscribeCalled).toBe(false);
+        expect(unsubscribeCalled).toBe(true);
         expect(messageError).toBe(true);
         expect(messageErrorValue).toBe('boo!');
       });
