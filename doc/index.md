@@ -42,6 +42,7 @@
 - [defaultIfEmpty](function/index.html#static-function-defaultIfEmpty)
 - [delay](function/index.html#static-function-delay)
 - [distinct](function/index.html#static-function-distinct)
+- [distinctKey](function/index.html#static-function-distinctKey)
 - [distinctUntilChanged](function/index.html#static-function-distinctUntilChanged)
 - [distinctUntilKeyChanged](function/index.html#static-function-distinctUntilKeyChanged)
 - [do](function/index.html#static-function-do)
