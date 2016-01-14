@@ -52,12 +52,15 @@ enabling "composite" subscription behavior.
 
 |RxJS 4|RxJS 5|
 |---|---|
+|`amb`|`race`|
 |`bufferWithCount`|`bufferCount`|
 |`bufferWithTime`|`bufferTime`|
 |`flatMap` or `selectMany`|`mergeMap` or `flatMap`(alias)|
 |`flatMapFirst`|`exhaustMap`|
 |`flatMapLatest`|`switchMap`|
 |`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
+|`fromCallback`|`bindCallback`|
+|`fromNodeCallback`|`bindNodeCallback`|
 |`publishValue`|`publishBehavior`|
 |`replay`|`publishReplay`|
 |`select`|`map`|
@@ -67,7 +70,6 @@ enabling "composite" subscription behavior.
 |`windowWithTime`|`windowTime`|
 |`windowWithCount`|`windowCount`|
 |`where`|`filter`|
-|`amb`|`-`|
 |`and`|`-`|
 |`asObservable`|`-`|
 |`average`|`-`|
@@ -84,14 +86,12 @@ enabling "composite" subscription behavior.
 |`jortSort`|`-`|
 |`jortSortUntil`|`-`|
 |`lastIndexOf`|`-`|
-|`let`|`-`|
 |`manySelect`|`-`|
 |`maxBy`|`-`|
 |`minBy`|`-`|
 |`onErrorResumeNext`|`-`|
 |`pausable`|`-`|
 |`pausableBuffered`|`-`|
-|`pluck`|`-`|
 |`shareReplay`|`-`|
 |`shareValue`|`-`|
 |`selectConcatObserver` or `concatMapObserver`|`-`|

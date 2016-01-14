@@ -19,11 +19,11 @@ export function skipUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SkipUntilOperator(notifier));
 }
 
-class SkipUntilOperator<T, R> implements Operator<T, R> {
+class SkipUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new SkipUntilSubscriber(subscriber, this.notifier);
   }
 }
@@ -39,13 +39,13 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult(this, notifier));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     if (this.hasValue) {
       super._next(value);
     }
   }
 
-  _complete() {
+  protected _complete() {
     if (this.isInnerStopped) {
       super._complete();
     } else {

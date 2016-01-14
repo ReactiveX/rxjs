@@ -1,5 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
 
 /**
  * Returns an Observable that skips `n` items emitted by an Observable.
@@ -10,11 +11,11 @@ import {Subscriber} from '../Subscriber';
  * @returns {Observable} an Observable that skips values emitted by the source Observable.
  .
  */
-export function skip(total) {
+export function skip<T>(total: number): Observable<T> {
   return this.lift(new SkipOperator(total));
 }
 
-class SkipOperator<T, R> implements Operator<T, R> {
+class SkipOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
   }
 
@@ -30,7 +31,7 @@ class SkipSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(x) {
+  protected _next(x: T) {
     if (++this.count > this.total) {
       this.destination.next(x);
     }

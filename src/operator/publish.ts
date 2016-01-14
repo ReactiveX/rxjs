@@ -1,5 +1,6 @@
 import {Subject} from '../Subject';
 import {multicast} from './multicast';
+import {ConnectableObservable} from '../observable/ConnectableObservable';
 
 /**
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
@@ -9,6 +10,6 @@ import {multicast} from './multicast';
  *
  * @returns a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
  */
-export function publish() {
-  return multicast.call(this, new Subject());
+export function publish<T>(): ConnectableObservable<T> {
+  return multicast.call(this, new Subject<T>());
 }

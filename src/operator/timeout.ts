@@ -3,24 +3,25 @@ import {isDate} from '../util/isDate';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
+import {Observable} from '../Observable';
 
-export function timeout(due: number|Date,
-                        errorToSend: any = null,
-                        scheduler: Scheduler = asap) {
+export function timeout<T>(due: number | Date,
+                           errorToSend: any = null,
+                           scheduler: Scheduler = asap): Observable<T> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
 }
 
-class TimeoutOperator<T, R> implements Operator<T, R> {
+class TimeoutOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
               private errorToSend: any,
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<R>) {
-    return new TimeoutSubscriber(
+  call(subscriber: Subscriber<T>) {
+    return new TimeoutSubscriber<T>(
       subscriber, this.absoluteTimeout, this.waitFor, this.errorToSend, this.scheduler
     );
   }
@@ -61,7 +62,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     this._previousIndex = currentIndex;
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.destination.next(value);
 
     if (!this.absoluteTimeout) {
@@ -69,12 +70,12 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err) {
+  protected _error(err: any) {
     this.destination.error(err);
     this._hasCompleted = true;
   }
 
-  _complete() {
+  protected _complete() {
     this.destination.complete();
     this._hasCompleted = true;
   }

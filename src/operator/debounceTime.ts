@@ -21,7 +21,7 @@ export function debounceTime<T>(dueTime: number, scheduler: Scheduler = asap): O
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 
-class DebounceTimeOperator<T, R> implements Operator<T, R> {
+class DebounceTimeOperator<T> implements Operator<T, T> {
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
 
@@ -41,14 +41,14 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.clearDebounce();
     this.lastValue = value;
     this.hasValue = true;
     this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
   }
 
-  _complete() {
+  protected _complete() {
     this.debouncedNext();
     this.destination.complete();
   }
@@ -74,6 +74,6 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNext(subscriber) {
+function dispatchNext(subscriber: DebounceTimeSubscriber<any>) {
   subscriber.debouncedNext();
 }

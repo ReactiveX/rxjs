@@ -5,7 +5,7 @@ import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export class FindValueOperator<T, R> implements Operator<T, R> {
+export class FindValueOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private source: Observable<T>,
               private yieldIndex: boolean,
@@ -35,7 +35,7 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
     destination.complete();
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const { predicate, thisArg } = this;
     const index = this.index++;
     const result = tryCatch(predicate).call(thisArg || this, value, index, this.source);
@@ -46,7 +46,7 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.notifyComplete(this.yieldIndex ? -1 : undefined);
   }
 }

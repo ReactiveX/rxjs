@@ -14,12 +14,12 @@ import {errorObject} from '../util/errorObject';
  * @returns {Observable<T>} an Observable that begins emitting items emitted by the source Observable when the
  * specified predicate becomes false.
  */
-export function skipWhile<T>(predicate: (x: T, index: number) => boolean): Observable<T> {
+export function skipWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
   return this.lift(new SkipWhileOperator(predicate));
 }
 
 class SkipWhileOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate: (x: T, index: number) => boolean) {
+  constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -32,17 +32,17 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              private predicate: (x: T, index: number) => boolean) {
+              private predicate: (value: T, index: number) => boolean) {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const destination = this.destination;
     if (this.skipping === true) {
       const index = this.index++;
       const result = tryCatch(this.predicate)(value, index);
       if (result === errorObject) {
-        destination.error(result.e);
+        destination.error(errorObject.e);
       } else {
         this.skipping = Boolean(result);
       }

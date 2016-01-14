@@ -4,6 +4,17 @@ var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.zipAll', function () {
+  it.asDiagram('zipAll')('should combine paired events from two observables', function () {
+    var x =    cold(               '-a-----b-|');
+    var y =    cold(               '--1-2-----');
+    var outer = hot('-x----y--------|         ', { x: x, y: y });
+    var expected =  '-----------------A----B-|';
+
+    var result = outer.zipAll(function (a, b) { return String(a) + String(b); });
+
+    expectObservable(result).toBe(expected, { A: 'a1', B: 'b2' });
+  });
+
   it('should combine two observables', function () {
     var a =    hot('---1---2---3---');
     var asubs =    '^';

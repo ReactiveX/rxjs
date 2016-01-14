@@ -169,6 +169,13 @@ describe('Observable.forkJoin', function () {
     expectObservable(e1).toBe(expected);
   });
 
+  it('should complete if sources list is empty', function () {
+    var e1 = Observable.forkJoin([]);
+    var expected = '|';
+
+    expectObservable(e1).toBe(expected);
+  });
+
   it('should complete when any of source is empty with selector', function () {
     function selector(x, y) {
       return x + y;

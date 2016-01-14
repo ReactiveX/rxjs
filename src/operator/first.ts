@@ -13,7 +13,7 @@ import {EmptyError} from '../util/EmptyError';
  */
 export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
                             resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: any): Observable<T> | Observable<R> {
+                            defaultValue?: R): Observable<T> | Observable<R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
@@ -41,7 +41,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const { destination, predicate, resultSelector } = this;
     const index = this.index++;
     let passed: any = true;
@@ -68,7 +68,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
     if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
       destination.next(this.defaultValue);

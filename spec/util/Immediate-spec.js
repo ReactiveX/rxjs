@@ -10,13 +10,25 @@ describe('ImmediateDefinition', function () {
 
   describe('when setImmediate exists on root', function () {
     it('should use the setImmediate and clearImmediate methods from root', function () {
+      var setImmediateCalled = false;
+      var clearImmediateCalled = false;
+
       var root = {
-        setImmediate: function () {},
-        clearImmediate: function () {}
+        setImmediate: function () {
+          setImmediateCalled = true;
+        },
+        clearImmediate: function () {
+          clearImmediateCalled = true;
+        }
       };
+
       var result = new ImmediateDefinition(root);
-      expect(result.setImmediate).toBe(root.setImmediate);
-      expect(result.clearImmediate).toBe(root.clearImmediate);
+
+      result.setImmediate(function () {});
+      result.clearImmediate();
+
+      expect(setImmediateCalled).toBeTruthy();
+      expect(clearImmediateCalled).toBeTruthy();
     });
   });
 

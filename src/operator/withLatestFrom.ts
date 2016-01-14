@@ -24,8 +24,8 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
  * ```
  */
-export function withLatestFrom<R>(...args: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
-  let project;
+export function withLatestFrom<T, R>(...args: Array<Observable<any> | ((...values: Array<any>) => R)>): Observable<R> {
+  let project: any;
   if (typeof args[args.length - 1] === 'function') {
     project = args.pop();
   }
@@ -39,7 +39,7 @@ class WithLatestFromOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new WithLatestFromSubscriber<T, R>(subscriber, this.observables, this.project);
+    return new WithLatestFromSubscriber(subscriber, this.observables, this.project);
   }
 }
 
@@ -64,7 +64,7 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(observable, value, observableIndex, index) {
+  notifyNext(observable: any, value: any, observableIndex: number, index: number) {
     this.values[observableIndex] = value;
     const toRespond = this.toRespond;
     if (toRespond.length > 0) {
@@ -79,7 +79,7 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
     // noop
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     if (this.toRespond.length === 0) {
       const values = this.values;
       const destination = this.destination;

@@ -3,7 +3,7 @@ import {isObject} from './util/isObject';
 import {isFunction} from './util/isFunction';
 
 export class Subscription {
-  public static EMPTY: Subscription = (function(empty){
+  public static EMPTY: Subscription = (function(empty: any){
     empty.isUnsubscribed = true;
     return empty;
   }(new Subscription()));
@@ -46,7 +46,7 @@ export class Subscription {
     }
   }
 
-  add(subscription: Subscription|Function|void): void {
+  add(subscription: Subscription | Function | void): void {
     // return early if:
     //  1. the subscription is null
     //  2. we're attempting to add our this

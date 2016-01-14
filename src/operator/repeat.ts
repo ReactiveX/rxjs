@@ -17,7 +17,7 @@ import {EmptyObservable} from '../observable/empty';
  */
 export function repeat<T>(count: number = -1): Observable<T> {
   if (count === 0) {
-    return new EmptyObservable();
+    return new EmptyObservable<T>();
   } else if (count < 0) {
     return this.lift(new RepeatOperator(-1, this));
   } else {
@@ -25,11 +25,11 @@ export function repeat<T>(count: number = -1): Observable<T> {
   }
 }
 
-class RepeatOperator<T, R> implements Operator<T, R> {
+class RepeatOperator<T> implements Operator<T, T> {
   constructor(private count: number,
               private source: Observable<T>) {
   }
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new RepeatSubscriber(subscriber, this.count, this.source);
   }
 }
@@ -55,4 +55,3 @@ class RepeatSubscriber<T> extends Subscriber<T> {
     }
   }
 }
-

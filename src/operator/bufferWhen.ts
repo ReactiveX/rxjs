@@ -23,12 +23,12 @@ export function bufferWhen<T>(closingSelector: () => Observable<any>): Observabl
   return this.lift(new BufferWhenOperator(closingSelector));
 }
 
-class BufferWhenOperator<T, R> implements Operator<T, R> {
+class BufferWhenOperator<T> implements Operator<T, T[]> {
 
   constructor(private closingSelector: () => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<T[]>): Subscriber<T> {
     return new BufferWhenSubscriber(subscriber, this.closingSelector);
   }
 }
@@ -38,16 +38,16 @@ class BufferWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private subscribing: boolean = false;
   private closingSubscription: Subscription;
 
-  constructor(destination: Subscriber<T>, private closingSelector: () => Observable<any>) {
+  constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
     super(destination);
     this.openBuffer();
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.buffer.push(value);
   }
 
-  _complete() {
+  protected _complete() {
     const buffer = this.buffer;
     if (buffer) {
       this.destination.next(buffer);

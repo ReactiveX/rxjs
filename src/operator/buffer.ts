@@ -19,15 +19,15 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * values.
  */
 export function buffer<T>(closingNotifier: Observable<any>): Observable<T[]> {
-  return this.lift(new BufferOperator(closingNotifier));
+  return this.lift(new BufferOperator<T>(closingNotifier));
 }
 
-class BufferOperator<T, R> implements Operator<T, R> {
+class BufferOperator<T> implements Operator<T, T[]> {
 
   constructor(private closingNotifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<T[]>): Subscriber<T> {
     return new BufferSubscriber(subscriber, this.closingNotifier);
   }
 }
@@ -35,12 +35,12 @@ class BufferOperator<T, R> implements Operator<T, R> {
 class BufferSubscriber<T, R> extends OuterSubscriber<T, R> {
   private buffer: T[] = [];
 
-  constructor(destination: Subscriber<T>, closingNotifier: Observable<any>) {
+  constructor(destination: Subscriber<T[]>, closingNotifier: Observable<any>) {
     super(destination);
     this.add(subscribeToResult(this, closingNotifier));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.buffer.push(value);
   }
 

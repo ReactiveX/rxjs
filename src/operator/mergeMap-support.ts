@@ -33,13 +33,13 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: any): void {
+  protected _next(value: any): void {
     if (this.active < this.concurrent) {
       const index = this.index++;
       const ish = tryCatch(this.project)(value, index);
       const destination = this.destination;
       if (ish === errorObject) {
-        destination.error(ish.e);
+        destination.error(errorObject.e);
       } else {
         this.active++;
         this._innerSub(ish, value, index);
@@ -53,7 +53,7 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult<T, R>(this, ish, value, index));
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (this.active === 0 && this.buffer.length === 0) {
       this.destination.complete();

@@ -7,16 +7,15 @@ import {isArray} from '../util/isArray';
 
 export class ForkJoinObservable<T> extends Observable<T> {
   constructor(private sources: Array<Observable<any> | Promise<any>>,
-              private resultSelector?: (...values: Array<any>) => any) {
+              private resultSelector?: (...values: Array<any>) => T) {
     super();
   }
 
-  static create(...sources: Array<Observable<any> |
+  static create<T>(...sources: Array<Observable<any> | Promise<any> |
                                   Array<Observable<any>> |
-                                  Promise<any> |
-                                  ((...values: Array<any>) => any)>): Observable<any> {
+                                  ((...values: Array<any>) => any)>): Observable<T> {
     if (sources === null || arguments.length === 0) {
-      return new EmptyObservable();
+      return new EmptyObservable<T>();
     }
 
     let resultSelector: (...values: Array<any>) => any = null;
@@ -28,6 +27,10 @@ export class ForkJoinObservable<T> extends Observable<T> {
     // assume it's been called with `forkJoin([obs1, obs2, obs3], resultSelector)`
     if (sources.length === 1 && isArray(sources[0])) {
       sources = <Array<Observable<any>>>sources[0];
+    }
+
+    if (sources.length === 0) {
+      return new EmptyObservable<T>();
     }
 
     return new ForkJoinObservable(<Array<Observable<any> | Promise<any>>>sources, resultSelector);
@@ -49,7 +52,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
 }
 
 class AllSubscriber<T> extends Subscriber<T> {
-  private _value: any = null;
+  private _value: T = null;
 
   constructor(destination: Subscriber<any>,
               private index: number,
@@ -60,11 +63,11 @@ class AllSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: any): void {
+  protected _next(value: T): void {
     this._value = value;
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
 
     if (this._value == null) {
@@ -95,7 +98,7 @@ function hasValue(x: any): boolean {
 }
 
 function emptyArray(len: number): any[] {
-  let arr = [];
+  let arr: any[] = [];
   for (let i = 0; i < len; i++) {
     arr.push(null);
   }

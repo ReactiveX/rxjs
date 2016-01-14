@@ -12,7 +12,7 @@ import {errorObject} from '../util/errorObject';
  * @return {Observable} an observable that originates from either the source or the observable returned by the
  *  catch `selector` function.
  */
-export function _catch<T>(selector: (err: any, caught: Observable<any>) => Observable<any>): Observable<T> {
+export function _catch<T, R>(selector: (err: any, caught: Observable<T>) => Observable<R>): Observable<R> {
   const operator = new CatchOperator(selector);
   const caught = this.lift(operator);
   return (operator.caught = caught);
@@ -37,7 +37,7 @@ class CatchSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  error(err) {
+  error(err: any) {
     if (!this.isStopped) {
       const result = tryCatch(this.selector)(err, this.caught);
       if (result === errorObject) {

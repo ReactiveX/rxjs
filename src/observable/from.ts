@@ -11,7 +11,7 @@ import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn-support';
 
 export class FromObservable<T> extends Observable<T> {
-  constructor(private ish: any, private scheduler: Scheduler) {
+  constructor(private ish: Observable<T> | Promise<T> | Iterator<T> | ArrayLike<T>, private scheduler: Scheduler) {
     super(null);
   }
 
@@ -26,8 +26,8 @@ export class FromObservable<T> extends Observable<T> {
         return new ArrayObservable(ish, scheduler);
       } else if (isPromise(ish)) {
         return new PromiseObservable(ish, scheduler);
-      } else if (typeof ish[SymbolShim.iterator] === 'function') {
-        return new IteratorObservable(ish, null, null, scheduler);
+      } else if (typeof ish[SymbolShim.iterator] === 'function' || typeof ish === 'string') {
+        return new IteratorObservable<T>(<any>ish, null, null, scheduler);
       }
     }
 

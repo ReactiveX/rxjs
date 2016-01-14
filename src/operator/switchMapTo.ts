@@ -8,19 +8,17 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export function switchMapTo<T, R, R2>(observable: Observable<R>,
-                                      projectResult?: (outerValue: T,
-                                                       innerValue: R,
-                                                       outerIndex: number,
-                                                       innerIndex: number) => R2): Observable<R2> {
-  return this.lift(new SwitchMapToOperator(observable, projectResult));
+                                      resultSelector?: (
+                                                 outerValue: T,
+                                                 innerValue: R,
+                                                 outerIndex: number,
+                                                 innerIndex: number) => R2): Observable<R2> {
+  return this.lift(new SwitchMapToOperator(observable, resultSelector));
 }
 
 class SwitchMapToOperator<T, R, R2> implements Operator<T, R> {
   constructor(private observable: Observable<R>,
-              private resultSelector?: (outerValue: T,
-                                        innerValue: R,
-                                        outerIndex: number,
-                                        innerIndex: number) => R2) {
+              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
@@ -38,7 +36,7 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: any) {
+  protected _next(value: any) {
     const innerSubscription = this.innerSubscription;
     if (innerSubscription) {
       innerSubscription.unsubscribe();
@@ -46,7 +44,7 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     this.add(this.innerSubscription = subscribeToResult(this, this.inner, value, this.index++));
   }
 
-  _complete() {
+  protected _complete() {
     const {innerSubscription} = this;
     if (!innerSubscription || innerSubscription.isUnsubscribed) {
       super._complete();

@@ -7,7 +7,7 @@ import {Subscriber} from '../Subscriber';
  * @param {any} defaultValue the default value used if source is empty; defaults to null.
  * @returns {Observable} an Observable of the items emitted by the where empty values are replaced by the specified default value or null.
  */
-export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T> | Observable<R> {
+export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
@@ -28,12 +28,12 @@ class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.isEmpty = false;
     this.destination.next(value);
   }
 
-  _complete(): void {
+  protected _complete(): void {
     if (this.isEmpty) {
       this.destination.next(this.defaultValue);
     }

@@ -22,7 +22,7 @@ class DeMaterializeSubscriber<T extends Notification<any>> extends Subscriber<T>
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     value.observe(this.destination);
   }
 }

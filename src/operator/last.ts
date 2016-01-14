@@ -20,7 +20,7 @@ import {EmptyError} from '../util/EmptyError';
  */
 export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
                            resultSelector?: (value: T, index: number) => R,
-                           defaultValue?: any): Observable<T> | Observable<R> {
+                           defaultValue?: R): Observable<T> | Observable<R> {
   return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 
@@ -37,7 +37,7 @@ class LastOperator<T, R> implements Operator<T, R> {
 }
 
 class LastSubscriber<T, R> extends Subscriber<T> {
-  private lastValue: T;
+  private lastValue: T | R;
   private hasValue: boolean = false;
   private index: number = 0;
 
@@ -53,7 +53,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const { predicate, resultSelector, destination } = this;
     const index = this.index++;
 
@@ -83,7 +83,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
     if (this.hasValue) {
       destination.next(this.lastValue);

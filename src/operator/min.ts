@@ -10,8 +10,8 @@ import {ReduceOperator} from './reduce-support';
  * @param {Function} optional comparer function that it will use instead of its default to compare the value of two items.
  * @returns {Observable<R>} an Observable that emits item with the smallest number.
  */
-export function min<T, R>(comparer?: (x: R, y: T) => R): Observable<R> {
-  const min = (typeof comparer === 'function')
+export function min<T>(comparer?: (value1: T, value2: T) => T): Observable<T> {
+  const min: typeof comparer = (typeof comparer === 'function')
     ? comparer
     : (x, y) => x < y ? x : y;
   return this.lift(new ReduceOperator(min));

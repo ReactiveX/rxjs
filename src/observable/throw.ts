@@ -2,7 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
-export class ErrorObservable<T> extends Observable<T> {
+export class ErrorObservable extends Observable<any> {
 
   static create<T>(error: any, scheduler?: Scheduler) {
     return new ErrorObservable(error, scheduler);
@@ -16,8 +16,7 @@ export class ErrorObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber): Subscription | Function | void {
-
+  _subscribe(subscriber: any): Subscription | Function | void {
     const error = this.error;
     const scheduler = this.scheduler;
 

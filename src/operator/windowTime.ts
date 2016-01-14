@@ -12,7 +12,7 @@ export function windowTime<T>(windowTimeSpan: number,
   return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
 }
 
-class WindowTimeOperator<T, R> implements Operator<T, R> {
+class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
 
   constructor(private windowTimeSpan: number,
               private windowCreationInterval: number,
@@ -36,7 +36,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     super(destination);
     if (windowCreationInterval !== null && windowCreationInterval >= 0) {
       let window = this.openWindow();
-      const closeState = { subscriber: this, window, context: null };
+      const closeState = { subscriber: this, window, context: <any>null };
       const creationState = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
       this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
       this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
@@ -47,7 +47,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const windows = this.windows;
     const len = windows.length;
     for (let i = 0; i < len; i++) {
@@ -55,7 +55,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err) {
+  protected _error(err: any) {
     const windows = this.windows;
     while (windows.length > 0) {
       windows.shift().error(err);
@@ -63,7 +63,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     this.destination.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const windows = this.windows;
     while (windows.length > 0) {
       windows.shift().complete();
@@ -102,11 +102,11 @@ function dispatchWindowTimeSpanOnly<T>(state: TimeSpanOnlyState<T>) {
   (<any>this).schedule(state, windowTimeSpan);
 }
 
-function dispatchWindowCreation(state) {
+function dispatchWindowCreation(state: any) {
   let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
   let window = subscriber.openWindow();
   let action = <Action>this;
-  let context = { action, subscription: null };
+  let context = { action, subscription: <any>null };
   const timeSpanState = { subscriber, window, context };
   context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);
   action.add(context.subscription);

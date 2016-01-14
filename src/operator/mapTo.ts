@@ -1,5 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
 
 /**
  * Maps every value to the same value every time.
@@ -9,7 +10,7 @@ import {Subscriber} from '../Subscriber';
  * @param {any} value the value to map each incoming value to
  * @returns {Observable} an observable of the passed value that emits everytime the source does
  */
-export function mapTo<T, R>(value: R) {
+export function mapTo<T, R>(value: R): Observable<R> {
   return this.lift(new MapToOperator(value));
 }
 
@@ -35,7 +36,7 @@ class MapToSubscriber<T, R> extends Subscriber<T> {
     this.value = value;
   }
 
-  _next(x) {
+  protected _next(x: T) {
     this.destination.next(this.value);
   }
 }

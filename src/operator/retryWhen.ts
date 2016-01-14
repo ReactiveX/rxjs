@@ -23,16 +23,16 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @param {scheduler} the Scheduler on which to subscribe to the source Observable.
  * @returns {Observable} the source Observable modified with retry logic.
  */
-export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>) {
+export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): Observable<T> {
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
-class RetryWhenOperator<T, R> implements Operator<T, R> {
+class RetryWhenOperator<T> implements Operator<T, T> {
   constructor(protected notifier: (errors: Observable<any>) => Observable<any>,
               protected source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new RetryWhenSubscriber(subscriber, this.notifier, this.source);
   }
 }

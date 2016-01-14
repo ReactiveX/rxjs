@@ -8,7 +8,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean): O
   return this.lift(new TakeWhileOperator(predicate));
 }
 
-class TakeWhileOperator<T, R> implements Operator<T, R> {
+class TakeWhileOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
@@ -25,12 +25,12 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     const destination = this.destination;
     const result = tryCatch(this.predicate)(value, this.index++);
 
     if (result == errorObject) {
-      destination.error(result.e);
+      destination.error(errorObject.e);
     } else if (Boolean(result)) {
       destination.next(value);
     } else {

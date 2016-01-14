@@ -8,11 +8,11 @@ export function sampleTime<T>(delay: number, scheduler: Scheduler = asap): Obser
   return this.lift(new SampleTimeOperator(delay, scheduler));
 }
 
-class SampleTimeOperator<T, R> implements Operator<T, R> {
+class SampleTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<R>) {
+  call(subscriber: Subscriber<T>) {
     return new SampleTimeSubscriber(subscriber, this.delay, this.scheduler);
   }
 }
@@ -26,7 +26,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
     this.add(scheduler.schedule(dispatchNotification, delay, { subscriber: this, delay }));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.lastValue = value;
     this.hasValue = true;
   }
@@ -39,7 +39,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNotification<T>(state) {
+function dispatchNotification<T>(state: any) {
   let { subscriber, delay } = state;
   subscriber.notifyNext();
   (<any>this).schedule(state, delay);

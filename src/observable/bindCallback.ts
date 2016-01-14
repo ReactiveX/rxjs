@@ -10,15 +10,15 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
   static create<T>(callbackFunc: Function,
-                   selector: Function = undefined,
-                   scheduler?: Scheduler): Function {
-    return (...args): Observable<T> => {
-      return new BoundCallbackObservable(callbackFunc, selector, args, scheduler);
+                   selector: Function | void = undefined,
+                   scheduler?: Scheduler): (...args: any[]) => Observable<T> {
+    return (...args: any[]): Observable<T> => {
+      return new BoundCallbackObservable<T>(callbackFunc, <any>selector, args, scheduler);
     };
   }
 
   constructor(private callbackFunc: Function,
-              private selector,
+              private selector: Function,
               private args: any[],
               public scheduler: Scheduler) {
     super();
@@ -33,7 +33,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
     if (!scheduler) {
       if (!subject) {
         subject = this.subject = new AsyncSubject<T>();
-        const handler = function handlerFn(...innerArgs) {
+        const handler = function handlerFn(...innerArgs: any[]) {
           const source = (<any>handlerFn).source;
           const { selector, subject } = source;
           if (selector) {
@@ -73,7 +73,7 @@ function dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Su
   if (!subject) {
     subject = source.subject = new AsyncSubject<T>();
 
-    const handler = function handlerFn(...innerArgs) {
+    const handler = function handlerFn(...innerArgs: any[]) {
       const source = (<any>handlerFn).source;
       const { selector, subject } = source;
       if (selector) {

@@ -11,12 +11,15 @@ import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {Notification} from './Notification';
 import {toSubscriber} from './util/toSubscriber';
+import {tryCatch} from './util/tryCatch';
+import {errorObject} from './util/errorObject';
 
 import {combineLatest as combineLatestStatic} from './operator/combineLatest-static';
 import {concat as concatStatic} from './operator/concat-static';
 import {merge as mergeStatic} from './operator/merge-static';
 import {zip as zipStatic} from './operator/zip-static';
 import {BoundCallbackObservable} from './observable/bindCallback';
+import {BoundNodeCallbackObservable} from './observable/bindNodeCallback';
 import {DeferObservable} from './observable/defer';
 import {EmptyObservable} from './observable/empty';
 import {ForkJoinObservable} from './observable/forkJoin';
@@ -27,9 +30,12 @@ import {FromEventPatternObservable} from './observable/fromEventPattern';
 import {PromiseObservable} from './observable/fromPromise';
 import {IntervalObservable} from './observable/interval';
 import {TimerObservable} from './observable/timer';
+import {race as raceStatic} from './operator/race-static';
 import {RangeObservable} from './observable/range';
 import {InfiniteObservable} from './observable/never';
 import {ErrorObservable} from './observable/throw';
+import {AjaxCreationMethod} from './observable/dom/ajax';
+import {WebSocketSubject} from './observable/dom/webSocket';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -51,7 +57,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
    * of a successful completion.
    */
-  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription|Function|void) {
+  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -66,7 +72,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Observable} a new cold observable
    * @description creates a new cold Observable by calling the Observable constructor
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription|Function|void) => {
+  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) => {
     return new Observable<T>(subscribe);
   };
 
@@ -77,8 +83,8 @@ export class Observable<T> implements CoreOperators<T>  {
    * @description creates a new Observable, with this Observable as the source, and the passed
    * operator defined as the new observable's operator.
    */
-  lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const observable = new Observable();
+  lift<T, R>(operator: Operator<T, R>): Observable<R> {
+    const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;
     return observable;
@@ -132,27 +138,16 @@ export class Observable<T> implements CoreOperators<T>  {
       throw new Error('no Promise impl found');
     }
 
-    let nextHandler;
+    const source = this;
 
-    if (thisArg) {
-      nextHandler = function nextHandlerFn(value: any): void {
-        const { thisArg, next } = <any>nextHandlerFn;
-        return next.call(thisArg, value);
-      };
-      nextHandler.thisArg = thisArg;
-      nextHandler.next = next;
-    } else {
-      nextHandler = next;
-    }
-
-    const promiseCallback = function promiseCallbackFn(resolve, reject) {
-      const { source, nextHandler } = <any>promiseCallbackFn;
-      source.subscribe(nextHandler, reject, resolve);
-    };
-    (<any>promiseCallback).source = this;
-    (<any>promiseCallback).nextHandler = nextHandler;
-
-    return new PromiseCtor<void>(promiseCallback);
+    return new PromiseCtor<void>((resolve, reject) => {
+      source.subscribe((value: T) => {
+        const result: any = tryCatch(next).call(thisArg, value);
+        if (result === errorObject) {
+          reject(errorObject.e);
+        }
+      }, reject, resolve);
+    });
   }
 
   _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
@@ -160,7 +155,9 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   // static method stubs
+  static ajax: AjaxCreationMethod;
   static bindCallback: typeof BoundCallbackObservable.create;
+  static bindNodeCallback: typeof BoundNodeCallbackObservable.create;
   static combineLatest: typeof combineLatestStatic;
   static concat: typeof concatStatic;
   static defer: typeof DeferObservable.create;
@@ -175,9 +172,11 @@ export class Observable<T> implements CoreOperators<T>  {
   static merge: typeof mergeStatic;
   static never: typeof InfiniteObservable.create;
   static of: typeof ArrayObservable.of;
+  static race: typeof raceStatic;
   static range: typeof RangeObservable.create;
   static throw: typeof ErrorObservable.create;
   static timer: typeof TimerObservable.create;
+  static webSocket: typeof WebSocketSubject.create;
   static zip: typeof zipStatic;
 
   // core operators
@@ -212,13 +211,15 @@ export class Observable<T> implements CoreOperators<T>  {
                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                concurrent?: number) => Observable<R>;
   flatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy: <R>(keySelector: (value: T) => string,
+  groupBy: <K, R>(keySelector: (value: T) => string,
                elementSelector?: (value: T) => R,
-               durationSelector?: (group: GroupedObservable<R>) => Observable<any>) => Observable<GroupedObservable<R>>;
+               durationSelector?: (group: GroupedObservable<K, R>) => Observable<any>) => Observable<GroupedObservable<K, R>>;
   ignoreElements: () => Observable<T>;
   last: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,
             defaultValue?: any) => Observable<T> | Observable<R>;
+  let: <T, R>(func: (selector: Observable<T>) => Observable<R>) => Observable<R>;
+  letBind: <T, R>(func: (selector: Observable<T>) => Observable<R>) => Observable<R>;
   every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   map: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   mapTo: <R>(value: R) => Observable<R>;
@@ -232,10 +233,12 @@ export class Observable<T> implements CoreOperators<T>  {
   multicast: (subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) => ConnectableObservable<T>;
   observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   partition: (predicate: (x: T) => boolean) => Observable<T>[];
+  pluck: (...properties: string[]) => Observable<any>;
   publish: () => ConnectableObservable<T>;
   publishBehavior: (value: any) => ConnectableObservable<T>;
   publishReplay: (bufferSize?: number, windowTime?: number, scheduler?: Scheduler) => ConnectableObservable<T>;
   publishLast: () => ConnectableObservable<T>;
+  race: (...observables: Array<Observable<any>>) => Observable<any>;
   reduce: <R>(project: (acc: R, x: T) => R, seed?: R) => Observable<R>;
   repeat: (count?: number) => Observable<T>;
   retry: (count?: number) => Observable<T>;

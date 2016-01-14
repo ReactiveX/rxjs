@@ -8,12 +8,12 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export function throttle<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function throttle<T>(durationSelector: (value: T) => Observable<number> | Promise<number>): Observable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
 }
 
-class ThrottleOperator<T, R> implements Operator<T, R> {
-  constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+class ThrottleOperator<T> implements Operator<T, T> {
+  constructor(private durationSelector: (value: T) => Observable<number> | Promise<number>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -25,11 +25,11 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private throttled: Subscription;
 
   constructor(destination: Subscriber<any>,
-              private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+              private durationSelector: (value: T) => Observable<number> | Promise<number>) {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     if (!this.throttled) {
       const duration = tryCatch(this.durationSelector)(value);
       if (duration === errorObject) {

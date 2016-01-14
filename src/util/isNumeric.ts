@@ -1,6 +1,6 @@
 import {isArray} from '../util/isArray';
 
-export function isNumeric(val) {
+export function isNumeric(val: any): val is number {
   // parseFloat NaNs numeric-cast false positives (null|true|false|"")
   // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
   // subtraction forces infinities to NaN

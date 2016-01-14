@@ -15,7 +15,7 @@ import {ConnectableObservable} from '../observable/ConnectableObservable';
  * on the items emitted by a `ConnectableObservable` that shares a single subscription to
  * the underlying stream.
  */
-export function multicast<T>(subjectOrSubjectFactory: Subject<T>|(() => Subject<T>)) {
+export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>)): ConnectableObservable<T> {
   let subjectFactory: () => Subject<T>;
   if (typeof subjectOrSubjectFactory === 'function') {
     subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;

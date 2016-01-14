@@ -1,3 +1,4 @@
+import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
@@ -10,7 +11,7 @@ import {noop} from '../util/noop';
  * @returns {Observable} an empty Observable that only calls onCompleted
  * or onError, based on which one is called by the source Observable.
  */
-export function ignoreElements() {
+export function ignoreElements<T>(): Observable<T> {
   return this.lift(new IgnoreElementsOperator());
 };
 
@@ -21,7 +22,7 @@ class IgnoreElementsOperator<T, R> implements Operator<T, R> {
 }
 
 class IgnoreElementsSubscriber<T> extends Subscriber<T> {
-  _next(unused: T): void {
+  protected _next(unused: T): void {
     noop();
   }
 }

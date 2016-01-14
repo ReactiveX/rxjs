@@ -20,9 +20,9 @@ export class ImmediateDefinition {
   currentlyRunningATask: boolean;
 
   constructor(private root: any) {
-    if (root.setImmediate) {
-      this.setImmediate = root.setImmediate;
-      this.clearImmediate = root.clearImmediate;
+    if (root.setImmediate && typeof root.setImmediate === 'function') {
+      this.setImmediate = root.setImmediate.bind(root);
+      this.clearImmediate = root.clearImmediate.bind(root);
     } else {
       this.nextHandle = 1;
       this.tasksByHandle = {};
@@ -46,7 +46,7 @@ export class ImmediateDefinition {
         this.setImmediate = this.createSetTimeoutSetImmediate();
       }
 
-      let ci = function clearImmediate(handle) {
+      let ci = function clearImmediate(handle: any) {
         delete (<any>clearImmediate).instance.tasksByHandle[handle];
       };
 
@@ -89,7 +89,7 @@ export class ImmediateDefinition {
 
   // This function accepts the same arguments as setImmediate, but
   // returns a function that requires no arguments.
-  partiallyApplied(handler, ...args) {
+  partiallyApplied(handler: any, ...args: any[]) {
     let fn = function result () {
       const { handler, args } = <any>result;
       if (typeof handler === 'function') {
@@ -105,7 +105,7 @@ export class ImmediateDefinition {
     return fn;
   }
 
-  addFromSetImmediateArguments(args) {
+  addFromSetImmediateArguments(args: any[]) {
     this.tasksByHandle[this.nextHandle] = this.partiallyApplied.apply(undefined, args);
     return this.nextHandle++;
   }
@@ -130,7 +130,7 @@ export class ImmediateDefinition {
     const root = this.root;
 
     let messagePrefix = 'setImmediate$' + root.Math.random() + '$';
-    let onGlobalMessage = function globalMessageHandler(event) {
+    let onGlobalMessage = function globalMessageHandler(event: any) {
       const instance = (<any>globalMessageHandler).instance;
       if (event.source === root &&
         typeof event.data === 'string' &&
@@ -155,7 +155,7 @@ export class ImmediateDefinition {
     return fn;
   }
 
-  runIfPresent(handle) {
+  runIfPresent(handle: any) {
     // From the spec: 'Wait until any invocations of this algorithm started before this one have completed.'
     // So if we're currently running a task, we'll need to delay this invocation.
     if (this.currentlyRunningATask) {
@@ -178,7 +178,7 @@ export class ImmediateDefinition {
 
   createMessageChannelSetImmediate() {
     let channel = new this.root.MessageChannel();
-    channel.port1.onmessage = (event) => {
+    channel.port1.onmessage = (event: any) => {
       let handle = event.data;
       this.runIfPresent(handle);
     };

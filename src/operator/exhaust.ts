@@ -16,28 +16,28 @@ export function exhaust<T>(): Observable<T> {
   return this.lift(new SwitchFirstOperator());
 }
 
-class SwitchFirstOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+class SwitchFirstOperator<T> implements Operator<T, T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new SwitchFirstSubscriber(subscriber);
   }
 }
 
-class SwitchFirstSubscriber<T, R> extends OuterSubscriber<T, R> {
+class SwitchFirstSubscriber<T> extends OuterSubscriber<T, T> {
   private hasCompleted: boolean = false;
   private hasSubscription: boolean = false;
 
-  constructor(destination: Subscriber<R>) {
+  constructor(destination: Subscriber<T>) {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     if (!this.hasSubscription) {
       this.hasSubscription = true;
       this.add(subscribeToResult(this, value));
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (!this.hasSubscription) {
       this.destination.complete();

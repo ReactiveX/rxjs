@@ -20,18 +20,18 @@ import {errorObject} from '../util/errorObject';
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
 export function bufferToggle<T, O>(openings: Observable<O>,
-                                   closingSelector: (openValue: O) => Observable<any>): Observable<T[]> {
-  return this.lift(new BufferToggleOperator<T, T, O>(openings, closingSelector));
+                                   closingSelector: (value: O) => Observable<any>): Observable<T[]> {
+  return this.lift(new BufferToggleOperator(openings, closingSelector));
 }
 
-class BufferToggleOperator<T, R, O> implements Operator<T, R> {
+class BufferToggleOperator<T, O> implements Operator<T, T[]> {
 
   constructor(private openings: Observable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
+              private closingSelector: (value: O) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new BufferToggleSubscriber<T, O>(subscriber, this.openings, this.closingSelector);
+  call(subscriber: Subscriber<T[]>): Subscriber<T> {
+    return new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector);
   }
 }
 
@@ -43,14 +43,14 @@ interface BufferContext<T> {
 class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   private contexts: Array<BufferContext<T>> = [];
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: Subscriber<T[]>,
               private openings: Observable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
+              private closingSelector: (value: O) => Observable<any>) {
     super(destination);
     this.add(this.openings.subscribe(new BufferToggleOpeningsSubscriber(this)));
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const contexts = this.contexts;
     const len = contexts.length;
     for (let i = 0; i < len; i++) {
@@ -58,7 +58,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
     }
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     const contexts = this.contexts;
     while (contexts.length > 0) {
       const context = contexts.shift();
@@ -70,7 +70,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
     super._error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const contexts = this.contexts;
     while (contexts.length > 0) {
       const context = contexts.shift();
@@ -89,14 +89,14 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
 
     let closingNotifier = tryCatch(closingSelector)(value);
     if (closingNotifier === errorObject) {
-      this._error(closingNotifier.e);
+      this._error(errorObject.e);
     } else {
       let context = {
-        buffer: [],
+        buffer: <T[]>[],
         subscription: new Subscription()
       };
       contexts.push(context);
-      const subscriber = new BufferToggleClosingsSubscriber(this, context);
+      const subscriber = new BufferToggleClosingsSubscriber<T>(this, context);
       const subscription = closingNotifier.subscribe(subscriber);
       context.subscription.add(subscription);
       this.add(subscription);
@@ -116,39 +116,39 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   }
 }
 
-class BufferToggleOpeningsSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: BufferToggleSubscriber<any, T>) {
+class BufferToggleOpeningsSubscriber<T, O> extends Subscriber<O> {
+  constructor(private parent: BufferToggleSubscriber<T, O>) {
     super(null);
   }
 
-  _next(value: T) {
+  protected _next(value: O) {
     this.parent.openBuffer(value);
   }
 
-  _error(err) {
+  protected _error(err: any) {
     this.parent.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     // noop
   }
 }
 
-class BufferToggleClosingsSubscriber<T> extends Subscriber<T> {
-  constructor(private parent: BufferToggleSubscriber<any, T>,
+class BufferToggleClosingsSubscriber<T> extends Subscriber<any> {
+  constructor(private parent: BufferToggleSubscriber<T, any>,
               private context: { subscription: any, buffer: T[] }) {
     super(null);
   }
 
-  _next() {
+  protected _next() {
     this.parent.closeBuffer(this.context);
   }
 
-  _error(err) {
+  protected _error(err: any) {
     this.parent.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     this.parent.closeBuffer(this.context);
   }
 }

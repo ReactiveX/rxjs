@@ -17,6 +17,6 @@ import {ReduceOperator} from './reduce-support';
  * @returns {Observable} an Observable that emits a single item that is the result of accumulating the output from the
  * items emitted by the source Observable.
  */
-export function reduce<T, R>(project: (acc: R, x: T) => R, seed?: R): Observable<R> {
+export function reduce<T, R>(project: (acc: R, value: T) => R, seed?: R): Observable<R> {
   return this.lift(new ReduceOperator(project, seed));
 }

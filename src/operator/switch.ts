@@ -1,10 +1,10 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+<<<<<<< HEAD
 /**
  * Converts an Observable that emits Observables into an Observable that emits the items emitted by the most recently
  * emitted of those Observables.
@@ -20,7 +20,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @returns {Observable<T>} an Observable that emits the items emitted by the Observable most recently emitted by the
  * source Observable.
  */
-export function _switch<T>(): Observable<T> {
+export function _switch<T>(): T {
   return this.lift(new SwitchOperator());
 }
 
@@ -39,13 +39,13 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.unsubscribeInner();
     this.active++;
     this.add(this.innerSubscription = subscribeToResult(this, value));
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (this.active === 0) {
       this.destination.complete();

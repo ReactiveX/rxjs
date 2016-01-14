@@ -14,22 +14,20 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @returns {Observable} an Observable containing all the projected Observables of each item of the source concatenated together.
  */
 export function exhaustMap<T, R, R2>(project: (value: T, index: number) => Observable<R>,
-                                     resultSelector?: (outerValue: T,
-                                                       innerValue: R,
-                                                       outerIndex: number,
-                                                       innerIndex: number) => R2): Observable<R> {
+                                     resultSelector?: (
+                                            outerValue: T,
+                                            innerValue: R,
+                                            outerIndex: number,
+                                            innerIndex: number) => R2): Observable<R2> {
   return this.lift(new SwitchFirstMapOperator(project, resultSelector));
 }
 
-class SwitchFirstMapOperator<T, R, R2> implements Operator<T, R> {
+class SwitchFirstMapOperator<T, R, R2> implements Operator<T, R2> {
   constructor(private project: (value: T, index: number) => Observable<R>,
-              private resultSelector?: (outerValue: T,
-                                        innerValue: R,
-                                        outerIndex: number,
-                                        innerIndex: number) => R2) {
+              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<R2>): Subscriber<T> {
     return new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector);
   }
 }
@@ -39,19 +37,19 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private index: number = 0;
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: Subscriber<R2>,
               private project: (value: T, index: number) => Observable<R>,
               private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2) {
     super(destination);
   }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     if (!this.hasSubscription) {
       const index = this.index++;
       const destination = this.destination;
       let result = tryCatch(this.project)(value, index);
       if (result === errorObject) {
-        destination.error(result.e);
+        destination.error(errorObject.e);
       } else {
         this.hasSubscription = true;
         this.add(subscribeToResult(this, result, value, index));
@@ -59,7 +57,7 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (!this.hasSubscription) {
       this.destination.complete();

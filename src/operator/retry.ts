@@ -21,11 +21,12 @@ export function retry<T>(count: number = -1): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 
-class RetryOperator<T, R> implements Operator<T, R> {
+class RetryOperator<T> implements Operator<T, T> {
   constructor(private count: number,
               private source: Observable<T>) {
   }
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new RetrySubscriber(subscriber, this.count, this.source);
   }
 }

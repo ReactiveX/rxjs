@@ -10,20 +10,20 @@ import {subscribeToResult} from '../util/subscribeToResult';
 
 export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: Observable<R>,
-                                  scheduler: Scheduler = asap): Observable<T> | Observable<R> {
+                                  scheduler: Scheduler = asap): Observable<T | R> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
 }
 
-class TimeoutWithOperator<T, R> implements Operator<T, R> {
+class TimeoutWithOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
               private withObservable: Observable<any>,
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<R>) {
+  call(subscriber: Subscriber<T>) {
     return new TimeoutWithSubscriber(
       subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler
     );
@@ -68,19 +68,19 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
     this._previousIndex = currentIndex;
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.destination.next(value);
     if (!this.absoluteTimeout) {
       this.scheduleTimeout();
     }
   }
 
-  _error(err) {
+  protected _error(err: any) {
     this.destination.error(err);
     this._hasCompleted = true;
   }
 
-  _complete() {
+  protected _complete() {
     this.destination.complete();
     this._hasCompleted = true;
   }

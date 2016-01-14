@@ -6,6 +6,7 @@ import {ColdObservable} from './ColdObservable';
 import {HotObservable} from './HotObservable';
 import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
+import {Subscription} from '../Subscription';
 
 interface FlushableTest {
   ready: boolean;
@@ -41,7 +42,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Cold observable cannot have unsubscription marker "!"');
     }
     const messages = TestScheduler.parseMarbles(marbles, values, error);
-    const cold = new ColdObservable(messages, this);
+    const cold = new ColdObservable<T>(messages, this);
     this.coldObservables.push(cold);
     return cold;
   }
@@ -51,7 +52,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       throw new Error('Hot observable cannot have unsubscription marker "!"');
     }
     const messages = TestScheduler.parseMarbles(marbles, values, error);
-    const subject = new HotObservable(messages, this);
+    const subject = new HotObservable<T>(messages, this);
     this.hotObservables.push(subject);
     return subject;
   }
@@ -75,7 +76,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     const flushTest: FlushableTest = { actual, ready: false };
     const unsubscriptionFrame = TestScheduler
       .parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
-    let subscription;
+    let subscription: Subscription;
 
     this.schedule(() => {
       subscription = observable.subscribe(x => {
@@ -196,8 +197,8 @@ export class TestScheduler extends VirtualTimeScheduler {
     const subIndex = marbles.indexOf('^');
     const frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
     const getValue = typeof values !== 'object' ?
-      (x) => x :
-      (x) => {
+      (x: any) => x :
+      (x: any) => {
         // Support Observable-of-Observables
         if (materializeInnerObservables && values[x] instanceof ColdObservable) {
           return values[x].messages;
@@ -208,7 +209,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
     for (let i = 0; i < len; i++) {
       const frame = i * this.frameTimeFactor + frameOffset;
-      let notification;
+      let notification: Notification<any>;
       const c = marbles[i];
       switch (c) {
         case '-':

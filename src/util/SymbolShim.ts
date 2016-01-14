@@ -1,6 +1,6 @@
 import {root} from './root';
 
-export function polyfillSymbol(root) {
+export function polyfillSymbol(root: any) {
   const Symbol = ensureSymbol(root);
   ensureIterator(Symbol, root);
   ensureObservable(Symbol);
@@ -8,7 +8,7 @@ export function polyfillSymbol(root) {
   return Symbol;
 }
 
-export function ensureFor(Symbol) {
+export function ensureFor(Symbol: any) {
   if (!Symbol.for) {
     Symbol.for = symbolForPolyfill;
   }
@@ -16,20 +16,20 @@ export function ensureFor(Symbol) {
 
 let id = 0;
 
-export function ensureSymbol(root) {
+export function ensureSymbol(root: any) {
   if (!root.Symbol) {
-    root.Symbol = function symbolFuncPolyfill(description) {
+    root.Symbol = function symbolFuncPolyfill(description: any) {
       return `@@Symbol(${description}):${id++}`;
     };
   }
   return root.Symbol;
 }
 
-export function symbolForPolyfill(key) {
+export function symbolForPolyfill(key: any) {
   return '@@' + key;
 }
 
-export function ensureIterator(Symbol, root) {
+export function ensureIterator(Symbol: any, root: any) {
   if (!Symbol.iterator) {
     if (typeof Symbol.for === 'function') {
       Symbol.iterator = Symbol.for('iterator');
@@ -52,7 +52,7 @@ export function ensureIterator(Symbol, root) {
   }
 }
 
-export function ensureObservable(Symbol) {
+export function ensureObservable(Symbol: any) {
   if (!Symbol.observable) {
     if (typeof Symbol.for === 'function') {
       Symbol.observable = Symbol.for('observable');

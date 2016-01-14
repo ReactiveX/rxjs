@@ -3,12 +3,13 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
 import {asap} from '../scheduler/asap';
+import {Observable} from '../Observable';
 
-export function throttleTime<T>(delay: number, scheduler: Scheduler = asap) {
+export function throttleTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
   return this.lift(new ThrottleTimeOperator(delay, scheduler));
 }
 
-class ThrottleTimeOperator<T, R> implements Operator<T, R> {
+class ThrottleTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 
@@ -26,7 +27,7 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     if (!this.throttled) {
       this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { subscriber: this }));
       this.destination.next(value);

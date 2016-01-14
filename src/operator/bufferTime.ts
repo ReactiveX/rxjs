@@ -26,13 +26,13 @@ export function bufferTime<T>(bufferTimeSpan: number,
   return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
 }
 
-class BufferTimeOperator<T, R> implements Operator<T, R> {
+class BufferTimeOperator<T> implements Operator<T, T[]> {
   constructor(private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<T[]>): Subscriber<T> {
     return new BufferTimeSubscriber(
       subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler
     );
@@ -42,7 +42,7 @@ class BufferTimeOperator<T, R> implements Operator<T, R> {
 class BufferTimeSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: Subscriber<T[]>,
               private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private scheduler: Scheduler) {
@@ -59,7 +59,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     const buffers = this.buffers;
     const len = buffers.length;
     for (let i = 0; i < len; i++) {
@@ -67,12 +67,12 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _error(err) {
+  protected _error(err: any) {
     this.buffers.length = 0;
     super._error(err);
   }
 
-  _complete() {
+  protected _complete() {
     const { buffers, destination } = this;
     while (buffers.length > 0) {
       destination.next(buffers.shift());
@@ -85,7 +85,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   }
 
   openBuffer(): T[] {
-    let buffer = [];
+    let buffer: T[] = [];
     this.buffers.push(buffer);
     return buffer;
   }
@@ -97,7 +97,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchBufferTimeSpanOnly(state) {
+function dispatchBufferTimeSpanOnly(state: any) {
   const subscriber: BufferTimeSubscriber<any> = state.subscriber;
 
   const prevBuffer = state.buffer;
@@ -111,7 +111,7 @@ function dispatchBufferTimeSpanOnly(state) {
   }
 }
 
-function dispatchBufferCreation(state) {
+function dispatchBufferCreation(state: any) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const buffer = subscriber.openBuffer();
   const action = <Action>this;

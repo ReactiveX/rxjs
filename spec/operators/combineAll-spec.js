@@ -4,6 +4,17 @@ var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.combineAll()', function () {
+  it.asDiagram('combineAll')('should combine events from two observables', function () {
+    var x =    cold(               '-a-----b---|');
+    var y =    cold(               '--1-2-|     ');
+    var outer = hot('-x----y--------|           ', { x: x, y: y });
+    var expected =  '-----------------A-B--C---|';
+
+    var result = outer.combineAll(function (a, b) { return String(a) + String(b); });
+
+    expectObservable(result).toBe(expected, { A: 'a1', B: 'a2', C: 'b2' });
+  });
+
   it('should work with two nevers', function () {
     var e1 = cold( '-');
     var e1subs =   '^';

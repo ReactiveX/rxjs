@@ -13,7 +13,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
     return this._getSubject().subscribe(subscriber);
   }
 
@@ -41,8 +41,8 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
-class ConnectableSubscription<T> extends Subscription {
-  constructor(protected connectable: ConnectableObservable<T>) {
+class ConnectableSubscription extends Subscription {
+  constructor(protected connectable: ConnectableObservable<any>) {
     super();
   }
 
@@ -62,9 +62,9 @@ class RefCountObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
     const connectable = this.connectable;
-    const refCountSubscriber = new RefCountSubscriber(subscriber, this);
+    const refCountSubscriber: RefCountSubscriber<T> = new RefCountSubscriber(subscriber, this);
     const subscription = connectable.subscribe(refCountSubscriber);
     if (!subscription.isUnsubscribed && ++this.refCount === 1) {
       refCountSubscriber.connection = this.connection = connectable.connect();
@@ -83,16 +83,16 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     destination.add(this);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.destination.next(value);
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this._resetConnectable();
     this.destination.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     this._resetConnectable();
     this.destination.complete();
   }

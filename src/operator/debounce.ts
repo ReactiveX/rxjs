@@ -19,15 +19,15 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @param {function} durationSelector function for computing the timeout duration for each item.
  * @returns {Observable} an Observable the same as source Observable, but drops items.
  */
-export function debounce<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function debounce<T>(durationSelector: (value: T) => Observable<number> | Promise<number>): Observable<T> {
   return this.lift(new DebounceOperator(durationSelector));
 }
 
-class DebounceOperator<T, R> implements Operator<T, R> {
-  constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+class DebounceOperator<T> implements Operator<T, T> {
+  constructor(private durationSelector: (value: T) => Observable<number> | Promise<number>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
+  call(subscriber: Subscriber<T>): Subscriber<T> {
     return new DebounceSubscriber(subscriber, this.durationSelector);
   }
 }
@@ -39,11 +39,11 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private durationSubscription: Subscription = null;
 
   constructor(destination: Subscriber<R>,
-              private durationSelector: (value: T) => any) {
+              private durationSelector: (value: T) => Observable<number> | Promise<number>) {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     let subscription = this.durationSubscription;
     const duration = tryCatch(this.durationSelector)(value);
 
@@ -63,7 +63,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  _complete() {
+  protected _complete() {
     this.emitValue();
     this.destination.complete();
   }

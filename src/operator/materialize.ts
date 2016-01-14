@@ -18,28 +18,28 @@ export function materialize<T>(): Observable<Notification<T>> {
   return this.lift(new MaterializeOperator());
 }
 
-class MaterializeOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+class MaterializeOperator<T> implements Operator<T, Notification<T>> {
+  call(subscriber: Subscriber<Notification<T>>): Subscriber<T> {
     return new MaterializeSubscriber(subscriber);
   }
 }
 
 class MaterializeSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>) {
+  constructor(destination: Subscriber<Notification<T>>) {
     super(destination);
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.destination.next(Notification.createNext(value));
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     const destination = this.destination;
     destination.next(Notification.createError(err));
     destination.complete();
   }
 
-  _complete() {
+  protected _complete() {
     const destination = this.destination;
     destination.next(Notification.createComplete());
     destination.complete();

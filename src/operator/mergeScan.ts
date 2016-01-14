@@ -7,14 +7,14 @@ import {errorObject} from '../util/errorObject';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
 
-export function mergeScan<T, R>(project: (acc: R, x: T) => Observable<R>,
+export function mergeScan<T, R>(project: (acc: R, value: T) => Observable<R>,
                                 seed: R,
-                                concurrent: number = Number.POSITIVE_INFINITY) {
+                                concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
   return this.lift(new MergeScanOperator(project, seed, concurrent));
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (acc: R, x: T) => Observable<R>,
+  constructor(private project: (acc: R, value: T) => Observable<R>,
               private seed: R,
               private concurrent: number) {
   }
@@ -34,19 +34,19 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   protected index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private project: (acc: R, x: T) => Observable<R>,
+              private project: (acc: R, value: T) => Observable<R>,
               private acc: R,
               private concurrent: number) {
     super(destination);
   }
 
-  _next(value: any): void {
+  protected _next(value: any): void {
     if (this.active < this.concurrent) {
       const index = this.index++;
       const ish = tryCatch(this.project)(this.acc, value);
       const destination = this.destination;
       if (ish === errorObject) {
-        destination.error(ish.e);
+        destination.error(errorObject.e);
       } else {
         this.active++;
         this._innerSub(ish, value, index);
@@ -60,7 +60,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult<T, R>(this, ish, value, index));
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.hasCompleted = true;
     if (this.active === 0 && this.buffer.length === 0) {
       if (this.hasValue === false) {

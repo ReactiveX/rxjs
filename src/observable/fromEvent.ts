@@ -15,7 +15,7 @@ export class FromEventObservable<T, R> extends Observable<T> {
   }
 
   private static setupSubscription<T>(sourceObj: any, eventName: string, handler: Function, subscriber: Subscriber<T>) {
-    let unsubscribe;
+    let unsubscribe: () => void;
     let tag = sourceObj.toString();
     if (tag === '[object NodeList]' || tag === '[object HTMLCollection]') {
       for (let i = 0, len = sourceObj.length; i < len; i++) {
@@ -35,18 +35,18 @@ export class FromEventObservable<T, R> extends Observable<T> {
     subscriber.add(new Subscription(unsubscribe));
   }
 
-  _subscribe(subscriber) {
+  _subscribe(subscriber: Subscriber<T>) {
     const sourceObj = this.sourceObj;
     const eventName = this.eventName;
     const selector = this.selector;
-    let handler = selector ? (...args) => {
+    let handler = selector ? (...args: any[]) => {
       let result = tryCatch(selector)(...args);
       if (result === errorObject) {
-        subscriber.error(result.e);
+        subscriber.error(errorObject.e);
       } else {
         subscriber.next(result);
       }
-    } : (e) => subscriber.next(e);
+    } : (e: any) => subscriber.next(e);
 
     FromEventObservable.setupSubscription(sourceObj, eventName, handler, subscriber);
   }

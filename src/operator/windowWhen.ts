@@ -11,7 +11,7 @@ export function windowWhen<T>(closingSelector: () => Observable<any>): Observabl
   return this.lift(new WindowOperator(closingSelector));
 }
 
-class WindowOperator<T, R> implements Operator<T, R> {
+class WindowOperator<T> implements Operator<T, Observable<T>> {
 
   constructor(private closingSelector: () => Observable<any>) {
   }
@@ -31,17 +31,17 @@ class WindowSubscriber<T> extends Subscriber<T> {
     this.openWindow();
   }
 
-  _next(value: T) {
+  protected _next(value: T) {
     this.window.next(value);
   }
 
-  _error(err: any) {
+  protected _error(err: any) {
     this.window.error(err);
     this.destination.error(err);
     this._unsubscribeClosingNotification();
   }
 
-  _complete() {
+  protected _complete() {
     this.window.complete();
     this.destination.complete();
     this._unsubscribeClosingNotification();
@@ -76,7 +76,7 @@ class WindowSubscriber<T> extends Subscriber<T> {
 
     const closingNotifier = tryCatch(this.closingSelector)();
     if (closingNotifier === errorObject) {
-      const err = closingNotifier.e;
+      const err = errorObject.e;
       this.destination.error(err);
       this.window.error(err);
     } else {
@@ -88,20 +88,20 @@ class WindowSubscriber<T> extends Subscriber<T> {
   }
 }
 
-class WindowClosingNotifierSubscriber<T> extends Subscriber<T> {
+class WindowClosingNotifierSubscriber extends Subscriber<any> {
   constructor(private parent: WindowSubscriber<any>) {
     super();
   }
 
-  _next() {
+  protected _next() {
     this.parent.openWindow();
   }
 
-  _error(err) {
+  protected _error(err: any) {
     this.parent.error(err);
   }
 
-  _complete() {
+  protected _complete() {
     this.parent.openWindow();
   }
 }

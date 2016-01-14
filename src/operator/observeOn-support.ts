@@ -4,7 +4,7 @@ import {Observer} from '../Observer';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 
-export class ObserveOnOperator<T, R> implements Operator<T, R> {
+export class ObserveOnOperator<T> implements Operator<T, T> {
   constructor(private scheduler: Scheduler, private delay: number = 0) {
   }
 
@@ -30,15 +30,15 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
                                       new ObserveOnMessage(notification, this.destination)));
    }
 
-  _next(value: T): void {
+  protected _next(value: T): void {
     this.scheduleMessage(Notification.createNext(value));
   }
 
-  _error(err: any): void {
+  protected _error(err: any): void {
     this.scheduleMessage(Notification.createError(err));
   }
 
-  _complete(): void {
+  protected _complete(): void {
     this.scheduleMessage(Notification.createComplete());
   }
 }
