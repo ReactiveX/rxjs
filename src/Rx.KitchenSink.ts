@@ -9,6 +9,7 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
   isEmpty?: () => Observable<boolean>;
   elementAt?: (index: number, defaultValue?: any) => Observable<T>;
   distinct?: (compare?: (x: T, y: T) => boolean, flushes?: Observable<any>) => Observable<T>;
+  distinctKey?: (key: string, compare?: (x: T, y: T) => boolean, flushes?: Observable<any>) => Observable<T>;
   distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean) => Observable<T>;
   find?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<T>;
   findIndex?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
@@ -65,6 +66,7 @@ import './add/operator/debounceTime';
 import './add/operator/defaultIfEmpty';
 import './add/operator/delay';
 import './add/operator/distinct';
+import './add/operator/distinctKey';
 import './add/operator/distinctUntilChanged';
 import './add/operator/distinctUntilKeyChanged';
 import './add/operator/do';
