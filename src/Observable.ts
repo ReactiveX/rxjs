@@ -118,6 +118,13 @@ export class Observable<T> implements CoreOperators<T>  {
       subscriber.add(this._subscribe(subscriber));
     }
 
+    if (subscriber.syncErrorThrowable) {
+      subscriber.syncErrorThrowable = false;
+      if (subscriber.syncErrorThrown) {
+        throw subscriber.syncErrorValue;
+      }
+    }
+
     return subscriber;
   }
 

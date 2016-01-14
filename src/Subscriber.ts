@@ -9,8 +9,14 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
-    return new Subscriber(next, error, complete);
+    const subscriber = new Subscriber(next, error, complete);
+    subscriber.syncErrorThrowable = false;
+    return subscriber;
   }
+
+  public syncErrorValue: any = null;
+  public syncErrorThrown: boolean = false;
+  public syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
   protected destination: Observer<any>;
@@ -33,11 +39,13 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
           if (destinationOrNext instanceof Subscriber) {
             this.destination = (<Observer<any>> destinationOrNext);
           } else {
+            this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <Observer<any>> destinationOrNext);
           }
           break;
         }
       default:
+        this.syncErrorThrowable = true;
         this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
         break;
     }
@@ -120,11 +128,55 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   next(value?: T): void {
     if (!this.isStopped && this._next) {
-      this.__tryOrUnsub(this._next, value);
+      const { _parent } = this;
+      if (!_parent.syncErrorThrowable) {
+        this.__tryOrUnsub(this._next, value);
+      } else if (this.__tryOrSetError(_parent, this._next, value)) {
+        this.unsubscribe();
+      }
     }
   }
 
-  __tryOrUnsub(fn: Function, value?: any): void {
+  error(err?: any): void {
+    if (!this.isStopped) {
+      const { _parent } = this;
+      if (this._error) {
+        if (!_parent.syncErrorThrowable) {
+          this.__tryOrUnsub(this._error, err);
+          this.unsubscribe();
+        } else {
+          this.__tryOrSetError(_parent, this._error, err);
+          this.unsubscribe();
+        }
+      } else if (!_parent.syncErrorThrowable) {
+        this.unsubscribe();
+        throw err;
+      } else {
+        _parent.syncErrorValue = err;
+        _parent.syncErrorThrown = true;
+        this.unsubscribe();
+      }
+    }
+  }
+
+  complete(): void {
+    if (!this.isStopped) {
+      const { _parent } = this;
+      if (this._complete) {
+        if (!_parent.syncErrorThrowable) {
+          this.__tryOrUnsub(this._complete);
+          this.unsubscribe();
+        } else {
+          this.__tryOrSetError(_parent, this._complete);
+          this.unsubscribe();
+        }
+      } else {
+        this.unsubscribe();
+      }
+    }
+  }
+
+  private __tryOrUnsub(fn: Function, value?: any): void {
     try {
       fn.call(this._context, value);
     } catch (err) {
@@ -133,22 +185,15 @@ class SafeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  error(err?: any): void {
-    if (!this.isStopped) {
-      if (this._error) {
-        this.__tryOrUnsub(this._error, err);
-      }
-      this.unsubscribe();
+  private __tryOrSetError(parent: Subscriber<T>, fn: Function, value?: any): boolean {
+    try {
+      fn.call(this._context, value);
+    } catch (err) {
+      parent.syncErrorValue = err;
+      parent.syncErrorThrown = true;
+      return true;
     }
-  }
-
-  complete(): void {
-    if (!this.isStopped) {
-      if (this._complete) {
-        this.__tryOrUnsub(this._complete);
-      }
-      this.unsubscribe();
-    }
+    return false;
   }
 
   protected _unsubscribe(): void {
