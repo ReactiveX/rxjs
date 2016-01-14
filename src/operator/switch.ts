@@ -4,7 +4,6 @@ import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-<<<<<<< HEAD
 /**
  * Converts an Observable that emits Observables into an Observable that emits the items emitted by the most recently
  * emitted of those Observables.
