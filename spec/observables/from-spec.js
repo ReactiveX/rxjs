@@ -13,6 +13,67 @@ describe('Observable.from', function () {
     }, null, done);
   }, 300);
 
+  it('should handle an ArrayLike', function (done) {
+    var arrayLike = {
+      length: 3,
+      0: 1,
+      1: 2,
+      2: 3
+    };
+    var expected = [1, 2, 3];
+    var i = 0;
+    Observable.from(arrayLike).subscribe(function (x) {
+      expect(x).toBe(expected[i++]);
+    }, null, done);
+  }, 300);
+
+  it('should handle an ArrayLike from arguments', function (done) {
+    function makeArrayLike() {
+      var expected = [1, 2, 3];
+      var i = 0;
+
+      Observable.from(arguments).subscribe(function (x) {
+        expect(x).toBe(expected[i++]);
+      }, null, done);
+    }
+
+    makeArrayLike(1, 2, 3);
+  }, 300);
+
+  it('should handle an ArrayLike with a mapFn', function (done) {
+    var arrayLike = {
+      length: 3,
+      0: 1,
+      1: 2,
+      2: 3
+    };
+    var expected = [1, 1, 1];
+    var i = 0;
+    var mapFn = function (v, k) {
+      return v - k;
+    };
+    Observable.from(arrayLike, mapFn).subscribe(function (x) {
+      expect(x).toBe(expected[i++]);
+    }, null, done);
+  }, 300);
+
+  it('should handle an ArrayLike with a thisArg', function (done) {
+    var arrayLike = {
+      length: 3,
+      0: 1,
+      1: 2,
+      2: 3
+    };
+    var expected = [123, 123, 123];
+    var i = 0;
+    var mapFn = function (x, y) {
+      return this.thing;
+    };
+    Observable.from(arrayLike, mapFn, {thing: 123}).subscribe(function (x) {
+      expect(x).toBe(expected[i++]);
+    }, null, done);
+  });
+
   it('should handle a promise', function (done) {
     var promise = Promise.resolve('pinky swear');
 
