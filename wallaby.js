@@ -36,5 +36,6 @@ module.exports = wallaby => ({
 
     // Global test helpers
     require('./spec/helpers/test-helper');
+    require('./spec/helpers/ajax-helper');
   }
 });

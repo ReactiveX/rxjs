@@ -55,19 +55,19 @@ module.exports = function (config) {
     sl_ios7: {
       base: 'SauceLabs',
       browserName: 'iphone',
-      platform: 'OS X 10.10',
+      platform: 'OS X 10.11',
       version: '7.1'
     },
     sl_ios8: {
       base: 'SauceLabs',
       browserName: 'iphone',
-      platform: 'OS X 10.10',
+      platform: 'OS X 10.11',
       version: '8.4'
     },
     sl_ios9: {
       base: 'SauceLabs',
       browserName: 'iphone',
-      platform: 'OS X 10.10',
+      platform: 'OS X 10.11',
       version: '9.1'
     },
     sl_ie9: {
@@ -184,12 +184,15 @@ module.exports = function (config) {
     // how many browser should be started simultanous
     concurrency: 1,
 
+    browserNoActivityTimeout: 30000,
+
     sauceLabs: {
       testName: 'RxJS 5 browser test',
       options: {
         'command-timeout': 600,
-        'idle-timeout': 600,
-        'max-duration': 5400
+        'idle-timeout': 12000,
+        'max-duration': 10800,
+        'recordScreenshots': true
       }
     }
   });
