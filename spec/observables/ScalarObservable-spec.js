@@ -11,13 +11,6 @@ describe('ScalarObservable', function () {
     expect(s.value).toBe(1);
   });
 
-  it('should create ScalarObservable via static create function', function () {
-    var s = new ScalarObservable(1);
-    var r = ScalarObservable.create(1);
-
-    expect(s).toEqual(r);
-  });
-
   it('should not schedule further if subscriber unsubscribed', function () {
     var s = new ScalarObservable(1, rxTestScheduler);
     var subscriber = new Rx.Subscriber();

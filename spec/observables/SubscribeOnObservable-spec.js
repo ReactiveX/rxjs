@@ -21,13 +21,6 @@ describe('SubscribeOnObservable', function () {
     expect(scheduler).toBe(Rx.Scheduler.asap);
   });
 
-  it('should create observable via staic create function', function () {
-    var s = new SubscribeOnObservable(rxTestScheduler);
-    var r = SubscribeOnObservable.create(rxTestScheduler);
-
-    expect(s).toEqual(r);
-  });
-
   it('should subscribe after specified delay', function () {
     var e1 =   hot('--a--b--|');
     var expected = '-----b--|';
