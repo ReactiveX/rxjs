@@ -1,4 +1,6 @@
-export class ArgumentOutOfRangeError implements Error {
-  name = 'ArgumentOutOfRangeError';
-  message = 'argument out of range';
+export class ArgumentOutOfRangeError extends Error {
+  constructor() {
+    super('argument out of range');
+    this.name = 'ArgumentOutOfRangeError';
+  }
 }
