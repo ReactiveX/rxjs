@@ -17,6 +17,7 @@ interface OperatorWrapper {
   path?: string;
   methodType: MethodType;
   isExtended?: boolean;
+  isDom?: boolean;
   isStatic?: boolean;
   exportedFnName?: string;
   exportedClassName?: string;
@@ -96,8 +97,9 @@ ${typescriptHack}`;
 
 function generateNewObservableFileContents (op:OperatorWrapper): OperatorWrapper {
   var overrides = AliasMethodOverrides[op.path];
-  var imports = `import {Observable} from '../../Observable';
-import {${op.exportedClassName}} from '../../observable/${op.path.replace('.ts','')}';`;
+  var levelsUp = op.isDom ? '../../../' : '../../';
+  var imports = `import {Observable} from '${levelsUp}Observable';
+import {${op.exportedClassName}} from '${levelsUp}observable/${op.path.replace('.ts','')}';`;
   var patch = op.aliases.map((alias) => {
     return `Observable.${alias} = ${op.exportedClassName}.${(overrides && overrides[alias]) || 'create'};`;
   }).join('\n');
@@ -153,7 +155,7 @@ function getNameOnOperatorProto (op:OperatorWrapper): OperatorWrapper {
 
 function getNameOnObservableProto (op:OperatorWrapper): OperatorWrapper {
   return Object.assign({}, op, {
-    memberName: op.path.replace('.ts', '')
+    memberName: op.path.replace('dom/', '').replace('.ts', '')
   });
 }
 
@@ -165,6 +167,10 @@ function getAliases (op:OperatorWrapper): OperatorWrapper {
 
 function checkForCreate (op: OperatorWrapper): boolean {
   return /static create/.test(op.srcFileContents);
+}
+
+function checkDom (op: OperatorWrapper): OperatorWrapper {
+  return Object.assign({}, op, {isDom: /(dom\/)/g.test(op.path)});
 }
 
 if (process.argv.find((v) => v === '--exec')) {
@@ -199,9 +205,11 @@ if (process.argv.find((v) => v === '--exec')) {
       .map(checkExtended)
       .map(generateNewOperatorFileContents)
       .forEach(writeToDisk);
+
     // Repeat the process for src/observable/*
-    mkdirp('./src/add/observable', () => {
+    mkdirp('./src/add/observable/dom', () => {
       fs.readdirSync('./src/observable')
+        .concat(fs.readdirSync('./src/observable/dom').map(o => `dom/${o}`))
         .filter(o => o.endsWith('.ts'))
         .map(o => {
           return {
@@ -211,6 +219,7 @@ if (process.argv.find((v) => v === '--exec')) {
         })
         .map(loadSrcFile)
         .filter(checkForCreate)
+        .map(checkDom)
         .map(getClassName)
         .map(getNameOnObservableProto)
         .map(getAliases)
