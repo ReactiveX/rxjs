@@ -1,4 +1,4 @@
-import {Observer} from './Observer';
+import {Observer, isObserver} from './Observer';
 import {Observable} from './Observable';
 
 export class Notification<T> {
@@ -32,8 +32,8 @@ export class Notification<T> {
   }
 
   accept(nextOrObserver: Observer<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
-    if (nextOrObserver && typeof (<Observer<T>>nextOrObserver).next === 'function') {
-      return this.observe(<Observer<T>>nextOrObserver);
+    if (isObserver(nextOrObserver)) {
+      return this.observe(nextOrObserver);
     } else {
       return this.do(<(value: T) => void>nextOrObserver, error, complete);
     }
