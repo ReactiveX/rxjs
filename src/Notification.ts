@@ -8,7 +8,7 @@ export class Notification<T> {
     this.hasValue = kind === 'N';
   }
 
-  observe(observer: Observer<T>): any {
+  observe(observer: Observer<T>): void {
     switch (this.kind) {
       case 'N':
         return observer.next(this.value);
@@ -19,7 +19,7 @@ export class Notification<T> {
     }
   }
 
-  do(next: (value: T) => void, error?: (err: any) => void, complete?: () => void): any {
+  do(next: (value: T) => void, error?: (err: any) => void, complete?: () => void): void {
     const kind = this.kind;
     switch (kind) {
       case 'N':
@@ -31,7 +31,7 @@ export class Notification<T> {
     }
   }
 
-  accept(nextOrObserver: Observer<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
+  accept(nextOrObserver: Observer<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void): void {
     if (nextOrObserver && typeof (<Observer<T>>nextOrObserver).next === 'function') {
       return this.observe(<Observer<T>>nextOrObserver);
     } else {
