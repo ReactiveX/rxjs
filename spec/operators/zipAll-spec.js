@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectSubscriptions, expectObservable */
+/* globals describe, it, expect, expectSubscriptions, expectObservable, hot, cold*/
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
@@ -425,26 +425,37 @@ describe('Observable.prototype.zipAll', function () {
   });
 
   it('should raise error if inner observable raises error', function () {
-    var values = {
-      x: cold(       'a-b---------|'),
-      y: cold(                 'c-d-e-f-#'),
-      z: cold(                          'g-h-i-j-k-|')
-    };
-    var e1 =   hot('--x---------y--------z--------|', values);
-    var expected = '--a-b-------c-d-e-f-#';
+    var x = cold(       'a-b---------|                     ');
+    var xsubs =    '                              ^       !';
+    var y = cold(                 'c-d-e-f-#               ');
+    var ysubs =    '                              ^       !';
+    var z = cold(                          'g-h-i-j-k-|    ');
+    var zsubs =    '                              ^       !';
+    var e1 =   hot('--x---------y--------z--------|', { x: x, y: y, z: z });
+    var e1subs =   '^                                     !';
+    var expected = '------------------------------u-v-----#';
 
-    expectObservable(e1.mergeAll()).toBe(expected);
+    var expectedValues = {
+      u: ['a', 'c', 'g'],
+      v: ['b', 'd', 'h']
+    };
+
+    expectObservable(e1.zipAll()).toBe(expected, expectedValues);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(z.subscriptions).toBe(zsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error if outer observable raises error', function () {
-    var values = {
-      y: cold(       'a-b---------|'),
-      z: cold(                 'c-d-e-f-|'),
-    };
-    var e1 =   hot('--y---------z---#-------------|', values);
-    var expected = '--a-b-------c-d-#';
+    var y = cold(       'a-b---------|');
+    var z = cold(                 'c-d-e-f-|');
+    var e1 =   hot('--y---------z---#', { y: y, z: z });
+    var e1subs =   '^               !';
+    var expected = '----------------#';
 
-    expectObservable(e1.mergeAll()).toBe(expected);
+    expectObservable(e1.zipAll()).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should work with two nevers', function () {
