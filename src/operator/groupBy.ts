@@ -1,9 +1,12 @@
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {Observable} from '../Observable';
+import {Operator} from '../Operator';
 import {Subject} from '../Subject';
 import {Map} from '../util/Map';
 import {FastMap} from '../util/FastMap';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
 
 /**
  * Groups the items emitted by an Observable according to a specified criterion,
@@ -19,11 +22,18 @@ import {FastMap} from '../util/FastMap';
  */
 export function groupBy<T, K, R>(keySelector: (value: T) => K,
                                  elementSelector?: (value: T) => R,
-                                 durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>): GroupByObservable<T, K, R> {
-  return new GroupByObservable(this, keySelector, elementSelector, durationSelector);
+                                 durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>): Observable<GroupedObservable<K, R>> {
+  return this.lift(new GroupByOperator(this, keySelector, elementSelector, durationSelector));
 }
 
-export class GroupByObservable<T, K, R> extends Observable<GroupedObservable<K, R>> {
+export interface RefCountSubscription {
+  count: number;
+  unsubscribe: () => void;
+  isUnsubscribed: boolean;
+  attemptedToUnsubscribe: boolean;
+}
+
+class GroupByOperator<T, K, R> extends Operator<T, R> {
   constructor(public source: Observable<T>,
               private keySelector: (value: T) => K,
               private elementSelector?: (value: T) => R,
@@ -31,21 +41,19 @@ export class GroupByObservable<T, K, R> extends Observable<GroupedObservable<K, 
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription {
-    const refCountSubscription = new RefCountSubscription();
-    const groupBySubscriber = new GroupBySubscriber(
-      subscriber, refCountSubscription, this.keySelector, this.elementSelector, this.durationSelector
+  call(subscriber: Subscriber<GroupedObservable<K, R>>): Subscriber<T> {
+    return new GroupBySubscriber(
+      subscriber, this.keySelector, this.elementSelector, this.durationSelector
     );
-    refCountSubscription.setPrimary(this.source.subscribe(groupBySubscriber));
-    return refCountSubscription;
   }
 }
 
-class GroupBySubscriber<T, K, R> extends Subscriber<T> {
+class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscription {
   private groups: Map<K, Subject<T|R>> = null;
+  public attemptedToUnsubscribe: boolean = false;
+  public count: number = 0;
 
-  constructor(destination: Subscriber<R>,
-              private refCountSubscription: RefCountSubscription,
+  constructor(destination: Subscriber<GroupedObservable<K, R>>,
               private keySelector: (value: T) => K,
               private elementSelector?: (value: T) => R,
               private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>) {
@@ -54,67 +62,48 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> {
     this.add(destination);
   }
 
-  protected _next(value: T): void {
-    let key: any;
-    try {
-      key = this.keySelector(value);
-    } catch (err) {
-      this.error(err);
-      return;
-    }
-    this._group(value, key);
-  }
+  protected _next(x: T): void {
+    let key = tryCatch(this.keySelector)(x);
+    if (key === errorObject) {
+      this.error(errorObject.e);
+    } else {
+      let groups = this.groups;
+      const elementSelector = this.elementSelector;
+      const durationSelector = this.durationSelector;
 
-  private _group(value: T, key: K) {
-    let groups = this.groups;
-
-    if (!groups) {
-      groups = this.groups = typeof key === 'string' ? new FastMap() : new Map();
-    }
-
-    let group = groups.get(key);
-
-    if (!group) {
-      groups.set(key, group = new Subject<T|R>());
-      let groupedObservable = new GroupedObservable(key, group, this.refCountSubscription);
-
-      if (this.durationSelector) {
-        if (!this._tryDuration(key, group)) {
-          return;
-        }
+      if (!groups) {
+        groups = this.groups = typeof key === 'string' ? new FastMap() : new Map();
       }
 
-      this.destination.next(groupedObservable);
-    }
+      let group = groups.get(key);
 
-    if (this.elementSelector) {
-      this._tryElementSelector(value, group);
-    } else {
-      group.next(value);
-    }
-  }
+      if (!group) {
+        groups.set(key, group = new Subject<R>());
+        let groupedObservable = new GroupedObservable(key, group, this);
 
-  private _tryElementSelector(value: T, group: Subject<T | R>) {
-    let result: any;
-    try {
-      result = this.elementSelector(value);
-    } catch (err) {
-      this.error(err);
-      return;
-    }
-    group.next(result);
-  }
+        if (durationSelector) {
+          let duration = tryCatch(durationSelector)(new GroupedObservable<K, R>(key, <any>group));
+          if (duration === errorObject) {
+            this.error(errorObject.e);
+          } else {
+            this.add(duration.subscribe(new GroupDurationSubscriber(key, group, this)));
+          }
+        }
 
-  private _tryDuration(key: K, group: any): boolean {
-    let duration: any;
-    try {
-      duration = this.durationSelector(new GroupedObservable<K, R>(key, group));
-    } catch (err) {
-      this.error(err);
-      return false;
+        this.destination.next(groupedObservable);
+      }
+
+      if (elementSelector) {
+        let value = tryCatch(elementSelector)(x);
+        if (value === errorObject) {
+          this.error(errorObject.e);
+        } else {
+          group.next(value);
+        }
+      } else {
+        group.next(x);
+      }
     }
-    this.add(duration.subscribe(new GroupDurationSubscriber(key, group, this)));
-    return true;
   }
 
   protected _error(err: any): void {
@@ -142,6 +131,15 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> {
   removeGroup(key: K): void {
     this.groups.delete(key);
   }
+
+  unsubscribe() {
+    if (!this.isUnsubscribed && !this.attemptedToUnsubscribe) {
+      this.attemptedToUnsubscribe = true;
+      if (this.count === 0) {
+        super.unsubscribe();
+      }
+    }
+  }
 }
 
 class GroupDurationSubscriber<K, T> extends Subscriber<T> {
@@ -167,30 +165,6 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
   }
 }
 
-export class RefCountSubscription extends Subscription {
-  primary: Subscription;
-  attemptedToUnsubscribePrimary: boolean = false;
-  count: number = 0;
-
-  constructor() {
-    super();
-  }
-
-  setPrimary(subscription: Subscription) {
-    this.primary = subscription;
-  }
-
-  unsubscribe() {
-    if (!this.isUnsubscribed && !this.attemptedToUnsubscribePrimary) {
-      this.attemptedToUnsubscribePrimary = true;
-      if (this.count === 0) {
-        super.unsubscribe();
-        this.primary.unsubscribe();
-      }
-    }
-  }
-}
-
 export class GroupedObservable<K, T> extends Observable<T> {
   constructor(public key: K,
               private groupSubject: Subject<T>,
@@ -200,27 +174,28 @@ export class GroupedObservable<K, T> extends Observable<T> {
 
   protected _subscribe(subscriber: Subscriber<T>) {
     const subscription = new Subscription();
-    if (this.refCountSubscription && !this.refCountSubscription.isUnsubscribed) {
-      subscription.add(new InnerRefCountSubscription(this.refCountSubscription));
+    const {refCountSubscription, groupSubject} = this;
+    if (refCountSubscription && !refCountSubscription.isUnsubscribed) {
+      subscription.add(new InnerRefCountSubscription(refCountSubscription));
     }
-    subscription.add(this.groupSubject.subscribe(subscriber));
+    subscription.add(groupSubject.subscribe(subscriber));
     return subscription;
   }
 }
 
-export class InnerRefCountSubscription extends Subscription {
+class InnerRefCountSubscription extends Subscription {
   constructor(private parent: RefCountSubscription) {
     super();
     parent.count++;
   }
 
   unsubscribe() {
-    if (!this.parent.isUnsubscribed && !this.isUnsubscribed) {
+    const parent = this.parent;
+    if (!parent.isUnsubscribed && !this.isUnsubscribed) {
       super.unsubscribe();
-      this.parent.count--;
-      if (this.parent.count === 0 && this.parent.attemptedToUnsubscribePrimary) {
-        this.parent.unsubscribe();
-        this.parent.primary.unsubscribe();
+      parent.count -= 1;
+      if (parent.count === 0 && parent.attemptedToUnsubscribe) {
+        parent.unsubscribe();
       }
     }
   }

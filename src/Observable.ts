@@ -215,7 +215,7 @@ export class Observable<T> implements CoreOperators<T>  {
                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
                concurrent?: number) => Observable<R>;
   flatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  groupBy: <K, R>(keySelector: (value: T) => string,
+  groupBy: <K, R>(keySelector: (value: T) => K,
                elementSelector?: (value: T) => R,
                durationSelector?: (group: GroupedObservable<K, R>) => Observable<any>) => Observable<GroupedObservable<K, R>>;
   ignoreElements: () => Observable<T>;
