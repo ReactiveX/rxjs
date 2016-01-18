@@ -331,6 +331,26 @@ describe('Observable.lift', function () {
 
   it('should allow injecting behaviors into all subscribers in an operator ' +
   'chain when overriden', function (done) {
+    // The custom Subscriber
+    var log = [];
+    function LogSubscriber() {
+      Subscriber.apply(this, arguments);
+    }
+    LogSubscriber.prototype = Object.create(Subscriber.prototype);
+    LogSubscriber.prototype.constructor = LogSubscriber;
+    LogSubscriber.prototype.next = function (x) {
+      log.push('next ' + x);
+      this.destination.next(x);
+    };
+
+    // The custom Operator
+    function LogOperator(childOperator) {
+      this.childOperator = childOperator;
+    }
+    LogOperator.prototype.call = function (subscriber) {
+      return this.childOperator.call(new LogSubscriber(subscriber));
+    };
+
     // The custom Observable
     function LogObservable() {
       Observable.apply(this, arguments);
@@ -344,26 +364,6 @@ describe('Observable.lift', function () {
       return obs;
     };
 
-    // The custom Operator
-    function LogOperator(childOperator) {
-      this.childOperator = childOperator;
-    }
-    LogOperator.prototype.call = function (subscriber) {
-      return this.childOperator.call(new LogSubscriber(subscriber));
-    };
-
-    // The custom Subscriber
-    var log = [];
-    function LogSubscriber() {
-      Subscriber.apply(this, arguments);
-    }
-    LogSubscriber.prototype = Object.create(Subscriber.prototype);
-    LogSubscriber.prototype.constructor = LogSubscriber;
-    LogSubscriber.prototype.next = function (x) {
-      log.push('next ' + x);
-      this.destination.next(x);
-    };
-
     // Use the LogObservable
     var result = new LogObservable(function (observer) {
       observer.next(1);
@@ -372,7 +372,7 @@ describe('Observable.lift', function () {
       observer.complete();
     })
     .map(function (x) { return 10 * x; })
-    .filter(function (x) { return x > 15 })
+    .filter(function (x) { return x > 15; })
     .count();
 
     expect(result instanceof LogObservable).toBe(true);
