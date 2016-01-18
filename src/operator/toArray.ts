@@ -14,7 +14,7 @@ class ToArrayOperator<T> implements Operator<T, T[]> {
 
 class ToArraySubscriber<T> extends Subscriber<T> {
 
-  array: T[] = [];
+  private array: T[] = [];
 
   constructor(destination: Subscriber<T[]>) {
     super(destination);
