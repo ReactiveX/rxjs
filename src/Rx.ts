@@ -68,6 +68,7 @@ import './add/operator/mergeMap';
 import './add/operator/mergeMapTo';
 import './add/operator/multicast';
 import './add/operator/observeOn';
+import './add/operator/pairwise';
 import './add/operator/partition';
 import './add/operator/pluck';
 import './add/operator/publish';
