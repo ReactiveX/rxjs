@@ -220,6 +220,8 @@ export class Observable<T> implements CoreOperators<T>  {
                elementSelector?: (value: T) => R,
                durationSelector?: (group: GroupedObservable<K, R>) => Observable<any>) => Observable<GroupedObservable<K, R>>;
   ignoreElements: () => Observable<T>;
+  inspect: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
+  inspectTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
   last: <R>(predicate?: (value: T, index: number) => boolean,
             resultSelector?: (value: T, index: number) => R,
             defaultValue?: any) => Observable<T> | Observable<R>;
