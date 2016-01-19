@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {IntervalObservable} from '../../observable/interval';
+import {create} from '../../observable/interval';
 
-Observable.interval = IntervalObservable.create;
+Observable.interval = create;
 
 export var _void: void;

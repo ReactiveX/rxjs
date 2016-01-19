@@ -9,15 +9,15 @@ import {errorObject} from '../util/errorObject';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
+export function create<T>(iterator: any,
+                          project?: ((x?: any, i?: number) => T) | any,
+                          thisArg?: any | Scheduler,
+                          scheduler?: Scheduler) {
+  return new IteratorObservable(iterator, project, thisArg, scheduler);
+}
+
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
-
-  static create<T>(iterator: any,
-                   project?: ((x?: any, i?: number) => T) | any,
-                   thisArg?: any | Scheduler,
-                   scheduler?: Scheduler) {
-    return new IteratorObservable(iterator, project, thisArg, scheduler);
-  }
 
   static dispatch(state: any) {
 

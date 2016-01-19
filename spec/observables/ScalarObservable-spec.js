@@ -1,6 +1,7 @@
 /* globals describe, it, expect, rxTestScheduler*/
 var Rx = require('../../dist/cjs/Rx');
 var ScalarObservable = require('../../dist/cjs/observable/ScalarObservable').ScalarObservable;
+var create = require('../../dist/cjs/observable/ScalarObservable').create;
 var EmptyObservable = require('../../dist/cjs/observable/empty').EmptyObservable;
 var ErrorObservable = require('../../dist/cjs/observable/throw').ErrorObservable;
 var Observable = Rx.Observable;
@@ -13,7 +14,7 @@ describe('ScalarObservable', function () {
 
   it('should create ScalarObservable via static create function', function () {
     var s = new ScalarObservable(1);
-    var r = ScalarObservable.create(1);
+    var r = create(1);
 
     expect(s).toEqual(r);
   });

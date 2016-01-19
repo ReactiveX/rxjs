@@ -1,5 +1,6 @@
 var Rx = require('../../dist/cjs/Rx');
 var RangeObservable = require('../../dist/cjs/observable/range').RangeObservable;
+var create = require('../../dist/cjs/observable/range').create;
 var Observable = Rx.Observable;
 var asap = Rx.Scheduler.asap;
 
@@ -33,12 +34,12 @@ describe('Observable.range', function () {
 describe('RangeObservable', function () {
   describe('create', function () {
     it('should create a RangeObservable', function () {
-      var observable = RangeObservable.create(12, 4);
+      var observable = create(12, 4);
       expect(observable instanceof RangeObservable).toBe(true);
     });
 
     it('should accept a scheduler', function () {
-      var observable = RangeObservable.create(12, 4, asap);
+      var observable = create(12, 4, asap);
       expect(observable.scheduler).toBe(asap);
     });
   });

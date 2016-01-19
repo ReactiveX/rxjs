@@ -1,6 +1,7 @@
 /* globals describe, it, expect, hot, expectObservable, expectSubscriptions, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var SubscribeOnObservable = require('../../dist/cjs/observable/SubscribeOnObservable').SubscribeOnObservable;
+var create = require('../../dist/cjs/observable/SubscribeOnObservable').create;
 var Observable = Rx.Observable;
 
 describe('SubscribeOnObservable', function () {
@@ -23,7 +24,7 @@ describe('SubscribeOnObservable', function () {
 
   it('should create observable via staic create function', function () {
     var s = new SubscribeOnObservable(rxTestScheduler);
-    var r = SubscribeOnObservable.create(rxTestScheduler);
+    var r = create(rxTestScheduler);
 
     expect(s).toEqual(r);
   });

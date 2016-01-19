@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {BoundCallbackObservable} from '../../observable/bindCallback';
+import {create} from '../../observable/bindCallback';
 
-Observable.bindCallback = BoundCallbackObservable.create;
+Observable.bindCallback = create;
 
 export var _void: void;

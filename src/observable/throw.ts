@@ -2,11 +2,11 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
-export class ErrorObservable extends Observable<any> {
+export function create<T>(error: any, scheduler?: Scheduler) {
+  return new ErrorObservable(error, scheduler);
+}
 
-  static create<T>(error: any, scheduler?: Scheduler) {
-    return new ErrorObservable(error, scheduler);
-  }
+export class ErrorObservable extends Observable<any> {
 
   static dispatch({ error, subscriber }) {
     subscriber.error(error);

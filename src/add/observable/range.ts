@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {RangeObservable} from '../../observable/range';
+import {create} from '../../observable/range';
 
-Observable.range = RangeObservable.create;
+Observable.range = create;
 
 export var _void: void;

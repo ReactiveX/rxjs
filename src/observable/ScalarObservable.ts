@@ -3,11 +3,11 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
-export class ScalarObservable<T> extends Observable<T> {
-  static create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {
-    return new ScalarObservable(value, scheduler);
-  }
+export function create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {
+  return new ScalarObservable(value, scheduler);
+}
 
+export class ScalarObservable<T> extends Observable<T> {
   static dispatch(state: any): void {
     const { done, value, subscriber } = state;
 

@@ -4,13 +4,13 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {Subscriber} from '../Subscriber';
 
-export class FromEventPatternObservable<T, R> extends Observable<T> {
+export function create<T>(addHandler: (handler: Function) => any,
+                          removeHandler: (handler: Function) => void,
+                          selector?: (...args: Array<any>) => T) {
+  return new FromEventPatternObservable(addHandler, removeHandler, selector);
+}
 
-  static create<T>(addHandler: (handler: Function) => any,
-                   removeHandler: (handler: Function) => void,
-                   selector?: (...args: Array<any>) => T) {
-    return new FromEventPatternObservable(addHandler, removeHandler, selector);
-  }
+export class FromEventPatternObservable<T, R> extends Observable<T> {
 
   constructor(private addHandler: (handler: Function) => any,
               private removeHandler: (handler: Function) => void,

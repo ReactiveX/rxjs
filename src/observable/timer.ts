@@ -7,11 +7,11 @@ import {isDate} from '../util/isDate';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
-export class TimerObservable extends Observable<number> {
+export function create(dueTime: number | Date = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
+  return new TimerObservable(dueTime, period, scheduler);
+}
 
-  static create(dueTime: number | Date = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
-    return new TimerObservable(dueTime, period, scheduler);
-  }
+export class TimerObservable extends Observable<number> {
 
   static dispatch(state: any) {
 
