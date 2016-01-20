@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {ErrorObservable} from '../../observable/throw';
+import {create} from '../../observable/throw';
 
-Observable.throw = ErrorObservable.create;
+Observable.throw = create;
 
 export var _void: void;

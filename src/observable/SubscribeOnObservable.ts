@@ -5,11 +5,11 @@ import {Observable} from '../Observable';
 import {asap} from '../scheduler/asap';
 import {isNumeric} from '../util/isNumeric';
 
-export class SubscribeOnObservable<T> extends Observable<T> {
-  static create<T>(source: Observable<T>, delay: number = 0, scheduler: Scheduler = asap): Observable<T> {
-    return new SubscribeOnObservable(source, delay, scheduler);
-  }
+export function create<T>(source: Observable<T>, delay: number = 0, scheduler: Scheduler = asap): Observable<T> {
+  return new SubscribeOnObservable(source, delay, scheduler);
+}
 
+export class SubscribeOnObservable<T> extends Observable<T> {
   static dispatch<T>({ source, subscriber }): Subscription {
     return source.subscribe(subscriber);
   }

@@ -3,11 +3,11 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
-export class EmptyObservable<T> extends Observable<T> {
+export function create<T>(scheduler?: Scheduler): Observable<T> {
+  return new EmptyObservable<T>(scheduler);
+}
 
-  static create<T>(scheduler?: Scheduler): Observable<T> {
-    return new EmptyObservable<T>(scheduler);
-  }
+export class EmptyObservable<T> extends Observable<T> {
 
   static dispatch({ subscriber }) {
     subscriber.complete();

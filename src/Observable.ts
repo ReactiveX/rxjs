@@ -18,24 +18,24 @@ import {combineLatest as combineLatestStatic} from './operator/combineLatest-sta
 import {concat as concatStatic} from './operator/concat-static';
 import {merge as mergeStatic} from './operator/merge-static';
 import {zip as zipStatic} from './operator/zip-static';
-import {BoundCallbackObservable} from './observable/bindCallback';
-import {BoundNodeCallbackObservable} from './observable/bindNodeCallback';
-import {DeferObservable} from './observable/defer';
-import {EmptyObservable} from './observable/empty';
-import {ForkJoinObservable} from './observable/forkJoin';
-import {FromObservable} from './observable/from';
-import {ArrayObservable} from './observable/fromArray';
-import {FromEventObservable} from './observable/fromEvent';
-import {FromEventPatternObservable} from './observable/fromEventPattern';
-import {PromiseObservable} from './observable/fromPromise';
-import {IntervalObservable} from './observable/interval';
-import {TimerObservable} from './observable/timer';
+import {create as createBoundCallbackObservable} from './observable/bindCallback';
+import {create as createBoundNodeCallbackObservable} from './observable/bindNodeCallback';
+import {create as createDeferObservable} from './observable/defer';
+import {create as createEmptyObservable} from './observable/empty';
+import {create as createForkJoinObservable} from './observable/forkJoin';
+import {create as createFromObservable} from './observable/from';
+import {create as createArrayObservable, ArrayObservable} from './observable/fromArray';
+import {create as createFromEventObservable} from './observable/fromEvent';
+import {create as createFromEventPatternObservable} from './observable/fromEventPattern';
+import {create as createPromiseObservable} from './observable/fromPromise';
+import {create as createIntervalObservable} from './observable/interval';
+import {create as createTimerObservable} from './observable/timer';
 import {race as raceStatic} from './operator/race-static';
-import {RangeObservable} from './observable/range';
-import {InfiniteObservable} from './observable/never';
-import {ErrorObservable} from './observable/throw';
+import {create as createRangeObservable} from './observable/range';
+import {create as createInfiniteObservable} from './observable/never';
+import {create as createErrorObservable} from './observable/throw';
 import {AjaxCreationMethod} from './observable/dom/ajax';
-import {WebSocketSubject} from './observable/dom/webSocket';
+import {create as createWebSocketSubject} from './observable/dom/webSocket';
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -72,7 +72,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Observable} a new cold observable
    * @description creates a new cold Observable by calling the Observable constructor
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) => {
+  static create<T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) {
     return new Observable<T>(subscribe);
   };
 
@@ -156,27 +156,27 @@ export class Observable<T> implements CoreOperators<T>  {
 
   // static method stubs
   static ajax: AjaxCreationMethod;
-  static bindCallback: typeof BoundCallbackObservable.create;
-  static bindNodeCallback: typeof BoundNodeCallbackObservable.create;
+  static bindCallback: typeof createBoundCallbackObservable;
+  static bindNodeCallback: typeof createBoundNodeCallbackObservable;
   static combineLatest: typeof combineLatestStatic;
   static concat: typeof concatStatic;
-  static defer: typeof DeferObservable.create;
-  static empty: typeof EmptyObservable.create;
-  static forkJoin: typeof ForkJoinObservable.create;
-  static from: typeof FromObservable.create;
-  static fromArray: typeof ArrayObservable.create;
-  static fromEvent: typeof FromEventObservable.create;
-  static fromEventPattern: typeof FromEventPatternObservable.create;
-  static fromPromise: typeof PromiseObservable.create;
-  static interval: typeof IntervalObservable.create;
+  static defer: typeof createDeferObservable;
+  static empty: typeof createEmptyObservable;
+  static forkJoin: typeof createForkJoinObservable;
+  static from: typeof createFromObservable;
+  static fromArray: typeof createArrayObservable;
+  static fromEvent: typeof createFromEventObservable;
+  static fromEventPattern: typeof createFromEventPatternObservable;
+  static fromPromise: typeof createPromiseObservable;
+  static interval: typeof createIntervalObservable;
   static merge: typeof mergeStatic;
-  static never: typeof InfiniteObservable.create;
+  static never: typeof createInfiniteObservable;
   static of: typeof ArrayObservable.of;
   static race: typeof raceStatic;
-  static range: typeof RangeObservable.create;
-  static throw: typeof ErrorObservable.create;
-  static timer: typeof TimerObservable.create;
-  static webSocket: typeof WebSocketSubject.create;
+  static range: typeof createRangeObservable;
+  static throw: typeof createErrorObservable;
+  static timer: typeof createTimerObservable;
+  static webSocket: typeof createWebSocketSubject;
   static zip: typeof zipStatic;
 
   // core operators

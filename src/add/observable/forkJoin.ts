@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {ForkJoinObservable} from '../../observable/forkJoin';
+import {create} from '../../observable/forkJoin';
 
-Observable.forkJoin = ForkJoinObservable.create;
+Observable.forkJoin = create;
 
 export var _void: void;

@@ -71,6 +71,21 @@ export function ajaxGetJSON<T, R>(url: string, resultSelector?: (data: T) => R, 
   const finalResultSelector = resultSelector ? (res: AjaxResponse) => resultSelector(res.response) : (res: AjaxResponse) => res.response;
   return new AjaxObservable<R>({ method: 'GET', url, responseType: 'json', resultSelector: finalResultSelector, headers });
 };
+
+export const create = (() => {
+  const create: any = (urlOrRequest: string | AjaxRequest) => {
+    return new AjaxObservable(urlOrRequest);
+  };
+
+  create.get = ajaxGet;
+  create.post = ajaxPost;
+  create.delete = ajaxDelete;
+  create.put = ajaxPut;
+  create.getJSON = ajaxGetJSON;
+
+  return <AjaxCreationMethod>create;
+})();
+
   /**
    * Creates an observable for an Ajax request with either a request object with url, headers, etc or a string for a URL.
    *
@@ -93,19 +108,6 @@ export function ajaxGetJSON<T, R>(url: string, resultSelector?: (data: T) => R, 
    * @returns {Observable} An observable sequence containing the XMLHttpRequest.
   */
 export class AjaxObservable<T> extends Observable<T> {
-  static create: AjaxCreationMethod = (() => {
-    const create: any = (urlOrRequest: string | AjaxRequest) => {
-      return new AjaxObservable(urlOrRequest);
-    };
-
-    create.get = ajaxGet;
-    create.post = ajaxPost;
-    create.delete = ajaxDelete;
-    create.put = ajaxPut;
-    create.getJSON = ajaxGetJSON;
-
-    return <AjaxCreationMethod>create;
-  })();
 
   private request: AjaxRequest;
 

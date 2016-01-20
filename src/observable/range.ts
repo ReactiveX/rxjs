@@ -3,11 +3,11 @@ import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
-export class RangeObservable extends Observable<number> {
+export function create(start: number = 0, end: number = 0, scheduler?: Scheduler): Observable<number> {
+  return new RangeObservable(start, end, scheduler);
+}
 
-  static create(start: number = 0, end: number = 0, scheduler?: Scheduler): Observable<number> {
-    return new RangeObservable(start, end, scheduler);
-  }
+export class RangeObservable extends Observable<number> {
 
   static dispatch(state: any) {
 

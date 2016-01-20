@@ -6,11 +6,11 @@ import {Subscriber} from '../Subscriber';
 import {isScheduler} from '../util/isScheduler';
 import {Subscription} from '../Subscription';
 
-export class ArrayObservable<T> extends Observable<T> {
+export function create<T>(array: T[], scheduler?: Scheduler) {
+  return new ArrayObservable(array, scheduler);
+}
 
-  static create<T>(array: T[], scheduler?: Scheduler) {
-    return new ArrayObservable(array, scheduler);
-  }
+export class ArrayObservable<T> extends Observable<T> {
 
   static of<T>(...array: Array<T | Scheduler>): Observable<T> {
     let scheduler = <Scheduler>array[array.length - 1];

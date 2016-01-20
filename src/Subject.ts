@@ -6,12 +6,7 @@ import {Subscription} from './Subscription';
 import {SubjectSubscription} from './subject/SubjectSubscription';
 import {rxSubscriber} from './symbol/rxSubscriber';
 
-export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
-
-  static create: Function = <T>(source: Observable<T>, destination: Observer<T>): Subject<T> => {
-    return new Subject<T>(source, destination);
-  };
-
+export abstract class BaseSubject<T> extends Observable<T> implements Observer<T>, Subscription {
   constructor(source?: Observable<T>, destination?: Observer<T>) {
     super();
     this.source = source;
@@ -203,3 +198,16 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     return new Subscriber<T>(this);
   }
 }
+
+export class Subject<T> extends BaseSubject<T> {
+  static createSubject<T>(source: Observable<T>, destination: Observer<T>): Subject<T> {
+    return new Subject<T>(source, destination);
+  }
+
+  constructor(source?: Observable<T>, destination?: Observer<T>) {
+    super(source, destination);
+  }
+}
+
+// Back compatability
+(<any>Subject).create = Subject.createSubject;

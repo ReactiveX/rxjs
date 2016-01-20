@@ -1,5 +1,5 @@
 import {Observable} from '../../../Observable';
-import {WebSocketSubject} from '../../../observable/dom/webSocket';
-Observable.webSocket = WebSocketSubject.create;
+import {create} from '../../../observable/dom/webSocket';
+Observable.webSocket = create;
 
 export var _void: void;

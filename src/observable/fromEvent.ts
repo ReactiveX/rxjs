@@ -4,11 +4,11 @@ import {errorObject} from '../util/errorObject';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
-export class FromEventObservable<T, R> extends Observable<T> {
+export function create<T>(sourceObj: any, eventName: string, selector?: (...args: Array<any>) => T) {
+  return new FromEventObservable(sourceObj, eventName, selector);
+}
 
-  static create<T>(sourceObj: any, eventName: string, selector?: (...args: Array<any>) => T) {
-    return new FromEventObservable(sourceObj, eventName, selector);
-  }
+export class FromEventObservable<T, R> extends Observable<T> {
 
   constructor(private sourceObj: any, private eventName: string, private selector?: (...args: Array<any>) => T) {
     super();

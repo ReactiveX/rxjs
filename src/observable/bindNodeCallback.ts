@@ -6,16 +6,16 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {AsyncSubject} from '../subject/AsyncSubject';
 
+export function create<T>(callbackFunc: Function,
+                          selector: Function = undefined,
+                          scheduler?: Scheduler): Function {
+  return (...args: any[]): Observable<T> => {
+    return new BoundNodeCallbackObservable(callbackFunc, selector, args, scheduler);
+  };
+}
+
 export class BoundNodeCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
-
-  static create<T>(callbackFunc: Function,
-                   selector: Function = undefined,
-                   scheduler?: Scheduler): Function {
-    return (...args: any[]): Observable<T> => {
-      return new BoundNodeCallbackObservable(callbackFunc, selector, args, scheduler);
-    };
-  }
 
   constructor(private callbackFunc: Function,
               private selector: Function,

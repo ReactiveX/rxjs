@@ -4,13 +4,13 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
+export function create<T>(promise: Promise<T>, scheduler: Scheduler = null): Observable<T> {
+  return new PromiseObservable(promise, scheduler);
+}
+
 export class PromiseObservable<T> extends Observable<T> {
 
   public value: T;
-
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = null): Observable<T> {
-    return new PromiseObservable(promise, scheduler);
-  }
 
   constructor(private promise: Promise<T>, public scheduler: Scheduler = null) {
     super();

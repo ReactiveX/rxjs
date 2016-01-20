@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {DeferObservable} from '../../observable/defer';
+import {create} from '../../observable/defer';
 
-Observable.defer = DeferObservable.create;
+Observable.defer = create;
 
 export var _void: void;

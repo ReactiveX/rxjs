@@ -4,11 +4,11 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {asap} from '../scheduler/asap';
 
-export class IntervalObservable extends Observable<number> {
-  static create(period: number = 0, scheduler: Scheduler = asap): Observable<number> {
-    return new IntervalObservable(period, scheduler);
-  }
+export function create(period: number = 0, scheduler: Scheduler = asap): Observable<number> {
+  return new IntervalObservable(period, scheduler);
+}
 
+export class IntervalObservable extends Observable<number> {
   static dispatch(state: any): void {
     const { index, subscriber, period } = state;
 

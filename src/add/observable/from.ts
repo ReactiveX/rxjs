@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {FromObservable} from '../../observable/from';
+import {create} from '../../observable/from';
 
-Observable.from = FromObservable.create;
+Observable.from = create;
 
 export var _void: void;

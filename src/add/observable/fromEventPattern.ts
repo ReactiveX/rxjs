@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {FromEventPatternObservable} from '../../observable/fromEventPattern';
+import {create} from '../../observable/fromEventPattern';
 
-Observable.fromEventPattern = FromEventPatternObservable.create;
+Observable.fromEventPattern = create;
 
 export var _void: void;

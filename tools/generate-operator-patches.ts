@@ -97,9 +97,9 @@ ${typescriptHack}`;
 function generateNewObservableFileContents (op:OperatorWrapper): OperatorWrapper {
   var overrides = AliasMethodOverrides[op.path];
   var imports = `import {Observable} from '../../Observable';
-import {${op.exportedClassName}} from '../../observable/${op.path.replace('.ts','')}';`;
-  var patch = op.aliases.map((alias) => {
-    return `Observable.${alias} = ${op.exportedClassName}.${(overrides && overrides[alias]) || 'create'};`;
+import {${op.aliases.length > 1 ? op.exportedClassName + ', ' : ''}${'create'}} from '../../observable/${op.path.replace('.ts','')}';`;
+  var patch = op.aliases.map((alias, i) => {
+    return `Observable.${alias} = ${i > 0 ? op.exportedClassName + '.' + (overrides && overrides[alias]) : 'create'};`;
   }).join('\n');
 
   var contents = `${header}
@@ -164,7 +164,7 @@ function getAliases (op:OperatorWrapper): OperatorWrapper {
 }
 
 function checkForCreate (op: OperatorWrapper): boolean {
-  return /static create/.test(op.srcFileContents);
+  return /export (?:const|function) create/.test(op.srcFileContents);
 }
 
 if (process.argv.find((v) => v === '--exec')) {

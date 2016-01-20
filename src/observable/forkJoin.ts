@@ -5,35 +5,34 @@ import {EmptyObservable} from './empty';
 import {isPromise} from '../util/isPromise';
 import {isArray} from '../util/isArray';
 
+export function create<T>(...sources: Array<Observable<any> | Promise<any> |
+  Array<Observable<any>> | ((...values: Array<any>) => any)>): Observable<T> {
+  if (sources === null || arguments.length === 0) {
+    return new EmptyObservable<T>();
+  }
+
+  let resultSelector: (...values: Array<any>) => any = null;
+  if (typeof sources[sources.length - 1] === 'function') {
+    resultSelector = <(...values: Array<any>) => any>sources.pop();
+  }
+
+  // if the first and only other argument besides the resultSelector is an array
+  // assume it's been called with `forkJoin([obs1, obs2, obs3], resultSelector)`
+  if (sources.length === 1 && isArray(sources[0])) {
+    sources = <Array<Observable<any>>>sources[0];
+  }
+
+  if (sources.length === 0) {
+    return new EmptyObservable<T>();
+  }
+
+  return new ForkJoinObservable(<Array<Observable<any> | Promise<any>>>sources, resultSelector);
+}
+
 export class ForkJoinObservable<T> extends Observable<T> {
   constructor(private sources: Array<Observable<any> | Promise<any>>,
               private resultSelector?: (...values: Array<any>) => T) {
     super();
-  }
-
-  static create<T>(...sources: Array<Observable<any> | Promise<any> |
-                                  Array<Observable<any>> |
-                                  ((...values: Array<any>) => any)>): Observable<T> {
-    if (sources === null || arguments.length === 0) {
-      return new EmptyObservable<T>();
-    }
-
-    let resultSelector: (...values: Array<any>) => any = null;
-    if (typeof sources[sources.length - 1] === 'function') {
-      resultSelector = <(...values: Array<any>) => any>sources.pop();
-    }
-
-    // if the first and only other argument besides the resultSelector is an array
-    // assume it's been called with `forkJoin([obs1, obs2, obs3], resultSelector)`
-    if (sources.length === 1 && isArray(sources[0])) {
-      sources = <Array<Observable<any>>>sources[0];
-    }
-
-    if (sources.length === 0) {
-      return new EmptyObservable<T>();
-    }
-
-    return new ForkJoinObservable(<Array<Observable<any> | Promise<any>>>sources, resultSelector);
   }
 
   protected _subscribe(subscriber: Subscriber<any>) {
@@ -56,10 +55,12 @@ class AllSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<any>,
               private index: number,
-              private context: { completed: number,
-                                 total: number,
-                                 values: any[],
-                                 selector: (...values: Array<any>) => any }) {
+              private context: {
+      completed: number,
+      total: number,
+      values: any[],
+      selector: (...values: Array<any>) => any
+    }) {
     super(destination);
   }
 
@@ -85,7 +86,7 @@ class AllSubscriber<T> extends Subscriber<T> {
 
     if (values.every(hasValue)) {
       let value = context.selector ? context.selector.apply(this, values) :
-                                     values;
+        values;
       destination.next(value);
     }
 
