@@ -21,7 +21,7 @@ export class AsapAction<T> extends FutureAction<T> {
     return this;
   }
 
-  _unsubscribe(): void {
+  protected _unsubscribe(): void {
 
     const {scheduler} = this;
     const {scheduledId, actions} = scheduler;
