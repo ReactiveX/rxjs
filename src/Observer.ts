@@ -5,12 +5,6 @@ export interface Observer<T> {
   complete(): void;
 }
 
-export function isObserver<T>(value: any): value is Observer<T> {
-  return !!value && typeof value.next === 'function'
-                 && typeof value.error === 'function'
-                 && typeof value.complete === 'function';
-}
-
 export const empty: Observer<any> = {
   isUnsubscribed: true,
   next(value: any): void { /* noop */},
