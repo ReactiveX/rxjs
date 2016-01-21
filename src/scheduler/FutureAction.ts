@@ -28,7 +28,7 @@ export class FutureAction<T> extends Subscription implements Action {
     return this._schedule(state, delay);
   }
 
-  _schedule(state?: any, delay: number = 0): Action {
+  protected _schedule(state?: any, delay: number = 0): Action {
 
     this.delay = delay;
     this.state = state;
