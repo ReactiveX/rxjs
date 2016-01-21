@@ -1,25 +1,5 @@
+import {Observer} from './Observer';
 import {Observable} from './Observable';
-
-export type NextObserver<T> = {
-  next(value: T): void;
-};
-function isNextObserver<T>(v: any): v is NextObserver<T> {
-  return !!v && typeof v.next === 'function';
-}
-
-export type ErrorObserver = {
-  error(error: any): void;
-};
-function isErrorObserver<T>(v: any): v is ErrorObserver {
-  return !!v && typeof v.error === 'function';
-}
-
-export type CompleteObserver = {
-  complete(): void;
-};
-function isCompleteObserver(v: any): v is CompleteObserver {
-  return !!v && typeof v.complete === 'function';
-}
 
 export class Notification<T> {
   hasValue: boolean;
@@ -28,26 +8,14 @@ export class Notification<T> {
     this.hasValue = kind === 'N';
   }
 
-  observe(observer: NextObserver<T> | ErrorObserver | CompleteObserver): any {
+  observe(observer: Observer<T>): any {
     switch (this.kind) {
       case 'N':
-        if (isNextObserver(observer)) {
-          return observer.next(this.value);
-        } else {
-          throw new Error('`observer` should implement NextObserver<T>');
-        }
+        return observer.next(this.value);
       case 'E':
-        if (isErrorObserver(observer)) {
-          return observer.error(this.exception);
-        } else {
-          throw new Error('`observer` should implement ErrorObserver');
-        }
+        return observer.error(this.exception);
       case 'C':
-        if (isCompleteObserver(observer)) {
-          return observer.complete();
-        } else {
-          throw new Error('`observer` should implement CompleteObserver');
-        }
+        return observer.complete();
     }
   }
 
@@ -63,9 +31,9 @@ export class Notification<T> {
     }
   }
 
-  accept(nextOrObserver: NextObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
-    if (isNextObserver(nextOrObserver)) {
-      return this.observe(nextOrObserver);
+  accept(nextOrObserver: Observer<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
+    if (nextOrObserver && typeof (<Observer<T>>nextOrObserver).next === 'function') {
+      return this.observe(<Observer<T>>nextOrObserver);
     } else {
       return this.do(<(value: T) => void>nextOrObserver, error, complete);
     }
