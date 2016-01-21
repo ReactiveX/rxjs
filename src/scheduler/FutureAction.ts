@@ -49,7 +49,7 @@ export class FutureAction<T> extends Subscription implements Action {
     return this;
   }
 
-  _unsubscribe() {
+  protected _unsubscribe() {
 
     const {id, scheduler} = this;
     const {actions} = scheduler;
