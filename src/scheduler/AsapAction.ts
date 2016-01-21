@@ -4,7 +4,7 @@ import {FutureAction} from './FutureAction';
 
 export class AsapAction<T> extends FutureAction<T> {
 
-  _schedule(state?: any, delay: number = 0): Action {
+  protected _schedule(state?: any, delay: number = 0): Action {
     if (delay > 0) {
       return super._schedule(state, delay);
     }
