@@ -2,7 +2,7 @@ import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {isScheduler} from '../util/isScheduler';
 import {ArrayObservable} from '../observable/ArrayObservable';
-import {MergeAllOperator} from './mergeAll-support';
+import {MergeAllOperator} from './mergeAll';
 
 /**
  * Joins this observable with multiple other observables by subscribing to them one at a time, starting with the source,

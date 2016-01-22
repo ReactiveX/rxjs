@@ -1,4 +1,4 @@
-import {MergeAllOperator} from './mergeAll-support';
+import {MergeAllOperator} from './mergeAll';
 
 /**
  * Joins every Observable emitted by the source (an Observable of Observables), in a serial
