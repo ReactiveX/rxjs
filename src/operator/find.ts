@@ -1,5 +1,8 @@
-import {FindValueOperator} from './find-support';
 import {Observable} from '../Observable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {tryCatch} from '../util/tryCatch';
+import {errorObject} from '../util/errorObject';
 
 /**
  * Returns an Observable that searches for the first item in the source Observable that
@@ -12,4 +15,50 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
     throw new TypeError('predicate is not a function');
   }
   return this.lift(new FindValueOperator(predicate, this, false, thisArg));
+}
+
+export class FindValueOperator<T> implements Operator<T, T> {
+  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private source: Observable<T>,
+              private yieldIndex: boolean,
+              private thisArg?: any) {
+  }
+
+  call(observer: Subscriber<T>): Subscriber<T> {
+    return new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg);
+  }
+}
+
+export class FindValueSubscriber<T> extends Subscriber<T> {
+  private index: number = 0;
+
+  constructor(destination: Subscriber<T>,
+              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private source: Observable<T>,
+              private yieldIndex: boolean,
+              private thisArg?: any) {
+    super(destination);
+  }
+
+  private notifyComplete(value: any): void {
+    const destination = this.destination;
+
+    destination.next(value);
+    destination.complete();
+  }
+
+  protected _next(value: T): void {
+    const { predicate, thisArg } = this;
+    const index = this.index++;
+    const result = tryCatch(predicate).call(thisArg || this, value, index, this.source);
+    if (result === errorObject) {
+      this.destination.error(result.e);
+    } else if (result) {
+      this.notifyComplete(this.yieldIndex ? index : value);
+    }
+  }
+
+  protected _complete(): void {
+    this.notifyComplete(this.yieldIndex ? -1 : undefined);
+  }
 }

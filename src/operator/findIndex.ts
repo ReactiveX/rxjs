@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {FindValueOperator} from './find-support';
+import {FindValueOperator} from './find';
 
 /**
  * Returns an Observable that searches for the first item in the source Observable that
