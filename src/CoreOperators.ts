@@ -2,7 +2,7 @@ import {Observable} from './Observable';
 import {Scheduler} from './Scheduler';
 import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
-import {GroupedObservable} from './operator/groupBy-support';
+import {GroupedObservable} from './operator/groupBy';
 import {Notification} from './Notification';
 
 export interface CoreOperators<T> {

@@ -6,7 +6,7 @@ import {Subscription} from './Subscription';
 import {root} from './util/root';
 import {CoreOperators} from './CoreOperators';
 import {SymbolShim} from './util/SymbolShim';
-import {GroupedObservable} from './operator/groupBy-support';
+import {GroupedObservable} from './operator/groupBy';
 import {ConnectableObservable} from './observable/ConnectableObservable';
 import {Subject} from './Subject';
 import {Notification} from './Notification';
