@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {MergeMapToOperator} from './mergeMapTo-support';
+import {MergeMapToOperator} from './mergeMapTo';
 
 /**
  * Maps values from the source to a specific observable, and merges them together in a serialized fashion.
