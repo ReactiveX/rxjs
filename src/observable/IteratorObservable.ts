@@ -12,13 +12,6 @@ import {Subscriber} from '../Subscriber';
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
 
-  static create<T>(iterator: any,
-                   project?: ((x?: any, i?: number) => T) | any,
-                   thisArg?: any | Scheduler,
-                   scheduler?: Scheduler) {
-    return new IteratorObservable(iterator, project, thisArg, scheduler);
-  }
-
   static dispatch(state: any) {
 
     const { index, hasError, thisArg, project, iterator, subscriber } = state;
