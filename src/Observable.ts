@@ -15,7 +15,7 @@ import {tryCatch} from './util/tryCatch';
 import {errorObject} from './util/errorObject';
 
 import {combineLatestStatic} from './operator/combineLatest';
-import {concat as concatStatic} from './operator/concat-static';
+import {concatStatic} from './operator/concat';
 import {mergeStatic} from './operator/merge';
 import {zipStatic} from './operator/zip';
 import {BoundCallbackObservable} from './observable/BoundCallbackObservable';

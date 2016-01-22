@@ -3,7 +3,7 @@ import {Observable} from '../Observable';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {ScalarObservable} from '../observable/ScalarObservable';
 import {EmptyObservable} from '../observable/EmptyObservable';
-import {concat} from './concat-static';
+import {concatStatic} from './concat';
 import {isScheduler} from '../util/isScheduler';
 
 export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
@@ -16,10 +16,10 @@ export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
 
   const len = array.length;
   if (len === 1) {
-    return concat(new ScalarObservable<T>(<T>array[0], scheduler), <Observable<T>>this);
+    return concatStatic(new ScalarObservable<T>(<T>array[0], scheduler), <Observable<T>>this);
   } else if (len > 1) {
-    return concat(new ArrayObservable<T>(<T[]>array, scheduler), <Observable<T>>this);
+    return concatStatic(new ArrayObservable<T>(<T[]>array, scheduler), <Observable<T>>this);
   } else {
-    return concat(new EmptyObservable<T>(scheduler), <Observable<T>>this);
+    return concatStatic(new EmptyObservable<T>(scheduler), <Observable<T>>this);
   }
 }
