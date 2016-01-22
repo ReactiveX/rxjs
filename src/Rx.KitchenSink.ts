@@ -25,7 +25,7 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
 /* tslint:disable:no-use-before-declare */
 import './add/observable/combineLatest';
 import './add/operator/concat-static';
-import './add/operator/merge-static';
+import './add/observable/merge';
 import './add/observable/race';
 import './add/observable/bindCallback';
 import './add/observable/bindNodeCallback';
