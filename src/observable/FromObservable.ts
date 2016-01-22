@@ -8,7 +8,7 @@ import {Scheduler} from '../Scheduler';
 import {SymbolShim} from '../util/SymbolShim';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {ObserveOnSubscriber} from '../operator/observeOn-support';
+import {ObserveOnSubscriber} from '../operator/observeOn';
 
 export class FromObservable<T> extends Observable<T> {
   constructor(private ish: Observable<T> | Promise<T> | Iterator<T> | ArrayLike<T>, private scheduler: Scheduler) {
