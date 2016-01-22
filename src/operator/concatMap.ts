@@ -1,4 +1,4 @@
-import {MergeMapOperator} from './mergeMap-support';
+import {MergeMapOperator} from './mergeMap';
 import {Observable} from '../Observable';
 
 /**
