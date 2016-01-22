@@ -3,8 +3,8 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {InfiniteObservable} from '../../observable/InfiniteObservable';
+import {NeverObservable} from '../../observable/NeverObservable';
 
-Observable.never = InfiniteObservable.create;
+Observable.never = NeverObservable.create;
 
 export var _void: void;

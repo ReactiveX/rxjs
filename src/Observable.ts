@@ -32,7 +32,7 @@ import {IntervalObservable} from './observable/IntervalObservable';
 import {TimerObservable} from './observable/TimerObservable';
 import {raceStatic} from './operator/race';
 import {RangeObservable} from './observable/RangeObservable';
-import {InfiniteObservable} from './observable/InfiniteObservable';
+import {NeverObservable} from './observable/NeverObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
 import {AjaxCreationMethod} from './observable/dom/AjaxObservable';
 import {WebSocketSubject} from './observable/dom/WebSocketSubject';
@@ -174,7 +174,7 @@ export class Observable<T> implements CoreOperators<T>  {
   static fromPromise: typeof PromiseObservable.create;
   static interval: typeof IntervalObservable.create;
   static merge: typeof mergeStatic;
-  static never: typeof InfiniteObservable.create;
+  static never: typeof NeverObservable.create;
   static of: typeof ArrayObservable.of;
   static race: typeof raceStatic;
   static range: typeof RangeObservable.create;
