@@ -25,7 +25,7 @@ import './add/observable/never';
 import './add/observable/range';
 import './add/observable/throw';
 import './add/observable/timer';
-import './add/operator/zip-static';
+import './add/observable/zip';
 
 import './add/observable/dom/ajax';
 import './add/observable/dom/webSocket';

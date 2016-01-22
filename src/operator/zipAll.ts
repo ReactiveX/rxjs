@@ -1,4 +1,4 @@
-import {ZipOperator} from './zip-support';
+import {ZipOperator} from './zip';
 import {Observable} from '../Observable';
 
 export function zipAll<T, R>(project?: (...values: Array<any>) => R): Observable<R> {

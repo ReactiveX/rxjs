@@ -42,7 +42,7 @@ import './add/observable/never';
 import './add/observable/range';
 import './add/observable/throw';
 import './add/observable/timer';
-import './add/operator/zip-static';
+import './add/observable/zip';
 
 // Operators
 import './add/operator/buffer';
