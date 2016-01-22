@@ -78,7 +78,7 @@ describe('Observable', function () {
       Observable.of(1,2,3).forEach(function (x) {
         if (x === 3) {
           throw new Error('NO THREES!');
-        };
+        }
         results.push(x);
       })
       .then(done.fail, function (err) {

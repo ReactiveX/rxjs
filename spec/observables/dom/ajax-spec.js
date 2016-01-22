@@ -50,7 +50,7 @@ describe('Observable.ajax', function () {
           return res.response;
         }
       })
-      .subscribe(function(x) {
+      .subscribe(function (x) {
         result = x;
       }, null, function () {
         complete = true;
@@ -80,7 +80,7 @@ describe('Observable.ajax', function () {
           throw new Error('ha! ha! fooled you!');
         }
       })
-      .subscribe(function(x) {
+      .subscribe(function (x) {
         throw 'should not next';
       }, function (err) {
         error = err;
@@ -110,7 +110,7 @@ describe('Observable.ajax', function () {
           throw new Error('wokka wokka');
         }
       })
-      .subscribe(function(x) {
+      .subscribe(function (x) {
         throw 'should not next';
       }, function (err) {
         error = err;
@@ -131,7 +131,7 @@ describe('Observable.ajax', function () {
         url: '/flibbertyJibbet',
         responseType: 'text',
       })
-      .subscribe(function(x) {
+      .subscribe(function (x) {
         result = x;
       }, null, function () {
         complete = true;
@@ -182,7 +182,6 @@ describe('Observable.ajax', function () {
     expect(error.status).toBe(404);
   });
 
-
   it('should fail on 404', function () {
     var error;
 
@@ -230,9 +229,9 @@ describe('Observable.ajax', function () {
 
     expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
     XMLHttpRequest.mostRecent().respondWith({
-       'status': 200,
-       'contentType': 'text/plain',
-       'responseText': expected
+      'status': 200,
+      'contentType': 'text/plain',
+      'responseText': expected
     });
   });
 
@@ -253,9 +252,9 @@ describe('Observable.ajax', function () {
 
     expect(XMLHttpRequest.mostRecent().url).toBe('/flibbertyJibbet');
     XMLHttpRequest.mostRecent().respondWith({
-       'status': 500,
-       'contentType': 'text/plain',
-       'responseText': expected
+      'status': 500,
+      'contentType': 'text/plain',
+      'responseText': expected
     });
   });
 
@@ -267,7 +266,7 @@ describe('Observable.ajax', function () {
 
       Rx.Observable
         .ajax.get('/flibbertyJibbet')
-        .subscribe(function(x) {
+        .subscribe(function (x) {
           result = x;
         }, null, function () {
           complete = true;
@@ -287,10 +286,10 @@ describe('Observable.ajax', function () {
       expect(complete).toBe(true);
     });
 
-
     it('should succeed on 200 with a resultSelector', function () {
       var expected = { larf: 'hahahahaha' };
-      var result, innerResult;
+      var result;
+      var innerResult;
       var complete = false;
 
       Rx.Observable
@@ -298,7 +297,7 @@ describe('Observable.ajax', function () {
           innerResult = x;
           return x.response.larf.toUpperCase();
         })
-        .subscribe(function(x) {
+        .subscribe(function (x) {
           result = x;
         }, null , function () {
           complete = true;
@@ -327,7 +326,7 @@ describe('Observable.ajax', function () {
 
       Rx.Observable
         .ajax.post('/flibbertyJibbet', expected)
-        .subscribe(function(x) {
+        .subscribe(function (x) {
           result = x;
         }, null , function () {
           complete = true;
@@ -340,7 +339,7 @@ describe('Observable.ajax', function () {
       expect(request.requestHeaders).toEqual({
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      })
+      });
 
       request.respondWith({
         'status': 200,

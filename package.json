@@ -23,7 +23,7 @@
     "build_cover": "rm -rf dist/ && npm run lint && npm run build_cjs && npm run cover",
     "build_docs": "./docgen.sh",
     "lint_perf": "eslint perf/",
-    "lint_spec": "eslint spec/**/*.js",
+    "lint_spec": "eslint spec/",
     "lint_src": "tslint -c tslint.json src/*.ts src/**/*.ts src/**/**/*.ts",
     "lint": "npm run lint_src && npm run lint_spec && npm run lint_perf",
     "cover": "istanbul cover -x \"*-spec.js index.js *-helper.js spec/helpers/*\" ./node_modules/jasmine/bin/jasmine.js && npm run cover_remapping",
