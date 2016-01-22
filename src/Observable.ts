@@ -30,7 +30,7 @@ import {FromEventPatternObservable} from './observable/FromEventPatternObservabl
 import {PromiseObservable} from './observable/PromiseObservable';
 import {IntervalObservable} from './observable/IntervalObservable';
 import {TimerObservable} from './observable/TimerObservable';
-import {race as raceStatic} from './operator/race-static';
+import {raceStatic} from './operator/race';
 import {RangeObservable} from './observable/RangeObservable';
 import {InfiniteObservable} from './observable/InfiniteObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
