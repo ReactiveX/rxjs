@@ -14,7 +14,7 @@ import {toSubscriber} from './util/toSubscriber';
 import {tryCatch} from './util/tryCatch';
 import {errorObject} from './util/errorObject';
 
-import {combineLatest as combineLatestStatic} from './operator/combineLatest-static';
+import {combineLatestStatic} from './operator/combineLatest';
 import {concat as concatStatic} from './operator/concat-static';
 import {merge as mergeStatic} from './operator/merge-static';
 import {zipStatic} from './operator/zip';

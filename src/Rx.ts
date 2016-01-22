@@ -8,7 +8,7 @@ import {Observable} from './Observable';
 
 // statics
 /* tslint:disable:no-use-before-declare */
-import './add/operator/combineLatest-static';
+import './add/observable/combineLatest';
 import './add/operator/concat-static';
 import './add/operator/merge-static';
 import './add/observable/race';

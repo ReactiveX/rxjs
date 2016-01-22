@@ -1,4 +1,4 @@
-import {CombineLatestOperator} from './combineLatest-support';
+import {CombineLatestOperator} from './combineLatest';
 import {Observable} from '../Observable';
 
 /**
