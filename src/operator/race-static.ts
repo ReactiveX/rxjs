@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {ArrayObservable} from '../observable/fromArray';
+import {ArrayObservable} from '../observable/ArrayObservable';
 import {RaceOperator} from './race-support';
 import {isArray} from '../util/isArray';
 

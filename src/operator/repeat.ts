@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {EmptyObservable} from '../observable/empty';
+import {EmptyObservable} from '../observable/EmptyObservable';
 
 export function repeat<T>(count: number = -1): Observable<T> {
   if (count === 0) {

@@ -1,8 +1,8 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {ArrayObservable} from '../observable/fromArray';
+import {ArrayObservable} from '../observable/ArrayObservable';
 import {ScalarObservable} from '../observable/ScalarObservable';
-import {EmptyObservable} from '../observable/empty';
+import {EmptyObservable} from '../observable/EmptyObservable';
 import {concat} from './concat-static';
 import {isScheduler} from '../util/isScheduler';
 

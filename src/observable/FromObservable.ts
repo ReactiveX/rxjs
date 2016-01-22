@@ -1,8 +1,8 @@
 import {isArray} from '../util/isArray';
 import {isPromise} from '../util/isPromise';
-import {PromiseObservable} from './fromPromise';
+import {PromiseObservable} from './PromiseObservable';
 import {IteratorObservable} from'./IteratorObservable';
-import {ArrayObservable} from './fromArray';
+import {ArrayObservable} from './ArrayObservable';
 
 import {Scheduler} from '../Scheduler';
 import {SymbolShim} from '../util/SymbolShim';

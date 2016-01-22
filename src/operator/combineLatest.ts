@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {ArrayObservable} from '../observable/fromArray';
+import {ArrayObservable} from '../observable/ArrayObservable';
 import {CombineLatestOperator} from './combineLatest-support';
 import {isArray} from '../util/isArray';
 

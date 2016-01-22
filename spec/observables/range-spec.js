@@ -1,5 +1,5 @@
 var Rx = require('../../dist/cjs/Rx');
-var RangeObservable = require('../../dist/cjs/observable/range').RangeObservable;
+var RangeObservable = require('../../dist/cjs/observable/RangeObservable').RangeObservable;
 var Observable = Rx.Observable;
 var asap = Rx.Scheduler.asap;
 

@@ -3,7 +3,7 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {InfiniteObservable} from '../../observable/never';
+import {InfiniteObservable} from '../../observable/InfiniteObservable';
 
 Observable.never = InfiniteObservable.create;
 

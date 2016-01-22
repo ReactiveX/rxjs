@@ -126,7 +126,7 @@ import {AsapScheduler} from './scheduler/AsapScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
 import {AnimationFrameScheduler} from './scheduler/AnimationFrameScheduler';
 import {rxSubscriber} from './symbol/rxSubscriber';
-import {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observable/dom/ajax';
+import {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observable/dom/AjaxObservable';
 /* tslint:enable:no-unused-variable */
 
 /* tslint:disable:no-var-keyword */

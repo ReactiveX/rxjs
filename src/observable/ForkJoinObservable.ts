@@ -1,7 +1,7 @@
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {PromiseObservable} from './fromPromise';
-import {EmptyObservable} from './empty';
+import {PromiseObservable} from './PromiseObservable';
+import {EmptyObservable} from './EmptyObservable';
 import {isPromise} from '../util/isPromise';
 import {isArray} from '../util/isArray';
 

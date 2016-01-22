@@ -1,7 +1,7 @@
 /* globals describe, it, expect, expectObservable, rxTestScheduler */
-var ArrayObservable = require('../../dist/cjs/observable/fromArray').ArrayObservable;
+var ArrayObservable = require('../../dist/cjs/observable/ArrayObservable').ArrayObservable;
 var ScalarObservable = require('../../dist/cjs/observable/ScalarObservable').ScalarObservable;
-var EmptyObservable = require('../../dist/cjs/observable/empty').EmptyObservable;
+var EmptyObservable = require('../../dist/cjs/observable/EmptyObservable').EmptyObservable;
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 

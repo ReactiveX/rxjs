@@ -3,7 +3,7 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {TimerObservable} from '../../observable/timer';
+import {TimerObservable} from '../../observable/TimerObservable';
 
 Observable.timer = TimerObservable.create;
 

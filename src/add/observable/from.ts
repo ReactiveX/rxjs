@@ -3,7 +3,7 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {FromObservable} from '../../observable/from';
+import {FromObservable} from '../../observable/FromObservable';
 
 Observable.from = FromObservable.create;
 

@@ -3,7 +3,7 @@
  * Any manual edits to this file will be lost next time the script is run.
  **/
 import {Observable} from '../../Observable';
-import {ArrayObservable} from '../../observable/fromArray';
+import {ArrayObservable} from '../../observable/ArrayObservable';
 
 Observable.fromArray = ArrayObservable.create;
 Observable.of = ArrayObservable.of;
