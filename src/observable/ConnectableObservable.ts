@@ -5,19 +5,19 @@ import {Subscription} from '../Subscription';
 
 export class ConnectableObservable<T> extends Observable<T> {
 
-  subject: Subject<T>;
-  subscription: Subscription;
+  protected subject: Subject<T>;
+  protected subscription: Subscription;
 
-  constructor(public source: Observable<T>,
+  constructor(protected source: Observable<T>,
               protected subjectFactory: () => Subject<T>) {
     super();
   }
 
   protected _subscribe(subscriber: Subscriber<T>) {
-    return this._getSubject().subscribe(subscriber);
+    return this.getSubject().subscribe(subscriber);
   }
 
-  _getSubject() {
+  protected getSubject() {
     const subject = this.subject;
     if (subject && !subject.isUnsubscribed) {
       return subject;
@@ -31,13 +31,22 @@ export class ConnectableObservable<T> extends Observable<T> {
     if (subscription && !subscription.isUnsubscribed) {
       return subscription;
     }
-    subscription = source.subscribe(this._getSubject());
+    subscription = source.subscribe(this.getSubject());
     subscription.add(new ConnectableSubscription(this));
     return (this.subscription = subscription);
   }
 
   refCount(): Observable<T> {
     return new RefCountObservable(this);
+  }
+
+  /**
+   * This method is opened for `ConnectableSubscription`.
+   * Not to call from others.
+   */
+  _closeSubscription(): void {
+    this.subject = null;
+    this.subscription = null;
   }
 }
 
@@ -46,10 +55,9 @@ class ConnectableSubscription extends Subscription {
     super();
   }
 
-  _unsubscribe() {
+  protected _unsubscribe() {
     const connectable = this.connectable;
-    connectable.subject = null;
-    connectable.subscription = null;
+    connectable._closeSubscription();
     this.connectable = null;
   }
 }
@@ -62,7 +70,7 @@ class RefCountObservable<T> extends Observable<T> {
     super();
   }
 
-  _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: Subscriber<T>) {
     const connectable = this.connectable;
     const refCountSubscriber: RefCountSubscriber<T> = new RefCountSubscriber(subscriber, this);
     const subscription = connectable.subscribe(refCountSubscriber);
@@ -97,7 +105,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     this.destination.complete();
   }
 
-  _resetConnectable() {
+  private _resetConnectable() {
     const observable = this.refCountObservable;
     const obsConnection = observable.connection;
     const subConnection = this.connection;
@@ -109,7 +117,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  _unsubscribe() {
+  protected _unsubscribe() {
     const observable = this.refCountObservable;
     if (observable.refCount === 0) {
       return;
