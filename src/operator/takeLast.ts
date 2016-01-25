@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
-import {EmptyObservable} from '../observable/empty';
+import {EmptyObservable} from '../observable/EmptyObservable';
 import {Observable} from '../Observable';
 
 export function takeLast<T>(total: number): Observable<T> {
