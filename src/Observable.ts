@@ -204,6 +204,7 @@ export class Observable<T> implements CoreOperators<T>  {
   debounceTime: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
   defaultIfEmpty: <R>(defaultValue?: T | R) => Observable<T> | Observable<R>;
   delay: (delay: number, scheduler?: Scheduler) => Observable<T>;
+  delayWhen: (delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: Observable<any>) => Observable<T>;
   distinctUntilChanged: (compare?: (x: T, y: T) => boolean) => Observable<T>;
   do: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
   expand: <R>(project: (x: T, ix: number) => Observable<R>, concurrent: number, scheduler: Scheduler) => Observable<R>;
