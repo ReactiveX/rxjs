@@ -1,7 +1,4 @@
 import {isFunction} from './util/isFunction';
-import {tryCatch} from './util/tryCatch';
-import {errorObject} from './util/errorObject';
-
 import {Observer} from './Observer';
 import {Subscription} from './Subscription';
 import {rxSubscriber} from './symbol/rxSubscriber';
@@ -123,20 +120,23 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   next(value?: T): void {
     if (!this.isStopped && this._next) {
-      if (tryCatch(this._next).call(this._context, value) === errorObject) {
-        this.unsubscribe();
-        throw errorObject.e;
-      }
+      this.__tryOrUnsub(this._next, value);
+    }
+  }
+
+  __tryOrUnsub(fn: Function, value?: any): void {
+    try {
+      fn.call(this._context, value);
+    } catch (err) {
+      this.unsubscribe();
+      throw err;
     }
   }
 
   error(err?: any): void {
     if (!this.isStopped) {
       if (this._error) {
-        if (tryCatch(this._error).call(this._context, err) === errorObject) {
-          this.unsubscribe();
-          throw errorObject.e;
-        }
+        this.__tryOrUnsub(this._error, err);
       }
       this.unsubscribe();
     }
@@ -145,10 +145,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
   complete(): void {
     if (!this.isStopped) {
       if (this._complete) {
-          if (tryCatch(this._complete).call(this._context) === errorObject) {
-            this.unsubscribe();
-            throw errorObject.e;
-          }
+        this.__tryOrUnsub(this._complete);
       }
       this.unsubscribe();
     }
