@@ -113,7 +113,7 @@ export class Observable<T> implements CoreOperators<T>  {
     const subscriber = toSubscriber(observerOrNext, error, complete);
 
     if (operator) {
-      subscriber.add(this._subscribe(this.operator.call(subscriber)));
+      subscriber.add(this._subscribe(operator.call(subscriber)));
     } else {
       subscriber.add(this._subscribe(subscriber));
     }
