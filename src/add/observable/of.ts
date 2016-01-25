@@ -1,6 +1,3 @@
-/**
- * This file was created manually, hence not managed by the 'tools/generate-operator-patches.ts' script.
- **/
 import {Observable} from '../../Observable';
 import {ArrayObservable} from '../../observable/ArrayObservable';
 
