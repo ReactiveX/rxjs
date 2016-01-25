@@ -1,6 +1,7 @@
 /* globals describe, it, expect */
 var Rx = require('../dist/cjs/Rx');
 var Promise = require('promise');
+var Subscriber = Rx.Subscriber;
 var Observable = Rx.Observable;
 
 function expectFullObserver(val) {
@@ -118,6 +119,15 @@ describe('Observable', function () {
       expect(mutatedByComplete).toBe(true);
     });
 
+    it('should work when subscribe is called with no arguments', function () {
+      var source = new Observable(function (subscriber) {
+        subscriber.next('foo');
+        subscriber.complete();
+      });
+
+      source.subscribe();
+    });
+
     it('should return a Subscription that calls the unsubscribe function returned by the subscriber', function () {
       var unsubscribeCalled = false;
 
@@ -136,35 +146,127 @@ describe('Observable', function () {
       expect(unsubscribeCalled).toBe(true);
     });
 
+    it('should not run unsubscription logic when an error is thrown sending messages synchronously', function () {
+      var messageError = false;
+      var messageErrorValue = false;
+      var unsubscribeCalled = false;
+
+      var sub;
+      var source = new Observable(function (observer) {
+        observer.next('boo!');
+        return function () {
+          unsubscribeCalled = true;
+        };
+      });
+
+      try {
+        sub = source.subscribe(function (x) { throw x; });
+      } catch (e) {
+        messageError = true;
+        messageErrorValue = e;
+      }
+
+      expect(sub).toBe(undefined);
+      expect(unsubscribeCalled).toBe(false);
+      expect(messageError).toBe(true);
+      expect(messageErrorValue).toBe('boo!');
+    });
+
+    it('should dispose of the subscriber when an error is thrown sending messages synchronously', function () {
+      var messageError = false;
+      var messageErrorValue = false;
+      var unsubscribeCalled = false;
+
+      var sub;
+      var subscriber = new Subscriber(function (x) { throw x; });
+      var source = new Observable(function (observer) {
+        observer.next('boo!');
+        return function () {
+          unsubscribeCalled = true;
+        };
+      });
+
+      try {
+        sub = source.subscribe(subscriber);
+      } catch (e) {
+        messageError = true;
+        messageErrorValue = e;
+      }
+
+      expect(sub).toBe(undefined);
+      expect(subscriber.isUnsubscribed).toBe(true);
+      expect(unsubscribeCalled).toBe(false);
+      expect(messageError).toBe(true);
+      expect(messageErrorValue).toBe('boo!');
+    });
+
     describe('when called with an anonymous observer', function () {
-      it('should accept an anonymous observer with just a next function', function () {
-        Observable.of(1).subscribe({
+      it('should accept an anonymous observer with just a next function and call the next function in the context of the anonymous observer', function () {
+        var o = {
           next: function next(x) {
+            expect(this).toBe(o);
             expect(x).toBe(1);
           }
-        });
+        };
+        Observable.of(1).subscribe(o);
       });
 
-      it('should accept an anonymous observer with just an error function', function () {
-        Observable.throw('bad').subscribe({
+      it('should accept an anonymous observer with just an error function and call the error function in the context of the anonymous observer', function () {
+        var o = {
           error: function error(err) {
+            expect(this).toBe(o);
             expect(err).toBe('bad');
           }
-        });
+        };
+        Observable.throw('bad').subscribe(o);
       });
 
-      it('should accept an anonymous observer with just a complete function', function (done) {
-        Observable.empty().subscribe({
+      it('should accept an anonymous observer with just a complete function and call the complete function in the context of the anonymous observer', function (done) {
+        var o = {
           complete: function complete() {
+            expect(this).toBe(o);
             done();
           }
-        });
+        };
+        Observable.empty().subscribe(o);
       });
 
       it('should accept an anonymous observer with no functions at all', function () {
         expect(function testEmptyObject() {
           Observable.empty().subscribe({});
         }).not.toThrow();
+      });
+
+      it('should not run unsubscription logic when an error is thrown sending messages synchronously to an anonymous observer', function () {
+        var messageError = false;
+        var messageErrorValue = false;
+        var unsubscribeCalled = false;
+
+        var o = {
+          next: function next(x) {
+            expect(this).toBe(o);
+            throw x;
+          }
+        };
+        var sub;
+        var source = new Observable(function (observer) {
+          observer.next('boo!');
+          return function () {
+            unsubscribeCalled = true;
+          };
+        });
+
+        try {
+          sub = source.subscribe(o);
+        } catch (e) {
+          messageError = true;
+          messageErrorValue = e;
+        }
+
+        expect(sub).toBe(undefined);
+        expect(unsubscribeCalled).toBe(false);
+        expect(messageError).toBe(true);
+        expect(messageErrorValue).toBe('boo!');
       });
     });
   });
