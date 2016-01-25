@@ -1,6 +1,6 @@
-import {noop} from './util/noop';
-import {throwError} from './util/throwError';
-import {tryOrThrowError} from './util/tryOrThrowError';
+import {isFunction} from './util/isFunction';
+import {tryCatch} from './util/tryCatch';
+import {errorObject} from './util/errorObject';
 
 import {Observer} from './Observer';
 import {Subscription} from './Subscription';
@@ -12,26 +12,38 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
-    return new SafeSubscriber<T>(next, error, complete);
+    return new Subscriber(next, error, complete);
   }
 
   protected isStopped: boolean = false;
   protected destination: Observer<any>;
 
-  constructor(destination: Observer<any> = emptyObserver) {
+  constructor(destinationOrNext?: Observer<any> | ((value: T) => void),
+              error?: (e?: any) => void,
+              complete?: () => void) {
     super();
 
-    this.destination = destination;
-
-    if (!destination ||
-        (destination instanceof Subscriber) ||
-        (destination === emptyObserver)) {
-      return;
+    switch (arguments.length) {
+      case 0:
+        this.destination = emptyObserver;
+        break;
+      case 1:
+        if (!destinationOrNext) {
+          this.destination = emptyObserver;
+          break;
+        }
+        if (typeof destinationOrNext === 'object') {
+          if (destinationOrNext instanceof Subscriber) {
+            this.destination = (<Observer<any>> destinationOrNext);
+          } else {
+            this.destination = new SafeSubscriber<T>(this, <Observer<any>> destinationOrNext);
+          }
+          break;
+        }
+      default:
+        this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
+        break;
     }
-
-    if (typeof destination.next !== 'function') { destination.next = noop; }
-    if (typeof destination.error !== 'function') { destination.error = throwError; }
-    if (typeof destination.complete !== 'function') { destination.complete = noop; }
   }
 
   next(value?: T): void {
@@ -83,25 +95,48 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
 class SafeSubscriber<T> extends Subscriber<T> {
 
-  constructor(next?: (x?: T) => void,
+  private _context: any;
+
+  constructor(private _parent: Subscriber<T>,
+              observerOrNext?: Observer<T> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
-    this._next = (typeof next === 'function') && tryOrThrowError(next) || null;
-    this._error = (typeof error === 'function') && tryOrThrowError(error) || throwError;
-    this._complete = (typeof complete === 'function') && tryOrThrowError(complete) || null;
+
+    let next: ((value: T) => void);
+    let context: any = this;
+
+    if (isFunction(observerOrNext)) {
+      next = (<((value: T) => void)> observerOrNext);
+    } else if (observerOrNext) {
+      context = observerOrNext;
+      next = (<Observer<T>> observerOrNext).next;
+      error = (<Observer<T>> observerOrNext).error;
+      complete = (<Observer<T>> observerOrNext).complete;
+    }
+
+    this._context = context;
+    this._next = next;
+    this._error = error;
+    this._complete = complete;
   }
 
   next(value?: T): void {
     if (!this.isStopped && this._next) {
-      this._next(value);
+      if (tryCatch(this._next).call(this._context, value) === errorObject) {
+        this.unsubscribe();
+        throw errorObject.e;
+      }
     }
   }
 
   error(err?: any): void {
     if (!this.isStopped) {
       if (this._error) {
-        this._error(err);
+        if (tryCatch(this._error).call(this._context, err) === errorObject) {
+          this.unsubscribe();
+          throw errorObject.e;
+        }
       }
       this.unsubscribe();
     }
@@ -110,9 +145,19 @@ class SafeSubscriber<T> extends Subscriber<T> {
   complete(): void {
     if (!this.isStopped) {
       if (this._complete) {
-        this._complete();
+          if (tryCatch(this._complete).call(this._context) === errorObject) {
+            this.unsubscribe();
+            throw errorObject.e;
+          }
       }
       this.unsubscribe();
     }
+  }
+
+  protected _unsubscribe(): void {
+    const { _parent } = this;
+    this._context = null;
+    this._parent = null;
+    _parent.unsubscribe();
   }
 }

@@ -12,10 +12,8 @@ export function toSubscriber<T>(
       return (<Subscriber<T>> next);
     } else if (typeof next[rxSubscriber] === 'function') {
       return next[rxSubscriber]();
-    } else {
-      return new Subscriber(<Observer<T>> next);
     }
   }
 
-  return Subscriber.create(<((value: T) => void)> next, error, complete);
+  return new Subscriber(next, error, complete);
 }
