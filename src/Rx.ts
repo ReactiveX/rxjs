@@ -48,6 +48,7 @@ import './add/operator/debounce';
 import './add/operator/debounceTime';
 import './add/operator/defaultIfEmpty';
 import './add/operator/delay';
+import './add/operator/delayWhen';
 import './add/operator/distinctUntilChanged';
 import './add/operator/do';
 import './add/operator/expand';
