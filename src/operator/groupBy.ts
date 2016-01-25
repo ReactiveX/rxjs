@@ -7,6 +7,18 @@ import {FastMap} from '../util/FastMap';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+/**
+ * Groups the items emitted by an Observable according to a specified criterion,
+ * and emits these grouped items as `GroupedObservables`, one `GroupedObservable` per group.
+ *
+ * <img src="./img/groupBy.png" width="100%">
+ *
+ * @param {Function} keySelector - a function that extracts the key for each item
+ * @param {Function} elementSelector - a function that extracts the return element for each item
+ * @returns {Observable} an Observable that emits GroupedObservables, each of which corresponds
+ * to a unique key value and each of which emits those items from the source Observable that share
+ * that key value.
+ */
 export function groupBy<T, K, R>(keySelector: (value: T) => K,
                                  elementSelector?: (value: T) => R,
                                  durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>): GroupByObservable<T, K, R> {
