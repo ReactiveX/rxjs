@@ -295,3 +295,105 @@ describe('Observable.create', function () {
     expect(called).toBe(true);
   });
 });
+
+describe('Observable.lift', function () {
+  it('should be overrideable in a custom Observable type that composes', function (done) {
+    function MyCustomObservable() {
+      Observable.apply(this, arguments);
+    }
+    MyCustomObservable.prototype = Object.create(Observable.prototype);
+    MyCustomObservable.prototype.constructor = MyCustomObservable;
+    MyCustomObservable.prototype.lift = function (operator) {
+      var obs = new MyCustomObservable();
+      obs.source = this;
+      obs.operator = operator;
+      return obs;
+    };
+
+    var result = new MyCustomObservable(function (observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    }).map(function (x) { return 10 * x; });
+
+    expect(result instanceof MyCustomObservable).toBe(true);
+
+    var expected = [10, 20, 30];
+
+    result.subscribe(
+      function (x) {
+        expect(x).toBe(expected.shift());
+      },
+      done.fail,
+      done);
+  });
+
+  it('should allow injecting behaviors into all subscribers in an operator ' +
+  'chain when overriden', function (done) {
+    // The custom Subscriber
+    var log = [];
+    function LogSubscriber() {
+      Subscriber.apply(this, arguments);
+    }
+    LogSubscriber.prototype = Object.create(Subscriber.prototype);
+    LogSubscriber.prototype.constructor = LogSubscriber;
+    LogSubscriber.prototype.next = function (x) {
+      log.push('next ' + x);
+      this.destination.next(x);
+    };
+
+    // The custom Operator
+    function LogOperator(childOperator) {
+      this.childOperator = childOperator;
+    }
+    LogOperator.prototype.call = function (subscriber) {
+      return this.childOperator.call(new LogSubscriber(subscriber));
+    };
+
+    // The custom Observable
+    function LogObservable() {
+      Observable.apply(this, arguments);
+    }
+    LogObservable.prototype = Object.create(Observable.prototype);
+    LogObservable.prototype.constructor = LogObservable;
+    LogObservable.prototype.lift = function (operator) {
+      var obs = new LogObservable();
+      obs.source = this;
+      obs.operator = new LogOperator(operator);
+      return obs;
+    };
+
+    // Use the LogObservable
+    var result = new LogObservable(function (observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
+    .map(function (x) { return 10 * x; })
+    .filter(function (x) { return x > 15; })
+    .count();
+
+    expect(result instanceof LogObservable).toBe(true);
+
+    var expected = [2];
+
+    result.subscribe(
+      function (x) {
+        expect(x).toBe(expected.shift());
+      },
+      done.fail,
+      function () {
+        expect(log).toEqual([
+          'next 10', // map
+          'next 20', // map
+          'next 20', // filter
+          'next 30', // map
+          'next 30', // filter
+          'next 2' // count
+        ]);
+        done();
+      });
+  });
+});

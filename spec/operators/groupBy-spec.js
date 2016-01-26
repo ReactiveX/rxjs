@@ -1346,4 +1346,45 @@ describe('Observable.prototype.groupBy()', function () {
     expectObservable(source, unsub).toBe(expected, expectedGroups);
     expectSubscriptions(e1.subscriptions).toBe(expectedSubs);
   });
+
+  it('should not break lift() composability', function (done) {
+    function MyCustomObservable() {
+      Observable.apply(this, arguments);
+    }
+    MyCustomObservable.prototype = Object.create(Observable.prototype);
+    MyCustomObservable.prototype.constructor = MyCustomObservable;
+    MyCustomObservable.prototype.lift = function (operator) {
+      var obs = new MyCustomObservable();
+      obs.source = this;
+      obs.operator = operator;
+      return obs;
+    };
+
+    var result = new MyCustomObservable(function (observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    }).groupBy(
+      function (x) { return x % 2; },
+      function (x) { return x + '!'; }
+    );
+
+    expect(result instanceof MyCustomObservable).toBe(true);
+
+    var expectedGroups = [
+      { key: 1, values: ['1!', '3!'] },
+      { key: 0, values: ['2!'] }
+    ];
+
+    result
+      .subscribe(function (g) {
+        var expectedGroup = expectedGroups.shift();
+        expect(g.key).toBe(expectedGroup.key);
+
+        g.subscribe(function (x) {
+          expect(x).toBe(expectedGroup.values.shift());
+        });
+      }, done.fail, done);
+  });
 });
