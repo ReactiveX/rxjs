@@ -4,8 +4,6 @@ import {isArray} from '../util/isArray';
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {SymbolShim} from '../util/SymbolShim';
@@ -117,14 +115,8 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
       args.push(result.value);
     }
 
-    const project = this.project;
-    if (project) {
-      let result = tryCatch(project).apply(this, args);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        destination.next(result);
-      }
+    if (this.project) {
+      this._tryProject(args);
     } else {
       destination.next(args);
     }
@@ -132,6 +124,17 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     if (shouldComplete) {
       destination.complete();
     }
+  }
+
+  protected _tryProject(args: any[]) {
+    let result: any;
+    try {
+      result = this.project.apply(this, args);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.destination.next(result);
   }
 }
 
