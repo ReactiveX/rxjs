@@ -1,8 +1,6 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
 
 /**
@@ -41,34 +39,55 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  protected _next(value: T): void {
-    const { destination, predicate, resultSelector } = this;
+  next(value: T): void {
     const index = this.index++;
-    let passed: any = true;
-    if (predicate) {
-      passed = tryCatch(predicate)(value, index, this.source);
-      if (passed === errorObject) {
-        destination.error(errorObject.e);
-        return;
-      }
-    }
-    if (passed) {
-      if (resultSelector) {
-        let result = tryCatch(resultSelector)(value, index);
-        if (result === errorObject) {
-          destination.error(errorObject.e);
-          return;
-        }
-        destination.next(result);
-      } else {
-        destination.next(value);
-      }
-      destination.complete();
-      this.hasCompleted = true;
+    if (this.predicate) {
+      this._tryPredicate(value, index);
+    } else {
+      this._emit(value, index);
     }
   }
 
-  protected _complete(): void {
+  private _tryPredicate(value: T, index: number) {
+    let result: any;
+    try {
+      result = this.predicate(value, index, this.source);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    if (result) {
+      this._emit(value, index);
+    }
+  }
+
+  private _emit(value: any, index: number) {
+    if (this.resultSelector) {
+      this._tryResultSelector(value, index);
+      return;
+    }
+    this._emitFinal(value);
+  }
+
+  private _tryResultSelector(value: T, index: number) {
+    let result: any;
+    try {
+      result = this.resultSelector(value, index);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this._emitFinal(result);
+  }
+
+  private _emitFinal(value: any) {
+    const destination = this.destination
+    destination.next(value);
+    destination.complete();
+    this.hasCompleted = true;
+  }
+
+  complete(): void {
     const destination = this.destination;
     if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
       destination.next(this.defaultValue);
