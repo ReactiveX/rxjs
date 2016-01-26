@@ -1,8 +1,6 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
 
 /**
@@ -53,37 +51,51 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  protected _next(value: T): void {
-    const { predicate, resultSelector, destination } = this;
+  next(value: T): void {
     const index = this.index++;
-
-    if (predicate) {
-      let found = tryCatch(predicate)(value, index, this.source);
-      if (found === errorObject) {
-        destination.error(errorObject.e);
+    if (this.predicate) {
+      this._tryPredicate(value, index);
+    } else {
+      if (this.resultSelector) {
+        this._tryResultSelector(value, index);
         return;
       }
-
-      if (found) {
-        if (resultSelector) {
-          let result = tryCatch(resultSelector)(value, index);
-          if (result === errorObject) {
-            destination.error(errorObject.e);
-            return;
-          }
-          this.lastValue = result;
-        } else {
-          this.lastValue = value;
-        }
-        this.hasValue = true;
-      }
-    } else {
       this.lastValue = value;
       this.hasValue = true;
     }
   }
 
-  protected _complete(): void {
+  private _tryPredicate(value: T, index: number) {
+    let result: any;
+    try {
+      result = this.predicate(value, index, this.source);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    if (result) {
+      if (this.resultSelector) {
+        this._tryResultSelector(value, index);
+        return;
+      }
+      this.lastValue = value;
+      this.hasValue = true;
+    }
+  }
+
+  private _tryResultSelector(value: T, index: number) {
+    let result: any;
+    try {
+      result = this.resultSelector(value, index);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.lastValue = result;
+    this.hasValue = true;
+  }
+
+  complete(): void {
     const destination = this.destination;
     if (this.hasValue) {
       destination.next(this.lastValue);
