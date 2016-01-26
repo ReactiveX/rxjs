@@ -81,7 +81,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   }
 
   private _emitFinal(value: any) {
-    const destination = this.destination
+    const destination = this.destination;
     destination.next(value);
     destination.complete();
     this.hasCompleted = true;
