@@ -1,8 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Similar to the well known `Array.prototype.map` function, this operator
@@ -32,19 +30,23 @@ class MapOperator<T, R> implements Operator<T, R> {
 
 class MapSubscriber<T, R> extends Subscriber<T> {
   count: number = 0;
+  private thisArg: any;
 
   constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => R,
-              private thisArg: any) {
+              thisArg: any) {
     super(destination);
+    this.thisArg = thisArg || this;
   }
 
-  protected _next(x: T) {
-    const result = tryCatch(this.project).call(this.thisArg || this, x, this.count++);
-    if (result === errorObject) {
-      this.error(errorObject.e);
-    } else {
-      this.destination.next(result);
+  next(value: T) {
+    let result: any;
+    try {
+      result = this.project.call(this.thisArg, value, this.count++);
+    } catch (err) {
+      this.destination.error(err);
+      return;
     }
+    this.destination.next(result);
   }
 }
