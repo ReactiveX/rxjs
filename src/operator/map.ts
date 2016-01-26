@@ -39,6 +39,8 @@ class MapSubscriber<T, R> extends Subscriber<T> {
     this.thisArg = thisArg || this;
   }
 
+  // NOTE: This looks unoptimized, but it's actually purposefully NOT
+  // using try/catch optimizations.
   next(value: T) {
     let result: any;
     try {
