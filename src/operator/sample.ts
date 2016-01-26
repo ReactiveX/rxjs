@@ -3,6 +3,7 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
@@ -43,7 +44,9 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.hasValue = true;
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     this.emitValue();
   }
 

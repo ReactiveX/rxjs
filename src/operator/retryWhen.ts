@@ -7,6 +7,7 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
@@ -92,7 +93,9 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.retries = null;
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
 
     const { errors, retries, retriesSubscription } = this;
     this.errors = null;

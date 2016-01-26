@@ -6,6 +6,7 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 
 export function mergeScan<T, R>(project: (acc: R, value: T) => Observable<R>,
                                 seed: R,
@@ -70,7 +71,9 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     const { destination } = this;
     this.acc = innerValue;
     this.hasValue = true;

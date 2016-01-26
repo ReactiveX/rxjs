@@ -3,6 +3,7 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export function takeUntil<T>(notifier: Observable<any>): Observable<T> {
@@ -26,7 +27,9 @@ class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(subscribeToResult(this, notifier));
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     this.complete();
   }
 

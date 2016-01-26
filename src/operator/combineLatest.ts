@@ -6,6 +6,7 @@ import {isScheduler} from '../util/isScheduler';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
@@ -116,9 +117,11 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(observable: any, value: R, outerIndex: number, innerIndex: number) {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     const values = this.values;
-    values[outerIndex] = value;
+    values[outerIndex] = innerValue;
     const toRespond = this.toRespond;
 
     if (toRespond.length > 0) {
