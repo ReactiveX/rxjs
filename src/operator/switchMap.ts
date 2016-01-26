@@ -2,8 +2,6 @@ import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
@@ -46,19 +44,24 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  protected _next(value: T): void {
+  next(value: T) {
+    let result: any;
     const index = this.index++;
-    const destination = this.destination;
-    let result = tryCatch(this.project)(value, index);
-    if (result === errorObject) {
-      destination.error(errorObject.e);
-    } else {
-      const innerSubscription = this.innerSubscription;
-      if (innerSubscription) {
-        innerSubscription.unsubscribe();
-      }
-      this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
+    try {
+      result = this.project(value, index);
+    } catch (error) {
+      this.destination.error(error);
+      return;
     }
+    this._innerSub(result, value, index);
+  }
+
+  private _innerSub(result: any, value: T, index: number) {
+    const innerSubscription = this.innerSubscription;
+    if (innerSubscription) {
+      innerSubscription.unsubscribe();
+    }
+    this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
   }
 
   protected _complete(): void {
@@ -81,16 +84,21 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
 
   notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
-    const { resultSelector, destination } = this;
-    if (resultSelector) {
-      const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        destination.next(result);
-      }
+    if (this.resultSelector) {
+      this._tryNotifyNext(outerValue, innerValue, outerIndex, innerIndex);
     } else {
-      destination.next(innerValue);
+      this.destination.next(innerValue);
     }
+  }
+
+  _tryNotifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+    let result: any;
+    try {
+      result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.destination.next(result);
   }
 }
