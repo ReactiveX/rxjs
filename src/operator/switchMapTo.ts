@@ -5,6 +5,7 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export function switchMapTo<T, R, R2>(observable: Observable<R>,
@@ -63,7 +64,9 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
       const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);

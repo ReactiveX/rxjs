@@ -3,6 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
@@ -53,7 +54,9 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(): void {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     this.hasValue = true;
   }
 

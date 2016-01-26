@@ -4,6 +4,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 
 /**
  * Returns an Observable that emits items based on applying a function that you supply to each item emitted by the
@@ -80,7 +81,9 @@ export class MergeMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     if (this.resultSelector) {
       this._notifyResultSelector(outerValue, innerValue, outerIndex, innerIndex);
     } else {

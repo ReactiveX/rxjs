@@ -8,16 +8,16 @@ export class InnerSubscriber<T, R> extends Subscriber<R> {
     super();
   }
 
-  protected _next(value: R) {
-    this.parent.notifyNext(this.outerValue, value, this.outerIndex, this.index++);
+  protected _next(value: R): void {
+    this.parent.notifyNext(this.outerValue, value, this.outerIndex, this.index++, this);
   }
 
-  protected _error(error: any) {
+  protected _error(error: any): void {
     this.parent.notifyError(error, this);
     this.unsubscribe();
   }
 
-  protected _complete() {
+  protected _complete(): void {
     this.parent.notifyComplete(this);
     this.unsubscribe();
   }

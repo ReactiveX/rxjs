@@ -2,6 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
@@ -62,11 +63,13 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(observable: any, value: any, observableIndex: number, index: number) {
-    this.values[observableIndex] = value;
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
+    this.values[outerIndex] = innerValue;
     const toRespond = this.toRespond;
     if (toRespond.length > 0) {
-      const found = toRespond.indexOf(observableIndex);
+      const found = toRespond.indexOf(outerIndex);
       if (found !== -1) {
         toRespond.splice(found, 1);
       }

@@ -5,6 +5,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
@@ -79,7 +80,9 @@ export class RaceSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(observable: any, value: R, outerIndex: number): void {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     if (!this.hasFirst) {
       this.hasFirst = true;
 
@@ -95,6 +98,6 @@ export class RaceSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.subscriptions = null;
     }
 
-    this.destination.next(value);
+    this.destination.next(innerValue);
   }
 }

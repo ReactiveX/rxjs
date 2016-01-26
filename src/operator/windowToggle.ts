@@ -8,6 +8,7 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export function windowToggle<T, O>(openings: Observable<O>,
@@ -102,7 +103,9 @@ class WindowToggleSubscriber<T, R, O> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: any, innerValue: any, outerIndex: number, innerIndex: number): void {
+  notifyNext(outerValue: any, innerValue: any,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
 
     if (outerValue === this.openings) {
 

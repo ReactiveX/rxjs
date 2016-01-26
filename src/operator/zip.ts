@@ -5,6 +5,7 @@ import {Operator} from '../Operator';
 import {Observer} from '../Observer';
 import {Subscriber} from '../Subscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {SymbolShim} from '../util/SymbolShim';
 
@@ -237,7 +238,9 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
     }
   }
 
-  notifyNext(outerValue: any, innerValue: any, outerIndex: number, innerIndex: number) {
+  notifyNext(outerValue: T, innerValue: any,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     this.buffer.push(innerValue);
     this.parent.checkIterators();
   }
