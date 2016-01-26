@@ -1,8 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
@@ -39,15 +37,22 @@ class CatchSubscriber<T> extends Subscriber<T> {
 
   error(err: any) {
     if (!this.isStopped) {
-      const result = tryCatch(this.selector)(err, this.caught);
-      if (result === errorObject) {
-        super.error(errorObject.e);
-      } else {
-        const { destination } = this;
-        this.unsubscribe();
-        (<any> destination).remove(this);
-        result.subscribe(this.destination);
+      let result: any;
+
+      try {
+        result = this.selector(err, this.caught);
+      } catch (err) {
+        this.destination.error(err);
+        return;
       }
+
+      this._innerSub(result);
     }
+  }
+
+  private _innerSub(result: Observable<any>) {
+    this.unsubscribe();
+    (<any>this.destination).remove(this);
+    result.subscribe(this.destination);
   }
 }
