@@ -1,7 +1,5 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {Observable} from '../Observable';
 
 /**
@@ -35,12 +33,17 @@ class FilterSubscriber<T> extends Subscriber<T> {
     this.select = select;
   }
 
-  protected _next(x: T) {
-    const result = tryCatch(this.select).call(this.thisArg || this, x, this.count++);
-    if (result === errorObject) {
-      this.destination.error(errorObject.e);
-    } else if (Boolean(result)) {
-      this.destination.next(x);
+  // the try catch block below is left specifically for
+  // optimization and perf reasons. a tryCatcher is not necessary here.
+  next(value: T) {
+    let result: any;
+    try {
+      result = this.select.call(this.thisArg, value, this.count++);
+    } catch (err) {
+      this.destination.error(err);
+    }
+    if (result) {
+      this.destination.next(value);
     }
   }
 }
