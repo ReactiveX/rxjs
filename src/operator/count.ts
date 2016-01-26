@@ -3,9 +3,6 @@ import {Operator} from '../Operator';
 import {Observer} from '../Observer';
 import {Subscriber} from '../Subscriber';
 
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-
 /**
  * Returns an observable of a single number that represents the number of items that either:
  * Match a provided predicate function, _or_ if a predicate is not provided, the number
@@ -43,22 +40,30 @@ class CountSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  protected _next(value: T): void {
-    const predicate = this.predicate;
-    let passed: any = true;
-    if (predicate) {
-      passed = tryCatch(predicate)(value, this.index++, this.source);
-      if (passed === errorObject) {
-        this.destination.error(passed.e);
-        return;
-      }
-    }
-    if (passed) {
-      this.count += 1;
+  next(value: T): void {
+    if (this.predicate) {
+      this._tryPredicate(value);
+    } else {
+      this.count++;
     }
   }
 
-  protected _complete(): void {
+  private _tryPredicate(value: T) {
+    let result: any;
+
+    try {
+      result = this.predicate(value, this.index++, this.source);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+
+    if (result) {
+      this.count++;
+    }
+  }
+
+  complete(): void {
     this.destination.next(this.count);
     this.destination.complete();
   }
