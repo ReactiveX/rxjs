@@ -1,8 +1,6 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Returns an Observable that applies a specified accumulator function to the first item emitted by a source Observable,
@@ -48,21 +46,27 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
     this.hasSeed = typeof seed !== 'undefined';
   }
 
-  protected _next(x: T) {
+  next(value: T) {
     if (this.hasValue || (this.hasValue = this.hasSeed)) {
-      const result = tryCatch(this.project).call(this, this.acc, x);
-      if (result === errorObject) {
-        this.destination.error(errorObject.e);
-      } else {
-        this.acc = result;
-      }
+      this._tryReduce(value);
     } else {
-      this.acc = x;
+      this.acc = value;
       this.hasValue = true;
     }
   }
 
-  protected _complete() {
+  private _tryReduce(value: T) {
+    let result: any;
+    try {
+      result = this.project(<R>this.acc, value);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.acc = result;
+  }
+
+  complete() {
     if (this.hasValue || this.hasSeed) {
       this.destination.next(this.acc);
     }
