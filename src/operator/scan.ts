@@ -1,8 +1,6 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Returns an Observable that applies a specified accumulator function to each item emitted by the source Observable.
@@ -49,18 +47,23 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
     this.accumulatorSet = typeof seed !== 'undefined';
   }
 
-  protected _next(value: T): void {
+  next(value: T): void {
     if (!this.accumulatorSet) {
       this.seed = value;
       this.destination.next(value);
     } else {
-      const result = tryCatch(this.accumulator).call(this, this.seed, value);
-      if (result === errorObject) {
-        this.destination.error(errorObject.e);
-      } else {
-        this.seed = result;
-        this.destination.next(this.seed);
-      }
+      return this._tryNext(value);
     }
+  }
+
+  private _tryNext(value: T): void {
+    let result: any;
+    try {
+      result = this.accumulator(<R>this.seed, value);
+    } catch (err) {
+      this.destination.error(err);
+    }
+    this.seed = result;
+    this.destination.next(result);
   }
 }

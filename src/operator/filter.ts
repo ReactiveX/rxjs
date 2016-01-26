@@ -41,6 +41,7 @@ class FilterSubscriber<T> extends Subscriber<T> {
       result = this.select.call(this.thisArg, value, this.count++);
     } catch (err) {
       this.destination.error(err);
+      return;
     }
     if (result) {
       this.destination.next(value);
