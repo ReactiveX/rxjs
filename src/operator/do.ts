@@ -3,8 +3,6 @@ import {Observer} from '../Observer';
 import {Subscriber} from '../Subscriber';
 
 import {noop} from '../util/noop';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {Observable} from '../Observable';
 
 /**
@@ -58,30 +56,35 @@ class DoSubscriber<T> extends Subscriber<T> {
     this.__complete = complete;
   }
 
-  protected _next(x: T) {
-    const result = tryCatch(this.__next)(x);
-    if (result === errorObject) {
-      this.destination.error(errorObject.e);
-    } else {
-      this.destination.next(x);
+  // NOTE: important, all try catch blocks below are there for performance
+  // reasons. tryCatcher approach does not benefit this operator.
+  protected _next(value: T) {
+    try {
+      this.__next(value);
+    } catch (err) {
+      this.destination.error(err);
+      return;
     }
+    this.destination.next(value);
   }
 
-  protected _error(e: any) {
-    const result = tryCatch(this.__error)(e);
-    if (result === errorObject) {
-      this.destination.error(errorObject.e);
-    } else {
-      this.destination.error(e);
+  protected _error(err: any) {
+    try {
+      this.__error(err);
+    } catch (err) {
+      this.destination.error(err);
+      return;
     }
+    this.destination.error(err);
   }
 
   protected _complete() {
-    const result = tryCatch(this.__complete)();
-    if (result === errorObject) {
-      this.destination.error(errorObject.e);
-    } else {
-      this.destination.complete();
+    try {
+      this.__complete();
+    } catch (err) {
+      this.destination.error(err);
+      return;
     }
+    this.destination.complete();
   }
 }
