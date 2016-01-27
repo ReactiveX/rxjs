@@ -3,9 +3,6 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -34,7 +31,6 @@ class DebounceOperator<T> implements Operator<T, T> {
 }
 
 class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
-
   private value: T;
   private hasValue: boolean = false;
   private durationSubscription: Subscription = null;
@@ -44,29 +40,36 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  protected _next(value: T) {
-    let subscription = this.durationSubscription;
-    const duration = tryCatch(this.durationSelector)(value);
+  protected _next(value: T): void {
+    try {
+      const result = this.durationSelector.call(this, value);
 
-    if (duration === errorObject) {
-      this.destination.error(errorObject.e);
-    } else {
-      this.value = value;
-      this.hasValue = true;
-      if (subscription) {
-        subscription.unsubscribe();
-        this.remove(subscription);
+      if (result) {
+        this._tryNext(value, result);
       }
-      subscription = subscribeToResult(this, duration);
-      if (!subscription.isUnsubscribed) {
-        this.add(this.durationSubscription = subscription);
-      }
+    } catch (err) {
+      this.destination.error(err);
     }
   }
 
-  protected _complete() {
+  protected _complete(): void {
     this.emitValue();
     this.destination.complete();
+  }
+
+  private _tryNext(value: T, duration: Observable<number> | Promise<number>): void {
+    let subscription = this.durationSubscription;
+    this.value = value;
+    this.hasValue = true;
+    if (subscription) {
+      subscription.unsubscribe();
+      this.remove(subscription);
+    }
+
+    subscription = subscribeToResult(this, duration);
+    if (!subscription.isUnsubscribed) {
+      this.add(this.durationSubscription = subscription);
+    }
   }
 
   notifyNext(outerValue: T, innerValue: R,
@@ -79,7 +82,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.emitValue();
   }
 
-  emitValue() {
+  emitValue(): void {
     if (this.hasValue) {
       const value = this.value;
       const subscription = this.durationSubscription;
