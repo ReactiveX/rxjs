@@ -88,7 +88,7 @@ export class Subscription {
         if (sub.isUnsubscribed || typeof sub.unsubscribe !== 'function') {
           break;
         } else if (this.isUnsubscribed) {
-            sub.unsubscribe();
+          sub.unsubscribe();
         } else {
           ((<any> this)._subscriptions || ((<any> this)._subscriptions = [])).push(sub);
         }
