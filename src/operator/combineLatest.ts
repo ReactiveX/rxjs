@@ -5,8 +5,6 @@ import {Scheduler} from '../Scheduler';
 import {isScheduler} from '../util/isScheduler';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
@@ -131,19 +129,22 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
 
     if (toRespond.length === 0) {
-      const project = this.project;
-      const destination = this.destination;
-
-      if (project) {
-        const result = tryCatch(project).apply(this, values);
-        if (result === errorObject) {
-          destination.error(errorObject.e);
-        } else {
-          destination.next(result);
-        }
+      if (this.project) {
+        this._tryProject(values);
       } else {
-        destination.next(values);
+        this.destination.next(values);
       }
     }
+  }
+
+  private _tryProject(values: any[]) {
+    let result: any;
+    try {
+      result = this.project.apply(this, values);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.destination.next(result);
   }
 }
