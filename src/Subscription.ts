@@ -1,6 +1,8 @@
 import {isArray} from './util/isArray';
 import {isObject} from './util/isObject';
 import {isFunction} from './util/isFunction';
+import {tryCatch} from './util/tryCatch';
+import {errorObject} from './util/errorObject';
 
 export class Subscription {
   public static EMPTY: Subscription = (function(empty: any){
@@ -17,6 +19,8 @@ export class Subscription {
   }
 
   unsubscribe(): void {
+    let hasErrors = false;
+    let errors: any[];
 
     if (this.isUnsubscribed) {
       return;
@@ -29,7 +33,11 @@ export class Subscription {
     (<any> this)._subscriptions = null;
 
     if (isFunction(_unsubscribe)) {
-      _unsubscribe.call(this);
+      let trial = tryCatch(_unsubscribe).call(this);
+      if (trial === errorObject) {
+        hasErrors = true;
+        (errors = errors || []).push(errorObject.e);
+      }
     }
 
     if (isArray(_subscriptions)) {
@@ -38,11 +46,25 @@ export class Subscription {
       const len = _subscriptions.length;
 
       while (++index < len) {
-        const subscription = _subscriptions[index];
-        if (isObject(subscription)) {
-          subscription.unsubscribe();
+        const sub = _subscriptions[index];
+        if (isObject(sub)) {
+          let trial = tryCatch(sub.unsubscribe).call(sub);
+          if (trial === errorObject) {
+            hasErrors = true;
+            errors = errors || [];
+            let err = errorObject.e;
+            if (err instanceof UnsubscriptionError) {
+              errors = errors.concat(err.errors);
+            } else {
+              errors.push(err);
+            }
+          }
         }
       }
+    }
+
+    if (hasErrors) {
+      throw new UnsubscriptionError(errors);
     }
   }
 
@@ -96,5 +118,12 @@ export class Subscription {
         subscriptions.splice(subscriptionIndex, 1);
       }
     }
+  }
+}
+
+export class UnsubscriptionError extends Error {
+  constructor(public errors: any[]) {
+    super('unsubscriptoin error(s)');
+    this.name = 'UnsubscriptionError';
   }
 }
