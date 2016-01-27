@@ -1,8 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
@@ -81,20 +79,23 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   protected _next(value: T) {
     if (this.toRespond.length === 0) {
-      const values = this.values;
-      const destination = this.destination;
-      const project = this.project;
-      const args = [value, ...values];
-      if (project) {
-        let result = tryCatch(this.project).apply(this, args);
-        if (result === errorObject) {
-          destination.error(result.e);
-        } else {
-          destination.next(result);
-        }
+      const args = [value, ...this.values];
+      if (this.project) {
+        this._tryProject(args);
       } else {
-        destination.next(args);
+        this.destination.next(args);
       }
     }
+  }
+
+  private _tryProject(args: any[]) {
+    let result: any;
+    try {
+      result = this.project.apply(this, args);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.destination.next(result);
   }
 }
