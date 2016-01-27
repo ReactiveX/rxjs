@@ -44,7 +44,7 @@ class SwitchMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  next(value: T) {
+  protected _next(value: T) {
     let result: any;
     const index = this.index++;
     try {

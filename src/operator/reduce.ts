@@ -46,7 +46,7 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
     this.hasSeed = typeof seed !== 'undefined';
   }
 
-  next(value: T) {
+  protected _next(value: T) {
     if (this.hasValue || (this.hasValue = this.hasSeed)) {
       this._tryReduce(value);
     } else {
@@ -66,7 +66,7 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
     this.acc = result;
   }
 
-  complete() {
+  protected _complete() {
     if (this.hasValue || this.hasSeed) {
       this.destination.next(this.acc);
     }

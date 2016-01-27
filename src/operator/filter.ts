@@ -35,7 +35,7 @@ class FilterSubscriber<T> extends Subscriber<T> {
 
   // the try catch block below is left specifically for
   // optimization and perf reasons. a tryCatcher is not necessary here.
-  next(value: T) {
+  protected _next(value: T) {
     let result: any;
     try {
       result = this.select.call(this.thisArg, value, this.count++);

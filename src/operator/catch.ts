@@ -35,6 +35,8 @@ class CatchSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
+  // NOTE: overriding `error` instead of `_error` because we don't want
+  // to have this flag this subscriber as `isStopped`.
   error(err: any) {
     if (!this.isStopped) {
       let result: any;

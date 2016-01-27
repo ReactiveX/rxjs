@@ -51,7 +51,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     }
   }
 
-  next(value: T): void {
+  protected _next(value: T): void {
     const index = this.index++;
     if (this.predicate) {
       this._tryPredicate(value, index);
@@ -95,7 +95,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     this.hasValue = true;
   }
 
-  complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
     if (this.hasValue) {
       destination.next(this.lastValue);

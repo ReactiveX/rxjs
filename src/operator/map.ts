@@ -41,7 +41,7 @@ class MapSubscriber<T, R> extends Subscriber<T> {
 
   // NOTE: This looks unoptimized, but it's actually purposefully NOT
   // using try/catch optimizations.
-  next(value: T) {
+  protected _next(value: T) {
     let result: any;
     try {
       result = this.project.call(this.thisArg, value, this.count++);

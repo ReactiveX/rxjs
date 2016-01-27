@@ -40,7 +40,7 @@ class CountSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  next(value: T): void {
+  protected _next(value: T): void {
     if (this.predicate) {
       this._tryPredicate(value);
     } else {
@@ -63,7 +63,7 @@ class CountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  complete(): void {
+  protected _complete(): void {
     this.destination.next(this.count);
     this.destination.complete();
   }

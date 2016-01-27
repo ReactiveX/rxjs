@@ -39,7 +39,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     super(destination);
   }
 
-  next(value: T): void {
+  protected _next(value: T): void {
     const index = this.index++;
     if (this.predicate) {
       this._tryPredicate(value, index);
@@ -87,7 +87,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     this.hasCompleted = true;
   }
 
-  complete(): void {
+  protected _complete(): void {
     const destination = this.destination;
     if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
       destination.next(this.defaultValue);

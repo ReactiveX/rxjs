@@ -47,7 +47,7 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
     this.accumulatorSet = typeof seed !== 'undefined';
   }
 
-  next(value: T): void {
+  protected _next(value: T): void {
     if (!this.accumulatorSet) {
       this.seed = value;
       this.destination.next(value);
