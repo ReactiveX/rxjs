@@ -7,12 +7,15 @@ import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+
 export function windowWhen<T>(closingSelector: () => Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowOperator(closingSelector));
 }
 
 class WindowOperator<T> implements Operator<T, Observable<T>> {
-
   constructor(private closingSelector: () => Observable<any>) {
   }
 
@@ -21,7 +24,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
   }
 }
 
-class WindowSubscriber<T> extends Subscriber<T> {
+class WindowSubscriber<T, R> extends OuterSubscriber<T, R> {
   private window: Subject<T>;
   private closingNotification: Subscription;
 
@@ -31,39 +34,46 @@ class WindowSubscriber<T> extends Subscriber<T> {
     this.openWindow();
   }
 
-  protected _next(value: T) {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
+    this.openWindow(innerSub);
+  }
+
+  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+    this._error(error);
+  }
+
+  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+    this.openWindow(innerSub);
+  }
+
+  protected _next(value: T): void {
     this.window.next(value);
   }
 
-  protected _error(err: any) {
+  protected _error(err: any): void {
     this.window.error(err);
     this.destination.error(err);
-    this._unsubscribeClosingNotification();
+    this.unsubscribeClosingNotification();
   }
 
-  protected _complete() {
+  protected _complete(): void {
     this.window.complete();
     this.destination.complete();
-    this._unsubscribeClosingNotification();
+    this.unsubscribeClosingNotification();
   }
 
-  unsubscribe() {
-    super.unsubscribe();
-    this._unsubscribeClosingNotification();
-  }
-
-  _unsubscribeClosingNotification() {
-    let closingNotification = this.closingNotification;
-    if (closingNotification) {
-      closingNotification.unsubscribe();
+  private unsubscribeClosingNotification(): void {
+    if (this.closingNotification) {
+      this.closingNotification.unsubscribe();
     }
   }
 
-  openWindow() {
-    const prevClosingNotification = this.closingNotification;
-    if (prevClosingNotification) {
-      this.remove(prevClosingNotification);
-      prevClosingNotification.unsubscribe();
+  private openWindow(innerSub: InnerSubscriber<T, R> = null): void {
+    if (innerSub) {
+      this.remove(innerSub);
+      innerSub.unsubscribe();
     }
 
     const prevWindow = this.window;
@@ -80,28 +90,8 @@ class WindowSubscriber<T> extends Subscriber<T> {
       this.destination.error(err);
       this.window.error(err);
     } else {
-      const closingNotification = this.closingNotification = new Subscription();
-      closingNotification.add(closingNotifier.subscribe(new WindowClosingNotifierSubscriber(this)));
-      this.add(closingNotification);
+      this.add(this.closingNotification = subscribeToResult(this, closingNotifier));
       this.add(window);
     }
-  }
-}
-
-class WindowClosingNotifierSubscriber extends Subscriber<any> {
-  constructor(private parent: WindowSubscriber<any>) {
-    super();
-  }
-
-  protected _next() {
-    this.parent.openWindow();
-  }
-
-  protected _error(err: any) {
-    this.parent.error(err);
-  }
-
-  protected _complete() {
-    this.parent.openWindow();
   }
 }
