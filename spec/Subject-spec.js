@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, hot, expectObservable */
 var Rx = require('../dist/cjs/Rx');
 
 var Subject = Rx.Subject;
@@ -507,5 +507,83 @@ describe('Subject', function () {
       done);
 
     source.subscribe(subject);
+  });
+
+  describe('asObservable', function () {
+    it('should hide subject', function () {
+      var subject = new Rx.Subject();
+      var observable = subject.asObservable();
+
+      expect(subject).not.toEqual(observable);
+
+      expect(observable instanceof Observable).toBe(true);
+      expect(observable instanceof Subject).toBe(false);
+    });
+
+    it('should handle subject never emits', function () {
+      var observable = hot('-').asObservable();
+
+      expectObservable(observable).toBe([]);
+    });
+
+    it('should handle subject completes without emits', function () {
+      var observable = hot('--^--|').asObservable();
+      var expected =         '---|';
+
+      expectObservable(observable).toBe(expected);
+    });
+
+    it('should handle subject throws', function () {
+      var observable = hot('--^--#').asObservable();
+      var expected =         '---#';
+
+      expectObservable(observable).toBe(expected);
+    });
+
+    it('should handle subject emits', function () {
+      var observable = hot('--^--x--|').asObservable();
+      var expected =         '---x--|';
+
+      expectObservable(observable).toBe(expected);
+    });
+
+    it('should work with inherited subject', function (done) {
+      var subject = new Rx.AsyncSubject();
+
+      subject.next(42);
+      subject.complete();
+
+      var observable = subject.asObservable();
+
+      var expected = [new Rx.Notification('N', 42),
+                      new Rx.Notification('C')];
+
+      observable.materialize().subscribe(function (x) {
+        expect(x).toEqual(expected.shift());
+      }, function (err) {
+        done.fail(err);
+      }, function () {
+        expect(expected).toEqual([]);
+        done();
+      });
+    });
+
+    it('should not eager', function () {
+      var subscribed = false;
+
+      var subject = new Rx.Subject(new Rx.Observable(function (observer) {
+        subscribed = true;
+        var subscription = Rx.Observable.of('x').subscribe(observer);
+        return function () {
+          subscription.unsubscribe();
+        };
+      }));
+
+      var observable = subject.asObservable();
+      expect(subscribed).toBe(false);
+
+      observable.subscribe();
+      expect(subscribed).toBe(true);
+    });
   });
 });

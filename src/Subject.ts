@@ -123,6 +123,11 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     this._complete();
   }
 
+  asObservable(): Observable<T> {
+    const observable = new SubjectObservable(this);
+    return observable;
+  }
+
   protected _next(value: T): void {
     if (this.destination) {
       this.destination.next(value);
@@ -201,5 +206,12 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
 
   [rxSubscriber]() {
     return new Subscriber<T>(this);
+  }
+}
+
+class SubjectObservable<T> extends Observable<T> {
+  constructor(source: Subject<T>) {
+    super();
+    this.source = source;
   }
 }
