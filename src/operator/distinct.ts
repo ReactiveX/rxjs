@@ -2,8 +2,6 @@ import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -28,38 +26,8 @@ class DistinctOperator<T, R> implements Operator<T, R> {
   }
 }
 
-class HashSet<T> {
-  private set: Array<T> = [];
-
-  constructor(private compare: (x: T, y: T) => boolean) {
-  }
-
-  private has(item: T): boolean {
-    for (var i = 0; i < this.set.length; i++) {
-      if (this.compare(this.set[i], item)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  push(item: T): boolean {
-    if (this.has(item)) {
-      return false;
-    } else {
-      this.set.push(item);
-      return true;
-    }
-  }
-
-  flush(): void {
-    this.set = [];
-  }
-}
-
-class DistinctSubscriber<T> extends Subscriber<T> {
-  private hashSet: HashSet<T>;
+export class DistinctSubscriber<T> extends Subscriber<T> {
+  private values: any[] = [];
   private flushSubscription: Subscription;
 
   constructor(destination: Subscriber<T>, compare: (x: T, y: T) => boolean, flushes: Observable<any>) {
@@ -67,45 +35,62 @@ class DistinctSubscriber<T> extends Subscriber<T> {
     if (typeof compare === 'function') {
       this.compare = compare;
     }
-    this.hashSet = new HashSet(this.compare);
 
     if (flushes) {
-      this.flushSubscription = flushes.subscribe(() => this.hashSet.flush());
+      this.add(this.flushSubscription = flushes.subscribe(new FlushSubscriber(this)));
     }
+  }
+
+  flush() {
+    this.values.length = 0;
   }
 
   private compare(x: T, y: T): boolean {
     return x === y;
   }
 
-  private disposeFlushSubscription(): void {
-    if (this.flushSubscription) {
-      this.flushSubscription.unsubscribe();
-    }
-  }
-
   protected _next(value: T): void {
-    let result: any = false;
-
-    result = tryCatch(this.hashSet.push.bind(this.hashSet))(value);
-    if (result === errorObject) {
-      this.destination.error(errorObject.e);
+    let found = false;
+    const values = this.values;
+    const len = values.length;
+    try {
+      for (let i = 0; i < len; i++) {
+        if (this.compare(values[i], value)) {
+          found = true;
+          return;
+        }
+      }
+    } catch (err) {
+      this.destination.error(err);
       return;
     }
-
-    if (result) {
-      this.destination.next(value);
-    }
+    this.values.push(value);
+    this.destination.next(value);
   }
 
   protected _complete(): void {
-    this.disposeFlushSubscription();
     super._complete();
   }
 
   unsubscribe(): void {
-    this.disposeFlushSubscription();
     super.unsubscribe();
   }
+}
 
+export class FlushSubscriber extends Subscriber<any> {
+  constructor(private parent: DistinctSubscriber<any>) {
+    super();
+  }
+
+  next() {
+    this.parent.flush();
+  }
+
+  complete() {
+    // noop
+  }
+
+  error(err: any) {
+    this.parent.error(err);
+  }
 }
