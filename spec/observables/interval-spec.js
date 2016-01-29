@@ -1,4 +1,4 @@
-/* globals describe, it, expect, spyOn */
+/* globals jasmine, describe, it, expect, spyOn, expectObservable, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 var Observer = Rx.Observer;
@@ -30,19 +30,19 @@ describe('Observable.interval', function () {
   });
 
   it('should emit values until unsubscribed', function (done) {
-    var values = [];
     var expected = [0,1,2,3,4,5,6];
     var e1 = Observable.interval(5);
     var subscription = e1.subscribe(function (x) {
-      values.push(x);
+      expect(x).toBe(expected.shift());
+
       if (x === 6) {
         subscription.unsubscribe();
-        expect(values).toEqual(expected);
+        expect(expected).toEqual([]);
         done();
       }
     }, function (x) {
       done.fail('should not be called');
-    }, function (x) {
+    }, function () {
       done.fail('should not be called');
     });
   });
