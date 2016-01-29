@@ -2,8 +2,6 @@ import {Operator} from '../Operator';
 import {Observer} from '../Observer';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -36,6 +34,7 @@ class EverySubscriber<T, R> extends Subscriber<T> {
               private thisArg: any,
               private source?: Observable<T>) {
     super(destination);
+    this.thisArg = thisArg || this;
   }
 
   private notifyComplete(everyValueMatch: boolean): void {
@@ -44,11 +43,15 @@ class EverySubscriber<T, R> extends Subscriber<T> {
   }
 
   protected _next(value: T): void {
-    const result = tryCatch(this.predicate).call(this.thisArg || this, value, this.index++, this.source);
+    let result = false;
+    try {
+      result = this.predicate.call(this.thisArg, value, this.index++, this.source);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
 
-    if (result === errorObject) {
-      this.destination.error(result.e);
-    } else if (!result) {
+    if (!result) {
       this.notifyComplete(false);
     }
   }
