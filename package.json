@@ -36,7 +36,6 @@
     "perf_micro": "node ./perf/micro/index.js",
     "prepublish": "npm run build_all",
     "generate_packages": "node .make-packages.js",
-    "generate_operator_patches": "tsc -outDir dist/ ./tools/generate-operator-patches.ts && node ./dist/generate-operator-patches.js --exec",
     "commit": "git-cz",
     "check_circular_dependencies": "madge ./dist/cjs --circular"
   },
