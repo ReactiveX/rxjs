@@ -412,6 +412,6 @@ module.exports = function painter(inputStreams, operatorLabel, outputStreams, fi
     if (err) {
       return console.error(arguments);
     }
-    console.log(this.outname + ' created :: ' + arguments[3]);
+    return console.log(this.outname + ' created :: ' + arguments[3]);
   });
 };
