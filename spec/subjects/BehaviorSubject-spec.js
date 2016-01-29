@@ -23,12 +23,12 @@ describe('BehaviorSubject', function () {
 
   it('should throw an ObjectUnsubscribedError if getValue() is called ' +
     'and the BehaviorSubject has been unsubscribed', function () {
-      var subject = new BehaviorSubject('hi there');
-      subject.unsubscribe();
-      expect(function () {
-        subject.getValue();
-      }).toThrow(new ObjectUnsubscribedError());
-    });
+    var subject = new BehaviorSubject('hi there');
+    subject.unsubscribe();
+    expect(function () {
+      subject.getValue();
+    }).toThrow(new ObjectUnsubscribedError());
+  });
 
   it('should have a getValue() method to retrieve the current value', function () {
     var subject = new BehaviorSubject('staltz');

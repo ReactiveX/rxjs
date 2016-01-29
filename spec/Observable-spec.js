@@ -203,36 +203,36 @@ describe('Observable', function () {
     describe('when called with an anonymous observer', function () {
       it('should accept an anonymous observer with just a next function and call the next function in the context' +
         ' of the anonymous observer', function () {
-          var o = {
-            next: function next(x) {
-              expect(this).toBe(o);
-              expect(x).toBe(1);
-            }
-          };
-          Observable.of(1).subscribe(o);
-        });
+        var o = {
+          next: function next(x) {
+            expect(this).toBe(o);
+            expect(x).toBe(1);
+          }
+        };
+        Observable.of(1).subscribe(o);
+      });
 
       it('should accept an anonymous observer with just an error function and call the error function in the context' +
         ' of the anonymous observer', function () {
-          var o = {
-            error: function error(err) {
-              expect(this).toBe(o);
-              expect(err).toBe('bad');
-            }
-          };
-          Observable.throw('bad').subscribe(o);
-        });
+        var o = {
+          error: function error(err) {
+            expect(this).toBe(o);
+            expect(err).toBe('bad');
+          }
+        };
+        Observable.throw('bad').subscribe(o);
+      });
 
       it('should accept an anonymous observer with just a complete function and call the complete function in the' +
         ' context of the anonymous observer', function (done) {
-          var o = {
-            complete: function complete() {
-              expect(this).toBe(o);
-              done();
-            }
-          };
-          Observable.empty().subscribe(o);
-        });
+        var o = {
+          complete: function complete() {
+            expect(this).toBe(o);
+            done();
+          }
+        };
+        Observable.empty().subscribe(o);
+      });
 
       it('should accept an anonymous observer with no functions at all', function () {
         expect(function testEmptyObject() {
@@ -242,36 +242,36 @@ describe('Observable', function () {
 
       it('should not run unsubscription logic when an error is thrown sending messages synchronously to an' +
         ' anonymous observer', function () {
-          var messageError = false;
-          var messageErrorValue = false;
-          var unsubscribeCalled = false;
+        var messageError = false;
+        var messageErrorValue = false;
+        var unsubscribeCalled = false;
 
-          var o = {
-            next: function next(x) {
-              expect(this).toBe(o);
-              throw x;
-            }
-          };
-          var sub;
-          var source = new Observable(function (observer) {
-            observer.next('boo!');
-            return function () {
-              unsubscribeCalled = true;
-            };
-          });
-
-          try {
-            sub = source.subscribe(o);
-          } catch (e) {
-            messageError = true;
-            messageErrorValue = e;
+        var o = {
+          next: function next(x) {
+            expect(this).toBe(o);
+            throw x;
           }
-
-          expect(sub).toBe(undefined);
-          expect(unsubscribeCalled).toBe(false);
-          expect(messageError).toBe(true);
-          expect(messageErrorValue).toBe('boo!');
+        };
+        var sub;
+        var source = new Observable(function (observer) {
+          observer.next('boo!');
+          return function () {
+            unsubscribeCalled = true;
+          };
         });
+
+        try {
+          sub = source.subscribe(o);
+        } catch (e) {
+          messageError = true;
+          messageErrorValue = e;
+        }
+
+        expect(sub).toBe(undefined);
+        expect(unsubscribeCalled).toBe(false);
+        expect(messageError).toBe(true);
+        expect(messageErrorValue).toBe('boo!');
+      });
     });
   });
 });
