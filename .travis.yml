@@ -25,6 +25,8 @@ env:
   - alias jasmine=./node_modules/.bin/jasmine
   - alias tsc=./node_modules/.bin/tsc
 
+before_install:
+  - npm install -g npm@3
 install:
   - npm install && npm run lint
 
