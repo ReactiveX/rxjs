@@ -1,8 +1,6 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Returns an Observable that searches for the first item in the source Observable that
@@ -50,11 +48,13 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
   protected _next(value: T): void {
     const { predicate, thisArg } = this;
     const index = this.index++;
-    const result = tryCatch(predicate).call(thisArg || this, value, index, this.source);
-    if (result === errorObject) {
-      this.destination.error(result.e);
-    } else if (result) {
-      this.notifyComplete(this.yieldIndex ? index : value);
+    try {
+      const result = predicate.call(thisArg || this, value, index, this.source);
+      if (result) {
+        this.notifyComplete(this.yieldIndex ? index : value);
+      }
+    } catch (err) {
+      this.destination.error(err);
     }
   }
 
