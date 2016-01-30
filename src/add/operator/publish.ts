@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {publish} from '../../operator/publish';
+import {publish, PublishSignature} from '../../operator/publish';
 
 Observable.prototype.publish = publish;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    publish: PublishSignature<T>;
+  }
+}

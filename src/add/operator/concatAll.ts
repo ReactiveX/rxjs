@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {concatAll} from '../../operator/concatAll';
+import {concatAll, ConcatAllSignature} from '../../operator/concatAll';
 
 Observable.prototype.concatAll = concatAll;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    concatAll: ConcatAllSignature<T>;
+  }
+}

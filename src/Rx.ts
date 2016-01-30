@@ -2,9 +2,9 @@
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
 // definition
-import {Subject} from './Subject';
+export {Subject} from './Subject';
 /* tslint:enable:no-unused-variable */
-import {Observable} from './Observable';
+export {Observable} from './Observable';
 
 // statics
 /* tslint:disable:no-use-before-declare */
@@ -60,9 +60,9 @@ import './add/operator/groupBy';
 import './add/operator/ignoreElements';
 import './add/operator/inspect';
 import './add/operator/inspectTime';
-import './add/operator/every';
 import './add/operator/last';
 import './add/operator/let';
+import './add/operator/every';
 import './add/operator/map';
 import './add/operator/mapTo';
 import './add/operator/materialize';
@@ -116,18 +116,19 @@ import './add/operator/zip';
 import './add/operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
-import {Operator} from './Operator';
-import {Observer} from './Observer';
-import {Subscription, UnsubscriptionError} from './Subscription';
-import {Subscriber} from './Subscriber';
-import {AsyncSubject} from './subject/AsyncSubject';
-import {ReplaySubject} from './subject/ReplaySubject';
-import {BehaviorSubject} from './subject/BehaviorSubject';
-import {ConnectableObservable} from './observable/ConnectableObservable';
-import {Notification} from './Notification';
-import {EmptyError} from './util/EmptyError';
-import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
-import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
+export {Operator} from './Operator';
+export {Observer} from './Observer';
+export {Subscription, UnsubscriptionError} from './Subscription';
+export {Subscriber} from './Subscriber';
+export {AsyncSubject} from './subject/AsyncSubject';
+export {ReplaySubject} from './subject/ReplaySubject';
+export {BehaviorSubject} from './subject/BehaviorSubject';
+export {ConnectableObservable} from './observable/ConnectableObservable';
+export {Notification} from './Notification';
+export {EmptyError} from './util/EmptyError';
+export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
+export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
+
 import {asap} from './scheduler/asap';
 import {async} from './scheduler/async';
 import {queue} from './scheduler/queue';
@@ -150,21 +151,6 @@ var Symbol = {
 /* tslint:enable:no-var-keyword */
 
 export {
-    Subject,
     Scheduler,
-    Observable,
-    Observer,
-    Operator,
-    Subscriber,
-    Subscription,
-    Symbol,
-    AsyncSubject,
-    ReplaySubject,
-    BehaviorSubject,
-    ConnectableObservable,
-    Notification,
-    EmptyError,
-    ArgumentOutOfRangeError,
-    ObjectUnsubscribedError,
-    UnsubscriptionError
+    Symbol
 };

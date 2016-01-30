@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {skipUntil} from '../../operator/skipUntil';
+import {skipUntil, SkipUntilSignature} from '../../operator/skipUntil';
 
 Observable.prototype.skipUntil = skipUntil;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    skipUntil: SkipUntilSignature<T>;
+  }
+}

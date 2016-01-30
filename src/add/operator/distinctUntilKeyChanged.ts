@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {distinctUntilKeyChanged} from '../../operator/distinctUntilKeyChanged';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {distinctUntilKeyChanged, DistinctUntilKeyChangedSignature} from '../../operator/distinctUntilKeyChanged';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.distinctUntilKeyChanged = distinctUntilKeyChanged;
+Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    distinctUntilKeyChanged: DistinctUntilKeyChangedSignature<T>;
+  }
+}

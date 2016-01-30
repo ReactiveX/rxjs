@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {reduce} from '../../operator/reduce';
+import {reduce, ReduceSignature} from '../../operator/reduce';
 
 Observable.prototype.reduce = reduce;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    reduce: ReduceSignature<T>;
+  }
+}

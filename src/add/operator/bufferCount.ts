@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {bufferCount} from '../../operator/bufferCount';
+import {bufferCount, BufferCountSignature} from '../../operator/bufferCount';
 
 Observable.prototype.bufferCount = bufferCount;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    bufferCount: BufferCountSignature<T>;
+  }
+}

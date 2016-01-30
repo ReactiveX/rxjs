@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {timeoutWith} from '../../operator/timeoutWith';
+import {timeoutWith, TimeoutWithSignature} from '../../operator/timeoutWith';
 
 Observable.prototype.timeoutWith = timeoutWith;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    timeoutWith: TimeoutWithSignature<T>;
+  }
+}

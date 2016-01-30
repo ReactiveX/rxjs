@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {windowToggle} from '../../operator/windowToggle';
+import {windowToggle, WindowToggleSignature} from '../../operator/windowToggle';
 
 Observable.prototype.windowToggle = windowToggle;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    windowToggle: WindowToggleSignature<T>;
+  }
+}

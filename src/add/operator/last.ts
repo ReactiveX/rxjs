@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {last} from '../../operator/last';
+import {last, LastSignature} from '../../operator/last';
 
 Observable.prototype.last = <any>last;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    last: LastSignature<T>;
+  }
+}

@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {cache} from '../../operator/cache';
+import {cache, CacheSignature} from '../../operator/cache';
 
 Observable.prototype.cache = cache;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    cache: CacheSignature<T>;
+  }
+}

@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {debounce} from '../../operator/debounce';
+import {debounce, DebounceSignature} from '../../operator/debounce';
 
 Observable.prototype.debounce = debounce;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    debounce: DebounceSignature<T>;
+  }
+}

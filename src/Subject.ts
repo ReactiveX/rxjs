@@ -17,6 +17,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
 
   constructor(protected destination?: Observer<T>, protected source?: Observable<T>) {
     super();
+    this.source = source;
   }
 
   public observers: Observer<T>[] = [];

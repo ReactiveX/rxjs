@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {find} from '../../operator/find';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {find, FindSignature} from '../../operator/find';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.find = find;
+Observable.prototype.find = find;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    find: FindSignature<T>;
+  }
+}

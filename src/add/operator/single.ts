@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {single} from '../../operator/single';
+import {single, SingleSignature} from '../../operator/single';
 
 Observable.prototype.single = single;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    single: SingleSignature<T>;
+  }
+}

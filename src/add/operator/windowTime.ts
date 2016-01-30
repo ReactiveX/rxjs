@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {windowTime} from '../../operator/windowTime';
+import {windowTime, WindowTimeSignature} from '../../operator/windowTime';
 
 Observable.prototype.windowTime = windowTime;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    windowTime: WindowTimeSignature<T>;
+  }
+}

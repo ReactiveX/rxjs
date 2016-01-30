@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {filter} from '../../operator/filter';
+import {filter, FilterSignature} from '../../operator/filter';
 
 Observable.prototype.filter = filter;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    filter: FilterSignature<T>;
+  }
+}

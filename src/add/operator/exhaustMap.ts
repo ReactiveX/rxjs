@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {exhaustMap} from '../../operator/exhaustMap';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {exhaustMap, SwitchFirstMapSignature} from '../../operator/exhaustMap';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.exhaustMap = exhaustMap;
+Observable.prototype.exhaustMap = exhaustMap;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    exhaustMap: SwitchFirstMapSignature<T>;
+  }
+}

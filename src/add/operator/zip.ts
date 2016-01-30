@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {zipProto} from '../../operator/zip';
+import {zipProto, ZipSignature} from '../../operator/zip';
 
 Observable.prototype.zip = zipProto;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    zip: ZipSignature<T>;
+  }
+}

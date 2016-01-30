@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {take} from '../../operator/take';
+import {take, TakeSignature} from '../../operator/take';
 
 Observable.prototype.take = take;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    take: TakeSignature<T>;
+  }
+}

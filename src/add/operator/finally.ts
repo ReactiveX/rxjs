@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {_finally} from '../../operator/finally';
+import {_finally, FinallySignature} from '../../operator/finally';
 
 Observable.prototype.finally = _finally;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    finally: FinallySignature<T>;
+  }
+}

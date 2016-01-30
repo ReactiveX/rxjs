@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {switchMapTo} from '../../operator/switchMapTo';
+import {switchMapTo, SwitchMapToSignature} from '../../operator/switchMapTo';
 
 Observable.prototype.switchMapTo = switchMapTo;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    switchMapTo: SwitchMapToSignature<T>;
+  }
+}

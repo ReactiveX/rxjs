@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {timeInterval} from '../../operator/timeInterval';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {timeInterval, TimeIntervalSignature} from '../../operator/timeInterval';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.timeInterval = timeInterval;
+Observable.prototype.timeInterval = timeInterval;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    timeInterval: TimeIntervalSignature<T>;
+  }
+}

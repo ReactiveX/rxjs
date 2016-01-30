@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {pluck} from '../../operator/pluck';
+import {pluck, PluckSignature} from '../../operator/pluck';
 
 Observable.prototype.pluck = pluck;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    pluck: PluckSignature<T>;
+  }
+}

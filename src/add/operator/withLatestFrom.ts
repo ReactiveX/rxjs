@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {withLatestFrom} from '../../operator/withLatestFrom';
+import {withLatestFrom, WithLatestFromSignature} from '../../operator/withLatestFrom';
 
 Observable.prototype.withLatestFrom = withLatestFrom;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    withLatestFrom: WithLatestFromSignature<T>;
+  }
+}

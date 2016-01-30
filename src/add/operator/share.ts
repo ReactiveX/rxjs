@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {share} from '../../operator/share';
+import {share, ShareSignature} from '../../operator/share';
 
 Observable.prototype.share = share;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    share: ShareSignature<T>;
+  }
+}

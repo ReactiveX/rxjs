@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {_switch} from '../../operator/switch';
+import {_switch, SwitchSignature} from '../../operator/switch';
 
 Observable.prototype.switch = _switch;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    switch: SwitchSignature<T>;
+  }
+}

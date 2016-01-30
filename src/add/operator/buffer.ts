@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {buffer} from '../../operator/buffer';
+import {buffer, BufferSignature} from '../../operator/buffer';
 
 Observable.prototype.buffer = buffer;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    buffer: BufferSignature<T>;
+  }
+}

@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {every} from '../../operator/every';
+import {every, EverySignature} from '../../operator/every';
 
 Observable.prototype.every = every;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    every: EverySignature<T>;
+  }
+}

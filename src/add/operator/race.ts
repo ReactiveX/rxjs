@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {race} from '../../operator/race';
+import {race, RaceSignature} from '../../operator/race';
 
 Observable.prototype.race = race;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    race: RaceSignature<T>;
+  }
+}

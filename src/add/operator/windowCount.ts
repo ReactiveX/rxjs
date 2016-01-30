@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {windowCount} from '../../operator/windowCount';
+import {windowCount, WindowCountSignature} from '../../operator/windowCount';
 
 Observable.prototype.windowCount = windowCount;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    windowCount: WindowCountSignature<T>;
+  }
+}

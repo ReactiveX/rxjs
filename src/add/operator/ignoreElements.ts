@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {ignoreElements} from '../../operator/ignoreElements';
+import {ignoreElements, IgnoreElementsSignature} from '../../operator/ignoreElements';
 
 Observable.prototype.ignoreElements = ignoreElements;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    ignoreElements: IgnoreElementsSignature<T>;
+  }
+}

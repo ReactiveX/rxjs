@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {map} from '../../operator/map';
+import {map, MapSignature} from '../../operator/map';
 
 Observable.prototype.map = map;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    map: MapSignature<T>;
+  }
+}

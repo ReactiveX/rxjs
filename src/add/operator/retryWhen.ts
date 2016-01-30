@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {retryWhen} from '../../operator/retryWhen';
+import {retryWhen, RetryWhenSignature} from '../../operator/retryWhen';
 
 Observable.prototype.retryWhen = retryWhen;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    retryWhen: RetryWhenSignature<T>;
+  }
+}

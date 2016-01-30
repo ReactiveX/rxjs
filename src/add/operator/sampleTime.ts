@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {sampleTime} from '../../operator/sampleTime';
+import {sampleTime, SampleTimeSignature} from '../../operator/sampleTime';
 
 Observable.prototype.sampleTime = sampleTime;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    sampleTime: SampleTimeSignature<T>;
+  }
+}

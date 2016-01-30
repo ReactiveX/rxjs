@@ -1,8 +1,13 @@
 
 import {Observable} from '../../Observable';
-import {letProto} from '../../operator/let';
+import {letProto, LetSignature} from '../../operator/let';
 
 Observable.prototype.let = letProto;
 Observable.prototype.letBind = letProto;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    let: LetSignature<T>;
+    letBind: LetSignature<T>;
+  }
+}

@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {throttleTime} from '../../operator/throttleTime';
+import {throttleTime, ThrottleTimeSignature} from '../../operator/throttleTime';
 
 Observable.prototype.throttleTime = throttleTime;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    throttleTime: ThrottleTimeSignature<T>;
+  }
+}

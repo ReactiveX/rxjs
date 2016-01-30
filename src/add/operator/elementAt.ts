@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {elementAt} from '../../operator/elementAt';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {elementAt, ElementAtSignature} from '../../operator/elementAt';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.elementAt = elementAt;
+Observable.prototype.elementAt = elementAt;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    elementAt: ElementAtSignature<T>;
+  }
+}

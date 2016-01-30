@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {combineAll} from '../../operator/combineAll';
+import {combineAll, CombineAllSignature} from '../../operator/combineAll';
 
 Observable.prototype.combineAll = combineAll;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    combineAll: CombineAllSignature<T>;
+  }
+}

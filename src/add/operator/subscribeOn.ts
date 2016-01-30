@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {subscribeOn} from '../../operator/subscribeOn';
+import {subscribeOn, SubscribeOnSignature} from '../../operator/subscribeOn';
 
 Observable.prototype.subscribeOn = subscribeOn;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    subscribeOn: SubscribeOnSignature<T>;
+  }
+}

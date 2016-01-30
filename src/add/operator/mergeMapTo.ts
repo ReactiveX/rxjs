@@ -1,7 +1,13 @@
 
 import {Observable} from '../../Observable';
-import {mergeMapTo} from '../../operator/mergeMapTo';
+import {mergeMapTo, MergeMapToSignature} from '../../operator/mergeMapTo';
 
+Observable.prototype.flatMapTo = <any>mergeMapTo;
 Observable.prototype.mergeMapTo = <any>mergeMapTo;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    flatMapTo: MergeMapToSignature<T>;
+    mergeMapTo: MergeMapToSignature<T>;
+  }
+}

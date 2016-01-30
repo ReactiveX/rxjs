@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {observeOn} from '../../operator/observeOn';
+import {observeOn, ObserveOnSignature} from '../../operator/observeOn';
 
 Observable.prototype.observeOn = observeOn;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    observeOn: ObserveOnSignature<T>;
+  }
+}

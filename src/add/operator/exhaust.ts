@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {exhaust} from '../../operator/exhaust';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {exhaust, SwitchFirstSignature} from '../../operator/exhaust';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.exhaust = exhaust;
+Observable.prototype.exhaust = exhaust;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    exhaust: SwitchFirstSignature<T>;
+  }
+}

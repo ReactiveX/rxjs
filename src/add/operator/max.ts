@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {max} from '../../operator/max';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {max, MaxSignature} from '../../operator/max';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.max = max;
+Observable.prototype.max = max;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    max: MaxSignature<T>;
+  }
+}

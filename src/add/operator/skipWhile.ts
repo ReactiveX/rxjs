@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {skipWhile} from '../../operator/skipWhile';
+import {skipWhile, SkipWhileSignature} from '../../operator/skipWhile';
 
 Observable.prototype.skipWhile = skipWhile;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    skipWhile: SkipWhileSignature<T>;
+  }
+}

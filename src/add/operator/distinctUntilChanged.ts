@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {distinctUntilChanged} from '../../operator/distinctUntilChanged';
+import {distinctUntilChanged, DistinctUntilChangedSignature} from '../../operator/distinctUntilChanged';
 
 Observable.prototype.distinctUntilChanged = distinctUntilChanged;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    distinctUntilChanged: DistinctUntilChangedSignature<T>;
+  }
+}

@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {debounceTime} from '../../operator/debounceTime';
+import {debounceTime, DebounceTimeSignature} from '../../operator/debounceTime';
 
 Observable.prototype.debounceTime = debounceTime;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    debounceTime: DebounceTimeSignature<T>;
+  }
+}

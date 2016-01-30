@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {concatMapTo} from '../../operator/concatMapTo';
+import {concatMapTo, ConcatMapToSignature} from '../../operator/concatMapTo';
 
 Observable.prototype.concatMapTo = concatMapTo;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    concatMapTo: ConcatMapToSignature<T>;
+  }
+}

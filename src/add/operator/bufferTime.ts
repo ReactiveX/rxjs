@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {bufferTime} from '../../operator/bufferTime';
+import {bufferTime, BufferTimeSignature} from '../../operator/bufferTime';
 
 Observable.prototype.bufferTime = bufferTime;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    bufferTime: BufferTimeSignature<T>;
+  }
+}

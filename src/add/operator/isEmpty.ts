@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {isEmpty} from '../../operator/isEmpty';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {isEmpty, IsEmptySignature} from '../../operator/isEmpty';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.isEmpty = isEmpty;
+Observable.prototype.isEmpty = isEmpty;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    isEmpty: IsEmptySignature<T>;
+  }
+}

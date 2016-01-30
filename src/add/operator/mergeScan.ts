@@ -1,9 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {mergeScan} from '../../operator/mergeScan';
-import {KitchenSinkOperators} from '../../Rx.KitchenSink';
+import {mergeScan, MergeScanSignature} from '../../operator/mergeScan';
 
-const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
-observableProto.mergeScan = mergeScan;
+Observable.prototype.mergeScan = mergeScan;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    mergeScan: MergeScanSignature<T>;
+  }
+}

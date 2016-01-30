@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {toPromise} from '../../operator/toPromise';
+import {toPromise, ToPromiseSignature} from '../../operator/toPromise';
 
 Observable.prototype.toPromise = toPromise;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    toPromise: ToPromiseSignature<T>;
+  }
+}

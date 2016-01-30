@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {partition} from '../../operator/partition';
+import {partition, PartitionSignature} from '../../operator/partition';
 
 Observable.prototype.partition = partition;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    partition: PartitionSignature<T>;
+  }
+}

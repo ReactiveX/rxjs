@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {groupBy} from '../../operator/groupBy';
+import {groupBy, GroupBySignature} from '../../operator/groupBy';
 
 Observable.prototype.groupBy = <any>groupBy;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    groupBy: GroupBySignature<T>;
+  }
+}

@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {startWith} from '../../operator/startWith';
+import {startWith, StartWithSignature} from '../../operator/startWith';
 
 Observable.prototype.startWith = startWith;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    startWith: StartWithSignature<T>;
+  }
+}

@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {count} from '../../operator/count';
+import {count, CountSignature} from '../../operator/count';
 
 Observable.prototype.count = count;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    count: CountSignature<T>;
+  }
+}

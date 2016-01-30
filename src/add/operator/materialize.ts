@@ -1,7 +1,11 @@
 
 import {Observable} from '../../Observable';
-import {materialize} from '../../operator/materialize';
+import {materialize, MaterializeSignature} from '../../operator/materialize';
 
 Observable.prototype.materialize = materialize;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    materialize: MaterializeSignature<T>;
+  }
+}
