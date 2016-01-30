@@ -82,6 +82,7 @@ import './add/operator/retryWhen';
 import './add/operator/sample';
 import './add/operator/sampleTime';
 import './add/operator/scan';
+import './add/operator/scanCase';
 import './add/operator/share';
 import './add/operator/single';
 import './add/operator/skip';
