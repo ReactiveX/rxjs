@@ -4,4 +4,10 @@ import {defaultIfEmpty} from '../../operator/defaultIfEmpty';
 
 Observable.prototype.defaultIfEmpty = defaultIfEmpty;
 
+declare module '../../Observable' {
+  interface Observable<T> {
+    defaultIfEmpty: <R>(defaultValue?: T | R) => Observable<T> | Observable<R>;
+  }
+}
+
 export var _void: void;
