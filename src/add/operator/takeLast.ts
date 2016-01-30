@@ -7,4 +7,10 @@ import {takeLast} from '../../operator/takeLast';
 
 Observable.prototype.takeLast = takeLast;
 
+declare module '../../Observable' {
+  interface Observable<T> {
+    takeLast: (count: number) => Observable<T>;
+  }
+}
+
 export var _void: void;
