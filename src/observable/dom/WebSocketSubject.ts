@@ -99,7 +99,7 @@ export class WebSocketSubject<T> extends Subject<T> {
     });
   }
 
-  _unsubscribe() {
+  protected _unsubscribe() {
     this.socket = null;
     this.source = null;
     this.destination = new ReplaySubject();
