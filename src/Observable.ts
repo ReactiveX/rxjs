@@ -129,7 +129,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @returns {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, thisArg: any, PromiseCtor?: PromiseConstructor): Promise<void> {
+  forEach(next: (value: T) => void, thisArg: any, PromiseCtor?: typeof Promise): Promise<void> {
     if (!PromiseCtor) {
       if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
         PromiseCtor = root.Rx.config.Promise;
@@ -269,7 +269,7 @@ export class Observable<T> implements CoreOperators<T>  {
   timeout: (due: number | Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
   timeoutWith: <R>(due: number | Date, withObservable: Observable<R>, scheduler?: Scheduler) => Observable<T> | Observable<R>;
   toArray: () => Observable<T[]>;
-  toPromise: (PromiseCtor?: PromiseConstructor) => Promise<T>;
+  toPromise: (PromiseCtor?: typeof Promise) => Promise<T>;
   window: (closingNotifier: Observable<any>) => Observable<Observable<T>>;
   windowCount: (windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
   windowTime: (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;

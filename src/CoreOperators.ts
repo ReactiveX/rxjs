@@ -84,7 +84,7 @@ export interface CoreOperators<T> {
   timeout?: (due: number | Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
   timeoutWith?: <R>(due: number | Date, withObservable: Observable<R>, scheduler?: Scheduler) => Observable<T> | Observable<R>;
   toArray?: () => Observable<T[]>;
-  toPromise?: (PromiseCtor: PromiseConstructor) => Promise<T>;
+  toPromise?: (PromiseCtor: typeof Promise) => Promise<T>;
   window?: (closingNotifier: Observable<any>) => Observable<Observable<T>>;
   windowCount?: (windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
   windowTime?: (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
