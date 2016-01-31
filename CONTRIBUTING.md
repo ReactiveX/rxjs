@@ -121,6 +121,12 @@ then it must cover the following cases:
 - Success with the context, if any allowed in the operator signature
 - If an error is thrown
 
+#### <a id="unit-tests"></a>CI Tests
+- Using [Travis](https://travis-ci.org/) on your forked version of RxJS will allow running CI tests on that fork before submitting a PR to master
+ - Simply create a `Travis` account and add your fork as a new project
+- [Sauce Labs](https://saucelabs.com/) setup will allow performing automated browser tests on the fork. Since `saucelabs` doesn't perform browser tests on a PR, this will help verify test results before PR's are checked into master.
+ - In your `Travis` repo configuration, set the environment variables SAUCE_USERNAME and SAUCE_ACCESS_KEY to your `saucelabs` account ([reference](https://cloud.githubusercontent.com/assets/1210596/12679038/b9ba4eb6-c656-11e5-8c9b-b063c9a3f9dc.png))
+- As master runs both of these tests per each check in, it'd be welcome to setup those test before creating your PR
 
 ### <a id="performance-tests"></a>Performance Tests
 
