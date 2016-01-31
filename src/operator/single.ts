@@ -2,9 +2,6 @@ import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observer} from '../Observer';
-
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {EmptyError} from '../util/EmptyError';
 
 /**
@@ -55,17 +52,22 @@ class SingleSubscriber<T> extends Subscriber<T> {
 
   protected _next(value: T): void {
     const predicate = this.predicate;
-    const currentIndex = this.index++;
-
+    this.index++;
     if (predicate) {
-      let result = tryCatch(predicate)(value, currentIndex, this.source);
-      if (result === errorObject) {
-        this.destination.error(errorObject.e);
-      } else if (result) {
-        this.applySingleValue(value);
-      }
+      this.tryNext(value);
     } else {
       this.applySingleValue(value);
+    }
+  }
+
+  private tryNext(value: T): void {
+    try {
+      const result = this.predicate(value, this.index, this.source);
+      if (result) {
+        this.applySingleValue(value);
+      }
+    } catch (err) {
+      this.destination.error(err);
     }
   }
 
