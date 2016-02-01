@@ -1,6 +1,10 @@
 import {Observer} from './Observer';
 import {Observable} from './Observable';
 
+function isObserver<T>(v: any | Observer<T>): v is Observer<T> {
+  return !!v && typeof v.next === 'function' && typeof v.error === 'function' && typeof v.complete === 'function';
+}
+
 export class Notification<T> {
   hasValue: boolean;
 
@@ -32,8 +36,8 @@ export class Notification<T> {
   }
 
   accept(nextOrObserver: Observer<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
-    if (nextOrObserver && typeof (<Observer<T>>nextOrObserver).next === 'function') {
-      return this.observe(<Observer<T>>nextOrObserver);
+    if (isObserver(nextOrObserver)) {
+      return this.observe(nextOrObserver);
     } else {
       return this.do(<(value: T) => void>nextOrObserver, error, complete);
     }
