@@ -1,8 +1,6 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -46,15 +44,19 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
 
   protected _next(value: T): void {
     if (!this.hasSubscription) {
-      const index = this.index++;
-      const destination = this.destination;
-      let result = tryCatch(this.project)(value, index);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        this.hasSubscription = true;
-        this.add(subscribeToResult(this, result, value, index));
-      }
+      this.tryNext(value);
+    }
+  }
+
+  private tryNext(value: T): void {
+    const index = this.index++;
+    const destination = this.destination;
+    try {
+      const result = this.project(value, index);
+      this.hasSubscription = true;
+      this.add(subscribeToResult(this, result, value, index));
+    } catch (err) {
+      destination.error(err);
     }
   }
 
@@ -70,14 +72,20 @@ class SwitchFirstMapSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
              innerSub: InnerSubscriber<T, R>): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
-      const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        destination.next(result);
-      }
+      this.trySelectResult(outerValue, innerValue, outerIndex, innerIndex);
     } else {
       destination.next(innerValue);
+    }
+  }
+
+  private trySelectResult(outerValue: T, innerValue: R,
+                          outerIndex: number, innerIndex: number): void {
+    const { resultSelector, destination } = this;
+    try {
+      const result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+      destination.next(result);
+    } catch (err) {
+      destination.error(err);
     }
   }
 
