@@ -133,6 +133,27 @@ describe('Notification', function () {
 
       expect(invoked).toBe(true);
     });
+
+    it('should handle next if no next was passed', function () {
+      var n = Notification.createNext();
+      expect(function () {
+        n.do(null, null, null);
+      }).not.toThrow();
+    });
+
+    it('should handle error if no error was passed', function () {
+      var n = Notification.createError();
+      expect(function () {
+        n.do(null, null, null);
+      }).not.toThrow();
+    });
+
+    it('should handle complete if no complete was passed', function () {
+      var n = Notification.createComplete();
+      expect(function () {
+        n.do(null, null, null);
+      }).not.toThrow();
+    });
   });
 
   describe('accept', function () {
@@ -276,6 +297,27 @@ describe('Notification', function () {
 
       n.observe(observer);
       expect(observed).toBe(true);
+    });
+
+    it('should not error for complete notifications if no complete handler', function () {
+      var n = Notification.createComplete();
+      expect(function () {
+        n.observe({});
+      }).not.toThrow();
+    });
+
+    it('should not error for error notifications if no error handler', function () {
+      var n = Notification.createError();
+      expect(function () {
+        n.observe({});
+      }).not.toThrow();
+    });
+
+    it('should not error for next notifications if no next complete', function () {
+      var n = Notification.createNext();
+      expect(function () {
+        n.observe({});
+      }).not.toThrow();
     });
   });
 });

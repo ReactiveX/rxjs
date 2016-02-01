@@ -11,11 +11,11 @@ export class Notification<T> {
   observe(observer: Observer<T>): any {
     switch (this.kind) {
       case 'N':
-        return observer.next(this.value);
+        return observer.next && observer.next(this.value);
       case 'E':
-        return observer.error(this.exception);
+        return observer.error && observer.error(this.exception);
       case 'C':
-        return observer.complete();
+        return observer.complete && observer.complete();
     }
   }
 
@@ -23,11 +23,11 @@ export class Notification<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
-        return next(this.value);
+        return next && next(this.value);
       case 'E':
-        return error(this.exception);
+        return error && error(this.exception);
       case 'C':
-        return complete();
+        return complete && complete();
     }
   }
 
