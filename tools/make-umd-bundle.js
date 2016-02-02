@@ -6,3 +6,10 @@ var b = browserify('dist/cjs/Rx.js', {
   standalone: 'Rx'
 });
 b.bundle().pipe(fs.createWriteStream('dist/global/Rx.umd.js'));
+
+
+var b = browserify('dist/cjs/Rx.KitchenSink.js', {
+  baseDir: 'dist/cjs',
+  standalone: 'Rx.KitchenSink'
+});
+b.bundle().pipe(fs.createWriteStream('dist/global/Rx.KitchenSink.umd.js'));
