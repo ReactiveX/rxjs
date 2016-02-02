@@ -48,6 +48,7 @@ export * from './add/operator/debounce';
 export * from './add/operator/debounceTime';
 export * from './add/operator/defaultIfEmpty';
 export * from './add/operator/delay';
+export * from './add/operator/delayWhen';
 export * from './add/operator/distinctUntilChanged';
 export * from './add/operator/do';
 export * from './add/operator/expand';
