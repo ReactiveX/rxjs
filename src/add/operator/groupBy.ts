@@ -11,5 +11,3 @@ declare module '../../Observable' {
       durationSelector?: (group: GroupedObservable<K, R>) => Observable<any>) => Observable<GroupedObservable<K, R>>;
   }
 }
-
-export var _void: void;

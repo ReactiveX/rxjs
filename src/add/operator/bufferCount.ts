@@ -9,5 +9,3 @@ declare module '../../Observable' {
     bufferCount: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
   }
 }
-
-export var _void: void;

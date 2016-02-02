@@ -9,5 +9,3 @@ declare module '../../Observable' {
     partition: (predicate: (x: T) => boolean) => Observable<T>[];
   }
 }
-
-export var _void: void;

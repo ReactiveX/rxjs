@@ -9,5 +9,3 @@ declare module '../../Observable' {
     windowCount: (windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
   }
 }
-
-export var _void: void;

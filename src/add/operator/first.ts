@@ -10,5 +10,3 @@ declare module '../../Observable' {
       resultSelector?: (value: T, index: number) => R, defaultValue?: any) => Observable<T> | Observable<R>;
   }
 }
-
-export var _void: void;

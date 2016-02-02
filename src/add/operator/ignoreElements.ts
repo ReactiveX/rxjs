@@ -9,5 +9,3 @@ declare module '../../Observable' {
     ignoreElements: () => Observable<T>;
   }
 }
-
-export var _void: void;

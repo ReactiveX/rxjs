@@ -9,5 +9,3 @@ declare module '../../Observable' {
     count: (predicate?: (value: T, index: number, source: Observable<T>) => boolean) => Observable<number>;
   }
 }
-
-export var _void: void;

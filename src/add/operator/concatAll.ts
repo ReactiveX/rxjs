@@ -9,5 +9,3 @@ declare module '../../Observable' {
     concatAll: () => Observable<any>;
   }
 }
-
-export var _void: void;

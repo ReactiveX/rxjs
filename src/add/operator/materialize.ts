@@ -10,5 +10,3 @@ declare module '../../Observable' {
     materialize: () => Observable<Notification<T>>;
   }
 }
-
-export var _void: void;

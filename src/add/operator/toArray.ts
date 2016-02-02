@@ -9,5 +9,3 @@ declare module '../../Observable' {
     toArray: () => Observable<T[]>;
   }
 }
-
-export var _void: void;

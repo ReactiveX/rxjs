@@ -9,5 +9,3 @@ declare module '../../Observable' {
     catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   }
 }
-
-export var _void: void;

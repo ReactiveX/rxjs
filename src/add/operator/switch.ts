@@ -9,5 +9,3 @@ declare module '../../Observable' {
     switch: <R>() => Observable<R>;
   }
 }
-
-export var _void: void;

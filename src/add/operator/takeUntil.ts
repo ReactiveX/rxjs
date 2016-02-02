@@ -9,5 +9,3 @@ declare module '../../Observable' {
     takeUntil: (notifier: Observable<any>) => Observable<T>;
   }
 }
-
-export var _void: void;

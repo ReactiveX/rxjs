@@ -9,5 +9,3 @@ declare module '../../Observable' {
     map: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
   }
 }
-
-export var _void: void;

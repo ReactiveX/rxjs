@@ -9,5 +9,3 @@ declare module '../../Observable' {
     combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
   }
 }
-
-export var _void: void;

@@ -9,5 +9,3 @@ declare module '../../Observable' {
     toPromise: (PromiseCtor?: typeof Promise) => Promise<T>;
   }
 }
-
-export var _void: void;

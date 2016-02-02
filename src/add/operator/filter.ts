@@ -9,5 +9,3 @@ declare module '../../Observable' {
     filter: (predicate: (x: T) => boolean, ix?: number, thisArg?: any) => Observable<T>;
   }
 }
-
-export var _void: void;

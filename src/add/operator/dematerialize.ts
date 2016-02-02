@@ -9,5 +9,3 @@ declare module '../../Observable' {
     dematerialize: () => Observable<any>;
   }
 }
-
-export var _void: void;

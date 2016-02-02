@@ -9,5 +9,3 @@ declare module '../../Observable' {
     finally: (finallySelector: () => void) => Observable<T>;
   }
 }
-
-export var _void: void;

@@ -9,5 +9,3 @@ declare module '../../Observable' {
     bufferToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>;
   }
 }
-
-export var _void: void;

@@ -11,5 +11,3 @@ declare module '../../Observable' {
                                       ((...values: Array<any>) => R)>) => Observable<R>;
   }
 }
-
-export var _void: void;

@@ -10,5 +10,3 @@ declare module '../../Observable' {
     timeoutWith: <R>(due: number | Date, withObservable: Observable<R>, scheduler?: Scheduler) => Observable<T> | Observable<R>;
   }
 }
-
-export var _void: void;

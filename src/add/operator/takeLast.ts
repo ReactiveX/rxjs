@@ -12,5 +12,3 @@ declare module '../../Observable' {
     takeLast: (count: number) => Observable<T>;
   }
 }
-
-export var _void: void;

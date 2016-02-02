@@ -10,5 +10,3 @@ declare module '../../Observable' {
     publish: () => ConnectableObservable<T>;
   }
 }
-
-export var _void: void;

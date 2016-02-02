@@ -11,5 +11,3 @@ declare module '../../Observable' {
       defaultValue?: any) => Observable<T> | Observable<R>;
   }
 }
-
-export var _void: void;

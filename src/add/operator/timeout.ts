@@ -10,5 +10,3 @@ declare module '../../Observable' {
     timeout: (due: number | Date, errorToSend?: any, scheduler?: Scheduler) => Observable<T>;
   }
 }
-
-export var _void: void;

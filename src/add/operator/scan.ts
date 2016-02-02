@@ -9,5 +9,3 @@ declare module '../../Observable' {
     scan: <R>(accumulator: (acc: R, x: T) => R, seed?: T | R) => Observable<R>;
   }
 }
-
-export var _void: void;

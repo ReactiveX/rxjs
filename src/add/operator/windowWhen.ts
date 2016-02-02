@@ -9,5 +9,3 @@ declare module '../../Observable' {
     windowWhen: (closingSelector: () => Observable<any>) => Observable<Observable<T>>;
   }
 }
-
-export var _void: void;

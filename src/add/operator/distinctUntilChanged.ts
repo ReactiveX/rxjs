@@ -9,5 +9,3 @@ declare module '../../Observable' {
     distinctUntilChanged: (compare?: (x: T, y: T) => boolean) => Observable<T>;
   }
 }
-
-export var _void: void;

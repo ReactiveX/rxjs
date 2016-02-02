@@ -11,5 +11,3 @@ declare module '../../Observable' {
     multicast: (subjectOrSubjectFactory: Subject<T> | (() => Subject<T>)) => ConnectableObservable<T>;
   }
 }
-
-export var _void: void;

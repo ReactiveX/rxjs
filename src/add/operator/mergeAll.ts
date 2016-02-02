@@ -9,5 +9,3 @@ declare module '../../Observable' {
     mergeAll: (concurrent?: any) => Observable<any>;
   }
 }
-
-export var _void: void;

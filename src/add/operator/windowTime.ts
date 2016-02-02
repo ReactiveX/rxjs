@@ -10,5 +10,3 @@ declare module '../../Observable' {
     windowTime: (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
   }
 }
-
-export var _void: void;

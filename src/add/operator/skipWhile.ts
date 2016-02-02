@@ -9,5 +9,3 @@ declare module '../../Observable' {
     skipWhile: (predicate: (x: T, index: number) => boolean) => Observable<T>;
   }
 }
-
-export var _void: void;

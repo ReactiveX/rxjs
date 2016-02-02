@@ -9,5 +9,3 @@ declare module '../../Observable' {
     startWith: (x: T) => Observable<T>;
   }
 }
-
-export var _void: void;

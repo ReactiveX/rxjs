@@ -9,5 +9,3 @@ declare module '../../Observable' {
     takeWhile: (predicate: (value: T, index: number) => boolean) => Observable<T>;
   }
 }
-
-export var _void: void;

@@ -10,5 +10,3 @@ declare module '../../Observable' {
     debounceTime: <R>(dueTime: number, scheduler?: Scheduler) => Observable<R>;
   }
 }
-
-export var _void: void;

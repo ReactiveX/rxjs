@@ -9,5 +9,3 @@ declare module '../../Observable' {
     windowToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>;
   }
 }
-
-export var _void: void;

@@ -9,5 +9,3 @@ declare module '../../Observable' {
     window: (closingNotifier: Observable<any>) => Observable<Observable<T>>;
   }
 }
-
-export var _void: void;

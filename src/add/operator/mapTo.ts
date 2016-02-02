@@ -9,5 +9,3 @@ declare module '../../Observable' {
     mapTo: <R>(value: R) => Observable<R>;
   }
 }
-
-export var _void: void;

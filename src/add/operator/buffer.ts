@@ -9,5 +9,3 @@ declare module '../../Observable' {
     buffer: (closingNotifier: Observable<any>) => Observable<T[]>;
   }
 }
-
-export var _void: void;

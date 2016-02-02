@@ -9,5 +9,3 @@ declare module '../../Observable' {
     zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   }
 }
-
-export var _void: void;

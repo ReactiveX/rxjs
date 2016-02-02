@@ -9,5 +9,3 @@ declare module '../../Observable' {
     retry: (count?: number) => Observable<T>;
   }
 }
-
-export var _void: void;

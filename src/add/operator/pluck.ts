@@ -9,5 +9,3 @@ declare module '../../Observable' {
     pluck: (...properties: string[]) => Observable<any>;
   }
 }
-
-export var _void: void;

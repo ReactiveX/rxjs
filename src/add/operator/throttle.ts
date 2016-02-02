@@ -9,5 +9,3 @@ declare module '../../Observable' {
     throttle: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
   }
 }
-
-export var _void: void;

@@ -10,5 +10,3 @@ declare module '../../Observable' {
     concat: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
   }
 }
-
-export var _void: void;

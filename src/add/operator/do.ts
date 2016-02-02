@@ -9,5 +9,3 @@ declare module '../../Observable' {
     do: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
   }
 }
-
-export var _void: void;

@@ -11,5 +11,3 @@ declare module '../../Observable' {
     letBind: <T, R>(func: (selector: Observable<T>) => Observable<R>) => Observable<R>;
   }
 }
-
-export var _void: void;

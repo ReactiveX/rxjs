@@ -9,5 +9,3 @@ declare module '../../Observable' {
     every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
   }
 }
-
-export var _void: void;

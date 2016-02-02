@@ -9,5 +9,3 @@ declare module '../../Observable' {
     retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
   }
 }
-
-export var _void: void;

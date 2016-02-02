@@ -9,5 +9,3 @@ declare module '../../Observable' {
     race: (...observables: Array<Observable<T>>) => Observable<T>;
   }
 }
-
-export var _void: void;

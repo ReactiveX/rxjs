@@ -10,5 +10,3 @@ declare module '../../Observable' {
     bufferTime: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
   }
 }
-
-export var _void: void;

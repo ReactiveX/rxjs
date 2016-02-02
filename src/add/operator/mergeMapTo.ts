@@ -11,5 +11,3 @@ declare module '../../Observable' {
     mergeMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
   }
 }
-
-export var _void: void;

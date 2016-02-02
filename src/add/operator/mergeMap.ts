@@ -15,5 +15,3 @@ declare module '../../Observable' {
       concurrent?: number) => Observable<R>;
   }
 }
-
-export var _void: void;

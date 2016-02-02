@@ -10,5 +10,3 @@ declare module '../../Observable' {
     expand: <R>(project: (x: T, ix: number) => Observable<R>, concurrent: number, scheduler: Scheduler) => Observable<R>;
   }
 }
-
-export var _void: void;

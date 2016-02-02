@@ -9,5 +9,3 @@ declare module '../../Observable' {
     reduce: <R>(project: (acc: R, x: T) => R, seed?: R) => Observable<R>;
   }
 }
-
-export var _void: void;

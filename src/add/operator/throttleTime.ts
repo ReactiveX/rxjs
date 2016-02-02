@@ -10,5 +10,3 @@ declare module '../../Observable' {
     throttleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
   }
 }
-
-export var _void: void;

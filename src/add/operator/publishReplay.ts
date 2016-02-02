@@ -11,5 +11,3 @@ declare module '../../Observable' {
     publishReplay: (bufferSize?: number, windowTime?: number, scheduler?: Scheduler) => ConnectableObservable<T>;
   }
 }
-
-export var _void: void;

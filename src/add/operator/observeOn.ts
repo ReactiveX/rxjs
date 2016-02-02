@@ -10,5 +10,3 @@ declare module '../../Observable' {
     observeOn: (scheduler: Scheduler, delay?: number) => Observable<T>;
   }
 }
-
-export var _void: void;
