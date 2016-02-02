@@ -25,7 +25,7 @@ class ThrottleOperator<T> implements Operator<T, T> {
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private throttled: Subscription;
 
-  constructor(destination: Subscriber<any>,
+  constructor(protected destination: Subscriber<T>,
               private durationSelector: (value: T) => Observable<number> | Promise<number>) {
     super(destination);
   }
@@ -42,7 +42,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  _unsubscribe() {
+  protected _unsubscribe() {
     const throttled = this.throttled;
     if (throttled) {
       this.remove(throttled);
