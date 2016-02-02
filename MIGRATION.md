@@ -211,6 +211,15 @@ To reduce polymorphism and get better performance out of operators, some operato
       <td><code>throttle(delay: number, scheduler?: Scheduler)</code></td>
       <td><code>throttleTime(delay: number, scheduler?: Scheduler)</code></td>
     </tr>
+    <tr>
+      <td rowspan="2"><code>delay</code></td>
+      <td><code>delay(dueTime: number|Date, scheduler?: Scheduler)</code></td>
+      <td><code>delay(dueTime: number|Date, scheduler?: Scheduler)</code></td>
+    </tr>
+    <tr>
+      <td><code>delay(subscriptionDelay?: Observable<any>, delayDurationSelector: function)</code></td>
+      <td><code>delayWhen(delayDurationSelector: function, subscriptionDelay?: Observable<any>)</code></td>
+    </tr>
   </tbody>
 </table>
 
