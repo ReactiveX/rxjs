@@ -1,4 +1,4 @@
-import {Observer} from './Observer';
+import {PartialObserver} from './Observer';
 import {Observable} from './Observable';
 
 export class Notification<T> {
@@ -8,14 +8,14 @@ export class Notification<T> {
     this.hasValue = kind === 'N';
   }
 
-  observe(observer: Observer<T>): any {
+  observe(observer: PartialObserver<T>): any {
     switch (this.kind) {
       case 'N':
-        return observer.next(this.value);
+        return observer.next && observer.next(this.value);
       case 'E':
-        return observer.error(this.exception);
+        return observer.error && observer.error(this.exception);
       case 'C':
-        return observer.complete();
+        return observer.complete && observer.complete();
     }
   }
 
@@ -23,17 +23,17 @@ export class Notification<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
-        return next(this.value);
+        return next && next(this.value);
       case 'E':
-        return error(this.exception);
+        return error && error(this.exception);
       case 'C':
-        return complete();
+        return complete && complete();
     }
   }
 
-  accept(nextOrObserver: Observer<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
-    if (nextOrObserver && typeof (<Observer<T>>nextOrObserver).next === 'function') {
-      return this.observe(<Observer<T>>nextOrObserver);
+  accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
+    if (nextOrObserver && typeof (<PartialObserver<T>>nextOrObserver).next === 'function') {
+      return this.observe(<PartialObserver<T>>nextOrObserver);
     } else {
       return this.do(<(value: T) => void>nextOrObserver, error, complete);
     }

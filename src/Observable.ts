@@ -1,4 +1,4 @@
-import {Observer} from './Observer';
+import {PartialObserver} from './Observer';
 import {Operator} from './Operator';
 import {Scheduler} from './Scheduler';
 import {Subscriber} from './Subscriber';
@@ -98,7 +98,7 @@ export class Observable<T> implements CoreOperators<T>  {
 
   /**
    * @method subscribe
-   * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called,
+   * @param {PartialObserver|Function} observerOrNext (optional) either an observer defining all functions to be called,
    *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
    * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
    *  the error will be thrown as unhandled
@@ -107,7 +107,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @description registers handlers for handling emitted values, error and completions from the observable, and
    *  executes the observable's subscriber function, which will take action to set up the underlying data stream
    */
-  subscribe(observerOrNext?: Observer<T> | ((value: T) => void),
+  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
             complete?: () => void): Subscription {
 

@@ -1,7 +1,7 @@
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Operator} from '../Operator';
-import {Observer} from '../Observer';
+import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 
@@ -50,6 +50,6 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 
 class ObserveOnMessage {
   constructor(public notification: Notification<any>,
-              public destination: Observer<any>) {
+              public destination: PartialObserver<any>) {
   }
 }

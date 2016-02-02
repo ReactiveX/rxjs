@@ -1,19 +1,19 @@
-import {Observer} from '../Observer';
+import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
 import {rxSubscriber} from '../symbol/rxSubscriber';
 
 export function toSubscriber<T>(
-  next?: Observer<T> | ((value: T) => void),
+  nextOrObserver?: PartialObserver<T> | ((value: T) => void),
   error?: (error: any) => void,
   complete?: () => void): Subscriber<T> {
 
-  if (next && typeof next === 'object') {
-    if (next instanceof Subscriber) {
-      return (<Subscriber<T>> next);
-    } else if (typeof next[rxSubscriber] === 'function') {
-      return next[rxSubscriber]();
+  if (nextOrObserver && typeof nextOrObserver === 'object') {
+    if (nextOrObserver instanceof Subscriber) {
+      return (<Subscriber<T>> nextOrObserver);
+    } else if (typeof nextOrObserver[rxSubscriber] === 'function') {
+      return nextOrObserver[rxSubscriber]();
     }
   }
 
-  return new Subscriber(next, error, complete);
+  return new Subscriber(nextOrObserver, error, complete);
 }

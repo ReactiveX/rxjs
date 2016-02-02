@@ -1,6 +1,6 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
-import {Observer} from '../Observer';
+import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -54,7 +54,7 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
 
   private _innerSub(ish: any,
-                    destination: Observer<R>,
+                    destination: PartialObserver<R>,
                     resultSelector: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
                     value: T,
                     index: number): void {

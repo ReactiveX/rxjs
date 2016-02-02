@@ -1,5 +1,5 @@
 import {isFunction} from './util/isFunction';
-import {Observer} from './Observer';
+import {Observer, PartialObserver} from './Observer';
 import {Subscription} from './Subscription';
 import {rxSubscriber} from './symbol/rxSubscriber';
 import {empty as emptyObserver} from './Observer';
@@ -19,9 +19,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   public syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
-  protected destination: Observer<any>;
+  protected destination: PartialObserver<any>;
 
-  constructor(destinationOrNext?: Observer<any> | ((value: T) => void),
+  constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
@@ -37,10 +37,10 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
         }
         if (typeof destinationOrNext === 'object') {
           if (destinationOrNext instanceof Subscriber) {
-            this.destination = (<Observer<any>> destinationOrNext);
+            this.destination = (<Subscriber<any>> destinationOrNext);
           } else {
             this.syncErrorThrowable = true;
-            this.destination = new SafeSubscriber<T>(this, <Observer<any>> destinationOrNext);
+            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
           }
           break;
         }
@@ -103,7 +103,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
   private _context: any;
 
   constructor(private _parent: Subscriber<T>,
-              observerOrNext?: Observer<T> | ((value: T) => void),
+              observerOrNext?: PartialObserver<T> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
@@ -115,9 +115,9 @@ class SafeSubscriber<T> extends Subscriber<T> {
       next = (<((value: T) => void)> observerOrNext);
     } else if (observerOrNext) {
       context = observerOrNext;
-      next = (<Observer<T>> observerOrNext).next;
-      error = (<Observer<T>> observerOrNext).error;
-      complete = (<Observer<T>> observerOrNext).complete;
+      next = (<PartialObserver<T>> observerOrNext).next;
+      error = (<PartialObserver<T>> observerOrNext).error;
+      complete = (<PartialObserver<T>> observerOrNext).complete;
     }
 
     this._context = context;
