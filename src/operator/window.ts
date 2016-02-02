@@ -3,6 +3,10 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subject} from '../Subject';
 
+import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+
 export function window<T>(closingNotifier: Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowOperator(closingNotifier));
 }
@@ -17,31 +21,45 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
   }
 }
 
-class WindowSubscriber<T> extends Subscriber<T> {
+class WindowSubscriber<T, R> extends OuterSubscriber<T, R> {
   private window: Subject<T>;
 
   constructor(protected destination: Subscriber<Observable<T>>,
               private closingNotifier: Observable<any>) {
     super(destination);
-    this.add(closingNotifier.subscribe(new WindowClosingNotifierSubscriber(this)));
+    this.add(subscribeToResult(this, closingNotifier));
     this.openWindow();
   }
 
-  protected _next(value: T) {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
+    this.openWindow();
+  }
+
+  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+    this._error(error);
+  }
+
+  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+    this._complete();
+  }
+
+  protected _next(value: T): void {
     this.window.next(value);
   }
 
-  protected _error(err: any) {
+  protected _error(err: any): void {
     this.window.error(err);
     this.destination.error(err);
   }
 
-  protected _complete() {
+  protected _complete(): void {
     this.window.complete();
     this.destination.complete();
   }
 
-  openWindow() {
+  private openWindow(): void  {
     const prevWindow = this.window;
     if (prevWindow) {
       prevWindow.complete();
@@ -50,31 +68,5 @@ class WindowSubscriber<T> extends Subscriber<T> {
     const newWindow = this.window = new Subject<T>();
     destination.add(newWindow);
     destination.next(newWindow);
-  }
-
-  errorWindow(err: any) {
-    this._error(err);
-  }
-
-  completeWindow() {
-    this._complete();
-  }
-}
-
-class WindowClosingNotifierSubscriber extends Subscriber<any> {
-  constructor(private parent: WindowSubscriber<any>) {
-    super();
-  }
-
-  protected _next() {
-    this.parent.openWindow();
-  }
-
-  protected _error(err: any) {
-    this.parent.errorWindow(err);
-  }
-
-  protected _complete() {
-    this.parent.completeWindow();
   }
 }
