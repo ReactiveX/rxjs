@@ -4,4 +4,8 @@ import {single} from '../../operator/single';
 
 Observable.prototype.single = single;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    single: (predicate?: (value: T, index: number) => boolean) => Observable<T>;
+  }
+}

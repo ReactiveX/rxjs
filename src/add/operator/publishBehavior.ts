@@ -1,7 +1,12 @@
 
 import {Observable} from '../../Observable';
+import {ConnectableObservable} from '../../observable/ConnectableObservable';
 import {publishBehavior} from '../../operator/publishBehavior';
 
 Observable.prototype.publishBehavior = publishBehavior;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    publishBehavior: (value: any) => ConnectableObservable<T>;
+  }
+}

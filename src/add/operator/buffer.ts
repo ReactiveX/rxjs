@@ -4,4 +4,8 @@ import {buffer} from '../../operator/buffer';
 
 Observable.prototype.buffer = buffer;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    buffer: (closingNotifier: Observable<any>) => Observable<T[]>;
+  }
+}

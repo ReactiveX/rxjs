@@ -4,4 +4,8 @@ import {skip} from '../../operator/skip';
 
 Observable.prototype.skip = skip;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    skip: (count: number) => Observable<T>;
+  }
+}

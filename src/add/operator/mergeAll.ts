@@ -4,4 +4,8 @@ import {mergeAll} from '../../operator/mergeAll';
 
 Observable.prototype.mergeAll = mergeAll;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    mergeAll: (concurrent?: any) => Observable<any>;
+  }
+}

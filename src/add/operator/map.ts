@@ -4,4 +4,8 @@ import {map} from '../../operator/map';
 
 Observable.prototype.map = map;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    map: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
+  }
+}

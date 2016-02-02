@@ -4,4 +4,8 @@ import {takeUntil} from '../../operator/takeUntil';
 
 Observable.prototype.takeUntil = takeUntil;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    takeUntil: (notifier: Observable<any>) => Observable<T>;
+  }
+}

@@ -4,4 +4,8 @@ import {ignoreElements} from '../../operator/ignoreElements';
 
 Observable.prototype.ignoreElements = ignoreElements;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    ignoreElements: () => Observable<T>;
+  }
+}

@@ -4,4 +4,8 @@ import {distinctUntilChanged} from '../../operator/distinctUntilChanged';
 
 Observable.prototype.distinctUntilChanged = distinctUntilChanged;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    distinctUntilChanged: (compare?: (x: T, y: T) => boolean) => Observable<T>;
+  }
+}

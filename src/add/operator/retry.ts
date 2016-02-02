@@ -4,4 +4,8 @@ import {retry} from '../../operator/retry';
 
 Observable.prototype.retry = retry;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    retry: (count?: number) => Observable<T>;
+  }
+}

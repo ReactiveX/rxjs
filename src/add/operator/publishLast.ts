@@ -1,7 +1,12 @@
 
 import {Observable} from '../../Observable';
+import {ConnectableObservable} from '../../observable/ConnectableObservable';
 import {publishLast} from '../../operator/publishLast';
 
 Observable.prototype.publishLast = publishLast;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    publishLast: () => ConnectableObservable<T>;
+  }
+}

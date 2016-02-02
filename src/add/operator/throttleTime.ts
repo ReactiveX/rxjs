@@ -1,7 +1,12 @@
 
 import {Observable} from '../../Observable';
+import {Scheduler} from '../../Scheduler';
 import {throttleTime} from '../../operator/throttleTime';
 
 Observable.prototype.throttleTime = throttleTime;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    throttleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
+  }
+}

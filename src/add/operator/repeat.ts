@@ -4,4 +4,8 @@ import {repeat} from '../../operator/repeat';
 
 Observable.prototype.repeat = repeat;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    repeat: (count?: number) => Observable<T>;
+  }
+}

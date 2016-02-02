@@ -4,4 +4,8 @@ import {merge} from '../../operator/merge';
 
 Observable.prototype.merge = merge;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    merge: (...observables: any[]) => Observable<any>;
+  }
+}

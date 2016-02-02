@@ -8,5 +8,3 @@ import {KitchenSinkOperators} from '../../Rx.KitchenSink';
 
 const observableProto = (<KitchenSinkOperators<any>>Observable.prototype);
 observableProto.distinctKey = distinctKey;
-
-export var _void: void;

@@ -4,4 +4,8 @@ import {concatAll} from '../../operator/concatAll';
 
 Observable.prototype.concatAll = concatAll;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    concatAll: () => Observable<any>;
+  }
+}

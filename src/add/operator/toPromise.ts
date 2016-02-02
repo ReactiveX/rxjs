@@ -4,4 +4,8 @@ import {toPromise} from '../../operator/toPromise';
 
 Observable.prototype.toPromise = toPromise;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    toPromise: (PromiseCtor?: typeof Promise) => Promise<T>;
+  }
+}

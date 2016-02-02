@@ -4,4 +4,8 @@ import {share} from '../../operator/share';
 
 Observable.prototype.share = share;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    share: () => Observable<T>;
+  }
+}

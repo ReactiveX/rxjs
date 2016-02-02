@@ -4,4 +4,8 @@ import {toArray} from '../../operator/toArray';
 
 Observable.prototype.toArray = toArray;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    toArray: () => Observable<T[]>;
+  }
+}

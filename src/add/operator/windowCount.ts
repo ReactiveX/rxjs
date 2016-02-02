@@ -4,4 +4,8 @@ import {windowCount} from '../../operator/windowCount';
 
 Observable.prototype.windowCount = windowCount;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    windowCount: (windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
+  }
+}

@@ -4,4 +4,8 @@ import {take} from '../../operator/take';
 
 Observable.prototype.take = take;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    take: (count: number) => Observable<T>;
+  }
+}

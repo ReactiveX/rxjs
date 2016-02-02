@@ -4,4 +4,8 @@ import {pluck} from '../../operator/pluck';
 
 Observable.prototype.pluck = pluck;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    pluck: (...properties: string[]) => Observable<any>;
+  }
+}

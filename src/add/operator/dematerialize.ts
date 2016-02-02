@@ -4,4 +4,8 @@ import {dematerialize} from '../../operator/dematerialize';
 
 Observable.prototype.dematerialize = dematerialize;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    dematerialize: () => Observable<any>;
+  }
+}

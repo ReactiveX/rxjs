@@ -4,4 +4,8 @@ import {zipAll} from '../../operator/zipAll';
 
 Observable.prototype.zipAll = zipAll;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
+  }
+}

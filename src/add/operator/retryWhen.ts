@@ -4,4 +4,8 @@ import {retryWhen} from '../../operator/retryWhen';
 
 Observable.prototype.retryWhen = retryWhen;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    retryWhen: (notifier: (errors: Observable<any>) => Observable<any>) => Observable<T>;
+  }
+}

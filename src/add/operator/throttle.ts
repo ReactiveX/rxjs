@@ -4,4 +4,8 @@ import {throttle} from '../../operator/throttle';
 
 Observable.prototype.throttle = throttle;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    throttle: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
+  }
+}

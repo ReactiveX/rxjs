@@ -4,4 +4,8 @@ import {_finally} from '../../operator/finally';
 
 Observable.prototype.finally = _finally;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    finally: (finallySelector: () => void) => Observable<T>;
+  }
+}

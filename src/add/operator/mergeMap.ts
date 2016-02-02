@@ -5,4 +5,13 @@ import {mergeMap} from '../../operator/mergeMap';
 Observable.prototype.mergeMap = mergeMap;
 Observable.prototype.flatMap = mergeMap;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    flatMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+      projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+      concurrent?: number) => Observable<R>;
+    mergeMap: <R>(project: ((x: T, ix: number) => Observable<any>),
+      projectResult?: (x: T, y: any, ix: number, iy: number) => R,
+      concurrent?: number) => Observable<R>;
+  }
+}

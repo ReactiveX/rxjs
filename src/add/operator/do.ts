@@ -4,4 +4,8 @@ import {_do} from '../../operator/do';
 
 Observable.prototype.do = _do;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    do: (next?: (x: T) => void, error?: (e: any) => void, complete?: () => void) => Observable<T>;
+  }
+}

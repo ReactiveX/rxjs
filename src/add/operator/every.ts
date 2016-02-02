@@ -4,4 +4,8 @@ import {every} from '../../operator/every';
 
 Observable.prototype.every = every;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    every: (predicate: (value: T, index: number) => boolean, thisArg?: any) => Observable<T>;
+  }
+}

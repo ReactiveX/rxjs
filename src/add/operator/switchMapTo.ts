@@ -4,4 +4,8 @@ import {switchMapTo} from '../../operator/switchMapTo';
 
 Observable.prototype.switchMapTo = switchMapTo;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    switchMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  }
+}

@@ -4,4 +4,8 @@ import {debounce} from '../../operator/debounce';
 
 Observable.prototype.debounce = debounce;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    debounce: (durationSelector: (value: T) => Observable<any> | Promise<any>) => Observable<T>;
+  }
+}

@@ -4,4 +4,8 @@ import {bufferCount} from '../../operator/bufferCount';
 
 Observable.prototype.bufferCount = bufferCount;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    bufferCount: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
+  }
+}

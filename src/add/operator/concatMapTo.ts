@@ -4,4 +4,8 @@ import {concatMapTo} from '../../operator/concatMapTo';
 
 Observable.prototype.concatMapTo = concatMapTo;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    concatMapTo: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  }
+}

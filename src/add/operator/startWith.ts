@@ -4,4 +4,8 @@ import {startWith} from '../../operator/startWith';
 
 Observable.prototype.startWith = startWith;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    startWith: (x: T) => Observable<T>;
+  }
+}

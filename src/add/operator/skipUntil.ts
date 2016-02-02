@@ -4,4 +4,8 @@ import {skipUntil} from '../../operator/skipUntil';
 
 Observable.prototype.skipUntil = skipUntil;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    skipUntil: (notifier: Observable<any>) => Observable<T>;
+  }
+}

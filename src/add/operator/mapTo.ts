@@ -4,4 +4,8 @@ import {mapTo} from '../../operator/mapTo';
 
 Observable.prototype.mapTo = mapTo;
 
-export var _void: void;
+declare module '../../Observable' {
+  interface Observable<T> {
+    mapTo: <R>(value: R) => Observable<R>;
+  }
+}
