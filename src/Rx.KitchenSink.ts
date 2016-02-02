@@ -18,3 +18,7 @@ import './add/operator/mergeScan';
 import './add/operator/min';
 import './add/operator/pairwise';
 import './add/operator/timeInterval';
+
+export {TimeInterval} from './operator/timeInterval';
+export {TestScheduler} from './testing/TestScheduler';
+export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';

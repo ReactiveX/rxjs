@@ -8,12 +8,10 @@ export {Observable} from './Observable';
 
 // statics
 /* tslint:disable:no-use-before-declare */
-import './add/observable/combineLatest';
-import './add/observable/concat';
-import './add/observable/merge';
-import './add/observable/race';
 import './add/observable/bindCallback';
 import './add/observable/bindNodeCallback';
+import './add/observable/combineLatest';
+import './add/observable/concat';
 import './add/observable/defer';
 import './add/observable/empty';
 import './add/observable/forkJoin';
@@ -23,7 +21,10 @@ import './add/observable/fromEvent';
 import './add/observable/fromEventPattern';
 import './add/observable/fromPromise';
 import './add/observable/interval';
+import './add/observable/merge';
+import './add/observable/race';
 import './add/observable/never';
+import './add/observable/of';
 import './add/observable/range';
 import './add/observable/throw';
 import './add/observable/timer';

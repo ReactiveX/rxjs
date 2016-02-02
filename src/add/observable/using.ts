@@ -3,4 +3,8 @@ import {UsingObservable} from '../../observable/UsingObservable';
 
 Observable.using = UsingObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let using: typeof UsingObservable.create;
+  }
+}

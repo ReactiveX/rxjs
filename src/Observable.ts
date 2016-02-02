@@ -6,29 +6,7 @@ import {root} from './util/root';
 import {SymbolShim} from './util/SymbolShim';
 import {toSubscriber} from './util/toSubscriber';
 
-import {combineLatestStatic} from './operator/combineLatest';
-import {concatStatic} from './operator/concat';
-import {mergeStatic} from './operator/merge';
-import {zipStatic} from './operator/zip';
-import {BoundCallbackObservable} from './observable/BoundCallbackObservable';
-import {BoundNodeCallbackObservable} from './observable/BoundNodeCallbackObservable';
-import {DeferObservable} from './observable/DeferObservable';
-import {EmptyObservable} from './observable/EmptyObservable';
-import {ForkJoinObservable} from './observable/ForkJoinObservable';
-import {FromObservable} from './observable/FromObservable';
-import {ArrayObservable} from './observable/ArrayObservable';
-import {FromEventObservable} from './observable/FromEventObservable';
-import {FromEventPatternObservable} from './observable/FromEventPatternObservable';
-import {PromiseObservable} from './observable/PromiseObservable';
-import {IntervalObservable} from './observable/IntervalObservable';
-import {TimerObservable} from './observable/TimerObservable';
-import {raceStatic} from './operator/race';
-import {RangeObservable} from './observable/RangeObservable';
-import {NeverObservable} from './observable/NeverObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
-import {UsingObservable} from './observable/UsingObservable';
-import {AjaxCreationMethod} from './observable/dom/AjaxObservable';
-import {WebSocketSubject} from './observable/dom/WebSocketSubject';
 
 export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
 export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T>;
@@ -172,31 +150,8 @@ export class Observable<T> {
     return this.source.subscribe(subscriber);
   }
 
-  // static method stubs
-  static ajax: AjaxCreationMethod;
-  static bindCallback: typeof BoundCallbackObservable.create;
-  static bindNodeCallback: typeof BoundNodeCallbackObservable.create;
-  static combineLatest: typeof combineLatestStatic;
-  static concat: typeof concatStatic;
-  static defer: typeof DeferObservable.create;
-  static empty: typeof EmptyObservable.create;
-  static forkJoin: typeof ForkJoinObservable.create;
-  static from: typeof FromObservable.create;
-  static fromArray: typeof ArrayObservable.create;
-  static fromEvent: typeof FromEventObservable.create;
-  static fromEventPattern: typeof FromEventPatternObservable.create;
-  static fromPromise: typeof PromiseObservable.create;
-  static interval: typeof IntervalObservable.create;
-  static merge: typeof mergeStatic;
-  static never: typeof NeverObservable.create;
-  static of: typeof ArrayObservable.of;
-  static race: typeof raceStatic;
-  static range: typeof RangeObservable.create;
+  // Throw is the special snow flake, the compiler sees it as a reserved word
   static throw: typeof ErrorObservable.create;
-  static timer: typeof TimerObservable.create;
-  static using: typeof UsingObservable.create;
-  static webSocket: typeof WebSocketSubject.create;
-  static zip: typeof zipStatic;
 
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
