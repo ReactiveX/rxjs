@@ -3,4 +3,8 @@ import {PromiseObservable} from '../../observable/PromiseObservable';
 
 Observable.fromPromise = PromiseObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let fromPromise: typeof PromiseObservable.create;
+  }
+}

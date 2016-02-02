@@ -3,4 +3,8 @@ import {NeverObservable} from '../../observable/NeverObservable';
 
 Observable.never = NeverObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let never: typeof NeverObservable.create;
+  }
+}

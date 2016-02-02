@@ -3,4 +3,8 @@ import {combineLatestStatic} from '../../operator/combineLatest';
 
 Observable.combineLatest = combineLatestStatic;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let combineLatest: typeof combineLatestStatic;
+  }
+}

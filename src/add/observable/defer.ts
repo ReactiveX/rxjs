@@ -3,4 +3,8 @@ import {DeferObservable} from '../../observable/DeferObservable';
 
 Observable.defer = DeferObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let defer: typeof DeferObservable.create;
+  }
+}

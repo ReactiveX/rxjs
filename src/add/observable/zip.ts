@@ -3,4 +3,8 @@ import {zipStatic} from '../../operator/zip';
 
 Observable.zip = zipStatic;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let zip: typeof zipStatic;
+  }
+}

@@ -3,4 +3,8 @@ import {ForkJoinObservable} from '../../observable/ForkJoinObservable';
 
 Observable.forkJoin = ForkJoinObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let forkJoin: typeof ForkJoinObservable.create;
+  }
+}

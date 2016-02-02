@@ -3,4 +3,8 @@ import {EmptyObservable} from '../../observable/EmptyObservable';
 
 Observable.empty = EmptyObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let empty: typeof EmptyObservable.create;
+  }
+}

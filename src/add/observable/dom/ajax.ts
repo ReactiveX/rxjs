@@ -4,4 +4,8 @@ import {AjaxObservable} from '../../../observable/dom/AjaxObservable';
 
 Observable.ajax = AjaxObservable.create;
 
-export var _void: void;
+declare module '../../../Observable' {
+  namespace Observable {
+    export let ajax: typeof AjaxObservable.create;
+  }
+}
