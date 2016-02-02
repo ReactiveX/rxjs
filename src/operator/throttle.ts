@@ -3,8 +3,6 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -32,14 +30,24 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   protected _next(value: T): void {
     if (!this.throttled) {
-      const duration = tryCatch(this.durationSelector)(value);
-      if (duration === errorObject) {
-        this.destination.error(errorObject.e);
-      } else {
-        this.add(this.throttled = subscribeToResult(this, duration));
-        this.destination.next(value);
-      }
+      this.tryDurationSelector(value);
     }
+  }
+
+  private tryDurationSelector(value: T): void {
+    let duration: Observable<number> | Promise<number> = null;
+    try {
+      duration = this.durationSelector(value);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.emitAndThrottle(value, duration);
+  }
+
+  private emitAndThrottle(value: T, duration: Observable<number> | Promise<number>) {
+    this.add(this.throttled = subscribeToResult(this, duration));
+    this.destination.next(value);
   }
 
   protected _unsubscribe() {
