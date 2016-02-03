@@ -2,8 +2,6 @@ import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -73,15 +71,24 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
              innerSub: InnerSubscriber<T, R>): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
-      const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        destination.next(result);
-      }
+      this.trySelectResult(outerValue, innerValue, outerIndex, innerIndex);
     } else {
       destination.next(innerValue);
     }
+  }
+
+  private trySelectResult(outerValue: T, innerValue: R,
+                          outerIndex: number, innerIndex: number): void {
+    const { resultSelector, destination } = this;
+    let result: R2;
+    try {
+      result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+    } catch (err) {
+      destination.error(err);
+      return;
+    }
+
+    destination.next(result);
   }
 
   notifyError(err: any): void {
