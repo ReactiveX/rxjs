@@ -38,6 +38,7 @@ import {AjaxCreationMethod} from './observable/dom/AjaxObservable';
 import {WebSocketSubject} from './observable/dom/WebSocketSubject';
 
 import {CombineLatestSignature} from './operator/combineLatest';
+import {WithLatestFromSignature} from './operator/withLatestFrom';
 
 export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
 export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T>;
@@ -285,7 +286,7 @@ export class Observable<T> implements CoreOperators<T>  {
   windowTime: (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
   windowToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>;
   windowWhen: (closingSelector: () => Observable<any>) => Observable<Observable<T>>;
-  withLatestFrom: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
+  withLatestFrom: WithLatestFromSignature<T>;
   zip: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 
