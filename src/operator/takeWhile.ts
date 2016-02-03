@@ -1,8 +1,6 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
   return this.lift(new TakeWhileOperator(predicate));
@@ -27,11 +25,19 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
 
   protected _next(value: T): void {
     const destination = this.destination;
-    const result = tryCatch(this.predicate)(value, this.index++);
+    let result: boolean;
+    try {
+      result = this.predicate(value, this.index++);
+    } catch (err) {
+      destination.error(err);
+      return;
+    }
+    this.nextOrComplete(value, result);
+  }
 
-    if (result == errorObject) {
-      destination.error(errorObject.e);
-    } else if (Boolean(result)) {
+  private nextOrComplete(value: T, predicateResult: boolean): void {
+    const destination = this.destination;
+    if (Boolean(predicateResult)) {
       destination.next(value);
     } else {
       destination.complete();
