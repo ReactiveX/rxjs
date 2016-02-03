@@ -7,6 +7,7 @@ import {Notification} from './Notification';
 
 import {CombineLatestSignature} from './operator/combineLatest';
 import {WithLatestFromSignature} from './operator/withLatestFrom';
+import {ZipSignature} from './operator/zip';
 
 export interface CoreOperators<T> {
   buffer?: (closingNotifier: Observable<any>) => Observable<T[]>;
@@ -97,6 +98,6 @@ export interface CoreOperators<T> {
   windowToggle?: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>;
   windowWhen?: (closingSelector: () => Observable<any>) => Observable<Observable<T>>;
   withLatestFrom: WithLatestFromSignature<T>;
-  zip?: <R>(...observables: Array<Observable<any> | ((...values: Array<any>) => R)>) => Observable<R>;
+  zip: ZipSignature<T>;
   zipAll?: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
 }
