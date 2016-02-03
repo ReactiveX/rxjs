@@ -1,8 +1,6 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 
 /**
  * Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds
@@ -38,17 +36,21 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
 
   protected _next(value: T): void {
     const destination = this.destination;
-    if (this.skipping === true) {
-      const index = this.index++;
-      const result = tryCatch(this.predicate)(value, index);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        this.skipping = Boolean(result);
-      }
+    if (this.skipping) {
+      this.tryCallPredicate(value);
     }
-    if (this.skipping === false) {
+
+    if (!this.skipping) {
       destination.next(value);
+    }
+  }
+
+  private tryCallPredicate(value: T): void {
+    try {
+      const result = this.predicate(value, this.index++);
+      this.skipping = Boolean(result);
+    } catch (err) {
+      this.destination.error(err);
     }
   }
 }
