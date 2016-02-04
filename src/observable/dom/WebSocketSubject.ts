@@ -39,7 +39,7 @@ export class WebSocketSubject<T> extends Subject<T> {
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable<T>, destination?: Observer<T>) {
     if (urlConfigOrSource instanceof Observable) {
-      super(urlConfigOrSource, destination);
+      super(destination, urlConfigOrSource);
     } else {
       super();
       this.WebSocketCtor = root.WebSocket;

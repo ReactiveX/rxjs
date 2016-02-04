@@ -411,7 +411,7 @@ describe('Subject', function () {
       }
     };
 
-    var sub = Subject.create(source, destination);
+    var sub = Subject.create(destination, source);
 
     sub.subscribe(function (x) {
       output.push(x);
@@ -456,7 +456,7 @@ describe('Subject', function () {
       }
     };
 
-    var sub = Subject.create(source, destination);
+    var sub = Subject.create(destination, source);
 
     sub.subscribe(function (x) {
       output.push(x);
@@ -571,7 +571,7 @@ describe('Subject', function () {
     it('should not eager', function () {
       var subscribed = false;
 
-      var subject = new Rx.Subject(new Rx.Observable(function (observer) {
+      var subject = new Rx.Subject(null, new Rx.Observable(function (observer) {
         subscribed = true;
         var subscription = Rx.Observable.of('x').subscribe(observer);
         return function () {

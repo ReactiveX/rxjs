@@ -8,20 +8,16 @@ import {rxSubscriber} from './symbol/rxSubscriber';
 
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
 
-  static create: Function = <T>(source: Observable<T>, destination: Observer<T>): Subject<T> => {
-    return new Subject<T>(source, destination);
+  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): Subject<T> => {
+    return new Subject<T>(destination, source);
   };
 
-  constructor(source?: Observable<T>, destination?: Observer<T>) {
+  constructor(protected destination?: Observer<T>, protected source?: Observable<T>) {
     super();
-    this.source = source;
-    this.destination = destination;
   }
 
   public observers: Observer<T>[] = [];
   public isUnsubscribed: boolean = false;
-
-  protected destination: Observer<T>;
 
   protected isStopped: boolean = false;
   protected hasErrored: boolean = false;
@@ -30,7 +26,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   protected hasCompleted: boolean = false;
 
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
-    const subject = new Subject(this, this.destination || this);
+    const subject = new Subject(this.destination || this, this);
     subject.operator = operator;
     return <any>subject;
   }
