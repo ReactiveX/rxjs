@@ -2,8 +2,6 @@ import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -69,14 +67,23 @@ class SwitchMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
              innerSub: InnerSubscriber<T, R>): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
-      const result = tryCatch(resultSelector)(outerValue, innerValue, outerIndex, innerIndex);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        destination.next(result);
-      }
+      this.tryResultSelector(outerValue, innerValue, outerIndex, innerIndex);
     } else {
       destination.next(innerValue);
     }
+  }
+
+  private tryResultSelector(outerValue: T, innerValue: R,
+                            outerIndex: number, innerIndex: number): void {
+    const { resultSelector, destination } = this;
+    let result: R2;
+    try {
+      result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+    } catch (err) {
+      destination.error(err);
+      return;
+    }
+
+    destination.next(result);
   }
 }
