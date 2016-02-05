@@ -21,7 +21,11 @@ import {errorObject} from '../util/errorObject';
  */
 export function bufferToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (value: O) => Observable<any>): Observable<T[]> {
-  return this.lift(new BufferToggleOperator(openings, closingSelector));
+  return this.lift(new BufferToggleOperator<T, O>(openings, closingSelector));
+}
+
+export interface BufferToggleSignature<T> {
+  <O>(openings: Observable<O>, closingSelector: (value: O) => Observable<any>): Observable<T[]>;
 }
 
 class BufferToggleOperator<T, O> implements Operator<T, T[]> {

@@ -5,7 +5,11 @@ import {Subject} from '../Subject';
 
 export function windowCount<T>(windowSize: number,
                                startWindowEvery: number = 0): Observable<Observable<T>> {
-  return this.lift(new WindowCountOperator(windowSize, startWindowEvery));
+  return this.lift(new WindowCountOperator<T>(windowSize, startWindowEvery));
+}
+
+export interface WindowCountSignature<T> {
+  (windowSize: number, startWindowEvery?: number): Observable<Observable<T>>;
 }
 
 class WindowCountOperator<T> implements Operator<T, Observable<T>> {

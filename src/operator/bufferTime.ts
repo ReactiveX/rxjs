@@ -23,7 +23,11 @@ import {asap} from '../scheduler/asap';
 export function bufferTime<T>(bufferTimeSpan: number,
                               bufferCreationInterval: number = null,
                               scheduler: Scheduler = asap): Observable<T[]> {
-  return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
+  return this.lift(new BufferTimeOperator<T>(bufferTimeSpan, bufferCreationInterval, scheduler));
+}
+
+export interface BufferTimeSignature<T> {
+  (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler): Observable<T[]>;
 }
 
 class BufferTimeOperator<T> implements Operator<T, T[]> {

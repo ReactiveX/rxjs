@@ -13,7 +13,11 @@ import {subscribeToResult} from '../util/subscribeToResult';
 
 export function windowToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
-  return this.lift(new WindowToggleOperator(openings, closingSelector));
+  return this.lift(new WindowToggleOperator<T, O>(openings, closingSelector));
+}
+
+export interface WindowToggleSignature<T> {
+  <O>(openings: Observable<O>, closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>>;
 }
 
 class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
@@ -34,7 +38,7 @@ interface WindowContext<T> {
   subscription: Subscription;
 }
 
-class WindowToggleSubscriber<T, R, O> extends OuterSubscriber<T, R> {
+class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   private contexts: WindowContext<T>[] = [];
   private openSubscription: Subscription;
 
@@ -105,7 +109,7 @@ class WindowToggleSubscriber<T, R, O> extends OuterSubscriber<T, R> {
 
   notifyNext(outerValue: any, innerValue: any,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+             innerSub: InnerSubscriber<T, any>): void {
 
     if (outerValue === this.openings) {
 

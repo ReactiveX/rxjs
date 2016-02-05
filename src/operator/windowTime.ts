@@ -9,7 +9,11 @@ import {asap} from '../scheduler/asap';
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,
                               scheduler: Scheduler = asap): Observable<Observable<T>> {
-  return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
+  return this.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, scheduler));
+}
+
+export interface WindowTimeSignature<T> {
+  (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler): Observable<Observable<T>>;
 }
 
 class WindowTimeOperator<T> implements Operator<T, Observable<T>> {

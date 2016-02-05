@@ -40,6 +40,16 @@ import {WebSocketSubject} from './observable/dom/WebSocketSubject';
 import {CombineLatestSignature} from './operator/combineLatest';
 import {WithLatestFromSignature} from './operator/withLatestFrom';
 import {ZipSignature} from './operator/zip';
+import {BufferSignature} from './operator/buffer';
+import {BufferCountSignature} from './operator/bufferCount';
+import {BufferTimeSignature} from './operator/bufferTime';
+import {BufferToggleSignature} from './operator/bufferToggle';
+import {BufferWhenSignature} from './operator/bufferWhen';
+import {WindowSignature} from './operator/window';
+import {WindowCountSignature} from './operator/windowCount';
+import {WindowTimeSignature} from './operator/windowTime';
+import {WindowToggleSignature} from './operator/windowToggle';
+import {WindowWhenSignature} from './operator/windowWhen';
 
 export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
 export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T>;
@@ -195,11 +205,11 @@ export class Observable<T> implements CoreOperators<T>  {
   static zip: typeof zipStatic;
 
   // core operators
-  buffer: (closingNotifier: Observable<any>) => Observable<T[]>;
-  bufferCount: (bufferSize: number, startBufferEvery: number) => Observable<T[]>;
-  bufferTime: (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler) => Observable<T[]>;
-  bufferToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<T[]>;
-  bufferWhen: (closingSelector: () => Observable<any>) => Observable<T[]>;
+  buffer: BufferSignature<T>;
+  bufferCount: BufferCountSignature<T>;
+  bufferTime: BufferTimeSignature<T>;
+  bufferToggle: BufferToggleSignature<T>;
+  bufferWhen: BufferWhenSignature<T>;
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
   combineLatest: CombineLatestSignature<T>;
@@ -282,11 +292,11 @@ export class Observable<T> implements CoreOperators<T>  {
   timeoutWith: <R>(due: number | Date, withObservable: Observable<R>, scheduler?: Scheduler) => Observable<T> | Observable<R>;
   toArray: () => Observable<T[]>;
   toPromise: (PromiseCtor?: typeof Promise) => Promise<T>;
-  window: (closingNotifier: Observable<any>) => Observable<Observable<T>>;
-  windowCount: (windowSize: number, startWindowEvery: number) => Observable<Observable<T>>;
-  windowTime: (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler) => Observable<Observable<T>>;
-  windowToggle: <O>(openings: Observable<O>, closingSelector?: (openValue: O) => Observable<any>) => Observable<Observable<T>>;
-  windowWhen: (closingSelector: () => Observable<any>) => Observable<Observable<T>>;
+  window: WindowSignature<T>;
+  windowCount: WindowCountSignature<T>;
+  windowTime: WindowTimeSignature<T>;
+  windowToggle: WindowToggleSignature<T>;
+  windowWhen: WindowWhenSignature<T>;
   withLatestFrom: WithLatestFromSignature<T>;
   zip: ZipSignature<T>;
   zipAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;

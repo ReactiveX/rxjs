@@ -8,7 +8,11 @@ import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export function window<T>(closingNotifier: Observable<any>): Observable<Observable<T>> {
-  return this.lift(new WindowOperator(closingNotifier));
+  return this.lift(new WindowOperator<T>(closingNotifier));
+}
+
+export interface WindowSignature<T> {
+  (closingNotifier: Observable<any>): Observable<Observable<T>>;
 }
 
 class WindowOperator<T> implements Operator<T, Observable<T>> {
@@ -21,7 +25,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
   }
 }
 
-class WindowSubscriber<T, R> extends OuterSubscriber<T, R> {
+class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   private window: Subject<T>;
 
   constructor(protected destination: Subscriber<Observable<T>>,
@@ -31,17 +35,17 @@ class WindowSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.openWindow();
   }
 
-  notifyNext(outerValue: T, innerValue: R,
+  notifyNext(outerValue: T, innerValue: any,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+             innerSub: InnerSubscriber<T, any>): void {
     this.openWindow();
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
     this._error(error);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
     this._complete();
   }
 
