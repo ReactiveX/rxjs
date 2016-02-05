@@ -19,7 +19,11 @@ import {Observable} from '../Observable';
  * @returns {Observable<T[]>} an Observable of arrays of buffered values.
  */
 export function bufferCount<T>(bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
-  return this.lift(new BufferCountOperator(bufferSize, startBufferEvery));
+  return this.lift(new BufferCountOperator<T>(bufferSize, startBufferEvery));
+}
+
+export interface BufferCountSignature<T> {
+  (bufferSize: number, startBufferEvery?: number): Observable<T[]>;
 }
 
 class BufferCountOperator<T> implements Operator<T, T[]> {

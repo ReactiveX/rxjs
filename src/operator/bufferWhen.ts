@@ -21,7 +21,11 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @returns {Observable<T[]>} an observable of arrays of buffered values.
  */
 export function bufferWhen<T>(closingSelector: () => Observable<any>): Observable<T[]> {
-  return this.lift(new BufferWhenOperator(closingSelector));
+  return this.lift(new BufferWhenOperator<T>(closingSelector));
+}
+
+export interface BufferWhenSignature<T> {
+  (closingSelector: () => Observable<any>): Observable<T[]>;
 }
 
 class BufferWhenOperator<T> implements Operator<T, T[]> {
@@ -34,7 +38,7 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
   }
 }
 
-class BufferWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
+class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[];
   private subscribing: boolean = false;
   private closingSubscription: Subscription;
@@ -61,9 +65,9 @@ class BufferWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.subscribing = false;
   }
 
-  notifyNext(outerValue: T, innerValue: R,
+  notifyNext(outerValue: T, innerValue: any,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+             innerSub: InnerSubscriber<T, any>): void {
     this.openBuffer();
   }
 
