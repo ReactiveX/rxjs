@@ -96,7 +96,10 @@ describe('BehaviorSubject', function () {
 
     subject.next('foo');
     subject.complete();
-    subject.next('bar');
+
+    expect(function () {
+      subject.next('bar');
+    }).toThrow(new Rx.ObjectUnsubscribedError());
   });
 
   it('should clean out unsubscribed subscribers', function (done) {

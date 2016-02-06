@@ -129,9 +129,6 @@ describe('Subject', function () {
     subscription1.unsubscribe();
 
     subject.complete();
-    subject.next(9);
-    subject.complete();
-    subject.error(new Error('err'));
 
     subscription2.unsubscribe();
 
@@ -180,9 +177,6 @@ describe('Subject', function () {
     subscription1.unsubscribe();
 
     subject.error(new Error('err'));
-    subject.next(9);
-    subject.complete();
-    subject.error(new Error('err'));
 
     subscription2.unsubscribe();
 
@@ -221,9 +215,6 @@ describe('Subject', function () {
     subscription1.unsubscribe();
 
     subject.complete();
-    subject.next(9);
-    subject.complete();
-    subject.error(new Error('err'));
 
     subscription2.unsubscribe();
 
@@ -507,6 +498,57 @@ describe('Subject', function () {
       done);
 
     source.subscribe(subject);
+  });
+
+  it('should throw ObjectUnsubscribedError when emit after unsubscribed', function () {
+    var subject = new Rx.Subject();
+    subject.unsubscribe();
+
+    expect(function () {
+      subject.next('a');
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+
+    expect(function () {
+      subject.error('a');
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+
+    expect(function () {
+      subject.complete();
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+  });
+
+  it('should throw ObjectUnsubscribedError when emit after completed', function () {
+    var subject = new Rx.Subject();
+    subject.complete();
+
+    expect(function () {
+      subject.next('a');
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+
+    expect(function () {
+      subject.error('a');
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+
+    expect(function () {
+      subject.complete();
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+  });
+
+  it('should throw ObjectUnsubscribedError when emit after error', function () {
+    var subject = new Rx.Subject();
+    subject.error('e');
+
+    expect(function () {
+      subject.next('a');
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+
+    expect(function () {
+      subject.error('a');
+    }).toThrow(new Rx.ObjectUnsubscribedError());
+
+    expect(function () {
+      subject.complete();
+    }).toThrow(new Rx.ObjectUnsubscribedError());
   });
 
   describe('asObservable', function () {
