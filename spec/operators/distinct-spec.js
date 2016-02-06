@@ -196,6 +196,21 @@ describe('Observable.prototype.distinct()', function () {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should raise error if flush raises error', function () {
+    var e1 =   hot('--a--b--a--b--a--b--|');
+    var e1subs =   '^            !';
+    var e2 =   hot('-----------x-#');
+    var e2subs =   '^            !';
+    var expected = '--a--b-------#';
+    var selector = function (x, y) {
+      return x === y;
+    };
+
+    expectObservable(e1.distinct(selector, e2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should unsubscribe from the flushing stream when the main stream is unsubbed', function () {
     var e1 =   hot('--a--b--a--b--a--b--|');
     var e1subs =   '^          !         ';
