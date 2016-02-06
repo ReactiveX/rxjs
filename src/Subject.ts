@@ -6,6 +6,9 @@ import {Subscription} from './Subscription';
 import {SubjectSubscription} from './subject/SubjectSubscription';
 import {rxSubscriber} from './symbol/rxSubscriber';
 
+import {throwError} from './util/throwError';
+import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
+
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
 
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): Subject<T> => {
@@ -53,9 +56,9 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
         return subscriber.error(this.errorValue);
       } else if (this.hasCompleted) {
         return subscriber.complete();
-      } else if (this.isUnsubscribed) {
-        throw new Error('Cannot subscribe to a disposed Subject.');
       }
+
+      this.throwIfUnsubscribed();
 
       const subscription = new SubjectSubscription(this, subscriber);
 
@@ -73,6 +76,8 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   }
 
   next(value: T): void {
+    this.throwIfUnsubscribed();
+
     if (this.isStopped) {
       return;
     }
@@ -89,6 +94,8 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   }
 
   error(err?: any): void {
+    this.throwIfUnsubscribed();
+
     if (this.isStopped) {
       return;
     }
@@ -105,6 +112,8 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   }
 
   complete(): void {
+    this.throwIfUnsubscribed();
+
     if (this.isStopped) {
       return;
     }
@@ -198,6 +207,12 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     this.isUnsubscribed = false;
 
     this.unsubscribe();
+  }
+
+  private throwIfUnsubscribed(): void {
+    if (this.isUnsubscribed) {
+      throwError(new ObjectUnsubscribedError());
+    }
   }
 
   [rxSubscriber]() {

@@ -70,8 +70,6 @@ describe('AsyncSubject', function () {
     expect(observer.results).toEqual([]);
     subject.complete();
     expect(observer.results).toEqual([2, 'done']);
-    subject.next(3);
-    expect(observer.results).toEqual([2, 'done']);
   });
 
   it('should not emit values if unsubscribed before complete', function () {
