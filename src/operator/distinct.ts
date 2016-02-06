@@ -1,7 +1,10 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+
+import {OuterSubscriber} from '../OuterSubscriber';
+import {InnerSubscriber} from '../InnerSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -26,9 +29,8 @@ class DistinctOperator<T, R> implements Operator<T, R> {
   }
 }
 
-export class DistinctSubscriber<T> extends Subscriber<T> {
-  private values: any[] = [];
-  private flushSubscription: Subscription;
+export class DistinctSubscriber<T, R> extends OuterSubscriber<T, R> {
+  private values: Array<T> = [];
 
   constructor(destination: Subscriber<T>, compare: (x: T, y: T) => boolean, flushes: Observable<any>) {
     super(destination);
@@ -37,16 +39,18 @@ export class DistinctSubscriber<T> extends Subscriber<T> {
     }
 
     if (flushes) {
-      this.add(this.flushSubscription = flushes.subscribe(new FlushSubscriber(this)));
+      this.add(subscribeToResult(this, flushes));
     }
   }
 
-  flush() {
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
     this.values.length = 0;
   }
 
-  private compare(x: T, y: T): boolean {
-    return x === y;
+  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+    this._error(error);
   }
 
   protected _next(value: T): void {
@@ -68,29 +72,7 @@ export class DistinctSubscriber<T> extends Subscriber<T> {
     this.destination.next(value);
   }
 
-  protected _complete(): void {
-    super._complete();
-  }
-
-  unsubscribe(): void {
-    super.unsubscribe();
-  }
-}
-
-export class FlushSubscriber extends Subscriber<any> {
-  constructor(private parent: DistinctSubscriber<any>) {
-    super();
-  }
-
-  next() {
-    this.parent.flush();
-  }
-
-  complete() {
-    // noop
-  }
-
-  error(err: any) {
-    this.parent.error(err);
+  private compare(x: T, y: T): boolean {
+    return x === y;
   }
 }
