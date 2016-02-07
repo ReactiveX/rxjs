@@ -63,6 +63,7 @@ enabling "composite" subscription behavior.
 |`fromNodeCallback`|`bindNodeCallback`|
 |`publishValue`|`publishBehavior`|
 |`replay`|`publishReplay`|
+|`return` or `just`|`of`|
 |`select`|`map`|
 |`selectConcat`|`concatMap`|
 |`switchFirst`|`exhaust`|
