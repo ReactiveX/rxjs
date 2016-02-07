@@ -34,5 +34,5 @@ export function mergeStatic<T, R>(...observables: Array<Observable<any> | Schedu
     return <Observable<R>>observables[0];
   }
 
-  return new ArrayObservable<Observable<T>>(<any>observables, scheduler).lift<Observable<T>, R>(new MergeAllOperator<R>(concurrent));
+  return new ArrayObservable(<any>observables, scheduler).lift(new MergeAllOperator<R>(concurrent));
 }

@@ -57,7 +57,7 @@ export function zipStatic<T, R>(...observables: Array<ObservableInput<any> | ((.
   if (typeof project === 'function') {
     observables.pop();
   }
-  return new ArrayObservable(observables).lift<T, R>(new ZipOperator<T, R>(project));
+  return new ArrayObservable(observables).lift(new ZipOperator(project));
 }
 
 export class ZipOperator<T, R> implements Operator<T, R> {

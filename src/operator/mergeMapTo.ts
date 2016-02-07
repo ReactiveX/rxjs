@@ -13,13 +13,15 @@ export function mergeMapTo<T, R, R2>(observable: Observable<R>,
   return this.lift(new MergeMapToOperator(observable, <any>resultSelector, concurrent));
 }
 
+// TODO: Figure out correct signature here: an Operator<Observable<T>, R2>
+//       needs to implement call(observer: Subscriber<R2>): Subscriber<Observable<T>>
 export class MergeMapToOperator<T, R, R2> implements Operator<Observable<T>, R2> {
   constructor(private ish: Observable<R> | Promise<R>,
               private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
               private concurrent: number = Number.POSITIVE_INFINITY) {
-    }
+  }
 
-  call(observer: Subscriber<R2>): Subscriber<T> {
+  call(observer: Subscriber<R2>): Subscriber<any> {
     return new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent);
   }
 }

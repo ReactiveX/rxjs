@@ -91,7 +91,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @description creates a new Observable, with this Observable as the source, and the passed
    * operator defined as the new observable's operator.
    */
-  lift<T, R>(operator: Operator<T, R>): Observable<R> {
+  lift<R>(operator: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;

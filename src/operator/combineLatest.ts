@@ -35,7 +35,7 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
 
   observables.unshift(this);
 
-  return new ArrayObservable(observables).lift<T, R>(new CombineLatestOperator<T, R>(project));
+  return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }
 
 /* tslint:disable:max-line-length */
@@ -107,7 +107,7 @@ export function combineLatestStatic<T, R>(...observables: Array<any | Observable
     observables = <Array<Observable<any>>>observables[0];
   }
 
-  return new ArrayObservable(observables, scheduler).lift<T, R>(new CombineLatestOperator<T, R>(project));
+  return new ArrayObservable(observables, scheduler).lift(new CombineLatestOperator<T, R>(project));
 }
 
 export class CombineLatestOperator<T, R> implements Operator<T, R> {
