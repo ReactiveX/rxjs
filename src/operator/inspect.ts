@@ -12,7 +12,7 @@ export function inspect<T>(durationSelector: (value: T) => Observable<any> | Pro
   return this.lift(new InspectOperator(durationSelector));
 }
 
-class InspectOperator<T, R> implements Operator<T, R> {
+class InspectOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
   }
 

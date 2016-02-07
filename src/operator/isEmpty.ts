@@ -13,15 +13,14 @@ export function isEmpty(): Observable<boolean> {
   return this.lift(new IsEmptyOperator());
 }
 
-class IsEmptyOperator<T> implements Operator<boolean, boolean> {
-  call (observer: Subscriber<T>): Subscriber<boolean> {
+class IsEmptyOperator implements Operator<any, boolean> {
+  call (observer: Subscriber<boolean>): Subscriber<any> {
     return new IsEmptySubscriber(observer);
   }
 }
 
-class IsEmptySubscriber extends Subscriber<boolean> {
-
-  constructor(destination: Subscriber<any>) {
+class IsEmptySubscriber extends Subscriber<any> {
+  constructor(destination: Subscriber<boolean>) {
     super(destination);
   }
 

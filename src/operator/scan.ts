@@ -21,7 +21,7 @@ class ScanOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, x: T) => R, private seed?: T | R) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<R>): Subscriber<T> {
     return new ScanSubscriber(subscriber, this.accumulator, this.seed);
   }
 }
@@ -40,7 +40,7 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
 
   private accumulatorSet: boolean = false;
 
-  constructor(destination: Subscriber<T>, private accumulator: (acc: R, x: T) => R, seed?: T|R) {
+  constructor(destination: Subscriber<R>, private accumulator: (acc: R, x: T) => R, seed?: T|R) {
     super(destination);
     this.seed = seed;
     this.accumulator = accumulator;

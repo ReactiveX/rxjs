@@ -58,7 +58,7 @@ class WithLatestFromOperator<T, R> implements Operator<T, R> {
               private project?: (...values: any[]) => Observable<R>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<R>): Subscriber<T> {
     return new WithLatestFromSubscriber(subscriber, this.observables, this.project);
   }
 }
@@ -67,7 +67,7 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
   private values: any[];
   private toRespond: number[] = [];
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: Subscriber<R>,
               private observables: Observable<any>[],
               private project?: (...values: any[]) => Observable<R>) {
     super(destination);

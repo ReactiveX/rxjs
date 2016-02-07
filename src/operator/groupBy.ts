@@ -31,7 +31,7 @@ export interface RefCountSubscription {
   attemptedToUnsubscribe: boolean;
 }
 
-class GroupByOperator<T, K, R> extends Operator<T, R> {
+class GroupByOperator<T, K, R> extends Operator<T, GroupedObservable<K, R>> {
   constructor(public source: Observable<T>,
               private keySelector: (value: T) => K,
               private elementSelector?: (value: T) => R,
