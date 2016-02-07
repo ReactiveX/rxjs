@@ -46,7 +46,7 @@ import 'rxjs/add/operator/map';
 Observable.of(1,2,3).map(x => x + '!!!'); // etc
 ```
 
-To import what you need and use it with ES7 function bind (best overall method, if possible):
+To import what you need and use it with ES next function bind (best overall method, if possible):
 
 ```js
 import {Observable} from 'rxjs/Observable';
