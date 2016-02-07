@@ -30,5 +30,5 @@ export function concatStatic<T, R>(...observables: Array<Observable<any> | Sched
     scheduler = args.pop();
   }
 
-  return new ArrayObservable(observables, scheduler).lift<Observable<T>, T | R>(new MergeAllOperator<T | R>(1));
+  return new ArrayObservable(observables, scheduler).lift(new MergeAllOperator<T | R>(1));
 }
