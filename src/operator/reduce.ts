@@ -27,7 +27,7 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
   constructor(private project: (acc: R, value: T) => R, private seed?: R) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+  call(subscriber: Subscriber<R>): Subscriber<T> {
     return new ReduceSubscriber(subscriber, this.project, this.seed);
   }
 }
@@ -39,7 +39,7 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
   hasValue: boolean = false;
   project: (acc: R, value: T) => R;
 
-  constructor(destination: Subscriber<T>, project: (acc: R, value: T) => R, seed?: R) {
+  constructor(destination: Subscriber<R>, project: (acc: R, value: T) => R, seed?: R) {
     super(destination);
     this.acc = seed;
     this.project = project;

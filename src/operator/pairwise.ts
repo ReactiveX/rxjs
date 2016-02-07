@@ -11,12 +11,12 @@ import {Subscriber} from '../Subscriber';
  *
  * @returns {Observable<R>} an observable of pairs of values.
  */
-export function pairwise<T>(): Observable<T> {
+export function pairwise<T>(): Observable<[T, T]> {
   return this.lift(new PairwiseOperator());
 }
 
-class PairwiseOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<T>): Subscriber<T> {
+class PairwiseOperator<T> implements Operator<T, [T, T]> {
+  call(subscriber: Subscriber<[T, T]>): Subscriber<T> {
     return new PairwiseSubscriber(subscriber);
   }
 }
@@ -25,7 +25,7 @@ class PairwiseSubscriber<T> extends Subscriber<T> {
   private prev: T;
   private hasPrev: boolean = false;
 
-  constructor(destination: Subscriber<T>) {
+  constructor(destination: Subscriber<[T, T]>) {
     super(destination);
   }
 

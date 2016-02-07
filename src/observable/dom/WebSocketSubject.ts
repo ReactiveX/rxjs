@@ -61,7 +61,7 @@ export class WebSocketSubject<T> extends Subject<T> {
 
   lift<R>(operator: Operator<T, R>) {
     const sock: WebSocketSubject<T> = new WebSocketSubject(this, this.destination);
-    sock.operator = operator;
+    sock.operator = <any>operator;
     return sock;
   }
 

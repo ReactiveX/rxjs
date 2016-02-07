@@ -9,7 +9,7 @@ export function inspectTime<T>(delay: number, scheduler: Scheduler = asap): Obse
   return this.lift(new InspectTimeOperator(delay, scheduler));
 }
 
-class InspectTimeOperator<T, R> implements Operator<T, R> {
+class InspectTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 

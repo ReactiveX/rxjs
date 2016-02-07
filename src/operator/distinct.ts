@@ -13,11 +13,11 @@ import {Subscription} from '../Subscription';
  * @param {Observable} [flushes] optional Observable for flushing the internal HashSet of the operator.
  * @returns {Observable} an Observable that emits items from the source Observable with distinct values.
  */
-export function distinct<T>(compare?: (x: T, y: T) => boolean, flushes?: Observable<any>) {
+export function distinct<T>(compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
   return this.lift(new DistinctOperator(compare, flushes));
 }
 
-class DistinctOperator<T, R> implements Operator<T, R> {
+class DistinctOperator<T> implements Operator<T, T> {
   constructor(private compare: (x: T, y: T) => boolean, private flushes: Observable<any>) {
   }
 
