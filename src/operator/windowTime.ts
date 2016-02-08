@@ -51,7 +51,10 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     const windows = this.windows;
     const len = windows.length;
     for (let i = 0; i < len; i++) {
-      windows[i].next(value);
+      const window = windows[i];
+      if (!window.isUnsubscribed) {
+        window.next(value);
+      }
     }
   }
 
@@ -66,7 +69,10 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   protected _complete() {
     const windows = this.windows;
     while (windows.length > 0) {
-      windows.shift().complete();
+      const window = windows.shift();
+      if (!window.isUnsubscribed) {
+        window.complete();
+      }
     }
     this.destination.complete();
   }

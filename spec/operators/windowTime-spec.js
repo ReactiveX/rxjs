@@ -183,12 +183,9 @@ describe('Observable.prototype.windowTime', function () {
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     rxTestScheduler.schedule(function () {
-      try {
+      expect(function () {
         window.subscribe();
-      }
-      catch (err) {
-        expect(err.message).toBe('Cannot subscribe to a disposed Subject.');
-      }
+      }).toThrow(new Rx.ObjectUnsubscribedError());
     }, 150);
   });
 
