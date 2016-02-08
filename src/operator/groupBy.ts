@@ -83,7 +83,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
 
     if (!group) {
       groups.set(key, group = new Subject<R>());
-      let groupedObservable = new GroupedObservable(key, group, this);
+      const groupedObservable = new GroupedObservable(key, group, this);
 
       if (this.durationSelector) {
         this._selectDuration(key, group);
@@ -95,7 +95,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     if (this.elementSelector) {
       this._selectElement(value, group);
     } else {
-      group.next(value);
+      this.tryGroupNext(value, group);
     }
   }
 
@@ -107,7 +107,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
       this.error(err);
       return;
     }
-    group.next(result);
+    this.tryGroupNext(result, group);
   }
 
   private _selectDuration(key: K, group: any) {
@@ -119,6 +119,12 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
       return;
     }
     this.add(duration.subscribe(new GroupDurationSubscriber(key, group, this)));
+  }
+
+  private tryGroupNext(value: T|R, group: Subject<T | R>): void {
+    if (!group.isUnsubscribed) {
+      group.next(value);
+    }
   }
 
   protected _error(err: any): void {
@@ -165,17 +171,30 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
   }
 
   protected _next(value: T): void {
-    this.group.complete();
-    this.parent.removeGroup(this.key);
+    this.tryComplete();
   }
 
   protected _error(err: any): void {
-    this.group.error(err);
-    this.parent.removeGroup(this.key);
+    this.tryError(err);
   }
 
   protected _complete(): void {
-    this.group.complete();
+    this.tryComplete();
+  }
+
+  private tryError(err: any): void {
+    const group = this.group;
+    if (!group.isUnsubscribed) {
+      group.error(err);
+    }
+    this.parent.removeGroup(this.key);
+  }
+
+  private tryComplete(): void {
+    const group = this.group;
+    if (!group.isUnsubscribed) {
+      group.complete();
+    }
     this.parent.removeGroup(this.key);
   }
 }
