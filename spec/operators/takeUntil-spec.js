@@ -18,7 +18,7 @@ describe('Observable.prototype.takeUntil()', function () {
   it('should take values and raises error when notifier raises error', function () {
     var e1 =     hot('--a--b--c--d--e--f--g--|');
     var e1subs =     '^            !          ';
-    var e2 =     hot('-------------#--|       ');
+    var e2 =     hot('-------------#          ');
     var e2subs =     '^            !          ';
     var expected =   '--a--b--c--d-#          ';
 

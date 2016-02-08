@@ -178,20 +178,20 @@ describe('zip', function () {
     });
 
     it('should work with non-empty observable and empty iterable', function () {
-      var a = hot('---^----#--|');
-      var asubs =    '^    !   ';
+      var a = hot('---^----#');
+      var asubs =    '^    !';
       var b = [];
-      var expected = '-----#   ';
+      var expected = '-----#';
 
       expectObservable(a.zip(b)).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
     it('should work with observable which raises error and non-empty iterable', function () {
-      var a = hot('---^----#--|');
-      var asubs =    '^    !   ';
+      var a = hot('---^----#');
+      var asubs =    '^    !';
       var b = [1];
-      var expected = '-----#   ';
+      var expected = '-----#';
 
       expectObservable(a.zip(b)).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);

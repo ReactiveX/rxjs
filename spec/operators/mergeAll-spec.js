@@ -359,7 +359,7 @@ describe('Observable.prototype.mergeAll()', function () {
     var ysubs =    '  ^           !                ';
     var z = cold(              'c-d-e-f-|          ');
     var zsubs =    '            ^   !              ';
-    var e1 =   hot('--y---------z---#-------------|', { y: y, z: z });
+    var e1 =   hot('--y---------z---#              ', { y: y, z: z });
     var e1subs =   '^               !              ';
     var expected = '--a-b-------c-d-#              ';
 

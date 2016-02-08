@@ -503,7 +503,7 @@ describe('Observable.prototype.multicast()', function () {
       source.connect();
     });
 
-    it('should not throw `cannot subscribe to a disposed subject` when used in ' +
+    it('should not throw ObjectUnsubscribedError when used in ' +
     'a switchMap', function (done) {
       var source = Observable.of(1, 2, 3)
         .multicast(function () { return new Subject(); })
@@ -548,7 +548,7 @@ describe('Observable.prototype.multicast()', function () {
       source.connect();
     });
 
-    it('should not throw `cannot subscribe to a disposed subject` when used in ' +
+    it('should not throw ObjectUnsubscribedError when used in ' +
     'a switchMap', function (done) {
       var source = Observable.of(1, 2, 3)
         .multicast(new Subject())

@@ -170,7 +170,7 @@ describe('Observable.prototype.windowWhen', function () {
     rxTestScheduler.schedule(function () {
       expect(function () {
         window.subscribe();
-      }).toThrowError('Cannot subscribe to a disposed Subject.');
+      }).toThrow(new Rx.ObjectUnsubscribedError());
     }, late);
   });
 

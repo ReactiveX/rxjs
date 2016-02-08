@@ -105,7 +105,7 @@ describe('Observable.prototype.concatAll()', function () {
       y: cold(       'a-b---------|'),
       z: cold(                 'c-d-e-f-|'),
     };
-    var e1 =   hot('--y---------z---#-------------|', values);
+    var e1 =   hot('--y---------z---#    ', values);
     var expected = '--a-b---------c-#';
 
     expectObservable(e1.concatAll()).toBe(expected);
