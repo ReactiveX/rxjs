@@ -11,6 +11,31 @@ describe('Observable.prototype.concat()', function () {
     expectObservable(e1.concat(e2, rxTestScheduler)).toBe(expected);
   });
 
+  it('should work properly with scalar observables', function (done) {
+    var results = [];
+
+    var s1 = Observable
+      .create(function (observer) {
+        setTimeout(function () {
+          observer.next(1);
+          observer.complete();
+        });
+      })
+      .concat(Observable.of(2));
+
+    s1.subscribe(
+        function (x) {
+          results.push('Next: ' + x);
+        },
+        done.fail,
+        function (x) {
+          results.push('Completed');
+          expect(results).toEqual(['Next: 1', 'Next: 2', 'Completed']);
+          done();
+        }
+      );
+  });
+
   it('should complete without emit if both sources are empty', function () {
     var e1 =   cold('--|');
     var e1subs =    '^ !';

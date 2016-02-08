@@ -29,12 +29,8 @@ export class MergeAllSubscriber<T> extends OuterSubscriber<Observable<T>, T> {
 
   protected _next(observable: Observable<T>) {
     if (this.active < this.concurrent) {
-      if (observable._isScalar) {
-        this.destination.next((<any>observable).value);
-      } else {
-        this.active++;
-        this.add(subscribeToResult<Observable<T>, T>(this, observable));
-      }
+      this.active++;
+      this.add(subscribeToResult<Observable<T>, T>(this, observable));
     } else {
       this.buffer.push(observable);
     }
