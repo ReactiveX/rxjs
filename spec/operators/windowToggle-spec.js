@@ -1,4 +1,4 @@
-/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions */
+/* globals describe, it, expect, hot, cold, expectObservable, expectSubscriptions, rxTestScheduler */
 var Rx = require('../../dist/cjs/Rx.KitchenSink');
 var Observable = Rx.Observable;
 
@@ -214,7 +214,7 @@ describe('Observable.prototype.windowToggle', function () {
     rxTestScheduler.schedule(function () {
       expect(function () {
         window.subscribe();
-      }).toThrowError('Cannot subscribe to a disposed Subject.');
+      }).toThrow(new Rx.ObjectUnsubscribedError());
     }, late);
   });
 
@@ -284,7 +284,7 @@ describe('Observable.prototype.windowToggle', function () {
   });
 
   it('should handle errors', function () {
-    var e1 = hot('--a--^---b---c---d---e--#f---g---h------|');
+    var e1 = hot('--a--^---b---c---d---e--#                ');
     var e1subs =      '^                  !                ';
     var e2 =     cold('--x-----------y--------z---|        ');
     var e2subs =      '^                  !                ';

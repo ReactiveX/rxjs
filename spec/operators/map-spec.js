@@ -137,7 +137,7 @@ describe('Observable.prototype.map()', function () {
   });
 
   it('should map with index until completed', function () {
-    var a = hot('-5-^-4--3---2----1--|--8--|--#');
+    var a = hot('-5-^-4--3---2----1--|');
     var asubs =    '^                !';
     var expected = '--a--b---c----d--|';
     var values = {a: 5, b: 14, c: 23, d: 32};
@@ -155,7 +155,7 @@ describe('Observable.prototype.map()', function () {
   });
 
   it('should map with index until an error occurs', function () {
-    var a = hot('-5-^-4--3---2----1--#--8--|', undefined, 'too bad');
+    var a = hot('-5-^-4--3---2----1--#', undefined, 'too bad');
     var asubs =    '^                !';
     var expected = '--a--b---c----d--#';
     var values = {a: 5, b: 14, c: 23, d: 32};
@@ -173,7 +173,7 @@ describe('Observable.prototype.map()', function () {
   });
 
   it('should map using a custom thisArg', function () {
-    var a = hot('-5-^-4--3---2----1--|--8--|--#');
+    var a = hot('-5-^-4--3---2----1--|');
     var asubs =    '^                !';
     var expected = '--a--b---c----d--|';
     var values = {a: 5, b: 14, c: 23, d: 32};
@@ -195,7 +195,7 @@ describe('Observable.prototype.map()', function () {
   });
 
   it('should map twice', function () {
-    var a = hot('-0----1-^-2---3--4-5--6--7-8-|--9-#-|');
+    var a = hot('-0----1-^-2---3--4-5--6--7-8-|');
     var asubs =         '^                    !';
     var expected =      '--a---b--c-d--e--f-g-|';
     var values = {a: 2, b: 3, c: 4, d: 5, e: 6, f: 7, g: 8};

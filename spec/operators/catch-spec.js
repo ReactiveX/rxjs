@@ -79,7 +79,7 @@ describe('Observable.prototype.catch()', function () {
   });
 
   it('should catch error and replace it with a hot Observable', function () {
-    var e1 =   hot('--a--b--#----|     ');
+    var e1 =   hot('--a--b--#          ');
     var e1subs =   '^       !          ';
     var e2 =   hot('1-2-3-4-5-6-7-8-9-|');
     var e2subs =   '        ^         !';

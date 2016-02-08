@@ -218,10 +218,14 @@ describe('Observable.prototype.skipUntil()', function () {
     var e1 =   hot( '--a--b--c--d--e--|');
     var e1subs =   ['^                !',
                     '^                !']; // for the explicit subscribe some lines below
-    var skip = hot( '-------------x--|');
+    var skip = new Rx.Subject();
     var expected =  '-';
 
-    e1.subscribe(function () {
+    e1.subscribe(function (x) {
+      if (x === 'd' && !skip.isUnsubscribed) {
+        skip.next('x');
+      }
+
       skip.unsubscribe();
     });
 
