@@ -16,11 +16,31 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
   if (typeof project !== 'function') {
     throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
   }
-  return this.lift(new MapOperator(project, thisArg));
+
+  const source = this.source;
+  const operator = this.operator;
+
+  if (source && operator && operator.transduce) {
+    return source.lift(new MapOperator(operator.transduce(project, thisArg), thisArg));
+  } else {
+    return this.lift(new MapOperator(project, thisArg));
+  }
 }
 
 class MapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => R, private thisArg: any) {
+  }
+
+  transduce(nextOperation: (value: T, index: number) => any, nextThisArg: any): (value: T, index: number) => R {
+    const fn = function transducedMap(value: T, index: number) {
+      const { project, thisArg, nextOperation, nextThisArg } = (<any>transducedMap);
+      return nextOperation.call(nextThisArg, project.call(thisArg, value, index), index);
+    };
+    (<any>fn).project = this.project;
+    (<any>fn).thisArg = this.thisArg;
+    (<any>fn).nextOperation = nextOperation;
+    (<any>fn).nextThisArg = nextThisArg;
+    return fn;
   }
 
   call(subscriber: Subscriber<R>): Subscriber<T> {
