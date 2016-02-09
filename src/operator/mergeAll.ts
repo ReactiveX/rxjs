@@ -4,9 +4,15 @@ import {Observer} from '../Observer';
 import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
+import {MergeMapOperator} from './mergeMap';
 
 export function mergeAll<T>(concurrent: number = Number.POSITIVE_INFINITY): T {
-  return this.lift(new MergeAllOperator(concurrent));
+  const { source, operator } = this;
+  if (source && operator && operator.transduce) {
+    return source.lift(new MergeMapOperator(operator.transduce((x: any) => x, this), null, concurrent));
+  } else {
+    return this.lift(new MergeAllOperator(concurrent));
+  }
 }
 
 export class MergeAllOperator<T> implements Operator<Observable<T>, T> {
