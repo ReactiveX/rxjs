@@ -204,11 +204,7 @@ To reduce polymorphism and get better performance out of operators, some operato
       <td><code>debounceTime(delay: number, scheduler?: Scheduler)</code></td>
     </tr>
     <tr>
-      <td rowspan="2"><code>throttle</code></td>
-      <td><code>throttle(durationSelector: Observable)</code></td>
-      <td><code>throttle(durationSelector: Observable)</code></td>
-    </tr>
-    <tr>
+      <td><code>throttle</code></td>
       <td><code>throttle(delay: number, scheduler?: Scheduler)</code></td>
       <td><code>throttleTime(delay: number, scheduler?: Scheduler)</code></td>
     </tr>
