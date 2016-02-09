@@ -126,8 +126,9 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     if (groups) {
       groups.forEach((group, key) => {
         group.error(err);
-        this.removeGroup(key);
       });
+
+      groups.clear();
     }
     this.destination.error(err);
   }
@@ -137,8 +138,9 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     if (groups) {
       groups.forEach((group, key) => {
         group.complete();
-        this.removeGroup(key);
       });
+
+      groups.clear();
     }
     this.destination.complete();
   }
