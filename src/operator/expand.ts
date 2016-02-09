@@ -82,12 +82,8 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private subscribeToProjection(result: any, value: T, index: number): void {
-    if (result._isScalar) {
-      this._next(result.value);
-    } else {
-      this.active++;
-      this.add(subscribeToResult<T, R>(this, result, value, index));
-    }
+    this.active++;
+    this.add(subscribeToResult<T, R>(this, result, value, index));
   }
 
   protected _complete(): void {
