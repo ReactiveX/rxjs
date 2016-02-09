@@ -29,7 +29,13 @@ export class MapPolyfill {
     return true;
   }
 
-  forEach(cb: Function, thisArg: any) {
+  clear(): void {
+    this._keys.length = 0;
+    this._values.length = 0;
+    this.size = 0;
+  }
+
+  forEach(cb: Function, thisArg: any): void {
     for (let i = 0; i < this.size; i++) {
       cb.call(thisArg, this._values[i], this._keys[i]);
     }
