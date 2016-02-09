@@ -210,6 +210,7 @@ export class Observable<T> implements CoreOperators<T>  {
   bufferTime: BufferTimeSignature<T>;
   bufferToggle: BufferToggleSignature<T>;
   bufferWhen: BufferWhenSignature<T>;
+  cache: (bufferSize?: number, windowTime?: number, scheduler?: Scheduler) => Observable<T>;
   catch: (selector: (err: any, source: Observable<T>, caught: Observable<any>) => Observable<any>) => Observable<T>;
   combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
   combineLatest: CombineLatestSignature<T>;
