@@ -4,7 +4,7 @@ import {Subscriber} from '../Subscriber';
 
 /**
  * Returns an Observable that searches for the first item in the source Observable that
- * matches the specified condition, and returns the first occurence in the source.
+ * matches the specified condition, and returns the first occurrence in the source.
  * @param {function} predicate function called with each item to test for condition matching.
  * @returns {Observable} an Observable of the first item that matches the condition.
  */

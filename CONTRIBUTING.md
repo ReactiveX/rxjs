@@ -145,7 +145,7 @@ testing techniques.
 
 #### <a id="macro"></a>Macro
 
-[Macro performance tests](perf/macro) are best written for scenarios where many object instance allocations (or deallocations) are occuring. Operators
+[Macro performance tests](perf/macro) are best written for scenarios where many object instance allocations (or deallocations) are occurring. Operators
 that create a lot of child subscriptions, or operators that emit new objects like Observables and Subjects are definitely worth creating
 macro performance tests for.
 

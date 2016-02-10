@@ -330,7 +330,7 @@ describe('Observable.lift', function () {
   });
 
   it('should allow injecting behaviors into all subscribers in an operator ' +
-  'chain when overriden', function (done) {
+  'chain when overridden', function (done) {
     // The custom Subscriber
     var log = [];
     function LogSubscriber() {
