@@ -35,6 +35,6 @@ RxNextMergeMap.addEventListener('click', function () {
 });
 
 Rx2MergeMap.addEventListener('click', function () {
-  Rx2TestObservable.mergeMap(projectionRx2).subscribe();
+  Rx2TestObservable.flatMap(projectionRx2).subscribe();
 });
 
