@@ -69,9 +69,10 @@
 
 ### BREAKING CHANGES
 
-* Subject: Subject.create arguments have been swapped to match Rx
-4 signature. `Subject.create(observable, observer)` is now
-`Subject.create(observer, observable)`
+* Subject: Subject.create arguments have been swapped to match Rx 4 signature. `Subject.create(observable, observer)` is now `Subject.create(observer, observable)`
+* Observable patching: Patch files for static observable methods such as `of` and `from` can now be found in `rxjs/add/observable/of`, `rxjs/add/observable/from`, etc.
+* Observable modules: Observable modules for subclassed Observables like `PromiseObservable`, `ArrayObservable` are now in appropriately named files like `rxjs/observable/PromiseObservable` and `rxjs/observable/ArrayObservable`
+  as opposed to `rxjs/observable/fromPromise` and `rxjs/observable/fromArray`, since they're not patching, they simply house the Observable implementations.
 
 
 
@@ -123,9 +124,6 @@
 
 * inspect: `inspect` and `inspectTime` were removed. Use `withLatestFrom` instead.
 * Subscriber/Observable: errors thrown in nextHandlers by consumer code will no longer propagate to the errorHandler.
-* Observable patching: Patch files for static observable methods such as `of` and `from` can now be found in `rxjs/add/observable/of`, `rxjs/add/observable/from`, etc.
-* Observable modules: Observable modules for subclassed Observables like `PromiseObservable`, `ArrayObservable` are now in appropriately named files like `rxjs/observable/PromiseObservable` and `rxjs/observable/ArrayObservable`
-  as opposed to `rxjs/observable/fromPromise` and `rxjs/observable/fromArray`, since they're not patching, they simply house the Observable implementations.
 
 
 
