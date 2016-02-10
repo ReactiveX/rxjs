@@ -1,5 +1,6 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, hot, cold */
 var Rx = require('../../dist/cjs/Rx');
+var Subject = Rx.Subject;
 var Observable = Rx.Observable;
 
 describe('Observable.prototype.do()', function () {
@@ -51,6 +52,32 @@ describe('Observable.prototype.do()', function () {
           completeCalled = true;
         }
       })
+      .subscribe();
+
+    expect(completeCalled).toBe(true);
+    expect(results).toEqual(expected);
+  });
+
+  it('should handle everything with a Subject', function () {
+    var expected = [1,2,3];
+    var results = [];
+    var completeCalled = false;
+    var subject = new Subject();
+
+    subject.subscribe({
+      next: function (x) {
+        results.push(x);
+      },
+      error: function (err) {
+        throw 'should not be called';
+      },
+      complete: function () {
+        completeCalled = true;
+      }
+    });
+
+    Observable.of(1,2,3)
+      .do(subject)
       .subscribe();
 
     expect(completeCalled).toBe(true);
