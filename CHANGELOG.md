@@ -1,3 +1,80 @@
+<a name="5.0.0-beta.2"></a>
+# [5.0.0-beta.2](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.1...v5.0.0-beta.2) (2016-02-10)
+
+
+### Bug Fixes
+
+* **ajax:** fixes error in Chrome accessing responseText when responseType isn't text. ([f3e2f73](https://github.com/ReactiveX/RxJS/commit/f3e2f73))
+* **benchpress:** fix issues with benchmarks ([16894bb](https://github.com/ReactiveX/RxJS/commit/16894bb))
+* **every:** remove eager predicate calls ([74c2c44](https://github.com/ReactiveX/RxJS/commit/74c2c44))
+* **forkJoin:** fix forkJoin to complete if sources Array is empty. ([412b13b](https://github.com/ReactiveX/RxJS/commit/412b13b))
+* **groupBy:** does not emit on unsubscribed group ([6d08705](https://github.com/ReactiveX/RxJS/commit/6d08705))
+* **groupBy:** fix groupBy to use lift(), supports composability ([815cfae](https://github.com/ReactiveX/RxJS/commit/815cfae)), closes [#1085](https://github.com/ReactiveX/RxJS/issues/1085) [#1085](https://github.com/ReactiveX/RxJS/issues/1085)
+* **merge/concat:** passed scalar observables will now complete properly ([c01b92f](https://github.com/ReactiveX/RxJS/commit/c01b92f)), closes [#1150](https://github.com/ReactiveX/RxJS/issues/1150)
+* **MergeMapSubscriber:** clearfy type definitions for MergeMapSubscriber's members ([4ee5f02](https://github.com/ReactiveX/RxJS/commit/4ee5f02))
+* **Observable.forEach:** errors thrown in nextHandler reject returned promise ([c5ead88](https://github.com/ReactiveX/RxJS/commit/c5ead88)), closes [#1184](https://github.com/ReactiveX/RxJS/issues/1184)
+* **Observer:** fix typing to allow observation via partial observables with PartialObservable<T ([7b6da90](https://github.com/ReactiveX/RxJS/commit/7b6da90))
+* **Subject:** align parameter order to match with RxJS4 ([44dfa07](https://github.com/ReactiveX/RxJS/commit/44dfa07)), closes [#1285](https://github.com/ReactiveX/RxJS/issues/1285)
+* **Subject:** throw ObjectUnsubscribedError when unsubecribed ([29b630b](https://github.com/ReactiveX/RxJS/commit/29b630b)), closes [#859](https://github.com/ReactiveX/RxJS/issues/859)
+* **Subscriber:** adds unsubscription when errors are thrown from user-land handlers. ([dc67d21](https://github.com/ReactiveX/RxJS/commit/dc67d21))
+* **Subscription:** fix leaks caused by unsubscribe functions that throw ([9e88c2e](https://github.com/ReactiveX/RxJS/commit/9e88c2e))
+* **subscriptions:** unsubscribe correctly when a Subscriber throws during synchronous dispatch. ([b1698fe](https://github.com/ReactiveX/RxJS/commit/b1698fe))
+* **typings:** don't expose PromiseConstructor dependency ([f59225b](https://github.com/ReactiveX/RxJS/commit/f59225b)), closes [#1270](https://github.com/ReactiveX/RxJS/issues/1270)
+* **typings:** remove R from Operator.call, update operators accordingly ([f27902d](https://github.com/ReactiveX/RxJS/commit/f27902d))
+* **typings:** remove redundant generics from call<T, R> and lift<T, R> ([603c9eb](https://github.com/ReactiveX/RxJS/commit/603c9eb))
+* **windowTime:** does not emit on unsubscribed window ([595f4ef](https://github.com/ReactiveX/RxJS/commit/595f4ef))
+
+### Features
+
+* **cache:** add cache operator ([4308a04](https://github.com/ReactiveX/RxJS/commit/4308a04))
+* **delayWhen:** add delayWhen operator ([17122f9](https://github.com/ReactiveX/RxJS/commit/17122f9))
+* **distinct:** add distinct operator ([94a034d](https://github.com/ReactiveX/RxJS/commit/94a034d))
+* **distinctKey:** add distinctKey operator ([fe4d57f](https://github.com/ReactiveX/RxJS/commit/fe4d57f))
+* **from:** allow Observable.from to handle array-like objects ([7245005](https://github.com/ReactiveX/RxJS/commit/7245005))
+* **MapPolyfill:** implement clear interface ([e3fbd05](https://github.com/ReactiveX/RxJS/commit/e3fbd05))
+* **operator:** adds inspect and inspectTime operators ([54f957b](https://github.com/ReactiveX/RxJS/commit/54f957b))
+* **OuterSubscriber:** notifyNext passes innersubscriber when next emits ([1df8928](https://github.com/ReactiveX/RxJS/commit/1df8928)), closes [#1250](https://github.com/ReactiveX/RxJS/issues/1250)
+* **Subject:** implement asObservable ([aca3dd0](https://github.com/ReactiveX/RxJS/commit/aca3dd0)), closes [#1108](https://github.com/ReactiveX/RxJS/issues/1108)
+* **takeLast:** adds takeLast operator. ([3583cd3](https://github.com/ReactiveX/RxJS/commit/3583cd3))
+
+### Performance Improvements
+
+* **catch:** remove tryCatch/errorObject for custom tryCatching, 1.3M -> 1.5M ops/sec ([35caf74](https://github.com/ReactiveX/RxJS/commit/35caf74))
+* **combineLatest:** remove tryCatch/errorObject, 156k -> 221k ops/sec ([1c7d639](https://github.com/ReactiveX/RxJS/commit/1c7d639))
+* **count:** remove tryCatch/errorObject for custom tryCatching, 1.84M -> 1.97M ops/sec ([869718d](https://github.com/ReactiveX/RxJS/commit/869718d))
+* **debounce:** remove tryCatch/errorObject for custom tryCatching ([90bf3f1](https://github.com/ReactiveX/RxJS/commit/90bf3f1))
+* **distinct:** increase perf from 60% of Rx4 to 1000% Rx4 ([d026c41](https://github.com/ReactiveX/RxJS/commit/d026c41))
+* **do:** remove tryCatch/errorObject use, 104k -> 263k ops/sec improvement ([ccba39d](https://github.com/ReactiveX/RxJS/commit/ccba39d))
+* **every:** remove tryCatch/errorObject (~1.8x improvement) ([14afeb6](https://github.com/ReactiveX/RxJS/commit/14afeb6))
+* **exhaustMap:** remove tryCatch/errorObject (~10% improvement) ([a55f459](https://github.com/ReactiveX/RxJS/commit/a55f459))
+* **filter:** remove tryCatch/errorObject for 2x perf improvement ([086c4bf](https://github.com/ReactiveX/RxJS/commit/086c4bf))
+* **find:** remove tryCatch/errorObject (~2x improvement) ([aa35b2a](https://github.com/ReactiveX/RxJS/commit/aa35b2a))
+* **first:** remove tryCatch/errorObject for custom tryCatching, 970k ops -> 1.27M ops/sec ([d8c835a](https://github.com/ReactiveX/RxJS/commit/d8c835a))
+* **groupBy:** remove tryCatch/errorObject for custom tryCatching, 38% faster. ([40c43f7](https://github.com/ReactiveX/RxJS/commit/40c43f7))
+* **last:** remove tryCatch/errorObject for custom tryCatching, 960k -> 1.38M ops/sec ([243ace3](https://github.com/ReactiveX/RxJS/commit/243ace3))
+* **map:** 2x increase from removing tryCatch/errorObject ([231f729](https://github.com/ReactiveX/RxJS/commit/231f729))
+* **mergeMap:** extra 1x factor gains from custom tryCatch member function ([c4ce2fb](https://github.com/ReactiveX/RxJS/commit/c4ce2fb))
+* **mergeMapTo:** remove tryCatch/errorObject (~2x improvement) ([42bcced](https://github.com/ReactiveX/RxJS/commit/42bcced))
+* **reduce:** remove tryCatch/errorObject, optimize calls, 2-3x perf improvement ([6186d46](https://github.com/ReactiveX/RxJS/commit/6186d46))
+* **scan:** remove tryCatch/errorObject for custom tryCatcher 1.75x improvement ([338135d](https://github.com/ReactiveX/RxJS/commit/338135d))
+* **single:** remove tryCatch/errorObject (~2.5x improvement) ([2515cfb](https://github.com/ReactiveX/RxJS/commit/2515cfb))
+* **skipWhile:** remove tryCatch/errorObject (~1.6x improvement) ([cf002db](https://github.com/ReactiveX/RxJS/commit/cf002db))
+* **Subscriber:** double performance adding tryOrUnsub to Subscriber ([4e75466](https://github.com/ReactiveX/RxJS/commit/4e75466))
+* **switchMap:** remove tryCatch/errorObject ~20% improvement ([ec0199f](https://github.com/ReactiveX/RxJS/commit/ec0199f))
+* **switchMapTo:** remove tryCatch/errorObject (~2x improvement) ([c8cf72a](https://github.com/ReactiveX/RxJS/commit/c8cf72a))
+* **takeWhile:** remove tryCatch/errorObject (~6x improvement) ([ef6c3c3](https://github.com/ReactiveX/RxJS/commit/ef6c3c3))
+* **withLatestFrom:** remove tryCatch/errorObject, 92k -> 107k (16% improvement) ([e4ccb44](https://github.com/ReactiveX/RxJS/commit/e4ccb44))
+* **zip:** extra 1x-2x factor gains from custom tryCatch member function ([a1b0e52](https://github.com/ReactiveX/RxJS/commit/a1b0e52))
+
+
+### BREAKING CHANGES
+
+* Subject: Subject.create arguments have been swapped to match Rx
+4 signature. `Subject.create(observable, observer)` is now
+`Subject.create(observer, observable)`
+
+
+
 <a name="5.0.0-beta.1"></a>
 # [5.0.0-beta.1](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.0...v5.0.0-beta.1) (2016-01-13)
 
@@ -46,6 +123,9 @@
 
 * inspect: `inspect` and `inspectTime` were removed. Use `withLatestFrom` instead.
 * Subscriber/Observable: errors thrown in nextHandlers by consumer code will no longer propagate to the errorHandler.
+* Observable patching: Patch files for static observable methods such as `of` and `from` can now be found in `rxjs/add/observable/of`, `rxjs/add/observable/from`, etc.
+* Observable modules: Observable modules for subclassed Observables like `PromiseObservable`, `ArrayObservable` are now in appropriately named files like `rxjs/observable/PromiseObservable` and `rxjs/observable/ArrayObservable`
+  as opposed to `rxjs/observable/fromPromise` and `rxjs/observable/fromArray`, since they're not patching, they simply house the Observable implementations.
 
 
 
