@@ -16,6 +16,27 @@ describe('Observable.prototype.publish()', function () {
     published.connect();
   });
 
+  it('To match RxJS 4 behavior, it should NOT allow you to reconnect by subscribing again', function (done) {
+    var expected = [1, 2, 3, 4];
+    var i = 0;
+
+    var source = Observable.of(1, 2, 3, 4).publish();
+
+    source.subscribe(function (x) {
+      expect(x).toBe(expected[i++]);
+    },
+    null,
+    function () {
+      source.subscribe(function (x) {
+        done.fail('should not be called');
+      }, null, done);
+
+      source.connect();
+    });
+
+    source.connect();
+  });
+
   it('should return a ConnectableObservable', function () {
     var source = Observable.of(1).publish();
     expect(source instanceof Rx.ConnectableObservable).toBe(true);
@@ -299,26 +320,5 @@ describe('Observable.prototype.publish()', function () {
     expect(results2).toEqual([1, 2, 3, 4]);
     expect(subscriptions).toBe(1);
     done();
-  });
-
-  it('To match RxJS 4 behavior, it should NOT allow you to reconnect by subscribing again', function (done) {
-    var expected = [1, 2, 3, 4];
-    var i = 0;
-
-    var source = Observable.of(1, 2, 3, 4).publish();
-
-    source.subscribe(function (x) {
-      expect(x).toBe(expected[i++]);
-    },
-    null,
-    function () {
-      source.subscribe(function (x) {
-        throw 'this should not be called';
-      }, null, done);
-
-      source.connect();
-    });
-
-    source.connect();
   });
 });

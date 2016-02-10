@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+/* globals describe, it, expect, expectObservable, expectSubscriptions */
 var Rx = require('../../dist/cjs/Rx');
 var Observable = Rx.Observable;
 
@@ -13,6 +13,28 @@ describe('Observable.prototype.publishBehavior()', function () {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     published.connect();
+  });
+
+  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', function (done) {
+    var expected = [0, 1, 2, 3, 4];
+    var i = 0;
+
+    var source = Observable.of(1, 2, 3, 4).publishBehavior(0);
+
+    source.subscribe(
+      function (x) {
+        expect(x).toBe(expected[i++]);
+      },
+      null,
+      function () {
+        source.subscribe(function (x) {
+          done.fail('should not be called');
+        }, null, done);
+
+        source.connect();
+      });
+
+    source.connect();
   });
 
   it('should return a ConnectableObservable', function () {
@@ -321,27 +343,5 @@ describe('Observable.prototype.publishBehavior()', function () {
 
     expect(results).toEqual([]);
     done();
-  });
-
-  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', function (done) {
-    var expected = [0, 1, 2, 3, 4];
-    var i = 0;
-
-    var source = Observable.of(1, 2, 3, 4).publishBehavior(0);
-
-    source.subscribe(
-      function (x) {
-        expect(x).toBe(expected[i++]);
-      },
-      null,
-      function () {
-        source.subscribe(function (x) {
-          throw 'should not be called';
-        }, null, done);
-
-        source.connect();
-      });
-
-    source.connect();
   });
 });
