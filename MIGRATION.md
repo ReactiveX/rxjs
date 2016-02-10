@@ -235,6 +235,6 @@ didn't make sense in a JavaScript context (for example: `currentThread` when the
 
 ## Unimplemented Operators/Features
 
-If there is a feature that used to exist in RxJS 4, but no longer does in RxJS 5, please be sure to file an issue (and preferrably a PR).
+If there is a feature that used to exist in RxJS 4, but no longer does in RxJS 5, please be sure to file an issue (and preferably a PR).
 In your issue, please describe the use case you have for the operator so we can better understand your need and prioritize it, and/or find
 and alternative way to compose the desired behavior.
