@@ -12,6 +12,8 @@ export class Subscription {
 
   public isUnsubscribed: boolean = false;
 
+  public dispose: () => void;
+
   constructor(_unsubscribe?: () => void) {
     if (_unsubscribe) {
       (<any> this)._unsubscribe = _unsubscribe;
@@ -120,6 +122,8 @@ export class Subscription {
     }
   }
 }
+
+Subscription.prototype.dispose = Subscription.prototype.unsubscribe;
 
 export class UnsubscriptionError extends Error {
   constructor(public errors: any[]) {
