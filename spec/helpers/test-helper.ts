@@ -1,6 +1,4 @@
-///<reference path='../../typings/es6-shim/es6-shim.d.ts'/>
-///<reference path='../../typings/jasmine/jasmine.d.ts'/>
-///<reference path='../../typings/lodash/lodash.d.ts'/>
+///<reference path='../../typings/main.d.ts'/>
 declare const global: any;
 declare const Symbol: any;
 
