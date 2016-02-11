@@ -20,7 +20,7 @@ export class FromObservable<T> extends Observable<T> {
     super(null);
   }
 
-  static create<T>(ish: any, mapFnOrScheduler: Scheduler | ((x: any, y: number) => T), thisArg?: any, lastScheduler?: Scheduler): Observable<T> {
+  static create<T>(ish: any, mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T), thisArg?: any, lastScheduler?: Scheduler): Observable<T> {
     let scheduler: Scheduler = null;
     let mapFn: (x: number, y: any) => T = null;
     if (isFunction(mapFnOrScheduler)) {
