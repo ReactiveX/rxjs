@@ -12,9 +12,10 @@
     }
   },
   "scripts": {
+    "preinstall": "typings install",
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global && npm run generate_packages",
-    "build_amd": "rm -rf dist/amd && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts src/Rx.DOM.ts src/add/observable/of.ts -m amd --outDir dist/amd --sourcemap --sourceRoot src --target ES5 --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
-    "build_cjs": "rm -rf dist/cjs && tsc typings/es6-shim/es6-shim.d.ts src/Rx.ts src/Rx.KitchenSink.ts src/Rx.DOM.ts src/add/observable/of.ts -m commonjs --outDir dist/cjs --sourcemap --sourceRoot src --target ES5 -d --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
+    "build_amd": "rm -rf dist/amd && tsc typings/main.d.ts src/Rx.ts src/Rx.DOM.ts src/add/observable/of.ts -m amd --outDir dist/amd --sourcemap --sourceRoot src --target ES5 --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
+    "build_cjs": "rm -rf dist/cjs && tsc typings/main.d.ts src/Rx.ts src/Rx.KitchenSink.ts src/Rx.DOM.ts src/add/observable/of.ts -m commonjs --outDir dist/cjs --sourcemap --sourceRoot src --target ES5 -d --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
     "build_es6": "rm -rf dist/es6 && tsc src/Rx.ts src/Rx.KitchenSink.ts src/Rx.DOM.ts src/add/observable/of.ts --outDir dist/es6 --sourceMap --sourceRoot src --target ES6 -d --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
     "build_closure_core": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js ./dist/global/Rx.umd.js --language_in ECMASCRIPT5 --create_source_map ./dist/global/Rx.umd.min.js.map --js_output_file ./dist/global/Rx.umd.min.js",
     "build_closure_kitchensink": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js ./dist/global/Rx.KitchenSink.umd.js --language_in ECMASCRIPT5 --create_source_map ./dist/global/Rx.KitchenSink.umd.min.js.map --js_output_file ./dist/global/Rx.KitchenSink.umd.min.js",
@@ -134,6 +135,7 @@
     "systemjs-builder": "^0.10.6",
     "tslint": "3.4.0",
     "typescript": "1.8.2",
+    "typings": "^0.6.10",
     "validate-commit-msg": "1.1.1",
     "watch": "0.16.0",
     "watchify": "3.7.0",

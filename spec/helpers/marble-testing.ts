@@ -1,4 +1,4 @@
-///<reference path='../../typings/jasmine/jasmine.d.ts'/>
+///<reference path='../../typings/main.d.ts'/>
 import {Observable} from '../../dist/cjs/Observable';
 import {SubscriptionLog} from '../../dist/cjs/testing/SubscriptionLog';
 import {ColdObservable} from '../../dist/cjs/testing/ColdObservable';
