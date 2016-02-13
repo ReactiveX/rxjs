@@ -87,6 +87,7 @@ import './add/operator/inspectTime';
 import './add/operator/isEmpty';
 import './add/operator/every';
 import './add/operator/last';
+import './add/operator/let';
 import './add/operator/map';
 import './add/operator/mapTo';
 import './add/operator/materialize';
