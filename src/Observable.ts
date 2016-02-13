@@ -6,6 +6,7 @@ import {root} from './util/root';
 import {SymbolShim} from './util/SymbolShim';
 import {toSubscriber} from './util/toSubscriber';
 
+import {IfObservable} from './observable/IfObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
 
 export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
@@ -150,7 +151,8 @@ export class Observable<T> {
     return this.source.subscribe(subscriber);
   }
 
-  // Throw is the special snow flake, the compiler sees it as a reserved word
+  // `if` and `throw` are special snow flakes, the compiler sees them as reserved words
+  static if: typeof IfObservable.create;
   static throw: typeof ErrorObservable.create;
 
   /**

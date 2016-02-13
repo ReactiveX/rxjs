@@ -1,6 +1,7 @@
 export * from './Rx';
 
 // statics
+import './add/observable/if';
 import './add/observable/using';
 
 // Operators

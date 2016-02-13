@@ -73,7 +73,7 @@
     "commit": "git-cz",
     "compile_dist_amd": "tsc ./typings/main.d.ts ./dist/amd/src/Rx.ts ./dist/amd/src/Rx.KitchenSink.ts ./dist/amd/src/Rx.DOM.ts ./dist/amd/src/add/observable/of.ts -m amd      --sourceMap --outDir ./dist/amd --target ES5    --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
     "compile_dist_cjs": "tsc ./typings/main.d.ts ./dist/cjs/src/Rx.ts ./dist/cjs/src/Rx.KitchenSink.ts ./dist/cjs/src/Rx.DOM.ts ./dist/cjs/src/add/observable/of.ts -m commonjs --sourceMap --outDir ./dist/cjs --target ES5 -d --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
-    "compile_dist_es6": "tsc                                  ./dist/es6/src/Rx.ts ./dist/es6/src/Rx.KitchenSink.ts ./dist/es6/src/Rx.DOM.ts ./dist/es6/src/add/observable/of.ts -m es2015   --sourceMap --outDir ./dist/es6 --target ES6 -d --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
+    "compile_dist_es6": "tsc                     ./dist/es6/src/Rx.ts ./dist/es6/src/Rx.KitchenSink.ts ./dist/es6/src/Rx.DOM.ts ./dist/es6/src/add/observable/of.ts -m es2015   --sourceMap --outDir ./dist/es6 --target ES6 -d --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
     "cover": "npm run cover_test && npm run cover_remapping",
     "cover_test": "istanbul cover -x \"*-spec.js index.js *-helper.js spec-js/helpers/*\" ./node_modules/jasmine/bin/jasmine.js",
     "cover_remapping": "remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.json && remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped.lcov -t lcovonly && remap-istanbul -i coverage/coverage.json -o coverage/coverage-remapped -t html",
