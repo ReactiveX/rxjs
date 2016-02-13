@@ -56,6 +56,7 @@ import './add/observable/never';
 import './add/observable/range';
 import './add/observable/throw';
 import './add/observable/timer';
+import './add/observable/using';
 import './add/observable/zip';
 
 // Operators

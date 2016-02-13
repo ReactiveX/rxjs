@@ -29,6 +29,7 @@ import {raceStatic} from './operator/race';
 import {RangeObservable} from './observable/RangeObservable';
 import {NeverObservable} from './observable/NeverObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
+import {UsingObservable} from './observable/UsingObservable';
 import {AjaxCreationMethod} from './observable/dom/AjaxObservable';
 import {WebSocketSubject} from './observable/dom/WebSocketSubject';
 
@@ -268,6 +269,7 @@ export class Observable<T> implements CoreOperators<T>  {
   static range: typeof RangeObservable.create;
   static throw: typeof ErrorObservable.create;
   static timer: typeof TimerObservable.create;
+  static using: typeof UsingObservable.create;
   static webSocket: typeof WebSocketSubject.create;
   static zip: typeof zipStatic;
 
