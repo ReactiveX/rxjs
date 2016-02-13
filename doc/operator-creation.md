@@ -11,7 +11,7 @@ For how to develop a custom operator for *this* library, [see below](#advanced).
 
 ### Guidelines
 
-In the most common case, users might like to create an operator to be used only by by their app. These can be developed in 
+In the most common case, users might like to create an operator to be used only by their app. These can be developed in 
 any way the developer sees fit, but here are some guidelines:
 
 1. __Operators should always return an Observable__. You're performing operations on unknown sets of things to create new sets.
