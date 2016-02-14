@@ -13,6 +13,10 @@ export function isEmpty(): Observable<boolean> {
   return this.lift(new IsEmptyOperator());
 }
 
+export interface IsEmptySignature<T> {
+  (): Observable<boolean>;
+}
+
 class IsEmptyOperator implements Operator<any, boolean> {
   call (observer: Subscriber<boolean>): Subscriber<any> {
     return new IsEmptySubscriber(observer);

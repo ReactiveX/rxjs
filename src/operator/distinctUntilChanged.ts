@@ -11,10 +11,13 @@ import {Observable} from '../Observable';
  * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.
  * @returns {Observable} an Observable that emits items from the source Observable with distinct values.
  */
-export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean): Observable<T>;
-export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T>;
-export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
+export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
   return this.lift(new DistinctUntilChangedOperator<T, K>(compare, keySelector));
+}
+
+export interface DistinctUntilChangedSignature<T> {
+ (compare?: (x: T, y: T) => boolean): Observable<T>;
+ <K>(compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
 }
 
 class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {

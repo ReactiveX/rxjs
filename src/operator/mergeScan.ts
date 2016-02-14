@@ -14,6 +14,10 @@ export function mergeScan<T, R>(project: (acc: R, value: T) => Observable<R>,
   return this.lift(new MergeScanOperator(project, seed, concurrent));
 }
 
+export interface MergeScanSignature<T> {
+  <R>(project: (acc: R, value: T) => Observable<R>, seed: R, concurrent?: number): Observable<R>;
+}
+
 export class MergeScanOperator<T, R> implements Operator<T, R> {
   constructor(private project: (acc: R, value: T) => Observable<R>,
               private seed: R,

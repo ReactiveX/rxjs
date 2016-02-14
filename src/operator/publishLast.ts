@@ -5,3 +5,7 @@ import {ConnectableObservable} from '../observable/ConnectableObservable';
 export function publishLast<T>(): ConnectableObservable<T> {
   return multicast.call(this, new AsyncSubject<T>());
 }
+
+export interface PublishLastSignature<T> {
+  (): ConnectableObservable<T>;
+}

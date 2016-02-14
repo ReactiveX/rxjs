@@ -8,6 +8,10 @@ export function timeInterval<T>(scheduler: Scheduler = asap): Observable<TimeInt
   return this.lift(new TimeIntervalOperator(scheduler));
 }
 
+export interface TimeIntervalSignature<T> {
+  (scheduler?: Scheduler): Observable<TimeInterval<T>>;
+}
+
 export class TimeInterval<T> {
   constructor(public value: T, public interval: number) {
 

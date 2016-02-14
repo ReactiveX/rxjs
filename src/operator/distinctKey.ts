@@ -21,3 +21,8 @@ export function distinctKey<T>(key: string, compare?: (x: T, y: T) => boolean, f
     return x[key] === y[key];
   }, flushes);
 }
+
+export interface DistinctKeySignature<T> {
+  (key: string): Observable<T>;
+  <K>(key: string, compare: (x: K, y: K) => boolean, flushes?: Observable<any>): Observable<T>;
+}

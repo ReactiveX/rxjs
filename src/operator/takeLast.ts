@@ -12,6 +12,10 @@ export function takeLast<T>(total: number): Observable<T> {
   }
 }
 
+export interface TakeLastSignature<T> {
+  (total: number): Observable<T>;
+}
+
 class TakeLastOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
     if (this.total < 0) {

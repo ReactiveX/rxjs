@@ -8,3 +8,7 @@ export function partition<T>(predicate: (value: T) => boolean, thisArg?: any): [
     filter.call(this, not(predicate, thisArg))
   ];
 }
+
+export interface PartitionSignature<T> {
+  (predicate: (value: T) => boolean, thisArg?: any): [Observable<T>, Observable<T>];
+}

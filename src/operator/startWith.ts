@@ -33,3 +33,13 @@ export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
     return concatStatic(new EmptyObservable<T>(scheduler), <Observable<T>>this);
   }
 }
+
+export interface StartWithSignature<T> {
+  (v1: T, scheduler?: Scheduler): Observable<T>;
+  (v1: T, v2: T, scheduler?: Scheduler): Observable<T>;
+  (v1: T, v2: T, v3: T, scheduler?: Scheduler): Observable<T>;
+  (v1: T, v2: T, v3: T, v4: T, scheduler?: Scheduler): Observable<T>;
+  (v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: Scheduler): Observable<T>;
+  (v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: Scheduler): Observable<T>;
+  (...array: Array<T | Scheduler>): Observable<T>;
+}

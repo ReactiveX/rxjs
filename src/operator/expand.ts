@@ -25,6 +25,11 @@ export function expand<T, R>(project: (value: T, index: number) => Observable<R>
   return this.lift(new ExpandOperator(project, concurrent, scheduler));
 }
 
+export interface ExpandSignature<T> {
+  (project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): Observable<T>;
+  <R>(project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): Observable<R>;
+}
+
 export class ExpandOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
               private concurrent: number,

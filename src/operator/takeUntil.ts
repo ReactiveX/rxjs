@@ -10,6 +10,10 @@ export function takeUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new TakeUntilOperator(notifier));
 }
 
+export interface TakeUntilSignature<T> {
+  (notifier: Observable<any>): Observable<T>;
+}
+
 class TakeUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }

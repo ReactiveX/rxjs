@@ -21,6 +21,10 @@ export function sample<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SampleOperator(notifier));
 }
 
+export interface SampleSignature<T> {
+  (notifier: Observable<any>): Observable<T>;
+}
+
 class SampleOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }

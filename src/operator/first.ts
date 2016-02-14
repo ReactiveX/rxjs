@@ -11,8 +11,15 @@ import {EmptyError} from '../util/EmptyError';
  */
 export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
                             resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: R): Observable<T> | Observable<R> {
+                            defaultValue?: R): Observable<T | R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
+}
+
+export interface FirstSignature<T> {
+  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+  (predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
+  <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
+      defaultValue?: R): Observable<R>;
 }
 
 class FirstOperator<T, R> implements Operator<T, R> {

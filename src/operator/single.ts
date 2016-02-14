@@ -20,6 +20,10 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
   return this.lift(new SingleOperator(predicate, this));
 }
 
+export interface SingleSignature<T> {
+  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+}
+
 class SingleOperator<T> implements Operator<T, T> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private source?: Observable<T>) {

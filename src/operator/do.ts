@@ -18,6 +18,11 @@ export function _do<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void),
   return this.lift(new DoOperator(nextOrObserver, error, complete));
 }
 
+export interface DoSignature<T> {
+  (next: (x: T) => void, error?: (e: any) => void, complete?: () => void): Observable<T>;
+  (observer: PartialObserver<T>): Observable<T>;
+}
+
 class DoOperator<T> implements Operator<T, T> {
   constructor(private nextOrObserver?: PartialObserver<T> | ((x: T) => void),
               private error?: (e: any) => void,

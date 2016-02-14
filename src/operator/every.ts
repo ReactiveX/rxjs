@@ -15,7 +15,11 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
   return source.lift(new EveryOperator(predicate, thisArg, source));
 }
 
-class EveryOperator<T, R> implements Operator<T, boolean> {
+export interface EverySignature<T> {
+  (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<boolean>;
+}
+
+class EveryOperator<T> implements Operator<T, boolean> {
   constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg?: any,
               private source?: Observable<T>) {
@@ -26,10 +30,10 @@ class EveryOperator<T, R> implements Operator<T, boolean> {
   }
 }
 
-class EverySubscriber<T, R> extends Subscriber<T> {
+class EverySubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
-  constructor(destination: Observer<R>,
+  constructor(destination: Observer<boolean>,
               private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg: any,
               private source?: Observable<T>) {

@@ -18,3 +18,8 @@ export function distinctUntilKeyChanged<T>(key: string, compare?: (x: T, y: T) =
     return x[key] === y[key];
   });
 }
+
+export interface DistinctUntilKeyChangedSignature<T> {
+  (key: string): Observable<T>;
+  <K>(key: string, compare: (x: K, y: K) => boolean): Observable<T>;
+}

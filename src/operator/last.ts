@@ -17,9 +17,16 @@ import {EmptyError} from '../util/EmptyError';
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
  */
 export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                           resultSelector?: (value: T, index: number) => R,
-                           defaultValue?: R): Observable<T> | Observable<R> {
+                           resultSelector?: (value: T, index: number) => R | void,
+                           defaultValue?: R): Observable<T | R> {
   return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
+}
+
+export interface LastSignature<T> {
+  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+  (predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
+  <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
+      defaultValue?: R): Observable<R>;
 }
 
 class LastOperator<T, R> implements Operator<T, R> {

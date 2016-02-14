@@ -15,6 +15,10 @@ export function pairwise<T>(): Observable<[T, T]> {
   return this.lift(new PairwiseOperator());
 }
 
+export interface PairwiseSignature<T> {
+  (): Observable<[T, T]>;
+}
+
 class PairwiseOperator<T> implements Operator<T, [T, T]> {
   call(subscriber: Subscriber<[T, T]>): Subscriber<T> {
     return new PairwiseSubscriber(subscriber);

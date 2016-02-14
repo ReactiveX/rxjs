@@ -15,6 +15,10 @@ export function filter<T>(select: (value: T, index: number) => boolean, thisArg?
   return this.lift(new FilterOperator(select, thisArg));
 }
 
+export interface FilterSignature<T> {
+  (select: (value: T, index: number) => boolean, thisArg?: any): Observable<T>;
+}
+
 class FilterOperator<T> implements Operator<T, T> {
   constructor(private select: (value: T, index: number) => boolean, private thisArg?: any) {
   }

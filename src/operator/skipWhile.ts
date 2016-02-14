@@ -16,6 +16,10 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): O
   return this.lift(new SkipWhileOperator(predicate));
 }
 
+export interface SkipWhileSignature<T> {
+  (predicate: (value: T, index: number) => boolean): Observable<T>;
+}
+
 class SkipWhileOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number) => boolean) {
   }

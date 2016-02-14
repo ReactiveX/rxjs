@@ -21,6 +21,10 @@ export function retry<T>(count: number = -1): Observable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 
+export interface RetrySignature<T> {
+  (count?: number): Observable<T>;
+}
+
 class RetryOperator<T> implements Operator<T, T> {
   constructor(private count: number,
               private source: Observable<T>) {

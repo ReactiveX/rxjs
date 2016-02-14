@@ -7,9 +7,9 @@ import {Subscription} from '../Subscription';
 
 export class ArrayLikeObservable<T> extends Observable<T> {
 
-  private mapFn: (x: any, y: number) => T;
+  private mapFn: (x: T, y: number) => T;
 
-  static create<T>(arrayLike: ArrayLike<T>, mapFn: (x: any, y: number) => T, thisArg: any, scheduler?: Scheduler): Observable<T> {
+  static create<T>(arrayLike: ArrayLike<T>, mapFn: (x: T, y: number) => T, thisArg: any, scheduler?: Scheduler): Observable<T> {
     const length = arrayLike.length;
     if (length === 0) {
       return new EmptyObservable<T>();
@@ -43,7 +43,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
   // value used if Array has one value and _isScalar
   private value: any;
 
-  constructor(private arrayLike: ArrayLike<T>, mapFn: (x: any, y: number) => T, thisArg: any, private scheduler?: Scheduler) {
+  constructor(private arrayLike: ArrayLike<T>, mapFn: (x: T, y: number) => T, thisArg: any, private scheduler?: Scheduler) {
     super();
     if (!mapFn && !scheduler && arrayLike.length === 1) {
       this._isScalar = true;

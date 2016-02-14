@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, ObservableOrPromise} from '../Observable';
 import {Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
@@ -8,12 +8,16 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export function inspect<T>(durationSelector: (value: T) => Observable<any> | Promise<any>): Observable<T> {
+export function inspect<T>(durationSelector: (value: T) => ObservableOrPromise<any>): Observable<T> {
   return this.lift(new InspectOperator(durationSelector));
 }
 
+export interface InspectSignature<T> {
+  (durationSelector: (value: T) => ObservableOrPromise<any>): Observable<T>;
+}
+
 class InspectOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+  constructor(private durationSelector: (value: T) => ObservableOrPromise<any>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -28,7 +32,7 @@ class InspectSubscriber<T, R> extends OuterSubscriber<T, R> {
   private throttled: Subscription;
 
   constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => Observable<any> | Promise<any>) {
+              private durationSelector: (value: T) => ObservableOrPromise<any>) {
     super(destination);
   }
 

@@ -11,6 +11,11 @@ export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T | R> 
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
+export interface DefaultIfEmptySignature<T> {
+  (defaultValue?: T): Observable<T>;
+  <R>(defaultValue?: R): Observable<T | R>;
+}
+
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
 
   constructor(private defaultValue: R) {

@@ -25,6 +25,10 @@ export function repeat<T>(count: number = -1): Observable<T> {
   }
 }
 
+export interface RepeatSignature<T> {
+  (count?: number): Observable<T>;
+}
+
 class RepeatOperator<T> implements Operator<T, T> {
   constructor(private count: number,
               private source: Observable<T>) {

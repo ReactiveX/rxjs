@@ -20,6 +20,10 @@ export function skipUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new SkipUntilOperator(notifier));
 }
 
+export interface SkipUntilSignature<T> {
+  (notifier: Observable<any>): Observable<T>;
+}
+
 class SkipUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }

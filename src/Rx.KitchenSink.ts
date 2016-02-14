@@ -3,21 +3,32 @@ import {Subject} from './Subject';
 /* tslint:enable:no-unused-variable */
 import {Observable} from './Observable';
 import {CoreOperators} from './CoreOperators';
-import {Scheduler as IScheduler} from './Scheduler';
+import {IsEmptySignature} from './operator/isEmpty';
+import {ElementAtSignature} from './operator/elementAt';
+import {DistinctSignature} from './operator/distinct';
+import {DistinctKeySignature} from './operator/distinctKey';
+import {DistinctUntilKeyChangedSignature} from './operator/distinctUntilKeyChanged';
+import {FindSignature} from './operator/find';
+import {FindIndexSignature} from './operator/findIndex';
+import {MaxSignature} from './operator/max';
+import {MinSignature} from './operator/min';
+import {PairwiseSignature} from './operator/pairwise';
+import {TimeIntervalSignature} from './operator/timeInterval';
+import {MergeScanSignature} from './operator/mergeScan';
 
 export interface KitchenSinkOperators<T> extends CoreOperators<T> {
-  isEmpty?: () => Observable<boolean>;
-  elementAt?: (index: number, defaultValue?: any) => Observable<T>;
-  distinct?: (compare?: (x: T, y: T) => boolean, flushes?: Observable<any>) => Observable<T>;
-  distinctKey?: (key: string, compare?: (x: T, y: T) => boolean, flushes?: Observable<any>) => Observable<T>;
-  distinctUntilKeyChanged?: (key: string, compare?: (x: any, y: any) => boolean) => Observable<T>;
-  find?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<T>;
-  findIndex?: (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any) => Observable<number>;
-  max?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
-  min?: <T, R>(comparer?: (x: R, y: T) => R) => Observable<R>;
-  pairwise?: <R>() => Observable<R>;
-  timeInterval?: <T>(scheduler?: IScheduler) => Observable<T>;
-  mergeScan?: <T, R>(project: (acc: R, x: T) => Observable<R>, seed: R, concurrent?: number) => Observable<R>;
+  isEmpty?: IsEmptySignature<T>;
+  elementAt?: ElementAtSignature<T>;
+  distinct?: DistinctSignature<T>;
+  distinctKey?: DistinctKeySignature<T>;
+  distinctUntilKeyChanged?: DistinctUntilKeyChangedSignature<T>;
+  find?: FindSignature<T>;
+  findIndex?: FindIndexSignature<T>;
+  max?: MaxSignature<T>;
+  min?: MinSignature<T>;
+  pairwise?: PairwiseSignature<T>;
+  timeInterval?: TimeIntervalSignature<T>;
+  mergeScan?: MergeScanSignature<T>;
   exhaust?: () => Observable<T>;
   exhaustMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
                        projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;

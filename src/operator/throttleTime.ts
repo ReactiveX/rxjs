@@ -9,6 +9,10 @@ export function throttleTime<T>(delay: number, scheduler: Scheduler = asap): Obs
   return this.lift(new ThrottleTimeOperator(delay, scheduler));
 }
 
+export interface ThrottleTimeSignature<T> {
+  (dueTime: number, scheduler?: Scheduler): Observable<T>;
+}
+
 class ThrottleTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }

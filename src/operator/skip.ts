@@ -15,6 +15,10 @@ export function skip<T>(total: number): Observable<T> {
   return this.lift(new SkipOperator(total));
 }
 
+export interface SkipSignature<T> {
+  (total: number): Observable<T>;
+}
+
 class SkipOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
   }
