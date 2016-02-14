@@ -13,6 +13,11 @@ import {Observable} from '../Observable';
  *   most recent values from each collected observable as arguments, in order.
  * @returns {Observable} an observable of projected results or arrays of recent values.
  */
-export function combineAll<T, R>(project?: (...values: Array<any>) => R): Observable<R> {
+export function combineAll<R>(project?: (...values: Array<any>) => R): Observable<R> {
   return this.lift(new CombineLatestOperator(project));
+}
+
+export interface CombineAllSignature<T> {
+  (): Observable<T[]>;
+  <R>(project?: (...values: Array<T>) => R): Observable<R>;
 }

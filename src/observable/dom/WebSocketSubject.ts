@@ -34,7 +34,7 @@ export class WebSocketSubject<T> extends Subject<T> {
   }
 
   static create<T>(urlConfigOrSource: string | WebSocketSubjectConfig): WebSocketSubject<T> {
-    return new WebSocketSubject(urlConfigOrSource);
+    return new WebSocketSubject<T>(urlConfigOrSource);
   }
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable<T>, destination?: Observer<T>) {

@@ -24,7 +24,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
                    selector: Function | void = undefined,
                    scheduler?: Scheduler): Function {
     return (...args: any[]): Observable<T> => {
-      return new BoundNodeCallbackObservable(callbackFunc, <any>selector, args, scheduler);
+      return new BoundNodeCallbackObservable<T>(callbackFunc, <any>selector, args, scheduler);
     };
   }
 

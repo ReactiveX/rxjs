@@ -24,6 +24,10 @@ export function _switch<T>(): T {
   return this.lift(new SwitchOperator());
 }
 
+export interface SwitchSignature<T> {
+  (): T;
+}
+
 class SwitchOperator<T, R> implements Operator<T, R> {
   call(subscriber: Subscriber<R>): Subscriber<T> {
     return new SwitchSubscriber(subscriber);

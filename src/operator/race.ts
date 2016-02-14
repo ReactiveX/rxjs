@@ -36,7 +36,7 @@ export interface RaceSignature<T> {
  * @returns {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  */
 export function raceStatic<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
-export function raceStatic<R>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<R> {
+export function raceStatic<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1) {
@@ -47,7 +47,7 @@ export function raceStatic<R>(...observables: Array<Observable<any> | Array<Obse
     }
   }
 
-  return new ArrayObservable(observables).lift(new RaceOperator());
+  return new ArrayObservable<T>(<any>observables).lift(new RaceOperator<T>());
 }
 
 export class RaceOperator<T> implements Operator<T, T> {

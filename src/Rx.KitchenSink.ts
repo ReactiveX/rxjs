@@ -15,6 +15,8 @@ import {MinSignature} from './operator/min';
 import {PairwiseSignature} from './operator/pairwise';
 import {TimeIntervalSignature} from './operator/timeInterval';
 import {MergeScanSignature} from './operator/mergeScan';
+import {SwitchFirstSignature} from './operator/exhaust';
+import {SwitchFirstMapSignature} from './operator/exhaustMap';
 
 export interface KitchenSinkOperators<T> extends CoreOperators<T> {
   isEmpty?: IsEmptySignature<T>;
@@ -29,9 +31,8 @@ export interface KitchenSinkOperators<T> extends CoreOperators<T> {
   pairwise?: PairwiseSignature<T>;
   timeInterval?: TimeIntervalSignature<T>;
   mergeScan?: MergeScanSignature<T>;
-  exhaust?: () => Observable<T>;
-  exhaustMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
-                       projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  exhaust?: SwitchFirstSignature<T>;
+  exhaustMap?: SwitchFirstMapSignature<T>;
 }
 
 // statics

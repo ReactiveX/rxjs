@@ -35,11 +35,11 @@ export class FromObservable<T> extends Observable<T> {
         if (ish instanceof Observable && !scheduler) {
           return ish;
         }
-        return new FromObservable(ish, scheduler);
+        return new FromObservable<T>(ish, scheduler);
       } else if (isArray(ish)) {
-        return new ArrayObservable(ish, scheduler);
+        return new ArrayObservable<T>(ish, scheduler);
       } else if (isPromise(ish)) {
-        return new PromiseObservable(ish, scheduler);
+        return new PromiseObservable<T>(ish, scheduler);
       } else if (typeof ish[SymbolShim.iterator] === 'function' || typeof ish === 'string') {
         return new IteratorObservable<T>(<any>ish, null, null, scheduler);
       } else if (isArrayLike(ish)) {

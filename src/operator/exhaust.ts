@@ -13,7 +13,11 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @returns {Observable} an Observable which contains all of the items of the first Observable and following Observables in the source.
  */
 export function exhaust<T>(): Observable<T> {
-  return this.lift(new SwitchFirstOperator());
+  return this.lift(new SwitchFirstOperator<T>());
+}
+
+export interface SwitchFirstSignature<T> {
+  (): T;
 }
 
 class SwitchFirstOperator<T> implements Operator<T, T> {

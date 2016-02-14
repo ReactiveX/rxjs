@@ -19,6 +19,10 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
   return this.lift(new MapOperator(project, thisArg));
 }
 
+export interface MapSignature<T> {
+  <R>(project: (value: T, index: number) => R, thisArg?: any): Observable<R>;
+}
+
 class MapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => R, private thisArg: any) {
   }

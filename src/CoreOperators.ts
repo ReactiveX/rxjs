@@ -1,6 +1,3 @@
-import {Observable} from './Observable';
-import {Scheduler} from './Scheduler';
-
 import {CombineLatestSignature} from './operator/combineLatest';
 import {WithLatestFromSignature} from './operator/withLatestFrom';
 import {ZipSignature} from './operator/zip';
@@ -70,6 +67,21 @@ import {TimeoutSignature} from './operator/timeout';
 import {TimeoutWithSignature} from './operator/timeoutWith';
 import {ToArraySignature} from './operator/toArray';
 import {ToPromiseSignature} from './operator/toPromise';
+import {CombineAllSignature} from './operator/combineAll';
+import {ConcatSignature} from './operator/concat';
+import {ConcatAllSignature} from './operator/concatAll';
+import {ConcatMapSignature} from './operator/concatMap';
+import {ConcatMapToSignature} from './operator/concatMapTo';
+import {MapSignature} from './operator/map';
+import {MapToSignature} from './operator/mapTo';
+import {MergeSignature} from './operator/merge';
+import {MergeAllSignature} from './operator/mergeAll';
+import {MergeMapSignature} from './operator/mergeMap';
+import {MergeMapToSignature} from './operator/mergeMapTo';
+import {SwitchSignature} from './operator/switch';
+import {SwitchMapSignature} from './operator/switchMap';
+import {SwitchMapToSignature} from './operator/switchMapTo';
+import {ZipAllSignature} from './operator/zipAll';
 
 export interface CoreOperators<T> {
   buffer: BufferSignature<T>;
@@ -79,12 +91,12 @@ export interface CoreOperators<T> {
   bufferWhen: BufferWhenSignature<T>;
   cache: CacheSignature<T>;
   catch: CatchSignature<T>;
-  combineAll: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
+  combineAll: CombineAllSignature<T>;
   combineLatest: CombineLatestSignature<T>;
-  concat?: <R>(...observables: (Observable<any> | Scheduler)[]) => Observable<R>;
-  concatAll?: () => Observable<T>;
-  concatMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  concatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  concat: ConcatSignature<T>;
+  concatAll: ConcatAllSignature<T>;
+  concatMap: ConcatMapSignature<T>;
+  concatMapTo: ConcatMapToSignature<T>;
   count: CountSignature<T>;
   dematerialize: DematerializeSignature<T>;
   debounce: DebounceSignature<T>;
@@ -98,10 +110,8 @@ export interface CoreOperators<T> {
   filter: FilterSignature<T>;
   finally: FinallySignature<T>;
   first: FirstSignature<T>;
-  flatMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
-                projectResult?: (x: T, y: any, ix: number, iy: number) => R,
-                concurrent?: number) => Observable<R>;
-  flatMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
+  flatMap: MergeMapSignature<T>;
+  flatMapTo: MergeMapToSignature<T>;
   groupBy: GroupBySignature<T>;
   ignoreElements: IgnoreElementsSignature<T>;
   inspect: InspectSignature<T>;
@@ -110,14 +120,13 @@ export interface CoreOperators<T> {
   let: LetSignature<T>;
   letBind: LetSignature<T>;
   every: EverySignature<T>;
-  map?: <R>(project: (x: T, ix?: number) => R, thisArg?: any) => Observable<R>;
-  mapTo?: <R>(value: R) => Observable<R>;
+  map: MapSignature<T>;
+  mapTo: MapToSignature<T>;
   materialize: MaterializeSignature<T>;
-  merge?: (...observables: any[]) => Observable<any>;
-  mergeAll?: (concurrent?: number) => Observable<T>;
-  mergeMap?: <R>(project: ((x: T, ix: number) => Observable<any>),
-                 projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
-  mergeMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R, concurrent?: number) => Observable<R>;
+  merge: MergeSignature<T>;
+  mergeAll: MergeAllSignature<T>;
+  mergeMap: MergeMapSignature<T>;
+  mergeMapTo: MergeMapToSignature<T>;
   multicast: MulticastSignature<T>;
   observeOn: ObserveOnSignature<T>;
   partition: PartitionSignature<T>;
@@ -141,9 +150,9 @@ export interface CoreOperators<T> {
   skipWhile: SkipWhileSignature<T>;
   startWith: StartWithSignature<T>;
   subscribeOn: SubscribeOnSignature<T>;
-  switch?: () => Observable<T>;
-  switchMap?: <R>(project: ((x: T, ix: number) => Observable<any>), projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
-  switchMapTo?: <R>(observable: Observable<any>, projectResult?: (x: T, y: any, ix: number, iy: number) => R) => Observable<R>;
+  switch: SwitchSignature<T>;
+  switchMap: SwitchMapSignature<T>;
+  switchMapTo: SwitchMapToSignature<T>;
   take: TakeSignature<T>;
   takeLast: TakeLastSignature<T>;
   takeUntil: TakeUntilSignature<T>;
@@ -161,5 +170,5 @@ export interface CoreOperators<T> {
   windowWhen: WindowWhenSignature<T>;
   withLatestFrom: WithLatestFromSignature<T>;
   zip: ZipSignature<T>;
-  zipAll?: <R>(project?: (...values: Array<any>) => R) => Observable<R>;
+  zipAll: ZipAllSignature<T>;
 }

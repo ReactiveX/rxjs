@@ -6,7 +6,11 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 export function mergeAll<T>(concurrent: number = Number.POSITIVE_INFINITY): T {
-  return this.lift(new MergeAllOperator(concurrent));
+  return this.lift(new MergeAllOperator<T>(concurrent));
+}
+
+export interface MergeAllSignature<T> {
+  (): T;
 }
 
 export class MergeAllOperator<T> implements Operator<Observable<T>, T> {

@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, ObservableInput, ObservableOrPromise} from '../Observable';
 import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
@@ -7,34 +7,41 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
-export function mergeMapTo<T, R, R2>(observable: Observable<R>,
-                                     resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2 | number,
-                                     concurrent: number = Number.POSITIVE_INFINITY): Observable<R2> {
+export function mergeMapTo<T, I, R>(observable: Observable<I>,
+                                    resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R | number,
+                                    concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
   return this.lift(new MergeMapToOperator(observable, <any>resultSelector, concurrent));
 }
 
-// TODO: Figure out correct signature here: an Operator<Observable<T>, R2>
-//       needs to implement call(observer: Subscriber<R2>): Subscriber<Observable<T>>
-export class MergeMapToOperator<T, R, R2> implements Operator<Observable<T>, R2> {
-  constructor(private ish: Observable<R> | Promise<R>,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+export interface MergeMapToSignature<T> {
+  <R>(observable: ObservableInput<R>, concurrent?: number): Observable<R>;
+  <I, R>(observable: ObservableInput<I>,
+         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
+         concurrent?: number): Observable<R>;
+}
+
+// TODO: Figure out correct signature here: an Operator<Observable<T>, R>
+//       needs to implement call(observer: Subscriber<R>): Subscriber<Observable<T>>
+export class MergeMapToOperator<T, I, R> implements Operator<Observable<T>, R> {
+  constructor(private ish: ObservableOrPromise<I>,
+              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
-  call(observer: Subscriber<R2>): Subscriber<any> {
+  call(observer: Subscriber<R>): Subscriber<any> {
     return new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent);
   }
 }
 
-export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
+export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private hasCompleted: boolean = false;
   private buffer: Observable<any>[] = [];
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Subscriber<R2>,
-              private ish: Observable<R> | Promise<R>,
-              private resultSelector?: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+  constructor(destination: Subscriber<R>,
+              private ish: ObservableOrPromise<I>,
+              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
   }
@@ -54,11 +61,11 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
   }
 
   private _innerSub(ish: any,
-                    destination: PartialObserver<R>,
-                    resultSelector: (outerValue: T, innerValue: R, outerIndex: number, innerIndex: number) => R2,
+                    destination: PartialObserver<I>,
+                    resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
                     value: T,
                     index: number): void {
-    this.add(subscribeToResult<T, R>(this, ish, value, index));
+    this.add(subscribeToResult<T, I>(this, ish, value, index));
   }
 
   protected _complete(): void {
@@ -68,9 +75,9 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
+  notifyNext(outerValue: T, innerValue: I,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+             innerSub: InnerSubscriber<T, I>): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
       this.trySelectResult(outerValue, innerValue, outerIndex, innerIndex);
@@ -79,10 +86,10 @@ export class MergeMapToSubscriber<T, R, R2> extends OuterSubscriber<T, R> {
     }
   }
 
-  private trySelectResult(outerValue: T, innerValue: R,
+  private trySelectResult(outerValue: T, innerValue: I,
                           outerIndex: number, innerIndex: number): void {
     const { resultSelector, destination } = this;
-    let result: R2;
+    let result: R;
     try {
       result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
     } catch (err) {
