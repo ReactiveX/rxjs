@@ -20,6 +20,10 @@ export function count<T>(predicate?: (value: T, index: number, source: Observabl
   return this.lift(new CountOperator(predicate, this));
 }
 
+export interface CountSignature<T> {
+  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<number>;
+}
+
 class CountOperator<T> implements Operator<T, number> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private source?: Observable<T>) {

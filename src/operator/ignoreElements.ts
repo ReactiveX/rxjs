@@ -15,6 +15,10 @@ export function ignoreElements<T>(): Observable<T> {
   return this.lift(new IgnoreElementsOperator());
 };
 
+export interface IgnoreElementsSignature<T> {
+  (): Observable<T>;
+}
+
 class IgnoreElementsOperator<T, R> implements Operator<T, R> {
   call(subscriber: Subscriber<R>): Subscriber<T> {
     return new IgnoreElementsSubscriber(subscriber);

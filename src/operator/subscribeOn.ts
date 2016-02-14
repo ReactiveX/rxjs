@@ -14,3 +14,7 @@ import {SubscribeOnObservable} from '../observable/SubscribeOnObservable';
 export function subscribeOn<T>(scheduler: Scheduler, delay: number = 0): Observable<T> {
   return new SubscribeOnObservable<T>(this, delay, scheduler);
 }
+
+export interface SubscribeOnSignature<T> {
+  (scheduler: Scheduler, delay?: number): Observable<T>;
+}

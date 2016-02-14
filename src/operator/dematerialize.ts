@@ -11,6 +11,10 @@ export function dematerialize<T>(): Observable<any> {
   return this.lift(new DeMaterializeOperator());
 }
 
+export interface DematerializeSignature<T> {
+  <R>(): Observable<R>;
+}
+
 class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {
   call(subscriber: Subscriber<any>) {
     return new DeMaterializeSubscriber(subscriber);

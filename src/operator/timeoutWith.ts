@@ -16,6 +16,11 @@ export function timeoutWith<T, R>(due: number | Date,
   return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
 }
 
+export interface TimeoutWithSignature<T> {
+  (due: number | Date, withObservable: Observable<T>, scheduler?: Scheduler): Observable<T>;
+  <R>(due: number | Date, withObservable: Observable<R>, scheduler?: Scheduler): Observable<T | R>;
+}
+
 class TimeoutWithOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,

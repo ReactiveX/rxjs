@@ -28,6 +28,10 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
+export interface RetryWhenSignature<T> {
+  (notifier: (errors: Observable<any>) => Observable<any>): Observable<T>;
+}
+
 class RetryWhenOperator<T> implements Operator<T, T> {
   constructor(protected notifier: (errors: Observable<any>) => Observable<any>,
               protected source: Observable<T>) {

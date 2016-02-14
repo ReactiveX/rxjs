@@ -22,6 +22,10 @@ export function reduce<T, R>(project: (acc: R, value: T) => R, seed?: R): Observ
   return this.lift(new ReduceOperator(project, seed));
 }
 
+export interface ReduceSignature<T> {
+  <R>(project: (acc: R, value: T) => R, seed?: R): Observable<R>;
+}
+
 export class ReduceOperator<T, R> implements Operator<T, R> {
 
   constructor(private project: (acc: R, value: T) => R, private seed?: R) {

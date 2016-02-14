@@ -9,12 +9,16 @@ import {map} from './map';
  * @param {...args} properties the nested properties to pluck
  * @returns {Observable} Returns a new Observable sequence of property values
  */
-export function pluck(...properties: string[]): Observable<any> {
+export function pluck<R>(...properties: string[]): Observable<R> {
   const length = properties.length;
   if (length === 0) {
     throw new Error('List of properties cannot be empty.');
   }
   return map.call(this, plucker(properties, length));
+}
+
+export interface PluckSignature<T> {
+  <R>(...properties: string[]): Observable<R>;
 }
 
 function plucker(props: string[], length: number): (x: string) => any {

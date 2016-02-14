@@ -13,3 +13,7 @@ import {ConnectableObservable} from '../observable/ConnectableObservable';
 export function publish<T>(): ConnectableObservable<T> {
   return multicast.call(this, new Subject<T>());
 }
+
+export interface PublishSignature<T> {
+  (): ConnectableObservable<T>;
+}

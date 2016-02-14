@@ -9,6 +9,10 @@ export function inspectTime<T>(delay: number, scheduler: Scheduler = asap): Obse
   return this.lift(new InspectTimeOperator(delay, scheduler));
 }
 
+export interface InspectTimeSignature<T> {
+  (delay: number, scheduler?: Scheduler): Observable<T>;
+}
+
 class InspectTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }

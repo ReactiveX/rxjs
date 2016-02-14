@@ -20,6 +20,10 @@ export function delay<T>(delay: number|Date,
   return this.lift(new DelayOperator(delayFor, scheduler));
 }
 
+export interface DelaySignature<T> {
+  (delay: number | Date, scheduler?: Scheduler): Observable<T>;
+}
+
 class DelayOperator<T> implements Operator<T, T> {
   constructor(private delay: number,
               private scheduler: Scheduler) {

@@ -9,6 +9,10 @@ export function observeOn<T>(scheduler: Scheduler, delay: number = 0): Observabl
   return this.lift(new ObserveOnOperator(scheduler, delay));
 }
 
+export interface ObserveOnSignature<T> {
+  (scheduler: Scheduler, delay?: number): Observable<T>;
+}
+
 export class ObserveOnOperator<T> implements Operator<T, T> {
   constructor(private scheduler: Scheduler, private delay: number = 0) {
   }

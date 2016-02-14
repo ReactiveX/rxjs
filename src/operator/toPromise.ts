@@ -18,3 +18,8 @@ export function toPromise<T>(PromiseCtor?: typeof Promise): Promise<T> {
     this.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
   });
 }
+
+export interface ToPromiseSignature<T> {
+  (): Promise<T>;
+  (PromiseCtor: typeof Promise): Promise<T>;
+}

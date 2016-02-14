@@ -25,19 +25,25 @@ export function race<T>(...observables: Array<Observable<T> | Array<Observable<T
   return raceStatic.apply(this, observables);
 }
 
+export interface RaceSignature<T> {
+  (...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
+  <R>(...observables: Array<Observable<any> | Array<Observable<T>>>): Observable<R>;
+}
+
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @returns {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  */
-export function raceStatic<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T> {
+export function raceStatic<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
+export function raceStatic<R>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<R> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1) {
     if (isArray(observables[0])) {
       observables = <Array<Observable<any>>>observables[0];
     } else {
-      return <Observable<T>>observables[0];
+      return <Observable<any>>observables[0];
     }
   }
 
@@ -50,7 +56,7 @@ export class RaceOperator<T> implements Operator<T, T> {
   }
 }
 
-export class RaceSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
   private hasFirst: boolean = false;
   private observables: Observable<any>[] = [];
   private subscriptions: Subscription[] = [];
@@ -80,9 +86,9 @@ export class RaceSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
+  notifyNext(outerValue: T, innerValue: T,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+             innerSub: InnerSubscriber<T, T>): void {
     if (!this.hasFirst) {
       this.hasFirst = true;
 

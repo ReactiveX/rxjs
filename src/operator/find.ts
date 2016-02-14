@@ -15,6 +15,10 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
   return this.lift(new FindValueOperator(predicate, this, false, thisArg));
 }
 
+export interface FindSignature<T> {
+  (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<T>;
+}
+
 export class FindValueOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private source: Observable<T>,

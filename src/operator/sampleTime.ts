@@ -8,6 +8,10 @@ export function sampleTime<T>(delay: number, scheduler: Scheduler = asap): Obser
   return this.lift(new SampleTimeOperator(delay, scheduler));
 }
 
+export interface SampleTimeSignature<T> {
+  (delay: number, scheduler?: Scheduler): Observable<T>;
+}
+
 class SampleTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }

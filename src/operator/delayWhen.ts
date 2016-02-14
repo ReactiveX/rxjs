@@ -14,7 +14,6 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @param {Observable} sequence indicating the delay for the subscription to the source.
  * @returns {Observable} an Observable that delays the emissions of the source Observable by the specified timeout or Date.
  */
-
 export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>,
                              subscriptionDelay?: Observable<any>): Observable<T> {
   if (subscriptionDelay) {
@@ -22,6 +21,10 @@ export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any
             .lift(new DelayWhenOperator(delayDurationSelector));
   }
   return this.lift(new DelayWhenOperator(delayDurationSelector));
+}
+
+export interface DelayWhenSignature<T> {
+  (delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: Observable<any>): Observable<T>;
 }
 
 class DelayWhenOperator<T> implements Operator<T, T> {

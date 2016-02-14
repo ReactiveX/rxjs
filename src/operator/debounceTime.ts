@@ -21,6 +21,10 @@ export function debounceTime<T>(dueTime: number, scheduler: Scheduler = asap): O
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 
+export interface DebounceTimeSignature<T> {
+  (dueTime: number, scheduler?: Scheduler): Observable<T>;
+}
+
 class DebounceTimeOperator<T> implements Operator<T, T> {
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }

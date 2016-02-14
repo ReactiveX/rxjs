@@ -13,6 +13,10 @@ export function _finally<T>(finallySelector: () => void): Observable<T> {
   return this.lift(new FinallyOperator(finallySelector));
 }
 
+export interface FinallySignature<T> {
+  <T>(finallySelector: () => void): Observable<T>;
+}
+
 class FinallyOperator<T> implements Operator<T, T> {
   constructor(private finallySelector: () => void) {
   }

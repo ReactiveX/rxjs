@@ -6,6 +6,10 @@ export function toArray<T>(): Observable<T[]> {
   return this.lift(new ToArrayOperator());
 }
 
+export interface ToArraySignature<T> {
+  (): Observable<T[]>;
+}
+
 class ToArrayOperator<T> implements Operator<T, T[]> {
   call(subscriber: Subscriber<T[]>): Subscriber<T> {
     return new ToArraySubscriber(subscriber);

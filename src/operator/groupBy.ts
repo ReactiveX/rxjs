@@ -24,6 +24,14 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K,
   return this.lift(new GroupByOperator(this, keySelector, elementSelector, durationSelector));
 }
 
+/* tslint:disable:max-line-length */
+export interface GroupBySignature<T> {
+  <K>(keySelector: (value: T) => K): Observable<GroupedObservable<K, T>>;
+  <K>(keySelector: (value: T) => K, elementSelector: void, durationSelector: (grouped: GroupedObservable<K, T>) => Observable<any>): Observable<GroupedObservable<K, T>>;
+  <K, R>(keySelector: (value: T) => K, elementSelector?: (value: T) => R, durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>): Observable<GroupedObservable<K, R>>;
+}
+/* tslint:enable:max-line-length */
+
 export interface RefCountSubscription {
   count: number;
   unsubscribe: () => void;

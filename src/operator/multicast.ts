@@ -26,3 +26,9 @@ export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subjec
   }
   return new ConnectableObservable(this, subjectFactory);
 }
+
+export type factoryOrValue<T> = T | (() => T);
+
+export interface MulticastSignature<T> {
+  (subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
+}

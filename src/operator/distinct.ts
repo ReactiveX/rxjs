@@ -20,6 +20,10 @@ export function distinct<T>(compare?: (x: T, y: T) => boolean, flushes?: Observa
   return this.lift(new DistinctOperator(compare, flushes));
 }
 
+export interface DistinctSignature<T> {
+  (compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T>;
+}
+
 class DistinctOperator<T> implements Operator<T, T> {
   constructor(private compare: (x: T, y: T) => boolean, private flushes: Observable<any>) {
   }
@@ -29,7 +33,7 @@ class DistinctOperator<T> implements Operator<T, T> {
   }
 }
 
-export class DistinctSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class DistinctSubscriber<T> extends OuterSubscriber<T, T> {
   private values: Array<T> = [];
 
   constructor(destination: Subscriber<T>, compare: (x: T, y: T) => boolean, flushes: Observable<any>) {
@@ -43,13 +47,13 @@ export class DistinctSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
+  notifyNext(outerValue: T, innerValue: T,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+             innerSub: InnerSubscriber<T, T>): void {
     this.values.length = 0;
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+  notifyError(error: any, innerSub: InnerSubscriber<T, T>): void {
     this._error(error);
   }
 

@@ -9,23 +9,23 @@ import {ArrayLikeObservable} from './ArrayLikeObservable';
 
 import {Scheduler} from '../Scheduler';
 import {SymbolShim} from '../util/SymbolShim';
-import {Observable} from '../Observable';
+import {Observable, ObservableInput} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn';
 
 const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 'number');
 
 export class FromObservable<T> extends Observable<T> {
-  constructor(private ish: Observable<T> | Promise<T> | Iterator<T> | ArrayLike<T>, private scheduler: Scheduler) {
+  constructor(private ish: ObservableInput<T>, private scheduler: Scheduler) {
     super(null);
   }
 
-  static create<T>(ish: any, mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T), thisArg?: any, lastScheduler?: Scheduler): Observable<T> {
+  static create<T>(ish: any, mapFnOrScheduler?: Scheduler | ((x: any, i: number) => T), thisArg?: any, lastScheduler?: Scheduler): Observable<T> {
     let scheduler: Scheduler = null;
-    let mapFn: (x: number, y: any) => T = null;
+    let mapFn: (x: any, i: number) => T = null;
     if (isFunction(mapFnOrScheduler)) {
       scheduler = lastScheduler || null;
-      mapFn = <(x: number, y: any) => T> mapFnOrScheduler;
+      mapFn = <(x: any, i: number) => T> mapFnOrScheduler;
     } else if (isScheduler(scheduler)) {
       scheduler = <Scheduler> mapFnOrScheduler;
     }

@@ -8,3 +8,7 @@ export function publishReplay<T>(bufferSize: number = Number.POSITIVE_INFINITY,
                                  scheduler?: Scheduler): ConnectableObservable<T> {
   return multicast.call(this, new ReplaySubject<T>(bufferSize, windowTime, scheduler));
 }
+
+export interface PublishReplaySignature<T> {
+  (bufferSize?: number, windowTime?: number, scheduler?: Scheduler): ConnectableObservable<T>;
+}

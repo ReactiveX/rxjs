@@ -10,3 +10,7 @@ import {FindValueOperator} from './find';
 export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number> {
   return this.lift(new FindValueOperator(predicate, this, true, thisArg));
 }
+
+export interface FindIndexSignature<T> {
+  (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number>;
+}
