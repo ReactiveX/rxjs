@@ -146,6 +146,7 @@ import './add/operator/zip';
 import './add/operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
+import {Operator} from './Operator';
 import {Observer} from './Observer';
 import {Subscription, UnsubscriptionError} from './Subscription';
 import {Subscriber} from './Subscriber';
@@ -183,6 +184,7 @@ export {
     Scheduler,
     Observable,
     Observer,
+    Operator,
     Subscriber,
     Subscription,
     AsyncSubject,
