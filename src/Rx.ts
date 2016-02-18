@@ -58,6 +58,7 @@ import './add/operator/finally';
 import './add/operator/first';
 import './add/operator/groupBy';
 import './add/operator/ignoreElements';
+import './add/operator/join';
 import './add/operator/audit';
 import './add/operator/auditTime';
 import './add/operator/last';

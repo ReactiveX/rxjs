@@ -82,7 +82,6 @@ enabling "composite" subscription behavior.
 |`groupJoin`|`-`|
 |`includes`|`-`|
 |`indexOf`|`-`|
-|`join`|`-`|
 |`jortSort`|`-`|
 |`jortSortUntil`|`-`|
 |`lastIndexOf`|`-`|
