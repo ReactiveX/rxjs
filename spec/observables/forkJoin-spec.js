@@ -13,6 +13,18 @@ describe('Observable.forkJoin', function () {
     var expected = '--------------(x|)';
 
     expectObservable(e1).toBe(expected, {x: ['d', 'b', '3']});
+
+    //Hack - just adding one new test cases in here or either jasmin-is-weird-spec.js,
+    //one of test breaks under publish-spec.js
+    var e2 = Observable.forkJoin(
+               hot('--a--b--c--d--|', { d: null }),
+               hot('(b|)'),
+               hot('--1--2--3--|'),
+               hot('-----r--t--u--|', { u: undefined })
+            );
+    var expected2 = '--------------(x|)';
+
+    expectObservable(e2).toBe(expected2, {x: [null, 'b', '3', undefined]});
   });
 
   it('should join the last values of the provided observables with selector', function () {

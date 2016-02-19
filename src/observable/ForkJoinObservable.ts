@@ -40,7 +40,12 @@ export class ForkJoinObservable<T> extends Observable<T> {
     const sources = this.sources;
     const len = sources.length;
 
-    const context = { completed: 0, total: len, values: emptyArray(len), selector: this.resultSelector };
+    const context = { completed: 0,
+                      total: len,
+                      values: new Array(len),
+                      haveValues: new Array(len),
+                      selector: this.resultSelector };
+
     for (let i = 0; i < len; i++) {
       let source = sources[i];
       if (isPromise(source)) {
@@ -52,39 +57,43 @@ export class ForkJoinObservable<T> extends Observable<T> {
 }
 
 class AllSubscriber<T> extends Subscriber<T> {
-  private _value: T = null;
 
   constructor(destination: Subscriber<any>,
               private index: number,
               private context: { completed: number,
                                  total: number,
                                  values: any[],
+                                 haveValues: any[],
                                  selector: (...values: Array<any>) => any }) {
     super(destination);
   }
 
   protected _next(value: T): void {
-    this._value = value;
+    const context = this.context;
+    const index = this.index;
+
+    context.values[index] = value;
+    context.haveValues[index] = true;
   }
 
   protected _complete(): void {
     const destination = this.destination;
+    const context = this.context;
 
-    if (this._value == null) {
+    if (!context.haveValues[this.index]) {
       destination.complete();
     }
 
-    const context = this.context;
     context.completed++;
-    context.values[this.index] = this._value;
+
     const values = context.values;
 
     if (context.completed !== values.length) {
       return;
     }
 
-    if (values.every(hasValue)) {
-      let value = context.selector ? context.selector.apply(this, values) :
+    if (context.haveValues.every(hasValue)) {
+      const value = context.selector ? context.selector.apply(this, values) :
                                      values;
       destination.next(value);
     }
@@ -94,13 +103,5 @@ class AllSubscriber<T> extends Subscriber<T> {
 }
 
 function hasValue(x: any): boolean {
-  return x !== null;
-}
-
-function emptyArray(len: number): any[] {
-  let arr: any[] = [];
-  for (let i = 0; i < len; i++) {
-    arr.push(null);
-  }
-  return arr;
+  return x === true;
 }
