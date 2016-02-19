@@ -3,13 +3,15 @@
 
 module.exports = function (config) {
   // Check out https://saucelabs.com/platforms for expanding browser coverage
+  // some browsers are disabled due to selenium fails to start browser instance.
+  // will be re enabled once issue's resolved.
   var customLaunchers = {
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
       version: '46'
     },
-    sl_chrome_beta: {
+    /*sl_chrome_beta: {
       base: 'SauceLabs',
       browserName: 'chrome',
       version: 'beta'
@@ -18,7 +20,7 @@ module.exports = function (config) {
       base: 'SauceLabs',
       browserName: 'chrome',
       version: 'dev'
-    },
+    },*/
     sl_firefox: {
       base: 'SauceLabs',
       browserName: 'firefox',
@@ -29,11 +31,11 @@ module.exports = function (config) {
       browserName: 'firefox',
       version: 'beta'
     },
-    sl_firefox_dev: {
+    /*sl_firefox_dev: {
       base: 'SauceLabs',
       browserName: 'firefox',
       version: 'dev'
-    },
+    },*/
     sl_safari7: {
       base: 'SauceLabs',
       browserName: 'safari',
