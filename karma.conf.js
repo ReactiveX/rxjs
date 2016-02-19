@@ -139,10 +139,10 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'spec/helpers/marble-testing.js',
-      'spec/helpers/test-helper.js',
-      'spec/helpers/ajax-helper.js',
-      'spec/**/*-spec.js'
+      'tmp/helpers/marble-testing.js',
+      'tmp/helpers/test-helper.js',
+      'tmp/helpers/ajax-helper.js',
+      'tmp/**/*-spec.js'
     ],
 
     // list of files to exclude
@@ -152,7 +152,7 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'spec/**/*.js': ['browserify']
+      'tmp/**/*.js': ['browserify']
     },
 
     // test results reporter to use

@@ -1,7 +1,7 @@
 'use strict';
 var Rx = require(__dirname);
 
-var marbleTesting = require('./spec/helpers/marble-testing');
+var marbleTesting = require('./tmp/helpers/marble-testing');
 
 global.rxTestScheduler = new Rx.TestScheduler(marbleTesting.assertDeepEqual);
 
