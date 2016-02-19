@@ -285,7 +285,7 @@ describe('Observable.prototype.throttle()', () =>  {
       Observable.timer(10).mapTo(3),
       Observable.timer(50).mapTo(4)
     );
-    const expected = [1,2,3,4];
+    const expected = [1, 2, 3, 4];
 
     e1.throttle(() =>  {
       return new Promise((resolve: any) => { resolve(42); });
@@ -308,14 +308,14 @@ describe('Observable.prototype.throttle()', () =>  {
       Observable.timer(10).mapTo(3),
       Observable.timer(50).mapTo(4)
     );
-    const expected = [1,2,3];
+    const expected = [1, 2, 3];
     const error = new Error('error');
 
     e1.throttle((x: number) => {
       if (x === 3) {
-        return new Promise((resolve: any, reject: any) => {reject(error);});
+        return new Promise((resolve: any, reject: any) => { reject(error); });
       } else {
-        return new Promise((resolve: any) => {resolve(42);});
+        return new Promise((resolve: any) => { resolve(42); });
       }
     }).subscribe(
       (x: number) => {

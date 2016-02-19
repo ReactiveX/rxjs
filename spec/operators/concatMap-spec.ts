@@ -40,7 +40,7 @@ describe('Observable.prototype.concatMap()', () => {
                      '                               ^         !'];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|';
 
-    const result = e1.concatMap((value: any) =>inner);
+    const result = e1.concatMap((value: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -637,7 +637,7 @@ describe('Observable.prototype.concatMap()', () => {
   });
 
   it('should map values to constant resolved promises and concatenate', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: any) => Observable.from(Promise.resolve(42));
 
     const results = [];
@@ -647,13 +647,13 @@ describe('Observable.prototype.concatMap()', () => {
       }, (err: any) => {
         done.fail('Subscriber error handler not supposed to be called.');
       }, () => {
-        expect(results).toEqual([42,42,42,42]);
+        expect(results).toEqual([42, 42, 42, 42]);
         done();
       });
   });
 
   it('should map values to constant rejected promises and concatenate', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: any) => Observable.from(Promise.reject(42));
 
     source.concatMap(project).subscribe(
@@ -668,7 +668,7 @@ describe('Observable.prototype.concatMap()', () => {
   });
 
   it('should map values to resolved promises and concatenate', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: number, index: number) => Observable.from(Promise.resolve(value + index));
 
     const results = [];
@@ -678,13 +678,13 @@ describe('Observable.prototype.concatMap()', () => {
       }, (err: any) => {
         done.fail('Subscriber error handler not supposed to be called.');
       }, () => {
-        expect(results).toEqual([4,4,4,4]);
+        expect(results).toEqual([4, 4, 4, 4]);
         done();
       });
   });
 
   it('should map values to rejected promises and concatenate', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: number, index: number) => Observable.from(Promise.reject('' + value + '-' + index));
 
     source.concatMap(project).subscribe(
@@ -699,7 +699,7 @@ describe('Observable.prototype.concatMap()', () => {
   });
 
   it('should concatMap values to resolved promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const resultSelectorCalledWith = [];
     const project = (value: number, index: number) => Observable.from((Promise.resolve([value, index])));
 
@@ -710,10 +710,10 @@ describe('Observable.prototype.concatMap()', () => {
 
     const results = [];
     const expectedCalls = [
-      [4, [4,0], 0, 0],
-      [3, [3,1], 1, 0],
-      [2, [2,2], 2, 0],
-      [1, [1,3], 3, 0]
+      [4, [4, 0], 0, 0],
+      [3, [3, 1], 1, 0],
+      [2, [2, 2], 2, 0],
+      [1, [1, 3], 3, 0]
     ];
     source.concatMap(project, resultSelector).subscribe(
       (x: any) => {
@@ -721,14 +721,14 @@ describe('Observable.prototype.concatMap()', () => {
       }, (err: any) => {
         done.fail('Subscriber error handler not supposed to be called.');
       }, () => {
-        expect(results).toEqual([8,8,8,8]);
+        expect(results).toEqual([8, 8, 8, 8]);
         (<any>expect(resultSelectorCalledWith)).toDeepEqual(expectedCalls);
         done();
       });
   });
 
   it('should concatMap values to rejected promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: number, index: number) => Observable.from(Promise.reject('' + value + '-' + index));
 
     const resultSelector = () => {

@@ -25,7 +25,7 @@
     "build_docs": "npm run build_es6 && npm run tests2png && esdoc -c esdoc.json",
     "publish_docs": "./publish_docs.sh",
     "lint_perf": "eslint perf/",
-    "lint_spec": "eslint spec/",
+    "lint_spec": "tslint -c tslint.json spec/*.ts spec/**/*.ts spec/**/**/*.ts",
     "lint_src": "tslint -c tslint.json src/*.ts src/**/*.ts src/**/**/*.ts",
     "lint": "npm run lint_src && npm run lint_spec && npm run lint_perf",
     "copy_src": "cp -r src/ dist/cjs/src && cp -r src/ dist/amd/src && cp -r src/ dist/es6/src",
@@ -93,6 +93,7 @@
   },
   "homepage": "https://github.com/ReactiveX/RxJS",
   "devDependencies": {
+    "babel-polyfill": "6.5.0",
     "benchmark": "1.0.0",
     "benchpress": "2.0.0-beta.1",
     "browserify": "13.0.0",

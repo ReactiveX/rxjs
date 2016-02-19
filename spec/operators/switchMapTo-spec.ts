@@ -1,9 +1,8 @@
 import * as Rx from '../../dist/cjs/Rx';
 import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+import {it, DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
-const queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.switchMapTo()', () => {
   it('should switch a synchronous many outer to a synchronous many inner', (done: DoneSignature) => {

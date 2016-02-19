@@ -26,7 +26,7 @@ describe('Observable.prototype.mergeMapTo()', () => {
   });
 
   it('should map values to constant resolved promises and merge', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
 
     const results = [];
     source.mergeMapTo(Observable.from(Promise.resolve(42))).subscribe(
@@ -37,13 +37,13 @@ describe('Observable.prototype.mergeMapTo()', () => {
         done.fail('Subscriber error handler not supposed to be called.');
       },
       () => {
-        expect(results).toEqual([42,42,42,42]);
+        expect(results).toEqual([42, 42, 42, 42]);
         done();
       });
   });
 
   it('should map values to constant rejected promises and merge', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
 
     source.mergeMapTo(Observable.from(Promise.reject(42))).subscribe(
       (x: any) => {
@@ -59,7 +59,7 @@ describe('Observable.prototype.mergeMapTo()', () => {
   });
 
   it('should mergeMapTo values to resolved promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const resultSelectorCalledWith = [];
     const inner = Observable.from(Promise.resolve(42));
     const resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
@@ -82,14 +82,14 @@ describe('Observable.prototype.mergeMapTo()', () => {
         done.fail('Subscriber error handler not supposed to be called.');
       },
       () => {
-        expect(results).toEqual([8,8,8,8]);
+        expect(results).toEqual([8, 8, 8, 8]);
         (<any>expect(resultSelectorCalledWith)).toDeepEqual(expectedCalls);
         done();
       });
   });
 
   it('should mergeMapTo values to rejected promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const inner = Observable.from(Promise.reject(42));
     const resultSelector = () => {
       throw 'this should not be called';
@@ -376,7 +376,7 @@ describe('Observable.prototype.mergeMapTo()', () => {
     const expected = ['!', '!', '!', '!'];
     let completed = false;
 
-    const sub = source.subscribe((x: string) => {
+    source.subscribe((x: string) => {
       expect(x).toBe(expected.shift());
     }, null, () => {
       expect(expected.length).toBe(0);
@@ -392,7 +392,7 @@ describe('Observable.prototype.mergeMapTo()', () => {
     const expected = ['!', '!', '!', '!'];
     let completed = false;
 
-    const sub = source.subscribe((x: string) => {
+    source.subscribe((x: string) => {
       expect(x).toBe(expected.shift());
     }, null, () => {
       expect(expected.length).toBe(0);

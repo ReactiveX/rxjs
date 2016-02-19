@@ -1,6 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+import {it, asDiagram} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -76,7 +76,7 @@ describe('Observable.prototype.startWith()', () => {
     const e1subs =   '^       !';
     const expected = '(yz)-a--|';
 
-    expectObservable((<any>e1).startWith('y','z')).toBe(expected);
+    expectObservable((<any>e1).startWith('y', 'z')).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -150,7 +150,7 @@ describe('Observable.prototype.startWith()', () => {
     const e1subs =   '^       !';
     const expected = '(yz)-a--|';
 
-    expectObservable((<any>e1).startWith('y','z', rxTestScheduler)).toBe(expected);
+    expectObservable((<any>e1).startWith('y', 'z', rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

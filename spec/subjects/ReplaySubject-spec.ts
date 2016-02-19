@@ -167,9 +167,9 @@ describe('ReplaySubject', () => {
 
       subscription3.unsubscribe();
 
-      expect(results1).toEqual([3,4,5,6,7]);
-      expect(results2).toEqual([4,5,6,7,8]);
-      expect(results3).toEqual([9,10,11]);
+      expect(results1).toEqual([3, 4, 5, 6, 7]);
+      expect(results2).toEqual([4, 5, 6, 7, 8]);
+      expect(results3).toEqual([9, 10, 11]);
 
       subject.complete();
     });

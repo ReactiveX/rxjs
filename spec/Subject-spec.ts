@@ -1,9 +1,8 @@
 import * as Rx from '../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from './helpers/marble-testing';
+import {hot, expectObservable} from './helpers/marble-testing';
 import {it, DoneSignature} from './helpers/test-helper';
 
 const Subject = Rx.Subject;
-const asap = Rx.Scheduler.asap;
 const Observable = Rx.Observable;
 
 describe('Subject', () => {
@@ -94,8 +93,8 @@ describe('Subject', () => {
 
     subscription3.unsubscribe();
 
-    expect(results1).toEqual([5,6,7]);
-    expect(results2).toEqual([6,7,8]);
+    expect(results1).toEqual([5, 6, 7]);
+    expect(results2).toEqual([6, 7, 8]);
     expect(results3).toEqual([11]);
   });
 
@@ -142,8 +141,8 @@ describe('Subject', () => {
 
     subscription3.unsubscribe();
 
-    expect(results1).toEqual([5,6,7]);
-    expect(results2).toEqual([6,7,'C']);
+    expect(results1).toEqual([5, 6, 7]);
+    expect(results2).toEqual([6, 7, 'C']);
     expect(results3).toEqual(['C']);
   });
 
@@ -190,8 +189,8 @@ describe('Subject', () => {
 
     subscription3.unsubscribe();
 
-    expect(results1).toEqual([5,6,7]);
-    expect(results2).toEqual([6,7,'E']);
+    expect(results1).toEqual([5, 6, 7]);
+    expect(results2).toEqual([6, 7, 'E']);
     expect(results3).toEqual(['E']);
   });
 
@@ -263,15 +262,15 @@ describe('Subject', () => {
     subject.unsubscribe();
 
     expect(() => {
-      const subscription3 = subject.subscribe(
+      subject.subscribe(
         function (x) { results3.push(x); },
         function (e) { results3.push('E'); },
         () => { results3.push('C'); }
       );
     }).toThrow();
 
-    expect(results1).toEqual([1,2,3,4,5]);
-    expect(results2).toEqual([3,4,5]);
+    expect(results1).toEqual([1, 2, 3, 4, 5]);
+    expect(results2).toEqual([3, 4, 5]);
     expect(results3).toEqual([]);
   });
 
@@ -307,9 +306,9 @@ describe('Subject', () => {
     auxSubject.next('c');
     auxSubject.next('d');
 
-    expect(results1).toEqual([1,2,3]);
+    expect(results1).toEqual([1, 2, 3]);
     expect(subscription2.isUnsubscribed).toBe(true);
-    expect(results2).toEqual(['a','b']);
+    expect(results2).toEqual(['a', 'b']);
   });
 
   it('should allow ad-hoc subscription to be removed from itself', () => {
@@ -345,9 +344,9 @@ describe('Subject', () => {
     auxSubject.next('c');
     auxSubject.next('d');
 
-    expect(results1).toEqual([1,2,3]);
+    expect(results1).toEqual([1, 2, 3]);
     expect(subscription2.isUnsubscribed).toBe(false);
-    expect(results2).toEqual(['a','b','c','d']);
+    expect(results2).toEqual(['a', 'b', 'c', 'd']);
   });
 
   it('should not allow values to be nexted after a return', (done: DoneSignature) => {
@@ -367,9 +366,11 @@ describe('Subject', () => {
     const subject = new Subject();
 
     const sub1 = subject.subscribe(function (x) {
+      //noop
     });
 
     const sub2 = subject.subscribe(function (x) {
+      //noop
     });
 
     expect(subject.observers.length).toBe(2);
@@ -382,7 +383,7 @@ describe('Subject', () => {
 
   it('should have a static create function that works', () => {
     expect(typeof Subject.create).toBe('function');
-    const source = Observable.of(1,2,3,4,5);
+    const source = Observable.of(1, 2, 3, 4, 5);
     const nexts = [];
     const output = [];
 
@@ -418,17 +419,17 @@ describe('Subject', () => {
     sub.next('c');
     sub.complete();
 
-    expect(nexts).toEqual(['a','b','c']);
+    expect(nexts).toEqual(['a', 'b', 'c']);
     expect(complete).toBe(true);
     expect(error).toBe(undefined);
 
-    expect(output).toEqual([1,2,3,4,5]);
+    expect(output).toEqual([1, 2, 3, 4, 5]);
     expect(outputComplete).toBe(true);
   });
 
   it('should have a static create function that works also to raise errors', () => {
     expect(typeof Subject.create).toBe('function');
-    const source = Observable.of(1,2,3,4,5);
+    const source = Observable.of(1, 2, 3, 4, 5);
     const nexts = [];
     const output = [];
 
@@ -464,11 +465,11 @@ describe('Subject', () => {
     sub.next('c');
     sub.error('boom');
 
-    expect(nexts).toEqual(['a','b','c']);
+    expect(nexts).toEqual(['a', 'b', 'c']);
     expect(complete).toBe(false);
     expect(error).toBe('boom');
 
-    expect(output).toEqual([1,2,3,4,5]);
+    expect(output).toEqual([1, 2, 3, 4, 5]);
     expect(outputComplete).toBe(true);
   });
 

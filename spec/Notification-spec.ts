@@ -1,6 +1,6 @@
 import * as Rx from '../dist/cjs/Rx';
 import {expectObservable} from './helpers/marble-testing';
-import {it, DoneSignature} from './helpers/test-helper';
+import {it} from './helpers/test-helper';
 
 const Notification = Rx.Notification;
 

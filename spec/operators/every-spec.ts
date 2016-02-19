@@ -35,7 +35,7 @@ describe('Observable.prototype.every()', () => {
   it('should accept thisArg with array observables', () => {
     const thisArg = {};
 
-    Observable.of(1,2,3,4).every(function (value: number, index: number) {
+    Observable.of(1, 2, 3, 4).every(function (value: number, index: number) {
       expect(this).toBe(thisArg);
       return true;
     }, thisArg).subscribe();

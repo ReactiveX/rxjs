@@ -172,7 +172,7 @@ describe('Observable.prototype.withLatestFrom()', () => {
     const e3subs =        '^       !';
     const expected =      '----x---#'; // throw
     const values = {
-      x: ['b','f','j']
+      x: ['b', 'f', 'j']
     };
 
     const result = e1.withLatestFrom(e2, e3);
@@ -241,21 +241,21 @@ describe('Observable.prototype.withLatestFrom()', () => {
   it('should handle promises', (done: DoneSignature) => {
     Observable.of(1).delay(1).withLatestFrom(Promise.resolve(2), Promise.resolve(3))
       .subscribe((x: any) => {
-        expect(x).toEqual([1,2,3]);
+        expect(x).toEqual([1, 2, 3]);
       }, null, done);
   });
 
   it('should handle arrays', () => {
-    Observable.of(1).delay(1).withLatestFrom([2,3,4], [4,5,6])
+    Observable.of(1).delay(1).withLatestFrom([2, 3, 4], [4, 5, 6])
       .subscribe((x: any) => {
-        expect(x).toEqual([1,4,6]);
+        expect(x).toEqual([1, 4, 6]);
       });
   });
 
   it('should handle lowercase-o observables', () => {
     Observable.of(1).delay(1).withLatestFrom(lowerCaseO(2, 3, 4), lowerCaseO(4, 5, 6))
       .subscribe((x: any) => {
-        expect(x).toEqual([1,4,6]);
+        expect(x).toEqual([1, 4, 6]);
       });
   });
 });

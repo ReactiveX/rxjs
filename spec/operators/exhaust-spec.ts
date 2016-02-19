@@ -3,7 +3,6 @@ import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marbl
 import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
-const queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.exhaust()', () => {
   asDiagram('exhaust')('should handle a hot observable of hot observables', () => {

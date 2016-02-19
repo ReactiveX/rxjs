@@ -11,7 +11,7 @@ describe('Observable.prototype.bufferToggle', () => {
     const e3 =   hot('---------c---------------c-----|');
     const expected = '---------x---------------y-----|';
     const values = {
-      x: ['a','b'],
+      x: ['a', 'b'],
       y: ['f'],
     };
 
@@ -31,8 +31,8 @@ describe('Observable.prototype.bufferToggle', () => {
     const expected = '----------------------------q-------------r-------(s|)';
 
     const values = {
-      q: ['c','d','e'],
-      r: ['f','g','h'],
+      q: ['c', 'd', 'e'],
+      r: ['f', 'g', 'h'],
       s: ['i']
     };
     const innerVals = ['x', 'y', 'z'];
@@ -56,9 +56,9 @@ describe('Observable.prototype.bufferToggle', () => {
                       '                       ^           !      '];
     const expected =    '-----------------ij----------------(k|)   ';
     const values = {
-      i: ['b','c','d','e'],
+      i: ['b', 'c', 'd', 'e'],
       j: ['e'],
-      k: ['g','h']
+      k: ['g', 'h']
     };
 
     let i = 0;
@@ -84,9 +84,9 @@ describe('Observable.prototype.bufferToggle', () => {
        sub:           '                       ^           !   '}]; // eslint-disable-line key-spacing
     const expected =    '-----------------ij----------------(k|)';
     const values = {
-      i: ['b','c','d','e'],
+      i: ['b', 'c', 'd', 'e'],
       j: ['e'],
-      k: ['g','h']
+      k: ['g', 'h']
     };
 
     let i = 0;
@@ -109,9 +109,9 @@ describe('Observable.prototype.bufferToggle', () => {
       cold(                                  '---------------|')];
     const expected =    '-----------------ij----------------(k|)';
     const values = {
-      i: ['b','c','d','e'],
+      i: ['b', 'c', 'd', 'e'],
       j: ['e'],
-      k: ['g','h']
+      k: ['g', 'h']
     };
 
     let i = 0;
@@ -133,7 +133,7 @@ describe('Observable.prototype.bufferToggle', () => {
     const expected =    '-----------                               ';
     const unsub =       '          !                               ';
     const values = {
-      i: ['b','c','d','e']
+      i: ['b', 'c', 'd', 'e']
     };
 
     let i = 0;
@@ -157,7 +157,7 @@ describe('Observable.prototype.bufferToggle', () => {
     const expected =    '-----------------i-                       ';
     const unsub =       '                  !                       ';
     const values = {
-      i: ['b','c','d','e']
+      i: ['b', 'c', 'd', 'e']
     };
 
     let i = 0;
@@ -227,7 +227,7 @@ describe('Observable.prototype.bufferToggle', () => {
                       '              ^    !                '];
     const expected =    '-----------------i-#                ';
     const values = {
-      i: ['b','c','d','e']
+      i: ['b', 'c', 'd', 'e']
     };
 
     let i = 0;
@@ -250,7 +250,7 @@ describe('Observable.prototype.bufferToggle', () => {
                       '              ^    !                '];
     const expected =    '-----------------i-#        ';
     const values = {
-      i: ['b','c','d','e']
+      i: ['b', 'c', 'd', 'e']
     };
 
     let i = 0;

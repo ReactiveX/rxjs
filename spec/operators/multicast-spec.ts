@@ -510,7 +510,7 @@ describe('Observable.prototype.multicast()', () => {
       const expected = ['a1', 'a2', 'a3', 'b1', 'b2', 'b3', 'c1', 'c2', 'c3'];
 
       Observable.of('a', 'b', 'c')
-        .switchMap((letter: string) => source.map((n :number) => String(letter + n)))
+        .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).toBe(expected.shift());
         }, done.fail, () => {
@@ -551,7 +551,7 @@ describe('Observable.prototype.multicast()', () => {
       const expected = ['a1', 'a2', 'a3'];
 
       Observable.of('a', 'b', 'c')
-        .switchMap((letter: string) => source.map((n :number) => String(letter + n)))
+        .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).toBe(expected.shift());
         }, done.fail, () => {

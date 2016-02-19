@@ -3,7 +3,6 @@ import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marbl
 import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
-const Scheduler = Rx.Scheduler;
 
 describe('Observable.prototype.inspect()', () => {
   asDiagram('inspect')('should emit the last value in each time window', () => {
@@ -286,7 +285,7 @@ describe('Observable.prototype.inspect()', () => {
 
   it('should inspect by promise resolves', (done: DoneSignature) => {
     const e1 = Observable.interval(10).take(5);
-    const expected = [0,1,2,3];
+    const expected = [0, 1, 2, 3];
 
     e1.inspect(() => {
       return new Promise((resolve: any) => { resolve(42); });
@@ -305,14 +304,14 @@ describe('Observable.prototype.inspect()', () => {
 
   it('should raise error when promise rejects', (done: DoneSignature) => {
     const e1 = Observable.interval(10).take(10);
-    const expected = [0,1,2];
+    const expected = [0, 1, 2];
     const error = new Error('error');
 
     e1.inspect((x: number) => {
       if (x === 3) {
-        return new Promise((resolve: any, reject: any) => {reject(error);});
+        return new Promise((resolve: any, reject: any) => { reject(error); });
       } else {
-        return new Promise((resolve: any) => {resolve(42);});
+        return new Promise((resolve: any) => { resolve(42); });
       }
     }).subscribe(
       (x: number) => {

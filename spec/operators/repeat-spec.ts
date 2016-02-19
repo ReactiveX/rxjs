@@ -1,5 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
+import {cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
 import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
@@ -222,7 +222,11 @@ describe('Observable.prototype.repeat()', () => {
 
   it('should terminate repeat and throw if source subscription to _complete throws', () => {
     const e1 = Observable.of<number>(1, 2, rxTestScheduler);
-    e1.subscribe(() => {}, () => {}, () => { throw new Error('error'); });
+    e1.subscribe(() => {
+      //noop
+    }, () => {
+      //noop
+    }, () => { throw new Error('error'); });
 
     expect(() => {
       e1.repeat(3);
@@ -242,7 +246,11 @@ describe('Observable.prototype.repeat()', () => {
 
   it('should terminate repeat and throw if source subscription to _complete throws when repeating infinitely', () => {
     const e1 = Observable.of<number>(1, 2, rxTestScheduler);
-    e1.subscribe(() => {}, () => {}, () => { throw new Error('error'); });
+    e1.subscribe(() => {
+      //noop
+    }, () => {
+      //noop
+    }, () => { throw new Error('error'); });
 
     expect(() => {
       e1.repeat();

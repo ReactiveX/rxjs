@@ -135,7 +135,7 @@ describe('AsyncSubject', () => {
   it('should keep emitting error to subsequent subscriptions', () => {
     const subject = new AsyncSubject();
     const observer = new TestObserver();
-    const subscription = subject.subscribe(observer);
+    subject.subscribe(observer);
 
     subject.next(1);
     expect(observer.results).toEqual([]);

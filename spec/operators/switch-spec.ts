@@ -201,10 +201,10 @@ describe('Observable.prototype.switch()', () => {
   });
 
   it('should handle an observable with Arrays in it', () => {
-    const expected = [1,2,3,4];
+    const expected = [1, 2, 3, 4];
     let completed = false;
 
-    Observable.of<any>(Observable.never(), Observable.never(), [1,2,3,4])
+    Observable.of<any>(Observable.never(), Observable.never(), [1, 2, 3, 4])
       .switch()
       .subscribe((x: number) => {
         expect(x).toBe(expected.shift());

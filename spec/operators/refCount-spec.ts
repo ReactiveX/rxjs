@@ -1,9 +1,8 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
+import {cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
 import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
-const Subject = Rx.Subject;
 
 describe('Observable.prototype.publish().refCount()', () => {
   asDiagram('refCount')('should turn a multicasted Observable an automatically ' +
@@ -21,9 +20,12 @@ describe('Observable.prototype.publish().refCount()', () => {
   it('should count references', () => {
     const source = Observable.never().publish().refCount();
 
-    const sub1 = source.subscribe({ next: () => { } });
-    const sub2 = source.subscribe({ next: () => { } });
-    const sub3 = source.subscribe({ next: () => { } });
+    const sub1 = source.subscribe({ next: function () { //noop
+      } });
+    const sub2 = source.subscribe({ next: function () { //noop
+      } });
+    const sub3 = source.subscribe({ next: function () { //noop
+      } });
 
     expect((<any>source).refCount).toBe(3);
 
@@ -42,8 +44,12 @@ describe('Observable.prototype.publish().refCount()', () => {
       };
     }).publish().refCount();
 
-    const sub1 = source.subscribe(() => {});
-    const sub2 = source.subscribe(() => {});
+    const sub1 = source.subscribe(() => {
+      //noop
+    });
+    const sub2 = source.subscribe(() => {
+      //noop
+    });
     const sub3 = source.subscribe((x: any) => {
       expect((<any>source).refCount).toBe(1);
     });

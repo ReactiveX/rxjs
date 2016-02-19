@@ -1,7 +1,6 @@
-import {polyfillSymbol, ensureIterator} from '../../dist/cjs/util/SymbolShim';
+import {polyfillSymbol} from '../../dist/cjs/util/SymbolShim';
 import {Map} from '../../dist/cjs/util/Map';
-import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {it} from '../helpers/test-helper';
 
 declare const __root__: any;
 
@@ -96,8 +95,11 @@ describe('SymbolShim.polyfillSymbol', () => {
 
   it('should patch using Set for mozilla bug', () => {
     function Set() {
+      //noop
     }
-    Set.prototype['@@iterator'] = () => {};
+    Set.prototype['@@iterator'] = () => {
+      //noop
+    };
 
     const root = {
       Set: Set,

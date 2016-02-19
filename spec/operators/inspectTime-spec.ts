@@ -4,7 +4,6 @@ import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
-const Scheduler = Rx.Scheduler;
 
 describe('Observable.prototype.inspectTime()', () => {
   asDiagram('inspectTime(50)')('should emit the last value in each time window', () => {

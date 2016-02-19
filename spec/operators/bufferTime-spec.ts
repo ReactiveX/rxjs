@@ -12,8 +12,8 @@ describe('Observable.prototype.bufferTime', () => {
     const t = time(  '----------|');
     const expected = '----------w---------x---------y--(z|)';
     const values = {
-      w: ['a','b'],
-      x: ['c','d','e'],
+      w: ['a', 'b'],
+      x: ['c', 'd', 'e'],
       y: ['f', 'g'],
       z: []
     };
@@ -29,7 +29,7 @@ describe('Observable.prototype.bufferTime', () => {
     const t = time(  '--------------------------------|');
     const expected = '--------------------------------x-------------------------------y---(z|)';
     const values = {
-      x: ['a','b','c'],
+      x: ['a', 'b', 'c'],
       y: ['d', 'e', 'g'],
       z: []
     };
@@ -197,7 +197,7 @@ describe('Observable.prototype.bufferTime', () => {
     const t = time(  '----------|');
     const expected = '----------w----#';
     const values = {
-      w: ['a','b']
+      w: ['a', 'b']
     };
 
     const result = e1.bufferTime(t, null, rxTestScheduler);

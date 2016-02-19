@@ -3,7 +3,6 @@ import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marbl
 import {it, asDiagram} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
 
 describe('Observable.prototype.delayWhen()', () => {
   asDiagram('delay(durationSelector)')('should delay by duration selector', () => {

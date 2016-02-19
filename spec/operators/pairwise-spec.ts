@@ -1,8 +1,5 @@
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
 import {it} from '../helpers/test-helper';
-
-const Observable = Rx.Observable;
 
 describe('Observable.prototype.pairwise()', () => {
   it('should pairwise things', () => {

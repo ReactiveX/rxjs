@@ -22,7 +22,7 @@ describe('Observable.prototype.mergeMap()', () => {
   });
 
   it('should map values to constant resolved promises and merge', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: any) => Observable.from(Promise.resolve(42));
 
     const results = [];
@@ -34,13 +34,13 @@ describe('Observable.prototype.mergeMap()', () => {
         done.fail('Subscriber error handler not supposed to be called.');
       },
       () => {
-        expect(results).toEqual([42,42,42,42]);
+        expect(results).toEqual([42, 42, 42, 42]);
         done();
       });
   });
 
   it('should map values to constant rejected promises and merge', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = function (value) {
       return Observable.from(Promise.reject(42));
     };
@@ -59,7 +59,7 @@ describe('Observable.prototype.mergeMap()', () => {
   });
 
   it('should map values to resolved promises and merge', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = function (value, index) {
       return Observable.from(Promise.resolve(value + index));
     };
@@ -73,13 +73,13 @@ describe('Observable.prototype.mergeMap()', () => {
         done.fail('Subscriber error handler not supposed to be called.');
       },
       () => {
-        expect(results).toEqual([4,4,4,4]);
+        expect(results).toEqual([4, 4, 4, 4]);
         done();
       });
   });
 
   it('should map values to rejected promises and merge', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = function (value, index) {
       return Observable.from(Promise.reject('' + value + '-' + index));
     };
@@ -98,7 +98,7 @@ describe('Observable.prototype.mergeMap()', () => {
   });
 
   it('should mergeMap values to resolved promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const resultSelectorCalledWith = [];
     const project = function (value, index) {
       return Observable.from(Promise.resolve([value, index]));
@@ -110,10 +110,10 @@ describe('Observable.prototype.mergeMap()', () => {
 
     const results = [];
     const expectedCalls = [
-      [4, [4,0], 0, 0],
-      [3, [3,1], 1, 0],
-      [2, [2,2], 2, 0],
-      [1, [1,3], 3, 0],
+      [4, [4, 0], 0, 0],
+      [3, [3, 1], 1, 0],
+      [2, [2, 2], 2, 0],
+      [1, [1, 3], 3, 0],
     ];
     source.mergeMap(project, resultSelector).subscribe(
       (x: number) => {
@@ -123,14 +123,14 @@ describe('Observable.prototype.mergeMap()', () => {
         done.fail('Subscriber error handler not supposed to be called.');
       },
       () => {
-        expect(results).toEqual([8,8,8,8]);
+        expect(results).toEqual([8, 8, 8, 8]);
         (<any>expect(resultSelectorCalledWith)).toDeepEqual(expectedCalls);
         done();
       });
   });
 
   it('should mergeMap values to rejected promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = function (value, index) {
       return Observable.from(Promise.reject('' + value + '-' + index));
     };
@@ -522,7 +522,7 @@ describe('Observable.prototype.mergeMap()', () => {
     const expected = '(44)--(8888)---(666)----(44)----|';
 
     const source = e1.mergeMap((value: any) => arrayRepeat(value, value),
-      (x: string, y: string) =>String(parseInt(x) + parseInt(y)));
+      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -545,7 +545,7 @@ describe('Observable.prototype.mergeMap()', () => {
     const expected = '(44)--(8888)---(666)----(44)----#';
 
     const source = e1.mergeMap((value: any) => arrayRepeat(value, value),
-      (x: string, y: string) =>String(parseInt(x) + parseInt(y)));
+      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -570,7 +570,7 @@ describe('Observable.prototype.mergeMap()', () => {
     const expected = '(44)--(8888)--                   ';
 
      const source = e1.mergeMap((value: any) => arrayRepeat(value, value),
-      (x: string, y: string) =>String(parseInt(x) + parseInt(y)));
+      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(source, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -637,7 +637,7 @@ describe('Observable.prototype.mergeMap()', () => {
     const expected = ['1!', '2!', '3!', '4!'];
     let completed = false;
 
-    const sub = source.subscribe((x: string) => {
+    source.subscribe((x: string) => {
       expect(x).toBe(expected.shift());
     }, null, () => {
       expect(expected.length).toBe(0);
@@ -653,7 +653,7 @@ describe('Observable.prototype.mergeMap()', () => {
     const expected = ['1!', '2!', '3!', '4!'];
     let completed = false;
 
-    const sub = source.subscribe((x: string) => {
+    source.subscribe((x: string) => {
       expect(x).toBe(expected.shift());
     }, null, () => {
       expect(expected.length).toBe(0);

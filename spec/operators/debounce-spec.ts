@@ -353,7 +353,7 @@ describe('Observable.prototype.debounce()', () => {
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)
       );
-    const expected = [1,2,3,4];
+    const expected = [1, 2, 3, 4];
 
     e1.debounce(() => {
       return new Promise((resolve: any) => { resolve(42); });
@@ -372,14 +372,14 @@ describe('Observable.prototype.debounce()', () => {
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)
       );
-    const expected = [1,2];
+    const expected = [1, 2];
     const error = new Error('error');
 
     e1.debounce((x: number) => {
       if (x === 3) {
-        return new Promise((resolve: any, reject: any) => {reject(error);});
+        return new Promise((resolve: any, reject: any) => { reject(error); });
       } else {
-        return new Promise((resolve: any) => {resolve(42);});
+        return new Promise((resolve: any) => { resolve(42); });
       }
     }).subscribe((x: number) => {
       expect(x).toEqual(expected.shift()); },

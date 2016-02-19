@@ -218,10 +218,10 @@ describe('Observable.prototype.catch()', () => {
         expect(err).toBe('bad');
         return Observable.empty();
       })
-      .subscribe(() => { },
-        (err: any) => {
+      .subscribe(() => {
+        //noop
+       }, (err: any) => {
           done.fail('should not be called');
-        },
-        done);
+        }, done);
   });
 });

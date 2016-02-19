@@ -100,7 +100,6 @@ describe('Observable.prototype.groupBy()', () => {
     const source = e1
       .groupBy((val: string) => val.toLowerCase().trim());
 
-
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
@@ -608,7 +607,9 @@ describe('Observable.prototype.groupBy()', () => {
         rxTestScheduler.schedule(() => {
           expectObservable(group).toBe(expected);
         }, 260);
-      }, () => {});
+      }, () => {
+        //noop
+      });
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 

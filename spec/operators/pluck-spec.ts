@@ -1,5 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
+import {cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
 import {it} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
@@ -146,7 +146,7 @@ describe('Observable.prototype.pluck()', () => {
     const r = a
       .mergeMap((x: string) => Observable.of(x))
       .pluck('prop')
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

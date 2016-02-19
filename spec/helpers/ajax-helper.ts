@@ -30,7 +30,7 @@ export class MockWebSocket {
     const sent = this.sent;
     const length = sent.length;
 
-    return length > 0 ? sent[length -1] : undefined;
+    return length > 0 ? sent[length - 1] : undefined;
   }
 
   triggerClose(e: any): void {
@@ -75,8 +75,8 @@ export class MockWebSocket {
 
   removeEventListener(name: string, handler: any): void {
     const lookup = this.handlers[name];
-    if(lookup) {
-      for (let i = lookup.length - 1; i--;) {
+    if (lookup) {
+      for (let i = lookup.length - 1; i--; ) {
         if (lookup[i] === handler) {
           lookup.splice(i, 1);
         }
@@ -121,7 +121,6 @@ export class MockXMLHttpRequest {
   private eventHandlers: Array<any> = [];
   private readyState: number = 0;
 
-  private async: any;
   private user: any;
   private password: any;
 
@@ -163,7 +162,7 @@ export class MockXMLHttpRequest {
   }
 
   removeEventListener(name: string, handler: any): void {
-    for (let i = this.eventHandlers.length - 1; i--;) {
+    for (let i = this.eventHandlers.length - 1; i--; ) {
       let eh = this.eventHandlers[i];
       if (eh.name === name && eh.handler === handler) {
         this.eventHandlers.splice(i, 1);

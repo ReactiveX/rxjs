@@ -5,7 +5,7 @@ import {it} from '../../helpers/test-helper';
 declare const __root__: any;
 
 const Observable = Rx.Observable;
-var __ws: any;
+let __ws: any;
 
 function setupMockWebSocket() {
   MockWebSocket.clearSockets();

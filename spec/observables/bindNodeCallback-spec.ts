@@ -1,5 +1,4 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
 import {it, DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;

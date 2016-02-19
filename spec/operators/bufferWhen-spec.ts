@@ -11,8 +11,8 @@ describe('Observable.prototype.bufferWhen', () => {
     //                               --------------(s|)
     const expected =    '--------------x-------------y-----(z|)';
     const values = {
-      x: ['b','c','d'],
-      y: ['e','f','g'],
+      x: ['b', 'c', 'd'],
+      y: ['e', 'f', 'g'],
       z: []
     };
 
@@ -28,8 +28,8 @@ describe('Observable.prototype.bufferWhen', () => {
       cold(                                    '-------------(s|)')];
     const expected =    '---------------x---------y---------(z|)   ';
     const values = {
-      x: ['b','c','d'],
-      y: ['e','f','g'],
+      x: ['b', 'c', 'd'],
+      y: ['e', 'f', 'g'],
       z: ['h']
     };
 
@@ -52,8 +52,8 @@ describe('Observable.prototype.bufferWhen', () => {
        sub:           '                         ^         !   '}]; // eslint-disable-line key-spacing
     const expected =    '---------------x---------y---------(z|)';
     const values = {
-      x: ['b','c','d'],
-      y: ['e','f','g'],
+      x: ['b', 'c', 'd'],
+      y: ['e', 'f', 'g'],
       z: ['h']
     };
 
@@ -79,8 +79,8 @@ describe('Observable.prototype.bufferWhen', () => {
                       '                         ^         !   '];
     const expected =    '---------------x---------y---------(z|)';
     const values = {
-      x: ['b','c','d'],
-      y: ['e','f','g'],
+      x: ['b', 'c', 'd'],
+      y: ['e', 'f', 'g'],
       z: ['h']
     };
 
@@ -106,7 +106,7 @@ describe('Observable.prototype.bufferWhen', () => {
                       '               ^  !                       '];
     const expected =    '---------------x---                       ';
     const values = {
-      x: ['b','c','d']
+      x: ['b', 'c', 'd']
     };
 
     let i = 0;
@@ -131,7 +131,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const expected =    '---------------x---                       ';
     const unsub =       '                  !                       ';
     const values = {
-      x: ['b','c','d']
+      x: ['b', 'c', 'd']
     };
 
     let i = 0;
@@ -156,7 +156,7 @@ describe('Observable.prototype.bufferWhen', () => {
       cold(                                    '-------------(s|)')];
     const closeSubs0 =  '^              !                          ';
     const expected =    '---------------(x#)                       ';
-    const values = { x: ['b','c','d'] };
+    const values = { x: ['b', 'c', 'd'] };
 
     let i = 0;
     const result = e1.bufferWhen(() => {
@@ -180,7 +180,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const closeSubs =  ['^              !                    ',
                       '               (^!)                 '];
     const expected =    '---------------(x#)                 ';
-    const values = { x: ['b','c','d'] };
+    const values = { x: ['b', 'c', 'd'] };
 
     let i = 0;
     const result = e1.bufferWhen(() => closings[i++]);
@@ -200,7 +200,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const closeSubs =  ['^              !                    ',
                       '               ^     !              '];
     const expected =    '---------------x-----#              ';
-    const values = { x: ['b','c','d'] };
+    const values = { x: ['b', 'c', 'd'] };
 
     let i = 0;
     const result = e1.bufferWhen(() => closings[i++]);
@@ -219,7 +219,7 @@ describe('Observable.prototype.bufferWhen', () => {
                       '               ^        !'];
     const expected =    '---------------x--------#';
     const values = {
-      x: ['b','c','d']
+      x: ['b', 'c', 'd']
     };
 
     const result = e1.bufferWhen(() => e2);
@@ -286,7 +286,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const e2 = cold('-');
     const expected =    '-----------------------------------(x|)';
     const values = {
-      x: ['b','c','d','e','f','g','h']
+      x: ['b', 'c', 'd', 'e', 'f', 'g', 'h']
     };
 
     expectObservable(e1.bufferWhen(() => e2)).toBe(expected, values);
@@ -319,7 +319,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const e2subs =      '(^!)';
     const expected =    '#';
     const values = {
-      x: ['b','c','d','e','f','g','h']
+      x: ['b', 'c', 'd', 'e', 'f', 'g', 'h']
     };
 
     const result = e1.bufferWhen(() => e2);
@@ -337,8 +337,8 @@ describe('Observable.prototype.bufferWhen', () => {
     //                                        ---------------(s|)
     const expected =            '---------------x-----';
     const values = {
-      x: ['b','c','d'],
-      y: ['e','f','g','h'],
+      x: ['b', 'c', 'd'],
+      y: ['e', 'f', 'g', 'h'],
       z: []
     };
 

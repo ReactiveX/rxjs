@@ -535,7 +535,7 @@ describe('Observable.zip', () => {
     const bsubs =    '^       !';
     const expected = '-----x--#';
 
-    expectObservable(Observable.zip(a,b)).toBe(expected, { x: [1, 2] }, 'too bad');
+    expectObservable(Observable.zip(a, b)).toBe(expected, { x: [1, 2] }, 'too bad');
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -570,7 +570,7 @@ describe('Observable.zip', () => {
     const r = [[1, 4], [2, 5], [3, 6]];
     let i = 0;
 
-    Observable.zip(a, b).subscribe((vals:Array<number>) => {
+    Observable.zip(a, b).subscribe((vals: Array<number>) => {
       (<any>expect(vals)).toDeepEqual(r[i++]);
     }, null, done);
   });

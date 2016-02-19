@@ -155,7 +155,6 @@ describe('Observable.prototype.windowWhen', () => {
 
   it('should dispose window Subjects if the outer is unsubscribed early', () => {
     const source = hot('--a--b--c--d--e--f--g--h--|');
-    const open =  cold('o-------------------------|');
     const sourceSubs = '^        !                 ';
     const expected =   'x---------                 ';
     const x = cold(    '--a--b--c-                 ');

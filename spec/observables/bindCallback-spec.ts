@@ -233,7 +233,7 @@ describe('Observable.bindCallback', () => {
       results1.push('done');
     });
 
-    source.subscribe((x: number) =>{
+    source.subscribe((x: number) => {
       results2.push(x);
     }, null, () => {
       results2.push('done');

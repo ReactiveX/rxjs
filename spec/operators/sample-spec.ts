@@ -1,5 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
+import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
 import {it, asDiagram} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;

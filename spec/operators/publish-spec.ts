@@ -3,7 +3,6 @@ import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marbl
 import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
-const Subject = Rx.Subject;
 
 describe('Observable.prototype.publish()', () => {
   asDiagram('publish')('should mirror a simple source Observable', () => {

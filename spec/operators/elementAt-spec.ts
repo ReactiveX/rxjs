@@ -96,7 +96,7 @@ describe('Observable.prototype.elementAt', () => {
   });
 
   it('should throw if index is smaller than zero', () => {
-    expect(() => { (<any>Observable.range(0,10)).elementAt(-1); })
+    expect(() => { (<any>Observable.range(0, 10)).elementAt(-1); })
       .toThrow(new Rx.ArgumentOutOfRangeError());
   });
 

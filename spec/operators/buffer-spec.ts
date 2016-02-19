@@ -10,9 +10,9 @@ describe('Observable.prototype.buffer()', () => {
     const b =    hot('-----B-----B-----B-|');
     const expected = '-----x-----y-----z-|';
     const expectedValues = {
-      x: ['a','b','c'],
-      y: ['d','e','f'],
-      z: ['g','h','i']
+      x: ['a', 'b', 'c'],
+      y: ['d', 'e', 'f'],
+      z: ['g', 'h', 'i']
     };
     expectObservable(a.buffer(b)).toBe(expected, expectedValues);
   });
@@ -213,7 +213,7 @@ describe('Observable.prototype.buffer()', () => {
     const bsubs =    '^    !';
     const expected = '-----(x|)';
     const expectedValues = {
-      x: ['a','b','c'],
+      x: ['a', 'b', 'c'],
     };
 
     expectObservable(a.buffer(b).take(1)).toBe(expected, expectedValues);

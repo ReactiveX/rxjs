@@ -300,7 +300,7 @@ describe('Observable.prototype.concatMapTo()', () => {
   });
 
   it('should map values to constant resolved promises and concatenate', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
 
     const results = [];
     source.concatMapTo(Observable.from(Promise.resolve(42))).subscribe(
@@ -311,13 +311,13 @@ describe('Observable.prototype.concatMapTo()', () => {
         done.fail('Subscriber error handler not supposed to be called.');
       },
       () => {
-        expect(results).toEqual([42,42,42,42]);
+        expect(results).toEqual([42, 42, 42, 42]);
         done();
       });
   });
 
   it('should map values to constant rejected promises and concatenate', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
 
     source.concatMapTo(Observable.from(Promise.reject(42))).subscribe(
       (x: any) => {
@@ -333,7 +333,7 @@ describe('Observable.prototype.concatMapTo()', () => {
   });
 
   it('should concatMapTo values to resolved promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const resultSelectorCalledWith = [];
     const inner = Observable.from(Promise.resolve(42));
     const resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
@@ -356,14 +356,14 @@ describe('Observable.prototype.concatMapTo()', () => {
         done.fail('Subscriber error handler not supposed to be called.');
       },
       () => {
-        expect(results).toEqual([8,8,8,8]);
+        expect(results).toEqual([8, 8, 8, 8]);
         (<any>expect(resultSelectorCalledWith)).toDeepEqual(expectedCalls);
         done();
       });
   });
 
   it('should concatMapTo values to rejected promises with resultSelector', (done: DoneSignature) => {
-    const source = Rx.Observable.from([4,3,2,1]);
+    const source = Rx.Observable.from([4, 3, 2, 1]);
     const inner = Observable.from(Promise.reject(42));
     const resultSelector = () => {
       throw 'this should not be called';

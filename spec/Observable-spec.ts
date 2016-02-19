@@ -1,11 +1,10 @@
 import * as Rx from '../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from './helpers/marble-testing';
 import {it, DoneSignature} from './helpers/test-helper';
 
 const Subscriber = Rx.Subscriber;
 const Observable = Rx.Observable;
 
-declare var __root__: any;
+declare const __root__: any;
 
 function expectFullObserver(val) {
   expect(typeof val).toBe('object');
@@ -28,8 +27,8 @@ describe('Observable', () => {
 
   describe('forEach', () => {
     it('should iterate and return a Promise', (done: DoneSignature) => {
-      const expected = [1,2,3];
-      const result = Observable.of(1,2,3).forEach(function (x) {
+      const expected = [1, 2, 3];
+      const result = Observable.of(1, 2, 3).forEach(function (x) {
         expect(x).toBe(expected.shift());
       }, null, Promise)
       .then(done);
@@ -67,9 +66,9 @@ describe('Observable', () => {
     });
 
     it('should accept a thisArg argument', (done: DoneSignature) => {
-      const expected = [1,2,3];
+      const expected = [1, 2, 3];
       const thisArg = {};
-      const result = Observable.of(1,2,3).forEach(function (x) {
+      const result = Observable.of(1, 2, 3).forEach(function (x) {
         expect(this).toBe(thisArg);
         expect(x).toBe(expected.shift());
       }, thisArg, Promise)
@@ -80,7 +79,7 @@ describe('Observable', () => {
 
     it('should reject promise if nextHandler throws', (done: DoneSignature) => {
       const results = [];
-      Observable.of(1,2,3).forEach((x: number) => {
+      Observable.of(1, 2, 3).forEach((x: number) => {
         if (x === 3) {
           throw new Error('NO THREES!');
         }
@@ -88,7 +87,7 @@ describe('Observable', () => {
       }, null)
       .then(<any>done.fail, function (err) {
         expect(err).toEqual(new Error('NO THREES!'));
-        expect(results).toEqual([1,2]);
+        expect(results).toEqual([1, 2]);
       })
       .then(done);
     });
@@ -142,7 +141,9 @@ describe('Observable', () => {
         };
       });
 
-      const sub = source.subscribe(() => { });
+      const sub = source.subscribe(() => {
+        //noop
+       });
       expect(sub instanceof Rx.Subscription).toBe(true);
       expect(unsubscribeCalled).toBe(false);
       expect(typeof sub.unsubscribe).toBe('function');
@@ -209,7 +210,7 @@ describe('Observable', () => {
       it('should accept an anonymous observer with just a next function and call the next function in the context' +
         ' of the anonymous observer', (done: DoneSignature) => {
         //intentionally not using lambda to avoid typescript's this context capture
-        var o = {
+        const o = {
           next: function next(x) {
             expect(this).toBe(o);
             expect(x).toBe(1);
@@ -223,7 +224,7 @@ describe('Observable', () => {
       it('should accept an anonymous observer with just an error function and call the error function in the context' +
         ' of the anonymous observer', (done: DoneSignature) => {
         //intentionally not using lambda to avoid typescript's this context capture
-        var o = {
+        const o = {
           error: function error(err) {
             expect(this).toBe(o);
             expect(err).toBe('bad');
@@ -237,7 +238,7 @@ describe('Observable', () => {
       it('should accept an anonymous observer with just a complete function and call the complete function in the' +
         ' context of the anonymous observer', (done: DoneSignature) => {
         //intentionally not using lambda to avoid typescript's this context capture
-         var o = {
+         const o = {
           complete: function complete() {
             expect(this).toBe(o);
             done();
@@ -260,7 +261,7 @@ describe('Observable', () => {
         let unsubscribeCalled = false;
 
         //intentionally not using lambda to avoid typescript's this context capture
-        var o = {
+        const o = {
           next: function next(x) {
             expect(this).toBe(o);
             throw x;
@@ -293,7 +294,9 @@ describe('Observable', () => {
 
 describe('Observable.create', () => {
   it('should create an Observable', () => {
-    const result = Observable.create(() => { });
+    const result = Observable.create(() => {
+      //noop
+     });
     expect(result instanceof Observable).toBe(true);
   });
 
@@ -306,14 +309,16 @@ describe('Observable.create', () => {
     });
 
     expect(called).toBe(false);
-    result.subscribe(() => { });
+    result.subscribe(() => {
+      //noop
+    });
     expect(called).toBe(true);
   });
 });
 
 describe('Observable.lift', () => {
   it('should be overrideable in a custom Observable type that composes', (done: DoneSignature) => {
-    class MyCustomObservable<T> extends Rx.Observable<T>{
+    class MyCustomObservable<T> extends Rx.Observable<T> {
       lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
         const observable = new MyCustomObservable<R>();
         (<any>observable).source = this;
@@ -357,7 +362,7 @@ describe('Observable.lift', () => {
 
     // The custom Operator
     class LogOperator<T, R> extends Rx.Operator<T, R> {
-      constructor(private childOperator: Rx.Operator<T,R>) {
+      constructor(private childOperator: Rx.Operator<T, R>) {
         super();
       }
 

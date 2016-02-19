@@ -1,6 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+import {it, DoneSignature} from '../helpers/test-helper';
 
 declare const __root__: any;
 const Observable = Rx.Observable;
@@ -16,14 +15,14 @@ describe('Observable.prototype.toPromise()', () => {
   it('should handle errors properly', (done: DoneSignature) => {
     Observable.throw('bad').toPromise(Promise).then(() => {
       done.fail('should not be called');
-    }, function (err) {
+    }, (err: any) => {
       expect(err).toBe('bad');
       done();
     });
   });
 
   it('should allow for global config via Rx.config.Promise', (done: DoneSignature) => {
-    var wasCalled = false;
+    let wasCalled = false;
     __root__.Rx = {};
     __root__.Rx.config = {};
     __root__.Rx.config.Promise = function MyPromise(callback) {

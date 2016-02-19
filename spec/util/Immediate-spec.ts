@@ -27,7 +27,9 @@ describe('ImmediateDefinition', () => {
 
       const result = new ImmediateDefinition(root);
 
-      result.setImmediate(() => {});
+      result.setImmediate(() => {
+        //noop
+      });
       result.clearImmediate(null);
 
       expect(setImmediateCalled).toBeTruthy();
@@ -43,7 +45,9 @@ describe('ImmediateDefinition', () => {
             nextTick: jasmine.createSpy('nextTick')
           }
         },
-        runIfPresent: () => {},
+        runIfPresent: () => {
+          //noop
+        },
         partiallyApplied: jasmine.createSpy('partiallyApplied'),
         addFromSetImmediateArguments: jasmine.createSpy('addFromSetImmediateArguments').and.returnValue(123456)
       };
@@ -52,7 +56,9 @@ describe('ImmediateDefinition', () => {
 
       expect(typeof setImmediateImpl).toBe('function');
 
-      const action = () => {};
+      const action = () => {
+        //noop
+      };
       const handle = setImmediateImpl(action);
 
       expect(handle).toBe(123456);
@@ -88,7 +94,9 @@ describe('ImmediateDefinition', () => {
 
       expect(instance.runIfPresent).toHaveBeenCalledWith(123456);
 
-      const action = () => {};
+      const action = () => {
+        //noop
+      };
       const handle = setImmediateImpl(action);
 
       expect(handle).toBe(123456);
@@ -126,7 +134,9 @@ describe('ImmediateDefinition', () => {
 
       expect(instance.runIfPresent).toHaveBeenCalledWith('something');
 
-      const action = () => {};
+      const action = () => {
+        //noop
+      };
       const handle = setImmediateImpl(action);
 
       expect(handle).toBe(123456);
@@ -156,7 +166,9 @@ describe('ImmediateDefinition', () => {
 
       expect(typeof setImmediateImpl).toBe('function');
 
-      const action = () => {};
+      const action = () => {
+        //noop
+      };
       const handle = setImmediateImpl(action);
 
       expect(handle).toBe(123456);
@@ -175,7 +187,9 @@ describe('ImmediateDefinition', () => {
   describe('when setImmediate does *not* exist on root', () => {
     describe('when it can use process.nextTick', () => {
       it('should use the post message impl', () => {
-        const nextTickImpl = () => { };
+        const nextTickImpl = () => {
+          //noop
+        };
         spyOn(ImmediateDefinition.prototype, 'canUseProcessNextTick').and.returnValue(true);
         spyOn(ImmediateDefinition.prototype, 'canUsePostMessage').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUseMessageChannel').and.returnValue(false);
@@ -194,7 +208,9 @@ describe('ImmediateDefinition', () => {
 
     describe('when it cannot use process.nextTick', () => {
       it('should use the post message impl', () => {
-        const postMessageImpl = () => { };
+        const postMessageImpl = () => {
+          //noop
+        };
         spyOn(ImmediateDefinition.prototype, 'canUseProcessNextTick').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUsePostMessage').and.returnValue(true);
         spyOn(ImmediateDefinition.prototype, 'canUseMessageChannel').and.returnValue(false);
@@ -213,7 +229,9 @@ describe('ImmediateDefinition', () => {
 
     describe('when it cannot use process.nextTick or postMessage', () => {
       it('should use the readystatechange impl', () => {
-        const messageChannelImpl = () => { };
+        const messageChannelImpl = () => {
+          //noop
+        };
         spyOn(ImmediateDefinition.prototype, 'canUseProcessNextTick').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUsePostMessage').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUseMessageChannel').and.returnValue(true);
@@ -232,7 +250,9 @@ describe('ImmediateDefinition', () => {
 
     describe('when it cannot use process.nextTick, postMessage or Message channels', () => {
       it('should use the readystatechange impl', () => {
-        const readyStateChangeImpl = () => { };
+        const readyStateChangeImpl = () => {
+          //noop
+        };
         spyOn(ImmediateDefinition.prototype, 'canUseProcessNextTick').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUsePostMessage').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUseMessageChannel').and.returnValue(false);
@@ -251,7 +271,9 @@ describe('ImmediateDefinition', () => {
 
     describe('when no other methods to implement setImmediate are available', () => {
       it('should use the setTimeout impl', () => {
-        const setTimeoutImpl = () => { };
+        const setTimeoutImpl = () => {
+          //noop
+        };
         spyOn(ImmediateDefinition.prototype, 'canUseProcessNextTick').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUsePostMessage').and.returnValue(false);
         spyOn(ImmediateDefinition.prototype, 'canUseMessageChannel').and.returnValue(false);
@@ -292,7 +314,7 @@ describe('ImmediateDefinition', () => {
 
         expect(typeof result).toBe('function');
 
-        const calledWith = result();
+        result();
 
         expect(__root__.__wasCalled).toEqual(true);
 
@@ -304,6 +326,7 @@ describe('ImmediateDefinition', () => {
   describe('prototype.identify', () => {
     it('should use Object.toString to return an identifier string', () => {
       function MockObject() {
+        //noop
       }
       MockObject.prototype.toString = jasmine.createSpy('Object.prototype.toString').and.returnValue('[object HEYO!]');
 
@@ -357,7 +380,9 @@ describe('ImmediateDefinition', () => {
     describe('when there is a global postMessage function', () => {
       describe('and importScripts does NOT exist', () => {
         it('should maintain any existing onmessage handler', () => {
-          const originalOnMessage = () => {};
+          const originalOnMessage = () => {
+            //noop
+          };
           const instance = {
             root: {
               onmessage: originalOnMessage
@@ -410,8 +435,12 @@ describe('ImmediateDefinition', () => {
         it('should return false', () => {
           const instance = {
             root: {
-              postMessage: () => {},
-              importScripts: () => {}
+              postMessage: function () {
+                //noop
+              },
+              importScripts: function () {
+                //noop
+              }
             }
           };
 
@@ -438,7 +467,9 @@ describe('ImmediateDefinition', () => {
     it('should return true if MessageChannel exists', () => {
       const instance = {
         root: {
-          MessageChannel: () => {}
+          MessageChannel: function () {
+            //noop
+          }
         }
       };
 
@@ -518,7 +549,9 @@ describe('ImmediateDefinition', () => {
         partiallyApplied: jasmine.createSpy('partiallyApplied').and.returnValue(partiallyAppliedResult)
       };
 
-      const args = [() => {}, 'foo', 'bar'];
+      const args = [() => {
+        //noop
+      }, 'foo', 'bar'];
 
       const handle = ImmediateDefinition.prototype.addFromSetImmediateArguments.call(instance, args);
 
@@ -530,7 +563,9 @@ describe('ImmediateDefinition', () => {
 
   describe('clearImmediate', () => {
     it('should delete values from tasksByHandle', () => {
-      const setTimeoutImpl = () => { };
+      const setTimeoutImpl = () => {
+        //noop
+      };
       spyOn(ImmediateDefinition.prototype, 'canUseProcessNextTick').and.returnValue(false);
       spyOn(ImmediateDefinition.prototype, 'canUsePostMessage').and.returnValue(false);
       spyOn(ImmediateDefinition.prototype, 'canUseMessageChannel').and.returnValue(false);
@@ -538,7 +573,9 @@ describe('ImmediateDefinition', () => {
       spyOn(ImmediateDefinition.prototype, 'createSetTimeoutSetImmediate').and.returnValue(setTimeoutImpl);
 
       const Immediate = new ImmediateDefinition({});
-      Immediate.tasksByHandle[123456] = () => {};
+      Immediate.tasksByHandle[123456] = () => {
+        //noop
+      };
 
       expect('123456' in Immediate.tasksByHandle).toBe(true);
 
@@ -550,7 +587,9 @@ describe('ImmediateDefinition', () => {
 
   describe('prototype.runIfPresent', () => {
     it('should delay running the task if it is currently running a task', () => {
-      const mockApplied = () => {};
+      const mockApplied = () => {
+        //noop
+      };
 
       const instance = {
         root: {
@@ -606,14 +645,18 @@ describe('ImmediateDefinition', () => {
 
   describe('prototype.createSetTimeoutSetImmediate', () => {
     it('should create a proper setImmediate implementation that uses setTimeout', () => {
-      const mockApplied = () => {};
+      const mockApplied = () => {
+        //noop
+      };
 
       const instance = {
         root: {
           setTimeout: jasmine.createSpy('setTimeout')
         },
         addFromSetImmediateArguments: jasmine.createSpy('addFromSetImmediateArguments').and.returnValue(123456),
-        runIfPresent: () => {},
+        runIfPresent: function () {
+          //noop
+        },
         partiallyApplied: jasmine.createSpy('partiallyApplied').and.returnValue(mockApplied)
       };
 
@@ -635,7 +678,7 @@ describe('ImmediateDefinition', () => {
           results.push(x);
         }, done.fail,
         () => {
-          expect(results).toEqual([1,2,3]);
+          expect(results).toEqual([1, 2, 3]);
           done();
         });
     });

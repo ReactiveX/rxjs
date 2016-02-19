@@ -39,10 +39,10 @@ describe('Observable.prototype.do()', () => {
   });
 
   it('should handle everything with an observer', () => {
-    const expected = [1,2,3];
+    const expected = [1, 2, 3];
     const results = [];
     let completeCalled = false;
-    Observable.of(1,2,3)
+    Observable.of(1, 2, 3)
       .do(<any>{
         next: (x: number) => {
           results.push(x);
@@ -61,7 +61,7 @@ describe('Observable.prototype.do()', () => {
   });
 
   it('should handle everything with a Subject', () => {
-    const expected = [1,2,3];
+    const expected = [1, 2, 3];
     const results = [];
     let completeCalled = false;
     const subject = new Subject();
@@ -78,7 +78,7 @@ describe('Observable.prototype.do()', () => {
       }
     });
 
-    Observable.of(1,2,3)
+    Observable.of(1, 2, 3)
       .do(<any>subject)
       .subscribe();
 

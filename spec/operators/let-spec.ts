@@ -9,7 +9,7 @@ describe('let', () => {
     const foo = (observable: Rx.Observable<string>) => observable.map((x: string) => x + x);
 
     Rx.Observable
-      .fromArray(['a','b'])
+      .fromArray(['a', 'b'])
       .let(foo)
       .subscribe(function (x) {
         expect(x).toBe(expected[i++]);

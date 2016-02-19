@@ -31,7 +31,7 @@ describe('Observable.prototype.concatAll()', () => {
       (x: number) => { res.push(x); },
       (err: any) => { done.fail('should not be called.'); },
       () => {
-        expect(res).toEqual([0,1,2,3]);
+        expect(res).toEqual([0, 1, 2, 3]);
         done();
       });
   }, 2000);

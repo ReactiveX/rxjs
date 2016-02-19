@@ -139,6 +139,7 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/babel-polyfill/dist/polyfill.js',
       'tmp/helpers/marble-testing.js',
       'tmp/helpers/test-helper.js',
       'tmp/helpers/ajax-helper.js',

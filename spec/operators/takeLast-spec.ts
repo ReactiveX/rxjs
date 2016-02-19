@@ -106,7 +106,7 @@ describe('Observable.prototype.takeLast()', () => {
   });
 
   it('should throw if total is less than zero', () => {
-    expect(() => { Observable.range(0,10).takeLast(-1); })
+    expect(() => { Observable.range(0, 10).takeLast(-1); })
       .toThrow(new Rx.ArgumentOutOfRangeError());
   });
 

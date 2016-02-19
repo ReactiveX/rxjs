@@ -1,5 +1,4 @@
 import {MapPolyfill} from '../../dist/cjs/util/MapPolyfill';
-import * as Rx from '../../dist/cjs/Rx';
 import {it} from '../helpers/test-helper';
 
 describe('MapPolyfill', () => {

@@ -3,7 +3,6 @@ import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marbl
 import {it, asDiagram} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
-const queueScheduler = Rx.Scheduler.queue;
 
 describe('Observable.prototype.combineLatest', () => {
   asDiagram('combineLatest')('should combine events from two cold observables', () => {

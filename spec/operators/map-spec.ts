@@ -229,9 +229,9 @@ describe('Observable.prototype.map()', () => {
     const filterer = new Filterer();
 
     const r = a
-      .map(function (x) { return this.selector1(x);}, filterer)
-      .map(function (x) { return this.selector2(x);}, filterer)
-      .map(function (x) { return this.selector1(x);}, filterer);
+      .map(function (x) { return this.selector1(x); }, filterer)
+      .map(function (x) { return this.selector2(x); }, filterer)
+      .map(function (x) { return this.selector1(x); }, filterer);
 
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(a.subscriptions).toBe(asubs);
