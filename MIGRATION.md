@@ -76,7 +76,6 @@ enabling "composite" subscription behavior.
 |`average`|`-`|
 |`controlled`|`-`|
 |`delaySubscription`|`-`|
-|`distinct`|`-`|
 |`doWhile`|`-`|
 |`extend`|`-`|
 |`groupByUntil`|`-`|
@@ -105,7 +104,6 @@ enabling "composite" subscription behavior.
 |`slice`|`-`|
 |`some`|`-`|
 |`sum`|`-`|
-|`takeLast`|`-`|
 |`takeLastBuffer`|`-`|
 |`takeLastBufferWithTime`|`-`|
 |`takeLastWithTime`|`-`|
