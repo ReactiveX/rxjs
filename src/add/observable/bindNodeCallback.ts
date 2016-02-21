@@ -3,4 +3,8 @@ import {BoundNodeCallbackObservable} from '../../observable/BoundNodeCallbackObs
 
 Observable.bindNodeCallback = BoundNodeCallbackObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let bindNodeCallback: typeof BoundNodeCallbackObservable.create;
+  }
+}

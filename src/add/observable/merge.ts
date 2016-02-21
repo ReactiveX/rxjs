@@ -4,4 +4,8 @@ import {mergeStatic} from '../../operator/merge';
 
 Observable.merge = mergeStatic;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let merge: typeof mergeStatic;
+  }
+}

@@ -3,4 +3,8 @@ import {ArrayObservable} from '../../observable/ArrayObservable';
 
 Observable.of = ArrayObservable.of;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let of: typeof ArrayObservable.of;
+  }
+}

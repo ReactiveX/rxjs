@@ -3,4 +3,8 @@ import {raceStatic} from '../../operator/race';
 
 Observable.race = raceStatic;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let race: typeof raceStatic;
+  }
+}

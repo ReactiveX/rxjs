@@ -3,4 +3,8 @@ import {FromEventObservable} from '../../observable/FromEventObservable';
 
 Observable.fromEvent = FromEventObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let fromEvent: typeof FromEventObservable.create;
+  }
+}

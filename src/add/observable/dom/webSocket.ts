@@ -4,4 +4,8 @@ import {WebSocketSubject} from '../../../observable/dom/WebSocketSubject';
 
 Observable.webSocket = WebSocketSubject.create;
 
-export var _void: void;
+declare module '../../../Observable' {
+  namespace Observable {
+    export let webSocket: typeof WebSocketSubject.create;
+  }
+}

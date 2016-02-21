@@ -3,4 +3,8 @@ import {RangeObservable} from '../../observable/RangeObservable';
 
 Observable.range = RangeObservable.create;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let range: typeof RangeObservable.create;
+  }
+}

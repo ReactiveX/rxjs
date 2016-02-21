@@ -4,4 +4,8 @@ import {concatStatic} from '../../operator/concat';
 
 Observable.concat = concatStatic;
 
-export var _void: void;
+declare module '../../Observable' {
+  namespace Observable {
+    export let concat: typeof concatStatic;
+  }
+}
