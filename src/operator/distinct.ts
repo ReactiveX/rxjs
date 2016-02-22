@@ -14,7 +14,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * An optional parameter is also provided such that an Observable can be provided to queue the internal HashSet to flush the values it holds.
  * @param {function} [compare] optional comparison function called to test if an item is distinct from previous items in the source.
  * @param {Observable} [flushes] optional Observable for flushing the internal HashSet of the operator.
- * @returns {Observable} an Observable that emits items from the source Observable with distinct values.
+ * @return {Observable} an Observable that emits items from the source Observable with distinct values.
+ * @method distinct
+ * @owner Observable
  */
 export function distinct<T>(compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
   return this.lift(new DistinctOperator(compare, flushes));

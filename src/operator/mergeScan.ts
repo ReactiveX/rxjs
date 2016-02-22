@@ -8,6 +8,14 @@ import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 
+/**
+ * @param project
+ * @param seed
+ * @param concurrent
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method mergeScan
+ * @owner Observable
+ */
 export function mergeScan<T, R>(project: (acc: R, value: T) => Observable<R>,
                                 seed: R,
                                 concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {

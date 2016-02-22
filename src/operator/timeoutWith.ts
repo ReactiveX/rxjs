@@ -8,6 +8,14 @@ import {isDate} from '../util/isDate';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param due
+ * @param withObservable
+ * @param scheduler
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method timeoutWith
+ * @owner Observable
+ */
 export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: Observable<R>,
                                   scheduler: Scheduler = asap): Observable<T | R> {

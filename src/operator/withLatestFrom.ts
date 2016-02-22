@@ -22,6 +22,8 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *  C:     --x----------------y-------------z-------------|
  * result: ---([a,d,x])---------([b,e,y])--------([c,f,z])---|
  * ```
+ * @method withLatestFrom
+ * @owner Observable
  */
 export function withLatestFrom<T, R>(...args: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
   let project: any;

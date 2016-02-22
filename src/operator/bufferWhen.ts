@@ -18,7 +18,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *
  * @param {function} closingSelector a function that takes no arguments and
  * returns an Observable that signals buffer closure.
- * @returns {Observable<T[]>} an observable of arrays of buffered values.
+ * @return {Observable<T[]>} an observable of arrays of buffered values.
+ * @method bufferWhen
+ * @owner Observable
  */
 export function bufferWhen<T>(closingSelector: () => Observable<any>): Observable<T[]> {
   return this.lift(new BufferWhenOperator<T>(closingSelector));

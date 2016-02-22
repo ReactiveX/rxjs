@@ -8,6 +8,12 @@ import {errorObject} from '../util/errorObject';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param durationSelector
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method inspect
+ * @owner Observable
+ */
 export function inspect<T>(durationSelector: (value: T) => ObservableOrPromise<any>): Observable<T> {
   return this.lift(new InspectOperator(durationSelector));
 }

@@ -4,6 +4,12 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {asap} from '../scheduler/asap';
 
+/**
+ * @param scheduler
+ * @return {Observable<TimeInterval<any>>|WebSocketSubject<T>|Observable<T>}
+ * @method timeInterval
+ * @owner Observable
+ */
 export function timeInterval<T>(scheduler: Scheduler = asap): Observable<TimeInterval<T>> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }

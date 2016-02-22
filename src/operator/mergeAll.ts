@@ -5,6 +5,12 @@ import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param concurrent
+ * @return {Observable<R>|WebSocketSubject<Observable<any>>|Observable<Observable<any>>}
+ * @method mergeAll
+ * @owner Observable
+ */
 export function mergeAll<T>(concurrent: number = Number.POSITIVE_INFINITY): T {
   return this.lift(new MergeAllOperator<T>(concurrent));
 }

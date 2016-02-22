@@ -9,6 +9,12 @@ import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {SymbolShim} from '../util/SymbolShim';
 
+/**
+ * @param observables
+ * @return {Observable<R>}
+ * @method zip
+ * @owner Observable
+ */
 export function zipProto<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
   observables.unshift(this);
   return zipStatic.apply(this, observables);
@@ -52,6 +58,14 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
 export function zipStatic<R>(array: ObservableInput<any>[]): Observable<R>;
 export function zipStatic<R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R): Observable<R>;
 /* tslint:enable:max-line-length */
+
+/**
+ * @param observables
+ * @return {Observable<R>}
+ * @static true
+ * @name zip
+ * @owner Observable
+ */
 export function zipStatic<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
   const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
   if (typeof project === 'function') {

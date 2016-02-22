@@ -12,7 +12,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * Returns an Observable that mirrors the first source Observable to emit an item
  * from the combination of this Observable and supplied Observables
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
- * @returns {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @method race
+ * @owner Observable
  */
 export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T> {
   // if the only argument is an array, it was most likely called with
@@ -33,7 +35,10 @@ export interface RaceSignature<T> {
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
- * @returns {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @static true
+ * @name race
+ * @owner Observable
  */
 export function raceStatic<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
 export function raceStatic<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {

@@ -5,6 +5,13 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
+/**
+ * @param delay
+ * @param scheduler
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method inspectTime
+ * @owner Observable
+ */
 export function inspectTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
   return this.lift(new InspectTimeOperator(delay, scheduler));
 }

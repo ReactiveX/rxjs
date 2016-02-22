@@ -3,8 +3,20 @@ import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
+/**
+ *
+ */
 export class RangeObservable extends Observable<number> {
 
+  /**
+   * @param start
+   * @param end
+   * @param scheduler
+   * @return {RangeObservable}
+   * @static true
+   * @name range
+   * @owner Observable
+   */
   static create(start: number = 0, end: number = 0, scheduler?: Scheduler): Observable<number> {
     return new RangeObservable(start, end, scheduler);
   }

@@ -8,8 +8,10 @@ import {Observable} from '../Observable';
  * <img src="./img/skip.png" width="100%">
  *
  * @param {Number} the `n` of times, items emitted by source Observable should be skipped.
- * @returns {Observable} an Observable that skips values emitted by the source Observable.
+ * @return {Observable} an Observable that skips values emitted by the source Observable.
  *
+ * @method skip
+ * @owner Observable
  */
 export function skip<T>(total: number): Observable<T> {
   return this.lift(new SkipOperator(total));

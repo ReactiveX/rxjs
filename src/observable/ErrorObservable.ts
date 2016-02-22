@@ -2,8 +2,19 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
+/**
+ *
+ */
 export class ErrorObservable extends Observable<any> {
 
+  /**
+   * @param error
+   * @param scheduler
+   * @return {ErrorObservable}
+   * @static true
+   * @name throw
+   * @owner Observable
+   */
   static create<T>(error: any, scheduler?: Scheduler) {
     return new ErrorObservable(error, scheduler);
   }

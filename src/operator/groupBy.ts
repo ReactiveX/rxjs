@@ -14,9 +14,11 @@ import {FastMap} from '../util/FastMap';
  *
  * @param {Function} keySelector - a function that extracts the key for each item
  * @param {Function} elementSelector - a function that extracts the return element for each item
- * @returns {Observable} an Observable that emits GroupedObservables, each of which corresponds
+ * @return {Observable} an Observable that emits GroupedObservables, each of which corresponds
  * to a unique key value and each of which emits those items from the source Observable that share
  * that key value.
+ * @method groupBy
+ * @owner Observable
  */
 export function groupBy<T, K, R>(keySelector: (value: T) => K,
                                  elementSelector?: (value: T) => R,

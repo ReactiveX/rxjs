@@ -6,6 +6,9 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {AsyncSubject} from '../subject/AsyncSubject';
 
+/**
+ *
+ */
 export class BoundNodeCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
@@ -20,6 +23,17 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   static create<T>(callbackFunc: Function, selector?: void, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
   static create<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
   /* tslint:enable:max-line-length */
+
+  /**
+   * Converts a node callback to an Observable.
+   * @param callbackFunc
+   * @param selector
+   * @param scheduler
+   * @return {function(...params: *): Observable<T>}
+   * @static true
+   * @name bindNodeCallback
+   * @owner Observable
+   */
   static create<T>(callbackFunc: Function,
                    selector: Function | void = undefined,
                    scheduler?: Scheduler): Function {

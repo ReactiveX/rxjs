@@ -3,8 +3,18 @@ import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
+/**
+ *
+ */
 export class DeferObservable<T> extends Observable<T> {
 
+  /**
+   * @param observableFactory
+   * @return {DeferObservable}
+   * @static true
+   * @name defer
+   * @owner Observable
+   */
   static create<T>(observableFactory: () => Observable<T>): Observable<T> {
     return new DeferObservable(observableFactory);
   }

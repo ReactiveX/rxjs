@@ -11,7 +11,9 @@ import {Observable} from '../Observable';
  * by a given timeout or until a given Date.
  * @param {number|Date} delay the timeout value or date until which the emission of the source items is delayed.
  * @param {Scheduler} [scheduler] the Scheduler to use for managing the timers that handle the timeout for each item.
- * @returns {Observable} an Observable that delays the emissions of the source Observable by the specified timeout or Date.
+ * @return {Observable} an Observable that delays the emissions of the source Observable by the specified timeout or Date.
+ * @method delay
+ * @owner Observable
  */
 export function delay<T>(delay: number|Date,
                          scheduler: Scheduler = asap): Observable<T> {

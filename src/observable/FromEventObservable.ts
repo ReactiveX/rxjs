@@ -34,8 +34,20 @@ function isEventTarget(sourceObj: any): sourceObj is EventTarget {
 
 export type EventTargetLike = EventTarget | NodeStyleEventEmmitter | JQueryStyleEventEmitter | NodeList | HTMLCollection;
 
+/**
+ *
+ */
 export class FromEventObservable<T, R> extends Observable<T> {
 
+  /**
+   * @param sourceObj
+   * @param eventName
+   * @param selector
+   * @return {FromEventObservable}
+   * @static true
+   * @name fromEvent
+   * @owner Observable
+   */
   static create<T>(sourceObj: EventTargetLike, eventName: string, selector?: (...args: Array<any>) => T): Observable<T> {
     return new FromEventObservable(sourceObj, eventName, selector);
   }

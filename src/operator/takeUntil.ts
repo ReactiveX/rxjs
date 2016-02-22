@@ -6,6 +6,12 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param notifier
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method takeUntil
+ * @owner Observable
+ */
 export function takeUntil<T>(notifier: Observable<any>): Observable<T> {
   return this.lift(new TakeUntilOperator(notifier));
 }

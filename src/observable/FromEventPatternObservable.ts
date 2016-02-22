@@ -4,8 +4,20 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {Subscriber} from '../Subscriber';
 
+/**
+ *
+ */
 export class FromEventPatternObservable<T, R> extends Observable<T> {
 
+  /**
+   * @param addHandler
+   * @param removeHandler
+   * @param selector
+   * @return {FromEventPatternObservable}
+   * @static true
+   * @name fromEventPattern
+   * @owner Observable
+   */
   static create<T>(addHandler: (handler: Function) => any,
                    removeHandler: (handler: Function) => void,
                    selector?: (...args: Array<any>) => T) {

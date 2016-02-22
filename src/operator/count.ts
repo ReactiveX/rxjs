@@ -13,8 +13,10 @@ import {Subscriber} from '../Subscriber';
  *   - `value`: the value from the source observable
  *   - `index`: the "index" of the value from the source observable
  *   - `source`: the source observable instance itself.
- * @returns {Observable} an observable of one number that represents the count as described
+ * @return {Observable} an observable of one number that represents the count as described
  * above
+ * @method count
+ * @owner Observable
  */
 export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<number> {
   return this.lift(new CountOperator(predicate, this));

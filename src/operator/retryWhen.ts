@@ -22,7 +22,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @param {notificationHandler} receives an Observable of notifications with which a user can `complete` or `error`,
  * aborting the retry.
  * @param {scheduler} the Scheduler on which to subscribe to the source Observable.
- * @returns {Observable} the source Observable modified with retry logic.
+ * @return {Observable} the source Observable modified with retry logic.
+ * @method retryWhen
+ * @owner Observable
  */
 export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): Observable<T> {
   return this.lift(new RetryWhenOperator(notifier, this));

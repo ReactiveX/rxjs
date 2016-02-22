@@ -3,6 +3,13 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subject} from '../Subject';
 
+/**
+ * @param windowSize
+ * @param startWindowEvery
+ * @return {Observable<Observable<any>>|WebSocketSubject<T>|Observable<T>}
+ * @method windowCount
+ * @owner Observable
+ */
 export function windowCount<T>(windowSize: number,
                                startWindowEvery: number = 0): Observable<Observable<T>> {
   return this.lift(new WindowCountOperator<T>(windowSize, startWindowEvery));

@@ -16,8 +16,10 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * value of that, or just emitting the array of recent values directly if there is no `project` function.
  * @param {...Observable} observables the observables to combine the source with
  * @param {function} [project] an optional function to project the values from the combined recent values into a new value for emission.
- * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
+ * @return {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
  * the most recent values from each observable.
+ * @method combineLatest
+ * @owner Observable
  */
 export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |
@@ -59,16 +61,6 @@ export interface CombineLatestSignature<T> {
 }
 /* tslint:enable:max-line-length */
 
-/**
- * Combines the values from observables passed as arguments. This is done by subscribing
- * to each observable, in order, and collecting an array of each of the most recent values any time any of the observables
- * emits, then either taking that array and passing it as arguments to an option `project` function and emitting the return
- * value of that, or just emitting the array of recent values directly if there is no `project` function.
- * @param {...Observable} observables the observables to combine
- * @param {function} [project] an optional function to project the values from the combined recent values into a new value for emission.
- * @returns {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
- * the most recent values from each observable.
- */
 /* tslint:disable:max-line-length */
 export function combineLatestStatic<T>(v1: ObservableInput<T>, scheduler?: Scheduler): Observable<[T]>;
 export function combineLatestStatic<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, scheduler?: Scheduler): Observable<[T, T2]>;
@@ -86,6 +78,20 @@ export function combineLatestStatic<R>(...observables: Array<ObservableInput<any
 export function combineLatestStatic<R>(array: ObservableInput<any>[], scheduler?: Scheduler): Observable<R>;
 export function combineLatestStatic<R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R, scheduler?: Scheduler): Observable<R>;
 /* tslint:enable:max-line-length */
+
+/**
+ * Combines the values from observables passed as arguments. This is done by subscribing
+ * to each observable, in order, and collecting an array of each of the most recent values any time any of the observables
+ * emits, then either taking that array and passing it as arguments to an option `project` function and emitting the return
+ * value of that, or just emitting the array of recent values directly if there is no `project` function.
+ * @param {...Observable} observables the observables to combine
+ * @param {function} [project] an optional function to project the values from the combined recent values into a new value for emission.
+ * @return {Observable} an observable of other projected values from the most recent values from each observable, or an array of each of
+ * the most recent values from each observable.
+ * @static true
+ * @name combineLatest
+ * @owner Observable
+ */
 export function combineLatestStatic<T, R>(...observables: Array<any | ObservableInput<any> |
                                                     Array<ObservableInput<any>> |
                                                     (((...values: Array<any>) => R)) |

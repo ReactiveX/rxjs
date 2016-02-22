@@ -7,6 +7,12 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param closingNotifier
+ * @return {Observable<Observable<any>>|WebSocketSubject<T>|Observable<T>}
+ * @method window
+ * @owner Observable
+ */
 export function window<T>(closingNotifier: Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowOperator<T>(closingNotifier));
 }

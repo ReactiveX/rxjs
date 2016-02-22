@@ -15,12 +15,25 @@ import {ObserveOnSubscriber} from '../operator/observeOn';
 
 const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 'number');
 
+/**
+ *
+ */
 export class FromObservable<T> extends Observable<T> {
   constructor(private ish: ObservableInput<T>, private scheduler: Scheduler) {
     super(null);
   }
 
-  static create<T>(ish: any, mapFnOrScheduler?: Scheduler | ((x: any, i: number) => T), thisArg?: any, lastScheduler?: Scheduler): Observable<T> {
+  /**
+   * @param ish
+   * @param mapFnOrScheduler
+   * @param thisArg
+   * @param lastScheduler
+   * @return {any}
+   * @static true
+   * @name from
+   * @owner Observable
+   */
+  static create<T>(ish: any, mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T), thisArg?: any, lastScheduler?: Scheduler): Observable<T> {
     let scheduler: Scheduler = null;
     let mapFn: (x: any, i: number) => T = null;
     if (isFunction(mapFnOrScheduler)) {

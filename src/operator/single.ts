@@ -12,9 +12,11 @@ import {EmptyError} from '../util/EmptyError';
  * <img src="./img/single.png" width="100%">
  *
  * @param {Function} a predicate function to evaluate items emitted by the source Observable.
- * @returns {Observable<T>} an Observable that emits the single item emitted by the source Observable that matches
+ * @return {Observable<T>} an Observable that emits the single item emitted by the source Observable that matches
  * the predicate.
  .
+ * @method single
+ * @owner Observable
  */
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T> {
   return this.lift(new SingleOperator(predicate, this));

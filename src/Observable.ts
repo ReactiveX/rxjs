@@ -136,10 +136,10 @@ export class Observable<T> implements CoreOperators<T>  {
 
   /**
    * @constructor
-   * @param {Function} subscribe the function that is
-   * called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values
-   * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
-   * of a successful completion.
+   * @param {Function} subscribe the function that is  called when the Observable is
+   * initially subscribed to. This function is given a Subscriber, to which new values
+   * can be `next`ed, or an `error` method can be called to raise an error, or
+   * `complete` can be called to notify of a successful completion.
    */
   constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) {
     if (subscribe) {
@@ -150,22 +150,23 @@ export class Observable<T> implements CoreOperators<T>  {
   // HACK: Since TypeScript inherits static properties too, we have to
   // fight against TypeScript here so Subject can have a different static create signature
   /**
-   * @static
+   * Creates a new cold Observable by calling the Observable constructor
+   * @static true
+   * @owner Observable
    * @method create
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
-   * @returns {Observable} a new cold observable
-   * @description creates a new cold Observable by calling the Observable constructor
+   * @return {Observable} a new cold observable
    */
   static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) => {
     return new Observable<T>(subscribe);
   };
 
   /**
+   * Creates a new Observable, with this Observable as the source, and the passed
+   * operator defined as the new observable's operator.
    * @method lift
    * @param {Operator} operator the operator defining the operation to take on the observable
-   * @returns {Observable} a new observable with the Operator applied
-   * @description creates a new Observable, with this Observable as the source, and the passed
-   * operator defined as the new observable's operator.
+   * @return {Observable} a new observable with the Operator applied
    */
   lift<R>(operator: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
@@ -175,15 +176,15 @@ export class Observable<T> implements CoreOperators<T>  {
   }
 
   /**
+   * Registers handlers for handling emitted values, error and completions from the observable, and
+   *  executes the observable's subscriber function, which will take action to set up the underlying data stream
    * @method subscribe
    * @param {PartialObserver|Function} observerOrNext (optional) either an observer defining all functions to be called,
    *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
    * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
    *  the error will be thrown as unhandled
    * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
-   * @returns {Subscription} a subscription reference to the registered handlers
-   * @description registers handlers for handling emitted values, error and completions from the observable, and
-   *  executes the observable's subscriber function, which will take action to set up the underlying data stream
+   * @return {Subscription} a subscription reference to the registered handlers
    */
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
@@ -213,7 +214,7 @@ export class Observable<T> implements CoreOperators<T>  {
    * @param {Function} next a handler for each value emitted by the observable
    * @param {any} [thisArg] a `this` context for the `next` handler function
    * @param {PromiseConstructor} [PromiseCtor] a constructor function used to instantiate the Promise
-   * @returns {Promise} a promise that either resolves on observable completion or
+   * @return {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
   forEach(next: (value: T) => void, thisArg: any, PromiseCtor?: typeof Promise): Promise<void> {
@@ -360,9 +361,9 @@ export class Observable<T> implements CoreOperators<T>  {
   zipAll: ZipAllSignature<T>;
 
   /**
+   * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
    * @method Symbol.observable
-   * @returns {Observable} this instance of the observable
-   * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
+   * @return {Observable} this instance of the observable
    */
   [SymbolShim.observable]() {
     return this;

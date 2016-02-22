@@ -12,7 +12,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * by a subscription delay and a delay selector function for each element.
  * @param {Function} selector function to retrieve a sequence indicating the delay for each given element.
  * @param {Observable} sequence indicating the delay for the subscription to the source.
- * @returns {Observable} an Observable that delays the emissions of the source Observable by the specified timeout or Date.
+ * @return {Observable} an Observable that delays the emissions of the source Observable by the specified timeout or Date.
+ * @method delayWhen
+ * @owner Observable
  */
 export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>,
                              subscriptionDelay?: Observable<any>): Observable<T> {

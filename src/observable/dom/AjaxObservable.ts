@@ -90,7 +90,7 @@ export function ajaxGetJSON<T, R>(url: string, resultSelector?: (data: T) => R, 
    *   - crossDomain: true if a cross domain request, else false
    *   - createXHR: a function to override if you need to use an alternate XMLHttpRequest implementation.
    *   - resultSelector: a function to use to alter the output value type of the Observable. Gets {AjaxResponse} as an argument
-   * @returns {Observable} An observable sequence containing the XMLHttpRequest.
+   * @return {Observable} An observable sequence containing the XMLHttpRequest.
   */
 export class AjaxObservable<T> extends Observable<T> {
   static create: AjaxCreationMethod = (() => {

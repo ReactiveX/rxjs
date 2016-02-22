@@ -11,7 +11,9 @@ import {Observable} from '../Observable';
  *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.
  * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the
  *   most recent values from each collected observable as arguments, in order.
- * @returns {Observable} an observable of projected results or arrays of recent values.
+ * @return {Observable} an observable of projected results or arrays of recent values.
+ * @method combineAll
+ * @owner Observable
  */
 export function combineAll<R>(project?: (...values: Array<any>) => R): Observable<R> {
   return this.lift(new CombineLatestOperator(project));

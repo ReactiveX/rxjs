@@ -6,6 +6,9 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {AsyncSubject} from '../subject/AsyncSubject';
 
+/**
+ *
+ */
 export class BoundCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
@@ -27,6 +30,21 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   static create<T>(callbackFunc: Function, selector?: void, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
   static create<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
   /* tslint:enable:max-line-length */
+
+  /**
+   * Converts a callback function to an observable sequence.
+   * @param {function} callbackFunc Function with a callback as the last
+   * parameter.
+   * @param {function} selector A selector which takes the arguments from the
+   * callback to produce a single item to yield on next.
+   * @param {Scheduler} [scheduler] The scheduler on which to schedule
+   * the callbacks.
+   * @return {function(...params: *): Observable<T>} a function which returns the
+   * Observable that corresponds to the callback.
+   * @static true
+   * @name bindCallback
+   * @owner Observable
+   */
   static create<T>(callbackFunc: Function,
                    selector: Function | void = undefined,
                    scheduler?: Scheduler): (...args: any[]) => Observable<T> {

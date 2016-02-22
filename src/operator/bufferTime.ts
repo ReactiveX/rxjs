@@ -18,7 +18,9 @@ import {asap} from '../scheduler/asap';
  * @param {Scheduler} [scheduler] (optional, defaults to `asap` scheduler) The
  * scheduler on which to schedule the intervals that determine buffer
  * boundaries.
- * @returns {Observable<T[]>} an observable of arrays of buffered values.
+ * @return {Observable<T[]>} an observable of arrays of buffered values.
+ * @method bufferTime
+ * @owner Observable
  */
 export function bufferTime<T>(bufferTimeSpan: number,
                               bufferCreationInterval: number = null,

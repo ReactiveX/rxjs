@@ -15,7 +15,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @param {function} project the function for projecting the next emitted item of the Observable.
  * @param {number} [concurrent] the max number of observables that can be created concurrently. defaults to infinity.
  * @param {Scheduler} [scheduler] The Scheduler to use for managing the expansions.
- * @returns {Observable} an Observable containing the expansions of the source Observable.
+ * @return {Observable} an Observable containing the expansions of the source Observable.
+ * @method expand
+ * @owner Observable
  */
 export function expand<T, R>(project: (value: T, index: number) => Observable<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
