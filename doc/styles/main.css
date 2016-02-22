@@ -1,0 +1,85 @@
+/* Colors:
+@reactivex-pink:  #EC0C8E;
+@reactivex-pinkle:#B7178C;
+@reactivex-purple:#592D89;
+@reactivex-blue:  #3c71c4;
+@reactivex-grass: #20993c;
+@reactivex-green: #26de5a;
+@reactivex-yellow:#ffcb47;
+@reactivex-red:   #de4c28;
+*/
+
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,700);
+@import url(https://fonts.googleapis.com/css?family=Signika);
+
+html {
+  font-family: 'Source Sans Pro', 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+a {
+  color: #B7178C;
+}
+
+/* Top nav bar border bottom */
+.layout-container > header {
+  border-bottom: solid 1px #B7178C;
+}
+
+.rx-title {
+  color: #EC0C8E;
+  font-family: 'Signika', 'Roboto', sans-serif;
+}
+.rx-title > img {
+  box-shadow: none !important;
+  max-height: 1.3em;
+  margin-bottom: -0.25em;
+  margin-right: 0.3em;
+}
+
+.content .detail {
+  font-size: 16px;
+}
+
+.content .detail + .detail {
+  margin-top: 75px;
+}
+
+.content .detail p img {
+  max-width: 640px;
+}
+
+/* Params table styling */
+table.params thead {
+  background: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+table.params ul {
+  padding: 0;
+}
+
+table.params ul li {
+  list-style: none;
+}
+
+table.params td {
+  padding: 4px 8px;
+}
+
+table.params td:first-child {
+  border-left: none;
+}
+
+table.params td:last-child {
+  border-right:  none;
+}
+
+table.params thead td {
+  border-top: none;
+}
+
+table.params tbody tr:last-child td {
+  border-bottom: none;
+}
