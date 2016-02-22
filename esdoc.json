@@ -2,5 +2,22 @@
   "source": "./dist/es6",
   "destination": "./tmp/docs",
   "undocumentIdentifier": false,
-  "index": "./doc/index.md"
+  "title": "RxJS",
+  "styles": ["./doc/styles/main.css"],
+  "index": "./doc/index.md",
+  "manual": {
+    "asset": "./doc/asset",
+    "overview": [
+      "./doc/introduction.md",
+      "./doc/observable.md",
+      "./doc/observer.md",
+      "./doc/subscription.md",
+      "./doc/subject.md",
+      "./doc/operators.md",
+      "./doc/scheduler.md"
+    ],
+    "installation": [
+      "./doc/installation.md"
+    ]
+  }
 }
