@@ -5,6 +5,14 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 
+/**
+ * @param due
+ * @param errorToSend
+ * @param scheduler
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method timeout
+ * @owner Observable
+ */
 export function timeout<T>(due: number | Date,
                            errorToSend: any = null,
                            scheduler: Scheduler = asap): Observable<T> {

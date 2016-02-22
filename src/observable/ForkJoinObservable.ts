@@ -5,12 +5,22 @@ import {EmptyObservable} from './EmptyObservable';
 import {isPromise} from '../util/isPromise';
 import {isArray} from '../util/isArray';
 
+/**
+ *
+ */
 export class ForkJoinObservable<T> extends Observable<T> {
   constructor(private sources: Array<Observable<any> | Promise<any>>,
               private resultSelector?: (...values: Array<any>) => T) {
     super();
   }
 
+  /**
+   * @param sources
+   * @return {any}
+   * @static true
+   * @name forkJoin
+   * @owner Observable
+   */
   static create<T>(...sources: Array<Observable<any> | Promise<any> |
                                   Array<Observable<any>> |
                                   ((...values: Array<any>) => any)>): Observable<T> {

@@ -20,6 +20,9 @@ export interface WebSocketSubjectConfig {
   WebSocketCtor?: { new(url: string, protocol?: string|Array<string>): WebSocket };
 }
 
+/**
+ *
+ */
 export class WebSocketSubject<T> extends Subject<T> {
   url: string;
   protocol: string|Array<string>;
@@ -33,6 +36,13 @@ export class WebSocketSubject<T> extends Subject<T> {
     return JSON.parse(e.data);
   }
 
+  /**
+   * @param urlConfigOrSource
+   * @return {WebSocketSubject}
+   * @static true
+   * @name webSocket
+   * @owner Observable
+   */
   static create<T>(urlConfigOrSource: string | WebSocketSubjectConfig): WebSocketSubject<T> {
     return new WebSocketSubject<T>(urlConfigOrSource);
   }

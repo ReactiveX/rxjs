@@ -6,12 +6,30 @@ import {Subscriber} from '../Subscriber';
 import {isScheduler} from '../util/isScheduler';
 import {Subscription} from '../Subscription';
 
+/**
+ *
+ */
 export class ArrayObservable<T> extends Observable<T> {
 
+  /**
+   * @param array
+   * @param scheduler
+   * @return {ArrayObservable}
+   * @static true
+   * @name fromArray
+   * @owner Observable
+   */
   static create<T>(array: T[], scheduler?: Scheduler) {
     return new ArrayObservable(array, scheduler);
   }
 
+  /**
+   * @param array
+   * @return {any}
+   * @static true
+   * @name of
+   * @owner Observable
+   */
   static of<T>(...array: Array<T | Scheduler>): Observable<T> {
     let scheduler = <Scheduler>array[array.length - 1];
     if (isScheduler(scheduler)) {

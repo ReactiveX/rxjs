@@ -10,7 +10,9 @@ import {isScheduler} from '../util/isScheduler';
  * <img src="./img/merge.png" width="100%">
  *
  * @param {Observable} input Observables
- * @returns {Observable} an Observable that emits items that are the result of every input Observable.
+ * @return {Observable} an Observable that emits items that are the result of every input Observable.
+ * @method merge
+ * @owner Observable
  */
 export function merge<T, R>(...observables: Array<ObservableInput<any> | Scheduler | number>): Observable<R> {
   observables.unshift(this);
@@ -52,6 +54,13 @@ export function mergeStatic<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: O
 export function mergeStatic<T>(...observables: (ObservableInput<T> | Scheduler | number)[]): Observable<T>;
 export function mergeStatic<T, R>(...observables: (ObservableInput<any> | Scheduler | number)[]): Observable<R>;
 /* tslint:enable:max-line-length */
+/**
+ * @param observables
+ * @return {Observable<R>}
+ * @static true
+ * @name merge
+ * @owner Observable
+ */
 export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | Scheduler | number>): Observable<R> {
  let concurrent = Number.POSITIVE_INFINITY;
  let scheduler: Scheduler = null;

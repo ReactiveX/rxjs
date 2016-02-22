@@ -9,7 +9,9 @@ import {Observable} from '../Observable';
  * @param {Function} select a function that is used to select the resulting values
  *  if it returns `true`, the value is emitted, if `false` the value is not passed to the resulting observable
  * @param {any} [thisArg] an optional argument to determine the value of `this` in the `select` function
- * @returns {Observable} an observable of values allowed by the select function
+ * @return {Observable} an observable of values allowed by the select function
+ * @method filter
+ * @owner Observable
  */
 export function filter<T>(select: (value: T, index: number) => boolean, thisArg?: any): Observable<T> {
   return this.lift(new FilterOperator(select, thisArg));

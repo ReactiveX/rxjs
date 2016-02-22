@@ -4,10 +4,21 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
+/**
+ *
+ */
 export class PromiseObservable<T> extends Observable<T> {
 
   public value: T;
 
+  /**
+   * @param promise
+   * @param scheduler
+   * @return {PromiseObservable}
+   * @static true
+   * @name fromPromise
+   * @owner Observable
+   */
   static create<T>(promise: Promise<T>, scheduler: Scheduler = null): Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }

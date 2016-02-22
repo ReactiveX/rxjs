@@ -1,5 +1,11 @@
 import {root} from '../util/root';
 
+/**
+ * @param PromiseCtor
+ * @return {Promise<T>}
+ * @method toPromise
+ * @owner Observable
+ */
 export function toPromise<T>(PromiseCtor?: typeof Promise): Promise<T> {
   if (!PromiseCtor) {
     if (root.Rx && root.Rx.config && root.Rx.config.Promise) {

@@ -2,6 +2,12 @@ import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
+/**
+ * @param predicate
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method takeWhile
+ * @owner Observable
+ */
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
   return this.lift(new TakeWhileOperator(predicate));
 }

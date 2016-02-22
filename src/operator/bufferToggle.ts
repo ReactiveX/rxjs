@@ -17,7 +17,9 @@ import {errorObject} from '../util/errorObject';
  * @param {Function} closingSelector a function that takes the value emitted by
  * the `openings` observable and returns an Observable, which, when it emits,
  * signals that the associated buffer should be emitted and cleared.
- * @returns {Observable<T[]>} an observable of arrays of buffered values.
+ * @return {Observable<T[]>} an observable of arrays of buffered values.
+ * @method bufferToggle
+ * @owner Observable
  */
 export function bufferToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (value: O) => Observable<any>): Observable<T[]> {

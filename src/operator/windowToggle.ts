@@ -11,6 +11,13 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param openings
+ * @param closingSelector
+ * @return {Observable<Observable<any>>|WebSocketSubject<T>|Observable<T>}
+ * @method windowToggle
+ * @owner Observable
+ */
 export function windowToggle<T, O>(openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowToggleOperator<T, O>(openings, closingSelector));

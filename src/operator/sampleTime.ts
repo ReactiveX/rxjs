@@ -4,6 +4,13 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {asap} from '../scheduler/asap';
 
+/**
+ * @param delay
+ * @param scheduler
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method sampleTime
+ * @owner Observable
+ */
 export function sampleTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
   return this.lift(new SampleTimeOperator(delay, scheduler));
 }

@@ -9,8 +9,10 @@ import {Subscriber} from '../Subscriber';
  * <img src="./img/skipWhile.png" width="100%">
  *
  * @param {Function} predicate - a function to test each item emitted from the source Observable.
- * @returns {Observable<T>} an Observable that begins emitting items emitted by the source Observable when the
+ * @return {Observable<T>} an Observable that begins emitting items emitted by the source Observable when the
  * specified predicate becomes false.
+ * @method skipWhile
+ * @owner Observable
  */
 export function skipWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
   return this.lift(new SkipWhileOperator(predicate));

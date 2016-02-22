@@ -12,9 +12,11 @@ import {EmptyError} from '../util/EmptyError';
  * <img src="./img/last.png" width="100%">
  *
  * @param {function} predicate - the condition any source emitted item has to satisfy.
- * @returns {Observable} an Observable that emits only the last item satisfying the given condition
+ * @return {Observable} an Observable that emits only the last item satisfying the given condition
  * from the source, or an NoSuchElementException if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
+ * @method last
+ * @owner Observable
  */
 export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
                            resultSelector?: (value: T, index: number) => R | void,

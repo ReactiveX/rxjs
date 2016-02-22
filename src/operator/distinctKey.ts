@@ -11,7 +11,9 @@ import {Observable} from '../Observable';
  * @param {string} key string key for object property lookup on each item.
  * @param {function} [compare] optional comparison function called to test if an item is distinct from previous items in the source.
  * @param {Observable} [flushes] optional Observable for flushing the internal HashSet of the operator.
- * @returns {Observable} an Observable that emits items from the source Observable with distinct values.
+ * @return {Observable} an Observable that emits items from the source Observable with distinct values.
+ * @method distinctKey
+ * @owner Observable
  */
 export function distinctKey<T>(key: string, compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
   return distinct.call(this, function(x: T, y: T) {

@@ -9,7 +9,9 @@ import {Subscriber} from '../Subscriber';
  *
  * <img src="./img/pairwise.png" width="100%">
  *
- * @returns {Observable<R>} an observable of pairs of values.
+ * @return {Observable<R>} an observable of pairs of values.
+ * @method pairwise
+ * @owner Observable
  */
 export function pairwise<T>(): Observable<[T, T]> {
   return this.lift(new PairwiseOperator());

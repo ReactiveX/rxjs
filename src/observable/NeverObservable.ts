@@ -2,7 +2,16 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
 
+/**
+ *
+ */
 export class NeverObservable<T> extends Observable<T> {
+  /**
+   * @return {NeverObservable<T>}
+   * @static true
+   * @name never
+   * @owner Observable
+   */
   static create<T>() {
     return new NeverObservable<T>();
   }

@@ -7,7 +7,9 @@ import {map} from './map';
  * `undefined` for that value.
  *
  * @param {...args} properties the nested properties to pluck
- * @returns {Observable} Returns a new Observable sequence of property values
+ * @return {Observable} Returns a new Observable sequence of property values
+ * @method pluck
+ * @owner Observable
  */
 export function pluck<R>(...properties: string[]): Observable<R> {
   const length = properties.length;

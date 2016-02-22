@@ -4,6 +4,12 @@ import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observable/EmptyObservable';
 import {Observable} from '../Observable';
 
+/**
+ * @param total
+ * @return {any}
+ * @method take
+ * @owner Observable
+ */
 export function take<T>(total: number): Observable<T> {
   if (total === 0) {
     return new EmptyObservable<T>();

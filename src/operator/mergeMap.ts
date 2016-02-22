@@ -14,8 +14,10 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * <img src="./img/mergeMap.png" width="100%">
  *
  * @param {Function} a function that, when applied to an item emitted by the source Observable, returns an Observable.
- * @returns {Observable} an Observable that emits the result of applying the transformation function to each item
+ * @return {Observable} an Observable that emits the result of applying the transformation function to each item
  * emitted by the source Observable and merging the results of the Observables obtained from this transformation
+ * @method mergeMap
+ * @owner Observable
  */
 export function mergeMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>,
                                   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R | number,

@@ -17,8 +17,10 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * new one.
  *
  * @param {Function} a predicate function to evaluate items emitted by the source Observable.
- * @returns {Observable<T>} an Observable that emits the items emitted by the Observable most recently emitted by the
+ * @return {Observable<T>} an Observable that emits the items emitted by the Observable most recently emitted by the
  * source Observable.
+ * @method switch
+ * @owner Observable
  */
 export function _switch<T>(): T {
   return this.lift(new SwitchOperator());

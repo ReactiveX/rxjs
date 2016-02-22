@@ -11,8 +11,10 @@ import {MergeMapToOperator} from './mergeMapTo';
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
- * @returns {Observable} an observable of values merged together by joining the passed observable
+ * @return {Observable} an observable of values merged together by joining the passed observable
  * with itself, one after the other, for each value emitted from the source.
+ * @method concatMapTo
+ * @owner Observable
  */
 export function concatMapTo<T, I, R>(observable: Observable<I>,
                                      resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {

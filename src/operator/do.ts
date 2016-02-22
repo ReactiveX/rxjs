@@ -11,6 +11,8 @@ import {PartialObserver} from '../Observer';
  * @param {function} [error] callback for errors in the source.
  * @param {function} [complete] callback for the completion of the source.
  * @reurns {Observable} a mirrored Observable with the specified Observer or callback attached for each item.
+ * @method do
+ * @owner Observable
  */
 export function _do<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void),
                        error?: (e: any) => void,

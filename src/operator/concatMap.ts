@@ -17,8 +17,10 @@ import {Observable, ObservableInput} from '../Observable';
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
- * @returns {Observable} an observable of values merged from the projected Observables as they were subscribed to,
+ * @return {Observable} an observable of values merged from the projected Observables as they were subscribed to,
  * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.
+ * @method concatMap
+ * @owner Observable
  */
 export function concatMap<T, I, R>(project: (value: T, index: number) =>  ObservableInput<I>,
                                    resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {

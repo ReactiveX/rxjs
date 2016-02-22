@@ -11,9 +11,11 @@ import {ConnectableObservable} from '../observable/ConnectableObservable';
  * as many times as needed, without causing multiple subscriptions to the source stream.
  * Subscribers to the given source will receive all notifications of the source from the
  * time of the subscription forward.
- * @returns {Observable} an Observable that emits the results of invoking the selector
+ * @return {Observable} an Observable that emits the results of invoking the selector
  * on the items emitted by a `ConnectableObservable` that shares a single subscription to
  * the underlying stream.
+ * @method multicast
+ * @owner Observable
  */
 export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>)): ConnectableObservable<T> {
   let subjectFactory: () => Subject<T>;

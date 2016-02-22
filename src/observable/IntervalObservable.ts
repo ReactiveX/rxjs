@@ -4,7 +4,18 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {asap} from '../scheduler/asap';
 
+/**
+ *
+ */
 export class IntervalObservable extends Observable<number> {
+  /**
+   * @param period
+   * @param scheduler
+   * @return {IntervalObservable}
+   * @static true
+   * @name interval
+   * @owner Observable
+   */
   static create(period: number = 0, scheduler: Scheduler = asap): Observable<number> {
     return new IntervalObservable(period, scheduler);
   }

@@ -7,8 +7,20 @@ import {isDate} from '../util/isDate';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
+/**
+ *
+ */
 export class TimerObservable extends Observable<number> {
 
+  /**
+   * @param dueTime
+   * @param period
+   * @param scheduler
+   * @return {TimerObservable}
+   * @static true
+   * @name timer
+   * @owner Observable
+   */
   static create(dueTime: number | Date = 0, period?: number | Scheduler, scheduler?: Scheduler): Observable<number> {
     return new TimerObservable(dueTime, period, scheduler);
   }

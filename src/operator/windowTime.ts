@@ -6,6 +6,14 @@ import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
 import {asap} from '../scheduler/asap';
 
+/**
+ * @param windowTimeSpan
+ * @param windowCreationInterval
+ * @param scheduler
+ * @return {Observable<Observable<any>>|WebSocketSubject<T>|Observable<T>}
+ * @method windowTime
+ * @owner Observable
+ */
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,
                               scheduler: Scheduler = asap): Observable<Observable<T>> {

@@ -11,7 +11,9 @@ import {Subscriber} from '../Subscriber';
  * <img src="./img/scan.png" width="100%">
  *
  * @param {any} [seed] The initial accumulator value.
- * @returns {Obervable} An observable of the accumulated values.
+ * @return {Obervable} An observable of the accumulated values.
+ * @method scan
+ * @owner Observable
  */
 export function scan<T, R>(accumulator: (acc: R, value: T) => R, seed?: T | R): Observable<R> {
   return this.lift(new ScanOperator(accumulator, seed));

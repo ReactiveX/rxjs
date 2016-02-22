@@ -7,6 +7,14 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param observable
+ * @param resultSelector
+ * @param concurrent
+ * @return {Observable<R>|WebSocketSubject<*>|Observable<*>}
+ * @method mergeMapTo
+ * @owner Observable
+ */
 export function mergeMapTo<T, I, R>(observable: Observable<I>,
                                     resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R | number,
                                     concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {

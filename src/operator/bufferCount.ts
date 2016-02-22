@@ -16,7 +16,9 @@ import {Observable} from '../Observable';
  * buffer. (e.g. if `startBufferEvery` is `2`, then a new buffer will be started
  * on every other value from the source.) A new buffer is started at the
  * beginning of the source by default.
- * @returns {Observable<T[]>} an Observable of arrays of buffered values.
+ * @return {Observable<T[]>} an Observable of arrays of buffered values.
+ * @method bufferCount
+ * @owner Observable
  */
 export function bufferCount<T>(bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
   return this.lift(new BufferCountOperator<T>(bufferSize, startBufferEvery));

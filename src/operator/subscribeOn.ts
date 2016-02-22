@@ -8,8 +8,10 @@ import {SubscribeOnObservable} from '../observable/SubscribeOnObservable';
  * <img src="./img/subscribeOn.png" width="100%">
  *
  * @param {Scheduler} the Scheduler to perform subscription actions on.
- * @returns {Observable<T>} the source Observable modified so that its subscriptions happen on the specified Scheduler
+ * @return {Observable<T>} the source Observable modified so that its subscriptions happen on the specified Scheduler
  .
+ * @method subscribeOn
+ * @owner Observable
  */
 export function subscribeOn<T>(scheduler: Scheduler, delay: number = 0): Observable<T> {
   return new SubscribeOnObservable<T>(this, delay, scheduler);

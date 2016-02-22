@@ -5,6 +5,13 @@ import {Subscription} from '../Subscription';
 import {asap} from '../scheduler/asap';
 import {Observable} from '../Observable';
 
+/**
+ * @param delay
+ * @param scheduler
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method throttleTime
+ * @owner Observable
+ */
 export function throttleTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
   return this.lift(new ThrottleTimeOperator(delay, scheduler));
 }

@@ -3,8 +3,18 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
+/**
+ *
+ */
 export class EmptyObservable<T> extends Observable<T> {
 
+  /**
+   * @param scheduler
+   * @return {EmptyObservable<T>}
+   * @static true
+   * @name empty
+   * @owner Observable
+   */
   static create<T>(scheduler?: Scheduler): Observable<T> {
     return new EmptyObservable<T>(scheduler);
   }

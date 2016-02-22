@@ -11,6 +11,12 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param closingSelector
+ * @return {Observable<Observable<any>>|WebSocketSubject<T>|Observable<T>}
+ * @method windowWhen
+ * @owner Observable
+ */
 export function windowWhen<T>(closingSelector: () => Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowOperator<T>(closingSelector));
 }

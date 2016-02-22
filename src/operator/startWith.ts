@@ -13,8 +13,10 @@ import {isScheduler} from '../util/isScheduler';
  * <img src="./img/startWith.png" width="100%">
  *
  * @param {Values} an Iterable that contains the items you want the modified Observable to emit first.
- * @returns {Observable} an Observable that emits the items in the specified Iterable and then emits the items
+ * @return {Observable} an Observable that emits the items in the specified Iterable and then emits the items
  * emitted by the source Observable.
+ * @method startWith
+ * @owner Observable
  */
 export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
   let scheduler = <Scheduler>array[array.length - 1];

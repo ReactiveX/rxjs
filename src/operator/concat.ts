@@ -10,7 +10,9 @@ import {MergeAllOperator} from './mergeAll';
  * on to the next.
  * @params {...Observable} the observables to concatenate
  * @params {Scheduler} [scheduler] an optional scheduler to schedule each observable subscription on.
- * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
+ * @return {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
+ * @method concat
+ * @owner Observable
  */
 export function concat<T, R>(...observables: Array<ObservableInput<any> | Scheduler>): Observable<R> {
   return concatStatic<T, R>(this, ...observables);
@@ -34,7 +36,10 @@ export interface ConcatSignature<T> {
  * into the returned observable. Will wait for each observable to complete before moving on to the next.
  * @params {...Observable} the observables to concatenate
  * @params {Scheduler} [scheduler] an optional scheduler to schedule each observable subscription on.
- * @returns {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
+ * @return {Observable} All values of each passed observable merged into a single observable, in order, in serial fashion.
+ * @static true
+ * @name concat
+ * @owner Observable
  */
 /* tslint:disable:max-line-length */
 export function concatStatic<T>(v1: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;

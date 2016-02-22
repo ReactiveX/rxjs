@@ -6,8 +6,18 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param observable
+ * @param resultSelector
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method switchMapTo
+ * @owner Observable
+ */
 export function switchMapTo<T, I, R>(observable: Observable<I>,
-                                     resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {
+                                     resultSelector?: (outerValue: T,
+                                                       innerValue: I,
+                                                       outerIndex: number,
+                                                       innerIndex: number) => R): Observable<R> {
   return this.lift(new SwitchMapToOperator(observable, resultSelector));
 }
 

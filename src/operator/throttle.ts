@@ -7,6 +7,12 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
+/**
+ * @param durationSelector
+ * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
+ * @method throttle
+ * @owner Observable
+ */
 export function throttle<T>(durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
 }

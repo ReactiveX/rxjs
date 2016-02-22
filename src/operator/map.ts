@@ -10,7 +10,9 @@ import {Observable} from '../Observable';
  *
  * @param {Function} project the function to create projection
  * @param {any} [thisArg] an optional argument to define what `this` is in the project function
- * @returns {Observable} a observable of projected values
+ * @return {Observable} a observable of projected values
+ * @method map
+ * @owner Observable
  */
 export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): Observable<R> {
   if (typeof project !== 'function') {

@@ -16,8 +16,10 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *
  * @param {Observable<any>} closingNotifier an Observable that signals the
  * buffer to be emitted} from the returned observable.
- * @returns {Observable<T[]>} an Observable of buffers, which are arrays of
+ * @return {Observable<T[]>} an Observable of buffers, which are arrays of
  * values.
+ * @method buffer
+ * @owner Observable
  */
 export function buffer<T>(closingNotifier: Observable<any>): Observable<T[]> {
   return this.lift(new BufferOperator<T>(closingNotifier));
