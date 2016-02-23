@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
+/** @test {sample} */
 describe('Observable.prototype.sample', () => {
   asDiagram('sample')('should get samples when the notifier emits', () => {
     const e1 =   hot('---a----b---c----------d-----|   ');

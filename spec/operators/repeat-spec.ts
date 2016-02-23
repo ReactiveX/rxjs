@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.repeat()', () => {
+/** @test {repeat} */
+describe('Observable.prototype.repeat', () => {
   asDiagram('repeat(3)')('should resubscribe count number of times', () => {
     const e1 =   cold('--a--b--|                ');
     const subs =     ['^       !                ',

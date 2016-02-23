@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
+/** @test {bufferToggle} */
 describe('Observable.prototype.bufferToggle', () => {
   asDiagram('bufferToggle')('should emit buffers using hot openings and hot closings', () => {
     const e1 =   hot('---a---b---c---d---e---f---g---|');

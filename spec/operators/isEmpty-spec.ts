@@ -1,8 +1,8 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
-describe('Observable.prototype.isEmpty()', () => {
+/** @test {isEmpty} */
+describe('Observable.prototype.isEmpty', () => {
   asDiagram('isEmpty')('should return true if source is empty', () => {
     const source = hot('-----|');
     const subs =       '^    !';

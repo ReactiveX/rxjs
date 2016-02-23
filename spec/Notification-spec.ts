@@ -1,9 +1,9 @@
 import * as Rx from '../dist/cjs/Rx';
-import {expectObservable} from './helpers/marble-testing';
-import {it} from './helpers/test-helper';
+declare const expectObservable;
 
 const Notification = Rx.Notification;
 
+/** @test {Notification} */
 describe('Notification', () => {
   it('should exist', () => {
     expect(Notification).toBeDefined();

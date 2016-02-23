@@ -1,6 +1,5 @@
 import {polyfillSymbol} from '../../dist/cjs/util/SymbolShim';
 import {Map} from '../../dist/cjs/util/Map';
-import {it} from '../helpers/test-helper';
 
 declare const __root__: any;
 

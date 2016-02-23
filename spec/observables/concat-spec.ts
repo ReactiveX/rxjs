@@ -1,11 +1,12 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, cold */
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
 
+/** @test {concat} */
 describe('Observable.concat', () => {
   it('should emit elements from multiple sources', () => {
     const e1 =  cold('-a-b-c-|');

@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram, DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('count', () => {
+/** @test {count} */
+describe('Observable.prototype.count', () => {
   asDiagram('count')('should count the values of an observable', () => {
     const source = hot('--a--b--c--|');
     const subs =       '^          !';

@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {cold, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.pluck()', () => {
+/** @test {pluck} */
+describe('Observable.prototype.pluck', () => {
   it('should work for one object', () => {
     const a =   cold('--x--|', {x: {prop: 42}});
     const asubs =    '^    !';

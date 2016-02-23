@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, time, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, time, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
+/** @test {window} */
 describe('Observable.prototype.window', () => {
   asDiagram('window')('should emit windows that close and reopen', () => {
     const source =   hot('---a---b---c---d---e---f---g---h---i---|    ');

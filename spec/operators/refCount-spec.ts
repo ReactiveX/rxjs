@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {cold, expectObservable, asDiagram, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.publish().refCount()', () => {
+/** @test {refCount} */
+describe('ConnectableObservable.prototype.refCount', () => {
   asDiagram('refCount')('should turn a multicasted Observable an automatically ' +
   '(dis)connecting hot one', () => {
     const source = cold('--1-2---3-4--5-|');

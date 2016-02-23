@@ -1,10 +1,11 @@
 import * as Rx from '../dist/cjs/Rx';
-import {hot, expectObservable} from './helpers/marble-testing';
-import {it, DoneSignature} from './helpers/test-helper';
+declare const {hot, expectObservable};
+import {DoneSignature} from './helpers/test-helper';
 
 const Subject = Rx.Subject;
 const Observable = Rx.Observable;
 
+/** @test {Subject} */
 describe('Subject', () => {
   it('should pump values right on through itself', (done: DoneSignature) => {
     const subject = new Subject();

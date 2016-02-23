@@ -1,9 +1,9 @@
 /* globals describe, it, expect */
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {it} from '../helpers/test-helper';
 
 const VirtualTimeScheduler = Rx.VirtualTimeScheduler;
 
+/** @test {VirtualTimeScheduler} */
 describe('VirtualTimeScheduler', () => {
   it('should exist', () => {
     expect(VirtualTimeScheduler).toBeDefined();

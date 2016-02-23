@@ -1,11 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {time, expectObservable} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {time, expectObservable};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 
 const Observable = Rx.Observable;
 
+/** @test {timer} */
 describe('Observable.timer', () => {
   it('should schedule a value of 0 then complete', () => {
     const dueTime = time('-----|');

@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
+/** @test {defer} */
 describe('Observable.defer', () => {
   it('should create an observable from the provided observbale factory', () => {
     const source = hot('--a--b--c--|');

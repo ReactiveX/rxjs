@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
 
-describe('Observable.prototype.multicast()', () => {
+/** @test {multicast} */
+describe('Observable.prototype.multicast', () => {
   asDiagram('multicast(() => new Subject())')('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';

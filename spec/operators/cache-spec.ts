@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, time, expectObservable} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, cold, time, expectObservable};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 
+/** @test {cache} */
 describe('Observable.prototype.cache', () => {
   it('should replay values upon subscription', () => {
     const s1 = hot('---^---a---b---c---|     ').cache();

@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.partition()', () => {
+/** @test {partition} */
+describe('Observable.prototype.partition', () => {
   function expectObservableArray(result, expected) {
     for (let idx = 0; idx < result.length; idx++ ) {
       expectObservable(result[idx]).toBe(expected[idx]);

@@ -1,7 +1,7 @@
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
 
-describe('Observable.prototype.pairwise()', () => {
+/** @test {pairwise} */
+describe('Observable.prototype.pairwise', () => {
   it('should pairwise things', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';

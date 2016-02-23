@@ -1,9 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, expectObservable} from '../helpers/marble-testing';
-import {it, DoneSignature, lowerCaseO} from '../helpers/test-helper';
+declare const {hot, expectObservable};
+import {DoneSignature, lowerCaseO} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
+/** @test {forkJoin} */
 describe('Observable.forkJoin', () => {
   it('should join the last values of the provided observables into an array', () => {
     const e1 = Observable.forkJoin(

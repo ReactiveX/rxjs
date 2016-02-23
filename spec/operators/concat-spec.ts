@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.concat()', () => {
+/** @test {concat} */
+describe('Observable.prototype.concat', () => {
   asDiagram('concat')('should concatenate two cold observables', () => {
     const e1 =   cold('--a--b-|');
     const e2 =   cold(       '--x---y--|');

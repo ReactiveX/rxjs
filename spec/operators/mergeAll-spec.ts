@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.mergeAll()', () => {
+/** @test {mergeAll} */
+describe('Observable.prototype.mergeAll', () => {
   asDiagram('mergeAll')('should merge a hot observable of cold observables', () => {
     const x = cold(    '--a---b--c---d--|      ');
     const y = cold(           '----e---f--g---|');

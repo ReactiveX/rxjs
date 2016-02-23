@@ -1,7 +1,7 @@
 import * as Rx from '../dist/cjs/Rx';
-import {it} from './helpers/test-helper';
 const Subscriber = Rx.Subscriber;
 
+/** @test {Subscriber} */
 describe('Subscriber', () => {
   it('should have the rxSubscriber symbol', () => {
     const sub = new Subscriber();

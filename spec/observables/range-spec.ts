@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
 import {RangeObservable} from '../../dist/cjs/observable/RangeObservable';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const asap = Rx.Scheduler.asap;
 
+/** @test {range} */
 describe('Observable.range', () => {
   it('should synchronously create a range of values by default', () => {
     const results = [];

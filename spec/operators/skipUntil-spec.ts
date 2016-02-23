@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.skipUntil()', () => {
+/** @test {skipUntil} */
+describe('Observable.prototype.skipUntil', () => {
   asDiagram('skipUntil')('should skip values until another observable notifies', () => {
     const e1 =     hot('--a--b--c--d--e----|');
     const e1subs =     '^                  !';

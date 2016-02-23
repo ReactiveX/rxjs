@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.defaultIfEmpty()', () => {
+/** @test {defaultIfEmpty} */
+describe('Observable.prototype.defaultIfEmpty', () => {
   asDiagram('defaultIfEmpty(42)')('should return the Observable if not empty with a default value', () => {
     const e1 =   hot('--------|');
     const expected = '--------(x|)';

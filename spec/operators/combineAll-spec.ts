@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
 
-describe('Observable.prototype.combineAll()', () => {
+/** @test {combineAll} */
+describe('Observable.prototype.combineAll', () => {
   asDiagram('combineAll')('should combine events from two observables', () => {
     const x =    cold(               '-a-----b---|');
     const y =    cold(               '--1-2-|     ');

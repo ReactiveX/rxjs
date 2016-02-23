@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const Symbol: any;
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
 
+/** @test {zipAll} */
 describe('Observable.prototype.zipAll', () => {
   asDiagram('zipAll')('should combine paired events from two observables', () => {
     const x =    cold(               '-a-----b-|');

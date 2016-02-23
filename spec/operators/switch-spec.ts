@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
 
-describe('Observable.prototype.switch()', () => {
+/** @test {switch} */
+describe('Observable.prototype.switch', () => {
   asDiagram('switch')('should switch a hot observable of cold observables', () => {
     const x = cold(    '--a---b--c---d--|      ');
     const y = cold(           '----e---f--g---|');

@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.first()', () => {
+/** @test {first} */
+describe('Observable.prototype.first', () => {
   asDiagram('first')('should take the first value of an observable with many values', () => {
     const e1 =   hot('-----a--b--c---d---|');
     const expected = '-----(a|)           ';

@@ -1,11 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.observeOn()', () => {
+/** @test {observeOn} */
+describe('Observable.prototype.observeOn', () => {
   asDiagram('observeOn(scheduler)')('should observe on specified scheduler', () => {
     const e1 =    hot('--a--b--|');
     const expected =  '--a--b--|';

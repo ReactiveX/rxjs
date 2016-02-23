@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
+/** @test {elementAt} */
 describe('Observable.prototype.elementAt', () => {
   asDiagram('elementAt(2)')('should return last element by zero-based index', () => {
     const source = hot('--a--b--c-d---|');

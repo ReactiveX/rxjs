@@ -1,6 +1,6 @@
 import {MapPolyfill} from '../../dist/cjs/util/MapPolyfill';
-import {it} from '../helpers/test-helper';
 
+/** @test {MapPolyfill} */
 describe('MapPolyfill', () => {
   it('should exist', () => {
     expect(typeof MapPolyfill).toBe('function');

@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('max', () => {
+/** @test {max} */
+describe('Observable.prototype.max', () => {
   asDiagram('max')('should find the max of values of an observable', () => {
     const e1 = hot('--a--b--c--|', { a: 42, b: -1, c: 3 });
     const subs =       '^          !';

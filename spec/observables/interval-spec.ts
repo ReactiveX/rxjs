@@ -1,11 +1,12 @@
 /* globals describe, it, expect, spyOn */
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {expectObservable} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {expectObservable};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
+/** @test {interval} */
 describe('Observable.interval', () => {
   it('should set up an interval', () => {
     const expected = '----------0---------1---------2---------3---------4---------5---------6-----';

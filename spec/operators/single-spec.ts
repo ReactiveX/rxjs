@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
-describe('Observable.prototype.single()', () => {
+/** @test {single} */
+describe('Observable.prototype.single', () => {
   asDiagram('single')('should raise error from empty predicate if observable emits multiple time', () => {
     const e1 =    hot('--a--b--c--|');
     const e1subs =    '^    !      ';

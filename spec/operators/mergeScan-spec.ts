@@ -1,11 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.mergeScan()', () => {
+/** @test {mergeScan} */
+describe('Observable.prototype.mergeScan', () => {
   it('should mergeScan things', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';

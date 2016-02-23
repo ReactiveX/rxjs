@@ -1,11 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.debounceTime()', () => {
+/** @test {debounceTime} */
+describe('Observable.prototype.debounceTime', () => {
   asDiagram('debounceTime(20)')('should debounce values by 20 time units', () => {
     const e1 =   hot('-a--bc--d---|');
     const expected = '---a---c--d-|';

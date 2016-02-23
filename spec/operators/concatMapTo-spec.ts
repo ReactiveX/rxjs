@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.concatMapTo()', () => {
+/** @test {concatMapTo} */
+describe('Observable.prototype.concatMapTo', () => {
   it('should concatMapTo many outer values to many inner values', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a---b---c---d---|                        ');

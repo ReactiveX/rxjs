@@ -1,9 +1,10 @@
 /* globals describe, it, expect, jasmine */
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
+/** @test {fromEventPattern} */
 describe('Observable.fromEventPattern', () => {
   it('should call addHandler on subscription', () => {
     let addHandlerCalledWith;

@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
 
-describe('Observable.prototype.do()', () => {
+/** @test {do} */
+describe('Observable.prototype.do', () => {
   asDiagram('do(x => console.log(x))')('should mirror multiple values and complete', () => {
     const e1 =  cold('--1--2--3--|');
     const e1subs =   '^          !';

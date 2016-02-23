@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.switchMapTo()', () => {
+/** @test {switchMapTo} */
+describe('Observable.prototype.switchMapTo', () => {
   it('should switch a synchronous many outer to a synchronous many inner', (done: DoneSignature) => {
     const a = Observable.of(1, 2, 3);
     const expected = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];

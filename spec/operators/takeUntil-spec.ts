@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.takeUntil()', () => {
+/** @test {takeUntil} */
+describe('Observable.prototype.takeUntil', () => {
   asDiagram('takeUntil')('should take values until notifier emits', () => {
     const e1 =     hot('--a--b--c--d--e--f--g--|');
     const e1subs =     '^            !          ';

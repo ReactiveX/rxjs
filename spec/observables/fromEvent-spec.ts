@@ -1,8 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
+/** @test {fromEvent} */
 describe('Observable.fromEvent', () => {
   it('should setup an event observable on objects with "on" and "off" ', () => {
     let onEventName;

@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
-describe('Observable.prototype.takeWhile()', () => {
+/** @test {takeWhile} */
+describe('Observable.prototype.takeWhile', () => {
   asDiagram('takeWhile(x => x < 4)')('should take all elements until predicate is false', () => {
     const source = hot('-1-^2--3--4--5--6--|');
     const sourceSubs =    '^      !         ';

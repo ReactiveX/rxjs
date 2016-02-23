@@ -1,9 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.finally()', () => {
+/** @test {finally} */
+describe('Observable.prototype.finally', () => {
   it('should call finally after complete', (done: DoneSignature) => {
     let completed = false;
     Observable.of(1, 2, 3)

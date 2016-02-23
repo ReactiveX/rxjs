@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const Symbol: any;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.expand()', () => {
+/** @test {expand} */
+describe('Observable.prototype.expand', () => {
   it('should map and recursively flatten', () => {
     const values = {
       a: 1,

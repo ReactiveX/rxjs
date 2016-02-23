@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, asDiagram, cold, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
+/** @test {combineLatest} */
 describe('Observable.prototype.combineLatest', () => {
   asDiagram('combineLatest')('should combine events from two cold observables', () => {
     const e1 =   hot('-a--b-----c-d-e-|');

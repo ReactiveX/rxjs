@@ -1,6 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
@@ -9,7 +8,8 @@ const addDrama = function (x) { return x + '!'; };
 const identity = function (x) { return x; };
 const throwError = function () { throw new Error(); };
 
-describe('Observable.prototype.map()', () => {
+/** @test {map} */
+describe('Observable.prototype.map', () => {
   asDiagram('map(x => 10 * x)')('should map multiple values', () => {
     const a =   cold('--1--2--3--|');
     const asubs =    '^          !';

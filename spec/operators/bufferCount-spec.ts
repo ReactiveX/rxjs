@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
+/** @test {bufferCount} */
 describe('Observable.prototype.bufferCount', () => {
   asDiagram('bufferCount(3,2)')('should emit buffers at intervals', () => {
     const values = {

@@ -11,9 +11,14 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
 import * as _ from 'lodash';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {root} from '../../dist/cjs/util/root';
-import {assertDeepEqual} from './marble-testing';
+import * as marbleHelpers from './marble-testing';
 
 global.rxTestScheduler = null;
+global.cold = marbleHelpers.cold;
+global.hot = marbleHelpers.hot;
+global.time = marbleHelpers.time;
+global.expectObservable = marbleHelpers.expectObservable;
+global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 
 //amending type definition of jasmine which seems doesn't have this
 export interface DoneSignature {
@@ -25,7 +30,7 @@ const defaultAssertion: (expectation: string, assertion?: (done: DoneSignature) 
 const singleAssertion: (expectation: string, assertion?: (done: DoneSignature) => void, timeout?: number) => void = global.fit;
 
 function assertAction(done: DoneSignature, assertion: (done?: DoneSignature) => void): void {
-  global.rxTestScheduler = new Rx.TestScheduler(assertDeepEqual);
+  global.rxTestScheduler = new Rx.TestScheduler(marbleHelpers.assertDeepEqual);
   let error: any;
   let errorHappened: boolean = false;
 
@@ -45,9 +50,6 @@ function assertAction(done: DoneSignature, assertion: (done?: DoneSignature) => 
 }
 
 export function asDiagram(expectation: string): (expectation: string, assertion?: (done: DoneSignature) => void, timeout?: number) => void {
-  if (global.it.asDiagram) {
-    return global.it.asDiagram(expectation);
-  }
   return it;
 }
 
@@ -69,6 +71,12 @@ export function fit(expectation: string, assertion?: (done?: DoneSignature) => v
   } else {
     singleAssertion.apply(this, arguments);
   }
+}
+
+global.it = it;
+global.fit = fit;
+if (!global.asDiagram) {
+  global.asDiagram = asDiagram;
 }
 
 export function lowerCaseO<T>(...args): Rx.Observable<T> {

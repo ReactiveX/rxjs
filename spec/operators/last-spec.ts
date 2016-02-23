@@ -1,8 +1,8 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
-describe('Observable.prototype.last()', () => {
+/** @test {last} */
+describe('Observable.prototype.last', () => {
   asDiagram('last')('should take the last value of an observable', () => {
     const e1 =   hot('--a----b--c--|');
     const e1subs =   '^            !';

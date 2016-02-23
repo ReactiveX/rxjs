@@ -1,6 +1,11 @@
 {
   "source": "./dist/es6",
   "destination": "./tmp/docs",
+  "test": {
+    "type": "mocha",
+    "source": "./spec-js",
+    "includes": ["(spec)\\.(js|ts)$"]
+  },
   "undocumentIdentifier": false,
   "title": "RxJS",
   "styles": ["./doc/styles/main.css"],

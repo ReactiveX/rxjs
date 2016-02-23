@@ -1,9 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
+/** @test {ignoreElements} */
 describe('Observable.prototype.ignoreElements', () => {
   asDiagram('ignoreElements')('should ignore all the elements of the source', () => {
     const source = hot('--a--b--c--d--|');

@@ -1,11 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.timeoutWith()', () => {
+/** @test {timeoutWith} */
+describe('Observable.prototype.timeoutWith', () => {
   asDiagram('timeoutWith(50)')('should timeout after a specified period then subscribe to the passed observable', () => {
     const e1 =  cold('-------a--b--|');
     const e1subs =   '^    !        ';

@@ -1,5 +1,5 @@
 import * as Rx from '../dist/cjs/Rx';
-import {it, DoneSignature} from './helpers/test-helper';
+import {DoneSignature} from './helpers/test-helper';
 
 const Subscriber = Rx.Subscriber;
 const Observable = Rx.Observable;
@@ -14,6 +14,7 @@ function expectFullObserver(val) {
   expect(typeof val.isUnsubscribed).toBe('boolean');
 }
 
+/** @test {Observable} */
 describe('Observable', () => {
   it('should be constructed with a subscriber function', (done: DoneSignature) => {
     const source = new Observable(function (observer) {
@@ -280,6 +281,7 @@ describe('Observable', () => {
   });
 });
 
+/** @test {Observable} */
 describe('Observable.create', () => {
   it('should create an Observable', () => {
     const result = Observable.create(() => {
@@ -304,6 +306,7 @@ describe('Observable.create', () => {
   });
 });
 
+/** @test {Observable} */
 describe('Observable.lift', () => {
   it('should be overrideable in a custom Observable type that composes', (done: DoneSignature) => {
     class MyCustomObservable<T> extends Rx.Observable<T> {

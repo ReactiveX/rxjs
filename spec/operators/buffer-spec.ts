@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.buffer()', () => {
+/** @test {buffer} */
+describe('Observable.prototype.buffer', () => {
   asDiagram('buffer')('should emit buffers that close and reopen', () => {
     const a =    hot('-a-b-c-d-e-f-g-h-i-|');
     const b =    hot('-----B-----B-----B-|');

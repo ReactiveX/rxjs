@@ -1,8 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 const asap = Rx.Scheduler.asap;
 
+/** @test {AsapScheduler} */
 describe('AsapScheduler', () => {
   it('should exist', () => {
     expect(asap).toBeDefined();

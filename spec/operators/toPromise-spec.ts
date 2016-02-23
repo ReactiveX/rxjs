@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const __root__: any;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.toPromise()', () => {
+/** @test {toPromise} */
+describe('Observable.prototype.toPromise', () => {
   it('should convert an Observable to a promise of its last value', (done: DoneSignature) => {
     Observable.of(1, 2, 3).toPromise(Promise).then((x: number) => {
       expect(x).toBe(3);

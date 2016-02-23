@@ -1,9 +1,10 @@
 import * as Rx from '../dist/cjs/Rx';
-import {it, DoneSignature} from './helpers/test-helper';
+import {DoneSignature} from './helpers/test-helper';
 
 const Observable = Rx.Observable;
 const Subscription = Rx.Subscription;
 
+/** @test {Subscription} */
 describe('Subscription', () => {
   it('should not leak', (done: DoneSignature) => {
     const tearDowns = [];

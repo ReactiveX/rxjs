@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('min', () => {
+/** @test {min} */
+describe('Observable.prototype.min', () => {
   asDiagram('min')('should min the values of an observable', () => {
     const source = hot('--a--b--c--|', { a: 42, b: -1, c: 3 });
     const subs =       '^          !';

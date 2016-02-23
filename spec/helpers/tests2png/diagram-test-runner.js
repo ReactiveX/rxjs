@@ -76,7 +76,7 @@ var glit = global.it;
 
 global.it = function (description, specFn, timeout) { };
 
-global.it.asDiagram = function asDiagram(operatorLabel) {
+global.asDiagram = function asDiagram(operatorLabel) {
   return function specFnWithPainter(description, specFn) {
     if (specFn.length === 0) {
       glit(description, function () {
@@ -156,4 +156,3 @@ global.lowerCaseO = function lowerCaseO() {
 
   return o;
 };
-

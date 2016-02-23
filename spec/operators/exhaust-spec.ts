@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.exhaust()', () => {
+/** @test {exhaust} */
+describe('Observable.prototype.exhaust', () => {
   asDiagram('exhaust')('should handle a hot observable of hot observables', () => {
     const x =   cold(      '--a---b---c--|               ');
     const y =   cold(              '---d--e---f---|      ');

@@ -2,12 +2,13 @@ import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {ArrayObservable} from '../../dist/cjs/observable/ArrayObservable';
 import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
 import {EmptyObservable} from '../../dist/cjs/observable/EmptyObservable';
-import {expectObservable} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {expectObservable};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
+/** @test {of} */
 describe('Observable.of', () => {
   it('should create an observable from the provided values', (done: DoneSignature) => {
     const x = { foo: 'bar' };

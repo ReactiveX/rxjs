@@ -1,7 +1,8 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
-describe('let', () => {
+/** @test {let} */
+describe('Observable.prototype.let', () => {
   it('should be able to compose with let', (done: DoneSignature) => {
     const expected = ['aa', 'bb'];
     let i = 0;

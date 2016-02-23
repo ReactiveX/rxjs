@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.distinctKey()', () => {
+/** @test {distinctKey} */
+describe('Observable.prototype.distinctKey', () => {
   asDiagram('distinctKey(\'k\')')('should distinguish between values', () => {
     const values = {a: {k: 1}, b: {k: 2}, c: {k: 3}};
     const e1 =   hot('-a--b-b----a-c-|', values);

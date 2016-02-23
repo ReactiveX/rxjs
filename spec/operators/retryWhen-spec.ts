@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.retryWhen()', () => {
+/** @test {retryWhen} */
+describe('Observable.prototype.retryWhen', () => {
   asDiagram('retryWhen')('should handle a source with eventual error using a hot notifier', () => {
     const source =  cold('-1--2--#');
     const subs =        ['^      !                     ',

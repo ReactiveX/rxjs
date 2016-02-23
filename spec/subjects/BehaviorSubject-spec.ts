@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, expectObservable} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {hot, expectObservable};
+import {DoneSignature} from '../helpers/test-helper';
 
 const BehaviorSubject = Rx.BehaviorSubject;
 const Observable = Rx.Observable;
 const ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 
+/** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
   it('should extend Subject', (done: DoneSignature) => {
     const subject = new BehaviorSubject(null);

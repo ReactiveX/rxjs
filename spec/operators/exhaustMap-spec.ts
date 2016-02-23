@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.exhaustMap()', () => {
+/** @test {exhaustMap} */
+describe('Observable.prototype.exhaustMap', () => {
   it('should handle outer throw', () => {
     const x =   cold('--a--b--c--|');
     const xsubs = [];

@@ -1,6 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
-import {it} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 

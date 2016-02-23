@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
+/** @test {sampleTime} */
 describe('Observable.prototype.sampleTime', () => {
   asDiagram('sampleTime(110)')('should get samples on a delay', () => {
     const e1 =   hot('----a-^--b----c----d----e----f----|');

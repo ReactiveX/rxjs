@@ -1,12 +1,13 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {GroupedObservable} from '../../dist/cjs/operator/groupBy';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.groupBy()', () => {
+/** @test {groupBy} */
+describe('Observable.prototype.groupBy', () => {
   asDiagram('groupBy(i => i % 2)')('should group numbers by odd/even', () => {
     const e1 =   hot('--1---2---3---4---5---|');
     const expected = '--x---y---------------|';

@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature, asDiagram, lowerCaseO} from '../helpers/test-helper';
+import {DoneSignature, lowerCaseO} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.withLatestFrom()', () => {
+/** @test {withLatestFrom} */
+describe('Observable.prototype.withLatestFrom', () => {
   asDiagram('withLatestFrom')('should combine events from cold observables', () => {
     const e1 =   hot('-a--b-----c-d-e-|');
     const e2 =   hot('--1--2-3-4---|   ');

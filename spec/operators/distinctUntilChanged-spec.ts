@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.distinctUntilChanged()', () => {
+/** @test {distinctUntilChanged} */
+describe('Observable.prototype.distinctUntilChanged', () => {
   asDiagram('distinctUntilChanged')('should distinguish between values', () => {
     const e1 =   hot('-1--2-2----1-3-|');
     const expected = '-1--2------1-3-|';

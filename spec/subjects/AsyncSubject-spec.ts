@@ -1,5 +1,4 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {it} from '../helpers/test-helper';
 
 const AsyncSubject = Rx.AsyncSubject;
 
@@ -19,6 +18,7 @@ class TestObserver implements Rx.Observer<number> {
   }
 }
 
+/** @test {AsyncSubject} */
 describe('AsyncSubject', () => {
   it('should emit the last value when complete', () => {
     const subject = new AsyncSubject();

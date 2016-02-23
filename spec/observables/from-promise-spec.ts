@@ -1,9 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const process: any;
 const Observable = Rx.Observable;
 
+/** @test {fromPromise} */
 describe('Observable.fromPromise', () => {
   it('should emit one value from a resolved promise', (done: DoneSignature) => {
     const promise = Promise.resolve(42);

@@ -1,8 +1,9 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
+/** @test {throw} */
 describe('Observable.throw', () => {
   it('should emit one value', (done: DoneSignature) => {
     let calls = 0;

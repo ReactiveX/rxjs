@@ -1,13 +1,14 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {SymbolShim} from '../../dist/cjs/util/SymbolShim';
-import {expectObservable} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const expectObservable: any;
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const Symbol: any;
 declare const rxTestScheduler: Rx.TestScheduler;
 const $$iterator = SymbolShim.iterator;
 const Observable = Rx.Observable;
 
+/** @test {from} */
 describe('Observable.from', () => {
   it('should enumerate an Array', (done: DoneSignature) => {
     const expected = [1, 2, 3];

@@ -1,9 +1,10 @@
 import {ImmediateDefinition} from '../../dist/cjs/util/Immediate';
 import * as Rx from '../../dist/cjs/Rx';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const __root__: any;
 
+/** @test {ImmediateDefinition} */
 describe('ImmediateDefinition', () => {
   it('should have setImmediate and clearImmediate methods', () => {
     const result = new ImmediateDefinition(__root__);

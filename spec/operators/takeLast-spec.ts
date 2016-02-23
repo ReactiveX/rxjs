@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.takeLast()', () => {
+/** @test {takeLast} */
+describe('Observable.prototype.takeLast', () => {
   asDiagram('takeLast(2)')('should take two values of an observable with many values', () => {
     const e1 =  cold('--a-----b----c---d--|    ');
     const e1subs =   '^                   !    ';

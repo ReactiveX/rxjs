@@ -1,9 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {it, DoneSignature} from '../helpers/test-helper';
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
+/** @test {bindNodeCallback} */
 describe('Observable.bindNodeCallback', () => {
   describe('when not scheduled', () => {
     it('should emit one value from a callback', () => {

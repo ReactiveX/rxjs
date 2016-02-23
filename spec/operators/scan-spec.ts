@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.scan()', () => {
+/** @test {scan} */
+describe('Observable.prototype.scan', () => {
   asDiagram('scan((acc, curr) => acc + curr, 0)')('should scan', () => {
     const values = {
       a: 1, b: 3, c: 5,

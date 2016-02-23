@@ -1,10 +1,10 @@
 import * as Rx from '../../../dist/cjs/Rx.DOM';
 import {root} from '../../../dist/cjs/util/root';
 import {MockXMLHttpRequest} from '../../helpers/ajax-helper';
-import {it} from '../../helpers/test-helper';
 
 declare const global: any;
 
+/** @test {ajax} */
 describe('Observable.ajax', () => {
   let gXHR: XMLHttpRequest;
   let rXHR: XMLHttpRequest;

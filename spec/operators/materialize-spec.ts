@@ -1,11 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 const Notification = Rx.Notification;
 
-describe('Observable.prototype.materialize()', () => {
+/** @test {materialize} */
+describe('Observable.prototype.materialize', () => {
   asDiagram('materialize')('should materialize an Observable', () => {
     const e1 =   hot('--x--y--z--|');
     const expected = '--a--b--c--(d|)';

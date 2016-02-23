@@ -1,13 +1,13 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
 // function shortcuts
 const throwError = function () { throw new Error(); };
 
-describe('Observable.prototype.mapTo()', () => {
+/** @test {mapTo} */
+describe('Observable.prototype.mapTo', () => {
   asDiagram('mapTo(\'a\')')('should map multiple values', () => {
     const a =   cold('--1--2--3--|');
     const asubs =    '^          !';

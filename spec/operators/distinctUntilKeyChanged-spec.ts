@@ -1,8 +1,8 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
-describe('Observable.prototype.distinctUntilKeyChanged()', () => {
+/** @test {distinctUntilKeyChanged} */
+describe('Observable.prototype.distinctUntilKeyChanged', () => {
   asDiagram('distinctUntilKeyChanged(\'k\')')('should distinguish between values', () => {
     const values = {a: {k: 1}, b: {k: 2}, c: {k: 3}};
     const e1 =   hot('-a--b-b----a-c-|', values);

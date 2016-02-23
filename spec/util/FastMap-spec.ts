@@ -1,6 +1,6 @@
 import {FastMap} from '../../dist/cjs/util/FastMap';
-import {it} from '../helpers/test-helper';
 
+/** @test {FastMap} */
 describe('FastMap', () => {
   it('should exist', () => {
     expect(typeof FastMap).toBe('function');

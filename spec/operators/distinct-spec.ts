@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.distinct()', () => {
+/** @test {distinct} */
+describe('Observable.prototype.distinct', () => {
   it('should distinguish between values', () => {
     const e1 =   hot('--a--a--a--b--b--a--|');
     const e1subs =   '^                   !';

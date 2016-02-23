@@ -1,12 +1,12 @@
 /* globals describe, it, expect, expectObservable, expectSubscriptions, rxTestScheduler, hot, cold */
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, time, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, cold, time, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Notification = Rx.Notification;
 const TestScheduler = Rx.TestScheduler;
 
+/** @test {TestScheduler} */
 describe('TestScheduler', () => {
   it('should exist', () => {
     expect(TestScheduler).toBeDefined();

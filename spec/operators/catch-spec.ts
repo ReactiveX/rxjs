@@ -1,11 +1,12 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram, DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestSchdeuler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.catch()', () => {
+/** @test {catch} */
+describe('Observable.prototype.catch', () => {
   asDiagram('catch')('should catch error and replace with a cold Observable', () => {
     const e1 =   hot('--a--b--#        ');
     const e2 =  cold('-1-2-3-|         ');

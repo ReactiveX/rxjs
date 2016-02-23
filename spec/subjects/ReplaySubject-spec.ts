@@ -1,13 +1,14 @@
 import * as Rx from '../../dist/cjs/Rx';
 import {TestScheduler} from '../../dist/cjs/testing/TestScheduler';
-import {hot, expectObservable} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {hot, expectObservable};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: TestScheduler;
 
 const ReplaySubject = Rx.ReplaySubject;
 const Observable = Rx.Observable;
 
+/** @test {ReplaySubject} */
 describe('ReplaySubject', () => {
   it('should extend Subject', (done: DoneSignature) => {
     const subject = new ReplaySubject();

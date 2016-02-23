@@ -1,10 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.mergeMap()', () => {
+/** @test {mergeMap} */
+describe('Observable.prototype.mergeMap', () => {
   it('should mergeMap many regular interval inners', () => {
     const a =   cold('----a---a---a---(a|)                    ');
     const b =   cold(    '----b---b---(b|)                    ');

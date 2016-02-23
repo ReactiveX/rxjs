@@ -1,8 +1,9 @@
 import * as Rx from '../dist/cjs/Rx';
-import {it, DoneSignature} from './helpers/test-helper';
+import {DoneSignature} from './helpers/test-helper';
 
 const Scheduler = Rx.Scheduler;
 
+/** @test {Scheduler} */
 describe('Scheduler.queue', () => {
   it('should schedule things recursively', () => {
     let call1 = false;

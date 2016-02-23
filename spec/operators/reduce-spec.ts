@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('Observable.prototype.reduce()', () => {
+/** @test {reduce} */
+describe('Observable.prototype.reduce', () => {
   asDiagram('reduce((acc, curr) => acc + curr, 0)')('should reduce', () => {
     const values = {
       a: 1, b: 3, c: 5, x: 9

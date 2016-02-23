@@ -1,7 +1,7 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {IteratorObservable} from '../../dist/cjs/observable/IteratorObservable';
-import {expectObservable} from '../helpers/marble-testing';
-import {it, DoneSignature} from '../helpers/test-helper';
+declare const {expectObservable};
+import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 

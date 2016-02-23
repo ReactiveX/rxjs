@@ -1,6 +1,5 @@
 import * as Rx from '../../../dist/cjs/Rx.DOM';
 import {MockWebSocket} from '../../helpers/ajax-helper';
-import {it} from '../../helpers/test-helper';
 
 declare const __root__: any;
 
@@ -18,6 +17,7 @@ function teardownMockWebSocket() {
   MockWebSocket.clearSockets();
 }
 
+/** @test {webSocket} */
 describe('Observable.webSocket', () => {
   beforeEach(() => {
     setupMockWebSocket();

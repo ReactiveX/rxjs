@@ -1,10 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it} from '../helpers/test-helper';
+declare const {hot, cold, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
-describe('...race(observables)', () => {
+/** @test {race} */
+describe('Observable.prototype.race', () => {
   it('should race cold and cold', () => {
     const e1 =  cold('---a-----b-----c----|');
     const e1subs =   '^                   !';
