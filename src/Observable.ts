@@ -273,6 +273,9 @@ export class Observable<T> implements CoreOperators<T>  {
   sample: (notifier: Observable<any>) => Observable<T>;
   sampleTime: (delay: number, scheduler?: Scheduler) => Observable<T>;
   scan: <R>(accumulator: (acc: R, x: T) => R, seed?: T | R) => Observable<R>;
+  scanCase: <T, R>(selector: (value: T, index: number) => string | number | symbol,
+                   strategy: { key: string | number | symbol, acc: (acc: R, value: T) => R },
+                   seed?: T | R) => Observable<R>;
   share: () => Observable<T>;
   single: (predicate?: (value: T, index: number) => boolean) => Observable<T>;
   skip: (count: number) => Observable<T>;
