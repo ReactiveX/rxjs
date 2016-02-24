@@ -39,12 +39,12 @@ const createXHRDefault = (): XMLHttpRequest => {
 };
 
 export interface AjaxCreationMethod {
-  (): <T>(urlOrRequest: string | AjaxRequest) => Observable<T>;
-  get: <T>(url: string, resultSelector?: (response: AjaxResponse) => T, headers?: Object) => Observable<T>;
-  post: <T>(url: string, body?: any, headers?: Object) => Observable<T>;
-  put: <T>(url: string, body?: any, headers?: Object) => Observable<T>;
-  delete: <T>(url: string, headers?: Object) => Observable<T>;
-  getJSON: <T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object) => Observable<R>;
+  <T>(urlOrRequest: string | AjaxRequest): Observable<T>;
+  get<T>(url: string, resultSelector?: (response: AjaxResponse) => T, headers?: Object): Observable<T>;
+  post<T>(url: string, body?: any, headers?: Object): Observable<T>;
+  put<T>(url: string, body?: any, headers?: Object): Observable<T>;
+  delete<T>(url: string, headers?: Object): Observable<T>;
+  getJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R>;
 }
 
 function defaultGetResultSelector<T>(response: AjaxResponse): T {
