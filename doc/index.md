@@ -10,3 +10,5 @@ This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Exte
 *Read the Manual on Observables, Observer, Subject, etc*
 ### [» Full reference](./identifiers.html)
 *Read detailed documentation on each operator*
+
+**Hint: open your DevTools to experiment with RxJS.**
