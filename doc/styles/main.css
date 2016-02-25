@@ -11,6 +11,7 @@
 
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,700);
 @import url(https://fonts.googleapis.com/css?family=Signika);
+@import url(https://fonts.googleapis.com/css?family=Kalam);
 
 html {
   font-family: 'Source Sans Pro', 'Roboto', sans-serif;
@@ -37,6 +38,27 @@ a {
   margin-right: 0.3em;
 }
 
+.navigation .manual-toc-title {
+  padding: 0.5em;
+}
+
+.manual-dot {
+  display: none;
+}
+
+.manual-toc .indent-h3 {
+  margin-left: 2em;
+}
+
+.inner-link-active {
+  border-bottom: 6px solid #EC0C8E;
+  background: inherit;
+}
+
+a:hover, .manual-toc-title a:hover {
+  color: #EC0C8E;
+}
+
 .content .detail {
   font-size: 16px;
 }
@@ -47,6 +69,15 @@ a {
 
 .content .detail p img {
   max-width: 640px;
+}
+
+.github-markdown pre > code {
+  line-height: 1.5em;
+  margin: 22px 0;
+}
+
+code.lang-none span {
+  color: #4d4d4c;
 }
 
 /* Params table styling */
@@ -82,4 +113,13 @@ table.params thead td {
 
 table.params tbody tr:last-child td {
   border-bottom: none;
+}
+
+.informal {
+  display: block;
+  padding-left: 1.3em;
+  border-left: 5px solid #dfdfdf;
+  font-size: 1.1em;
+  font-family: 'Kalam', cursive;
+  margin: 22px 0;
 }
