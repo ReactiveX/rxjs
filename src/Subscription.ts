@@ -19,14 +19,13 @@ export class Subscription {
   }
 
   unsubscribe(): void {
-    let hasErrors = false;
-    let errors: any[];
-
     if (this.isUnsubscribed) {
       return;
     }
-
     this.isUnsubscribed = true;
+
+    let hasErrors = false;
+    let errors: any[] = [];
 
     const { _unsubscribe, _subscriptions } = (<any> this);
 
@@ -36,7 +35,7 @@ export class Subscription {
       let trial = tryCatch(_unsubscribe).call(this);
       if (trial === errorObject) {
         hasErrors = true;
-        (errors = errors || []).push(errorObject.e);
+        errors.push(errorObject.e);
       }
     }
 
@@ -51,7 +50,6 @@ export class Subscription {
           let trial = tryCatch(sub.unsubscribe).call(sub);
           if (trial === errorObject) {
             hasErrors = true;
-            errors = errors || [];
             let err = errorObject.e;
             if (err instanceof UnsubscriptionError) {
               errors = errors.concat(err.errors);
