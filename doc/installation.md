@@ -1,6 +1,6 @@
 ## ES6 via npm
 
-```sh
+```none
 npm install rxjs-es
 ```
 
@@ -32,7 +32,7 @@ Observable.of(1,2,3)::map(x => x + '!!!'); // etc
 
 ## CommonJS via npm
 
-```sh
+```none
 npm install rxjs
 ```
 
@@ -69,13 +69,13 @@ You can also use the above method to build your own Observable and export it fro
 
 To install this library via [npm](https://www.npmjs.org) **version 3**, use the following command:
 
-```sh
+```none
 npm install @reactivex/rxjs
 ```
 
 If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
 
-```sh
+```none
 npm install @reactivex/rxjs@5.0.0-beta.1
 ```
 
