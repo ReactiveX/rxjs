@@ -20,7 +20,7 @@
     "build_closure_kitchensink": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js ./dist/global/Rx.KitchenSink.umd.js --language_in ECMASCRIPT5 --create_source_map ./dist/global/Rx.KitchenSink.umd.min.js.map --js_output_file ./dist/global/Rx.KitchenSink.umd.min.js",
     "build_global": "rm -rf dist/global && mkdir \"dist/global\" && node tools/make-umd-bundle.js && node tools/make-system-bundle.js && npm run build_closure_core && npm run build_closure_kitchensink",
     "build_perf": "npm run build_cjs && npm run build_global && webdriver-manager update && npm run perf",
-    "build_test": "rm -rf dist/ && npm run lint && npm run build_cjs && jasmine",
+    "build_test": "rm -rf dist/ && npm run lint && npm run build_cjs && tsc spec/typings/typing-tpecs.ts --outDir dist/tpec --target ES6 --diagnostics --pretty && jasmine",
     "build_cover": "rm -rf dist/ && npm run lint && npm run build_cjs && npm run cover",
     "build_docs": "npm run build_es6 && npm run tests2png && esdoc -c esdoc.json",
     "publish_docs": "./publish_docs.sh",
