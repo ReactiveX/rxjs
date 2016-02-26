@@ -13,7 +13,9 @@ export class Subscription {
   public isUnsubscribed: boolean = false;
 
   constructor(_unsubscribe?: () => void) {
-    if (_unsubscribe) {
+    // Check `_unsubscribe`to avoid override `this._unsubscribe` accidentally.
+    // Dn't call `super(_unsubscribe)` from a derived class.
+    if (!!_unsubscribe) {
       (<any> this)._unsubscribe = _unsubscribe;
     }
   }
