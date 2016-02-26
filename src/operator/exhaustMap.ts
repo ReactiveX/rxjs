@@ -1,6 +1,7 @@
 import {Operator} from '../Operator';
 import {Observable, ObservableInput} from '../Observable';
 import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -95,7 +96,9 @@ class SwitchFirstMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this.destination.error(err);
   }
 
-  notifyComplete(): void {
+  notifyComplete(innerSub: Subscription): void {
+    this.remove(innerSub);
+
     this.hasSubscription = false;
     if (this.hasCompleted) {
       this.destination.complete();
