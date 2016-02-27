@@ -84,7 +84,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     super._complete();
   }
 
-  _unsubscribe() {
+  protected _unsubscribe() {
     this.buffers = null;
   }
 

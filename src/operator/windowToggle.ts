@@ -93,7 +93,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
     super._complete();
   }
 
-  _unsubscribe() {
+  protected _unsubscribe() {
     const { contexts } = this;
     this.contexts = null;
     if (contexts) {
