@@ -129,8 +129,10 @@ import {EmptyError} from './util/EmptyError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {asap} from './scheduler/asap';
+import {async} from './scheduler/async';
 import {queue} from './scheduler/queue';
 import {AsapScheduler} from './scheduler/AsapScheduler';
+import {AsyncScheduler} from './scheduler/AsyncScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
 import {rxSubscriber} from './symbol/rxSubscriber';
 /* tslint:enable:no-unused-variable */
@@ -138,6 +140,7 @@ import {rxSubscriber} from './symbol/rxSubscriber';
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
   asap,
+  async,
   queue
 };
 

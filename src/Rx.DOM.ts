@@ -124,9 +124,11 @@ import {EmptyError} from './util/EmptyError';
 import {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {asap} from './scheduler/asap';
+import {async} from './scheduler/async';
 import {queue} from './scheduler/queue';
 import {animationFrame} from './scheduler/animationFrame';
 import {AsapScheduler} from './scheduler/AsapScheduler';
+import {AsyncScheduler} from './scheduler/AsyncScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
 import {AnimationFrameScheduler} from './scheduler/AnimationFrameScheduler';
 import {rxSubscriber} from './symbol/rxSubscriber';
@@ -136,6 +138,7 @@ import {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observab
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
   asap,
+  async,
   queue,
   animationFrame
 };
