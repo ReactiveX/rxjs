@@ -2,10 +2,10 @@ module.exports = wallaby => ({
   files: [
     'index.js',
     'src/**/*.ts',
-    {pattern: 'spec/helpers/*.js', instrument: false}
+    {pattern: 'spec/helpers/*.ts', instrument: false}
   ],
 
-  tests: ['spec/**/*-spec.js'],
+  tests: ['spec/**/*-spec.ts'],
 
   compilers: {
     '**/*.ts': wallaby.compilers.typeScript({
