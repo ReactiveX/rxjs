@@ -29,52 +29,40 @@ class TakeLastOperator<T> implements Operator<T, T> {
 }
 
 class TakeLastSubscriber<T> extends Subscriber<T> {
-  private ring: T[];
+  private ring: Array<T> = new Array();
   private count: number = 0;
-  private index: number = 0;
 
   constructor(destination: Subscriber<T>, private total: number) {
     super(destination);
-    this.ring = new Array(total);
   }
 
   protected _next(value: T): void {
-
-    let index = this.index;
     const ring = this.ring;
     const total = this.total;
-    const count = this.count;
+    const count = this.count++;
 
-    if (total > 1) {
-      if (count < total) {
-        this.count = count + 1;
-        this.index = index + 1;
-      } else if (index === 0) {
-        this.index = ++index;
-      } else if (index < total) {
-        this.index = index + 1;
-      } else  {
-        this.index = index = 0;
-      }
-    } else if (count < total) {
-      this.count = total;
+    if (ring.length < total) {
+      ring.push(value);
+    } else {
+      const index = count % total;
+      ring[index] = value;
     }
-
-    ring[index] = value;
   }
 
   protected _complete(): void {
+    const destination = this.destination;
+    let count = this.count;
 
-    let iter = -1;
-    const { ring, count, total, destination } = this;
-    let index = (total === 1 || count < total) ? 0 : this.index - 1;
+    if (count > 0) {
+      const total = this.count >= this.total ? this.total : this.count;
+      const ring  = this.ring;
 
-    while (++iter < count) {
-      if (iter + index === total) {
-        index = total - iter;
+      for (let i = 0; i < total; i++) {
+        const idx = (count++) % total;
+        destination.next(ring[idx]);
       }
-      destination.next(ring[iter + index]);
     }
+
     destination.complete();
   }
 }

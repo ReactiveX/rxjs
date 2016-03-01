@@ -14,6 +14,40 @@ describe('Observable.prototype.takeLast()', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should take last three values', () => {
+    const e1 =  cold('--a-----b----c---d--|    ');
+    const e1subs =   '^                   !    ';
+    const expected = '--------------------(bcd|)';
+
+    expectObservable(e1.takeLast(3)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should take all element when try to take larger then source', () => {
+    const e1 =  cold('--a-----b----c---d--|    ');
+    const e1subs =   '^                   !    ';
+    const expected = '--------------------(abcd|)';
+
+    expectObservable(e1.takeLast(5)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should take all element when try to take exact', () => {
+    const e1 =  cold('--a-----b----c---d--|    ');
+    const e1subs =   '^                   !    ';
+    const expected = '--------------------(abcd|)';
+
+    expectObservable(e1.takeLast(4)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not take any values', () => {
+    const e1 =  cold('--a-----b----c---d--|');
+    const expected = '|';
+
+    expectObservable(e1.takeLast(0)).toBe(expected);
+  });
+
   it('should work with empty', () => {
     const e1 =  cold('|');
     const e1subs =   '(^!)';
