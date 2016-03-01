@@ -22,6 +22,13 @@ a {
   color: #B7178C;
 }
 
+hr {
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-bottom: 1px solid #ddd;
+}
+
 /* Top nav bar border bottom */
 .layout-container > header {
   background-color: #333;
@@ -187,4 +194,77 @@ table.params thead td {
 
 table.params tbody tr:last-child td {
   border-bottom: none;
+}
+
+.informal {
+  display: block;
+  padding-left: 1.3em;
+  border-left: 5px solid #dfdfdf;
+  font-size: 1.1em;
+  font-family: 'Kalam', cursive;
+  margin: 22px 0;
+}
+
+/* Operator Decision Tree styling */
+.decision-tree-widget ul {
+  padding-left: 0;
+  display: inline-block;
+}
+
+.decision-tree-widget ul li{
+  margin: 10px 0;
+  list-style: none;
+}
+
+.decision-tree-widget ul li:hover {
+  cursor: pointer;
+  color: #EC0C8E;
+}
+
+.decision-tree-widget ul li::before {
+  display: inline-block;
+  background: #B7178C;
+  width: 10px;
+  content: '';
+  height: 10px;
+  border-radius: 20px;
+  margin-bottom: -5px;
+  margin-right: 8px;
+  border: 6px #EEEEEE solid;
+}
+
+.decision-tree-widget ul li:hover::before {
+  background: #EC0C8E;
+}
+
+.decision-tree-widget .current-sentence {
+  font-weight: bold;
+  line-height: 1.7em;
+}
+
+.decision-tree-widget .undo {
+  padding: 4px;
+  margin: 8px;
+  border: 1px solid #B7178C;
+  color: #B7178C;
+}
+
+.decision-tree-widget .undo:hover {
+  cursor: pointer;
+  border: 1px solid #EC0C8E;
+  color: #EC0C8E;
+}
+
+.decision-tree-widget .reset {
+  padding: 4px;
+  color: #B7178C;
+}
+
+.decision-tree-widget .reset:hover {
+  cursor: pointer;
+  color: #EC0C8E;
+}
+
+.decision-tree-widget ul h4.decision {
+  margin: 10px 0;
 }

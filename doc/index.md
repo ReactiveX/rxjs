@@ -11,4 +11,8 @@ This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Exte
 ### [» Full reference](./identifiers.html)
 *Read detailed documentation on each operator*
 
+- - -
+
+<div class="decision-tree-widget"></div>
+
 **Hint: open your DevTools to experiment with RxJS.**

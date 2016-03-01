@@ -100,6 +100,10 @@ Below you can see the anatomy of a marble diagram.
 
 Throughout this documentation site, we extensively use marble diagrams to explain how operators work. They may be really useful in other contexts too, like on a whiteboard or even in our unit tests (as ASCII diagrams).
 
+## Choose an operator
+
+<div class="decision-tree-widget"></div>
+
 ## Categories of operators
 
 There are operators for different purposes, and they may be categorized as: creation, transformation, filtering, combination, multicasting, error handling, utility, etc. In the following list you will find all the operators organized in categories.
