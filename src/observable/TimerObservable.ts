@@ -1,7 +1,7 @@
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 import {isScheduler} from '../util/isScheduler';
 import {isDate} from '../util/isDate';
 import {Subscription} from '../Subscription';
@@ -58,7 +58,7 @@ export class TimerObservable extends Observable<number> {
     }
 
     if (!isScheduler(scheduler)) {
-      scheduler = asap;
+      scheduler = async;
     }
 
     this.scheduler = scheduler;

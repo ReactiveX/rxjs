@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 
 /**
  * @param scheduler
@@ -10,7 +10,7 @@ import {asap} from '../scheduler/asap';
  * @method timeInterval
  * @owner Observable
  */
-export function timeInterval<T>(scheduler: Scheduler = asap): Observable<TimeInterval<T>> {
+export function timeInterval<T>(scheduler: Scheduler = async): Observable<TimeInterval<T>> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }
 

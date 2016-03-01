@@ -1,4 +1,4 @@
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 import {isDate} from '../util/isDate';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
@@ -16,7 +16,7 @@ import {Observable} from '../Observable';
  * @owner Observable
  */
 export function delay<T>(delay: number|Date,
-                         scheduler: Scheduler = asap): Observable<T> {
+                         scheduler: Scheduler = async): Observable<T> {
   const absoluteDelay = isDate(delay);
   const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(<number>delay);
   return this.lift(new DelayOperator(delayFor, scheduler));

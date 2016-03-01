@@ -3,7 +3,7 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 
 /**
  * Returns the source Observable delayed by the computed debounce duration,
@@ -19,7 +19,7 @@ import {asap} from '../scheduler/asap';
  * @method debounceTime
  * @owner Observable
  */
-export function debounceTime<T>(dueTime: number, scheduler: Scheduler = asap): Observable<T> {
+export function debounceTime<T>(dueTime: number, scheduler: Scheduler = async): Observable<T> {
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 

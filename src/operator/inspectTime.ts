@@ -1,4 +1,4 @@
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
@@ -12,7 +12,7 @@ import {Subscription} from '../Subscription';
  * @method inspectTime
  * @owner Observable
  */
-export function inspectTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
+export function inspectTime<T>(delay: number, scheduler: Scheduler = async): Observable<T> {
   return this.lift(new InspectTimeOperator(delay, scheduler));
 }
 

@@ -4,7 +4,7 @@ import {Observable} from '../Observable';
 import {Subject} from '../Subject';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 
 /**
  * @param windowTimeSpan
@@ -16,7 +16,7 @@ import {asap} from '../scheduler/asap';
  */
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,
-                              scheduler: Scheduler = asap): Observable<Observable<T>> {
+                              scheduler: Scheduler = async): Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, scheduler));
 }
 

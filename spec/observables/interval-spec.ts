@@ -16,7 +16,7 @@ describe('Observable.interval', () => {
   it('should specify default scheduler if incorrect scheduler specified', () => {
     const scheduler = (<any>Observable.interval(10, <any>jasmine.createSpy('dummy'))).scheduler;
 
-    expect(scheduler).toBe(Rx.Scheduler.asap);
+    expect(scheduler).toBe(Rx.Scheduler.async);
   });
 
   it('should emit when relative interval set to zero', () => {

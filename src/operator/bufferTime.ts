@@ -3,7 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 
 /**
  * Buffers values from the source for a specific time period. Optionally allows
@@ -15,7 +15,7 @@ import {asap} from '../scheduler/asap';
  * before emitting them and clearing them.
  * @param {number} [bufferCreationInterval] the interval at which to start new
  * buffers.
- * @param {Scheduler} [scheduler] (optional, defaults to `asap` scheduler) The
+ * @param {Scheduler} [scheduler] (optional, defaults to `async` scheduler) The
  * scheduler on which to schedule the intervals that determine buffer
  * boundaries.
  * @return {Observable<T[]>} an observable of arrays of buffered values.
@@ -24,7 +24,7 @@ import {asap} from '../scheduler/asap';
  */
 export function bufferTime<T>(bufferTimeSpan: number,
                               bufferCreationInterval: number = null,
-                              scheduler: Scheduler = asap): Observable<T[]> {
+                              scheduler: Scheduler = async): Observable<T[]> {
   return this.lift(new BufferTimeOperator<T>(bufferTimeSpan, bufferCreationInterval, scheduler));
 }
 

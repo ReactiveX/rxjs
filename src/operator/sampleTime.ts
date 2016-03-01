@@ -2,7 +2,7 @@ import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 
 /**
  * @param delay
@@ -11,7 +11,7 @@ import {asap} from '../scheduler/asap';
  * @method sampleTime
  * @owner Observable
  */
-export function sampleTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
+export function sampleTime<T>(delay: number, scheduler: Scheduler = async): Observable<T> {
   return this.lift(new SampleTimeOperator(delay, scheduler));
 }
 

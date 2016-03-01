@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 import {Observable} from '../Observable';
 
 /**
@@ -12,7 +12,7 @@ import {Observable} from '../Observable';
  * @method throttleTime
  * @owner Observable
  */
-export function throttleTime<T>(delay: number, scheduler: Scheduler = asap): Observable<T> {
+export function throttleTime<T>(delay: number, scheduler: Scheduler = async): Observable<T> {
   return this.lift(new ThrottleTimeOperator(delay, scheduler));
 }
 

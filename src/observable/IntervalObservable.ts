@@ -2,7 +2,7 @@ import {Subscriber} from '../Subscriber';
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {asap} from '../scheduler/asap';
+import {async} from '../scheduler/async';
 
 /**
  *
@@ -16,7 +16,7 @@ export class IntervalObservable extends Observable<number> {
    * @name interval
    * @owner Observable
    */
-  static create(period: number = 0, scheduler: Scheduler = asap): Observable<number> {
+  static create(period: number = 0, scheduler: Scheduler = async): Observable<number> {
     return new IntervalObservable(period, scheduler);
   }
 
@@ -34,13 +34,13 @@ export class IntervalObservable extends Observable<number> {
     (<any> this).schedule(state, period);
   }
 
-  constructor(private period: number = 0, private scheduler: Scheduler = asap) {
+  constructor(private period: number = 0, private scheduler: Scheduler = async) {
     super();
     if (!isNumeric(period) || period < 0) {
       this.period = 0;
     }
     if (!scheduler || typeof scheduler.schedule !== 'function') {
-      this.scheduler = asap;
+      this.scheduler = async;
     }
   }
 
