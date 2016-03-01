@@ -45,6 +45,9 @@ function assertAction(done: DoneSignature, assertion: (done?: DoneSignature) => 
 }
 
 export function asDiagram(expectation: string): (expectation: string, assertion?: (done: DoneSignature) => void, timeout?: number) => void {
+  if (global.it.asDiagram) {
+    return global.it.asDiagram(expectation);
+  }
   return it;
 }
 

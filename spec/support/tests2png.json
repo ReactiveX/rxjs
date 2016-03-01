@@ -1,9 +1,10 @@
 {
-  "spec_dir": "spec",
+  "spec_dir": "tmp",
   "spec_files": [
     "**/*[sS]pec.js"
   ],
   "helpers": [
-    "helpers/tests2png/diagram-test-runner.js"
+    "helpers/tests2png/diagram-test-runner.js",
+    "helpers/**/*helper.js"
   ]
 }
