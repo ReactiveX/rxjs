@@ -30,7 +30,7 @@ describe('Observable', () => {
       const expected = [1, 2, 3];
       const result = Observable.of(1, 2, 3).forEach(function (x) {
         expect(x).toBe(expected.shift());
-      }, null, Promise)
+      }, Promise)
       .then(done);
 
       expect(typeof result.then).toBe('function');
@@ -39,7 +39,7 @@ describe('Observable', () => {
     it('should reject promise when in error', (done: DoneSignature) => {
       Observable.throw('bad').forEach((x: any) => {
         done.fail('should not be called');
-      }, null, Promise).then(() => {
+      }, Promise).then(() => {
         done.fail('should not complete');
       }, (err: any) => {
         expect(err).toBe('bad');
@@ -63,18 +63,6 @@ describe('Observable', () => {
         expect(wasCalled).toBe(true);
         done();
       });
-    });
-
-    it('should accept a thisArg argument', (done: DoneSignature) => {
-      const expected = [1, 2, 3];
-      const thisArg = {};
-      const result = Observable.of(1, 2, 3).forEach(function (x) {
-        expect(this).toBe(thisArg);
-        expect(x).toBe(expected.shift());
-      }, thisArg, Promise)
-      .then(done);
-
-      expect(typeof result.then).toBe('function');
     });
 
     it('should reject promise if nextHandler throws', (done: DoneSignature) => {
