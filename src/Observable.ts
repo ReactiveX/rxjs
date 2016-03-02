@@ -213,12 +213,11 @@ export class Observable<T> implements CoreOperators<T>  {
   /**
    * @method forEach
    * @param {Function} next a handler for each value emitted by the observable
-   * @param {any} [thisArg] a `this` context for the `next` handler function
    * @param {PromiseConstructor} [PromiseCtor] a constructor function used to instantiate the Promise
    * @return {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, thisArg: any, PromiseCtor?: typeof Promise): Promise<void> {
+  forEach(next: (value: T) => void, PromiseCtor?: typeof Promise): Promise<void> {
     if (!PromiseCtor) {
       if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
         PromiseCtor = root.Rx.config.Promise;
@@ -235,7 +234,7 @@ export class Observable<T> implements CoreOperators<T>  {
 
     return new PromiseCtor<void>((resolve, reject) => {
       source.subscribe((value: T) => {
-        const result: any = tryCatch(next).call(thisArg, value);
+        const result: any = tryCatch(next)(value);
         if (result === errorObject) {
           reject(errorObject.e);
         }
