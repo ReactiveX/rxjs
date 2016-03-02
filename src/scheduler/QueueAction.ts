@@ -2,7 +2,7 @@ import {Action} from './Action';
 import {FutureAction} from './FutureAction';
 
 export class QueueAction<T> extends FutureAction<T> {
-  protected _schedule(state?: any, delay: number = 0): Action {
+  protected _schedule(state?: T, delay: number = 0): Action {
     if (delay > 0) {
       return super._schedule(state, delay);
     }
