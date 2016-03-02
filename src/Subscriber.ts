@@ -1,3 +1,4 @@
+import {isObject} from './util/isObject';
 import {isFunction} from './util/isFunction';
 import {Observer, PartialObserver} from './Observer';
 import {Subscription} from './Subscription';
@@ -17,6 +18,11 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   public syncErrorValue: any = null;
   public syncErrorThrown: boolean = false;
   public syncErrorThrowable: boolean = false;
+
+  // for backwards compatability with <= Rx4
+  public onNext: (value: T) => void;
+  public onError: (error: any) => void;
+  public onCompleted: () => void;
 
   protected isStopped: boolean = false;
   protected destination: PartialObserver<any>;
@@ -98,6 +104,10 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 }
 
+Subscriber.prototype.onNext = Subscriber.prototype.next;
+Subscriber.prototype.onError = Subscriber.prototype.error;
+Subscriber.prototype.onCompleted = Subscriber.prototype.complete;
+
 class SafeSubscriber<T> extends Subscriber<T> {
 
   private _context: any;
@@ -113,11 +123,11 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
     if (isFunction(observerOrNext)) {
       next = (<((value: T) => void)> observerOrNext);
-    } else if (observerOrNext) {
+    } else if (isObject(observerOrNext)) {
       context = observerOrNext;
-      next = (<PartialObserver<T>> observerOrNext).next;
-      error = (<PartialObserver<T>> observerOrNext).error;
-      complete = (<PartialObserver<T>> observerOrNext).complete;
+      next = (<any> observerOrNext).onNext || (<PartialObserver<T>> observerOrNext).next;
+      error = (<any> observerOrNext).onError || (<PartialObserver<T>> observerOrNext).error;
+      complete = (<any> observerOrNext).onCompleted || (<PartialObserver<T>> observerOrNext).complete;
     }
 
     this._context = context;

@@ -15,12 +15,18 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     return new Subject<T>(destination, source);
   };
 
-  constructor(protected destination?: Observer<T>, protected source?: Observable<T>) {
-    super();
-  }
-
   public observers: Observer<T>[] = [];
   public isUnsubscribed: boolean = false;
+
+  public add: (subscription: Subscription|Function|void) => void;
+  public remove: (subscription: Subscription) => void;
+  public unsubscribe: () => void;
+
+  // for backwards compatability with <= Rx4
+  public onNext: (value: T) => void;
+  public onError: (error: any) => void;
+  public onCompleted: () => void;
+  public dispose: () => void;
 
   protected isStopped: boolean = false;
   protected hasErrored: boolean = false;
@@ -28,22 +34,14 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   protected dispatching: boolean = false;
   protected hasCompleted: boolean = false;
 
+  constructor(protected destination?: Observer<T>, protected source?: Observable<T>) {
+    super();
+  }
+
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
     const subject = new Subject(this.destination || this, this);
     subject.operator = operator;
     return <any>subject;
-  }
-
-  add(subscription: Subscription|Function|void): void {
-    Subscription.prototype.add.call(this, subscription);
-  }
-
-  remove(subscription: Subscription): void {
-    Subscription.prototype.remove.call(this, subscription);
-  }
-
-  unsubscribe(): void {
-    Subscription.prototype.unsubscribe.call(this);
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
@@ -219,6 +217,15 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     return new Subscriber<T>(this);
   }
 }
+
+Subject.prototype.add = Subscription.prototype.add;
+Subject.prototype.remove = Subscription.prototype.remove;
+Subject.prototype.unsubscribe = Subscription.prototype.unsubscribe;
+
+Subject.prototype.onNext = Subject.prototype.next;
+Subject.prototype.onError = Subject.prototype.error;
+Subject.prototype.onCompleted = Subject.prototype.complete;
+Subject.prototype.dispose = Subject.prototype.unsubscribe;
 
 class SubjectObservable<T> extends Observable<T> {
   constructor(source: Subject<T>) {
