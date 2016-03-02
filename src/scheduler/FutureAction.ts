@@ -5,12 +5,12 @@ import {Subscription} from '../Subscription';
 
 export class FutureAction<T> extends Subscription implements Action {
 
-  public id: any;
-  public state: any;
+  public id: number;
+  public state: T;
   public delay: number;
 
   constructor(public scheduler: Scheduler,
-              public work: (x?: any) => Subscription | void) {
+              public work: (x?: T) => Subscription | void) {
     super();
   }
 
@@ -21,21 +21,21 @@ export class FutureAction<T> extends Subscription implements Action {
     this.work(this.state);
   }
 
-  schedule(state?: any, delay: number = 0): Action {
+  schedule(state?: T, delay: number = 0): Action {
     if (this.isUnsubscribed) {
       return this;
     }
     return this._schedule(state, delay);
   }
 
-  protected _schedule(state?: any, delay: number = 0): Action {
+  protected _schedule(state?: T, delay: number = 0): Action {
 
     this.delay = delay;
     this.state = state;
     const id = this.id;
 
     if (id != null) {
-      this.id = undefined;
+      this.id = null;
       root.clearTimeout(id);
     }
 
