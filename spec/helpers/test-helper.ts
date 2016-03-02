@@ -17,6 +17,7 @@ global.hot = marbleHelpers.hot;
 global.time = marbleHelpers.time;
 global.expectObservable = marbleHelpers.expectObservable;
 global.expectSubscriptions = marbleHelpers.expectSubscriptions;
+global.type = type;
 
 //amending type definition of jasmine which seems doesn't have this
 export interface DoneSignature {
@@ -75,6 +76,11 @@ global.it = it;
 global.fit = fit;
 if (!global.asDiagram) {
   global.asDiagram = asDiagram;
+}
+
+export function type(assertion: Function): void {
+  //intentionally does not execute to avoid unexpected side effect occurs by subscription,
+  //or infinite source. Suffecient to check build time only.
 }
 
 export function lowerCaseO<T>(...args): Rx.Observable<T> {

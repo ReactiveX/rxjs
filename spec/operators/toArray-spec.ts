@@ -1,5 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions, type};
 
 const Observable = Rx.Observable;
 
@@ -100,5 +100,13 @@ describe('Observable.prototype.toArray', () => {
 
     expectObservable(e1.toArray()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  type(() => {
+    const typeValue = {
+      val: 3
+    };
+
+    Observable.of(typeValue).toArray().subscribe(x => { x[0].val.toString(); });
   });
 });
