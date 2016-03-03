@@ -76,7 +76,7 @@ describe('Observable.prototype.startWith()', () => {
     const e1subs =   '^       !';
     const expected = '(yz)-a--|';
 
-    expectObservable((<any>e1).startWith('y', 'z')).toBe(expected);
+    expectObservable(e1.startWith('y', 'z')).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -105,7 +105,7 @@ describe('Observable.prototype.startWith()', () => {
     const expected = 's--a--b---';
     const values = { s: 's', a: 'a', b: 'b' };
 
-    const result = (<any>e1).startWith('s', rxTestScheduler);
+    const result = e1.startWith('s', rxTestScheduler);
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -118,7 +118,7 @@ describe('Observable.prototype.startWith()', () => {
     const unsub =    '         !        ';
     const values = { s: 's', a: 'a', b: 'b' };
 
-    const result = (<any>e1)
+    const result = e1
       .mergeMap((x: string) => Observable.of(x))
       .startWith('s', rxTestScheduler)
       .mergeMap((x: string) => Observable.of(x));
@@ -141,7 +141,7 @@ describe('Observable.prototype.startWith()', () => {
     const e1subs =   '^    !';
     const expected = 'x-a--|';
 
-    expectObservable((<any>e1).startWith(defaultStartValue, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.startWith(defaultStartValue, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -150,7 +150,7 @@ describe('Observable.prototype.startWith()', () => {
     const e1subs =   '^       !';
     const expected = '(yz)-a--|';
 
-    expectObservable((<any>e1).startWith('y', 'z', rxTestScheduler)).toBe(expected);
+    expectObservable(e1.startWith('y', 'z', rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

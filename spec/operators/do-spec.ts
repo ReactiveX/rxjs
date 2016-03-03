@@ -1,6 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx';
 import {hot, cold, expectObservable, expectSubscriptions} from '../helpers/marble-testing';
-import {it, asDiagram} from '../helpers/test-helper';
+import {it, asDiagram, DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
@@ -11,7 +11,9 @@ describe('Observable.prototype.do()', () => {
     const e1subs =   '^          !';
     const expected = '--1--2--3--|';
 
-    const result = (<any>e1).do();
+    const result = e1.do(() => {
+      //noop
+    });
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
@@ -38,32 +40,28 @@ describe('Observable.prototype.do()', () => {
     expect(err).toBe('bad');
   });
 
-  it('should handle everything with an observer', () => {
+  it('should handle everything with an observer', (done: DoneSignature) => {
     const expected = [1, 2, 3];
     const results = [];
-    let completeCalled = false;
+
     Observable.of(1, 2, 3)
-      .do(<any>{
+      .do(<Rx.Observer<number>>{
         next: (x: number) => {
           results.push(x);
         },
         error: (err: any) => {
-          throw 'should not be called';
+          done.fail('should not be called');
         },
         complete: () => {
-          completeCalled = true;
+          expect(results).toEqual(expected);
+          done();
         }
-      })
-      .subscribe();
-
-    expect(completeCalled).toBe(true);
-    expect(results).toEqual(expected);
+      }).subscribe();
   });
 
-  it('should handle everything with a Subject', () => {
+  it('should handle everything with a Subject', (done: DoneSignature) => {
     const expected = [1, 2, 3];
     const results = [];
-    let completeCalled = false;
     const subject = new Subject();
 
     subject.subscribe({
@@ -71,19 +69,17 @@ describe('Observable.prototype.do()', () => {
         results.push(x);
       },
       error: (err: any) => {
-        throw 'should not be called';
+        done.fail('should not be called');
       },
       complete: () => {
-        completeCalled = true;
+        expect(results).toEqual(expected);
+        done();
       }
     });
 
     Observable.of(1, 2, 3)
-      .do(<any>subject)
+      .do(<Rx.Observer<number>>subject)
       .subscribe();
-
-    expect(completeCalled).toBe(true);
-    expect(results).toEqual(expected);
   });
 
   it('should handle an error with a callback', () => {
@@ -172,7 +168,9 @@ describe('Observable.prototype.do()', () => {
     const e1subs =   '^      !    ';
     const expected = '--1--2--    ';
 
-    const result = (<any>e1).do();
+    const result = e1.do(() => {
+      //noop
+    });
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
@@ -183,9 +181,11 @@ describe('Observable.prototype.do()', () => {
     const expected = '--1--2--    ';
     const unsub =    '       !    ';
 
-    const result = (<any>e1)
+    const result = e1
       .mergeMap((x: any) => Observable.of(x))
-      .do()
+      .do(() => {
+        //noop
+      })
       .mergeMap((x: any) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
@@ -197,7 +197,9 @@ describe('Observable.prototype.do()', () => {
     const e1subs =   '^          !';
     const expected = '--1--2--3--|';
 
-    const result = (<any>e1).do();
+    const result = e1.do(() => {
+      //noop
+    });
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
@@ -207,7 +209,9 @@ describe('Observable.prototype.do()', () => {
     const e1subs =   '^          !';
     const expected = '--1--2--3--#';
 
-    const result = (<any>e1).do();
+    const result = e1.do(() => {
+      //noop
+    });
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });

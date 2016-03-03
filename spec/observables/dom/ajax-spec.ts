@@ -4,7 +4,6 @@ import {MockXMLHttpRequest} from '../../helpers/ajax-helper';
 import {it} from '../../helpers/test-helper';
 
 declare const global: any;
-//declare const XMLHttpRequest: MockXMLHttpRequest;
 
 describe('Observable.ajax', () => {
   let gXHR: XMLHttpRequest;
@@ -25,16 +24,17 @@ describe('Observable.ajax', () => {
   });
 
   it('should set headers', () => {
-    const obj = {
+    const obj: Rx.AjaxRequest = {
       url: '/talk-to-me-goose',
       headers: {
         'Content-Type': 'kenny/loggins',
         'Fly-Into-The': 'Dangah Zone!',
         'Take-A-Ride-Into-The': 'Danger ZoooOoone!'
-      }
+      },
+      method: ''
     };
 
-    (<any>Rx.Observable.ajax)(obj).subscribe();
+    Rx.Observable.ajax(obj).subscribe();
 
     const request = MockXMLHttpRequest.mostRecent;
 
@@ -85,10 +85,11 @@ describe('Observable.ajax', () => {
       responseType: 'text',
       resultSelector: (res: any) => {
         throw new Error('ha! ha! fooled you!');
-      }
+      },
+      method: ''
     };
 
-    (<any>Rx.Observable.ajax)(obj)
+    Rx.Observable.ajax(obj)
       .subscribe((x: any) => {
         throw 'should not next';
       }, (err: any) => {
@@ -137,9 +138,10 @@ describe('Observable.ajax', () => {
     const obj = {
       url: '/flibbertyJibbet',
       responseType: 'text',
+      method: ''
     };
 
-    (<any>Rx.Observable.ajax)(obj)
+    Rx.Observable.ajax(obj)
       .subscribe((x: any) => {
         result = x;
       }, null, () => {
@@ -166,10 +168,11 @@ describe('Observable.ajax', () => {
       normalizeError: (e: any, xhr: any, type: any) => {
         return xhr.response || xhr.responseText;
       },
-      responseType: 'text'
+      responseType: 'text',
+      method: ''
     };
 
-    (<any>Rx.Observable.ajax)(obj)
+    Rx.Observable.ajax(obj)
       .subscribe((x: any) => {
         throw 'should not next';
       }, (err: any) => {
@@ -198,10 +201,11 @@ describe('Observable.ajax', () => {
       normalizeError: (e: any, xhr: any, type: any) => {
         return xhr.response || xhr.responseText;
       },
-      responseType: 'text'
+      responseType: 'text',
+      method: ''
     };
 
-    (<any>Rx.Observable.ajax)(obj).subscribe((x: any) => {
+    Rx.Observable.ajax(obj).subscribe((x: any) => {
         throw 'should not next';
       }, (err: any) => {
         error = err;
@@ -224,8 +228,8 @@ describe('Observable.ajax', () => {
 
   it('should succeed no settings', () => {
     const expected = JSON.stringify({ foo: 'bar' });
-    //Type definition need to be updated
-    (<any>Rx.Observable.ajax)('/flibbertyJibbet')
+
+    Rx.Observable.ajax('/flibbertyJibbet')
         .subscribe((x: any) => {
           expect(x.status).toBe(200);
           expect(x.xhr.method).toBe('GET');
@@ -245,7 +249,7 @@ describe('Observable.ajax', () => {
   it('should fail no settings', () => {
     const expected = JSON.stringify({ foo: 'bar' });
 
-    (<any>Rx.Observable.ajax)('/flibbertyJibbet')
+    Rx.Observable.ajax('/flibbertyJibbet')
         .subscribe(() => {
           throw 'should not have been called';
         }, (x: any) => {

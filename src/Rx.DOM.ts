@@ -146,6 +146,7 @@ var Symbol = {
 /* tslint:enable:no-var-keyword */
 
 export {
+  AjaxRequest,
   AjaxResponse,
   AjaxError,
   AjaxTimeoutError,
