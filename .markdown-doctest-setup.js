@@ -26,6 +26,10 @@ module.exports = {
     expectObservable: marbleTesting.expectObservable,
     expectSubscriptions: marbleTesting.expectSubscriptions,
     assertDeepEqual: marbleTesting.assertDeepEqual,
+    Rx: Rx,
+    setTimeout: setTimeout,
+    setInterval: setInterval,
+    clearInterval: clearInterval,
     Observable: Rx.Observable,
     someObservable: Rx.Observable.range(1, 10),
     it: it

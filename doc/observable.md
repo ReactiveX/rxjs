@@ -24,6 +24,16 @@ var observable = Rx.Observable.create(function (observer) {
 To invoke the Observable and see these values, we need to *subscribe* to it:
 
 ```js
+var observable = Rx.Observable.create(function (observer) {
+  observer.next(1);
+  observer.next(2);
+  observer.next(3);
+  setTimeout(() => {
+    observer.next(4);
+    observer.complete();
+  }, 1000);
+});
+
 console.log('just before subscribe');
 observable.subscribe({
   next: x => console.log('got value ' + x),
@@ -132,6 +142,7 @@ This happens because both functions and Observables are lazy computations. If yo
 
 Some people claim that Observables are asynchronous. That is not true. If you surround a function call with logs, like this:
 
+<!-- skip-example -->
 ```js
 console.log('before');
 console.log(foo.call());
@@ -149,6 +160,7 @@ You will obviously see the output:
 
 And this is the same behavior with Observables:
 
+<!-- skip-example -->
 ```js
 console.log('before');
 foo.subscribe(function (x) {
@@ -189,9 +201,7 @@ var foo = Rx.Observable.create(function (observer) {
   observer.next(100); // "return" another value
   observer.next(200); // "return" yet another
 });
-```
 
-```js
 console.log('before');
 foo.subscribe(function (x) {
   console.log(x);
@@ -222,6 +232,12 @@ var foo = Rx.Observable.create(function (observer) {
     observer.next(300); // happens asynchronously
   }, 1000);
 });
+
+console.log('before');
+foo.subscribe(function (x) {
+  console.log(x);
+});
+console.log('after');
 ```
 
 With output:
@@ -273,6 +289,7 @@ In the example above, the `subscribe` function is the most important piece to de
 
 The Observable `observable` in the example can be *subscribed* to, like this:
 
+<!-- skip-example -->
 ```js
 observable.subscribe(x => console.log(x));
 ```
@@ -351,6 +368,7 @@ Because Observable Executions may be infinite, and it's common for an Observer t
 
 When `observable.subscribe` is called, the Observer gets attached to the newly created Observable execution, but also this call returns an object, the `Subscription`:
 
+<!-- skip-example -->
 ```js
 var subscription = observable.subscribe(x => console.log(x));
 ```
@@ -358,6 +376,7 @@ var subscription = observable.subscribe(x => console.log(x));
 The Subscription represents the ongoing execution, and has a minimal API, which primarily simply allows you to cancel that execution. Read more about the [`Subscription` type here](./overview.html#subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
 
 ```js
+var observable = Rx.Observable.fromArray([10, 20, 30]);
 var subscription = observable.subscribe(x => console.log(x));
 // Later:
 subscription.unsubscribe();
