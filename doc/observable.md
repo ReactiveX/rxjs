@@ -68,8 +68,8 @@ ES2015 introduced [generator functions and iterators](https://developer.mozilla.
 
 | | Producer | Consumer |
 | --- | --- | --- |
-| **Pull** | **unaware** of when data is sent | **decides** when data is received |
-| **Push** | **decides** when data is sent | **unaware** of when data is received |
+| **Pull** | **Passive:** produces data when requested. | **Active:** decides when data is requested. |
+| **Push** | **Active:** produces data at its own pace. | **Passive:** just reacts to data sent to it. |
 
 **What is Push?** In Push systems, the Producer determines when to send data to the Consumer The Consumer itself is unaware of when the data will be received.
 
@@ -382,7 +382,7 @@ var subscription = observable.subscribe(x => console.log(x));
 subscription.unsubscribe();
 ```
 
-<span class="informal">When you subscribe, get back a Subscription, which represents the ongoing execution. Just call `unsubscribe()` to cancel the execution.</span>
+<span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Just call `unsubscribe()` to cancel the execution.</span>
 
 Each Observable must define how to dispose resources of that execution when we create the Observable using `create()`. You can do that by returning a custom `unsubscribe` function from within `function subscribe()`.
 
