@@ -90,6 +90,7 @@ enabling "composite" subscription behavior.
 |`maxBy`|`-`|
 |`minBy`|`-`|
 |`onErrorResumeNext`|`-`|
+|`ofObjectChanges`|`-`|
 |`pausable`|`-`|
 |`pausableBuffered`|`-`|
 |`shareReplay`|`-`|
