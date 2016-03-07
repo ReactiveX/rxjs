@@ -128,7 +128,20 @@ There are a few things to know and (try to) understand while developing operator
    the shared underlying subscription.
    - When you `subscribe` to an Observable, the functions or Observer you passed are used to create the final `destination`
    `Subscriber` for the chain. It's this `Subscriber` that is really also the shared `Subscriptoin` for the operator chain.
-   
+
+### Submitting a PR for an Operator
+
+Please complete these steps for each new operator added to RxJS as a pull request:
+
+- Add the operator to either Core or KitchenSink
+- It must have a `-spec.ts` tests file covering the canonical corner cases, with marble diagram tests
+- If possible, write a `asDiagram` test case too, for PNG diagram generation purposes
+- The spec file should have a type definition test at the end of the spec to verify type definition for various use cases
+- The operator must be documented in JSDoc style in the implementation file, including also the PNG marble diagram image
+- The operator should be listed in `doc/operators.md` in a category of operators
+- It should also be inserted in the operator decision tree file `doc/decision-tree-widget/tree.yml`
+- You may need to update `MIGRATION.md` if the operator differs from the corresponding one in RxJS v4
+
 ### Inner Subscriptions
 
 An "inner subscriber" or "inner subscription" is any subscription created inside of an operator's primary Subscriber. For example,
