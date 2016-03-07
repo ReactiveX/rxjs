@@ -42,9 +42,13 @@ describe('BehaviorSubject', () => {
 
   it('should not allow you to set `value` directly', () => {
     const subject = new BehaviorSubject('flibberty');
-    expect(() => {
+
+    try {
       subject.value = 'jibbets';
-    }).toThrow();
+    } catch (e) {
+      //noop
+    }
+
     expect(subject.getValue()).toBe('flibberty');
     expect(subject.value).toBe('flibberty');
   });
