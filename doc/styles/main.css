@@ -24,18 +24,47 @@ a {
 
 /* Top nav bar border bottom */
 .layout-container > header {
-  border-bottom: solid 1px #B7178C;
+  background-color: #333;
+  border-bottom: none;
 }
 
-.rx-title {
-  color: #EC0C8E;
-  font-family: 'Signika', 'Roboto', sans-serif;
+.layout-container > header a {
+  color: #777;
 }
-.rx-title > img {
-  box-shadow: none !important;
-  max-height: 1.3em;
-  margin-bottom: -0.25em;
-  margin-right: 0.3em;
+.layout-container > header a:hover, .layout-container > header a:active {
+  color: #fff;
+}
+
+.layout-container > header > a.repo-url-github {
+  -webkit-filter: brightness(20);
+  filter: brightness(20);
+}
+
+.search-box img {
+  -webkit-filter: brightness(1.7);
+  filter: brightness(1.7);
+}
+
+.search-input {
+  border-color: #EC0C8E;
+  color: #fff;
+}
+.search-input-edge {
+  background-color: #EC0C8E;
+}
+
+/* Navigation side menu */
+.navigation {
+  background-color: #333;
+  box-shadow: none;
+  border-right: none;
+}
+
+.navigation a {
+  color: #bbb;
+}
+.navigation a:hover {
+  color: #fff;
 }
 
 .navigation .manual-toc-title {
@@ -46,8 +75,28 @@ a {
   display: none;
 }
 
-.manual-toc .indent-h3 {
+.manual-toc .indent-h1 {
+  margin-left: 1em;
+}
+.manual-toc .indent-h2 {
   margin-left: 2em;
+}
+.manual-toc .indent-h3 {
+  margin-left: 3em;
+}
+.manual-toc .indent-h4 {
+  margin-left: 4em;
+}
+
+ul.manual-toc {
+  padding-right: 0.5em;
+}
+
+.manual-toc [class^="indent-"] {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  color: #bbb;
+  white-space: nowrap;
 }
 
 .inner-link-active {
@@ -55,8 +104,20 @@ a {
   background: inherit;
 }
 
-a:hover, .manual-toc-title a:hover {
+a:hover {
   color: #EC0C8E;
+}
+
+/* Content */
+.rx-title {
+  color: #EC0C8E;
+  font-family: 'Signika', 'Roboto', sans-serif;
+}
+.rx-title > img {
+  box-shadow: none !important;
+  max-height: 1.3em;
+  margin-bottom: -0.25em;
+  margin-right: 0.3em;
 }
 
 .content .detail {
@@ -82,6 +143,15 @@ a:hover, .manual-toc-title a:hover {
 
 code.lang-none span {
   color: #4d4d4c;
+}
+
+.informal {
+  display: block;
+  padding-left: 1.3em;
+  border-left: 5px solid #dfdfdf;
+  font-size: 1.1em;
+  font-family: 'Kalam', cursive;
+  margin: 22px 0;
 }
 
 /* Params table styling */
@@ -117,13 +187,4 @@ table.params thead td {
 
 table.params tbody tr:last-child td {
   border-bottom: none;
-}
-
-.informal {
-  display: block;
-  padding-left: 1.3em;
-  border-left: 5px solid #dfdfdf;
-  font-size: 1.1em;
-  font-family: 'Kalam', cursive;
-  margin: 22px 0;
 }
