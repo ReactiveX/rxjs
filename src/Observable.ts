@@ -6,8 +6,6 @@ import {root} from './util/root';
 import {CoreOperators} from './CoreOperators';
 import {SymbolShim} from './util/SymbolShim';
 import {toSubscriber} from './util/toSubscriber';
-import {tryCatch} from './util/tryCatch';
-import {errorObject} from './util/errorObject';
 
 import {combineLatestStatic} from './operator/combineLatest';
 import {concatStatic} from './operator/concat';
@@ -230,13 +228,27 @@ export class Observable<T> implements CoreOperators<T>  {
       throw new Error('no Promise impl found');
     }
 
-    const source = this;
-
     return new PromiseCtor<void>((resolve, reject) => {
-      source.subscribe((value: T) => {
-        const result: any = tryCatch(next)(value);
-        if (result === errorObject) {
-          reject(errorObject.e);
+      const subscription = this.subscribe((value) => {
+        if (subscription) {
+          // if there is a subscription, then we can surmise
+          // the next handling is asynchronous. Any errors thrown
+          // need to be rejected explicitly and unsubscribe must be
+          // called manually
+          try {
+            next(value);
+          } catch (err) {
+            reject(err);
+            subscription.unsubscribe();
+          }
+        } else {
+          // if there is NO subscription, then we're getting a nexted
+          // value synchronously during subscription. We can just call it.
+          // If it errors, Observable's `subscribe` imple will ensure the
+          // unsubscription logic is called, then synchronously rethrow the error.
+          // After that, Promise will trap the error and send it
+          // down the rejection path.
+          next(value);
         }
       }, reject, resolve);
     });

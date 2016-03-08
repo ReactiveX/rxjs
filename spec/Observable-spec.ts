@@ -80,6 +80,62 @@ describe('Observable', () => {
       })
       .then(done);
     });
+
+    it('should handle a synchronous throw from the next handler and tear down', (done: DoneSignature) => {
+      let unsubscribeCalled = false;
+      const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+
+        return () => {
+          unsubscribeCalled = true;
+        };
+      });
+
+      const results = [];
+      syncObservable.forEach((x) => {
+        results.push(x);
+        if (x === 2) {
+          throw new Error('I told, you Bobby Boucher, twos are the debil!');
+        }
+      }).then(
+        () => done.fail(),
+        (err) => {
+          results.push(err);
+          expect(results).toEqual([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
+          expect(unsubscribeCalled).toBe(true);
+          done();
+        });
+    });
+
+    it('should handle an asynchronous throw from the next handler and tear down', (done: DoneSignature) => {
+      let unsubscribeCalled = false;
+      const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
+        let i = 1;
+        const id = setInterval(() => observer.next(i++));
+
+        return () => {
+          clearInterval(id);
+          unsubscribeCalled = true;
+        };
+      });
+
+      const results = [];
+      syncObservable.forEach((x) => {
+        results.push(x);
+        if (x === 2) {
+          throw new Error('I told, you Bobby Boucher, twos are the debil!');
+        }
+      }).then(
+        () => done.fail(),
+        (err) => {
+          results.push(err);
+          expect(results).toEqual([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
+          expect(unsubscribeCalled).toBe(true);
+          done();
+        });
+    });
   });
 
   describe('subscribe', () => {
