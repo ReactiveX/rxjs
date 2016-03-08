@@ -1,8 +1,108 @@
 # Operators
 
+RxJS is mostly useful for its *operators*, even though the Observable is the foundation. Operators are the essential pieces that allow complex asynchronous code to be easily composed in a declarative manner.
+
 ## What are operators?
 
+Operators are **methods** on the Observable type, such as `.map(...)`, `.filter(...)`, `.merge(...)`, etc. When called, they do not *change* the existing Observable instance. Instead, they return a *new* Observable, whose subscription logic is based on the first Observable.
+
+<span class="informal">An Operator is a function take creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span>
+
+An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. A subscribe on the output Observable will causa also a subscribe on the input Observable. In the following example, we create a custom operator/function that simply multiplies by 10 each value delivered by the input Observable:
+
+```js
+function multiplyByTen(input) {
+  var output = Rx.Observable.create(function subscribe(observer) {
+    input.subscribe({
+      next: (v) => observer.next(10 * v),
+      error: (err) => observer.error(err),
+      complete: () => observer.complete()
+    });
+  });
+  return output;
+}
+
+var input = Rx.Observable.fromArray([1, 2, 3, 4]);
+var output = multiplyByTen(input);
+output.subscribe(x => console.log(x));
+```
+
+Which outputs:
+
+```none
+10
+20
+30
+40
+```
+
+Notice that a subscribe to `output` will cause `input` Observable to be subscribed. We call this an "operator subscription chain".
+
+## Instance operators versus static operators
+
+**What is an instance operator?** Typically when referring to operators, we assume *instance* operators, which are methods on Observable instances. For instance, if the operator `multiplyByTen` would be an official instance operator, it would look roughly like this:
+
+```js
+Rx.Observable.prototype.multiplyByTen = function multiplyByTen() {
+  var input = this;
+  return Rx.Observable.create(function subscribe(observer) {
+    input.subscribe({
+      next: (v) => observer.next(10 * v),
+      error: (err) => observer.error(err),
+      complete: () => observer.complete()
+    });
+  });
+}
+```
+
+<span class="informal">Instance operators are functions that use the `this` keyword to infer what is the input Observable.</span>
+
+Notice how the `input` Observable is not a function argument anymore, it is assumed to be the `this` object. This is how we would use such instance operator:
+
+```js
+var observable = Rx.Observable.fromArray([1, 2, 3, 4]).multiplyByTen();
+
+observable.subscribe(x => console.log(x));
+```
+
+**What is a static operator?** Besides instance operators, static operators are functions attached to the Observable class directly. A static operator uses no `this` keyword internally, but instead relies entirely on its arguments.
+
+<span class="informal">Static operators are pure functions attached to the Observable class, and usually are used to create Observables from scratch.</span>
+
+The most common type of static operators are the so-called *Creation Operators*. Instead of transforming an input Observable to an output Observable, they simply take a non-Observable argument, like a number, and *create* a new Observable.
+
+A typical example of a static creation operator would be the `interval` function. It takes a number (not an Observable) as input argument, and produces an Observable as output:
+
+```js
+var observable = Rx.Observable.interval(1000 /* number of milliseconds */);
+```
+
+Another example of a creation operator is `create`, which we have been using extensively in previous examples. See the list of [all static creation operators here](#creation-operators).
+
+However, static operators may be of different nature than simply creation. Some *Combination Operators* may be static, such as `merge`, `combineLatest`, `concat`, etc. These make sense as static operators because they take *multiple* Observables as input, not just one, for instance:
+
+```js
+var observable1 = Rx.Observable.interval(1000);
+var observable2 = Rx.Observable.interval(400);
+
+var merged = Rx.Observable.merge(observable1, observable2);
+```
+
+## Marble diagrams
+
+To explain how operators work, textual descriptions are often not enough. Many operators are related to time, they may for instance delay, sample, throttle, or debounce value emissions in different ways. Diagrams are often a better tool for that. *Marble Diagrams* are visual representations of how operators work, and include the input Observable(s), the operator and its parameters, and the output Observable.
+
+<span class="informal">In a marble diagram, time flows to the right, and the diagram describes how values ("marbles") are emitted on the Observable execution.</span>
+
+Below you can see the anatomy of a marble diagram.
+
+<img src="./asset/marble-diagram-anatomy.svg">
+
+Throughout this documentation site, we extensively use marble diagrams to explain how operators work. They may be really useful in other contexts too, like on a whiteboard or even in our unit tests (as ASCII diagrams).
+
 ## Categories of operators
+
+There are operators for different purposes, and they may be categorized as: creation, transformation, filtering, combination, multicasting, error handling, utility, etc. In the following list you will find all the operators organized in categories.
 
 ### Creation Operators
 
