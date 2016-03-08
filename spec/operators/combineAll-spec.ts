@@ -188,7 +188,7 @@ describe('Observable.prototype.combineAll', () => {
     const e3subs =        '^         !';
     const expected =      '-----wxyz-|';
 
-    const result = Observable.of(e1, e2, e3).combineAll(<any>((x: string, y: string, z: string) => x + y + z));
+    const result = Observable.of(e1, e2, e3).combineAll((x: string, y: string, z: string) => x + y + z);
 
     expectObservable(result).toBe(expected, { w: 'bfi', x: 'cfi', y: 'cgi', z: 'cgj' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
