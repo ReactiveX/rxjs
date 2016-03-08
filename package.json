@@ -36,7 +36,7 @@
     "test_buildonly": "rm -rf spec-js && mkdirp spec-js && tsc --project ./spec --pretty",
     "test": "npm run test_buildonly && npm run test_nobuild",
     "test_karma": "karma start karma.conf.js",
-    "tests2png": "npm run test_buildonly && mkdirp tmp/docs/img && mkdirp spec-js/support && cp spec/support/*.json spec-js/support/ && JASMINE_CONFIG_PATH=spec/support/tests2png.json jasmine",
+    "tests2png": "npm run test_buildonly && mkdirp tmp/docs/img && mkdirp spec-js/support && cp spec/support/*.json spec-js/support/ && jasmine JASMINE_CONFIG_PATH=spec/support/tests2png.json",
     "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15",
     "perf": "protractor protractor.conf.js",
     "perf_micro": "node ./perf/micro/index.js",
