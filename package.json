@@ -12,7 +12,7 @@
     }
   },
   "scripts": {
-    "preinstall": "typings install",
+    "postinstall": "typings install",
     "build_all": "npm run build_es6 && npm run build_amd && npm run build_cjs && npm run build_global && npm run generate_packages",
     "build_amd": "rm -rf dist/amd && tsc typings/main.d.ts src/Rx.ts src/Rx.DOM.ts src/add/observable/of.ts -m amd --outDir dist/amd --sourcemap --sourceRoot src --target ES5 --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
     "build_cjs": "rm -rf dist/cjs && tsc typings/main.d.ts src/Rx.ts src/Rx.KitchenSink.ts src/Rx.DOM.ts src/add/observable/of.ts -m commonjs --outDir dist/cjs --sourcemap --sourceRoot src --target ES5 -d --diagnostics --pretty --noImplicitAny --suppressImplicitAnyIndexErrors",
