@@ -231,7 +231,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const expected = '(0123)(0123)---(0123)---(0123)--|';
 
-    const result = e1.concatMapTo(<any>['0', '1', '2', '3']);
+    const result = e1.concatMapTo(['0', '1', '2', '3']);
 
     expectObservable(result).toBe(expected);
   });
@@ -240,7 +240,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const expected = '(2345)(4567)---(3456)---(2345)--|';
 
-    const result = e1.concatMapTo(<any>['0', '1', '2', '3'],
+    const result = e1.concatMapTo(['0', '1', '2', '3'],
       (x: string, y: string) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result).toBe(expected);
@@ -250,7 +250,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------#');
     const expected = '(0123)(0123)---(0123)---(0123)--#';
 
-    const result = e1.concatMapTo(<any>['0', '1', '2', '3']);
+    const result = e1.concatMapTo(['0', '1', '2', '3']);
 
     expectObservable(result).toBe(expected);
   });
@@ -259,7 +259,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------#');
     const expected = '(2345)(4567)---(3456)---(2345)--#';
 
-    const result = e1.concatMapTo(<any>['0', '1', '2', '3'],
+    const result = e1.concatMapTo(['0', '1', '2', '3'],
       (x: string, y: string) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result).toBe(expected);
@@ -270,7 +270,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const unsub =    '             !';
     const expected = '(0123)(0123)--';
 
-    const result = e1.concatMapTo(<any>['0', '1', '2', '3']);
+    const result = e1.concatMapTo(['0', '1', '2', '3']);
 
     expectObservable(result, unsub).toBe(expected);
   });
@@ -280,7 +280,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const unsub =    '             !';
     const expected = '(2345)(4567)--';
 
-    const result = e1.concatMapTo(<any>['0', '1', '2', '3'],
+    const result = e1.concatMapTo(['0', '1', '2', '3'],
       (x: string, y: string) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result, unsub).toBe(expected);
@@ -290,7 +290,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const expected = '(2345)(4567)---#';
 
-    const result = e1.concatMapTo(<any>['0', '1', '2', '3'], (x: string, y: string) => {
+    const result = e1.concatMapTo(['0', '1', '2', '3'], (x: string, y: string) => {
       if (x === '3') {
         throw 'error';
       }

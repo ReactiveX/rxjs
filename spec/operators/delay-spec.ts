@@ -25,7 +25,7 @@ describe('Observable.prototype.delay', () => {
     const subs =     '^          !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(<any>absoluteDelay, rxTestScheduler);
+    const result = e1.delay(absoluteDelay, rxTestScheduler);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -38,7 +38,7 @@ describe('Observable.prototype.delay', () => {
     const subs =        '^           !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(<any>absoluteDelay, rxTestScheduler);
+    const result = e1.delay(absoluteDelay, rxTestScheduler);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -63,7 +63,7 @@ describe('Observable.prototype.delay', () => {
     const subs =     '^       !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(<any>absoluteDelay, rxTestScheduler);
+    const result = e1.delay(absoluteDelay, rxTestScheduler);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -76,7 +76,7 @@ describe('Observable.prototype.delay', () => {
     const e1Sub =       '^           !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(<any>absoluteDelay, rxTestScheduler);
+    const result = e1.delay(absoluteDelay, rxTestScheduler);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1Sub);
