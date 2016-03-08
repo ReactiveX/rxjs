@@ -14,6 +14,8 @@ var cjsPkg = Object.assign({}, pkg, {
 });
 var es6Pkg = Object.assign({}, cjsPkg, {
   name: 'rxjs-es',
+  main: 'Rx.js',
+  typings: 'Rx.d.ts'
 });
 
 fs.writeFileSync('dist/cjs/package.json', JSON.stringify(cjsPkg, null, 2));

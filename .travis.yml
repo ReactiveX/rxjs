@@ -31,7 +31,7 @@ install:
   - npm install && npm run lint
 
 script:
-  - npm test && node ./node_modules/markdown-doctest/bin/cmd.js
+  - npm run build_spec && npm run test_jasmine && node ./node_modules/markdown-doctest/bin/cmd.js
   - npm run check_circular_dependencies
   - npm run cover
   - cat ./coverage/coverage-remapped.lcov | ./node_modules/coveralls/bin/coveralls.js
