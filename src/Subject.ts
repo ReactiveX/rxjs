@@ -4,7 +4,7 @@ import {Observable} from './Observable';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {SubjectSubscription} from './subject/SubjectSubscription';
-import {rxSubscriber} from './symbol/rxSubscriber';
+import {$$rxSubscriber} from './symbol/rxSubscriber';
 
 import {throwError} from './util/throwError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
@@ -216,7 +216,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     }
   }
 
-  [rxSubscriber]() {
+  [$$rxSubscriber]() {
     return new Subscriber<T>(this);
   }
 }

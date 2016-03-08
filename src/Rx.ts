@@ -136,7 +136,9 @@ import {queue} from './scheduler/queue';
 import {AsapScheduler} from './scheduler/AsapScheduler';
 import {AsyncScheduler} from './scheduler/AsyncScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
-import {rxSubscriber} from './symbol/rxSubscriber';
+import {$$rxSubscriber as rxSubscriber} from './symbol/rxSubscriber';
+import {$$observable as observable} from './symbol/observable';
+import {$$iterator as iterator} from './symbol/iterator';
 /* tslint:enable:no-unused-variable */
 
 /* tslint:disable:no-var-keyword */
@@ -147,7 +149,9 @@ var Scheduler = {
 };
 
 var Symbol = {
-  rxSubscriber
+  rxSubscriber,
+  observable,
+  iterator
 };
 /* tslint:enable:no-var-keyword */
 

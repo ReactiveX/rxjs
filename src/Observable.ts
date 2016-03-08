@@ -3,7 +3,7 @@ import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {root} from './util/root';
-import {SymbolShim} from './util/SymbolShim';
+import {$$observable} from './symbol/observable';
 import {toSubscriber} from './util/toSubscriber';
 
 import {IfObservable} from './observable/IfObservable';
@@ -160,7 +160,7 @@ export class Observable<T> {
    * @method Symbol.observable
    * @return {Observable} this instance of the observable
    */
-  [SymbolShim.observable]() {
+  [$$observable]() {
     return this;
   }
 }

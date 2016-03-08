@@ -1,11 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {SymbolShim} from '../../dist/cjs/util/SymbolShim';
 declare const expectObservable: any;
 import {DoneSignature} from '../helpers/test-helper';
+import {$$iterator} from '../../dist/cjs/symbol/iterator';
 
 declare const Symbol: any;
 declare const rxTestScheduler: Rx.TestScheduler;
-const $$iterator = SymbolShim.iterator;
 const Observable = Rx.Observable;
 
 /** @test {from} */

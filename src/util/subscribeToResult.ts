@@ -3,7 +3,8 @@ import {isArray} from './isArray';
 import {isPromise} from './isPromise';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {SymbolShim} from '../util/SymbolShim';
+import {$$iterator} from '../symbol/iterator';
+import {$$observable} from '../symbol/observable';
 import {Subscription} from '../Subscription';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -50,7 +51,7 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
       root.setTimeout(() => { throw err; });
     });
     return destination;
-  } else if (typeof result[SymbolShim.iterator] === 'function') {
+  } else if (typeof result[$$iterator] === 'function') {
     for (let item of result) {
       destination.next(item);
       if (destination.isUnsubscribed) {
@@ -60,8 +61,8 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
     if (!destination.isUnsubscribed) {
       destination.complete();
     }
-  } else if (typeof result[SymbolShim.observable] === 'function') {
-    const obs = result[SymbolShim.observable]();
+  } else if (typeof result[$$observable] === 'function') {
+    const obs = result[$$observable]();
     if (typeof obs.subscribe !== 'function') {
       destination.error('invalid observable');
     } else {

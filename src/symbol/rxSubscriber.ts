@@ -1,4 +1,6 @@
-import {SymbolShim} from '../util/SymbolShim';
+import {root} from '../util/root';
+
+const Symbol: any = root.Symbol;
 
 /**
  * rxSubscriber symbol is a symbol for retrieving an "Rx safe" Observer from an object
@@ -6,4 +8,5 @@ import {SymbolShim} from '../util/SymbolShim';
  * including the ability to add and remove subscriptions to the subscription chain and
  * guarantees involving event triggering (can't "next" after unsubscription, etc).
  */
-export const rxSubscriber = SymbolShim.for('rxSubscriber');
+export const $$rxSubscriber = (typeof Symbol === 'function' && typeof Symbol.for === 'function') ?
+  Symbol.for('rxSubscriber') : '@@rxSubscriber';

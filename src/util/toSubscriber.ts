@@ -1,6 +1,6 @@
 import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
-import {rxSubscriber} from '../symbol/rxSubscriber';
+import {$$rxSubscriber} from '../symbol/rxSubscriber';
 
 export function toSubscriber<T>(
   nextOrObserver?: PartialObserver<T> | ((value: T) => void),
@@ -10,8 +10,8 @@ export function toSubscriber<T>(
   if (nextOrObserver && typeof nextOrObserver === 'object') {
     if (nextOrObserver instanceof Subscriber) {
       return (<Subscriber<T>> nextOrObserver);
-    } else if (typeof nextOrObserver[rxSubscriber] === 'function') {
-      return nextOrObserver[rxSubscriber]();
+    } else if (typeof nextOrObserver[$$rxSubscriber] === 'function') {
+      return nextOrObserver[$$rxSubscriber]();
     }
   }
 

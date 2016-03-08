@@ -8,7 +8,8 @@ import {ArrayObservable} from './ArrayObservable';
 import {ArrayLikeObservable} from './ArrayLikeObservable';
 
 import {Scheduler} from '../Scheduler';
-import {SymbolShim} from '../util/SymbolShim';
+import {$$observable} from '../symbol/observable';
+import {$$iterator} from '../symbol/iterator';
 import {Observable, ObservableInput} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn';
@@ -44,7 +45,7 @@ export class FromObservable<T> extends Observable<T> {
     }
 
     if (ish != null) {
-      if (typeof ish[SymbolShim.observable] === 'function') {
+      if (typeof ish[$$observable] === 'function') {
         if (ish instanceof Observable && !scheduler) {
           return ish;
         }
@@ -53,7 +54,7 @@ export class FromObservable<T> extends Observable<T> {
         return new ArrayObservable<T>(ish, scheduler);
       } else if (isPromise(ish)) {
         return new PromiseObservable<T>(ish, scheduler);
-      } else if (typeof ish[SymbolShim.iterator] === 'function' || typeof ish === 'string') {
+      } else if (typeof ish[$$iterator] === 'function' || typeof ish === 'string') {
         return new IteratorObservable<T>(<any>ish, null, null, scheduler);
       } else if (isArrayLike(ish)) {
         return new ArrayLikeObservable(ish, mapFn, thisArg, scheduler);
@@ -67,9 +68,9 @@ export class FromObservable<T> extends Observable<T> {
     const ish = this.ish;
     const scheduler = this.scheduler;
     if (scheduler == null) {
-      return ish[SymbolShim.observable]().subscribe(subscriber);
+      return ish[$$observable]().subscribe(subscriber);
     } else {
-      return ish[SymbolShim.observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
+      return ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
     }
   }
 }
