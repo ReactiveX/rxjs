@@ -148,6 +148,8 @@ The build and test structure is fairly primitive at the moment. There are variou
 - test: runs tests with `jasmine`, must have built prior to running.
 - tests2png: generates PNG marble diagrams from test cases.
 
+`npm run info` will list available script.
+
 ### Example
 
 ```sh
