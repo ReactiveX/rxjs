@@ -1,6 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
+import {DoneSignature, type} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -284,6 +284,40 @@ describe('Observable.prototype.mergeMapTo', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should mergeMapTo many cold Observable, with parameter concurrency=1, without resultSelector', () => {
+    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+    const e1 =     hot('-a-------b-------c---|                                        ');
+    const e1subs =     '^                                                            !';
+    const inner =  cold('----i---j---k---l---|                                        ', values);
+    const innersubs = [' ^                   !                                        ',
+                     '                     ^                   !                    ',
+                     '                                         ^                   !'];
+    const expected =   '-----i---j---k---l-------i---j---k---l-------i---j---k---l---|';
+
+    const result = e1.mergeMapTo(inner, 1);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should mergeMap to many cold Observable, with parameter concurrency=2, without resultSelector', () => {
+    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+    const e1 =     hot('-a-------b-------c---|                    ');
+    const e1subs =     '^                                        !';
+    const inner =  cold('----i---j---k---l---|                    ', values);
+    const innersubs = [' ^                   !                    ',
+                     '         ^                   !            ',
+                     '                     ^                   !'];
+    const expected =   '-----i---j---(ki)(lj)k---(li)j---k---l---|';
+
+    const result = e1.mergeMapTo(inner, 2);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should mergeMapTo many outer to arrays', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const e1subs =   '^                               !';
@@ -401,5 +435,19 @@ describe('Observable.prototype.mergeMapTo', () => {
     });
 
     expect(completed).toBe(true);
+  });
+
+  it('should support type signatures', () => {
+    type(() => {
+      let o: Rx.Observable<number>;
+      let m: Rx.Observable<string>;
+
+      /* tslint:disable:no-unused-variable */
+      let a1: Rx.Observable<string> = o.mergeMapTo(m);
+      let a2: Rx.Observable<string> = o.mergeMapTo(m, 3);
+      let a3: Rx.Observable<{ o: number; i: string; }> = o.mergeMapTo(m, (o, i) => ({ o, i }));
+      let a4: Rx.Observable<{ o: number; i: string; }> = o.mergeMapTo(m, (o, i) => ({ o, i }), 3);
+      /* tslint:enable:no-unused-variable */
+    });
   });
 });
