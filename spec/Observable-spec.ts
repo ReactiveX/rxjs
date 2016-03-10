@@ -113,7 +113,7 @@ describe('Observable', () => {
       let unsubscribeCalled = false;
       const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
         let i = 1;
-        const id = setInterval(() => observer.next(i++));
+        const id = setInterval(() => observer.next(i++), 1);
 
         return () => {
           clearInterval(id);
