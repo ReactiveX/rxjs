@@ -20,8 +20,12 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * @owner Observable
  */
 export function mergeMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>,
-                                  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R | number,
+                                  resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
                                   concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+  if (typeof resultSelector === 'number') {
+    concurrent = <number>resultSelector;
+    resultSelector = null;
+  }
   return this.lift(new MergeMapOperator(project, <any>resultSelector, concurrent));
 }
 

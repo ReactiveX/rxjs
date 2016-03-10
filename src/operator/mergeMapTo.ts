@@ -16,8 +16,12 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @owner Observable
  */
 export function mergeMapTo<T, I, R>(observable: Observable<I>,
-                                    resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R | number,
+                                    resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
                                     concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+  if (typeof resultSelector === 'number') {
+    concurrent = <number>resultSelector;
+    resultSelector = null;
+  }
   return this.lift(new MergeMapToOperator(observable, <any>resultSelector, concurrent));
 }
 
