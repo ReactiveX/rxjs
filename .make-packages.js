@@ -3,7 +3,13 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var Builder = require('systemjs-builder');
-var addLicenseToFile = require('./tools/add-license-to-file');
+var licenseTool = require('./tools/add-license-to-file');
+var addLicenseToFile = licenseTool.addLicenseToFile;
+var addLicenseTextToFile = licenseTool.addLicenseTextToFile;
+
+// License info for minified files
+var licenseUrl = 'https://github.com/ReactiveX/RxJS/blob/master/LICENSE.txt';
+var license = 'Apache License 2.0 ' + licenseUrl;
 
 delete pkg.scripts;
 
@@ -40,10 +46,10 @@ fs.writeFileSync('dist/es6/README.md', fs.readFileSync('./README.md').toString()
 
 // Add licenses to tops of bundles
 addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.umd.js');
-addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.umd.min.js');
+addLicenseTextToFile(license, 'dist/cjs/bundles/Rx.umd.min.js');
 addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.js');
-addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.min.js');
+addLicenseTextToFile('license', 'dist/cjs/bundles/Rx.min.js');
 addLicenseToFile('LICENSE.txt', 'dist/global/Rx.umd.js');
-addLicenseToFile('LICENSE.txt', 'dist/global/Rx.umd.min.js');
+addLicenseTextToFile(license, 'dist/global/Rx.umd.min.js');
 addLicenseToFile('LICENSE.txt', 'dist/global/Rx.js');
-addLicenseToFile('LICENSE.txt', 'dist/global/Rx.min.js');
+addLicenseTextToFile(license, 'dist/global/Rx.min.js');
