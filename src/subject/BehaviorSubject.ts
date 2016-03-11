@@ -5,6 +5,7 @@ import {throwError} from '../util/throwError';
 import {ObjectUnsubscribedError} from '../util/ObjectUnsubscribedError';
 
 export class BehaviorSubject<T> extends Subject<T> {
+  " tag_class_BehaviorSubject": T;
 
   constructor(private _value: T) {
     super();

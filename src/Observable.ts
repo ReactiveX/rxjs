@@ -20,6 +20,7 @@ export type ObservableInput<T> = ObservableOrPromise<T> | ArrayOrIterator<T>;
  * @class Observable<T>
  */
 export class Observable<T> {
+  " tag_class_Observable": T;
 
   public _isScalar: boolean = false;
 

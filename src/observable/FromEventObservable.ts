@@ -38,6 +38,7 @@ export type EventTargetLike = EventTarget | NodeStyleEventEmmitter | JQueryStyle
  *
  */
 export class FromEventObservable<T, R> extends Observable<T> {
+  " tag_class_FromEventObservable": [T, R];
 
   /**
    * @param sourceObj

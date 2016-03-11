@@ -8,6 +8,7 @@ import {Subscriber} from '../Subscriber';
  *
  */
 export class FromEventPatternObservable<T, R> extends Observable<T> {
+  " tag_class_FromEventPatternObservable": [T, R];
 
   /**
    * @param addHandler

@@ -3,6 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class UsingObservable<T> extends Observable<T> {
+  " tag_class_UsingObservable": T;
 
   static create<T>(resourceFactory: () => Subscription,
                    observableFactory: (resource: Subscription) => Observable<T>): Observable<T> {
