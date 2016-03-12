@@ -11,11 +11,12 @@ module.exports = function (config) {
       browserName: 'chrome',
       version: '46'
     },
-    /*sl_chrome_beta: {
+    sl_chrome_beta: {
       base: 'SauceLabs',
       browserName: 'chrome',
       version: 'beta'
     },
+    /*
     sl_chrome_dev: {
       base: 'SauceLabs',
       browserName: 'chrome',
@@ -24,14 +25,14 @@ module.exports = function (config) {
     sl_firefox: {
       base: 'SauceLabs',
       browserName: 'firefox',
-      version: '42'
+      version: '44'
     },
-    sl_firefox_beta: {
+    /*sl_firefox_beta: {
       base: 'SauceLabs',
       browserName: 'firefox',
       version: 'beta'
     },
-    /*sl_firefox_dev: {
+    sl_firefox_dev: {
       base: 'SauceLabs',
       browserName: 'firefox',
       version: 'dev'
