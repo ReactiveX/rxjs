@@ -63,7 +63,8 @@ export class ForkJoinObservable<T> extends Observable<T> {
       if (isPromise(source)) {
         source = new PromiseObservable(<Promise<any>>source);
       }
-      (<Observable<any>>source).subscribe(new AllSubscriber(subscriber, i, context));
+      subscriber.add((<Observable<any>>source)
+        .subscribe(new AllSubscriber(subscriber, i, context)));
     }
   }
 }

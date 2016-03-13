@@ -263,4 +263,20 @@ describe('Observable.forkJoin', () => {
 
     expectObservable(e1).toBe(expected);
   });
+
+  it('should allow unsubscribing early and explicitly', () => {
+    const e1 =   hot('--a--^--b--c---d-| ');
+    const e1subs =        '^        !    ';
+    const e2 =   hot('---e-^---f--g---h-|');
+    const e2subs =        '^        !    ';
+    const expected =      '----------    ';
+    const unsub =         '         !    ';
+
+    const result = Observable.forkJoin(e1, e2);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
 });
