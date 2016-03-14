@@ -16,11 +16,14 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     return new Subject<T>(destination, source);
   };
 
-  constructor(protected destination?: Observer<T>, protected source?: Observable<T>) {
+  constructor(destination?: Observer<T>, source?: Observable<T>) {
     super();
+    this.destination = destination;
     this.source = source;
   }
 
+  protected destination: Observer<T>;
+  protected source: Observable<T>
   public observers: Observer<T>[] = [];
   public isUnsubscribed: boolean = false;
 
