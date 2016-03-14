@@ -20,11 +20,19 @@ export class VirtualTimeScheduler implements Scheduler {
   flush() {
     const actions = this.actions;
     const maxFrames = this.maxFrames;
+    const errorHandler: any = function flushError(err: any) {
+      const { scheduler } = <any>flushError;
+      scheduler.actions.length = 0;
+      scheduler.frame = 0;
+      throw err;
+    };
+    errorHandler.scheduler = this;
+
     while (actions.length > 0) {
       let action = actions.shift();
       this.frame = action.delay;
       if (this.frame <= maxFrames) {
-        action.execute();
+        action.execute(errorHandler);
       } else {
         break;
       }

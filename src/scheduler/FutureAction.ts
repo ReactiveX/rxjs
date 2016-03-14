@@ -15,15 +15,15 @@ export class FutureAction<T> extends Subscription implements Action {
     super();
   }
 
-  execute() {
+  execute(errorHandler: (err: any) => void) {
     if (this.isUnsubscribed) {
-      throw new Error('How did did we execute a canceled Action?');
+      errorHandler(new Error('Tried to execute a cancelled action'));
     } else {
       try {
         this.work(this.state);
       } catch (e) {
         this.unsubscribe();
-        throw e;
+        errorHandler(e);
       }
     }
   }

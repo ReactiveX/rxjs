@@ -19,8 +19,14 @@ export class QueueScheduler implements Scheduler {
     }
     this.active = true;
     const actions = this.actions;
+    const errorHandler: any = function flushError(err: any) {
+      (<any>flushError).scheduler.active = false;
+      throw err;
+    };
+    errorHandler.scheduler = this;
+
     for (let action: QueueAction<any>; action = actions.shift(); ) {
-      action.execute();
+      action.execute(errorHandler);
     }
     this.active = false;
   }

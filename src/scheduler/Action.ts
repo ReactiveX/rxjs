@@ -6,6 +6,6 @@ export interface Action extends Subscription {
   state?: any;
   delay?: number;
   schedule(state?: any, delay?: number): void;
-  execute(): void;
+  execute(errorHandler: (error: any) => void): void;
   scheduler: Scheduler;
 }
