@@ -18,28 +18,6 @@ describe('Observable.prototype.publishBehavior', () => {
     published.connect();
   });
 
-  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', (done: DoneSignature) => {
-    const expected = [0, 1, 2, 3, 4];
-    let i = 0;
-
-    const source = Observable.of(1, 2, 3, 4).publishBehavior(0);
-
-    source.subscribe(
-      (x: number) => {
-        expect(x).toBe(expected[i++]);
-      },
-      done.fail,
-      () => {
-        source.subscribe((x: any) => {
-          done.fail('should not be called');
-        }, done.fail, done);
-
-        source.connect();
-      });
-
-    source.connect();
-  });
-
   it('should return a ConnectableObservable', () => {
     const source = Observable.of(1).publishBehavior(1);
     expect(source instanceof Rx.ConnectableObservable).toBe(true);
@@ -347,4 +325,27 @@ describe('Observable.prototype.publishBehavior', () => {
     expect(results).toEqual([]);
     done();
   });
+
+  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', (done: DoneSignature) => {
+    const expected = [0, 1, 2, 3, 4];
+    let i = 0;
+
+    const source = Observable.of(1, 2, 3, 4).publishBehavior(0);
+
+    source.subscribe(
+      (x: number) => {
+        expect(x).toBe(expected[i++]);
+      },
+      done.fail,
+      () => {
+        source.subscribe((x: any) => {
+          done.fail('should not be called');
+        }, done.fail, done);
+
+        source.connect();
+      });
+
+    source.connect();
+  });
+
 });
