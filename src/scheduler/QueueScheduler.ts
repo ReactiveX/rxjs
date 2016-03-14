@@ -19,13 +19,16 @@ export class QueueScheduler implements Scheduler {
     }
     this.active = true;
     const actions = this.actions;
-    for (let action: QueueAction<any>; action = actions.shift(); ) {
-      action.execute();
+    try {
+      for (let action: QueueAction<any>; action = actions.shift(); ) {
+        action.execute();
+      }
+    } finally {
+      this.active = false;
     }
-    this.active = false;
   }
 
-  schedule<T>(work: (x?: T) => Subscription | void, delay: number = 0, state?: T): Subscription {
+  schedule<T> (work: (x?: T) => Subscription | void, delay: number = 0, state?: T): Subscription {
     return (delay <= 0) ?
       this.scheduleNow(work, state) :
       this.scheduleLater(work, delay, state);
