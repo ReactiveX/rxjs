@@ -25,6 +25,11 @@ export class VirtualTimeScheduler implements Scheduler {
       this.frame = action.delay;
       if (this.frame <= maxFrames) {
         action.execute();
+        if (action.error) {
+          actions.length = 0;
+          this.frame = 0;
+          throw action.error;
+        }
       } else {
         break;
       }
@@ -65,6 +70,7 @@ class VirtualAction<T> extends Subscription implements Action {
   state: T;
   delay: number;
   calls = 0;
+  error: any;
 
   constructor(public scheduler: VirtualTimeScheduler,
               public work: (x?: T) => Subscription | void,

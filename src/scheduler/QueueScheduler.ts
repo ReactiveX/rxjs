@@ -21,6 +21,10 @@ export class QueueScheduler implements Scheduler {
     const actions = this.actions;
     for (let action: QueueAction<any>; action = actions.shift(); ) {
       action.execute();
+      if (action.error) {
+        this.active = false;
+        throw action.error;
+      }
     }
     this.active = false;
   }

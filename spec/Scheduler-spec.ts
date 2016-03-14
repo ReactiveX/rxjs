@@ -34,4 +34,25 @@ describe('Scheduler.queue', () => {
       done();
     }, 70);
   });
+
+  it('should be reusable after an error is thrown during execution', (done: DoneSignature) => {
+    const results = [];
+
+    expect(() => {
+      Scheduler.queue.schedule(() => {
+        results.push(1);
+      });
+
+      Scheduler.queue.schedule(() => {
+        throw new Error('bad');
+      });
+    }).toThrow(new Error('bad'));
+
+    setTimeout(() => {
+      Scheduler.queue.schedule(() => {
+        results.push(2);
+        done();
+      });
+    }, 0);
+  });
 });

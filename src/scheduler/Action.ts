@@ -8,4 +8,5 @@ export interface Action extends Subscription {
   schedule(state?: any, delay?: number): void;
   execute(): void;
   scheduler: Scheduler;
+  error: any;
 }

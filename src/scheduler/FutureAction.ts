@@ -8,6 +8,8 @@ export class FutureAction<T> extends Subscription implements Action {
   public id: number;
   public state: T;
   public delay: number;
+  public error: any;
+
   private pending: boolean = false;
 
   constructor(public scheduler: Scheduler,
@@ -17,13 +19,13 @@ export class FutureAction<T> extends Subscription implements Action {
 
   execute() {
     if (this.isUnsubscribed) {
-      throw new Error('How did did we execute a canceled Action?');
+      this.error = new Error('executing a cancelled action');
     } else {
       try {
         this.work(this.state);
       } catch (e) {
         this.unsubscribe();
-        throw e;
+        this.error = e;
       }
     }
   }
