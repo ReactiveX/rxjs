@@ -9,7 +9,7 @@ import {isArray} from '../util/isArray';
  *
  */
 export class ForkJoinObservable<T> extends Observable<T> {
-  " tag_class_ForkJoinObservable": T;
+  ' tag_class_ForkJoinObservable': T;
 
   constructor(private sources: Array<Observable<any> | Promise<any>>,
               private resultSelector?: (...values: Array<any>) => T) {

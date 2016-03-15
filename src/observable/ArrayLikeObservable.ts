@@ -6,7 +6,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class ArrayLikeObservable<T> extends Observable<T> {
-  " tag_class_ArrayLikeObservable": T;
+  ' tag_class_ArrayLikeObservable': T;
 
   private mapFn: (x: T, y: number) => T;
 

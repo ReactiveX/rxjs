@@ -6,7 +6,7 @@ import {Subscription} from '../Subscription';
  *
  */
 export class ErrorObservable extends Observable<any> {
-  " tag_class_ErrorObservable": any;
+  ' tag_class_ErrorObservable': any;
 
   /**
    * @param error

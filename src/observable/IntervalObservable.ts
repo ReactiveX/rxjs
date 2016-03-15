@@ -8,7 +8,7 @@ import {async} from '../scheduler/async';
  *
  */
 export class IntervalObservable extends Observable<number> {
-  " tag_class_IntervalObservable": any;
+  ' tag_class_IntervalObservable': any;
 
   /**
    * @param period

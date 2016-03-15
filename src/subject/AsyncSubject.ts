@@ -3,7 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class AsyncSubject<T> extends Subject<T> {
-  " tag_class_AsyncSubject": T;
+  ' tag_class_AsyncSubject': T;
 
   value: T = null;
   hasNext: boolean = false;

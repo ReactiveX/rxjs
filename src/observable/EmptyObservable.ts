@@ -7,7 +7,7 @@ import {Subscription} from '../Subscription';
  *
  */
 export class EmptyObservable<T> extends Observable<T> {
-  " tag_class_EmptyObservable": T;
+  ' tag_class_EmptyObservable': T;
 
   /**
    * @param scheduler

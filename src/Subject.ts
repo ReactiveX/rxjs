@@ -10,7 +10,7 @@ import {throwError} from './util/throwError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
-  " tag_class_Subject": T;
+  ' tag_class_Subject': T;
 
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): Subject<T> => {
     return new Subject<T>(destination, source);
@@ -23,7 +23,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   }
 
   protected destination: Observer<T>;
-  protected source: Observable<T>
+  protected source: Observable<T>;
   public observers: Observer<T>[] = [];
   public isUnsubscribed: boolean = false;
 

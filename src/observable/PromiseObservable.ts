@@ -8,7 +8,7 @@ import {Subscription} from '../Subscription';
  *
  */
 export class PromiseObservable<T> extends Observable<T> {
-  " tag_class_PromiseObservable": T;
+  ' tag_class_PromiseObservable': T;
 
   public value: T;
 

@@ -7,7 +7,7 @@ import {errorObject} from '../util/errorObject';
  *
  */
 export class DeferObservable<T> extends Observable<T> {
-  " tag_class_DeferObservable": T;
+  ' tag_class_DeferObservable': T;
 
   /**
    * @param observableFactory

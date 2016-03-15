@@ -4,7 +4,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class ConnectableObservable<T> extends Observable<T> {
-  " tag_class_ConnectableObservable": T;
+  ' tag_class_ConnectableObservable': T;
 
   protected subject: Subject<T>;
   protected subscription: Subscription;

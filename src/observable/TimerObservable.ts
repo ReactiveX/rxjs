@@ -11,7 +11,7 @@ import {Subscriber} from '../Subscriber';
  *
  */
 export class TimerObservable extends Observable<number> {
-  " tag_class_TimerObservable": any;
+  ' tag_class_TimerObservable': any;
 
   /**
    * @param dueTime

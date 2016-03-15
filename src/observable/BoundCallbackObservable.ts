@@ -10,7 +10,7 @@ import {AsyncSubject} from '../subject/AsyncSubject';
  *
  */
 export class BoundCallbackObservable<T> extends Observable<T> {
-  " tag_class_BoundCallbackObservable": T;
+  ' tag_class_BoundCallbackObservable': T;
 
   subject: AsyncSubject<T>;
 

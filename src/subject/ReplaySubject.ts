@@ -6,8 +6,8 @@ import {Subscription} from '../Subscription';
 import {ObserveOnSubscriber} from '../operator/observeOn';
 
 export class ReplaySubject<T> extends Subject<T> {
-  " tag_class_ReplaySubject": T;
-  
+  ' tag_class_ReplaySubject': T;
+
   private events: ReplayEvent<T>[] = [];
   private scheduler: Scheduler;
   private bufferSize: number;
