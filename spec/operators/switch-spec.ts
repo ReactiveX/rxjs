@@ -189,15 +189,16 @@ describe('Observable.prototype.switch', () => {
       });
   });
 
-  it('should handle an observable of promises, where one rejects', (done: DoneSignature) => {
-    Observable.of<any>(Promise.resolve(1), Promise.reject(2), Promise.resolve(3))
+  it('should handle an observable of promises, where last rejects', (done: DoneSignature) => {
+    Observable.of<any>(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
       .switch()
-      .subscribe((x: number) => {
-        expect(x).toBe(3);
+      .subscribe(() => {
+        done.fail();
       }, (err: any) => {
-        expect(err).toBe(2);
-      }, () => {
+        expect(err).toBe(3);
         done();
+      }, () => {
+        done.fail();
       });
   });
 
