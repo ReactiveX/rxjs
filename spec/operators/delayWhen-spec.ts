@@ -5,7 +5,7 @@ declare const rxTestScheduler: Rx.TestScheduler;
 
 /** @test {delayWhen} */
 describe('Observable.prototype.delayWhen', () => {
-  asDiagram('delay(durationSelector)')('should delay by duration selector', () => {
+  asDiagram('delayWhen(durationSelector)')('should delay by duration selector', () => {
     const e1 =        hot('---a---b---c--|');
     const expected =      '-----a------c----(b|)';
     const subs =          '^                !';
