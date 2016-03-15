@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable, ObservableOrPromise} from '../Observable';
+import {Observable, SubscribableOrPromise} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
@@ -19,16 +19,16 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method debounce
  * @owner Observable
  */
-export function debounce<T>(durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T> {
+export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
   return this.lift(new DebounceOperator(durationSelector));
 }
 
 export interface DebounceSignature<T> {
-  (durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T>;
+  (durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T>;
 }
 
 class DebounceOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => ObservableOrPromise<number>) {
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -42,7 +42,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private durationSubscription: Subscription = null;
 
   constructor(destination: Subscriber<R>,
-              private durationSelector: (value: T) => ObservableOrPromise<number>) {
+              private durationSelector: (value: T) => SubscribableOrPromise<number>) {
     super(destination);
   }
 
@@ -63,7 +63,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.destination.complete();
   }
 
-  private _tryNext(value: T, duration: ObservableOrPromise<number>): void {
+  private _tryNext(value: T, duration: SubscribableOrPromise<number>): void {
     let subscription = this.durationSubscription;
     this.value = value;
     this.hasValue = true;

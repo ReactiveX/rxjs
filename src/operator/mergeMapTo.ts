@@ -1,4 +1,4 @@
-import {Observable, ObservableInput, ObservableOrPromise} from '../Observable';
+import {Observable, ObservableInput, SubscribableOrPromise} from '../Observable';
 import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
@@ -31,7 +31,7 @@ export interface MergeMapToSignature<T> {
 // TODO: Figure out correct signature here: an Operator<Observable<T>, R>
 //       needs to implement call(observer: Subscriber<R>): Subscriber<Observable<T>>
 export class MergeMapToOperator<T, I, R> implements Operator<Observable<T>, R> {
-  constructor(private ish: ObservableOrPromise<I>,
+  constructor(private ish: SubscribableOrPromise<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
@@ -48,7 +48,7 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   protected index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private ish: ObservableOrPromise<I>,
+              private ish: SubscribableOrPromise<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
               private concurrent: number = Number.POSITIVE_INFINITY) {
     super(destination);
