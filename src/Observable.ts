@@ -1,4 +1,4 @@
-import {PartialObserver} from './Observer';
+import {PartialObserver, Observer} from './Observer';
 import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
@@ -9,9 +9,13 @@ import {toSubscriber} from './util/toSubscriber';
 import {IfObservable} from './observable/IfObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
 
-export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
+export interface Subscribable<T> {
+  subscribe(observer: Observer<T>): Subscription;
+}
+
+export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
 export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T>;
-export type ObservableInput<T> = ObservableOrPromise<T> | ArrayOrIterator<T>;
+export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayOrIterator<T>;
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -19,7 +23,7 @@ export type ObservableInput<T> = ObservableOrPromise<T> | ArrayOrIterator<T>;
  *
  * @class Observable<T>
  */
-export class Observable<T> {
+export class Observable<T> implements Subscribable<T> {
 
   public _isScalar: boolean = false;
 

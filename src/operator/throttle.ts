@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable, ObservableOrPromise} from '../Observable';
+import {Observable, SubscribableOrPromise} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
@@ -13,16 +13,16 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method throttle
  * @owner Observable
  */
-export function throttle<T>(durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T> {
+export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
 }
 
 export interface ThrottleSignature<T> {
-  (durationSelector: (value: T) => ObservableOrPromise<number>): Observable<T>;
+  (durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T>;
 }
 
 class ThrottleOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => ObservableOrPromise<number>) {
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
@@ -34,7 +34,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private throttled: Subscription;
 
   constructor(protected destination: Subscriber<T>,
-              private durationSelector: (value: T) => ObservableOrPromise<number>) {
+              private durationSelector: (value: T) => SubscribableOrPromise<number>) {
     super(destination);
   }
 
@@ -45,7 +45,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private tryDurationSelector(value: T): void {
-    let duration: ObservableOrPromise<number> = null;
+    let duration: SubscribableOrPromise<number> = null;
     try {
       duration = this.durationSelector(value);
     } catch (err) {
@@ -55,7 +55,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.emitAndThrottle(value, duration);
   }
 
-  private emitAndThrottle(value: T, duration: ObservableOrPromise<number>) {
+  private emitAndThrottle(value: T, duration: SubscribableOrPromise<number>) {
     this.add(this.throttled = subscribeToResult(this, duration));
     this.destination.next(value);
   }
