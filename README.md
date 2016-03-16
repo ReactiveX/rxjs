@@ -128,7 +128,7 @@ Automatically generated documentation can be found on the ReactiveX website: htt
 ## Goals
 
 - Provide better performance than preceding versions of RxJS
-- To model/follow the [ES7 Observable Spec](https://github.com/zenparsing/es-observable) to the observable.
+- To model/follow the [Observable Spec Proposal](https://github.com/zenparsing/es-observable) to the observable.
 - Provide more modular file structure in a variety of formats
 - Provide more debuggable call stacks than preceding versions of RxJS
 
