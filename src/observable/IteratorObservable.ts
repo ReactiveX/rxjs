@@ -9,6 +9,11 @@ import {errorObject} from '../util/errorObject';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
 

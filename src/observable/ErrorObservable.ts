@@ -3,7 +3,9 @@ import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class ErrorObservable extends Observable<any> {
 

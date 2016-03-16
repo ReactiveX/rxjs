@@ -4,13 +4,15 @@ import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class EmptyObservable<T> extends Observable<T> {
 
   /**
    * @param scheduler
-   * @return {EmptyObservable<T>}
+   * @return {Observable<T>}
    * @static true
    * @name empty
    * @owner Observable

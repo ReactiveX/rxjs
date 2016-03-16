@@ -114,6 +114,11 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SubscriptionDelayObservable<T> extends Observable<T> {
   constructor(protected source: Observable<T>, private subscriptionDelay: Observable<any>) {
     super();

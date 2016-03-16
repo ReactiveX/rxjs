@@ -6,7 +6,9 @@ import {isPromise} from '../util/isPromise';
 import {isArray} from '../util/isArray';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class ForkJoinObservable<T> extends Observable<T> {
   constructor(private sources: Array<Observable<any> | Promise<any>>,

@@ -5,6 +5,9 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {ObserveOnSubscriber} from '../operator/observeOn';
 
+/**
+ * @class ReplaySubject<T>
+ */
 export class ReplaySubject<T> extends Subject<T> {
   private events: ReplayEvent<T>[] = [];
   private scheduler: Scheduler;

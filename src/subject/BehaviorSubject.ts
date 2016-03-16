@@ -4,6 +4,9 @@ import {Subscription} from '../Subscription';
 import {throwError} from '../util/throwError';
 import {ObjectUnsubscribedError} from '../util/ObjectUnsubscribedError';
 
+/**
+ * @class BehaviorSubject<T>
+ */
 export class BehaviorSubject<T> extends Subject<T> {
 
   constructor(private _value: T) {

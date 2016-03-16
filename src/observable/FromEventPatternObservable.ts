@@ -5,7 +5,9 @@ import {errorObject} from '../util/errorObject';
 import {Subscriber} from '../Subscriber';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class FromEventPatternObservable<T, R> extends Observable<T> {
 

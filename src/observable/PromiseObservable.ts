@@ -5,7 +5,9 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class PromiseObservable<T> extends Observable<T> {
 

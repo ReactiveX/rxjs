@@ -5,6 +5,11 @@ import {EmptyObservable} from './EmptyObservable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
 export class ArrayLikeObservable<T> extends Observable<T> {
 
   private mapFn: (x: T, y: number) => T;

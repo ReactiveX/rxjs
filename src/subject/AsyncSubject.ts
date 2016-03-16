@@ -2,6 +2,9 @@ import {Subject} from '../Subject';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
+/**
+ * @class AsyncSubject<T>
+ */
 export class AsyncSubject<T> extends Subject<T> {
   value: T = null;
   hasNext: boolean = false;
