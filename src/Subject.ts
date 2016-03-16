@@ -9,6 +9,9 @@ import {rxSubscriber} from './symbol/rxSubscriber';
 import {throwError} from './util/throwError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 
+/**
+ * @class Subject<T>
+ */
 export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
 
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): Subject<T> => {
@@ -221,6 +224,11 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SubjectObservable<T> extends Observable<T> {
   constructor(source: Subject<T>) {
     super();

@@ -16,7 +16,9 @@ import {ObserveOnSubscriber} from '../operator/observeOn';
 const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 'number');
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class FromObservable<T> extends Observable<T> {
   constructor(private ish: ObservableInput<T>, private scheduler: Scheduler) {

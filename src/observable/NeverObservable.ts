@@ -3,7 +3,9 @@ import {Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class NeverObservable<T> extends Observable<T> {
   /**

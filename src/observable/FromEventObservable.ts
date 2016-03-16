@@ -35,7 +35,9 @@ function isEventTarget(sourceObj: any): sourceObj is EventTarget {
 export type EventTargetLike = EventTarget | NodeStyleEventEmmitter | JQueryStyleEventEmitter | NodeList | HTMLCollection;
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class FromEventObservable<T, R> extends Observable<T> {
 

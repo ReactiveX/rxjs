@@ -21,7 +21,9 @@ export interface WebSocketSubjectConfig {
 }
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class WebSocketSubject<T> extends Subject<T> {
   url: string;

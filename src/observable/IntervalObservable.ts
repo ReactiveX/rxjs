@@ -5,7 +5,9 @@ import {Observable} from '../Observable';
 import {async} from '../scheduler/async';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class IntervalObservable extends Observable<number> {
   /**

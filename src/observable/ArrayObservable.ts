@@ -7,19 +7,21 @@ import {isScheduler} from '../util/isScheduler';
 import {Subscription} from '../Subscription';
 
 /**
- *
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
  */
 export class ArrayObservable<T> extends Observable<T> {
 
   /**
    * @param array
    * @param scheduler
-   * @return {ArrayObservable}
+   * @return {Observable}
    * @static true
    * @name fromArray
    * @owner Observable
    */
-  static create<T>(array: T[], scheduler?: Scheduler) {
+  static create<T>(array: T[], scheduler?: Scheduler): Observable<T> {
     return new ArrayObservable(array, scheduler);
   }
 

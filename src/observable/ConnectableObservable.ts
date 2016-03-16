@@ -3,6 +3,9 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
+/**
+ * @class ConnectableObservable<T>
+ */
 export class ConnectableObservable<T> extends Observable<T> {
 
   protected subject: Subject<T>;
@@ -62,6 +65,11 @@ class ConnectableSubscription extends Subscription {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class RefCountObservable<T> extends Observable<T> {
   connection: Subscription;
 
