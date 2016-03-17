@@ -5,15 +5,14 @@
   "scripts": {
     "yaml2json": "rm -f src/tree.json && node tools/yaml2json tree.yml ./src/tree.json",
     "prebrowserify": "mkdir -p dist",
-    "browserify": "browserify src/main.js -t babelify --ignore snabbdom-to-html --outfile dist/decision-tree-widget.js",
+    "browserify": "browserify src/main.js -t babelify --outfile dist/decision-tree-widget.js",
     "uglify": "uglifyjs dist/decision-tree-widget.js -o dist/decision-tree-widget.min.js",
     "build": "npm install && npm run yaml2json && npm run browserify && npm run uglify",
     "postbuild": "rm -f src/tree.json"
   },
   "dependencies": {
-    "@cycle/core": "^6.0.3",
-    "cycle-snabbdom": "^1.1.1",
-    "rx": "^4.0.8",
+    "hyperscript-helpers": "^2.1.0",
+    "snabbdom": "^0.4.2",
     "yaml-js": "^0.1.3"
   },
   "devDependencies": {
