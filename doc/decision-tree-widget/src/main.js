@@ -1,32 +1,36 @@
-import {Observable} from 'rx';
-import {run} from '@cycle/core';
-import {makeDOMDriver, div, h4, p, li, ul, a, span} from 'cycle-snabbdom';
+const snabbdom = require('snabbdom');
+const classModule = require('snabbdom/modules/class');
+const propsModule = require('snabbdom/modules/props');
+const styleModule = require('snabbdom/modules/style');
+const attrsModule = require('snabbdom/modules/attributes');
+const h = require('snabbdom/h');
+const {div, h4, p, li, ul, a, span} = require('hyperscript-helpers')(h);
 const tree = require('./tree.json');
+const patch = snabbdom.init([classModule, propsModule, styleModule, attrsModule]);
 
-function intent(domSource) {
-  const chooseOption$ = domSource
-    .select('.option')
-    .events('click')
+function intent(containerElem) {
+  const click$ = Rx.Observable.fromEvent(containerElem, 'click');
+
+  const chooseOption$ = click$
+    .filter(ev => ev.target.className === 'option')
     .map(ev => ({
       type: 'CHOOSE_OPTION',
-      payload: parseInt(ev.currentTarget.dataset.index)
+      payload: parseInt(ev.target.dataset.index)
     }));
 
-  const undo$ = domSource
-    .select('.undo')
-    .events('click')
+  const undo$ = click$
+    .filter(ev => ev.target.className === 'undo')
     .map(() => ({
       type: 'UNDO'
     }));
 
-  const reset$ = domSource
-    .select('.reset')
-    .events('click')
+  const reset$ = click$
+    .filter(ev => ev.target.className === 'reset')
     .map(() => ({
       type: 'RESET'
     }));
 
-  return Observable.merge(chooseOption$, undo$, reset$);
+  return Rx.Observable.merge(chooseOption$, undo$, reset$);
 }
 
 function model(action$) {
@@ -58,7 +62,7 @@ function model(action$) {
       return initialState;
     });
 
-  return Observable.merge(selectReducer$, undoReducer$, resetReducer$)
+  return Rx.Observable.merge(selectReducer$, undoReducer$, resetReducer$)
     .scan((state, reducer) => reducer(state), initialState)
     .startWith(initialState);
 }
@@ -87,7 +91,7 @@ function renderCurrentSentence(state) {
     state.previous ? `"${state.previous}${state.options.length === 1 ? '.' : '...'}"` : null,
     state.previous ? span('.undo', '\u21A9\u00A0Undo') : null,
     state.previous ? span('.reset', 'Or\u00A0reset') : null
-  ]);
+  ].filter(x => x !== null));
 }
 
 function renderOption(option, index) {
@@ -142,8 +146,8 @@ function view(state$) {
   );
 }
 
-function main(sources) {
-  const action$ = intent(sources.DOM);
+function main(containerElem) {
+  const action$ = intent(containerElem);
   const state$ = model(action$);
   const displayState$ = viewModel(state$);
   const vdom$ = view(displayState$);
@@ -153,7 +157,7 @@ function main(sources) {
 }
 
 window.addEventListener('load', () => {
-  run(main, {
-    DOM: makeDOMDriver('.decision-tree-widget')
-  });
+  const container = document.querySelector('.decision-tree-widget');
+  const vdom$ = main(container).DOM;
+  vdom$.startWith(container).pairwise().subscribe(([a,b]) => { patch(a,b); });
 });
