@@ -10,6 +10,8 @@ import {AsyncSubject} from '../subject/AsyncSubject';
  *
  */
 export class BoundNodeCallbackObservable<T> extends Observable<T> {
+  ' tag_class_BoundNodeCallbackObservable': T;
+
   subject: AsyncSubject<T>;
 
   /* tslint:disable:max-line-length */

@@ -10,6 +10,7 @@ import {Subscription} from '../Subscription';
  *
  */
 export class ArrayObservable<T> extends Observable<T> {
+  ' tag_class_ArrayLikeObservable': T;
 
   /**
    * @param array

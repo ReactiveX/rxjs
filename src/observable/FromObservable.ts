@@ -20,6 +20,8 @@ const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 
  *
  */
 export class FromObservable<T> extends Observable<T> {
+  ' tag_class_FromObservable': T;
+
   constructor(private ish: ObservableInput<T>, private scheduler: Scheduler) {
     super(null);
   }

@@ -7,6 +7,7 @@ import {Subscriber} from '../Subscriber';
  *
  */
 export class RangeObservable extends Observable<number> {
+  ' tag_class_RangeObservable': any;
 
   /**
    * @param start

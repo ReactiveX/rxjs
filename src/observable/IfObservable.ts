@@ -3,6 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class IfObservable<T, R> extends Observable<T> {
+  ' tag_class_IfObservable': [T, R];
 
   static create<T, R>(condition: () => boolean,
                       thenSource?: Observable<T>,

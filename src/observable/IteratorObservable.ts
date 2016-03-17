@@ -10,6 +10,8 @@ import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
 export class IteratorObservable<T> extends Observable<T> {
+  ' tag_class_IteratorObservable': T;
+
   private iterator: any;
 
   static create<T>(iterator: any,

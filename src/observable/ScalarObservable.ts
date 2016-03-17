@@ -4,6 +4,8 @@ import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
 export class ScalarObservable<T> extends Observable<T> {
+  ' tag_class_ScalarObservable': T;
+
   static create<T>(value: T, scheduler?: Scheduler): ScalarObservable<T> {
     return new ScalarObservable(value, scheduler);
   }

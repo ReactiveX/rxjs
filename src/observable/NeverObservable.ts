@@ -6,6 +6,8 @@ import {noop} from '../util/noop';
  *
  */
 export class NeverObservable<T> extends Observable<T> {
+  ' tag_class_NeverObservable': T;
+
   /**
    * @return {NeverObservable<T>}
    * @static true
