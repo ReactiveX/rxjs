@@ -7,16 +7,33 @@ import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
- * Buffers the incoming observable values until the passed `closingNotifier`
- * emits a value, at which point it emits the buffer on the returned observable
- * and starts a new buffer internally, awaiting the next time `closingNotifier`
- * emits.
+ * Buffers the source Observable values until `closingNotifier` emits.
+ *
+ * <span class="informal">Collects values from the past as an array, and emits
+ * that array only when another Observable emits.</span>
  *
  * <img src="./img/buffer.png" width="100%">
  *
- * @param {Observable<any>} closingNotifier an Observable that signals the
- * buffer to be emitted} from the returned observable.
- * @return {Observable<T[]>} an Observable of buffers, which are arrays of
+ * Buffers the incoming Observable values until the given `closingNotifier`
+ * Observable emits a value, at which point it emits the buffer on the output
+ * Observable and starts a new buffer internally, awaiting the next time
+ * `closingNotifier` emits.
+ *
+ * @example <caption>On every click, emit array of most recent interval events</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var interval = Rx.Observable.interval(1000);
+ * var buffered = interval.buffer(clicks);
+ * buffered.subscribe(x => console.log(x));
+ *
+ * @see {@link bufferCount}
+ * @see {@link bufferTime}
+ * @see {@link bufferToggle}
+ * @see {@link bufferWhen}
+ * @see {@link window}
+ *
+ * @param {Observable<any>} closingNotifier An Observable that signals the
+ * buffer to be emitted on the output Observable.
+ * @return {Observable<T[]>} An Observable of buffers, which are arrays of
  * values.
  * @method buffer
  * @owner Observable
