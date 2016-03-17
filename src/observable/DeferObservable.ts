@@ -1,8 +1,9 @@
-import {Observable} from '../Observable';
+import {Observable, SubscribableOrPromise} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
+import {Subscription} from '../Subscription';
 
+import {subscribeToResult} from '../util/subscribeToResult';
+import {OuterSubscriber} from '../OuterSubscriber';
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -17,20 +18,34 @@ export class DeferObservable<T> extends Observable<T> {
    * @name defer
    * @owner Observable
    */
-  static create<T>(observableFactory: () => Observable<T>): Observable<T> {
+  static create<T>(observableFactory: () => SubscribableOrPromise<T> | void): Observable<T> {
     return new DeferObservable(observableFactory);
   }
 
-  constructor(private observableFactory: () => Observable<T>) {
+  constructor(private observableFactory: () => SubscribableOrPromise<T> | void) {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
-    const result = tryCatch(this.observableFactory)();
-    if (result === errorObject) {
-      subscriber.error(errorObject.e);
-    } else {
-      result.subscribe(subscriber);
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+    return new DeferSubscriber(subscriber, this.observableFactory);
+  }
+}
+
+class DeferSubscriber<T> extends OuterSubscriber<T, T> {
+  constructor(destination: Subscriber<T>,
+              private factory: () => SubscribableOrPromise<T> | void) {
+    super(destination);
+    this.tryDefer();
+  }
+
+  private tryDefer(): void {
+    try {
+      const result = this.factory.call(this);
+      if (result) {
+        this.add(subscribeToResult(this, result));
+      }
+    } catch (err) {
+      this._error(err);
     }
   }
 }

@@ -1,5 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, expectObservable, expectSubscriptions};
+import {DoneSignature} from '../helpers/test-helper';
+declare const {hot, expectObservable, expectSubscriptions, type};
 
 const Observable = Rx.Observable;
 
@@ -27,6 +28,36 @@ describe('Observable.defer', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
+  it('should accept factory returns promise resolves', (done: DoneSignature) => {
+    const expected = 42;
+    const e1 = Observable.defer(() => {
+      return new Promise((resolve: any) => { resolve(expected); });
+    });
+
+    e1.subscribe((x: number) => {
+      expect(x).toBe(expected);
+      done();
+    }, x => {
+      done.fail();
+    });
+  });
+
+  it('should accept factory returns promise rejects', (done: DoneSignature) => {
+    const expected = 42;
+    const e1 = Observable.defer(() => {
+      return new Promise((resolve: any, reject: any) => { reject(expected); });
+    });
+
+    e1.subscribe((x: number) => {
+      done.fail();
+    }, x => {
+      expect(x).toBe(expected);
+      done();
+    }, () => {
+      done.fail();
+    });
+  });
+
   it('should create an observable from error', () => {
     const source = hot('#');
     const sourceSubs = '(^!)';
@@ -39,10 +70,9 @@ describe('Observable.defer', () => {
   });
 
   it('should create an observable when factory throws', () => {
-    //type definition need to be updated
-    const e1 = Observable.defer(<any>(() => {
+    const e1 = Observable.defer(() => {
       throw 'error';
-    }));
+    });
     const expected = '#';
 
     expectObservable(e1).toBe(expected);
