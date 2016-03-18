@@ -33,6 +33,28 @@ describe('Observable.prototype.publishBehavior', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
+  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', (done: DoneSignature) => {
+    const expected = [0, 1, 2, 3, 4];
+    let i = 0;
+
+    const source = Observable.of(1, 2, 3, 4).publishBehavior(0);
+
+    source.subscribe(
+      (x: number) => {
+        expect(x).toBe(expected[i++]);
+      },
+      done.fail,
+      () => {
+        source.subscribe((x: any) => {
+          done.fail('should not be called');
+        }, done.fail, done);
+
+        source.connect();
+      });
+
+    source.connect();
+  });
+
   it('should multicast the same values to multiple observers', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
@@ -325,27 +347,4 @@ describe('Observable.prototype.publishBehavior', () => {
     expect(results).toEqual([]);
     done();
   });
-
-  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', (done: DoneSignature) => {
-    const expected = [0, 1, 2, 3, 4];
-    let i = 0;
-
-    const source = Observable.of(1, 2, 3, 4).publishBehavior(0);
-
-    source.subscribe(
-      (x: number) => {
-        expect(x).toBe(expected[i++]);
-      },
-      done.fail,
-      () => {
-        source.subscribe((x: any) => {
-          done.fail('should not be called');
-        }, done.fail, done);
-
-        source.connect();
-      });
-
-    source.connect();
-  });
-
 });
