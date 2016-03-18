@@ -15,11 +15,11 @@ export class DeferObservable<T> extends Observable<T> {
    * @name defer
    * @owner Observable
    */
-  static create<T>(observableFactory: () => Observable<T>): Observable<T> {
+  static create<T>(observableFactory: () => Observable<T> | void): Observable<T> {
     return new DeferObservable(observableFactory);
   }
 
-  constructor(private observableFactory: () => Observable<T>) {
+  constructor(private observableFactory: () => Observable<T> | void) {
     super();
   }
 
@@ -28,7 +28,7 @@ export class DeferObservable<T> extends Observable<T> {
     if (result === errorObject) {
       subscriber.error(errorObject.e);
     } else {
-      result.subscribe(subscriber);
+      (<Observable<T>>result).subscribe(subscriber);
     }
   }
 }
