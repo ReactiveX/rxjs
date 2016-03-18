@@ -1,8 +1,6 @@
 import {isArray} from './util/isArray';
 import {isObject} from './util/isObject';
 import {isFunction} from './util/isFunction';
-import {tryCatch} from './util/tryCatch';
-import {errorObject} from './util/errorObject';
 
 export class Subscription {
   public static EMPTY: Subscription = (function(empty: any){
@@ -26,19 +24,23 @@ export class Subscription {
     }
     this.isUnsubscribed = true;
 
-    let hasErrors = false;
-    let errors: any[] = [];
+    const result: {
+      hasErrors: boolean;
+      errors: any[];
+    } = {
+      hasErrors: false,
+      errors: [],
+    };
 
-    const { _unsubscribe, _subscriptions } = (<any> this);
+    const { _unsubscribe, _subscriptions }: {
+      _unsubscribe: () => void;
+      _subscriptions: Subscription[];
+    } = (<any> this);
 
     (<any> this)._subscriptions = null;
 
     if (isFunction(_unsubscribe)) {
-      let trial = tryCatch(_unsubscribe).call(this);
-      if (trial === errorObject) {
-        hasErrors = true;
-        errors.push(errorObject.e);
-      }
+      callPrivateUnsubscribe(this, result);
     }
 
     if (isArray(_subscriptions)) {
@@ -47,24 +49,15 @@ export class Subscription {
       const len = _subscriptions.length;
 
       while (++index < len) {
-        const sub = _subscriptions[index];
+        const sub: Subscription = _subscriptions[index];
         if (isObject(sub)) {
-          let trial = tryCatch(sub.unsubscribe).call(sub);
-          if (trial === errorObject) {
-            hasErrors = true;
-            let err = errorObject.e;
-            if (err instanceof UnsubscriptionError) {
-              errors = errors.concat(err.errors);
-            } else {
-              errors.push(err);
-            }
-          }
+          callPublicUnsubscribe(sub, result);
         }
       }
     }
 
-    if (hasErrors) {
-      throw new UnsubscriptionError(errors);
+    if (result.hasErrors) {
+      throw new UnsubscriptionError(result.errors);
     }
   }
 
@@ -125,5 +118,29 @@ export class UnsubscriptionError extends Error {
   constructor(public errors: any[]) {
     super('unsubscriptoin error(s)');
     this.name = 'UnsubscriptionError';
+  }
+}
+
+function callPrivateUnsubscribe(sub: Subscription, result: { hasErrors: boolean; errors: any[]; }): void {
+  try {
+    (<any>sub)._unsubscribe();
+  }
+  catch (e) {
+    result.hasErrors = true;
+    result.errors.push(e);
+  }
+}
+
+function callPublicUnsubscribe(sub: Subscription, result: { hasErrors: boolean; errors: any[]; }): void {
+  try {
+    sub.unsubscribe();
+  }
+  catch (e) {
+    result.hasErrors = true;
+    if (e instanceof UnsubscriptionError) {
+      result.errors = result.errors.concat(e);
+    } else {
+      result.errors.push(e);
+    }
   }
 }
