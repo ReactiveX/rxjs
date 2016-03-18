@@ -103,7 +103,7 @@ from the main (upstream) repository:
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
 can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any
-asynchronous operator should be written in [Marble Test Style outlined in detail here](docs/writing-marble-tests.md).
+asynchronous operator should be written in [Marble Test Style outlined in detail here](doc/writing-marble-tests.md).
 
 Each operator under test must be in its own file to cover the following cases:
 
