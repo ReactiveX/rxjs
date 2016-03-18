@@ -131,10 +131,16 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
         const context = { window, subscription };
         this.contexts.push(context);
         const innerSubscription = subscribeToResult(this, closingNotifier, context);
-        (<any> innerSubscription).context = context;
-        subscription.add(innerSubscription);
+
+        if (innerSubscription.isUnsubscribed) {
+          this.closeWindow(this.contexts.length - 1);
+        } else {
+          (<any> innerSubscription).context = context;
+          subscription.add(innerSubscription);
+        }
 
         this.destination.next(window);
+
       }
     } else {
       this.closeWindow(this.contexts.indexOf(outerValue));
@@ -151,7 +157,11 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
     }
   }
 
-  closeWindow(index: number) {
+  private closeWindow(index: number): void {
+    if (index === -1) {
+      return;
+    }
+
     const { contexts } = this;
     const context = contexts[index];
     const { window, subscription } = context;

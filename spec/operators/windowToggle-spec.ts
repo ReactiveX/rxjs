@@ -407,4 +407,22 @@ describe('Observable.prototype.windowToggle', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
+
+  it ('should handle empty closing observable', () => {
+    const e1 = hot('--a--^---b---c---d---e---f---g---h------|');
+    const e1subs =      '^                                  !';
+    const e2 = cold(    '---o---------------o-----------|    ');
+    const e2subs =      '^                              !    ';
+    const e3 =  Observable.empty();
+    const expected =    '---x---------------y---------------|';
+    const x = cold(        '|');
+    const y = cold(                        '|');
+    const values = { x: x, y: y };
+
+    const result = e1.windowToggle(e2, () => e3);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
 });
