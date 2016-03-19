@@ -142,14 +142,14 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
 
   private closeBuffer(context: BufferContext<T>): void {
     const contexts = this.contexts;
-    if (contexts === null) {
-      return;
+
+    if (contexts && context) {
+      const { buffer, subscription } = context;
+      this.destination.next(buffer);
+      contexts.splice(contexts.indexOf(context), 1);
+      this.remove(subscription);
+      subscription.unsubscribe();
     }
-    const { buffer, subscription } = context;
-    this.destination.next(buffer);
-    contexts.splice(contexts.indexOf(context), 1);
-    this.remove(subscription);
-    subscription.unsubscribe();
   }
 
   private trySubscribe(closingNotifier: any): void {
@@ -161,10 +161,15 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
     contexts.push(context);
 
     const innerSubscription = subscribeToResult(this, closingNotifier, <any>context);
-    (<any> innerSubscription).context = context;
 
-    this.add(innerSubscription);
-    subscription.add(innerSubscription);
+    if (!innerSubscription.isUnsubscribed) {
+      (<any> innerSubscription).context = context;
+
+      this.add(innerSubscription);
+      subscription.add(innerSubscription);
+    } else {
+      this.closeBuffer(context);
+    }
   }
 }
 
