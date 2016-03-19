@@ -22,7 +22,7 @@ export interface AjaxRequest {
   responseType?: string;
 }
 
-const createXHRDefault = (): XMLHttpRequest => {
+function createXHRDefault(): XMLHttpRequest {
   let xhr = new root.XMLHttpRequest();
   if (this.crossDomain) {
     if ('withCredentials' in xhr) {
@@ -36,7 +36,7 @@ const createXHRDefault = (): XMLHttpRequest => {
   } else {
     return xhr;
   }
-};
+}
 
 export interface AjaxCreationMethod {
   <T>(urlOrRequest: string | AjaxRequest): Observable<T>;
