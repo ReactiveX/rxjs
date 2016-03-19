@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import {DoneSignature} from '../helpers/test-helper';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
@@ -341,5 +342,43 @@ describe('Observable.prototype.bufferToggle', () => {
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should accept closing selector that returns a resolved promise', (done: DoneSignature) => {
+    const e1 = Observable.concat(Observable.of(1),
+      Observable.timer(10).mapTo(2),
+      Observable.timer(10).mapTo(3),
+      Observable.timer(100).mapTo(4)
+      );
+    const expected = [[1]];
+
+    e1.bufferToggle(Observable.of(10), () => new Promise((resolve: any) => { resolve(42); }))
+      .subscribe((x) => {
+        expect(x).toEqual(expected.shift()); },
+        done.fail,
+        () => {
+          expect(expected.length).toBe(0);
+          done();
+      });
+  });
+
+  it('should accept closing selector that returns a rejected promise', (done: DoneSignature) => {
+    const e1 = Observable.concat(Observable.of(1),
+      Observable.timer(10).mapTo(2),
+      Observable.timer(10).mapTo(3),
+      Observable.timer(100).mapTo(4)
+      );
+
+    const expected = 42;
+
+    e1.bufferToggle(Observable.of(10), () => new Promise((resolve: any, reject: any) => { reject(expected); }))
+      .subscribe((x) => {
+        done.fail();
+      }, (x) => {
+        expect(x).toBe(expected);
+        done();
+      }, () => {
+        done.fail();
+      });
   });
 });
