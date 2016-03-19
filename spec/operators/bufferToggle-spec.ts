@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-import {DoneSignature} from '../helpers/test-helper';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
@@ -344,7 +343,7 @@ describe('Observable.prototype.bufferToggle', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should accept closing selector that returns a resolved promise', (done: DoneSignature) => {
+  it('should accept closing selector that returns a resolved promise', (done: MochaDone) => {
     const e1 = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
@@ -354,15 +353,16 @@ describe('Observable.prototype.bufferToggle', () => {
 
     e1.bufferToggle(Observable.of(10), () => new Promise((resolve: any) => { resolve(42); }))
       .subscribe((x) => {
-        expect(x).toEqual(expected.shift()); },
-        done.fail,
-        () => {
-          expect(expected.length).toBe(0);
+        expect(x).to.deep.equal(expected.shift());
+      }, () => {
+        done(new Error('should not be called'));
+      }, () => {
+          expect(expected.length).to.be.equal(0);
           done();
       });
   });
 
-  it('should accept closing selector that returns a rejected promise', (done: DoneSignature) => {
+  it('should accept closing selector that returns a rejected promise', (done: MochaDone) => {
     const e1 = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
@@ -373,12 +373,24 @@ describe('Observable.prototype.bufferToggle', () => {
 
     e1.bufferToggle(Observable.of(10), () => new Promise((resolve: any, reject: any) => { reject(expected); }))
       .subscribe((x) => {
-        done.fail();
+        done(new Error('should not be called'));
       }, (x) => {
-        expect(x).toBe(expected);
+        expect(x).to.equal(expected);
         done();
       }, () => {
-        done.fail();
+        done(new Error('should not be called'));
       });
+  });
+
+  it('should handle empty closing observable', () => {
+    const e1 = hot('--a--^---b---c---d---e---f---g---h------|');
+    const subs =        '^                                  !';
+    const e2 =     cold('--x-----------y--------z---|        ');
+    const expected =    '--l-----------m--------n-----------|';
+
+    const result = e1.bufferToggle(e2, () => Observable.empty());
+
+    expectObservable(result).toBe(expected, {l: [], m: [], n: []});
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 });
