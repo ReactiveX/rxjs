@@ -25,6 +25,11 @@ class IsEmptyOperator implements Operator<any, boolean> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class IsEmptySubscriber extends Subscriber<any> {
   constructor(destination: Subscriber<boolean>) {
     super(destination);

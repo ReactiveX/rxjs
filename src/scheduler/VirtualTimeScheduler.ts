@@ -66,6 +66,11 @@ export class VirtualTimeScheduler implements Scheduler {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class VirtualAction<T> extends Subscription implements Action<T> {
   state: T;
   delay: number;

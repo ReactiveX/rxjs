@@ -36,6 +36,11 @@ class SampleOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private value: T;
   private hasValue: boolean = false;

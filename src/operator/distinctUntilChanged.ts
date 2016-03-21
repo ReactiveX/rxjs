@@ -32,6 +32,11 @@ class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DistinctUntilChangedSubscriber<T, K> extends Subscriber<T> {
   private key: K;
   private hasKey: boolean = false;

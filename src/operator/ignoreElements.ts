@@ -27,6 +27,11 @@ class IgnoreElementsOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class IgnoreElementsSubscriber<T> extends Subscriber<T> {
   protected _next(unused: T): void {
     noop();

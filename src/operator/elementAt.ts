@@ -6,6 +6,9 @@ import {Observable} from '../Observable';
 /**
  * Returns an Observable that emits the item at the specified index in the source Observable.
  * If default is given, missing indices will output this value on next; otherwise, outputs error.
+ * @throws {ArgumentOutOfRangeError} When using `elementAt(i)`, it delivers an
+ * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0` or the
+ * Observable has completed before emitting the i-th `next` notification.
  * @param {number} index the index of the value to be retrieved.
  * @param {any} [defaultValue] the default value returned for missing indices.
  * @return {Observable} an Observable that emits a single item, if it is found. Otherwise, will emit the default value if given.
@@ -33,6 +36,11 @@ class ElementAtOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class ElementAtSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>, private index: number, private defaultValue?: T) {

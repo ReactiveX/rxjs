@@ -30,6 +30,11 @@ class SkipOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SkipSubscriber<T> extends Subscriber<T> {
   count: number = 0;
 

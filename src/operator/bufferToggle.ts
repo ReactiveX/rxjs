@@ -68,6 +68,11 @@ interface BufferContext<T> {
   subscription: Subscription;
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   private contexts: Array<BufferContext<T>> = [];
 
@@ -144,6 +149,11 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class BufferToggleOpeningsSubscriber<T, O> extends Subscriber<O> {
   constructor(private parent: BufferToggleSubscriber<T, O>) {
     super(null);
@@ -162,6 +172,11 @@ class BufferToggleOpeningsSubscriber<T, O> extends Subscriber<O> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class BufferToggleClosingsSubscriber<T> extends Subscriber<any> {
   constructor(private parent: BufferToggleSubscriber<T, any>,
               private context: { subscription: any, buffer: T[] }) {

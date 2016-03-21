@@ -56,6 +56,11 @@ class BufferOperator<T> implements Operator<T, T[]> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class BufferSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[] = [];
 

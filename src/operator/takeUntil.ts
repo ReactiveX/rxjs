@@ -29,6 +29,11 @@ class TakeUntilOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   constructor(destination: Subscriber<any>,

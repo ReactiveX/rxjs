@@ -61,6 +61,11 @@ class SwitchOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private hasCompleted: boolean = false;

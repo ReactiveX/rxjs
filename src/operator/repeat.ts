@@ -40,6 +40,11 @@ class RepeatOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class RepeatSubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<any>,
               private count: number,

@@ -3,8 +3,8 @@ import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 
 const asap = Rx.Scheduler.asap;
 
-/** @test {AsapScheduler} */
-describe('AsapScheduler', () => {
+/** @test {Scheduler} */
+describe('Scheduler.asap', () => {
   it('should exist', () => {
     expect(asap).exist;
   });

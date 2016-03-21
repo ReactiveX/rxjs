@@ -35,6 +35,11 @@ class DoOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DoSubscriber<T> extends Subscriber<T> {
 
   private safeSubscriber: Subscriber<T>;

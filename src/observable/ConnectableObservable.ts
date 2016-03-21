@@ -53,6 +53,11 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class ConnectableSubscription extends Subscription {
   constructor(protected connectable: ConnectableObservable<any>) {
     super();
@@ -89,6 +94,11 @@ class RefCountObservable<T> extends Observable<T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class RefCountSubscriber<T> extends Subscriber<T> {
   connection: Subscription;
 

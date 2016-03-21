@@ -38,6 +38,11 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class ReduceSubscriber<T, R> extends Subscriber<T> {
 
   acc: T | R;

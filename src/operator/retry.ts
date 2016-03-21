@@ -37,6 +37,11 @@ class RetryOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class RetrySubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<any>,
               private count: number,

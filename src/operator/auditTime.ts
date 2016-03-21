@@ -29,6 +29,11 @@ class AuditTimeOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class AuditTimeSubscriber<T> extends Subscriber<T> {
 
   private value: T;

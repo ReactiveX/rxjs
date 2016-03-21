@@ -79,6 +79,11 @@ interface WindowContext<T> {
   subscription: Subscription;
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   private contexts: WindowContext<T>[] = [];
   private openSubscription: Subscription;

@@ -36,6 +36,11 @@ class CountOperator<T> implements Operator<T, number> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class CountSubscriber<T> extends Subscriber<T> {
   private count: number = 0;
   private index: number = 0;

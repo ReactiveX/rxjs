@@ -2,6 +2,11 @@ import {Action} from './Action';
 import {Immediate} from '../util/Immediate';
 import {FutureAction} from './FutureAction';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class AsapAction<T> extends FutureAction<T> {
 
   protected _schedule(state?: T, delay: number = 0): Action<T> {

@@ -2,6 +2,11 @@ import {Action} from './Action';
 import {FutureAction} from './FutureAction';
 import {AnimationFrame} from '../util/AnimationFrame';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class AnimationFrameAction<T> extends FutureAction<T> {
 
   protected _schedule(state?: T, delay: number = 0): Action<T> {

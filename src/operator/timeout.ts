@@ -39,6 +39,11 @@ class TimeoutOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class TimeoutSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
   private _previousIndex: number = 0;

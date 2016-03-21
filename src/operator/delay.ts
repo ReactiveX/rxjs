@@ -66,6 +66,11 @@ class DelayOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DelaySubscriber<T> extends Subscriber<T> {
   private queue: Array<any> = [];
   private active: boolean = false;

@@ -5,6 +5,8 @@ import {EmptyObservable} from '../observable/EmptyObservable';
 import {Observable} from '../Observable';
 
 /**
+ * @throws {ArgumentOutOfRangeError} When using `takeLast(i)`, it delivers an
+ * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
  * @param total
  * @return {any}
  * @method takeLast
@@ -34,6 +36,11 @@ class TakeLastOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class TakeLastSubscriber<T> extends Subscriber<T> {
   private ring: Array<T> = new Array();
   private count: number = 0;

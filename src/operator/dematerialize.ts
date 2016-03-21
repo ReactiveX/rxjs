@@ -5,6 +5,9 @@ import {Notification} from '../Notification';
 
 /**
  * Returns an Observable that transforms Notification objects into the items or notifications they represent.
+ *
+ * @see {@link Notification}
+ *
  * @return {Observable} an Observable that emits items and notifications embedded in Notification objects emitted by the source Observable.
  * @method dematerialize
  * @owner Observable
@@ -23,6 +26,11 @@ class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DeMaterializeSubscriber<T extends Notification<any>> extends Subscriber<T> {
   constructor(destination: Subscriber<any>) {
     super(destination);

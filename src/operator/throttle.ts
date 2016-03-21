@@ -30,6 +30,11 @@ class ThrottleOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private throttled: Subscription;
 

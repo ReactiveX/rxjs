@@ -1,6 +1,11 @@
 import {Subscriber} from './Subscriber';
 import {InnerSubscriber} from './InnerSubscriber';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class OuterSubscriber<T, R> extends Subscriber<T> {
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,

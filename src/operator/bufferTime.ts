@@ -75,6 +75,11 @@ type CreationState<T> = {
   scheduler: Scheduler;
 };
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class BufferTimeSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
 

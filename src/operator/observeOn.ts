@@ -6,6 +6,8 @@ import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 
 /**
+ * @see {@link Notification}
+ *
  * @param scheduler
  * @param delay
  * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -29,6 +31,11 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
   static dispatch({ notification, destination }) {
     notification.observe(destination);

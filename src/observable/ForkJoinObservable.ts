@@ -56,6 +56,11 @@ export class ForkJoinObservable<T> extends Observable<T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
   private completed = 0;
   private total: number;

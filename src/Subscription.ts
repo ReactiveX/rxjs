@@ -17,20 +17,46 @@ export interface ISubscription extends AnonymousSubscription {
   remove(sub: ISubscription): void;
 }
 
+/**
+ * Represents a disposable resource, such as the execution of an Observable. A
+ * Subscription has one important method, `unsubscribe`, that takes no argument
+ * and just disposes the resource held by the subscription.
+ *
+ * Additionally, subscriptions may be grouped together through the `add()`
+ * method, which will attach a child Subscription to the current Subscription.
+ * When a Subscription is unsubscribed, all its children (and its grandchildren)
+ * will be unsubscribed as well.
+ *
+ * @class Subscription
+ */
 export class Subscription implements ISubscription {
   public static EMPTY: Subscription = (function(empty: any){
     empty.isUnsubscribed = true;
     return empty;
   }(new Subscription()));
 
+  /**
+   * A flag to indicate whether this Subscription has already been unsubscribed.
+   * @type {boolean}
+   */
   public isUnsubscribed: boolean = false;
 
-  constructor(_unsubscribe?: () => void) {
-    if (_unsubscribe) {
-      (<any> this)._unsubscribe = _unsubscribe;
+  /**
+   * @param {function(): void} [unsubscribe] A function describing how to
+   * perform the disposal of resources when the `unsubscribe` method is called.
+   */
+  constructor(unsubscribe?: () => void) {
+    if (unsubscribe) {
+      (<any> this)._unsubscribe = unsubscribe;
     }
   }
 
+  /**
+   * Disposes the resources held by the subscription. May, for instance, cancel
+   * an ongoing Observable execution or cancel any other type of work that
+   * started when the Subscription was created.
+   * @return {void}
+   */
   unsubscribe(): void {
     let hasErrors = false;
     let errors: any[];
@@ -82,19 +108,22 @@ export class Subscription implements ISubscription {
   }
 
   /**
-   * Adds a tear down to be called during the unsubscribe() of this subscription.
+   * Adds a tear down to be called during the unsubscribe() of this
+   * Subscription.
    *
-   * If the tear down being added is a subscription that is already unsubscribed,
-   * is the same reference `add` is being called on, or is `Subscription.EMPTY`,
-   * it will not be added.
+   * If the tear down being added is a subscription that is already
+   * unsubscribed, is the same reference `add` is being called on, or is
+   * `Subscription.EMPTY`, it will not be added.
    *
-   * If this subscription is already in an `isUnsubscribed` state, the passed tear down logic
-   * will be executed immediately
+   * If this subscription is already in an `isUnsubscribed` state, the passed
+   * tear down logic will be executed immediately.
    *
-   * @param {TeardownLogic} teardown the additional logic to execute on teardown.
-   * @returns {Subscription} returns the subscription used or created to be added to the inner
-   *  subscriptions list. This subscription can be used with `remove()` to remove the passed teardown
-   *  logic from the inner subscriptions list.
+   * @param {TeardownLogic} teardown The additional logic to execute on
+   * teardown.
+   * @return {Subscription} Returns the Subscription used or created to be
+   * added to the inner subscriptions list. This Subscription can be used with
+   * `remove()` to remove the passed teardown logic from the inner subscriptions
+   * list.
    */
   add(teardown: TeardownLogic): Subscription {
     if (!teardown || (
@@ -125,9 +154,10 @@ export class Subscription implements ISubscription {
   }
 
   /**
-   * removes a subscription from the internal list of subscriptions that will unsubscribe
-   * during unsubscribe process of this subscription.
-   * @param {Subscription} subscription the subscription to remove
+   * Removes a Subscription from the internal list of subscriptions that will
+   * unsubscribe during the unsubscribe process of this Subscription.
+   * @param {Subscription} subscription The subscription to remove.
+   * @return {void}
    */
   remove(subscription: Subscription): void {
 
@@ -149,6 +179,10 @@ export class Subscription implements ISubscription {
   }
 }
 
+/**
+ * An error thrown when one or more errors have occurred during the
+ * `unsubscribe` of a {@link Subscription}.
+ */
 export class UnsubscriptionError extends Error {
   constructor(public errors: any[]) {
     super('unsubscriptoin error(s)');

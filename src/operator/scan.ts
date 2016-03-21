@@ -32,6 +32,11 @@ class ScanOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class ScanSubscriber<T, R> extends Subscriber<T> {
   private _seed: T | R;
 

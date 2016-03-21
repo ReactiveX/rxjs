@@ -25,6 +25,11 @@ class TakeWhileOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class TakeWhileSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 

@@ -31,6 +31,11 @@ class SkipWhileOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SkipWhileSubscriber<T> extends Subscriber<T> {
   private skipping: boolean = true;
   private index: number = 0;

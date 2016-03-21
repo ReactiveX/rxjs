@@ -85,6 +85,11 @@ export class MergeMapOperator<T, I, R> implements Operator<T, I> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private hasCompleted: boolean = false;
   private buffer: Observable<any>[] = [];

@@ -34,6 +34,11 @@ class MapOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class MapSubscriber<T, R> extends Subscriber<T> {
   count: number = 0;
   private thisArg: any;

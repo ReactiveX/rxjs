@@ -36,6 +36,11 @@ class DebounceTimeOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DebounceTimeSubscriber<T> extends Subscriber<T> {
   private debouncedSubscription: Subscription = null;
   private lastValue: T = null;

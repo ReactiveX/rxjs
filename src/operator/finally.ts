@@ -28,6 +28,11 @@ class FinallyOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class FinallySubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>, finallySelector: () => void) {
     super(destination);

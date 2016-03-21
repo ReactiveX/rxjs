@@ -60,6 +60,11 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[];
   private subscribing: boolean = false;

@@ -72,6 +72,11 @@ class SwitchFirstMapOperator<T, I, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SwitchFirstMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private hasSubscription: boolean = false;
   private hasCompleted: boolean = false;

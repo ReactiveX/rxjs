@@ -33,6 +33,11 @@ export class FindValueOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class FindValueSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 

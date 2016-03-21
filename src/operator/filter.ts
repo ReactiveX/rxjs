@@ -30,6 +30,11 @@ class FilterOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class FilterSubscriber<T> extends Subscriber<T> {
 
   count: number = 0;

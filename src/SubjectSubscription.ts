@@ -2,6 +2,11 @@ import {Subject} from './Subject';
 import {Observer} from './Observer';
 import {Subscription} from './Subscription';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class SubjectSubscription extends Subscription {
   isUnsubscribed: boolean = false;
 

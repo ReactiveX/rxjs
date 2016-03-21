@@ -21,6 +21,11 @@ class ToArrayOperator<T> implements Operator<T, T[]> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class ToArraySubscriber<T> extends Subscriber<T> {
 
   private array: T[] = [];

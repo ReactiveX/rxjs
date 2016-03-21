@@ -38,6 +38,11 @@ class DelayWhenOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private completed: boolean = false;
   private delayNotifierSubscriptions: Array<Subscription> = [];
@@ -129,6 +134,11 @@ class SubscriptionDelayObservable<T> extends Observable<T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SubscriptionDelaySubscriber<T> extends Subscriber<T> {
   private sourceSubscribed: boolean = false;
 

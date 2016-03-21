@@ -86,6 +86,11 @@ type CreationState<T> = {
   scheduler: Scheduler;
 };
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
 

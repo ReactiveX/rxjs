@@ -28,6 +28,11 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
   private isEmpty: boolean = true;
 

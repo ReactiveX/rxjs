@@ -66,6 +66,11 @@ export class MergeAllOperator<T> implements Operator<Observable<T>, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class MergeAllSubscriber<T> extends OuterSubscriber<Observable<T>, T> {
   private hasCompleted: boolean = false;
   private buffer: Observable<T>[] = [];

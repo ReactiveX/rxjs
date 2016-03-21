@@ -37,7 +37,15 @@ exports.onHandleTag = function onHandleTag(ev) {
     var owner = getTagValue(tag, '@owner');
     var name = getTagValue(tag, '@name');
     var isStatic = getTagValue(tag, '@static');
+    var noImport = getTagValue(tag, '@noimport');
     var isHidden = getTagValue(tag, '@hide');
+    if (name) {
+      tag.name = name;
+    }
+    if (noImport) {
+      delete tag.importPath;
+      delete tag.importStyle;
+    }
     if (isHidden) {
       ev.data.tag[i] = {name: '', longname: ''};
       ev.data.tag[i]['export'] = false;
@@ -46,9 +54,6 @@ exports.onHandleTag = function onHandleTag(ev) {
       tag.kind = 'method';
       tag.static = false;
       tag.memberof = ownerLongname;
-      if (name) {
-        tag.name = name;
-      }
       if (isStatic) {
         tag.static = true;
       }

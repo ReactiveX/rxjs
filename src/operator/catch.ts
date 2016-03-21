@@ -33,6 +33,11 @@ class CatchOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class CatchSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<any>,

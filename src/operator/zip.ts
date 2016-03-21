@@ -87,6 +87,11 @@ export class ZipOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class ZipSubscriber<T, R> extends Subscriber<T> {
   private index = 0;
   private values: any;
@@ -246,6 +251,11 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAheadIterator<T> {
   stillUnsubscribed = true;
   buffer: T[] = [];

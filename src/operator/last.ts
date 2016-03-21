@@ -11,6 +11,8 @@ import {EmptyError} from '../util/EmptyError';
  *
  * <img src="./img/last.png" width="100%">
  *
+ * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
+ * callback if the Observable completes before any `next` notification was sent.
  * @param {function} predicate - the condition any source emitted item has to satisfy.
  * @return {Observable} an Observable that emits only the last item satisfying the given condition
  * from the source, or an NoSuchElementException if no such items are emitted.
@@ -43,6 +45,11 @@ class LastOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class LastSubscriber<T, R> extends Subscriber<T> {
   private lastValue: T | R;
   private hasValue: boolean = false;

@@ -74,6 +74,11 @@ class SwitchMapOperator<T, I, R> implements Operator<T, I> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private index: number = 0;
   private innerSubscription: Subscription;

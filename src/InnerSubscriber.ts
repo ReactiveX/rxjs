@@ -1,6 +1,11 @@
 import {Subscriber} from './Subscriber';
 import {OuterSubscriber} from './OuterSubscriber';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class InnerSubscriber<T, R> extends Subscriber<R> {
   private index: number = 0;
 

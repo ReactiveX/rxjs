@@ -61,6 +61,11 @@ export class RaceOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
   private hasFirst: boolean = false;
   private observables: Observable<any>[] = [];

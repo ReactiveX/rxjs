@@ -71,6 +71,11 @@ class WindowCountOperator<T> implements Operator<T, Observable<T>> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class WindowCountSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [ new Subject<T>() ];
   private count: number = 0;

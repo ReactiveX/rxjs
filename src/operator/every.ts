@@ -32,6 +32,11 @@ class EveryOperator<T> implements Operator<T, boolean> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class EverySubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 

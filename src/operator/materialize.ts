@@ -10,8 +10,10 @@ import {Notification} from '../Notification';
  *
  * <img src="./img/materialize.png" width="100%">
  *
+ * @see {@link Notification}
+ *
  * @scheduler materialize does not operate by default on a particular Scheduler.
- * @return {Observable} an Observable that emits items that are the result of
+ * @return {Observable<Notification<T>>} an Observable that emits items that are the result of
  * materializing the items and notifications of the source Observable.
  * @method materialize
  * @owner Observable
@@ -30,6 +32,11 @@ class MaterializeOperator<T> implements Operator<T, Notification<T>> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class MaterializeSubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<Notification<T>>) {
     super(destination);

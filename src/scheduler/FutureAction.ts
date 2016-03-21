@@ -3,6 +3,11 @@ import {Action} from './Action';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class FutureAction<T> extends Subscription implements Action<T> {
 
   public id: number;

@@ -33,6 +33,11 @@ class MapToOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class MapToSubscriber<T, R> extends Subscriber<T> {
 
   value: R;

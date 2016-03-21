@@ -11,6 +11,8 @@ import {EmptyError} from '../util/EmptyError';
  *
  * <img src="./img/single.png" width="100%">
  *
+ * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
+ * callback if the Observable completes before any `next` notification was sent.
  * @param {Function} a predicate function to evaluate items emitted by the source Observable.
  * @return {Observable<T>} an Observable that emits the single item emitted by the source Observable that matches
  * the predicate.
@@ -36,6 +38,11 @@ class SingleOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SingleSubscriber<T> extends Subscriber<T> {
   private seenValue: boolean = false;
   private singleValue: T;

@@ -34,6 +34,11 @@ class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class TimeIntervalSubscriber<T> extends Subscriber<T> {
   private lastTime: number = 0;
 

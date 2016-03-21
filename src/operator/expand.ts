@@ -43,6 +43,11 @@ export class ExpandOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private index: number = 0;
   private active: number = 0;

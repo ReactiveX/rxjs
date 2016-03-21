@@ -35,6 +35,11 @@ class DistinctOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class DistinctSubscriber<T> extends OuterSubscriber<T, T> {
   private values: Array<T> = [];
 

@@ -83,6 +83,11 @@ class WithLatestFromOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
   private values: any[];
   private toRespond: number[] = [];

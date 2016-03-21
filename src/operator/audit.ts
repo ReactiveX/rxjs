@@ -31,6 +31,11 @@ class AuditOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private value: T;

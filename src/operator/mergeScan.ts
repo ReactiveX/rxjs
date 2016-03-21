@@ -39,6 +39,11 @@ export class MergeScanOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasValue: boolean = false;
   private hasCompleted: boolean = false;

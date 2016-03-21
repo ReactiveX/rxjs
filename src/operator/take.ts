@@ -5,6 +5,8 @@ import {EmptyObservable} from '../observable/EmptyObservable';
 import {Observable} from '../Observable';
 
 /**
+ * @throws {ArgumentOutOfRangeError} When using `take(i)`, it delivers an
+ * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
  * @param total
  * @return {any}
  * @method take
@@ -34,6 +36,11 @@ class TakeOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class TakeSubscriber<T> extends Subscriber<T> {
   private count: number = 0;
 

@@ -35,6 +35,11 @@ class SkipUntilOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private hasValue: boolean = false;

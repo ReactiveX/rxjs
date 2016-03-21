@@ -36,6 +36,11 @@ class DebounceOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private value: T;
   private hasValue: boolean = false;

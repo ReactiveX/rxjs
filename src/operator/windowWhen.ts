@@ -66,6 +66,11 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   private window: Subject<T>;
   private closingNotification: Subscription;

@@ -151,6 +151,11 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private values: any[] = [];

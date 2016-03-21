@@ -59,6 +59,11 @@ class BufferCountOperator<T> implements Operator<T, T[]> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class BufferCountSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [[]];
   private count: number = 0;

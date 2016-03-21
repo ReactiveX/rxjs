@@ -27,6 +27,11 @@ class PairwiseOperator<T> implements Operator<T, [T, T]> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class PairwiseSubscriber<T> extends Subscriber<T> {
   private prev: T;
   private hasPrev: boolean = false;

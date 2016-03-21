@@ -55,6 +55,11 @@ class SwitchFirstOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SwitchFirstSubscriber<T> extends OuterSubscriber<T, T> {
   private hasCompleted: boolean = false;
   private hasSubscription: boolean = false;

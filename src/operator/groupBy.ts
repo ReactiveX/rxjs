@@ -63,6 +63,11 @@ class GroupByOperator<T, K, R> extends Operator<T, GroupedObservable<K, R>> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscription {
   private groups: Map<K, Subject<T|R>> = null;
   public attemptedToUnsubscribe: boolean = false;
@@ -182,6 +187,11 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class GroupDurationSubscriber<K, T> extends Subscriber<T> {
   constructor(private key: K,
               private group: Subject<T>,
@@ -244,6 +254,11 @@ export class GroupedObservable<K, T> extends Observable<T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class InnerRefCountSubscription extends Subscription {
   constructor(private parent: RefCountSubscription) {
     super();

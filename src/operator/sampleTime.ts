@@ -28,6 +28,11 @@ class SampleTimeOperator<T> implements Operator<T, T> {
   }
 }
 
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
 class SampleTimeSubscriber<T> extends Subscriber<T> {
   lastValue: T;
   hasValue: boolean = false;
