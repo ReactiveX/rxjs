@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">es6/operator/debounce.js | API Document</title>
+  <title data-ice="title">es6/operator/debounce.js | RxJS API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   
   
   <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -33,36 +37,35 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/debounce.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { PromiseObservable } from &apos;../observable/fromPromise&apos;;
-import { Subscriber } from &apos;../Subscriber&apos;;
-import { tryCatch } from &apos;../util/tryCatch&apos;;
-import { isPromise } from &apos;../util/isPromise&apos;;
-import { errorObject } from &apos;../util/errorObject&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
+import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+/**
+ * Returns the source Observable delayed by the computed debounce duration,
+ * with the duration lengthened if a new source item arrives before the delay
+ * duration ends.
+ * In practice, for each item emitted on the source, this operator holds the
+ * latest item, waits for a silence as long as the `durationSelector` specifies,
+ * and only then emits the latest source item on the result Observable.
+ * @param {function} durationSelector function for computing the timeout duration for each item.
+ * @return {Observable} an Observable the same as source Observable, but drops items.
+ * @method debounce
+ * @owner Observable
+ */
 export function debounce(durationSelector) {
     return this.lift(new DebounceOperator(durationSelector));
 }
@@ -70,80 +73,64 @@ class DebounceOperator {
     constructor(durationSelector) {
         this.durationSelector = durationSelector;
     }
-    call(observer) {
-        return new DebounceSubscriber(observer, this.durationSelector);
+    call(subscriber) {
+        return new DebounceSubscriber(subscriber, this.durationSelector);
     }
 }
-class DebounceSubscriber extends Subscriber {
+class DebounceSubscriber extends OuterSubscriber {
     constructor(destination, durationSelector) {
         super(destination);
         this.durationSelector = durationSelector;
-        this.debouncedSubscription = null;
-        this.lastValue = null;
-        this._index = 0;
-    }
-    get index() {
-        return this._index;
+        this.hasValue = false;
+        this.durationSubscription = null;
     }
     _next(value) {
-        const destination = this.destination;
-        const currentIndex = ++this._index;
-        let debounce = tryCatch(this.durationSelector)(value);
-        if (debounce === errorObject) {
-            destination.error(errorObject.e);
-        }
-        else {
-            if (isPromise(debounce)) {
-                debounce = PromiseObservable.create(debounce);
+        try {
+            const result = this.durationSelector.call(this, value);
+            if (result) {
+                this._tryNext(value, result);
             }
-            this.lastValue = value;
-            this.clearDebounce();
-            this.add(this.debouncedSubscription = debounce._subscribe(new DurationSelectorSubscriber(this, currentIndex)));
+        }
+        catch (err) {
+            this.destination.error(err);
         }
     }
     _complete() {
-        this.debouncedNext();
+        this.emitValue();
         this.destination.complete();
     }
-    debouncedNext() {
-        this.clearDebounce();
-        if (this.lastValue != null) {
-            this.destination.next(this.lastValue);
-            this.lastValue = null;
+    _tryNext(value, duration) {
+        let subscription = this.durationSubscription;
+        this.value = value;
+        this.hasValue = true;
+        if (subscription) {
+            subscription.unsubscribe();
+            this.remove(subscription);
+        }
+        subscription = subscribeToResult(this, duration);
+        if (!subscription.isUnsubscribed) {
+            this.add(this.durationSubscription = subscription);
         }
     }
-    clearDebounce() {
-        const debouncedSubscription = this.debouncedSubscription;
-        if (debouncedSubscription) {
-            debouncedSubscription.unsubscribe();
-            this.remove(debouncedSubscription);
-            this.debouncedSubscription = null;
-        }
+    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        this.emitValue();
     }
-}
-class DurationSelectorSubscriber extends Subscriber {
-    constructor(parent, currentIndex) {
-        super(null);
-        this.parent = parent;
-        this.currentIndex = currentIndex;
+    notifyComplete() {
+        this.emitValue();
     }
-    debounceNext() {
-        const parent = this.parent;
-        if (this.currentIndex === parent.index) {
-            parent.debouncedNext();
-            if (!this.isUnsubscribed) {
-                this.unsubscribe();
+    emitValue() {
+        if (this.hasValue) {
+            const value = this.value;
+            const subscription = this.durationSubscription;
+            if (subscription) {
+                this.durationSubscription = null;
+                subscription.unsubscribe();
+                this.remove(subscription);
             }
+            this.value = null;
+            this.hasValue = false;
+            super._next(value);
         }
-    }
-    _next(unused) {
-        this.debounceNext();
-    }
-    _error(err) {
-        this.parent.error(err);
-    }
-    _complete() {
-        this.debounceNext();
     }
 }
 //# sourceMappingURL=debounce.js.map</code></pre>
@@ -151,7 +138,7 @@ class DurationSelectorSubscriber extends Subscriber {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

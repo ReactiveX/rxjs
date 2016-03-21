@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl">
-  <title data-ice="title">API Document</title>
+  <title data-ice="title">RxJS API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   
   
   <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -33,127 +37,37 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="observable">Observable</h1>
-<h2 id="creation-functions">creation functions</h2>
-<ul>
-<li><a href="function/index.html#static-function-combineLatest">combineLatest</a></li>
-<li><a href="function/index.html#static-function-concat">concat</a></li>
-<li><a href="function/index.html#static-function-create">create</a></li>
-<li><a href="function/index.html#static-function-defer">defer</a></li>
-<li><a href="function/index.html#static-function-empty">empty</a></li>
-<li><a href="function/index.html#static-function-forkJoin">forkJoin</a></li>
-<li><a href="function/index.html#static-function-from">from</a></li>
-<li><a href="function/index.html#static-function-fromArray">fromArray</a></li>
-<li><a href="function/index.html#static-function-fromEvent">fromEvent</a></li>
-<li><a href="function/index.html#static-function-fromEventPattern">fromEventPattern</a></li>
-<li><a href="function/index.html#static-function-fromPromise">fromPromise</a></li>
-<li><a href="function/index.html#static-function-interval">interval</a></li>
-<li><a href="function/index.html#static-function-merge">merge</a></li>
-<li><a href="function/index.html#static-function-never">never</a></li>
-<li><a href="function/index.html#static-function-of">of</a></li>
-<li><a href="function/index.html#static-function-range">range</a></li>
-<li><a href="function/index.html#static-function-throw">throw</a></li>
-<li><a href="function/index.html#static-function-timer">timer</a></li>
-<li><a href="function/index.html#static-function-zip">zip</a></li>
-</ul>
-<h2 id="operators">operators</h2>
-<ul>
-<li><a href="function/index.html#static-function-buffer">buffer</a></li>
-<li><a href="function/index.html#static-function-bufferCount">bufferCount</a></li>
-<li><a href="function/index.html#static-function-bufferTime">bufferTime</a></li>
-<li><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></li>
-<li><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></li>
-<li><a href="function/index.html#static-function-catch">catch</a></li>
-<li><a href="function/index.html#static-function-combineAll">combineAll</a></li>
-<li><a href="function/index.html#static-function-combineLatest">combineLatest</a></li>
-<li><a href="function/index.html#static-function-concat">concat</a></li>
-<li><a href="function/index.html#static-function-concatAll">concatAll</a></li>
-<li><a href="function/index.html#static-function-concatMap">concatMap</a></li>
-<li><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></li>
-<li><a href="function/index.html#static-function-count">count</a></li>
-<li><a href="function/index.html#static-function-debounce">debounce</a></li>
-<li><a href="function/index.html#static-function-defaultIfEmpty">defaultIfEmpty</a></li>
-<li><a href="function/index.html#static-function-delay">delay</a></li>
-<li><a href="function/index.html#static-function-distinctUntilChanged">distinctUntilChanged</a></li>
-<li><a href="function/index.html#static-function-distinctUntilKeyChanged">distinctUntilKeyChanged</a></li>
-<li><a href="function/index.html#static-function-do">do</a></li>
-<li><a href="function/index.html#static-function-expand">expand</a></li>
-<li><a href="function/index.html#static-function-filter">filter</a></li>
-<li><a href="function/index.html#static-function-finally">finally</a></li>
-<li><a href="function/index.html#static-function-mergeMap">mergeMap</a></li>
-<li><a href="function/index.html#static-function-mergeMapTo">mergeMapTo</a></li>
-<li><a href="function/index.html#static-function-groupBy">groupBy</a></li>
-<li><a href="function/index.html#static-function-lift">lift</a></li>
-<li><a href="function/index.html#static-function-map">map</a></li>
-<li><a href="function/index.html#static-function-mapTo">mapTo</a></li>
-<li><a href="function/index.html#static-function-materialize">materialize</a></li>
-<li><a href="function/index.html#static-function-merge">merge</a></li>
-<li><a href="function/index.html#static-function-mergeAll">mergeAll</a></li>
-<li><a href="function/index.html#static-function-multicast">multicast</a></li>
-<li><a href="function/index.html#static-function-observeOn">observeOn</a></li>
-<li><a href="function/index.html#static-function-partition">partition</a></li>
-<li><a href="function/index.html#static-function-publish">publish</a></li>
-<li><a href="function/index.html#static-function-publishBehavior">publishBehavior</a></li>
-<li><a href="function/index.html#static-function-publishReplay">publishReplay</a></li>
-<li><a href="function/index.html#static-function-reduce">reduce</a></li>
-<li><a href="function/index.html#static-function-repeat">repeat</a></li>
-<li><a href="function/index.html#static-function-retry">retry</a></li>
-<li><a href="function/index.html#static-function-retryWhen">retryWhen</a></li>
-<li><a href="function/index.html#static-function-sample">sample</a></li>
-<li><a href="function/index.html#static-function-sampleTime">sampleTime</a></li>
-<li><a href="function/index.html#static-function-scan">scan</a></li>
-<li><a href="function/index.html#static-function-skip">skip</a></li>
-<li><a href="function/index.html#static-function-skipUntil">skipUntil</a></li>
-<li><a href="function/index.html#static-function-startWith">startWith</a></li>
-<li><a href="function/index.html#static-function-subscribeOn">subscribeOn</a></li>
-<li><a href="function/index.html#static-function-switch">switch</a></li>
-<li><a href="function/index.html#static-function-switchMap">switchMap</a></li>
-<li><a href="function/index.html#static-function-switchMapTo">switchMapTo</a></li>
-<li><a href="function/index.html#static-function-take">take</a></li>
-<li><a href="function/index.html#static-function-takeUntil">takeUntil</a></li>
-<li><a href="function/index.html#static-function-throttle">throttle</a></li>
-<li><a href="function/index.html#static-function-timeout">timeout</a></li>
-<li><a href="function/index.html#static-function-timeoutWith">timeoutWith</a></li>
-<li><a href="function/index.html#static-function-toArray">toArray</a></li>
-<li><a href="function/index.html#static-function-toPromise">toPromise</a></li>
-<li><a href="function/index.html#static-function-window">window</a></li>
-<li><a href="function/index.html#static-function-windowCount">windowCount</a></li>
-<li><a href="function/index.html#static-function-windowTime">windowTime</a></li>
-<li><a href="function/index.html#static-function-windowToggle">windowToggle</a></li>
-<li><a href="function/index.html#static-function-windowWhen">windowWhen</a></li>
-<li><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></li>
-<li><a href="function/index.html#static-function-zip">zip</a></li>
-<li><a href="function/index.html#static-function-zipAll">zipAll</a></li>
-</ul>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p></p><h1 class="rx-title"><img src="./manual/asset/Rx_Logo_S.png">RxJS</h1>
+
+<p></p>
+<p><strong>The ReactiveX library for JavaScript.</strong></p>
+<p>This is a rewrite of <a href="https://github.com/Reactive-Extensions/RxJS">Reactive-Extensions/RxJS</a> and is intended to supersede it once this is ready. This version&apos;s purpose is to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.</p>
+<h3 id="-install-it-manual-installation-html-"><a href="./manual/installation.html">&#xBB; Install it</a></h3>
+<p><em>How to install RxJS through npm or CDN</em></p>
+<h3 id="-learn-it-manual-overview-html-"><a href="./manual/overview.html">&#xBB; Learn it</a></h3>
+<p><em>Read the Manual on Observables, Observer, Subject, etc</em></p>
+<h3 id="-full-reference-identifiers-html-"><a href="./identifiers.html">&#xBB; Full reference</a></h3>
+<p><em>Read detailed documentation on each operator</em></p>
+<p><strong>Hint: open your DevTools to experiment with RxJS.</strong></p>
 </div>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

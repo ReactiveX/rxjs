@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">es6/operator/retryWhen.js | API Document</title>
+  <title data-ice="title">es6/operator/retryWhen.js | RxJS API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   
   
   <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -33,35 +37,42 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/retryWhen.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
-import { Subject } from &apos;../Subject&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subject } from &apos;../Subject&apos;;
 import { tryCatch } from &apos;../util/tryCatch&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
+import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
+import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+/**
+ * Returns an Observable that emits the same values as the source observable with the exception of an `error`.
+ * An `error` will cause the emission of the Throwable that cause the error to the Observable returned from
+ * notificationHandler. If that Observable calls onComplete or `error` then retry will call `complete` or `error`
+ * on the child subscription. Otherwise, this Observable will resubscribe to the source observable, on a particular
+ * Scheduler.
+ *
+ * &lt;img src=&quot;./img/retryWhen.png&quot; width=&quot;100%&quot;&gt;
+ *
+ * @param {notificationHandler} receives an Observable of notifications with which a user can `complete` or `error`,
+ * aborting the retry.
+ * @param {scheduler} the Scheduler on which to subscribe to the source Observable.
+ * @return {Observable} the source Observable modified with retry logic.
+ * @method retryWhen
+ * @owner Observable
+ */
 export function retryWhen(notifier) {
     return this.lift(new RetryWhenOperator(notifier, this));
 }
@@ -71,106 +82,64 @@ class RetryWhenOperator {
         this.source = source;
     }
     call(subscriber) {
-        return new FirstRetryWhenSubscriber(subscriber, this.notifier, this.source);
+        return new RetryWhenSubscriber(subscriber, this.notifier, this.source);
     }
 }
-class FirstRetryWhenSubscriber extends Subscriber {
+class RetryWhenSubscriber extends OuterSubscriber {
     constructor(destination, notifier, source) {
-        super();
-        this.destination = destination;
+        super(destination);
         this.notifier = notifier;
         this.source = source;
-        destination.add(this);
-        this.lastSubscription = this;
-    }
-    _next(value) {
-        this.destination.next(value);
     }
     error(err) {
-        const destination = this.destination;
-        if (!this.isUnsubscribed) {
-            super.unsubscribe();
-            if (!this.retryNotifications) {
-                this.errors = new Subject();
-                const notifications = tryCatch(this.notifier).call(this, this.errors);
-                if (notifications === errorObject) {
-                    destination.error(errorObject.e);
+        if (!this.isStopped) {
+            let errors = this.errors;
+            let retries = this.retries;
+            let retriesSubscription = this.retriesSubscription;
+            if (!retries) {
+                errors = new Subject();
+                retries = tryCatch(this.notifier)(errors);
+                if (retries === errorObject) {
+                    return super.error(errorObject.e);
                 }
-                else {
-                    this.retryNotifications = notifications;
-                    const notificationSubscriber = new RetryNotificationSubscriber(this);
-                    this.notificationSubscription = notifications.subscribe(notificationSubscriber);
-                    destination.add(this.notificationSubscription);
-                }
+                retriesSubscription = subscribeToResult(this, retries);
             }
-            this.errors.next(err);
+            else {
+                this.errors = null;
+                this.retriesSubscription = null;
+            }
+            this.unsubscribe();
+            this.isUnsubscribed = false;
+            this.errors = errors;
+            this.retries = retries;
+            this.retriesSubscription = retriesSubscription;
+            errors.next(err);
         }
     }
-    destinationError(err) {
-        this.tearDown();
-        this.destination.error(err);
-    }
-    _complete() {
-        this.destinationComplete();
-    }
-    destinationComplete() {
-        this.tearDown();
-        this.destination.complete();
-    }
-    unsubscribe() {
-        const lastSubscription = this.lastSubscription;
-        if (lastSubscription === this) {
-            super.unsubscribe();
+    _unsubscribe() {
+        const { errors, retriesSubscription } = this;
+        if (errors) {
+            errors.unsubscribe();
+            this.errors = null;
         }
-        else {
-            this.tearDown();
+        if (retriesSubscription) {
+            retriesSubscription.unsubscribe();
+            this.retriesSubscription = null;
         }
+        this.retries = null;
     }
-    tearDown() {
-        super.unsubscribe();
-        this.lastSubscription.unsubscribe();
-        const notificationSubscription = this.notificationSubscription;
-        if (notificationSubscription) {
-            notificationSubscription.unsubscribe();
-        }
-    }
-    resubscribe() {
-        const { destination, lastSubscription } = this;
-        destination.remove(lastSubscription);
-        lastSubscription.unsubscribe();
-        const nextSubscriber = new MoreRetryWhenSubscriber(this);
-        this.lastSubscription = this.source.subscribe(nextSubscriber);
-        destination.add(this.lastSubscription);
-    }
-}
-class MoreRetryWhenSubscriber extends Subscriber {
-    constructor(parent) {
-        super(null);
-        this.parent = parent;
-    }
-    _next(value) {
-        this.parent.destination.next(value);
-    }
-    _error(err) {
-        this.parent.errors.next(err);
-    }
-    _complete() {
-        this.parent.destinationComplete();
-    }
-}
-class RetryNotificationSubscriber extends Subscriber {
-    constructor(parent) {
-        super(null);
-        this.parent = parent;
-    }
-    _next(value) {
-        this.parent.resubscribe();
-    }
-    _error(err) {
-        this.parent.destinationError(err);
-    }
-    _complete() {
-        this.parent.destinationComplete();
+    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        const { errors, retries, retriesSubscription } = this;
+        this.errors = null;
+        this.retries = null;
+        this.retriesSubscription = null;
+        this.unsubscribe();
+        this.isStopped = false;
+        this.isUnsubscribed = false;
+        this.errors = errors;
+        this.retries = retries;
+        this.retriesSubscription = retriesSubscription;
+        this.source.subscribe(this);
     }
 }
 //# sourceMappingURL=retryWhen.js.map</code></pre>
@@ -178,7 +147,7 @@ class RetryNotificationSubscriber extends Subscriber {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/delayWhen-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/delayWhen-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+/** @test {delayWhen} */
+describe(&apos;Observable.prototype.delayWhen&apos;, function () {
+    asDiagram(&apos;delayWhen(durationSelector)&apos;)(&apos;should delay by duration selector&apos;, function () {
+        var e1 = hot(&apos;---a---b---c--|&apos;);
+        var expected = &apos;-----a------c----(b|)&apos;;
+        var subs = &apos;^                !&apos;;
+        var selector = [cold(&apos;--x--|&apos;),
+            cold(&apos;----------x-|&apos;),
+            cold(&apos;-x--|&apos;)];
+        var selectorSubs = [&apos;   ^ !            &apos;,
+            &apos;       ^         !&apos;,
+            &apos;           ^!     &apos;];
+        var idx = 0;
+        function durationSelector(x) {
+            return selector[idx++];
+        }
+        var result = e1.delayWhen(durationSelector);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector[0].subscriptions).toBe(selectorSubs[0]);
+        expectSubscriptions(selector[1].subscriptions).toBe(selectorSubs[1]);
+        expectSubscriptions(selector[2].subscriptions).toBe(selectorSubs[2]);
+    });
+    it(&apos;should delay by selector&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;---a--b-|&apos;;
+        var subs = &apos;^       !&apos;;
+        var selector = cold(&apos;-x--|&apos;);
+        var selectorSubs = [&apos;  ^!     &apos;,
+            &apos;     ^!  &apos;];
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should raise error if source raises error&apos;, function () {
+        var e1 = hot(&apos;--a--#&apos;);
+        var expected = &apos;---a-#&apos;;
+        var subs = &apos;^    !&apos;;
+        var selector = cold(&apos;-x--|&apos;);
+        var selectorSubs = &apos;  ^!     &apos;;
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should raise error if selector raises error&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;---#&apos;;
+        var subs = &apos;^  !&apos;;
+        var selector = cold(&apos;-#&apos;);
+        var selectorSubs = &apos;  ^!     &apos;;
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should delay by selector and completes after value emits&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;---------a--(b|)&apos;;
+        var subs = &apos;^           !&apos;;
+        var selector = cold(&apos;-------x--|&apos;);
+        var selectorSubs = [&apos;  ^      !&apos;,
+            &apos;     ^      !&apos;];
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should delay by selector completes if selector does not emits&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;------a--(b|)&apos;;
+        var subs = &apos;^        !&apos;;
+        var selector = cold(&apos;----|&apos;);
+        var selectorSubs = [&apos;  ^   !&apos;,
+            &apos;     ^   !&apos;];
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should not emit if selector never emits&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;-&apos;;
+        var subs = &apos;^         &apos;;
+        var selector = cold(&apos;-&apos;);
+        var selectorSubs = [&apos;  ^       &apos;,
+            &apos;     ^    &apos;];
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should delay by first value from selector&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;------a--(b|)&apos;;
+        var subs = &apos;^        !&apos;;
+        var selector = cold(&apos;----x--y--|&apos;);
+        var selectorSubs = [&apos;  ^   !&apos;,
+            &apos;     ^   !&apos;];
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should delay by selector does not completes&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;------a--(b|)&apos;;
+        var subs = &apos;^        !&apos;;
+        var selector = cold(&apos;----x-----y---&apos;);
+        var selectorSubs = [&apos;  ^   !&apos;,
+            &apos;     ^   !&apos;];
+        var result = e1.delayWhen(function (x) { return selector; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+    it(&apos;should raise error if selector throws&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var expected = &apos;--#&apos;;
+        var subs = &apos;^ !&apos;;
+        var err = new Error(&apos;error&apos;);
+        var result = e1.delayWhen((function (x) { throw err; }));
+        expectObservable(result).toBe(expected, null, err);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should start subscription when subscription delay emits&apos;, function () {
+        var e1 = hot(&apos;-----a---b---|&apos;);
+        var expected = &apos;  -----a---b-|&apos;;
+        var subs = &apos;  ^          !&apos;;
+        var selector = cold(&apos;--x--|&apos;);
+        var selectorSubs = [&apos;     ^ !&apos;,
+            &apos;         ^ !&apos;];
+        var subDelay = cold(&apos;--x--|&apos;);
+        var subDelaySub = &apos;^ !&apos;;
+        var result = e1.delayWhen(function (x) { return selector; }, subDelay);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+        expectSubscriptions(subDelay.subscriptions).toBe(subDelaySub);
+    });
+    it(&apos;should start subscription when subscription delay completes without emit value&apos;, function () {
+        var e1 = hot(&apos;-----a---b---|&apos;);
+        var expected = &apos;  -----a---b-|&apos;;
+        var subs = &apos;  ^          !&apos;;
+        var selector = cold(&apos;--x--|&apos;);
+        var selectorSubs = [&apos;     ^ !&apos;,
+            &apos;         ^ !&apos;];
+        var subDelay = cold(&apos;--|&apos;);
+        var subDelaySub = &apos;^ !&apos;;
+        var result = e1.delayWhen(function (x) { return selector; }, subDelay);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+        expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+        expectSubscriptions(subDelay.subscriptions).toBe(subDelaySub);
+    });
+    it(&apos;should raise error when subscription delay raises error&apos;, function () {
+        var e1 = hot(&apos;-----a---b---|&apos;);
+        var expected = &apos;   #          &apos;;
+        var selector = cold(&apos;--x--|&apos;);
+        var subDelay = cold(&apos;---#&apos;);
+        var subDelaySub = &apos;^  !&apos;;
+        var result = e1.delayWhen(function (x) { return selector; }, subDelay);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe([]);
+        expectSubscriptions(selector.subscriptions).toBe([]);
+        expectSubscriptions(subDelay.subscriptions).toBe(subDelaySub);
+    });
+});
+//# sourceMappingURL=delayWhen-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

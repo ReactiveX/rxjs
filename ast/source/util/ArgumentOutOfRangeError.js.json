@@ -23,7 +23,24 @@
             }
           }
         },
-        "superClass": null,
+        "superClass": {
+          "type": "Identifier",
+          "name": "Error",
+          "range": [
+            45,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 45
+            },
+            "end": {
+              "line": 1,
+              "column": 50
+            }
+          }
+        },
         "body": {
           "type": "ClassBody",
           "body": [
@@ -33,8 +50,8 @@
                 "type": "Identifier",
                 "name": "constructor",
                 "range": [
-                  43,
-                  54
+                  57,
+                  68
                 ],
                 "loc": {
                   "start": {
@@ -57,49 +74,12 @@
                     {
                       "type": "ExpressionStatement",
                       "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              67,
-                              71
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 3,
-                                "column": 8
-                              },
-                              "end": {
-                                "line": 3,
-                                "column": 12
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "name",
-                            "range": [
-                              72,
-                              76
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 3,
-                                "column": 13
-                              },
-                              "end": {
-                                "line": 3,
-                                "column": 17
-                              }
-                            }
-                          },
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "Super",
                           "range": [
-                            67,
-                            76
+                            81,
+                            86
                           ],
                           "loc": {
                             "start": {
@@ -108,32 +88,34 @@
                             },
                             "end": {
                               "line": 3,
-                              "column": 17
+                              "column": 13
                             }
                           }
                         },
-                        "right": {
-                          "type": "Literal",
-                          "value": "ArgumentOutOfRangeError",
-                          "raw": "'ArgumentOutOfRangeError'",
-                          "range": [
-                            79,
-                            104
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 3,
-                              "column": 20
-                            },
-                            "end": {
-                              "line": 3,
-                              "column": 45
+                        "arguments": [
+                          {
+                            "type": "Literal",
+                            "value": "argument out of range",
+                            "raw": "'argument out of range'",
+                            "range": [
+                              87,
+                              110
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 3,
+                                "column": 14
+                              },
+                              "end": {
+                                "line": 3,
+                                "column": 37
+                              }
                             }
                           }
-                        },
+                        ],
                         "range": [
-                          67,
-                          104
+                          81,
+                          111
                         ],
                         "loc": {
                           "start": {
@@ -142,13 +124,13 @@
                           },
                           "end": {
                             "line": 3,
-                            "column": 45
+                            "column": 38
                           }
                         }
                       },
                       "range": [
-                        67,
-                        105
+                        81,
+                        112
                       ],
                       "loc": {
                         "start": {
@@ -157,7 +139,7 @@
                         },
                         "end": {
                           "line": 3,
-                          "column": 46
+                          "column": 39
                         }
                       }
                     },
@@ -172,8 +154,8 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              114,
-                              118
+                              121,
+                              125
                             ],
                             "loc": {
                               "start": {
@@ -188,10 +170,10 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "name": "message",
+                            "name": "name",
                             "range": [
-                              119,
-                              126
+                              126,
+                              130
                             ],
                             "loc": {
                               "start": {
@@ -200,13 +182,13 @@
                               },
                               "end": {
                                 "line": 4,
-                                "column": 20
+                                "column": 17
                               }
                             }
                           },
                           "range": [
-                            114,
-                            126
+                            121,
+                            130
                           ],
                           "loc": {
                             "start": {
@@ -215,32 +197,32 @@
                             },
                             "end": {
                               "line": 4,
-                              "column": 20
+                              "column": 17
                             }
                           }
                         },
                         "right": {
                           "type": "Literal",
-                          "value": "argument out of range",
-                          "raw": "'argument out of range'",
+                          "value": "ArgumentOutOfRangeError",
+                          "raw": "'ArgumentOutOfRangeError'",
                           "range": [
-                            129,
-                            152
+                            133,
+                            158
                           ],
                           "loc": {
                             "start": {
                               "line": 4,
-                              "column": 23
+                              "column": 20
                             },
                             "end": {
                               "line": 4,
-                              "column": 46
+                              "column": 45
                             }
                           }
                         },
                         "range": [
-                          114,
-                          152
+                          121,
+                          158
                         ],
                         "loc": {
                           "start": {
@@ -249,13 +231,13 @@
                           },
                           "end": {
                             "line": 4,
-                            "column": 46
+                            "column": 45
                           }
                         }
                       },
                       "range": [
-                        114,
-                        153
+                        121,
+                        159
                       ],
                       "loc": {
                         "start": {
@@ -264,14 +246,14 @@
                         },
                         "end": {
                           "line": 4,
-                          "column": 47
+                          "column": 46
                         }
                       }
                     }
                   ],
                   "range": [
-                    57,
-                    159
+                    71,
+                    165
                   ],
                   "loc": {
                     "start": {
@@ -287,8 +269,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  54,
-                  159
+                  68,
+                  165
                 ],
                 "loc": {
                   "start": {
@@ -304,8 +286,8 @@
               "kind": "constructor",
               "computed": false,
               "range": [
-                43,
-                159
+                57,
+                165
               ],
               "loc": {
                 "start": {
@@ -321,13 +303,13 @@
             }
           ],
           "range": [
-            37,
-            161
+            51,
+            167
           ],
           "loc": {
             "start": {
               "line": 1,
-              "column": 37
+              "column": 51
             },
             "end": {
               "line": 6,
@@ -337,7 +319,7 @@
         },
         "range": [
           7,
-          161
+          167
         ],
         "loc": {
           "start": {
@@ -355,8 +337,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=ArgumentOutOfRangeError.js.map",
             "range": [
-              162,
-              213
+              168,
+              219
             ],
             "loc": {
               "start": {
@@ -375,7 +357,7 @@
       "source": null,
       "range": [
         0,
-        161
+        167
       ],
       "loc": {
         "start": {
@@ -392,8 +374,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=ArgumentOutOfRangeError.js.map",
           "range": [
-            162,
-            213
+            168,
+            219
           ],
           "loc": {
             "start": {
@@ -412,7 +394,7 @@
   "sourceType": "module",
   "range": [
     0,
-    161
+    167
   ],
   "loc": {
     "start": {
@@ -429,8 +411,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=ArgumentOutOfRangeError.js.map",
       "range": [
-        162,
-        213
+        168,
+        219
       ],
       "loc": {
         "start": {

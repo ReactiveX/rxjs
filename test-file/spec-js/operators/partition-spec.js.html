@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/partition-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/partition-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {partition} */
+describe(&apos;Observable.prototype.partition&apos;, function () {
+    function expectObservableArray(result, expected) {
+        for (var idx = 0; idx &lt; result.length; idx++) {
+            expectObservable(result[idx]).toBe(expected[idx]);
+        }
+    }
+    asDiagram(&apos;partition(x =&gt; x % 2 === 1)&apos;)(&apos;should partition an observable of &apos; +
+        &apos;integers into even and odd&apos;, function () {
+        var e1 = hot(&apos;--1-2---3------4--5---6--|&apos;);
+        var e1subs = &apos;^                        !&apos;;
+        var expected = [&apos;--1-----3---------5------|&apos;,
+            &apos;----2----------4------6--|&apos;];
+        var result = e1.partition(function (x) { return x % 2 === 1; });
+        expectObservableArray(result, expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition an observable into two using a predicate&apos;, function () {
+        var e1 = hot(&apos;--a-b---a------d--a---c--|&apos;);
+        var e1subs = &apos;^                        !&apos;;
+        var expected = [&apos;--a-----a---------a------|&apos;,
+            &apos;----b----------d------c--|&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should pass errors to both returned observables&apos;, function () {
+        var e1 = hot(&apos;--a-b---#&apos;);
+        var e1subs = &apos;^       !&apos;;
+        var expected = [&apos;--a-----#&apos;,
+            &apos;----b---#&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should pass errors to both returned observables if source throws&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = [&apos;#&apos;,
+            &apos;#&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should pass errors to both returned observables if predicate throws&apos;, function () {
+        var e1 = hot(&apos;--a-b--a--|&apos;);
+        var e1subs = &apos;^      !   &apos;;
+        var expected = [&apos;--a----#   &apos;,
+            &apos;----b--#   &apos;];
+        var index = 0;
+        var error = &apos;error&apos;;
+        function predicate(x) {
+            var match = x === &apos;a&apos;;
+            if (match &amp;&amp; index++ &gt; 1) {
+                throw error;
+            }
+            return match;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition empty observable if source does not emits&apos;, function () {
+        var e1 = hot(&apos;----|&apos;);
+        var e1subs = &apos;^   !&apos;;
+        var expected = [&apos;----|&apos;,
+            &apos;----|&apos;];
+        function predicate(x) {
+            return x === &apos;x&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition empty observable if source is empty&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = [&apos;|&apos;,
+            &apos;|&apos;];
+        function predicate(x) {
+            return x === &apos;x&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition if source emits single elements&apos;, function () {
+        var e1 = hot(&apos;--a--|&apos;);
+        var e1subs = &apos;^    !&apos;;
+        var expected = [&apos;--a--|&apos;,
+            &apos;-----|&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition if predicate matches all of source elements&apos;, function () {
+        var e1 = hot(&apos;--a--a--a--a--a--a--a--|&apos;);
+        var e1subs = &apos;^                      !&apos;;
+        var expected = [&apos;--a--a--a--a--a--a--a--|&apos;,
+            &apos;-----------------------|&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition if predicate does not match all of source elements&apos;, function () {
+        var e1 = hot(&apos;--b--b--b--b--b--b--b--|&apos;);
+        var e1subs = &apos;^                      !&apos;;
+        var expected = [&apos;-----------------------|&apos;,
+            &apos;--b--b--b--b--b--b--b--|&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition to infinite observable if source does not completes&apos;, function () {
+        var e1 = hot(&apos;--a-b---a------d----&apos;);
+        var e1subs = &apos;^                   &apos;;
+        var expected = [&apos;--a-----a-----------&apos;,
+            &apos;----b----------d----&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition to infinite observable if source never completes&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = [&apos;-&apos;,
+            &apos;-&apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        expectObservableArray(e1.partition(predicate), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should partition into two observable with early unsubscription&apos;, function () {
+        var e1 = hot(&apos;--a-b---a------d-|&apos;);
+        var unsub = &apos;       !          &apos;;
+        var e1subs = &apos;^      !          &apos;;
+        var expected = [&apos;--a-----          &apos;,
+            &apos;----b---          &apos;];
+        function predicate(x) {
+            return x === &apos;a&apos;;
+        }
+        var result = e1.partition(predicate);
+        for (var idx = 0; idx &lt; result.length; idx++) {
+            expectObservable(result[idx], unsub).toBe(expected[idx]);
+        }
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;--a-b---a------d-|&apos;);
+        var e1subs = &apos;^      !          &apos;;
+        var expected = [&apos;--a-----          &apos;,
+            &apos;----b---          &apos;];
+        var unsub = &apos;       !          &apos;;
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .partition(function (x) { return x === &apos;a&apos;; })
+            .map(function (observable) {
+            return observable.mergeMap(function (x) { return Observable.of(x); });
+        });
+        expectObservable(result[0], unsub).toBe(expected[0]);
+        expectObservable(result[1], unsub).toBe(expected[1]);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
+    it(&apos;should throw without predicate&apos;, function () {
+        var e1 = hot(&apos;--a-b---a------d----&apos;);
+        expect(e1.partition).toThrow();
+    });
+});
+//# sourceMappingURL=partition-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

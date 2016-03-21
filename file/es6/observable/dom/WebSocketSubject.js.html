@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">es6/observable/dom/WebSocketSubject.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/observable/dom/WebSocketSubject.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subject } from &apos;../../Subject&apos;;
+import { Subscriber } from &apos;../../Subscriber&apos;;
+import { Observable } from &apos;../../Observable&apos;;
+import { Subscription } from &apos;../../Subscription&apos;;
+import { root } from &apos;../../util/root&apos;;
+import { ReplaySubject } from &apos;../../subject/ReplaySubject&apos;;
+import { tryCatch } from &apos;../../util/tryCatch&apos;;
+import { errorObject } from &apos;../../util/errorObject&apos;;
+import { assign } from &apos;../../util/assign&apos;;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class WebSocketSubject extends Subject {
+    constructor(urlConfigOrSource, destination) {
+        if (urlConfigOrSource instanceof Observable) {
+            super(destination, urlConfigOrSource);
+        }
+        else {
+            super();
+            this.WebSocketCtor = root.WebSocket;
+            if (typeof urlConfigOrSource === &apos;string&apos;) {
+                this.url = urlConfigOrSource;
+            }
+            else {
+                // WARNING: config object could override important members here.
+                assign(this, urlConfigOrSource);
+            }
+            if (!this.WebSocketCtor) {
+                throw new Error(&apos;no WebSocket constructor can be found&apos;);
+            }
+            this.destination = new ReplaySubject();
+        }
+    }
+    resultSelector(e) {
+        return JSON.parse(e.data);
+    }
+    /**
+     * @param urlConfigOrSource
+     * @return {WebSocketSubject}
+     * @static true
+     * @name webSocket
+     * @owner Observable
+     */
+    static create(urlConfigOrSource) {
+        return new WebSocketSubject(urlConfigOrSource);
+    }
+    lift(operator) {
+        const sock = new WebSocketSubject(this, this.destination);
+        sock.operator = operator;
+        return sock;
+    }
+    // TODO: factor this out to be a proper Operator/Subscriber implementation and eliminate closures
+    multiplex(subMsg, unsubMsg, messageFilter) {
+        const self = this;
+        return new Observable((observer) =&gt; {
+            const result = tryCatch(subMsg)();
+            if (result === errorObject) {
+                observer.error(errorObject.e);
+            }
+            else {
+                self.next(result);
+            }
+            let subscription = self.subscribe(x =&gt; {
+                const result = tryCatch(messageFilter)(x);
+                if (result === errorObject) {
+                    observer.error(errorObject.e);
+                }
+                else if (result) {
+                    observer.next(x);
+                }
+            }, err =&gt; observer.error(err), () =&gt; observer.complete());
+            return () =&gt; {
+                const result = tryCatch(unsubMsg)();
+                if (result === errorObject) {
+                    observer.error(errorObject.e);
+                }
+                else {
+                    self.next(result);
+                }
+                subscription.unsubscribe();
+            };
+        });
+    }
+    _unsubscribe() {
+        this.socket = null;
+        this.source = null;
+        this.destination = new ReplaySubject();
+        this.isStopped = false;
+        this.hasErrored = false;
+        this.hasCompleted = false;
+        this.observers = null;
+        this.isUnsubscribed = false;
+    }
+    _subscribe(subscriber) {
+        if (!this.observers) {
+            this.observers = [];
+        }
+        const subscription = super._subscribe(subscriber);
+        // HACK: For some reason transpilation wasn&apos;t honoring this in arrow functions below
+        // Doesn&apos;t seem right, need to reinvestigate.
+        const self = this;
+        const WebSocket = this.WebSocketCtor;
+        if (self.source || !subscription || subscription.isUnsubscribed) {
+            return subscription;
+        }
+        if (self.url &amp;&amp; !self.socket) {
+            const socket = self.protocol ? new WebSocket(self.url, self.protocol) : new WebSocket(self.url);
+            self.socket = socket;
+            socket.onopen = (e) =&gt; {
+                const openObserver = self.openObserver;
+                if (openObserver) {
+                    openObserver.next(e);
+                }
+                const queue = self.destination;
+                self.destination = Subscriber.create((x) =&gt; socket.readyState === 1 &amp;&amp; socket.send(x), (e) =&gt; {
+                    const closingObserver = self.closingObserver;
+                    if (closingObserver) {
+                        closingObserver.next(undefined);
+                    }
+                    if (e &amp;&amp; e.code) {
+                        socket.close(e.code, e.reason);
+                    }
+                    else {
+                        self._finalError(new TypeError(&apos;WebSocketSubject.error must be called with an object with an error code, &apos; +
+                            &apos;and an optional reason: { code: number, reason: string }&apos;));
+                    }
+                }, () =&gt; {
+                    const closingObserver = self.closingObserver;
+                    if (closingObserver) {
+                        closingObserver.next(undefined);
+                    }
+                    socket.close();
+                });
+                if (queue &amp;&amp; queue instanceof ReplaySubject) {
+                    subscription.add(queue.subscribe(self.destination));
+                }
+            };
+            socket.onerror = (e) =&gt; self.error(e);
+            socket.onclose = (e) =&gt; {
+                const closeObserver = self.closeObserver;
+                if (closeObserver) {
+                    closeObserver.next(e);
+                }
+                if (e.wasClean) {
+                    self._finalComplete();
+                }
+                else {
+                    self._finalError(e);
+                }
+            };
+            socket.onmessage = (e) =&gt; {
+                const result = tryCatch(self.resultSelector)(e);
+                if (result === errorObject) {
+                    self._finalError(errorObject.e);
+                }
+                else {
+                    self._finalNext(result);
+                }
+            };
+        }
+        return new Subscription(() =&gt; {
+            subscription.unsubscribe();
+            if (!this.observers || this.observers.length === 0) {
+                const { socket } = this;
+                if (socket &amp;&amp; socket.readyState &lt; 2) {
+                    socket.close();
+                }
+                this.socket = undefined;
+                this.source = undefined;
+                this.destination = new ReplaySubject();
+            }
+        });
+    }
+}
+//# sourceMappingURL=WebSocketSubject.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

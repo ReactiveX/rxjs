@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Installation</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual" data-toc-name="overview">
+    <h1 class="manual-toc-title"><a href="manual/overview.html" data-ice="title">Overview</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#introduction" data-ice="link">Introduction</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#observable" data-ice="link">Observable</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#pull-versus-push" data-ice="link">Pull versus Push</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#observables-as-generalizations-of-functions" data-ice="link">Observables as generalizations of functions</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#anatomy-of-an-observable" data-ice="link">Anatomy of an Observable</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#creating-observables" data-ice="link">Creating Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#subscribing-to-observables" data-ice="link">Subscribing to Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#executing-observables" data-ice="link">Executing Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#disposing-observable-executions" data-ice="link">Disposing Observable Executions</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#observer" data-ice="link">Observer</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#subscription" data-ice="link">Subscription</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#subject" data-ice="link">Subject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#multicasted-observables" data-ice="link">Multicasted Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#reference-counting" data-ice="link">Reference counting</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#behaviorsubject" data-ice="link">BehaviorSubject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#replaysubject" data-ice="link">ReplaySubject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#asyncsubject" data-ice="link">AsyncSubject</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#operators" data-ice="link">Operators</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#what-are-operators-" data-ice="link">What are operators?</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#instance-operators-versus-static-operators" data-ice="link">Instance operators versus static operators</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#marble-diagrams" data-ice="link">Marble diagrams</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#categories-of-operators" data-ice="link">Categories of operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#creation-operators" data-ice="link">Creation Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#transformation-operators" data-ice="link">Transformation Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#filtering-operators" data-ice="link">Filtering Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#combination-operators" data-ice="link">Combination Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#multicasting-operators" data-ice="link">Multicasting Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#error-handling-operators" data-ice="link">Error Handling Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#utility-operators" data-ice="link">Utility Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#conditional-and-boolean-operators" data-ice="link">Conditional and Boolean Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#mathematical-and-aggregate-operators" data-ice="link">Mathematical and Aggregate Operators</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#scheduler" data-ice="link">Scheduler</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#scheduler-types" data-ice="link">Scheduler Types</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#using-schedulers" data-ice="link">Using Schedulers</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="installation">
+    <h1 class="manual-toc-title"><a href="manual/installation.html" data-ice="title">Installation</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#es6-via-npm" data-ice="link">ES6 via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#commonjs-via-npm" data-ice="link">CommonJS via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#all-module-types-cjs-es6-amd-typescript-via-npm" data-ice="link">All Module Types (CJS/ES6/AMD/TypeScript) via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#cdn" data-ice="link">CDN</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="reference">
+    <h1 class="manual-toc-title"><a href="identifiers.html" data-ice="title">Reference</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#class" data-ice="link">Class</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown">
+  <div class="manual-breadcrumb-list">
+    <a href="./manual/./index.html">Manual</a>
+    <span>&#xBB;</span>
+    <span data-ice="title">Installation</span>
+  </div>
+  <div data-ice="content"><h2 id="es6-via-npm">ES6 via npm</h2>
+<pre><code class="lang-none"><code class="source-code prettyprint">npm install rxjs-es</code>
+</code></pre>
+<p>To import the entire core set of functionality:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import Rx from &apos;rxjs/Rx&apos;;
+
+Rx.Observable.of(1,2,3)</code>
+</code></pre>
+<p>To import only what you need by patching (this is useful for size-sensitive bundling):</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import {Observable} from &apos;rxjs/Observable&apos;;
+import &apos;rxjs/add/operator/map&apos;;
+
+Observable.of(1,2,3).map(x =&gt; x + &apos;!!!&apos;); // etc</code>
+</code></pre>
+<p>To import what you need and use it with ES next function bind (best overall method, if possible):</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import {Observable} from &apos;rxjs/Observable&apos;;
+import {map} from &apos;rxjs/operator/map&apos;;
+
+Observable.of(1,2,3)::map(x =&gt; x + &apos;!!!&apos;); // etc</code>
+</code></pre>
+<h2 id="commonjs-via-npm">CommonJS via npm</h2>
+<pre><code class="lang-none"><code class="source-code prettyprint">npm install rxjs</code>
+</code></pre>
+<p>Import all core functionality:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var Rx = require(&apos;rxjs/Rx&apos;);
+
+Rx.Observable.of(1,2,3); // etc</code>
+</code></pre>
+<p>Import only what you need and patch Observable (this is useful in size-sensitive bundling scenarios):</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var Observable = require(&apos;rxjs/Observable&apos;).Observable;
+// patch Observable with appropriate methods
+require(&apos;rxjs/add/operator/map&apos;);
+
+Observable.of(1,2,3).map(function (x) { return x + &apos;!!!&apos;; }); // etc</code>
+</code></pre>
+<p>Import operators and use them <em>manually</em> you can do the following (this is also useful for bundling):</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var Observable = require(&apos;rxjs/Observable&apos;).Observable;
+var map = require(&apos;rxjs/operator/map&apos;).map;
+
+map.call(Observable.of(1,2,3), function (x) { return x + &apos;!!!&apos;; });</code>
+</code></pre>
+<p>You can also use the above method to build your own Observable and export it from your own module.</p>
+<h2 id="all-module-types-cjs-es6-amd-typescript-via-npm">All Module Types (CJS/ES6/AMD/TypeScript) via npm</h2>
+<p>To install this library via <a href="https://www.npmjs.org">npm</a> <strong>version 3</strong>, use the following command:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">npm install @reactivex/rxjs</code>
+</code></pre>
+<p>If you are using npm <strong>version 2</strong> before this library has achieved a stable version, you need to specify the library version explicitly:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">npm install @reactivex/rxjs@5.0.0-beta.1</code>
+</code></pre>
+<h2 id="cdn">CDN</h2>
+<p>For CDN, you can use <a href="https://npmcdn.com">npmcdn</a>. Just replace <code>version</code> with the current
+version on the link below:</p>
+<p><a href="https://npmcdn.com/@reactivex/rxjs@version/dist/global/Rx.umd.js">https://npmcdn.com/@reactivex/rxjs@version/dist/global/Rx.umd.js</a></p>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

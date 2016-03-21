@@ -8,10 +8,10 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "SymbolShim",
+            "name": "root",
             "range": [
               9,
-              19
+              13
             ],
             "loc": {
               "start": {
@@ -20,16 +20,16 @@
               },
               "end": {
                 "line": 1,
-                "column": 19
+                "column": 13
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "SymbolShim",
+            "name": "root",
             "range": [
               9,
-              19
+              13
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 19
+                "column": 13
               }
             }
           },
           "range": [
             9,
-            19
+            13
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 19
+              "column": 13
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../util/SymbolShim",
-        "raw": "'../util/SymbolShim'",
+        "value": "../util/root",
+        "raw": "'../util/root'",
         "range": [
-          27,
-          47
+          21,
+          35
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 27
+            "column": 21
           },
           "end": {
             "line": 1,
-            "column": 47
+            "column": 35
           }
         }
       },
       "range": [
         0,
-        48
+        36
       ],
       "loc": {
         "start": {
@@ -88,24 +88,133 @@
         },
         "end": {
           "line": 1,
-          "column": 48
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "Symbol",
+            "range": [
+              43,
+              49
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 6
+              },
+              "end": {
+                "line": 2,
+                "column": 12
+              }
+            }
+          },
+          "init": {
+            "type": "MemberExpression",
+            "computed": false,
+            "object": {
+              "type": "Identifier",
+              "name": "root",
+              "range": [
+                52,
+                56
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 15
+                },
+                "end": {
+                  "line": 2,
+                  "column": 19
+                }
+              }
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "Symbol",
+              "range": [
+                57,
+                63
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 20
+                },
+                "end": {
+                  "line": 2,
+                  "column": 26
+                }
+              }
+            },
+            "range": [
+              52,
+              63
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 15
+              },
+              "end": {
+                "line": 2,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            43,
+            63
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 26
+            }
+          }
+        }
+      ],
+      "kind": "const",
+      "range": [
+        37,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 27
         }
       },
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+          "value": "*\n * rxSubscriber symbol is a symbol for retrieving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
           "range": [
-            49,
-            404
+            65,
+            420
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 3,
               "column": 0
             },
             "end": {
-              "line": 7,
+              "line": 8,
               "column": 3
             }
           }
@@ -121,160 +230,398 @@
             "type": "VariableDeclarator",
             "id": {
               "type": "Identifier",
-              "name": "rxSubscriber",
+              "name": "$$rxSubscriber",
               "range": [
-                418,
-                430
+                434,
+                448
               ],
               "loc": {
                 "start": {
-                  "line": 8,
+                  "line": 9,
                   "column": 13
                 },
                 "end": {
-                  "line": 8,
-                  "column": 25
+                  "line": 9,
+                  "column": 27
                 }
               }
             },
             "init": {
-              "type": "CallExpression",
-              "callee": {
-                "type": "MemberExpression",
-                "computed": false,
-                "object": {
-                  "type": "Identifier",
-                  "name": "SymbolShim",
+              "type": "ConditionalExpression",
+              "test": {
+                "type": "LogicalExpression",
+                "operator": "&&",
+                "left": {
+                  "type": "BinaryExpression",
+                  "operator": "===",
+                  "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                      "type": "Identifier",
+                      "name": "Symbol",
+                      "range": [
+                        459,
+                        465
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 38
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 44
+                        }
+                      }
+                    },
+                    "prefix": true,
+                    "range": [
+                      452,
+                      465
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 31
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 44
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "Literal",
+                    "value": "function",
+                    "raw": "'function'",
+                    "range": [
+                      470,
+                      480
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 49
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 59
+                      }
+                    }
+                  },
                   "range": [
-                    433,
-                    443
+                    452,
+                    480
                   ],
                   "loc": {
                     "start": {
-                      "line": 8,
-                      "column": 28
+                      "line": 9,
+                      "column": 31
                     },
                     "end": {
-                      "line": 8,
-                      "column": 38
+                      "line": 9,
+                      "column": 59
                     }
                   }
                 },
-                "property": {
-                  "type": "Identifier",
-                  "name": "for",
+                "right": {
+                  "type": "BinaryExpression",
+                  "operator": "===",
+                  "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "Symbol",
+                        "range": [
+                          491,
+                          497
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 9,
+                            "column": 70
+                          },
+                          "end": {
+                            "line": 9,
+                            "column": 76
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "for",
+                        "range": [
+                          498,
+                          501
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 9,
+                            "column": 77
+                          },
+                          "end": {
+                            "line": 9,
+                            "column": 80
+                          }
+                        }
+                      },
+                      "range": [
+                        491,
+                        501
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 70
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 80
+                        }
+                      }
+                    },
+                    "prefix": true,
+                    "range": [
+                      484,
+                      501
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 63
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 80
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "Literal",
+                    "value": "function",
+                    "raw": "'function'",
+                    "range": [
+                      506,
+                      516
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 85
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 95
+                      }
+                    }
+                  },
                   "range": [
-                    444,
-                    447
+                    484,
+                    516
                   ],
                   "loc": {
                     "start": {
-                      "line": 8,
-                      "column": 39
+                      "line": 9,
+                      "column": 63
                     },
                     "end": {
-                      "line": 8,
-                      "column": 42
+                      "line": 9,
+                      "column": 95
                     }
                   }
                 },
                 "range": [
-                  433,
-                  447
+                  452,
+                  516
                 ],
                 "loc": {
                   "start": {
-                    "line": 8,
-                    "column": 28
+                    "line": 9,
+                    "column": 31
                   },
                   "end": {
-                    "line": 8,
-                    "column": 42
+                    "line": 9,
+                    "column": 95
                   }
                 }
               },
-              "arguments": [
-                {
-                  "type": "Literal",
-                  "value": "rxSubscriber",
-                  "raw": "'rxSubscriber'",
+              "consequent": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "Symbol",
+                    "range": [
+                      524,
+                      530
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 10
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "for",
+                    "range": [
+                      531,
+                      534
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 14
+                      }
+                    }
+                  },
                   "range": [
-                    448,
-                    462
+                    524,
+                    534
                   ],
                   "loc": {
                     "start": {
-                      "line": 8,
-                      "column": 43
+                      "line": 10,
+                      "column": 4
                     },
                     "end": {
-                      "line": 8,
-                      "column": 57
+                      "line": 10,
+                      "column": 14
                     }
                   }
+                },
+                "arguments": [
+                  {
+                    "type": "Literal",
+                    "value": "rxSubscriber",
+                    "raw": "'rxSubscriber'",
+                    "range": [
+                      535,
+                      549
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 29
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  524,
+                  550
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 30
+                  }
                 }
-              ],
+              },
+              "alternate": {
+                "type": "Literal",
+                "value": "@@rxSubscriber",
+                "raw": "'@@rxSubscriber'",
+                "range": [
+                  553,
+                  569
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 33
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 49
+                  }
+                }
+              },
               "range": [
-                433,
-                463
+                451,
+                569
               ],
               "loc": {
                 "start": {
-                  "line": 8,
-                  "column": 28
+                  "line": 9,
+                  "column": 30
                 },
                 "end": {
-                  "line": 8,
-                  "column": 58
+                  "line": 10,
+                  "column": 49
                 }
               }
             },
             "range": [
-              418,
-              463
+              434,
+              569
             ],
             "loc": {
               "start": {
-                "line": 8,
+                "line": 9,
                 "column": 13
               },
               "end": {
-                "line": 8,
-                "column": 58
+                "line": 10,
+                "column": 49
               }
             }
           }
         ],
         "kind": "const",
         "range": [
-          412,
-          464
+          428,
+          570
         ],
         "loc": {
           "start": {
-            "line": 8,
+            "line": 9,
             "column": 7
           },
           "end": {
-            "line": 8,
-            "column": 59
+            "line": 10,
+            "column": 50
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+            "value": "*\n * rxSubscriber symbol is a symbol for retrieving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
             "range": [
-              49,
-              404
+              65,
+              420
             ],
             "loc": {
               "start": {
-                "line": 2,
+                "line": 3,
                 "column": 0
               },
               "end": {
-                "line": 7,
+                "line": 8,
                 "column": 3
               }
             }
@@ -285,16 +632,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=rxSubscriber.js.map",
             "range": [
-              465,
-              505
+              571,
+              611
             ],
             "loc": {
               "start": {
-                "line": 9,
+                "line": 11,
                 "column": 0
               },
               "end": {
-                "line": 9,
+                "line": 11,
                 "column": 40
               }
             }
@@ -304,34 +651,34 @@
       "specifiers": [],
       "source": null,
       "range": [
-        405,
-        464
+        421,
+        570
       ],
       "loc": {
         "start": {
-          "line": 8,
+          "line": 9,
           "column": 0
         },
         "end": {
-          "line": 8,
-          "column": 59
+          "line": 10,
+          "column": 50
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+          "value": "*\n * rxSubscriber symbol is a symbol for retrieving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
           "range": [
-            49,
-            404
+            65,
+            420
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 3,
               "column": 0
             },
             "end": {
-              "line": 7,
+              "line": 8,
               "column": 3
             }
           }
@@ -342,16 +689,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=rxSubscriber.js.map",
           "range": [
-            465,
-            505
+            571,
+            611
           ],
           "loc": {
             "start": {
-              "line": 9,
+              "line": 11,
               "column": 0
             },
             "end": {
-              "line": 9,
+              "line": 11,
               "column": 40
             }
           }
@@ -362,7 +709,7 @@
   "sourceType": "module",
   "range": [
     0,
-    464
+    570
   ],
   "loc": {
     "start": {
@@ -370,25 +717,25 @@
       "column": 0
     },
     "end": {
-      "line": 8,
-      "column": 59
+      "line": 10,
+      "column": 50
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * rxSubscriber symbol is a symbol for retreiving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
+      "value": "*\n * rxSubscriber symbol is a symbol for retrieving an \"Rx safe\" Observer from an object\n * \"Rx safety\" can be defined as an object that has all of the traits of an Rx Subscriber,\n * including the ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription, etc).\n ",
       "range": [
-        49,
-        404
+        65,
+        420
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 7,
+          "line": 8,
           "column": 3
         }
       }
@@ -397,16 +744,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=rxSubscriber.js.map",
       "range": [
-        465,
-        505
+        571,
+        611
       ],
       "loc": {
         "start": {
-          "line": 9,
+          "line": 11,
           "column": 0
         },
         "end": {
-          "line": 9,
+          "line": 11,
           "column": 40
         }
       }

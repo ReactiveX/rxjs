@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/single-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/single-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {single} */
+describe(&apos;Observable.prototype.single&apos;, function () {
+    asDiagram(&apos;single&apos;)(&apos;should raise error from empty predicate if observable emits multiple time&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--|&apos;);
+        var e1subs = &apos;^    !      &apos;;
+        var expected = &apos;-----#      &apos;;
+        var errorMsg = &apos;Sequence contains more than one element&apos;;
+        expectObservable(e1.single()).toBe(expected, null, errorMsg);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error from empty predicate if observable does not emit&apos;, function () {
+        var e1 = hot(&apos;--a--^--|&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        expectObservable(e1.single()).toBe(expected, null, new Rx.EmptyError());
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should return only element from empty predicate if observable emits only once&apos;, function () {
+        var e1 = hot(&apos;--a--|&apos;);
+        var e1subs = &apos;^    !&apos;;
+        var expected = &apos;-----(a|)&apos;;
+        expectObservable(e1.single()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow unsubscribing explicitly and early&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--|&apos;);
+        var unsub = &apos;   !        &apos;;
+        var e1subs = &apos;^  !        &apos;;
+        var expected = &apos;----        &apos;;
+        expectObservable(e1.single(), unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--|&apos;);
+        var e1subs = &apos;^  !        &apos;;
+        var expected = &apos;----        &apos;;
+        var unsub = &apos;   !        &apos;;
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .single()
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error from empty predicate if observable emits error&apos;, function () {
+        var e1 = hot(&apos;--a--b^--#&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        expectObservable(e1.single()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error from predicate if observable emits error&apos;, function () {
+        var e1 = hot(&apos;--a--b^--#&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        var predicate = function (value) {
+            return value === &apos;c&apos;;
+        };
+        expectObservable(e1.single(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if predicate throws error&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--d--|&apos;);
+        var e1subs = &apos;^          !   &apos;;
+        var expected = &apos;-----------#   &apos;;
+        var predicate = function (value) {
+            if (value !== &apos;d&apos;) {
+                return false;
+            }
+            throw &apos;error&apos;;
+        };
+        expectObservable(e1.single(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should return element from predicate if observable have single matching element&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--|&apos;);
+        var e1subs = &apos;^          !&apos;;
+        var expected = &apos;-----------(b|)&apos;;
+        var predicate = function (value) {
+            return value === &apos;b&apos;;
+        };
+        expectObservable(e1.single(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error from predicate if observable have multiple matching element&apos;, function () {
+        var e1 = hot(&apos;--a--b--a--b--b--|&apos;);
+        var e1subs = &apos;^          !      &apos;;
+        var expected = &apos;-----------#      &apos;;
+        var predicate = function (value) {
+            return value === &apos;b&apos;;
+        };
+        expectObservable(e1.single(predicate)).toBe(expected, null, &apos;Sequence contains more than one element&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error from predicate if observable does not emit&apos;, function () {
+        var e1 = hot(&apos;--a--^--|&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        var predicate = function (value) {
+            return value === &apos;a&apos;;
+        };
+        expectObservable(e1.single(predicate)).toBe(expected, null, new Rx.EmptyError());
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should return undefined from predicate if observable does not contain matching element&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--|&apos;);
+        var e1subs = &apos;^          !&apos;;
+        var expected = &apos;-----------(z|)&apos;;
+        var predicate = function (value) {
+            return value === &apos;x&apos;;
+        };
+        expectObservable(e1.single(predicate)).toBe(expected, { z: undefined });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+});
+//# sourceMappingURL=single-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

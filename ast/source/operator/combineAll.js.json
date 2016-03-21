@@ -60,11 +60,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./combineLatest-support",
-        "raw": "'./combineLatest-support'",
+        "value": "./combineLatest",
+        "raw": "'./combineLatest'",
         "range": [
           38,
-          63
+          55
         ],
         "loc": {
           "start": {
@@ -73,13 +73,13 @@
           },
           "end": {
             "line": 1,
-            "column": 63
+            "column": 55
           }
         }
       },
       "range": [
         0,
-        64
+        56
       ],
       "loc": {
         "start": {
@@ -88,16 +88,16 @@
         },
         "end": {
           "line": 1,
-          "column": 64
+          "column": 56
         }
       },
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
+          "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @return {Observable} an observable of projected results or arrays of recent values.\n * @method combineAll\n * @owner Observable\n ",
           "range": [
-            65,
-            1085
+            57,
+            1119
           ],
           "loc": {
             "start": {
@@ -105,7 +105,7 @@
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 15,
               "column": 3
             }
           }
@@ -120,16 +120,16 @@
           "type": "Identifier",
           "name": "combineAll",
           "range": [
-            1102,
-            1112
+            1136,
+            1146
           ],
           "loc": {
             "start": {
-              "line": 14,
+              "line": 16,
               "column": 16
             },
             "end": {
-              "line": 14,
+              "line": 16,
               "column": 26
             }
           }
@@ -139,16 +139,16 @@
             "type": "Identifier",
             "name": "project",
             "range": [
-              1113,
-              1120
+              1147,
+              1154
             ],
             "loc": {
               "start": {
-                "line": 14,
+                "line": 16,
                 "column": 27
               },
               "end": {
-                "line": 14,
+                "line": 16,
                 "column": 34
               }
             }
@@ -167,16 +167,16 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      1135,
-                      1139
+                      1169,
+                      1173
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
+                        "line": 17,
                         "column": 11
                       },
                       "end": {
-                        "line": 15,
+                        "line": 17,
                         "column": 15
                       }
                     }
@@ -185,31 +185,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      1140,
-                      1144
+                      1174,
+                      1178
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
+                        "line": 17,
                         "column": 16
                       },
                       "end": {
-                        "line": 15,
+                        "line": 17,
                         "column": 20
                       }
                     }
                   },
                   "range": [
-                    1135,
-                    1144
+                    1169,
+                    1178
                   ],
                   "loc": {
                     "start": {
-                      "line": 15,
+                      "line": 17,
                       "column": 11
                     },
                     "end": {
-                      "line": 15,
+                      "line": 17,
                       "column": 20
                     }
                   }
@@ -221,16 +221,16 @@
                       "type": "Identifier",
                       "name": "CombineLatestOperator",
                       "range": [
-                        1149,
-                        1170
+                        1183,
+                        1204
                       ],
                       "loc": {
                         "start": {
-                          "line": 15,
+                          "line": 17,
                           "column": 25
                         },
                         "end": {
-                          "line": 15,
+                          "line": 17,
                           "column": 46
                         }
                       }
@@ -240,79 +240,79 @@
                         "type": "Identifier",
                         "name": "project",
                         "range": [
-                          1171,
-                          1178
+                          1205,
+                          1212
                         ],
                         "loc": {
                           "start": {
-                            "line": 15,
+                            "line": 17,
                             "column": 47
                           },
                           "end": {
-                            "line": 15,
+                            "line": 17,
                             "column": 54
                           }
                         }
                       }
                     ],
                     "range": [
-                      1145,
-                      1179
+                      1179,
+                      1213
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
+                        "line": 17,
                         "column": 21
                       },
                       "end": {
-                        "line": 15,
+                        "line": 17,
                         "column": 55
                       }
                     }
                   }
                 ],
                 "range": [
-                  1135,
-                  1180
+                  1169,
+                  1214
                 ],
                 "loc": {
                   "start": {
-                    "line": 15,
+                    "line": 17,
                     "column": 11
                   },
                   "end": {
-                    "line": 15,
+                    "line": 17,
                     "column": 56
                   }
                 }
               },
               "range": [
-                1128,
-                1181
+                1162,
+                1215
               ],
               "loc": {
                 "start": {
-                  "line": 15,
+                  "line": 17,
                   "column": 4
                 },
                 "end": {
-                  "line": 15,
+                  "line": 17,
                   "column": 57
                 }
               }
             }
           ],
           "range": [
-            1122,
-            1183
+            1156,
+            1217
           ],
           "loc": {
             "start": {
-              "line": 14,
+              "line": 16,
               "column": 36
             },
             "end": {
-              "line": 16,
+              "line": 18,
               "column": 1
             }
           }
@@ -320,26 +320,26 @@
         "generator": false,
         "expression": false,
         "range": [
-          1093,
-          1183
+          1127,
+          1217
         ],
         "loc": {
           "start": {
-            "line": 14,
+            "line": 16,
             "column": 7
           },
           "end": {
-            "line": 16,
+            "line": 18,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
+            "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @return {Observable} an observable of projected results or arrays of recent values.\n * @method combineAll\n * @owner Observable\n ",
             "range": [
-              65,
-              1085
+              57,
+              1119
             ],
             "loc": {
               "start": {
@@ -347,7 +347,7 @@
                 "column": 0
               },
               "end": {
-                "line": 13,
+                "line": 15,
                 "column": 3
               }
             }
@@ -358,16 +358,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=combineAll.js.map",
             "range": [
-              1184,
-              1222
+              1218,
+              1256
             ],
             "loc": {
               "start": {
-                "line": 17,
+                "line": 19,
                 "column": 0
               },
               "end": {
-                "line": 17,
+                "line": 19,
                 "column": 38
               }
             }
@@ -377,26 +377,26 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1086,
-        1183
+        1120,
+        1217
       ],
       "loc": {
         "start": {
-          "line": 14,
+          "line": 16,
           "column": 0
         },
         "end": {
-          "line": 16,
+          "line": 18,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
+          "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @return {Observable} an observable of projected results or arrays of recent values.\n * @method combineAll\n * @owner Observable\n ",
           "range": [
-            65,
-            1085
+            57,
+            1119
           ],
           "loc": {
             "start": {
@@ -404,7 +404,7 @@
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 15,
               "column": 3
             }
           }
@@ -415,16 +415,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=combineAll.js.map",
           "range": [
-            1184,
-            1222
+            1218,
+            1256
           ],
           "loc": {
             "start": {
-              "line": 17,
+              "line": 19,
               "column": 0
             },
             "end": {
-              "line": 17,
+              "line": 19,
               "column": 38
             }
           }
@@ -435,7 +435,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1183
+    1217
   ],
   "loc": {
     "start": {
@@ -443,17 +443,17 @@
       "column": 0
     },
     "end": {
-      "line": 16,
+      "line": 18,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
+      "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @return {Observable} an observable of projected results or arrays of recent values.\n * @method combineAll\n * @owner Observable\n ",
       "range": [
-        65,
-        1085
+        57,
+        1119
       ],
       "loc": {
         "start": {
@@ -461,7 +461,7 @@
           "column": 0
         },
         "end": {
-          "line": 13,
+          "line": 15,
           "column": 3
         }
       }
@@ -470,16 +470,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=combineAll.js.map",
       "range": [
-        1184,
-        1222
+        1218,
+        1256
       ],
       "loc": {
         "start": {
-          "line": 17,
+          "line": 19,
           "column": 0
         },
         "end": {
-          "line": 17,
+          "line": 19,
           "column": 38
         }
       }

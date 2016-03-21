@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">spec-js/Notification-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/Notification-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../dist/cjs/Rx&apos;);
+var Notification = Rx.Notification;
+/** @test {Notification} */
+describe(&apos;Notification&apos;, function () {
+    it(&apos;should exist&apos;, function () {
+        expect(Notification).toBeDefined();
+        expect(typeof Notification).toBe(&apos;function&apos;);
+    });
+    describe(&apos;createNext&apos;, function () {
+        it(&apos;should return a Notification&apos;, function () {
+            var n = Notification.createNext(&apos;test&apos;);
+            expect(n instanceof Notification).toBe(true);
+            expect(n.value).toBe(&apos;test&apos;);
+            expect(n.kind).toBe(&apos;N&apos;);
+            expect(typeof n.exception).toBe(&apos;undefined&apos;);
+            expect(n.hasValue).toBe(true);
+        });
+    });
+    describe(&apos;createError&apos;, function () {
+        it(&apos;should return a Notification&apos;, function () {
+            var n = Notification.createError(&apos;test&apos;);
+            expect(n instanceof Notification).toBe(true);
+            expect(typeof n.value).toBe(&apos;undefined&apos;);
+            expect(n.kind).toBe(&apos;E&apos;);
+            expect(n.exception).toBe(&apos;test&apos;);
+            expect(n.hasValue).toBe(false);
+        });
+    });
+    describe(&apos;createComplete&apos;, function () {
+        it(&apos;should return a Notification&apos;, function () {
+            var n = Notification.createComplete();
+            expect(n instanceof Notification).toBe(true);
+            expect(typeof n.value).toBe(&apos;undefined&apos;);
+            expect(n.kind).toBe(&apos;C&apos;);
+            expect(typeof n.exception).toBe(&apos;undefined&apos;);
+            expect(n.hasValue).toBe(false);
+        });
+    });
+    describe(&apos;toObservable&apos;, function () {
+        it(&apos;should create observable from a next Notification&apos;, function () {
+            var value = &apos;a&apos;;
+            var next = Notification.createNext(value);
+            expectObservable(next.toObservable()).toBe(&apos;(a|)&apos;);
+        });
+        it(&apos;should create observable from a complete Notification&apos;, function () {
+            var complete = Notification.createComplete();
+            expectObservable(complete.toObservable()).toBe(&apos;|&apos;);
+        });
+        it(&apos;should create observable from a error Notification&apos;, function () {
+            var error = Notification.createError(&apos;error&apos;);
+            expectObservable(error.toObservable()).toBe(&apos;#&apos;);
+        });
+    });
+    describe(&apos;static reference&apos;, function () {
+        it(&apos;should create new next Notification with value&apos;, function () {
+            var value = &apos;a&apos;;
+            var first = Notification.createNext(value);
+            var second = Notification.createNext(value);
+            expect(first).not.toBe(second);
+        });
+        it(&apos;should create new error Notification&apos;, function () {
+            var first = Notification.createError();
+            var second = Notification.createError();
+            expect(first).not.toBe(second);
+        });
+        it(&apos;should return static next Notification reference without value&apos;, function () {
+            var first = Notification.createNext(undefined);
+            var second = Notification.createNext(undefined);
+            expect(first).toBe(second);
+        });
+        it(&apos;should return static complete Notification reference&apos;, function () {
+            var first = Notification.createComplete();
+            var second = Notification.createComplete();
+            expect(first).toBe(second);
+        });
+    });
+    describe(&apos;do&apos;, function () {
+        it(&apos;should invoke on next&apos;, function () {
+            var n = Notification.createNext(&apos;a&apos;);
+            var invoked = false;
+            n.do(function (x) {
+                invoked = true;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            expect(invoked).toBe(true);
+        });
+        it(&apos;should invoke on error&apos;, function () {
+            var n = Notification.createError();
+            var invoked = false;
+            n.do(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                invoked = true;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            expect(invoked).toBe(true);
+        });
+        it(&apos;should invoke on complete&apos;, function () {
+            var n = Notification.createComplete();
+            var invoked = false;
+            n.do(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                invoked = true;
+            });
+            expect(invoked).toBe(true);
+        });
+    });
+    describe(&apos;accept&apos;, function () {
+        it(&apos;should accept observer for next Notification&apos;, function () {
+            var value = &apos;a&apos;;
+            var observed = false;
+            var n = Notification.createNext(value);
+            var observer = Rx.Subscriber.create(function (x) {
+                expect(x).toBe(value);
+                observed = true;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            n.accept(observer);
+            expect(observed).toBe(true);
+        });
+        it(&apos;should accept observer for error Notification&apos;, function () {
+            var observed = false;
+            var n = Notification.createError();
+            var observer = Rx.Subscriber.create(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                observed = true;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            n.accept(observer);
+            expect(observed).toBe(true);
+        });
+        it(&apos;should accept observer for complete Notification&apos;, function () {
+            var observed = false;
+            var n = Notification.createComplete();
+            var observer = Rx.Subscriber.create(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                observed = true;
+            });
+            n.accept(observer);
+            expect(observed).toBe(true);
+        });
+        it(&apos;should accept function for next Notification&apos;, function () {
+            var value = &apos;a&apos;;
+            var observed = false;
+            var n = Notification.createNext(value);
+            n.accept(function (x) {
+                expect(x).toBe(value);
+                observed = true;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            expect(observed).toBe(true);
+        });
+        it(&apos;should accept function for error Notification&apos;, function () {
+            var observed = false;
+            var error = &apos;error&apos;;
+            var n = Notification.createError(error);
+            n.accept(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                expect(err).toBe(error);
+                observed = true;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            expect(observed).toBe(true);
+        });
+        it(&apos;should accept function for complete Notification&apos;, function () {
+            var observed = false;
+            var n = Notification.createComplete();
+            n.accept(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                observed = true;
+            });
+            expect(observed).toBe(true);
+        });
+    });
+    describe(&apos;observe&apos;, function () {
+        it(&apos;should observe for next Notification&apos;, function () {
+            var value = &apos;a&apos;;
+            var observed = false;
+            var n = Notification.createNext(value);
+            var observer = Rx.Subscriber.create(function (x) {
+                expect(x).toBe(value);
+                observed = true;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            n.observe(observer);
+            expect(observed).toBe(true);
+        });
+        it(&apos;should observe for error Notification&apos;, function () {
+            var observed = false;
+            var n = Notification.createError();
+            var observer = Rx.Subscriber.create(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                observed = true;
+            }, function () {
+                throw &apos;should not be called&apos;;
+            });
+            n.observe(observer);
+            expect(observed).toBe(true);
+        });
+        it(&apos;should observe for complete Notification&apos;, function () {
+            var observed = false;
+            var n = Notification.createComplete();
+            var observer = Rx.Subscriber.create(function (x) {
+                throw &apos;should not be called&apos;;
+            }, function (err) {
+                throw &apos;should not be called&apos;;
+            }, function () {
+                observed = true;
+            });
+            n.observe(observer);
+            expect(observed).toBe(true);
+        });
+    });
+});
+//# sourceMappingURL=Notification-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

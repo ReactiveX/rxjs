@@ -1,0 +1,737 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "publishReplay",
+            "range": [
+              9,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 22
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "publishReplay",
+            "range": [
+              9,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            9,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 22
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./publishReplay",
+        "raw": "'./publishReplay'",
+        "range": [
+          30,
+          47
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 30
+          },
+          "end": {
+            "line": 1,
+            "column": 47
+          }
+        }
+      },
+      "range": [
+        0,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 48
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {Observable<any>}\n * @method cache\n * @owner Observable\n ",
+          "range": [
+            49,
+            185
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "cache",
+          "range": [
+            202,
+            207
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 16
+            },
+            "end": {
+              "line": 10,
+              "column": 21
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "bufferSize",
+              "range": [
+                208,
+                218
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 22
+                },
+                "end": {
+                  "line": 10,
+                  "column": 32
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  221,
+                  227
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 35
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 41
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  228,
+                  245
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 42
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 59
+                  }
+                }
+              },
+              "range": [
+                221,
+                245
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 35
+                },
+                "end": {
+                  "line": 10,
+                  "column": 59
+                }
+              }
+            },
+            "range": [
+              208,
+              245
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 22
+              },
+              "end": {
+                "line": 10,
+                "column": 59
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "windowTime",
+              "range": [
+                247,
+                257
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 61
+                },
+                "end": {
+                  "line": 10,
+                  "column": 71
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  260,
+                  266
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 74
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 80
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  267,
+                  284
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 81
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 98
+                  }
+                }
+              },
+              "range": [
+                260,
+                284
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 74
+                },
+                "end": {
+                  "line": 10,
+                  "column": 98
+                }
+              }
+            },
+            "range": [
+              247,
+              284
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 61
+              },
+              "end": {
+                "line": 10,
+                "column": 98
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "scheduler",
+            "range": [
+              286,
+              295
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 100
+              },
+              "end": {
+                "line": 10,
+                "column": 109
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "publishReplay",
+                        "range": [
+                          310,
+                          323
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 11
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 24
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "call",
+                        "range": [
+                          324,
+                          328
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 25
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 29
+                          }
+                        }
+                      },
+                      "range": [
+                        310,
+                        328
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 11,
+                          "column": 11
+                        },
+                        "end": {
+                          "line": 11,
+                          "column": 29
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "ThisExpression",
+                        "range": [
+                          329,
+                          333
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 30
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 34
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "bufferSize",
+                        "range": [
+                          335,
+                          345
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 36
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 46
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "windowTime",
+                        "range": [
+                          347,
+                          357
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 48
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 58
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "scheduler",
+                        "range": [
+                          359,
+                          368
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 60
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 69
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      310,
+                      369
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 70
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "refCount",
+                    "range": [
+                      370,
+                      378
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 71
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 79
+                      }
+                    }
+                  },
+                  "range": [
+                    310,
+                    378
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 79
+                    }
+                  }
+                },
+                "arguments": [],
+                "range": [
+                  310,
+                  380
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 81
+                  }
+                }
+              },
+              "range": [
+                303,
+                381
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 4
+                },
+                "end": {
+                  "line": 11,
+                  "column": 82
+                }
+              }
+            }
+          ],
+          "range": [
+            297,
+            383
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 111
+            },
+            "end": {
+              "line": 12,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          193,
+          383
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 7
+          },
+          "end": {
+            "line": 12,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {Observable<any>}\n * @method cache\n * @owner Observable\n ",
+            "range": [
+              49,
+              185
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 9,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=cache.js.map",
+            "range": [
+              384,
+              417
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 0
+              },
+              "end": {
+                "line": 13,
+                "column": 33
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        186,
+        383
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {Observable<any>}\n * @method cache\n * @owner Observable\n ",
+          "range": [
+            49,
+            185
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=cache.js.map",
+          "range": [
+            384,
+            417
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 33
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    383
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 12,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {Observable<any>}\n * @method cache\n * @owner Observable\n ",
+      "range": [
+        49,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=cache.js.map",
+      "range": [
+        384,
+        417
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 33
+        }
+      }
+    }
+  ]
+}

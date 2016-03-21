@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">es6/Rx.js | API Document</title>
+  <title data-ice="title">es6/Rx.js | RxJS API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   
   
   <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -33,37 +37,32 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/Rx.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subject } from &apos;./Subject&apos;;
-import { Observable } from &apos;./Observable&apos;;
-import &apos;./add/operator/combineLatest-static&apos;;
-import &apos;./add/operator/concat-static&apos;;
-import &apos;./add/operator/merge-static&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* tslint:disable:no-unused-variable */
+// Subject imported before Observable to bypass circular dependency issue since
+// Subject extends Observable and Observable references Subject in it&apos;s
+// definition
+export { Subject } from &apos;./Subject&apos;;
+/* tslint:enable:no-unused-variable */
+export { Observable } from &apos;./Observable&apos;;
 import &apos;./add/observable/bindCallback&apos;;
+import &apos;./add/observable/bindNodeCallback&apos;;
+import &apos;./add/observable/combineLatest&apos;;
+import &apos;./add/observable/concat&apos;;
 import &apos;./add/observable/defer&apos;;
 import &apos;./add/observable/empty&apos;;
 import &apos;./add/observable/forkJoin&apos;;
@@ -73,16 +72,20 @@ import &apos;./add/observable/fromEvent&apos;;
 import &apos;./add/observable/fromEventPattern&apos;;
 import &apos;./add/observable/fromPromise&apos;;
 import &apos;./add/observable/interval&apos;;
+import &apos;./add/observable/merge&apos;;
+import &apos;./add/observable/race&apos;;
 import &apos;./add/observable/never&apos;;
+import &apos;./add/observable/of&apos;;
 import &apos;./add/observable/range&apos;;
 import &apos;./add/observable/throw&apos;;
 import &apos;./add/observable/timer&apos;;
-import &apos;./add/operator/zip-static&apos;;
+import &apos;./add/observable/zip&apos;;
 import &apos;./add/operator/buffer&apos;;
 import &apos;./add/operator/bufferCount&apos;;
 import &apos;./add/operator/bufferTime&apos;;
 import &apos;./add/operator/bufferToggle&apos;;
 import &apos;./add/operator/bufferWhen&apos;;
+import &apos;./add/operator/cache&apos;;
 import &apos;./add/operator/catch&apos;;
 import &apos;./add/operator/combineAll&apos;;
 import &apos;./add/operator/combineLatest&apos;;
@@ -96,6 +99,7 @@ import &apos;./add/operator/debounce&apos;;
 import &apos;./add/operator/debounceTime&apos;;
 import &apos;./add/operator/defaultIfEmpty&apos;;
 import &apos;./add/operator/delay&apos;;
+import &apos;./add/operator/delayWhen&apos;;
 import &apos;./add/operator/distinctUntilChanged&apos;;
 import &apos;./add/operator/do&apos;;
 import &apos;./add/operator/expand&apos;;
@@ -104,8 +108,11 @@ import &apos;./add/operator/finally&apos;;
 import &apos;./add/operator/first&apos;;
 import &apos;./add/operator/groupBy&apos;;
 import &apos;./add/operator/ignoreElements&apos;;
-import &apos;./add/operator/every&apos;;
+import &apos;./add/operator/inspect&apos;;
+import &apos;./add/operator/inspectTime&apos;;
 import &apos;./add/operator/last&apos;;
+import &apos;./add/operator/let&apos;;
+import &apos;./add/operator/every&apos;;
 import &apos;./add/operator/map&apos;;
 import &apos;./add/operator/mapTo&apos;;
 import &apos;./add/operator/materialize&apos;;
@@ -116,10 +123,12 @@ import &apos;./add/operator/mergeMapTo&apos;;
 import &apos;./add/operator/multicast&apos;;
 import &apos;./add/operator/observeOn&apos;;
 import &apos;./add/operator/partition&apos;;
+import &apos;./add/operator/pluck&apos;;
 import &apos;./add/operator/publish&apos;;
 import &apos;./add/operator/publishBehavior&apos;;
 import &apos;./add/operator/publishReplay&apos;;
 import &apos;./add/operator/publishLast&apos;;
+import &apos;./add/operator/race&apos;;
 import &apos;./add/operator/reduce&apos;;
 import &apos;./add/operator/repeat&apos;;
 import &apos;./add/operator/retry&apos;;
@@ -135,11 +144,10 @@ import &apos;./add/operator/skipWhile&apos;;
 import &apos;./add/operator/startWith&apos;;
 import &apos;./add/operator/subscribeOn&apos;;
 import &apos;./add/operator/switch&apos;;
-import &apos;./add/operator/switchFirst&apos;;
 import &apos;./add/operator/switchMap&apos;;
-import &apos;./add/operator/switchFirstMap&apos;;
 import &apos;./add/operator/switchMapTo&apos;;
 import &apos;./add/operator/take&apos;;
+import &apos;./add/operator/takeLast&apos;;
 import &apos;./add/operator/takeUntil&apos;;
 import &apos;./add/operator/takeWhile&apos;;
 import &apos;./add/operator/throttle&apos;;
@@ -156,36 +164,44 @@ import &apos;./add/operator/windowWhen&apos;;
 import &apos;./add/operator/withLatestFrom&apos;;
 import &apos;./add/operator/zip&apos;;
 import &apos;./add/operator/zipAll&apos;;
-import { Subscription } from &apos;./Subscription&apos;;
-import { Subscriber } from &apos;./Subscriber&apos;;
-import { AsyncSubject } from &apos;./subject/AsyncSubject&apos;;
-import { ReplaySubject } from &apos;./subject/ReplaySubject&apos;;
-import { BehaviorSubject } from &apos;./subject/BehaviorSubject&apos;;
-import { ConnectableObservable } from &apos;./observable/ConnectableObservable&apos;;
-import { Notification } from &apos;./Notification&apos;;
-import { EmptyError } from &apos;./util/EmptyError&apos;;
-import { ArgumentOutOfRangeError } from &apos;./util/ArgumentOutOfRangeError&apos;;
-import { ObjectUnsubscribedError } from &apos;./util/ObjectUnsubscribedError&apos;;
+/* tslint:disable:no-unused-variable */
+export { Operator } from &apos;./Operator&apos;;
+export { Subscription, UnsubscriptionError } from &apos;./Subscription&apos;;
+export { Subscriber } from &apos;./Subscriber&apos;;
+export { AsyncSubject } from &apos;./subject/AsyncSubject&apos;;
+export { ReplaySubject } from &apos;./subject/ReplaySubject&apos;;
+export { BehaviorSubject } from &apos;./subject/BehaviorSubject&apos;;
+export { ConnectableObservable } from &apos;./observable/ConnectableObservable&apos;;
+export { Notification } from &apos;./Notification&apos;;
+export { EmptyError } from &apos;./util/EmptyError&apos;;
+export { ArgumentOutOfRangeError } from &apos;./util/ArgumentOutOfRangeError&apos;;
+export { ObjectUnsubscribedError } from &apos;./util/ObjectUnsubscribedError&apos;;
 import { asap } from &apos;./scheduler/asap&apos;;
+import { async } from &apos;./scheduler/async&apos;;
 import { queue } from &apos;./scheduler/queue&apos;;
-import { rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
+import { $$rxSubscriber as rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
+import { $$observable as observable } from &apos;./symbol/observable&apos;;
+import { $$iterator as iterator } from &apos;./symbol/iterator&apos;;
 /* tslint:enable:no-unused-variable */
 /* tslint:disable:no-var-keyword */
 var Scheduler = {
     asap,
+    async,
     queue
 };
 var Symbol = {
-    rxSubscriber
+    rxSubscriber,
+    observable,
+    iterator
 };
 /* tslint:enable:no-var-keyword */
-export { Subject, Scheduler, Observable, Subscriber, Subscription, Symbol, AsyncSubject, ReplaySubject, BehaviorSubject, ConnectableObservable, Notification, EmptyError, ArgumentOutOfRangeError, ObjectUnsubscribedError };
+export { Scheduler, Symbol };
 //# sourceMappingURL=Rx.js.map</code></pre>
 
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

@@ -2,102 +2,84 @@
   "type": "Program",
   "body": [
     {
-      "type": "VariableDeclaration",
-      "declarations": [
+      "type": "ImportDeclaration",
+      "specifiers": [
         {
-          "type": "VariableDeclarator",
-          "id": {
+          "type": "ImportSpecifier",
+          "local": {
             "type": "Identifier",
-            "name": "is_array",
+            "name": "isArray",
             "range": [
-              6,
-              14
+              9,
+              16
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 6
+                "column": 9
               },
               "end": {
                 "line": 1,
-                "column": 14
+                "column": 16
               }
             }
           },
-          "init": {
-            "type": "MemberExpression",
-            "computed": false,
-            "object": {
-              "type": "Identifier",
-              "name": "Array",
-              "range": [
-                17,
-                22
-              ],
-              "loc": {
-                "start": {
-                  "line": 1,
-                  "column": 17
-                },
-                "end": {
-                  "line": 1,
-                  "column": 22
-                }
-              }
-            },
-            "property": {
-              "type": "Identifier",
-              "name": "isArray",
-              "range": [
-                23,
-                30
-              ],
-              "loc": {
-                "start": {
-                  "line": 1,
-                  "column": 23
-                },
-                "end": {
-                  "line": 1,
-                  "column": 30
-                }
-              }
-            },
+          "imported": {
+            "type": "Identifier",
+            "name": "isArray",
             "range": [
-              17,
-              30
+              9,
+              16
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 17
+                "column": 9
               },
               "end": {
                 "line": 1,
-                "column": 30
+                "column": 16
               }
             }
           },
           "range": [
-            6,
-            30
+            9,
+            16
           ],
           "loc": {
             "start": {
               "line": 1,
-              "column": 6
+              "column": 9
             },
             "end": {
               "line": 1,
-              "column": 30
+              "column": 16
             }
           }
         }
       ],
-      "kind": "const",
+      "source": {
+        "type": "Literal",
+        "value": "../util/isArray",
+        "raw": "'../util/isArray'",
+        "range": [
+          24,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 24
+          },
+          "end": {
+            "line": 1,
+            "column": 41
+          }
+        }
+      },
       "range": [
         0,
-        31
+        42
       ],
       "loc": {
         "start": {
@@ -106,7 +88,7 @@
         },
         "end": {
           "line": 1,
-          "column": 31
+          "column": 42
         }
       }
     },
@@ -118,8 +100,8 @@
           "type": "Identifier",
           "name": "isNumeric",
           "range": [
-            48,
-            57
+            59,
+            68
           ],
           "loc": {
             "start": {
@@ -137,8 +119,8 @@
             "type": "Identifier",
             "name": "val",
             "range": [
-              58,
-              61
+              69,
+              72
             ],
             "loc": {
               "start": {
@@ -167,10 +149,10 @@
                     "type": "CallExpression",
                     "callee": {
                       "type": "Identifier",
-                      "name": "is_array",
+                      "name": "isArray",
                       "range": [
-                        350,
-                        358
+                        361,
+                        368
                       ],
                       "loc": {
                         "start": {
@@ -179,7 +161,7 @@
                         },
                         "end": {
                           "line": 7,
-                          "column": 20
+                          "column": 19
                         }
                       }
                     },
@@ -188,24 +170,24 @@
                         "type": "Identifier",
                         "name": "val",
                         "range": [
-                          359,
-                          362
+                          369,
+                          372
                         ],
                         "loc": {
                           "start": {
                             "line": 7,
-                            "column": 21
+                            "column": 20
                           },
                           "end": {
                             "line": 7,
-                            "column": 24
+                            "column": 23
                           }
                         }
                       }
                     ],
                     "range": [
-                      350,
-                      363
+                      361,
+                      373
                     ],
                     "loc": {
                       "start": {
@@ -214,14 +196,14 @@
                       },
                       "end": {
                         "line": 7,
-                        "column": 25
+                        "column": 24
                       }
                     }
                   },
                   "prefix": true,
                   "range": [
-                    349,
-                    363
+                    360,
+                    373
                   ],
                   "loc": {
                     "start": {
@@ -230,7 +212,7 @@
                     },
                     "end": {
                       "line": 7,
-                      "column": 25
+                      "column": 24
                     }
                   }
                 },
@@ -247,17 +229,17 @@
                         "type": "Identifier",
                         "name": "val",
                         "range": [
-                          368,
-                          371
+                          378,
+                          381
                         ],
                         "loc": {
                           "start": {
                             "line": 7,
-                            "column": 30
+                            "column": 29
                           },
                           "end": {
                             "line": 7,
-                            "column": 33
+                            "column": 32
                           }
                         }
                       },
@@ -267,17 +249,17 @@
                           "type": "Identifier",
                           "name": "parseFloat",
                           "range": [
-                            374,
-                            384
+                            384,
+                            394
                           ],
                           "loc": {
                             "start": {
                               "line": 7,
-                              "column": 36
+                              "column": 35
                             },
                             "end": {
                               "line": 7,
-                              "column": 46
+                              "column": 45
                             }
                           }
                         },
@@ -286,48 +268,48 @@
                             "type": "Identifier",
                             "name": "val",
                             "range": [
-                              385,
-                              388
+                              395,
+                              398
                             ],
                             "loc": {
                               "start": {
                                 "line": 7,
-                                "column": 47
+                                "column": 46
                               },
                               "end": {
                                 "line": 7,
-                                "column": 50
+                                "column": 49
                               }
                             }
                           }
                         ],
                         "range": [
-                          374,
-                          389
+                          384,
+                          399
                         ],
                         "loc": {
                           "start": {
                             "line": 7,
-                            "column": 36
+                            "column": 35
                           },
                           "end": {
                             "line": 7,
-                            "column": 51
+                            "column": 50
                           }
                         }
                       },
                       "range": [
-                        368,
-                        389
+                        378,
+                        399
                       ],
                       "loc": {
                         "start": {
                           "line": 7,
-                          "column": 30
+                          "column": 29
                         },
                         "end": {
                           "line": 7,
-                          "column": 51
+                          "column": 50
                         }
                       }
                     },
@@ -336,32 +318,32 @@
                       "value": 1,
                       "raw": "1",
                       "range": [
-                        392,
-                        393
+                        402,
+                        403
                       ],
                       "loc": {
                         "start": {
                           "line": 7,
-                          "column": 54
+                          "column": 53
                         },
                         "end": {
                           "line": 7,
-                          "column": 55
+                          "column": 54
                         }
                       }
                     },
                     "range": [
-                      368,
-                      393
+                      378,
+                      403
                     ],
                     "loc": {
                       "start": {
                         "line": 7,
-                        "column": 30
+                        "column": 29
                       },
                       "end": {
                         "line": 7,
-                        "column": 55
+                        "column": 54
                       }
                     }
                   },
@@ -370,38 +352,38 @@
                     "value": 0,
                     "raw": "0",
                     "range": [
-                      398,
-                      399
+                      408,
+                      409
                     ],
                     "loc": {
                       "start": {
                         "line": 7,
-                        "column": 60
+                        "column": 59
                       },
                       "end": {
                         "line": 7,
-                        "column": 61
+                        "column": 60
                       }
                     }
                   },
                   "range": [
-                    367,
-                    399
+                    377,
+                    409
                   ],
                   "loc": {
                     "start": {
                       "line": 7,
-                      "column": 29
+                      "column": 28
                     },
                     "end": {
                       "line": 7,
-                      "column": 61
+                      "column": 60
                     }
                   }
                 },
                 "range": [
-                  349,
-                  399
+                  360,
+                  409
                 ],
                 "loc": {
                   "start": {
@@ -410,13 +392,13 @@
                   },
                   "end": {
                     "line": 7,
-                    "column": 61
+                    "column": 60
                   }
                 }
               },
               "range": [
-                342,
-                400
+                353,
+                410
               ],
               "loc": {
                 "start": {
@@ -425,7 +407,7 @@
                 },
                 "end": {
                   "line": 7,
-                  "column": 62
+                  "column": 61
                 }
               },
               "leadingComments": [
@@ -433,8 +415,8 @@
                   "type": "Line",
                   "value": " parseFloat NaNs numeric-cast false positives (null|true|false|\"\")",
                   "range": [
-                    69,
-                    137
+                    80,
+                    148
                   ],
                   "loc": {
                     "start": {
@@ -451,8 +433,8 @@
                   "type": "Line",
                   "value": " ...but misinterprets leading-number strings, particularly hex literals (\"0x...\")",
                   "range": [
-                    142,
-                    225
+                    153,
+                    236
                   ],
                   "loc": {
                     "start": {
@@ -469,8 +451,8 @@
                   "type": "Line",
                   "value": " subtraction forces infinities to NaN",
                   "range": [
-                    230,
-                    269
+                    241,
+                    280
                   ],
                   "loc": {
                     "start": {
@@ -487,8 +469,8 @@
                   "type": "Line",
                   "value": " adding 1 corrects loss of precision from parseFloat (#15100)",
                   "range": [
-                    274,
-                    337
+                    285,
+                    348
                   ],
                   "loc": {
                     "start": {
@@ -505,8 +487,8 @@
             }
           ],
           "range": [
-            63,
-            402
+            74,
+            412
           ],
           "loc": {
             "start": {
@@ -522,8 +504,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          39,
-          402
+          50,
+          412
         ],
         "loc": {
           "start": {
@@ -541,8 +523,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        32,
-        402
+        43,
+        412
       ],
       "loc": {
         "start": {
@@ -558,8 +540,8 @@
     {
       "type": "EmptyStatement",
       "range": [
-        403,
-        404
+        413,
+        414
       ],
       "loc": {
         "start": {
@@ -576,8 +558,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=isNumeric.js.map",
           "range": [
-            405,
-            442
+            415,
+            452
           ],
           "loc": {
             "start": {
@@ -596,7 +578,7 @@
   "sourceType": "module",
   "range": [
     0,
-    404
+    414
   ],
   "loc": {
     "start": {
@@ -613,8 +595,8 @@
       "type": "Line",
       "value": " parseFloat NaNs numeric-cast false positives (null|true|false|\"\")",
       "range": [
-        69,
-        137
+        80,
+        148
       ],
       "loc": {
         "start": {
@@ -631,8 +613,8 @@
       "type": "Line",
       "value": " ...but misinterprets leading-number strings, particularly hex literals (\"0x...\")",
       "range": [
-        142,
-        225
+        153,
+        236
       ],
       "loc": {
         "start": {
@@ -649,8 +631,8 @@
       "type": "Line",
       "value": " subtraction forces infinities to NaN",
       "range": [
-        230,
-        269
+        241,
+        280
       ],
       "loc": {
         "start": {
@@ -667,8 +649,8 @@
       "type": "Line",
       "value": " adding 1 corrects loss of precision from parseFloat (#15100)",
       "range": [
-        274,
-        337
+        285,
+        348
       ],
       "loc": {
         "start": {
@@ -685,8 +667,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=isNumeric.js.map",
       "range": [
-        405,
-        442
+        415,
+        452
       ],
       "loc": {
         "start": {

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/observables/fromEvent-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/fromEvent-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {fromEvent} */
+describe(&apos;Observable.fromEvent&apos;, function () {
+    it(&apos;should setup an event observable on objects with &quot;on&quot; and &quot;off&quot; &apos;, function () {
+        var onEventName;
+        var onHandler;
+        var offEventName;
+        var offHandler;
+        var obj = {
+            on: function (a, b) {
+                onEventName = a;
+                onHandler = b;
+            },
+            off: function (a, b) {
+                offEventName = a;
+                offHandler = b;
+            }
+        };
+        var subscription = Observable.fromEvent(obj, &apos;click&apos;)
+            .subscribe(function () {
+            //noop
+        });
+        subscription.unsubscribe();
+        expect(onEventName).toBe(&apos;click&apos;);
+        expect(typeof onHandler).toBe(&apos;function&apos;);
+        expect(offEventName).toBe(onEventName);
+        expect(offHandler).toBe(onHandler);
+    });
+    it(&apos;should setup an event observable on objects with &quot;addEventListener&quot; and &quot;removeEventListener&quot; &apos;, function () {
+        var onEventName;
+        var onHandler;
+        var offEventName;
+        var offHandler;
+        var obj = {
+            addEventListener: function (a, b, useCapture) {
+                onEventName = a;
+                onHandler = b;
+            },
+            removeEventListener: function (a, b, useCapture) {
+                offEventName = a;
+                offHandler = b;
+            }
+        };
+        var subscription = Observable.fromEvent(obj, &apos;click&apos;)
+            .subscribe(function () {
+            //noop
+        });
+        subscription.unsubscribe();
+        expect(onEventName).toBe(&apos;click&apos;);
+        expect(typeof onHandler).toBe(&apos;function&apos;);
+        expect(offEventName).toBe(onEventName);
+        expect(offHandler).toBe(onHandler);
+    });
+    it(&apos;should setup an event observable on objects with &quot;addListener&quot; and &quot;removeListener&quot; &apos;, function () {
+        var onEventName;
+        var onHandler;
+        var offEventName;
+        var offHandler;
+        var obj = {
+            addListener: function (a, b) {
+                onEventName = a;
+                onHandler = b;
+            },
+            removeListener: function (a, b) {
+                offEventName = a;
+                offHandler = b;
+            }
+        };
+        var subscription = Observable.fromEvent(obj, &apos;click&apos;)
+            .subscribe(function () {
+            //noop
+        });
+        subscription.unsubscribe();
+        expect(onEventName).toBe(&apos;click&apos;);
+        expect(typeof onHandler).toBe(&apos;function&apos;);
+        expect(offEventName).toBe(onEventName);
+        expect(offHandler).toBe(onHandler);
+    });
+    it(&apos;should pass through events that occur&apos;, function (done) {
+        var send;
+        var obj = {
+            on: function (name, handler) {
+                send = handler;
+            },
+            off: function () {
+                //noop
+            }
+        };
+        Observable.fromEvent(obj, &apos;click&apos;).take(1)
+            .subscribe(function (e) {
+            expect(e).toBe(&apos;test&apos;);
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+        send(&apos;test&apos;);
+    });
+    it(&apos;should pass through events that occur and use the selector if provided&apos;, function (done) {
+        var send;
+        var obj = {
+            on: function (name, handler) {
+                send = handler;
+            },
+            off: function () {
+                //noop
+            }
+        };
+        function selector(x) {
+            return x + &apos;!&apos;;
+        }
+        Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
+            .subscribe(function (e) {
+            expect(e).toBe(&apos;test!&apos;);
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+        send(&apos;test&apos;);
+    });
+    it(&apos;should not fail if no event arguments are passed and the selector does not return&apos;, function (done) {
+        var send;
+        var obj = {
+            on: function (name, handler) {
+                send = handler;
+            },
+            off: function () {
+                //noop
+            }
+        };
+        function selector() {
+            //noop
+        }
+        Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
+            .subscribe(function (e) {
+            expect(e).toBeUndefined();
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+        send();
+    });
+    it(&apos;should return a value from the selector if no event arguments are passed&apos;, function (done) {
+        var send;
+        var obj = {
+            on: function (name, handler) {
+                send = handler;
+            },
+            off: function () {
+                //noop
+            }
+        };
+        function selector() {
+            return &apos;no arguments&apos;;
+        }
+        Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
+            .subscribe(function (e) {
+            expect(e).toBe(&apos;no arguments&apos;);
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+        send();
+    });
+    it(&apos;should pass multiple arguments to selector from event emitter&apos;, function (done) {
+        var send;
+        var obj = {
+            on: function (name, handler) {
+                send = handler;
+            },
+            off: function () {
+                //noop
+            }
+        };
+        function selector(x, y, z) {
+            return [].slice.call(arguments);
+        }
+        Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
+            .subscribe(function (e) {
+            expect(e).toEqual([1, 2, 3]);
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+        send(1, 2, 3);
+    });
+});
+//# sourceMappingURL=fromEvent-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

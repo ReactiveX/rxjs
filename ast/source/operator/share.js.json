@@ -291,7 +291,27 @@
           "line": 5,
           "column": 1
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} an Observable that upon connection causes the source Observable to emit items to its Observers\n * @method share\n * @owner Observable\n ",
+          "range": [
+            140,
+            739
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "ExportNamedDeclaration",
@@ -301,16 +321,16 @@
           "type": "Identifier",
           "name": "share",
           "range": [
-            156,
-            161
+            756,
+            761
           ],
           "loc": {
             "start": {
-              "line": 6,
+              "line": 18,
               "column": 16
             },
             "end": {
-              "line": 6,
+              "line": 18,
               "column": 21
             }
           }
@@ -335,16 +355,16 @@
                         "type": "Identifier",
                         "name": "multicast",
                         "range": [
-                          177,
-                          186
+                          777,
+                          786
                         ],
                         "loc": {
                           "start": {
-                            "line": 7,
+                            "line": 19,
                             "column": 11
                           },
                           "end": {
-                            "line": 7,
+                            "line": 19,
                             "column": 20
                           }
                         }
@@ -353,31 +373,31 @@
                         "type": "Identifier",
                         "name": "call",
                         "range": [
-                          187,
-                          191
+                          787,
+                          791
                         ],
                         "loc": {
                           "start": {
-                            "line": 7,
+                            "line": 19,
                             "column": 21
                           },
                           "end": {
-                            "line": 7,
+                            "line": 19,
                             "column": 25
                           }
                         }
                       },
                       "range": [
-                        177,
-                        191
+                        777,
+                        791
                       ],
                       "loc": {
                         "start": {
-                          "line": 7,
+                          "line": 19,
                           "column": 11
                         },
                         "end": {
-                          "line": 7,
+                          "line": 19,
                           "column": 25
                         }
                       }
@@ -386,16 +406,16 @@
                       {
                         "type": "ThisExpression",
                         "range": [
-                          192,
-                          196
+                          792,
+                          796
                         ],
                         "loc": {
                           "start": {
-                            "line": 7,
+                            "line": 19,
                             "column": 26
                           },
                           "end": {
-                            "line": 7,
+                            "line": 19,
                             "column": 30
                           }
                         }
@@ -404,32 +424,32 @@
                         "type": "Identifier",
                         "name": "shareSubjectFactory",
                         "range": [
-                          198,
-                          217
+                          798,
+                          817
                         ],
                         "loc": {
                           "start": {
-                            "line": 7,
+                            "line": 19,
                             "column": 32
                           },
                           "end": {
-                            "line": 7,
+                            "line": 19,
                             "column": 51
                           }
                         }
                       }
                     ],
                     "range": [
-                      177,
-                      218
+                      777,
+                      818
                     ],
                     "loc": {
                       "start": {
-                        "line": 7,
+                        "line": 19,
                         "column": 11
                       },
                       "end": {
-                        "line": 7,
+                        "line": 19,
                         "column": 52
                       }
                     }
@@ -438,78 +458,78 @@
                     "type": "Identifier",
                     "name": "refCount",
                     "range": [
-                      219,
-                      227
+                      819,
+                      827
                     ],
                     "loc": {
                       "start": {
-                        "line": 7,
+                        "line": 19,
                         "column": 53
                       },
                       "end": {
-                        "line": 7,
+                        "line": 19,
                         "column": 61
                       }
                     }
                   },
                   "range": [
-                    177,
-                    227
+                    777,
+                    827
                   ],
                   "loc": {
                     "start": {
-                      "line": 7,
+                      "line": 19,
                       "column": 11
                     },
                     "end": {
-                      "line": 7,
+                      "line": 19,
                       "column": 61
                     }
                   }
                 },
                 "arguments": [],
                 "range": [
-                  177,
-                  229
+                  777,
+                  829
                 ],
                 "loc": {
                   "start": {
-                    "line": 7,
+                    "line": 19,
                     "column": 11
                   },
                   "end": {
-                    "line": 7,
+                    "line": 19,
                     "column": 63
                   }
                 }
               },
               "range": [
-                170,
-                230
+                770,
+                830
               ],
               "loc": {
                 "start": {
-                  "line": 7,
+                  "line": 19,
                   "column": 4
                 },
                 "end": {
-                  "line": 7,
+                  "line": 19,
                   "column": 64
                 }
               }
             }
           ],
           "range": [
-            164,
-            232
+            764,
+            832
           ],
           "loc": {
             "start": {
-              "line": 6,
+              "line": 18,
               "column": 24
             },
             "end": {
-              "line": 8,
+              "line": 20,
               "column": 1
             }
           }
@@ -517,52 +537,91 @@
         "generator": false,
         "expression": false,
         "range": [
-          147,
-          232
+          747,
+          832
         ],
         "loc": {
           "start": {
-            "line": 6,
+            "line": 18,
             "column": 7
           },
           "end": {
-            "line": 8,
+            "line": 20,
             "column": 1
           }
         },
-        "leadingComments": [],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} an Observable that upon connection causes the source Observable to emit items to its Observers\n * @method share\n * @owner Observable\n ",
+            "range": [
+              140,
+              739
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 0
+              },
+              "end": {
+                "line": 17,
+                "column": 3
+              }
+            }
+          }
+        ],
         "trailingComments": []
       },
       "specifiers": [],
       "source": null,
       "range": [
-        140,
-        232
+        740,
+        832
       ],
       "loc": {
         "start": {
-          "line": 6,
+          "line": 18,
           "column": 0
         },
         "end": {
-          "line": 8,
+          "line": 20,
           "column": 1
         }
-      }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} an Observable that upon connection causes the source Observable to emit items to its Observers\n * @method share\n * @owner Observable\n ",
+          "range": [
+            140,
+            739
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "EmptyStatement",
       "range": [
-        233,
-        234
+        833,
+        834
       ],
       "loc": {
         "start": {
-          "line": 9,
+          "line": 21,
           "column": 0
         },
         "end": {
-          "line": 9,
+          "line": 21,
           "column": 1
         }
       },
@@ -571,16 +630,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=share.js.map",
           "range": [
-            235,
-            268
+            835,
+            868
           ],
           "loc": {
             "start": {
-              "line": 10,
+              "line": 22,
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 22,
               "column": 33
             }
           }
@@ -591,7 +650,7 @@
   "sourceType": "module",
   "range": [
     0,
-    234
+    834
   ],
   "loc": {
     "start": {
@@ -599,25 +658,43 @@
       "column": 0
     },
     "end": {
-      "line": 9,
+      "line": 21,
       "column": 1
     }
   },
   "comments": [
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=share.js.map",
+      "type": "Block",
+      "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} an Observable that upon connection causes the source Observable to emit items to its Observers\n * @method share\n * @owner Observable\n ",
       "range": [
-        235,
-        268
+        140,
+        739
       ],
       "loc": {
         "start": {
-          "line": 10,
+          "line": 6,
           "column": 0
         },
         "end": {
-          "line": 10,
+          "line": 17,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=share.js.map",
+      "range": [
+        835,
+        868
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
           "column": 33
         }
       }

@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">es6/Observable.js | API Document</title>
+  <title data-ice="title">es6/Observable.js | RxJS API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   
   
   <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -33,35 +37,24 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/Observable.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;./Subscriber&apos;;
-import { root } from &apos;./util/root&apos;;
-import { SymbolShim } from &apos;./util/SymbolShim&apos;;
-import { rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { root } from &apos;./util/root&apos;;
+import { $$observable } from &apos;./symbol/observable&apos;;
+import { toSubscriber } from &apos;./util/toSubscriber&apos;;
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
@@ -71,10 +64,10 @@ import { rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
 export class Observable {
     /**
      * @constructor
-     * @param {Function} subscribe the function that is
-     * called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values
-     * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
-     * of a successful completion.
+     * @param {Function} subscribe the function that is  called when the Observable is
+     * initially subscribed to. This function is given a Subscriber, to which new values
+     * can be `next`ed, or an `error` method can be called to raise an error, or
+     * `complete` can be called to notify of a successful completion.
      */
     constructor(subscribe) {
         this._isScalar = false;
@@ -83,11 +76,11 @@ export class Observable {
         }
     }
     /**
+     * Creates a new Observable, with this Observable as the source, and the passed
+     * operator defined as the new observable&apos;s operator.
      * @method lift
      * @param {Operator} operator the operator defining the operation to take on the observable
-     * @returns {Observable} a new observable with the Operator applied
-     * @description creates a new Observable, with this Observable as the source, and the passed
-     * operator defined as the new observable&apos;s operator.
+     * @return {Observable} a new observable with the Operator applied
      */
     lift(operator) {
         const observable = new Observable();
@@ -96,49 +89,38 @@ export class Observable {
         return observable;
     }
     /**
-     * @method Symbol.observable
-     * @returns {Observable} this instance of the observable
-     * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
-     */
-    [SymbolShim.observable]() {
-        return this;
-    }
-    /**
+     * Registers handlers for handling emitted values, error and completions from the observable, and
+     *  executes the observable&apos;s subscriber function, which will take action to set up the underlying data stream
      * @method subscribe
-     * @param {Observer|Function} observerOrNext (optional) either an observer defining all functions to be called,
+     * @param {PartialObserver|Function} observerOrNext (optional) either an observer defining all functions to be called,
      *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
      * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
      *  the error will be thrown as unhandled
      * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
-     * @returns {Subscription} a subscription reference to the registered handlers
-     * @description registers handlers for handling emitted values, error and completions from the observable, and
-     *  executes the observable&apos;s subscriber function, which will take action to set up the underlying data stream
+     * @return {Subscription} a subscription reference to the registered handlers
      */
     subscribe(observerOrNext, error, complete) {
-        let subscriber;
-        if (observerOrNext &amp;&amp; typeof observerOrNext === &apos;object&apos;) {
-            if (observerOrNext instanceof Subscriber) {
-                subscriber = observerOrNext;
-            }
-            else if (observerOrNext[rxSubscriber]) {
-                subscriber = observerOrNext[rxSubscriber]();
-            }
-            else {
-                subscriber = new Subscriber(observerOrNext);
-            }
+        const { operator } = this;
+        const subscriber = toSubscriber(observerOrNext, error, complete);
+        if (operator) {
+            subscriber.add(this._subscribe(operator.call(subscriber)));
         }
         else {
-            const next = observerOrNext;
-            subscriber = Subscriber.create(next, error, complete);
+            subscriber.add(this._subscribe(subscriber));
         }
-        subscriber.add(this._subscribe(subscriber));
+        if (subscriber.syncErrorThrowable) {
+            subscriber.syncErrorThrowable = false;
+            if (subscriber.syncErrorThrown) {
+                throw subscriber.syncErrorValue;
+            }
+        }
         return subscriber;
     }
     /**
      * @method forEach
      * @param {Function} next a handler for each value emitted by the observable
-     * @param {PromiseConstructor} PromiseCtor? a constructor function used to instantiate the Promise
-     * @returns {Promise} a promise that either resolves on observable completion or
+     * @param {PromiseConstructor} [PromiseCtor] a constructor function used to instantiate the Promise
+     * @return {Promise} a promise that either resolves on observable completion or
      *  rejects with the handled error
      */
     forEach(next, PromiseCtor) {
@@ -154,21 +136,53 @@ export class Observable {
             throw new Error(&apos;no Promise impl found&apos;);
         }
         return new PromiseCtor((resolve, reject) =&gt; {
-            this.subscribe(next, reject, resolve);
+            const subscription = this.subscribe((value) =&gt; {
+                if (subscription) {
+                    // if there is a subscription, then we can surmise
+                    // the next handling is asynchronous. Any errors thrown
+                    // need to be rejected explicitly and unsubscribe must be
+                    // called manually
+                    try {
+                        next(value);
+                    }
+                    catch (err) {
+                        reject(err);
+                        subscription.unsubscribe();
+                    }
+                }
+                else {
+                    // if there is NO subscription, then we&apos;re getting a nexted
+                    // value synchronously during subscription. We can just call it.
+                    // If it errors, Observable&apos;s `subscribe` imple will ensure the
+                    // unsubscription logic is called, then synchronously rethrow the error.
+                    // After that, Promise will trap the error and send it
+                    // down the rejection path.
+                    next(value);
+                }
+            }, reject, resolve);
         });
     }
     _subscribe(subscriber) {
-        return this.source._subscribe(this.operator.call(subscriber));
+        return this.source.subscribe(subscriber);
+    }
+    /**
+     * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
+     * @method Symbol.observable
+     * @return {Observable} this instance of the observable
+     */
+    [$$observable]() {
+        return this;
     }
 }
 // HACK: Since TypeScript inherits static properties too, we have to
 // fight against TypeScript here so Subject can have a different static create signature
 /**
- * @static
+ * Creates a new cold Observable by calling the Observable constructor
+ * @static true
+ * @owner Observable
  * @method create
  * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
- * @returns {Observable} a new cold observable
- * @description creates a new cold Observable by calling the Observable constructor
+ * @return {Observable} a new cold observable
  */
 Observable.create = (subscribe) =&gt; {
     return new Observable(subscribe);
@@ -178,7 +192,7 @@ Observable.create = (subscribe) =&gt; {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

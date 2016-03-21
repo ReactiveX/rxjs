@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/repeat-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/repeat-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
+var Observable = Rx.Observable;
+/** @test {repeat} */
+describe(&apos;Observable.prototype.repeat&apos;, function () {
+    asDiagram(&apos;repeat(3)&apos;)(&apos;should resubscribe count number of times&apos;, function () {
+        var e1 = cold(&apos;--a--b--|                &apos;);
+        var subs = [&apos;^       !                &apos;,
+            &apos;        ^       !        &apos;,
+            &apos;                ^       !&apos;];
+        var expected = &apos;--a--b----a--b----a--b--|&apos;;
+        expectObservable(e1.repeat(3)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should resubscribe multiple times&apos;, function () {
+        var e1 = cold(&apos;--a--b--|                        &apos;);
+        var subs = [&apos;^       !                        &apos;,
+            &apos;        ^       !                &apos;,
+            &apos;                ^       !        &apos;,
+            &apos;                        ^       !&apos;];
+        var expected = &apos;--a--b----a--b----a--b----a--b--|&apos;;
+        expectObservable(e1.repeat(2).repeat(2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should complete without emit when count is zero&apos;, function () {
+        var e1 = cold(&apos;--a--b--|&apos;);
+        var subs = [];
+        var expected = &apos;|&apos;;
+        expectObservable(e1.repeat(0)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should emit source once when count is one&apos;, function () {
+        var e1 = cold(&apos;--a--b--|&apos;);
+        var subs = &apos;^       !&apos;;
+        var expected = &apos;--a--b--|&apos;;
+        expectObservable(e1.repeat(1)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should repeat until gets unsubscribed&apos;, function () {
+        var e1 = cold(&apos;--a--b--|      &apos;);
+        var subs = [&apos;^       !      &apos;,
+            &apos;        ^     !&apos;];
+        var unsub = &apos;              !&apos;;
+        var expected = &apos;--a--b----a--b-&apos;;
+        expectObservable(e1.repeat(10), unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should be able to repeat indefinitely until unsubscribed&apos;, function () {
+        var e1 = cold(&apos;--a--b--|                                    &apos;);
+        var subs = [&apos;^       !                                    &apos;,
+            &apos;        ^       !                            &apos;,
+            &apos;                ^       !                    &apos;,
+            &apos;                        ^       !            &apos;,
+            &apos;                                ^       !    &apos;,
+            &apos;                                        ^   !&apos;];
+        var unsub = &apos;                                            !&apos;;
+        var expected = &apos;--a--b----a--b----a--b----a--b----a--b----a--&apos;;
+        expectObservable(e1.repeat(), unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should not break unsubscription chain when unsubscribed explicitly&apos;, function () {
+        var e1 = cold(&apos;--a--b--|                                    &apos;);
+        var subs = [&apos;^       !                                    &apos;,
+            &apos;        ^       !                            &apos;,
+            &apos;                ^       !                    &apos;,
+            &apos;                        ^       !            &apos;,
+            &apos;                                ^       !    &apos;,
+            &apos;                                        ^   !&apos;];
+        var unsub = &apos;                                            !&apos;;
+        var expected = &apos;--a--b----a--b----a--b----a--b----a--b----a--&apos;;
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .repeat()
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should consider negative count as repeat indefinitely&apos;, function () {
+        var e1 = cold(&apos;--a--b--|                                    &apos;);
+        var subs = [&apos;^       !                                    &apos;,
+            &apos;        ^       !                            &apos;,
+            &apos;                ^       !                    &apos;,
+            &apos;                        ^       !            &apos;,
+            &apos;                                ^       !    &apos;,
+            &apos;                                        ^   !&apos;];
+        var unsub = &apos;                                            !&apos;;
+        var expected = &apos;--a--b----a--b----a--b----a--b----a--b----a--&apos;;
+        expectObservable(e1.repeat(-1), unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should not complete when source never completes&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(e1.repeat(3)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not complete when source does not completes&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var unsub = &apos;                              !&apos;;
+        var subs = &apos;^                             !&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(e1.repeat(3), unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should complete immediately when source does not complete without emit but count is zero&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var subs = [];
+        var expected = &apos;|&apos;;
+        expectObservable(e1.repeat(0)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should complete immediately when source does not complete but count is zero&apos;, function () {
+        var e1 = cold(&apos;--a--b--&apos;);
+        var subs = [];
+        var expected = &apos;|&apos;;
+        expectObservable(e1.repeat(0)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should emit source once and does not complete when source emits but does not complete&apos;, function () {
+        var e1 = cold(&apos;--a--b--&apos;);
+        var subs = [&apos;^       &apos;];
+        var expected = &apos;--a--b--&apos;;
+        expectObservable(e1.repeat(3)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should complete when source is empty&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = [&apos;(^!)&apos;, &apos;(^!)&apos;, &apos;(^!)&apos;];
+        var expected = &apos;|&apos;;
+        expectObservable(e1.repeat(3)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should complete when source does not emit&apos;, function () {
+        var e1 = cold(&apos;----|        &apos;);
+        var subs = [&apos;^   !        &apos;,
+            &apos;    ^   !    &apos;,
+            &apos;        ^   !&apos;];
+        var expected = &apos;------------|&apos;;
+        expectObservable(e1.repeat(3)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should complete immediately when source does not emit but count is zero&apos;, function () {
+        var e1 = cold(&apos;----|&apos;);
+        var subs = [];
+        var expected = &apos;|&apos;;
+        expectObservable(e1.repeat(0)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should raise error when source raises error&apos;, function () {
+        var e1 = cold(&apos;--a--b--#&apos;);
+        var subs = &apos;^       !&apos;;
+        var expected = &apos;--a--b--#&apos;;
+        expectObservable(e1.repeat(2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should raises error if source throws&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        expectObservable(e1.repeat(3)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raises error if source throws when repeating infinitely&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        expectObservable(e1.repeat()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should terminate repeat and throw if source subscription to _next throws&apos;, function () {
+        var e1 = Observable.of(1, 2, rxTestScheduler);
+        e1.subscribe(function () { throw new Error(&apos;error&apos;); });
+        expect(function () {
+            e1.repeat(3);
+            rxTestScheduler.flush();
+        }).toThrow();
+    });
+    it(&apos;should terminate repeat and throw if source subscription to _complete throws&apos;, function () {
+        var e1 = Observable.of(1, 2, rxTestScheduler);
+        e1.subscribe(function () {
+            //noop
+        }, function () {
+            //noop
+        }, function () { throw new Error(&apos;error&apos;); });
+        expect(function () {
+            e1.repeat(3);
+            rxTestScheduler.flush();
+        }).toThrow();
+    });
+    it(&apos;should terminate repeat and throw if source subscription to _next throws when repeating infinitely&apos;, function () {
+        var e1 = Observable.of(1, 2, rxTestScheduler);
+        e1.subscribe(function () { throw new Error(&apos;error&apos;); });
+        expect(function () {
+            e1.repeat();
+            rxTestScheduler.flush();
+        }).toThrow();
+    });
+    it(&apos;should terminate repeat and throw if source subscription to _complete throws when repeating infinitely&apos;, function () {
+        var e1 = Observable.of(1, 2, rxTestScheduler);
+        e1.subscribe(function () {
+            //noop
+        }, function () {
+            //noop
+        }, function () { throw new Error(&apos;error&apos;); });
+        expect(function () {
+            e1.repeat();
+            rxTestScheduler.flush();
+        }).toThrow();
+    });
+    it(&apos;should raise error after first emit succeed&apos;, function () {
+        var repeated = false;
+        var e1 = cold(&apos;--a--|&apos;).map(function (x) {
+            if (repeated) {
+                throw &apos;error&apos;;
+            }
+            else {
+                repeated = true;
+                return x;
+            }
+        });
+        var expected = &apos;--a----#&apos;;
+        expectObservable(e1.repeat(2)).toBe(expected);
+    });
+    it(&apos;should repeat a synchronous source (multicasted and refCounted) multiple times&apos;, function (done) {
+        var expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
+        Observable.of(1, 2, 3)
+            .multicast(function () { return new Rx.Subject(); })
+            .refCount()
+            .repeat(5)
+            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, function () {
+            expect(expected.length).toBe(0);
+            done();
+        });
+    });
+});
+//# sourceMappingURL=repeat-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

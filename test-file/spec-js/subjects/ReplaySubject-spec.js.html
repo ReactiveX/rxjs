@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/subjects/ReplaySubject-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/subjects/ReplaySubject-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var ReplaySubject = Rx.ReplaySubject;
+var Observable = Rx.Observable;
+/** @test {ReplaySubject} */
+describe(&apos;ReplaySubject&apos;, function () {
+    it(&apos;should extend Subject&apos;, function (done) {
+        var subject = new ReplaySubject();
+        expect(subject instanceof Rx.Subject).toBe(true);
+        done();
+    });
+    it(&apos;should replay values upon subscription&apos;, function (done) {
+        var subject = new ReplaySubject();
+        var expects = [1, 2, 3];
+        var i = 0;
+        subject.next(1);
+        subject.next(2);
+        subject.next(3);
+        subject.subscribe(function (x) {
+            expect(x).toBe(expects[i++]);
+            if (i === 3) {
+                subject.complete();
+            }
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+    });
+    it(&apos;should replay values and complete&apos;, function (done) {
+        var subject = new ReplaySubject();
+        var expects = [1, 2, 3];
+        var i = 0;
+        subject.next(1);
+        subject.next(2);
+        subject.next(3);
+        subject.complete();
+        subject.subscribe(function (x) {
+            expect(x).toBe(expects[i++]);
+        }, null, done);
+    });
+    it(&apos;should replay values and error&apos;, function (done) {
+        var subject = new ReplaySubject();
+        var expects = [1, 2, 3];
+        var i = 0;
+        subject.next(1);
+        subject.next(2);
+        subject.next(3);
+        subject.error(&apos;fooey&apos;);
+        subject.subscribe(function (x) {
+            expect(x).toBe(expects[i++]);
+        }, function (err) {
+            expect(err).toBe(&apos;fooey&apos;);
+            done();
+        });
+    });
+    it(&apos;should only replay values within its buffer size&apos;, function (done) {
+        var subject = new ReplaySubject(2);
+        var expects = [2, 3];
+        var i = 0;
+        subject.next(1);
+        subject.next(2);
+        subject.next(3);
+        subject.subscribe(function (x) {
+            expect(x).toBe(expects[i++]);
+            if (i === 2) {
+                subject.complete();
+            }
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+    });
+    describe(&apos;with bufferSize=2&apos;, function () {
+        it(&apos;should replay 2 previous values when subscribed&apos;, function () {
+            var replaySubject = new ReplaySubject(2);
+            function feedNextIntoSubject(x) { replaySubject.next(x); }
+            function feedErrorIntoSubject(err) { replaySubject.error(err); }
+            function feedCompleteIntoSubject() { replaySubject.complete(); }
+            var sourceTemplate = &apos;-1-2-3----4------5-6---7--8----9--|&apos;;
+            var subscriber1 = hot(&apos;      (a|)                         &apos;).mergeMapTo(replaySubject);
+            var unsub1 = &apos;                     !             &apos;;
+            var expected1 = &apos;      (23)4------5-6--             &apos;;
+            var subscriber2 = hot(&apos;            (b|)                   &apos;).mergeMapTo(replaySubject);
+            var unsub2 = &apos;                         !         &apos;;
+            var expected2 = &apos;            (34)-5-6---7--         &apos;;
+            var subscriber3 = hot(&apos;                           (c|)    &apos;).mergeMapTo(replaySubject);
+            var expected3 = &apos;                           (78)9--|&apos;;
+            expectObservable(hot(sourceTemplate).do(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject)).toBe(sourceTemplate);
+            expectObservable(subscriber1, unsub1).toBe(expected1);
+            expectObservable(subscriber2, unsub2).toBe(expected2);
+            expectObservable(subscriber3).toBe(expected3);
+        });
+        it(&apos;should replay 2 last values for when subscribed after completed&apos;, function () {
+            var replaySubject = new ReplaySubject(2);
+            function feedNextIntoSubject(x) { replaySubject.next(x); }
+            function feedErrorIntoSubject(err) { replaySubject.error(err); }
+            function feedCompleteIntoSubject() { replaySubject.complete(); }
+            var sourceTemplate = &apos;-1-2-3--4--|&apos;;
+            var subscriber1 = hot(&apos;               (a|) &apos;).mergeMapTo(replaySubject);
+            var expected1 = &apos;               (34|)&apos;;
+            expectObservable(hot(sourceTemplate).do(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject)).toBe(sourceTemplate);
+            expectObservable(subscriber1).toBe(expected1);
+        });
+        it(&apos;should handle subscribers that arrive and leave at different times, &apos; +
+            &apos;subject does not complete&apos;, function () {
+            var subject = new ReplaySubject(2);
+            var results1 = [];
+            var results2 = [];
+            var results3 = [];
+            subject.next(1);
+            subject.next(2);
+            subject.next(3);
+            subject.next(4);
+            var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (err) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
+            subject.next(5);
+            var subscription2 = subject.subscribe(function (x) { results2.push(x); }, function (err) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
+            subject.next(6);
+            subject.next(7);
+            subscription1.unsubscribe();
+            subject.next(8);
+            subscription2.unsubscribe();
+            subject.next(9);
+            subject.next(10);
+            var subscription3 = subject.subscribe(function (x) { results3.push(x); }, function (err) { results3.push(&apos;E&apos;); }, function () { results3.push(&apos;C&apos;); });
+            subject.next(11);
+            subscription3.unsubscribe();
+            expect(results1).toEqual([3, 4, 5, 6, 7]);
+            expect(results2).toEqual([4, 5, 6, 7, 8]);
+            expect(results3).toEqual([9, 10, 11]);
+            subject.complete();
+        });
+    });
+    describe(&apos;with windowTime=40&apos;, function () {
+        it(&apos;should replay previous values since 40 time units ago when subscribed&apos;, function () {
+            var replaySubject = new ReplaySubject(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+            function feedNextIntoSubject(x) { replaySubject.next(x); }
+            function feedErrorIntoSubject(err) { replaySubject.error(err); }
+            function feedCompleteIntoSubject() { replaySubject.complete(); }
+            var sourceTemplate = &apos;-1-2-3----4------5-6----7-8----9--|&apos;;
+            var subscriber1 = hot(&apos;      (a|)                         &apos;).mergeMapTo(replaySubject);
+            var unsub1 = &apos;                     !             &apos;;
+            var expected1 = &apos;      (23)4------5-6--             &apos;;
+            var subscriber2 = hot(&apos;            (b|)                   &apos;).mergeMapTo(replaySubject);
+            var unsub2 = &apos;                         !         &apos;;
+            var expected2 = &apos;            4----5-6----7-         &apos;;
+            var subscriber3 = hot(&apos;                           (c|)    &apos;).mergeMapTo(replaySubject);
+            var expected3 = &apos;                           (78)9--|&apos;;
+            expectObservable(hot(sourceTemplate).do(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject)).toBe(sourceTemplate);
+            expectObservable(subscriber1, unsub1).toBe(expected1);
+            expectObservable(subscriber2, unsub2).toBe(expected2);
+            expectObservable(subscriber3).toBe(expected3);
+        });
+        it(&apos;should replay last values since 40 time units ago when subscribed&apos;, function () {
+            var replaySubject = new ReplaySubject(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+            function feedNextIntoSubject(x) { replaySubject.next(x); }
+            function feedErrorIntoSubject(err) { replaySubject.error(err); }
+            function feedCompleteIntoSubject() { replaySubject.complete(); }
+            var sourceTemplate = &apos;-1-2-3----4|&apos;;
+            var subscriber1 = hot(&apos;             (a|)&apos;).mergeMapTo(replaySubject);
+            var expected1 = &apos;             (4|)&apos;;
+            expectObservable(hot(sourceTemplate).do(feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject)).toBe(sourceTemplate);
+            expectObservable(subscriber1).toBe(expected1);
+        });
+    });
+    it(&apos;should be an Observer which can be given to Observable.subscribe&apos;, function (done) {
+        var source = Observable.of(1, 2, 3, 4, 5);
+        var subject = new ReplaySubject(3);
+        var expected = [3, 4, 5];
+        source.subscribe(subject);
+        subject.subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, done);
+    });
+});
+//# sourceMappingURL=ReplaySubject-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

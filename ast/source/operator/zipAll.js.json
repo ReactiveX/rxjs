@@ -60,11 +60,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./zip-support",
-        "raw": "'./zip-support'",
+        "value": "./zip",
+        "raw": "'./zip'",
         "range": [
           28,
-          43
+          35
         ],
         "loc": {
           "start": {
@@ -73,13 +73,13 @@
           },
           "end": {
             "line": 1,
-            "column": 43
+            "column": 35
           }
         }
       },
       "range": [
         0,
-        44
+        36
       ],
       "loc": {
         "start": {
@@ -88,9 +88,29 @@
         },
         "end": {
           "line": 1,
-          "column": 44
+          "column": 36
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
+          "range": [
+            37,
+            162
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "ExportNamedDeclaration",
@@ -100,16 +120,16 @@
           "type": "Identifier",
           "name": "zipAll",
           "range": [
-            61,
-            67
+            179,
+            185
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 8,
               "column": 16
             },
             "end": {
-              "line": 2,
+              "line": 8,
               "column": 22
             }
           }
@@ -119,16 +139,16 @@
             "type": "Identifier",
             "name": "project",
             "range": [
-              68,
-              75
+              186,
+              193
             ],
             "loc": {
               "start": {
-                "line": 2,
+                "line": 8,
                 "column": 23
               },
               "end": {
-                "line": 2,
+                "line": 8,
                 "column": 30
               }
             }
@@ -147,16 +167,16 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      90,
-                      94
+                      208,
+                      212
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 9,
                         "column": 11
                       },
                       "end": {
-                        "line": 3,
+                        "line": 9,
                         "column": 15
                       }
                     }
@@ -165,31 +185,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      95,
-                      99
+                      213,
+                      217
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 9,
                         "column": 16
                       },
                       "end": {
-                        "line": 3,
+                        "line": 9,
                         "column": 20
                       }
                     }
                   },
                   "range": [
-                    90,
-                    99
+                    208,
+                    217
                   ],
                   "loc": {
                     "start": {
-                      "line": 3,
+                      "line": 9,
                       "column": 11
                     },
                     "end": {
-                      "line": 3,
+                      "line": 9,
                       "column": 20
                     }
                   }
@@ -201,16 +221,16 @@
                       "type": "Identifier",
                       "name": "ZipOperator",
                       "range": [
-                        104,
-                        115
+                        222,
+                        233
                       ],
                       "loc": {
                         "start": {
-                          "line": 3,
+                          "line": 9,
                           "column": 25
                         },
                         "end": {
-                          "line": 3,
+                          "line": 9,
                           "column": 36
                         }
                       }
@@ -220,79 +240,79 @@
                         "type": "Identifier",
                         "name": "project",
                         "range": [
-                          116,
-                          123
+                          234,
+                          241
                         ],
                         "loc": {
                           "start": {
-                            "line": 3,
+                            "line": 9,
                             "column": 37
                           },
                           "end": {
-                            "line": 3,
+                            "line": 9,
                             "column": 44
                           }
                         }
                       }
                     ],
                     "range": [
-                      100,
-                      124
+                      218,
+                      242
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 9,
                         "column": 21
                       },
                       "end": {
-                        "line": 3,
+                        "line": 9,
                         "column": 45
                       }
                     }
                   }
                 ],
                 "range": [
-                  90,
-                  125
+                  208,
+                  243
                 ],
                 "loc": {
                   "start": {
-                    "line": 3,
+                    "line": 9,
                     "column": 11
                   },
                   "end": {
-                    "line": 3,
+                    "line": 9,
                     "column": 46
                   }
                 }
               },
               "range": [
-                83,
-                126
+                201,
+                244
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 9,
                   "column": 4
                 },
                 "end": {
-                  "line": 3,
+                  "line": 9,
                   "column": 47
                 }
               }
             }
           ],
           "range": [
-            77,
-            128
+            195,
+            246
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 8,
               "column": 32
             },
             "end": {
-              "line": 4,
+              "line": 10,
               "column": 1
             }
           }
@@ -300,35 +320,54 @@
         "generator": false,
         "expression": false,
         "range": [
-          52,
-          128
+          170,
+          246
         ],
         "loc": {
           "start": {
-            "line": 2,
+            "line": 8,
             "column": 7
           },
           "end": {
-            "line": 4,
+            "line": 10,
             "column": 1
           }
         },
-        "leadingComments": [],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
+            "range": [
+              37,
+              162
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 7,
+                "column": 3
+              }
+            }
+          }
+        ],
         "trailingComments": [
           {
             "type": "Line",
             "value": "# sourceMappingURL=zipAll.js.map",
             "range": [
-              129,
-              163
+              247,
+              281
             ],
             "loc": {
               "start": {
-                "line": 5,
+                "line": 11,
                 "column": 0
               },
               "end": {
-                "line": 5,
+                "line": 11,
                 "column": 34
               }
             }
@@ -338,34 +377,54 @@
       "specifiers": [],
       "source": null,
       "range": [
-        45,
-        128
+        163,
+        246
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 8,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 10,
           "column": 1
         }
       },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
+          "range": [
+            37,
+            162
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 3
+            }
+          }
+        }
+      ],
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=zipAll.js.map",
           "range": [
-            129,
-            163
+            247,
+            281
           ],
           "loc": {
             "start": {
-              "line": 5,
+              "line": 11,
               "column": 0
             },
             "end": {
-              "line": 5,
+              "line": 11,
               "column": 34
             }
           }
@@ -376,7 +435,7 @@
   "sourceType": "module",
   "range": [
     0,
-    128
+    246
   ],
   "loc": {
     "start": {
@@ -384,25 +443,43 @@
       "column": 0
     },
     "end": {
-      "line": 4,
+      "line": 10,
       "column": 1
     }
   },
   "comments": [
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=zipAll.js.map",
+      "type": "Block",
+      "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
       "range": [
-        129,
-        163
+        37,
+        162
       ],
       "loc": {
         "start": {
-          "line": 5,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 5,
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=zipAll.js.map",
+      "range": [
+        247,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
           "column": 34
         }
       }

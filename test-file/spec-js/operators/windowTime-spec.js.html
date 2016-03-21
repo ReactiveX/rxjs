@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/windowTime-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/windowTime-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
+var Observable = Rx.Observable;
+/** @test {windowTime} */
+describe(&apos;Observable.prototype.windowTime&apos;, function () {
+    asDiagram(&apos;windowTime(50, 100)&apos;)(&apos;should emit windows given windowTimeSpan &apos; +
+        &apos;and windowCreationInterval&apos;, function () {
+        var source = hot(&apos;--1--2--^-a--b--c--d--e---f--g--h-|&apos;);
+        var subs = &apos;^                         !&apos;;
+        //  100 frames            0---------1---------2-----|
+        //  50                     ----|
+        //  50                               ----|
+        //  50                                         ----|
+        var expected = &apos;x---------y---------z-----|&apos;;
+        var x = cold(&apos;--a--(b|)                  &apos;);
+        var y = cold(&apos;-d--e|           &apos;);
+        var z = cold(&apos;-g--h| &apos;);
+        var values = { x: x, y: y, z: z };
+        var result = source.windowTime(50, 100, rxTestScheduler);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should emit windows given windowTimeSpan&apos;, function () {
+        var source = hot(&apos;--1--2--^--a--b--c--d--e--f--g--h--|&apos;);
+        var subs = &apos;^                          !&apos;;
+        var timeSpan = time(&apos;----------|&apos;);
+        //  100 frames            0---------1---------2------|
+        var expected = &apos;x---------y---------z------|&apos;;
+        var x = cold(&apos;---a--b--c|                 &apos;);
+        var y = cold(&apos;--d--e--f-|       &apos;);
+        var z = cold(&apos;-g--h--|&apos;);
+        var values = { x: x, y: y, z: z };
+        var result = source.windowTime(timeSpan, null, rxTestScheduler);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should emit windows given windowTimeSpan and windowCreationInterval&apos;, function () {
+        var source = hot(&apos;--1--2--^--a--b--c--d--e--f--g--h--|&apos;);
+        var subs = &apos;^                          !&apos;;
+        var timeSpan = time(&apos;-----|&apos;);
+        var interval = time(&apos;----------|&apos;);
+        //  100 frames            0---------1---------2------|
+        //  50                     ----|
+        //  50                               ----|
+        //  50                                         ----|
+        var expected = &apos;x---------y---------z------|&apos;;
+        var x = cold(&apos;---a-|                      &apos;);
+        var y = cold(&apos;--d--(e|)         &apos;);
+        var z = cold(&apos;-g--h|  &apos;);
+        var values = { x: x, y: y, z: z };
+        var result = source.windowTime(timeSpan, interval, rxTestScheduler);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should return a single empty window if source is empty&apos;, function () {
+        var source = cold(&apos;|&apos;);
+        var subs = &apos;(^!)&apos;;
+        var expected = &apos;(w|)&apos;;
+        var w = cold(&apos;|&apos;);
+        var expectedValues = { w: w };
+        var timeSpan = time(&apos;-----|&apos;);
+        var interval = time(&apos;----------|&apos;);
+        var result = source.windowTime(timeSpan, interval, rxTestScheduler);
+        expectObservable(result).toBe(expected, expectedValues);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should split a Just source into a single window identical to source&apos;, function () {
+        var source = cold(&apos;(a|)&apos;);
+        var subs = &apos;(^!)&apos;;
+        var expected = &apos;(w|)&apos;;
+        var w = cold(&apos;(a|)&apos;);
+        var expectedValues = { w: w };
+        var timeSpan = time(&apos;-----|&apos;);
+        var interval = time(&apos;----------|&apos;);
+        var result = source.windowTime(timeSpan, interval, rxTestScheduler);
+        expectObservable(result).toBe(expected, expectedValues);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should be able to split a never Observable into timely empty windows&apos;, function () {
+        var source = hot(&apos;^----------&apos;);
+        var subs = &apos;^         !&apos;;
+        var expected = &apos;a--b--c--d-&apos;;
+        var timeSpan = time(&apos;---|&apos;);
+        var interval = time(&apos;---|&apos;);
+        var a = cold(&apos;---|       &apos;);
+        var b = cold(&apos;---|    &apos;);
+        var c = cold(&apos;---| &apos;);
+        var d = cold(&apos;--&apos;);
+        var unsub = &apos;          !&apos;;
+        var expectedValues = { a: a, b: b, c: c, d: d };
+        var result = source.windowTime(timeSpan, interval, rxTestScheduler);
+        expectObservable(result, unsub).toBe(expected, expectedValues);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should emit an error-only window if outer is a simple throw-Observable&apos;, function () {
+        var source = cold(&apos;#&apos;);
+        var subs = &apos;(^!)&apos;;
+        var expected = &apos;(w#)&apos;;
+        var w = cold(&apos;#&apos;);
+        var expectedValues = { w: w };
+        var timeSpan = time(&apos;-----|&apos;);
+        var interval = time(&apos;----------|&apos;);
+        var result = source.windowTime(timeSpan, interval, rxTestScheduler);
+        expectObservable(result).toBe(expected, expectedValues);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should handle source Observable which eventually emits an error&apos;, function () {
+        var source = hot(&apos;--1--2--^--a--b--c--d--e--f--g--h--#&apos;);
+        var subs = &apos;^                          !&apos;;
+        var timeSpan = time(&apos;-----|&apos;);
+        var interval = time(&apos;----------|&apos;);
+        //  100 frames            0---------1---------2------|
+        //  50                     ----|
+        //  50                               ----|
+        //  50                                         ----|
+        var expected = &apos;x---------y---------z------#&apos;;
+        var x = cold(&apos;---a-|                      &apos;);
+        var y = cold(&apos;--d--(e|)         &apos;);
+        var z = cold(&apos;-g--h|  &apos;);
+        var values = { x: x, y: y, z: z };
+        var result = source.windowTime(timeSpan, interval, rxTestScheduler);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should emit windows given windowTimeSpan and windowCreationInterval, &apos; +
+        &apos;but outer is unsubscribed early&apos;, function () {
+        var source = hot(&apos;--1--2--^--a--b--c--d--e--f--g--h--|&apos;);
+        var subs = &apos;^          !                &apos;;
+        var timeSpan = time(&apos;-----|&apos;);
+        var interval = time(&apos;----------|&apos;);
+        //  100 frames            0---------1---------2------|
+        //  50                     ----|
+        //  50                               ----|
+        //  50                                         ----|
+        var expected = &apos;x---------y-                &apos;;
+        var x = cold(&apos;---a-|                      &apos;);
+        var y = cold(&apos;--                &apos;);
+        var unsub = &apos;           !                &apos;;
+        var values = { x: x, y: y };
+        var result = source.windowTime(timeSpan, interval, rxTestScheduler);
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should dispose window Subjects if the outer is unsubscribed early&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--f--g--h--|&apos;);
+        var sourceSubs = &apos;^        !                 &apos;;
+        var expected = &apos;x---------                 &apos;;
+        var x = cold(&apos;--a--b--c-                 &apos;);
+        var unsub = &apos;         !                 &apos;;
+        var values = { x: x };
+        var window;
+        var result = source.windowTime(1000, 1000, rxTestScheduler)
+            .do(function (w) { window = w; });
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        rxTestScheduler.schedule(function () {
+            expect(function () {
+                window.subscribe();
+            }).toThrow(new Rx.ObjectUnsubscribedError());
+        }, 150);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var source = hot(&apos;--1--2--^--a--b--c--d--e--f--g--h--|&apos;);
+        var sourcesubs = &apos;^             !             &apos;;
+        var timeSpan = time(&apos;-----|&apos;);
+        var interval = time(&apos;----------|&apos;);
+        //  100 frames            0---------1---------2------|
+        //  50                     ----|
+        //  50                               ----|
+        //  50                                         ----|
+        var expected = &apos;x---------y----             &apos;;
+        var x = cold(&apos;---a-|                      &apos;);
+        var y = cold(&apos;--d--             &apos;);
+        var unsub = &apos;              !             &apos;;
+        var values = { x: x, y: y };
+        var result = source
+            .mergeMap(function (x) { return Observable.of(x); })
+            .windowTime(timeSpan, interval, rxTestScheduler)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(sourcesubs);
+    });
+});
+//# sourceMappingURL=windowTime-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

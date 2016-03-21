@@ -1,0 +1,560 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "FindValueOperator",
+            "range": [
+              9,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 26
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "FindValueOperator",
+            "range": [
+              9,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            9,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 26
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./find",
+        "raw": "'./find'",
+        "range": [
+          34,
+          42
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 34
+          },
+          "end": {
+            "line": 1,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        0,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+          "range": [
+            44,
+            461
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "findIndex",
+          "range": [
+            478,
+            487
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 16
+            },
+            "end": {
+              "line": 10,
+              "column": 25
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "predicate",
+            "range": [
+              488,
+              497
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 26
+              },
+              "end": {
+                "line": 10,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "thisArg",
+            "range": [
+              499,
+              506
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 37
+              },
+              "end": {
+                "line": 10,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "ThisExpression",
+                    "range": [
+                      521,
+                      525
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "lift",
+                    "range": [
+                      526,
+                      530
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "range": [
+                    521,
+                    530
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 20
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "NewExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "FindValueOperator",
+                      "range": [
+                        535,
+                        552
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 11,
+                          "column": 25
+                        },
+                        "end": {
+                          "line": 11,
+                          "column": 42
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "predicate",
+                        "range": [
+                          553,
+                          562
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 43
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 52
+                          }
+                        }
+                      },
+                      {
+                        "type": "ThisExpression",
+                        "range": [
+                          564,
+                          568
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 54
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 58
+                          }
+                        }
+                      },
+                      {
+                        "type": "Literal",
+                        "value": true,
+                        "raw": "true",
+                        "range": [
+                          570,
+                          574
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 60
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 64
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "thisArg",
+                        "range": [
+                          576,
+                          583
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 11,
+                            "column": 66
+                          },
+                          "end": {
+                            "line": 11,
+                            "column": 73
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      531,
+                      584
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 74
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  521,
+                  585
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 75
+                  }
+                }
+              },
+              "range": [
+                514,
+                586
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 4
+                },
+                "end": {
+                  "line": 11,
+                  "column": 76
+                }
+              }
+            }
+          ],
+          "range": [
+            508,
+            588
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 46
+            },
+            "end": {
+              "line": 12,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          469,
+          588
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 7
+          },
+          "end": {
+            "line": 12,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+            "range": [
+              44,
+              461
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 9,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=findIndex.js.map",
+            "range": [
+              589,
+              626
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 0
+              },
+              "end": {
+                "line": 13,
+                "column": 37
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        462,
+        588
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+          "range": [
+            44,
+            461
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=findIndex.js.map",
+          "range": [
+            589,
+            626
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    588
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 12,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+      "range": [
+        44,
+        461
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=findIndex.js.map",
+      "range": [
+        589,
+        626
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 37
+        }
+      }
+    }
+  ]
+}

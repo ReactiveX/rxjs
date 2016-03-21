@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/mergeAll-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/mergeAll-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {mergeAll} */
+describe(&apos;Observable.prototype.mergeAll&apos;, function () {
+    asDiagram(&apos;mergeAll&apos;)(&apos;should merge a hot observable of cold observables&apos;, function () {
+        var x = cold(&apos;--a---b--c---d--|      &apos;);
+        var y = cold(&apos;----e---f--g---|&apos;);
+        var e1 = hot(&apos;--x------y-------|       &apos;, { x: x, y: y });
+        var expected = &apos;----a---b--c-e-d-f--g---|&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+    });
+    it(&apos;should merge all observables in an observable&apos;, function () {
+        var e1 = Observable.fromArray([
+            Observable.of(&apos;a&apos;),
+            Observable.of(&apos;b&apos;),
+            Observable.of(&apos;c&apos;)
+        ]);
+        var expected = &apos;(abc|)&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+    });
+    it(&apos;should throw if any child observable throws&apos;, function () {
+        var e1 = Observable.fromArray([
+            Observable.of(&apos;a&apos;),
+            Observable.throw(&apos;error&apos;),
+            Observable.of(&apos;c&apos;)
+        ]);
+        var expected = &apos;(a#)&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+    });
+    it(&apos;should handle merging a hot observable of observables&apos;, function () {
+        var x = cold(&apos;a---b---c---|   &apos;);
+        var xsubs = &apos;  ^           !   &apos;;
+        var y = cold(&apos;d---e---f---|&apos;);
+        var ysubs = &apos;     ^           !&apos;;
+        var e1 = hot(&apos;--x--y--|         &apos;, { x: x, y: y });
+        var e1subs = &apos;^                !&apos;;
+        var expected = &apos;--a--db--ec--f---|&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge one cold Observable at a time with parameter concurrency=1&apos;, function () {
+        var x = cold(&apos;a---b---c---|            &apos;);
+        var xsubs = &apos;  ^           !            &apos;;
+        var y = cold(&apos;d---e---f---|&apos;);
+        var ysubs = &apos;              ^           !&apos;;
+        var e1 = hot(&apos;--x--y--|                  &apos;, { x: x, y: y });
+        var e1subs = &apos;^                         !&apos;;
+        var expected = &apos;--a---b---c---d---e---f---|&apos;;
+        expectObservable(e1.mergeAll(1)).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge two cold Observables at a time with parameter concurrency=2&apos;, function () {
+        var x = cold(&apos;a---b---c---|        &apos;);
+        var xsubs = &apos;  ^           !        &apos;;
+        var y = cold(&apos;d---e---f---|     &apos;);
+        var ysubs = &apos;     ^           !     &apos;;
+        var z = cold(&apos;--g---h-|&apos;);
+        var zsubs = &apos;              ^       !&apos;;
+        var e1 = hot(&apos;--x--y--z--|           &apos;, { x: x, y: y, z: z });
+        var e1subs = &apos;^                     !&apos;;
+        var expected = &apos;--a--db--ec--f--g---h-|&apos;;
+        expectObservable(e1.mergeAll(2)).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(z.subscriptions).toBe(zsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge one hot Observable at a time with parameter concurrency=1&apos;, function () {
+        var x = hot(&apos;---a---b---c---|          &apos;);
+        var xsubs = &apos;  ^            !          &apos;;
+        var y = hot(&apos;-------------d---e---f---|&apos;);
+        var ysubs = &apos;               ^         !&apos;;
+        var e1 = hot(&apos;--x--y--|                 &apos;, { x: x, y: y });
+        var e1subs = &apos;^                        !&apos;;
+        var expected = &apos;---a---b---c-----e---f---|&apos;;
+        expectObservable(e1.mergeAll(1)).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge two hot Observables at a time with parameter concurrency=2&apos;, function () {
+        var x = hot(&apos;i--a---b---c---|        &apos;);
+        var xsubs = &apos;  ^            !        &apos;;
+        var y = hot(&apos;-i-i--d---e---f---|     &apos;);
+        var ysubs = &apos;     ^            !     &apos;;
+        var z = hot(&apos;--i--i--i--i-----g---h-|&apos;);
+        var zsubs = &apos;               ^       !&apos;;
+        var e1 = hot(&apos;--x--y--z--|            &apos;, { x: x, y: y, z: z });
+        var e1subs = &apos;^                      !&apos;;
+        var expected = &apos;---a--db--ec--f--g---h-|&apos;;
+        expectObservable(e1.mergeAll(2)).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(z.subscriptions).toBe(zsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle merging a hot observable of observables, outer unsubscribed early&apos;, function () {
+        var x = cold(&apos;a---b---c---|   &apos;);
+        var xsubs = &apos;  ^         !     &apos;;
+        var y = cold(&apos;d---e---f---|&apos;);
+        var ysubs = &apos;     ^      !     &apos;;
+        var e1 = hot(&apos;--x--y--|         &apos;, { x: x, y: y });
+        var e1subs = &apos;^           !     &apos;;
+        var unsub = &apos;            !     &apos;;
+        var expected = &apos;--a--db--ec--     &apos;;
+        expectObservable(e1.mergeAll(), unsub).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var x = cold(&apos;a---b---c---|   &apos;);
+        var xsubs = &apos;  ^         !     &apos;;
+        var y = cold(&apos;d---e---f---|&apos;);
+        var ysubs = &apos;     ^      !     &apos;;
+        var e1 = hot(&apos;--x--y--|         &apos;, { x: x, y: y });
+        var e1subs = &apos;^           !     &apos;;
+        var expected = &apos;--a--db--ec--     &apos;;
+        var unsub = &apos;            !     &apos;;
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .mergeAll()
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge parallel emissions&apos;, function () {
+        var x = cold(&apos;----a----b----c---|&apos;);
+        var xsubs = &apos;  ^                 !&apos;;
+        var y = cold(&apos;-d----e----f---|&apos;);
+        var ysubs = &apos;     ^              !&apos;;
+        var e1 = hot(&apos;--x--y--|            &apos;, { x: x, y: y });
+        var e1subs = &apos;^                   !&apos;;
+        var expected = &apos;------(ad)-(be)-(cf)|&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge empty and empty&apos;, function () {
+        var x = cold(&apos;|&apos;);
+        var xsubs = &apos;  (^!)   &apos;;
+        var y = cold(&apos;|&apos;);
+        var ysubs = &apos;     (^!)&apos;;
+        var e1 = hot(&apos;--x--y--|&apos;, { x: x, y: y });
+        var e1subs = &apos;^       !&apos;;
+        var expected = &apos;--------|&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge three empties&apos;, function () {
+        var x = cold(&apos;|&apos;);
+        var xsubs = &apos;  (^!)     &apos;;
+        var y = cold(&apos;|&apos;);
+        var ysubs = &apos;     (^!)  &apos;;
+        var z = cold(&apos;|&apos;);
+        var zsubs = &apos;       (^!)&apos;;
+        var e1 = hot(&apos;--x--y-z---|&apos;, { x: x, y: y, z: z });
+        var e1subs = &apos;^          !&apos;;
+        var expected = &apos;-----------|&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(z.subscriptions).toBe(zsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge never and empty&apos;, function () {
+        var x = cold(&apos;-&apos;);
+        var xsubs = &apos;  ^&apos;;
+        var y = cold(&apos;|&apos;);
+        var ysubs = &apos;     (^!)&apos;;
+        var e1 = hot(&apos;--x--y--|&apos;, { x: x, y: y });
+        var e1subs = &apos;^        &apos;;
+        var expected = &apos;---------&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge never and never&apos;, function () {
+        var x = cold(&apos;-&apos;);
+        var xsubs = &apos;  ^&apos;;
+        var y = cold(&apos;-&apos;);
+        var ysubs = &apos;     ^&apos;;
+        var e1 = hot(&apos;--x--y--|&apos;, { x: x, y: y });
+        var e1subs = &apos;^        &apos;;
+        var expected = &apos;---------&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge empty and throw&apos;, function () {
+        var x = cold(&apos;|&apos;);
+        var xsubs = &apos;  (^!)   &apos;;
+        var y = cold(&apos;#&apos;);
+        var ysubs = &apos;     (^!)&apos;;
+        var e1 = hot(&apos;--x--y--|&apos;, { x: x, y: y });
+        var e1subs = &apos;^    !   &apos;;
+        var expected = &apos;-----#   &apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge never and throw&apos;, function () {
+        var x = cold(&apos;-&apos;);
+        var xsubs = &apos;  ^  !&apos;;
+        var y = cold(&apos;#&apos;);
+        var ysubs = &apos;     (^!)&apos;;
+        var e1 = hot(&apos;--x--y--|&apos;, { x: x, y: y });
+        var e1subs = &apos;^    !   &apos;;
+        var expected = &apos;-----#   &apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge empty and eventual error&apos;, function () {
+        var x = cold(&apos;|&apos;);
+        var xsubs = &apos;  (^!)&apos;;
+        var y = cold(&apos;------#&apos;);
+        var ysubs = &apos;     ^     !&apos;;
+        var e1 = hot(&apos;--x--y--|&apos;, { x: x, y: y });
+        var e1subs = &apos;^          !&apos;;
+        var expected = &apos;-----------#&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge never and eventual error&apos;, function () {
+        var x = cold(&apos;-&apos;);
+        var xsubs = &apos;  ^        !&apos;;
+        var y = cold(&apos;------#&apos;);
+        var ysubs = &apos;     ^     !&apos;;
+        var e1 = hot(&apos;--x--y--|&apos;, { x: x, y: y });
+        var e1subs = &apos;^          !&apos;;
+        var expected = &apos;-----------#&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should take an empty source and return empty too&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should take a never source and return never too&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should take a throw source and return throw too&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle merging a hot observable of non-overlapped observables&apos;, function () {
+        var x = cold(&apos;a-b---------|                 &apos;);
+        var xsubs = &apos;  ^           !                 &apos;;
+        var y = cold(&apos;c-d-e-f-|           &apos;);
+        var ysubs = &apos;            ^       !           &apos;;
+        var z = cold(&apos;g-h-i-j-k-|&apos;);
+        var zsubs = &apos;                     ^         !&apos;;
+        var e1 = hot(&apos;--x---------y--------z--------| &apos;, { x: x, y: y, z: z });
+        var e1subs = &apos;^                              !&apos;;
+        var expected = &apos;--a-b-------c-d-e-f--g-h-i-j-k-|&apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(z.subscriptions).toBe(zsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if inner observable raises error&apos;, function () {
+        var x = cold(&apos;a-b---------|                 &apos;);
+        var xsubs = &apos;  ^           !                 &apos;;
+        var y = cold(&apos;c-d-e-f-#           &apos;);
+        var ysubs = &apos;            ^       !           &apos;;
+        var z = cold(&apos;g-h-i-j-k-|&apos;);
+        var zsubs = [];
+        var e1 = hot(&apos;--x---------y--------z--------| &apos;, { x: x, y: y, z: z });
+        var e1subs = &apos;^                   !           &apos;;
+        var expected = &apos;--a-b-------c-d-e-f-#           &apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(z.subscriptions).toBe(zsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if outer observable raises error&apos;, function () {
+        var y = cold(&apos;a-b---------|                &apos;);
+        var ysubs = &apos;  ^           !                &apos;;
+        var z = cold(&apos;c-d-e-f-|          &apos;);
+        var zsubs = &apos;            ^   !              &apos;;
+        var e1 = hot(&apos;--y---------z---#              &apos;, { y: y, z: z });
+        var e1subs = &apos;^               !              &apos;;
+        var expected = &apos;--a-b-------c-d-#              &apos;;
+        expectObservable(e1.mergeAll()).toBe(expected);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(z.subscriptions).toBe(zsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should merge all promises in an observable&apos;, function (done) {
+        var e1 = Rx.Observable.fromArray([
+            new Promise(function (res) { res(&apos;a&apos;); }),
+            new Promise(function (res) { res(&apos;b&apos;); }),
+            new Promise(function (res) { res(&apos;c&apos;); }),
+            new Promise(function (res) { res(&apos;d&apos;); }),
+        ]);
+        var expected = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;];
+        var res = [];
+        e1.mergeAll().subscribe(function (x) { res.push(x); }, function (err) { done.fail(&apos;should not be called&apos;); }, function () {
+            expect(res).toEqual(expected);
+            done();
+        });
+    });
+    it(&apos;should raise error when promise rejects&apos;, function (done) {
+        var error = &apos;error&apos;;
+        var e1 = Rx.Observable.fromArray([
+            new Promise(function (res) { res(&apos;a&apos;); }),
+            new Promise(function (res, rej) { rej(error); }),
+            new Promise(function (res) { res(&apos;c&apos;); }),
+            new Promise(function (res) { res(&apos;d&apos;); }),
+        ]);
+        var res = [];
+        e1.mergeAll().subscribe(function (x) { res.push(x); }, function (err) {
+            expect(res.length).toEqual(1);
+            expect(err).toBe(error);
+            done();
+        }, function () { done.fail(&apos;should not be called&apos;); });
+    });
+});
+//# sourceMappingURL=mergeAll-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">spec-js/observables/dom/ajax-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/dom/ajax-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../../dist/cjs/Rx.DOM&apos;);
+var root_1 = require(&apos;../../../dist/cjs/util/root&apos;);
+var ajax_helper_1 = require(&apos;../../helpers/ajax-helper&apos;);
+/** @test {ajax} */
+describe(&apos;Observable.ajax&apos;, function () {
+    var gXHR;
+    var rXHR;
+    beforeEach(function () {
+        gXHR = global.XMLHttpRequest;
+        rXHR = root_1.root.XMLHttpRequest;
+        global.XMLHttpRequest = ajax_helper_1.MockXMLHttpRequest;
+        root_1.root.XMLHttpRequest = ajax_helper_1.MockXMLHttpRequest;
+    });
+    afterEach(function () {
+        ajax_helper_1.MockXMLHttpRequest.clearRequest();
+        global.XMLHttpRequest = gXHR;
+        root_1.root.XMLHttpRequest = rXHR;
+    });
+    it(&apos;should set headers&apos;, function () {
+        var obj = {
+            url: &apos;/talk-to-me-goose&apos;,
+            headers: {
+                &apos;Content-Type&apos;: &apos;kenny/loggins&apos;,
+                &apos;Fly-Into-The&apos;: &apos;Dangah Zone!&apos;,
+                &apos;Take-A-Ride-Into-The&apos;: &apos;Danger ZoooOoone!&apos;
+            },
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+        expect(request.url).toBe(&apos;/talk-to-me-goose&apos;);
+        expect(request.requestHeaders).toEqual({
+            &apos;Content-Type&apos;: &apos;kenny/loggins&apos;,
+            &apos;Fly-Into-The&apos;: &apos;Dangah Zone!&apos;,
+            &apos;Take-A-Ride-Into-The&apos;: &apos;Danger ZoooOoone!&apos;,
+            &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;
+        });
+    });
+    it(&apos;should have an optional resultSelector&apos;, function () {
+        var expected = &apos;avast ye swabs!&apos;;
+        var result;
+        var complete = false;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            resultSelector: function (res) { return res.response; }
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            result = x;
+        }, null, function () {
+            complete = true;
+        });
+        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;application/json&apos;,
+            &apos;responseText&apos;: expected
+        });
+        expect(result).toBe(expected);
+        expect(complete).toBe(true);
+    });
+    it(&apos;should have error when resultSelector errors&apos;, function () {
+        var expected = &apos;avast ye swabs!&apos;;
+        var error;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            resultSelector: function (res) {
+                throw new Error(&apos;ha! ha! fooled you!&apos;);
+            },
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            throw &apos;should not next&apos;;
+        }, function (err) {
+            error = err;
+        }, function () {
+            throw &apos;should not complete&apos;;
+        });
+        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;application/json&apos;,
+            &apos;responseText&apos;: expected
+        });
+        expect(error).toEqual(new Error(&apos;ha! ha! fooled you!&apos;));
+    });
+    it(&apos;should error if createXHR throws&apos;, function () {
+        var error;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            createXHR: function () {
+                throw new Error(&apos;wokka wokka&apos;);
+            }
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            throw &apos;should not next&apos;;
+        }, function (err) {
+            error = err;
+        }, function () {
+            throw &apos;should not complete&apos;;
+        });
+        expect(error).toEqual(new Error(&apos;wokka wokka&apos;));
+    });
+    it(&apos;should succeed on 200&apos;, function () {
+        var expected = { foo: &apos;bar&apos; };
+        var result;
+        var complete = false;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            result = x;
+        }, null, function () {
+            complete = true;
+        });
+        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;application/json&apos;,
+            &apos;responseText&apos;: JSON.stringify(expected)
+        });
+        expect(result.xhr).toBeDefined();
+        expect(result.response).toBe(JSON.stringify({ foo: &apos;bar&apos; }));
+        expect(complete).toBe(true);
+    });
+    it(&apos;should fail on 404&apos;, function () {
+        var error;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            normalizeError: function (e, xhr, type) {
+                return xhr.response || xhr.responseText;
+            },
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            throw &apos;should not next&apos;;
+        }, function (err) {
+            error = err;
+        }, function () {
+            throw &apos;should not complete&apos;;
+        });
+        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 404,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: &apos;Wee! I am text!&apos;
+        });
+        expect(error instanceof Rx.AjaxError).toBe(true);
+        expect(error.message).toBe(&apos;ajax error 404&apos;);
+        expect(error.status).toBe(404);
+    });
+    it(&apos;should fail on 404&apos;, function () {
+        var error;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            normalizeError: function (e, xhr, type) {
+                return xhr.response || xhr.responseText;
+            },
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe(function (x) {
+            throw &apos;should not next&apos;;
+        }, function (err) {
+            error = err;
+        }, function () {
+            throw &apos;should not complete&apos;;
+        });
+        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 300,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: &apos;Wee! I am text!&apos;
+        });
+        expect(error instanceof Rx.AjaxError).toBe(true);
+        expect(error.message).toBe(&apos;ajax error 300&apos;);
+        expect(error.status).toBe(300);
+    });
+    it(&apos;should succeed no settings&apos;, function () {
+        var expected = JSON.stringify({ foo: &apos;bar&apos; });
+        Rx.Observable.ajax(&apos;/flibbertyJibbet&apos;)
+            .subscribe(function (x) {
+            expect(x.status).toBe(200);
+            expect(x.xhr.method).toBe(&apos;GET&apos;);
+            expect(x.xhr.responseText).toBe(expected);
+        }, function () {
+            throw &apos;should not have been called&apos;;
+        });
+        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: expected
+        });
+    });
+    it(&apos;should fail no settings&apos;, function () {
+        var expected = JSON.stringify({ foo: &apos;bar&apos; });
+        Rx.Observable.ajax(&apos;/flibbertyJibbet&apos;)
+            .subscribe(function () {
+            throw &apos;should not have been called&apos;;
+        }, function (x) {
+            expect(x.status).toBe(500);
+            expect(x.xhr.method).toBe(&apos;GET&apos;);
+            expect(x.xhr.responseText).toBe(expected);
+        }, function () {
+            throw &apos;should not have been called&apos;;
+        });
+        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 500,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: expected
+        });
+    });
+    describe(&apos;ajax.get&apos;, function () {
+        it(&apos;should succeed on 200&apos;, function () {
+            var expected = { foo: &apos;bar&apos; };
+            var result;
+            var complete = false;
+            Rx.Observable
+                .ajax.get(&apos;/flibbertyJibbet&apos;)
+                .subscribe(function (x) {
+                result = x;
+            }, null, function () {
+                complete = true;
+            });
+            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            expect(request.url).toBe(&apos;/flibbertyJibbet&apos;);
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify(expected)
+            });
+            expect(result).toEqual(expected);
+            expect(complete).toBe(true);
+        });
+        it(&apos;should succeed on 200 with a resultSelector&apos;, function () {
+            var expected = { larf: &apos;hahahahaha&apos; };
+            var result;
+            var innerResult;
+            var complete = false;
+            Rx.Observable
+                .ajax.get(&apos;/flibbertyJibbet&apos;, function (x) {
+                innerResult = x;
+                return x.response.larf.toUpperCase();
+            })
+                .subscribe(function (x) {
+                result = x;
+            }, null, function () {
+                complete = true;
+            });
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+            ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify(expected)
+            });
+            expect(innerResult.xhr).toBeDefined();
+            expect(innerResult.response).toEqual({ larf: &apos;hahahahaha&apos; });
+            expect(result).toBe(&apos;HAHAHAHAHA&apos;);
+            expect(complete).toBe(true);
+        });
+    });
+    describe(&apos;ajax.post&apos;, function () {
+        it(&apos;should succeed on 200&apos;, function () {
+            var expected = { foo: &apos;bar&apos;, hi: &apos;there you&apos; };
+            var result;
+            var complete = false;
+            Rx.Observable
+                .ajax.post(&apos;/flibbertyJibbet&apos;, expected)
+                .subscribe(function (x) {
+                result = x;
+            }, null, function () {
+                complete = true;
+            });
+            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            expect(request.method).toBe(&apos;POST&apos;);
+            expect(request.url).toBe(&apos;/flibbertyJibbet&apos;);
+            expect(request.requestHeaders).toEqual({
+                &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
+                &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;
+            });
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify(expected)
+            });
+            expect(request.data).toEqual(&apos;foo=bar&amp;hi=there%20you&apos;);
+            expect(result.response).toEqual(expected);
+            expect(complete).toBe(true);
+        });
+    });
+});
+//# sourceMappingURL=ajax-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

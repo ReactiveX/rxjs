@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/min-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/min-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {min} */
+describe(&apos;Observable.prototype.min&apos;, function () {
+    asDiagram(&apos;min&apos;)(&apos;should min the values of an observable&apos;, function () {
+        var source = hot(&apos;--a--b--c--|&apos;, { a: 42, b: -1, c: 3 });
+        var subs = &apos;^          !&apos;;
+        var expected = &apos;-----------(x|)&apos;;
+        expectObservable(source.min()).toBe(expected, { x: -1 });
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should be never when source is never&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(e1.min()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should be zero when source is empty&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(e1.min()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should be never when source doesn\&apos;t complete&apos;, function () {
+        var e1 = hot(&apos;--x--^--y--&apos;);
+        var e1subs = &apos;^     &apos;;
+        var expected = &apos;------&apos;;
+        expectObservable(e1.min()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should be completes when source doesn\&apos;t have values&apos;, function () {
+        var e1 = hot(&apos;-x-^---|&apos;);
+        var e1subs = &apos;^   !&apos;;
+        var expected = &apos;----|&apos;;
+        expectObservable(e1.min()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should min the unique value of an observable&apos;, function () {
+        var e1 = hot(&apos;-x-^--y--|&apos;, { y: 42 });
+        var e1subs = &apos;^     !&apos;;
+        var expected = &apos;------(w|)&apos;;
+        expectObservable(e1.min()).toBe(expected, { w: 42 });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should min the values of an ongoing hot observable&apos;, function () {
+        var e1 = hot(&apos;--a-^-b--c--d--|&apos;, { a: 42, b: -1, c: 0, d: 666 });
+        var subs = &apos;^          !&apos;;
+        var expected = &apos;-----------(x|)&apos;;
+        expectObservable(e1.min()).toBe(expected, { x: -1 });
+        expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
+    it(&apos;should min a range() source observable&apos;, function (done) {
+        Rx.Observable.range(1, 10000).min().subscribe(function (value) {
+            expect(value).toEqual(1);
+        }, done.fail, done);
+    });
+    it(&apos;should min a range().skip(1) source observable&apos;, function (done) {
+        Rx.Observable.range(1, 10).skip(1).min().subscribe(function (value) {
+            expect(value).toEqual(2);
+        }, done.fail, done);
+    });
+    it(&apos;should min a range().take(1) source observable&apos;, function (done) {
+        Rx.Observable.range(1, 10).take(1).min().subscribe(function (value) {
+            expect(value).toEqual(1);
+        }, done.fail, done);
+    });
+    it(&apos;should work with error&apos;, function () {
+        var e1 = hot(&apos;-x-^--y--z--#&apos;, { x: 1, y: 2, z: 3 }, &apos;too bad&apos;);
+        var e1subs = &apos;^        !&apos;;
+        var expected = &apos;---------#&apos;;
+        expectObservable(e1.min()).toBe(expected, null, &apos;too bad&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should work with throw&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        expectObservable(e1.min()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a constant predicate on an empty hot observable&apos;, function () {
+        var e1 = hot(&apos;-x-^---|&apos;);
+        var e1subs = &apos;^   !&apos;;
+        var expected = &apos;----|&apos;;
+        var predicate = function (x, y) {
+            return 42;
+        };
+        expectObservable(e1.min(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a constant predicate on an never hot observable&apos;, function () {
+        var e1 = hot(&apos;-x-^----&apos;);
+        var e1subs = &apos;^    &apos;;
+        var expected = &apos;-----&apos;;
+        var predicate = function (x, y) {
+            return 42;
+        };
+        expectObservable(e1.min(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a constant predicate on a simple hot observable&apos;, function () {
+        var e1 = hot(&apos;-x-^-a-|&apos;, { a: 1 });
+        var e1subs = &apos;^   !&apos;;
+        var expected = &apos;----(w|)&apos;;
+        var predicate = function () {
+            return 42;
+        };
+        expectObservable(e1.min(predicate)).toBe(expected, { w: 1 });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow unsubscribing explicitly and early&apos;, function () {
+        var e1 = hot(&apos;-x-^-a-b-c-d-e-f-g-|&apos;);
+        var unsub = &apos;       !         &apos;;
+        var e1subs = &apos;^      !         &apos;;
+        var expected = &apos;--------         &apos;;
+        var predicate = function () {
+            return 42;
+        };
+        expectObservable(e1.min(predicate), unsub).toBe(expected, { w: 42 });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;-x-^-a-b-c-d-e-f-g-|&apos;);
+        var e1subs = &apos;^      !         &apos;;
+        var expected = &apos;--------         &apos;;
+        var unsub = &apos;       !         &apos;;
+        var predicate = function () {
+            return 42;
+        };
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .min(predicate)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected, { w: 42 });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a constant predicate on observable with many values&apos;, function () {
+        var e1 = hot(&apos;-x-^-a-b-c-d-e-f-g-|&apos;);
+        var e1subs = &apos;^               !&apos;;
+        var expected = &apos;----------------(w|)&apos;;
+        var predicate = function () {
+            return 42;
+        };
+        expectObservable(e1.min(predicate)).toBe(expected, { w: 42 });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a predicate on observable with many values&apos;, function () {
+        var e1 = hot(&apos;-a-^-b--c--d-|&apos;, { a: 42, b: -1, c: 0, d: 666 });
+        var e1subs = &apos;^         !&apos;;
+        var expected = &apos;----------(w|)&apos;;
+        var predicate = function (x, y) {
+            return Math.max(x, y);
+        };
+        expectObservable(e1.min(predicate)).toBe(expected, { w: 666 });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a predicate for string on observable with many values&apos;, function () {
+        var e1 = hot(&apos;-1-^-2--3--4-|&apos;);
+        var e1subs = &apos;^         !&apos;;
+        var expected = &apos;----------(w|)&apos;;
+        var predicate = function (x, y) {
+            return x &lt; y ? x : y;
+        };
+        expectObservable(e1.min(predicate)).toBe(expected, { w: &apos;2&apos; });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a constant predicate on observable that throws&apos;, function () {
+        var e1 = hot(&apos;-1-^---#&apos;);
+        var e1subs = &apos;^   !&apos;;
+        var expected = &apos;----#&apos;;
+        var predicate = function () {
+            return 42;
+        };
+        expectObservable(e1.min(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a predicate that throws, on observable with many values&apos;, function () {
+        var e1 = hot(&apos;-1-^-2--3--|&apos;);
+        var e1subs = &apos;^    !   &apos;;
+        var expected = &apos;-----#   &apos;;
+        var predicate = function (x, y) {
+            if (y === &apos;3&apos;) {
+                throw &apos;error&apos;;
+            }
+            return x &gt; y ? x : y;
+        };
+        expectObservable(e1.min(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+});
+//# sourceMappingURL=min-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

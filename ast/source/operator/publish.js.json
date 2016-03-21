@@ -181,7 +181,27 @@
           "line": 2,
           "column": 40
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+          "range": [
+            79,
+            492
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "ExportNamedDeclaration",
@@ -191,16 +211,16 @@
           "type": "Identifier",
           "name": "publish",
           "range": [
-            95,
-            102
+            509,
+            516
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 13,
               "column": 16
             },
             "end": {
-              "line": 3,
+              "line": 13,
               "column": 23
             }
           }
@@ -220,16 +240,16 @@
                     "type": "Identifier",
                     "name": "multicast",
                     "range": [
-                      118,
-                      127
+                      532,
+                      541
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 14,
                         "column": 11
                       },
                       "end": {
-                        "line": 4,
+                        "line": 14,
                         "column": 20
                       }
                     }
@@ -238,31 +258,31 @@
                     "type": "Identifier",
                     "name": "call",
                     "range": [
-                      128,
-                      132
+                      542,
+                      546
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 14,
                         "column": 21
                       },
                       "end": {
-                        "line": 4,
+                        "line": 14,
                         "column": 25
                       }
                     }
                   },
                   "range": [
-                    118,
-                    132
+                    532,
+                    546
                   ],
                   "loc": {
                     "start": {
-                      "line": 4,
+                      "line": 14,
                       "column": 11
                     },
                     "end": {
-                      "line": 4,
+                      "line": 14,
                       "column": 25
                     }
                   }
@@ -271,16 +291,16 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      133,
-                      137
+                      547,
+                      551
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 14,
                         "column": 26
                       },
                       "end": {
-                        "line": 4,
+                        "line": 14,
                         "column": 30
                       }
                     }
@@ -291,79 +311,79 @@
                       "type": "Identifier",
                       "name": "Subject",
                       "range": [
-                        143,
-                        150
+                        557,
+                        564
                       ],
                       "loc": {
                         "start": {
-                          "line": 4,
+                          "line": 14,
                           "column": 36
                         },
                         "end": {
-                          "line": 4,
+                          "line": 14,
                           "column": 43
                         }
                       }
                     },
                     "arguments": [],
                     "range": [
-                      139,
-                      152
+                      553,
+                      566
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 14,
                         "column": 32
                       },
                       "end": {
-                        "line": 4,
+                        "line": 14,
                         "column": 45
                       }
                     }
                   }
                 ],
                 "range": [
-                  118,
-                  153
+                  532,
+                  567
                 ],
                 "loc": {
                   "start": {
-                    "line": 4,
+                    "line": 14,
                     "column": 11
                   },
                   "end": {
-                    "line": 4,
+                    "line": 14,
                     "column": 46
                   }
                 }
               },
               "range": [
-                111,
-                154
+                525,
+                568
               ],
               "loc": {
                 "start": {
-                  "line": 4,
+                  "line": 14,
                   "column": 4
                 },
                 "end": {
-                  "line": 4,
+                  "line": 14,
                   "column": 47
                 }
               }
             }
           ],
           "range": [
-            105,
-            156
+            519,
+            570
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 13,
               "column": 26
             },
             "end": {
-              "line": 5,
+              "line": 15,
               "column": 1
             }
           }
@@ -371,35 +391,54 @@
         "generator": false,
         "expression": false,
         "range": [
-          86,
-          156
+          500,
+          570
         ],
         "loc": {
           "start": {
-            "line": 3,
+            "line": 13,
             "column": 7
           },
           "end": {
-            "line": 5,
+            "line": 15,
             "column": 1
           }
         },
-        "leadingComments": [],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+            "range": [
+              79,
+              492
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 12,
+                "column": 3
+              }
+            }
+          }
+        ],
         "trailingComments": [
           {
             "type": "Line",
             "value": "# sourceMappingURL=publish.js.map",
             "range": [
-              157,
-              192
+              571,
+              606
             ],
             "loc": {
               "start": {
-                "line": 6,
+                "line": 16,
                 "column": 0
               },
               "end": {
-                "line": 6,
+                "line": 16,
                 "column": 35
               }
             }
@@ -409,34 +448,54 @@
       "specifiers": [],
       "source": null,
       "range": [
-        79,
-        156
+        493,
+        570
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 13,
           "column": 0
         },
         "end": {
-          "line": 5,
+          "line": 15,
           "column": 1
         }
       },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+          "range": [
+            79,
+            492
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ],
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=publish.js.map",
           "range": [
-            157,
-            192
+            571,
+            606
           ],
           "loc": {
             "start": {
-              "line": 6,
+              "line": 16,
               "column": 0
             },
             "end": {
-              "line": 6,
+              "line": 16,
               "column": 35
             }
           }
@@ -447,7 +506,7 @@
   "sourceType": "module",
   "range": [
     0,
-    156
+    570
   ],
   "loc": {
     "start": {
@@ -455,25 +514,43 @@
       "column": 0
     },
     "end": {
-      "line": 5,
+      "line": 15,
       "column": 1
     }
   },
   "comments": [
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=publish.js.map",
+      "type": "Block",
+      "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
       "range": [
-        157,
-        192
+        79,
+        492
       ],
       "loc": {
         "start": {
-          "line": 6,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 6,
+          "line": 12,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=publish.js.map",
+      "range": [
+        571,
+        606
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
           "column": 35
         }
       }

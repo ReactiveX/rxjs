@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/observables/from-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/from-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
+var iterator_1 = require(&apos;../../dist/cjs/symbol/iterator&apos;);
+var Observable = Rx.Observable;
+/** @test {from} */
+describe(&apos;Observable.from&apos;, function () {
+    it(&apos;should enumerate an Array&apos;, function (done) {
+        var expected = [1, 2, 3];
+        var i = 0;
+        Observable.from(expected).subscribe(function (x) {
+            expect(x).toBe(expected[i++]);
+        }, done.fail, done);
+    }, 300);
+    it(&apos;should handle an ArrayLike&apos;, function (done) {
+        var arrayLike = {
+            length: 3,
+            0: 1,
+            1: 2,
+            2: 3
+        };
+        var expected = [1, 2, 3];
+        Observable.from(arrayLike).subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, done);
+    }, 300);
+    it(&apos;should handle an ArrayLike from arguments&apos;, function (done) {
+        function makeArrayLike() {
+            var args = [];
+            for (var _i = 0; _i &lt; arguments.length; _i++) {
+                args[_i - 0] = arguments[_i];
+            }
+            var expected = [1, 2, 3];
+            Observable.from(arguments).subscribe(function (x) {
+                expect(x).toBe(expected.shift());
+            }, done.fail, done);
+        }
+        makeArrayLike(1, 2, 3);
+    }, 300);
+    it(&apos;should handle an ArrayLike with a mapFn&apos;, function (done) {
+        var arrayLike = {
+            length: 3,
+            0: 1,
+            1: 2,
+            2: 3
+        };
+        var expected = [1, 1, 1];
+        var mapFn = function (v, k) { return v - k; };
+        Observable.from(arrayLike, mapFn).subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, done);
+    }, 300);
+    it(&apos;should handle an ArrayLike with a thisArg&apos;, function (done) {
+        var arrayLike = {
+            length: 3,
+            0: 1,
+            1: 2,
+            2: 3
+        };
+        var expected = [123, 123, 123];
+        var mapFn = function (x, y) {
+            return this.thing;
+        };
+        Observable.from(arrayLike, mapFn, { thing: 123 }).subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, done);
+    });
+    it(&apos;should handle a promise&apos;, function (done) {
+        var promise = Promise.resolve(&apos;pinky swear&apos;);
+        Observable.from(promise).subscribe(function (x) {
+            expect(x).toBe(&apos;pinky swear&apos;);
+        }, done.fail, done);
+    });
+    it(&apos;should handle an &quot;observableque&quot; object&apos;, function (done) {
+        var observablesque = {};
+        observablesque[Symbol.observable] = function () {
+            return {
+                subscribe: function (observer) {
+                    observer.next(&apos;test&apos;);
+                    observer.complete();
+                }
+            };
+        };
+        Observable.from(observablesque).subscribe(function (x) {
+            expect(x).toBe(&apos;test&apos;);
+        }, done.fail, done);
+    });
+    it(&apos;should accept scheduler for observableque object&apos;, function () {
+        var observablesque = {};
+        observablesque[Symbol.observable] = function () {
+            return {
+                subscribe: function (observer) {
+                    observer.next(&apos;x&apos;);
+                    observer.complete();
+                }
+            };
+        };
+        var e1 = Observable.from(observablesque, rxTestScheduler);
+        var expected = &apos;(x|)&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should handle a string&apos;, function (done) {
+        var expected = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;];
+        Observable.from(&apos;abc&apos;).subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, done);
+    });
+    it(&apos;should handle any iterable thing&apos;, function (done) {
+        var iterable = {};
+        var iteratorResults = [
+            { value: &apos;one&apos;, done: false },
+            { value: &apos;two&apos;, done: false },
+            { done: true }
+        ];
+        var expected = [&apos;one&apos;, &apos;two&apos;];
+        expect(iterator_1.$$iterator).toBe(Symbol.iterator);
+        iterable[Symbol.iterator] = function () {
+            return {
+                next: function () {
+                    return iteratorResults.shift();
+                }
+            };
+        };
+        Observable.from(iterable).subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, done);
+    });
+    it(&apos;should throw for non observable object&apos;, function () {
+        var r = function () {
+            Observable.from({}).subscribe();
+        };
+        expect(r).toThrow();
+    });
+    it(&apos;should handle object has observable symbol&apos;, function (done) {
+        var value = &apos;x&apos;;
+        Observable.from(Observable.of(value)).subscribe(function (x) {
+            expect(x).toBe(value);
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+    });
+});
+//# sourceMappingURL=from-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

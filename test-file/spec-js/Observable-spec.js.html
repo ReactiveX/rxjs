@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">spec-js/Observable-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/Observable-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Rx = require(&apos;../dist/cjs/Rx&apos;);
+var Subscriber = Rx.Subscriber;
+var Observable = Rx.Observable;
+function expectFullObserver(val) {
+    expect(typeof val).toBe(&apos;object&apos;);
+    expect(typeof val.next).toBe(&apos;function&apos;);
+    expect(typeof val.error).toBe(&apos;function&apos;);
+    expect(typeof val.complete).toBe(&apos;function&apos;);
+    expect(typeof val.isUnsubscribed).toBe(&apos;boolean&apos;);
+}
+/** @test {Observable} */
+describe(&apos;Observable&apos;, function () {
+    it(&apos;should be constructed with a subscriber function&apos;, function (done) {
+        var source = new Observable(function (observer) {
+            expectFullObserver(observer);
+            observer.next(1);
+            observer.complete();
+        });
+        source.subscribe(function (x) { expect(x).toBe(1); }, null, done);
+    });
+    describe(&apos;forEach&apos;, function () {
+        it(&apos;should iterate and return a Promise&apos;, function (done) {
+            var expected = [1, 2, 3];
+            var result = Observable.of(1, 2, 3).forEach(function (x) {
+                expect(x).toBe(expected.shift());
+            }, Promise)
+                .then(done);
+            expect(typeof result.then).toBe(&apos;function&apos;);
+        });
+        it(&apos;should reject promise when in error&apos;, function (done) {
+            Observable.throw(&apos;bad&apos;).forEach(function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, Promise).then(function () {
+                done.fail(&apos;should not complete&apos;);
+            }, function (err) {
+                expect(err).toBe(&apos;bad&apos;);
+                done();
+            });
+        });
+        it(&apos;should allow Promise to be globally configured&apos;, function (done) {
+            var wasCalled = false;
+            __root__.Rx = {};
+            __root__.Rx.config = {};
+            __root__.Rx.config.Promise = function MyPromise(callback) {
+                wasCalled = true;
+                return new Promise(callback);
+            };
+            Observable.of(42).forEach(function (x) {
+                expect(x).toBe(42);
+            }, null).then(function () {
+                expect(wasCalled).toBe(true);
+                done();
+            });
+        });
+        it(&apos;should reject promise if nextHandler throws&apos;, function (done) {
+            var results = [];
+            Observable.of(1, 2, 3).forEach(function (x) {
+                if (x === 3) {
+                    throw new Error(&apos;NO THREES!&apos;);
+                }
+                results.push(x);
+            }, null)
+                .then(done.fail, function (err) {
+                expect(err).toEqual(new Error(&apos;NO THREES!&apos;));
+                expect(results).toEqual([1, 2]);
+            })
+                .then(done);
+        });
+        it(&apos;should handle a synchronous throw from the next handler and tear down&apos;, function (done) {
+            var unsubscribeCalled = false;
+            var syncObservable = new Observable(function (observer) {
+                observer.next(1);
+                observer.next(2);
+                observer.next(3);
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            var results = [];
+            syncObservable.forEach(function (x) {
+                results.push(x);
+                if (x === 2) {
+                    throw new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
+                }
+            }).then(function () { return done.fail(); }, function (err) {
+                results.push(err);
+                expect(results).toEqual([1, 2, new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;)]);
+                expect(unsubscribeCalled).toBe(true);
+                done();
+            });
+        });
+        it(&apos;should handle an asynchronous throw from the next handler and tear down&apos;, function (done) {
+            var unsubscribeCalled = false;
+            var syncObservable = new Observable(function (observer) {
+                var i = 1;
+                var id = setInterval(function () { return observer.next(i++); }, 1);
+                return function () {
+                    clearInterval(id);
+                    unsubscribeCalled = true;
+                };
+            });
+            var results = [];
+            syncObservable.forEach(function (x) {
+                results.push(x);
+                if (x === 2) {
+                    throw new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
+                }
+            }).then(function () { return done.fail(); }, function (err) {
+                results.push(err);
+                expect(results).toEqual([1, 2, new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;)]);
+                expect(unsubscribeCalled).toBe(true);
+                done();
+            });
+        });
+    });
+    describe(&apos;subscribe&apos;, function () {
+        it(&apos;should be synchronous&apos;, function () {
+            var subscribed = false;
+            var nexted;
+            var completed;
+            var source = new Observable(function (observer) {
+                subscribed = true;
+                observer.next(&apos;wee&apos;);
+                expect(nexted).toBe(&apos;wee&apos;);
+                observer.complete();
+                expect(completed).toBe(true);
+            });
+            expect(subscribed).toBe(false);
+            var mutatedByNext = false;
+            var mutatedByComplete = false;
+            source.subscribe(function (x) {
+                nexted = x;
+                mutatedByNext = true;
+            }, null, function () {
+                completed = true;
+                mutatedByComplete = true;
+            });
+            expect(mutatedByNext).toBe(true);
+            expect(mutatedByComplete).toBe(true);
+        });
+        it(&apos;should work when subscribe is called with no arguments&apos;, function () {
+            var source = new Observable(function (subscriber) {
+                subscriber.next(&apos;foo&apos;);
+                subscriber.complete();
+            });
+            source.subscribe();
+        });
+        it(&apos;should return a Subscription that calls the unsubscribe function returned by the subscriber&apos;, function () {
+            var unsubscribeCalled = false;
+            var source = new Observable(function () {
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            var sub = source.subscribe(function () {
+                //noop
+            });
+            expect(sub instanceof Rx.Subscription).toBe(true);
+            expect(unsubscribeCalled).toBe(false);
+            expect(typeof sub.unsubscribe).toBe(&apos;function&apos;);
+            sub.unsubscribe();
+            expect(unsubscribeCalled).toBe(true);
+        });
+        it(&apos;should run unsubscription logic when an error is thrown sending messages synchronously&apos;, function () {
+            var messageError = false;
+            var messageErrorValue = false;
+            var unsubscribeCalled = false;
+            var sub;
+            var source = new Observable(function (observer) {
+                observer.next(&apos;boo!&apos;);
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            try {
+                sub = source.subscribe(function (x) { throw x; });
+            }
+            catch (e) {
+                messageError = true;
+                messageErrorValue = e;
+            }
+            expect(sub).toBe(undefined);
+            expect(unsubscribeCalled).toBe(true);
+            expect(messageError).toBe(true);
+            expect(messageErrorValue).toBe(&apos;boo!&apos;);
+        });
+        it(&apos;should dispose of the subscriber when an error is thrown sending messages synchronously&apos;, function () {
+            var messageError = false;
+            var messageErrorValue = false;
+            var unsubscribeCalled = false;
+            var sub;
+            var subscriber = new Subscriber(function (x) { throw x; });
+            var source = new Observable(function (observer) {
+                observer.next(&apos;boo!&apos;);
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            try {
+                sub = source.subscribe(subscriber);
+            }
+            catch (e) {
+                messageError = true;
+                messageErrorValue = e;
+            }
+            expect(sub).toBe(undefined);
+            expect(subscriber.isUnsubscribed).toBe(true);
+            expect(unsubscribeCalled).toBe(true);
+            expect(messageError).toBe(true);
+            expect(messageErrorValue).toBe(&apos;boo!&apos;);
+        });
+        describe(&apos;when called with an anonymous observer&apos;, function () {
+            it(&apos;should accept an anonymous observer with just a next function and call the next function in the context&apos; +
+                &apos; of the anonymous observer&apos;, function (done) {
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    next: function next(x) {
+                        expect(this).toBe(o);
+                        expect(x).toBe(1);
+                        done();
+                    }
+                };
+                Observable.of(1).subscribe(o);
+            });
+            it(&apos;should accept an anonymous observer with just an error function and call the error function in the context&apos; +
+                &apos; of the anonymous observer&apos;, function (done) {
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    error: function error(err) {
+                        expect(this).toBe(o);
+                        expect(err).toBe(&apos;bad&apos;);
+                        done();
+                    }
+                };
+                Observable.throw(&apos;bad&apos;).subscribe(o);
+            });
+            it(&apos;should accept an anonymous observer with just a complete function and call the complete function in the&apos; +
+                &apos; context of the anonymous observer&apos;, function (done) {
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    complete: function complete() {
+                        expect(this).toBe(o);
+                        done();
+                    }
+                };
+                Observable.empty().subscribe(o);
+            });
+            it(&apos;should accept an anonymous observer with no functions at all&apos;, function () {
+                expect(function () {
+                    Observable.empty().subscribe({});
+                }).not.toThrow();
+            });
+            it(&apos;should not run unsubscription logic when an error is thrown sending messages synchronously to an&apos; +
+                &apos; anonymous observer&apos;, function () {
+                var messageError = false;
+                var messageErrorValue = false;
+                var unsubscribeCalled = false;
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    next: function next(x) {
+                        expect(this).toBe(o);
+                        throw x;
+                    }
+                };
+                var sub;
+                var source = new Observable(function (observer) {
+                    observer.next(&apos;boo!&apos;);
+                    return function () {
+                        unsubscribeCalled = true;
+                    };
+                });
+                try {
+                    sub = source.subscribe(o);
+                }
+                catch (e) {
+                    messageError = true;
+                    messageErrorValue = e;
+                }
+                expect(sub).toBe(undefined);
+                expect(unsubscribeCalled).toBe(true);
+                expect(messageError).toBe(true);
+                expect(messageErrorValue).toBe(&apos;boo!&apos;);
+            });
+        });
+    });
+});
+/** @test {Observable} */
+describe(&apos;Observable.create&apos;, function () {
+    it(&apos;should create an Observable&apos;, function () {
+        var result = Observable.create(function () {
+            //noop
+        });
+        expect(result instanceof Observable).toBe(true);
+    });
+    it(&apos;should provide an observer to the function&apos;, function () {
+        var called = false;
+        var result = Observable.create(function (observer) {
+            called = true;
+            expectFullObserver(observer);
+            observer.complete();
+        });
+        expect(called).toBe(false);
+        result.subscribe(function () {
+            //noop
+        });
+        expect(called).toBe(true);
+    });
+});
+/** @test {Observable} */
+describe(&apos;Observable.lift&apos;, function () {
+    it(&apos;should be overrideable in a custom Observable type that composes&apos;, function (done) {
+        var MyCustomObservable = (function (_super) {
+            __extends(MyCustomObservable, _super);
+            function MyCustomObservable() {
+                _super.apply(this, arguments);
+            }
+            MyCustomObservable.prototype.lift = function (operator) {
+                var observable = new MyCustomObservable();
+                observable.source = this;
+                observable.operator = operator;
+                return observable;
+            };
+            return MyCustomObservable;
+        }(Rx.Observable));
+        var result = new MyCustomObservable(function (observer) {
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        }).map(function (x) { return 10 * x; });
+        expect(result instanceof MyCustomObservable).toBe(true);
+        var expected = [10, 20, 30];
+        result.subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, done);
+    });
+    it(&apos;should allow injecting behaviors into all subscribers in an operator &apos; +
+        &apos;chain when overridden&apos;, function (done) {
+        // The custom Subscriber
+        var log = [];
+        var LogSubscriber = (function (_super) {
+            __extends(LogSubscriber, _super);
+            function LogSubscriber() {
+                _super.apply(this, arguments);
+            }
+            LogSubscriber.prototype.next = function (value) {
+                log.push(&apos;next &apos; + value);
+                if (!this.isStopped) {
+                    this._next(value);
+                }
+            };
+            return LogSubscriber;
+        }(Rx.Subscriber));
+        // The custom Operator
+        var LogOperator = (function (_super) {
+            __extends(LogOperator, _super);
+            function LogOperator(childOperator) {
+                _super.call(this);
+                this.childOperator = childOperator;
+            }
+            LogOperator.prototype.call = function (subscriber) {
+                return this.childOperator.call(new LogSubscriber(subscriber));
+            };
+            return LogOperator;
+        }(Rx.Operator));
+        // The custom Observable
+        var LogObservable = (function (_super) {
+            __extends(LogObservable, _super);
+            function LogObservable() {
+                _super.apply(this, arguments);
+            }
+            LogObservable.prototype.lift = function (operator) {
+                var observable = new LogObservable();
+                observable.source = this;
+                observable.operator = new LogOperator(operator);
+                return observable;
+            };
+            return LogObservable;
+        }(Observable));
+        // Use the LogObservable
+        var result = new LogObservable(function (observer) {
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        })
+            .map(function (x) { return 10 * x; })
+            .filter(function (x) { return x &gt; 15; })
+            .count();
+        expect(result instanceof LogObservable).toBe(true);
+        var expected = [2];
+        result.subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, done.fail, function () {
+            expect(log).toEqual([
+                &apos;next 10&apos;,
+                &apos;next 20&apos;,
+                &apos;next 20&apos;,
+                &apos;next 30&apos;,
+                &apos;next 30&apos;,
+                &apos;next 2&apos; // count
+            ]);
+            done();
+        });
+    });
+});
+//# sourceMappingURL=Observable-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

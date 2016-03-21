@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/switchMap-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/switchMap-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {switchMap} */
+describe(&apos;Observable.prototype.switchMap&apos;, function () {
+    it(&apos;should switch with a selector function&apos;, function (done) {
+        var a = Observable.of(1, 2, 3);
+        var expected = [&apos;a1&apos;, &apos;b1&apos;, &apos;c1&apos;, &apos;a2&apos;, &apos;b2&apos;, &apos;c2&apos;, &apos;a3&apos;, &apos;b3&apos;, &apos;c3&apos;];
+        a.switchMap(function (x) { return Observable.of(&apos;a&apos; + x, &apos;b&apos; + x, &apos;c&apos; + x); })
+            .subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, null, done);
+    });
+    it(&apos;should unsub inner observables&apos;, function () {
+        var unsubbed = [];
+        Observable.of(&apos;a&apos;, &apos;b&apos;).switchMap(function (x) {
+            return Observable.create(function (subscriber) {
+                subscriber.complete();
+                return function () {
+                    unsubbed.push(x);
+                };
+            });
+        }).subscribe();
+        expect(unsubbed).toEqual([&apos;a&apos;, &apos;b&apos;]);
+    });
+    it(&apos;should switch inner cold observables&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|           &apos;);
+        var xsubs = &apos;         ^         !                  &apos;;
+        var y = cold(&apos;---f---g---h---i--|&apos;);
+        var ysubs = &apos;                   ^                 !&apos;;
+        var e1 = hot(&apos;---------x---------y---------|        &apos;);
+        var e1subs = &apos;^                                    !&apos;;
+        var expected = &apos;-----------a--b--c----f---g---h---i--|&apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error when projection throws&apos;, function () {
+        var e1 = hot(&apos;-------x-----y---|&apos;);
+        var e1subs = &apos;^      !          &apos;;
+        var expected = &apos;-------#          &apos;;
+        function project() {
+            throw &apos;error&apos;;
+        }
+        expectObservable(e1.switchMap(project)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error when resultSelector throws&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|   &apos;);
+        var xsubs = &apos;         ^ !                  &apos;;
+        var e1 = hot(&apos;---------x---------y---------|&apos;);
+        var e1subs = &apos;^          !                  &apos;;
+        var expected = &apos;-----------#                  &apos;;
+        function selector() {
+            throw &apos;error&apos;;
+        }
+        var result = e1.switchMap(function (value) { return x; }, selector);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner cold observables, outer is unsubscribed early&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|           &apos;);
+        var xsubs = &apos;         ^         !                  &apos;;
+        var y = cold(&apos;---f---g---h---i--|&apos;);
+        var ysubs = &apos;                   ^ !                &apos;;
+        var e1 = hot(&apos;---------x---------y---------|        &apos;);
+        var e1subs = &apos;^                    !                &apos;;
+        var unsub = &apos;                     !                &apos;;
+        var expected = &apos;-----------a--b--c----                &apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|           &apos;);
+        var xsubs = &apos;         ^         !                  &apos;;
+        var y = cold(&apos;---f---g---h---i--|&apos;);
+        var ysubs = &apos;                   ^ !                &apos;;
+        var e1 = hot(&apos;---------x---------y---------|        &apos;);
+        var e1subs = &apos;^                    !                &apos;;
+        var expected = &apos;-----------a--b--c----                &apos;;
+        var unsub = &apos;                     !                &apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .switchMap(function (value) { return observableLookup[value]; })
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner cold observables, inner never completes&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|          &apos;);
+        var xsubs = &apos;         ^         !                 &apos;;
+        var y = cold(&apos;---f---g---h---i--&apos;);
+        var ysubs = &apos;                   ^                 &apos;;
+        var e1 = hot(&apos;---------x---------y---------|       &apos;);
+        var e1subs = &apos;^                                    &apos;;
+        var expected = &apos;-----------a--b--c----f---g---h---i--&apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle a synchronous switch to the second inner observable&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|   &apos;);
+        var xsubs = &apos;         (^!)                 &apos;;
+        var y = cold(&apos;---f---g---h---i--|  &apos;);
+        var ysubs = &apos;         ^                 !  &apos;;
+        var e1 = hot(&apos;---------(xy)----------------|&apos;);
+        var e1subs = &apos;^                            !&apos;;
+        var expected = &apos;------------f---g---h---i----|&apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner cold observables, one inner throws&apos;, function () {
+        var x = cold(&apos;--a--b--#--d--e--|          &apos;);
+        var xsubs = &apos;         ^       !                   &apos;;
+        var y = cold(&apos;---f---g---h---i--&apos;);
+        var ysubs = [];
+        var e1 = hot(&apos;---------x---------y---------|       &apos;);
+        var e1subs = &apos;^                !                   &apos;;
+        var expected = &apos;-----------a--b--#                   &apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner hot observables&apos;, function () {
+        var x = hot(&apos;-----a--b--c--d--e--|                 &apos;);
+        var xsubs = &apos;         ^         !                  &apos;;
+        var y = hot(&apos;--p-o-o-p-------------f---g---h---i--|&apos;);
+        var ysubs = &apos;                   ^                 !&apos;;
+        var e1 = hot(&apos;---------x---------y---------|        &apos;);
+        var e1subs = &apos;^                                    !&apos;;
+        var expected = &apos;-----------c--d--e----f---g---h---i--|&apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner empty and empty&apos;, function () {
+        var x = cold(&apos;|&apos;);
+        var y = cold(&apos;|&apos;);
+        var xsubs = &apos;         (^!)                 &apos;;
+        var ysubs = &apos;                   (^!)       &apos;;
+        var e1 = hot(&apos;---------x---------y---------|&apos;);
+        var e1subs = &apos;^                            !&apos;;
+        var expected = &apos;-----------------------------|&apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner empty and never&apos;, function () {
+        var x = cold(&apos;|&apos;);
+        var y = cold(&apos;-&apos;);
+        var xsubs = &apos;         (^!)                 &apos;;
+        var ysubs = &apos;                   ^          &apos;;
+        var e1 = hot(&apos;---------x---------y---------|&apos;);
+        var e1subs = &apos;^                             &apos;;
+        var expected = &apos;------------------------------&apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner never and empty&apos;, function () {
+        var x = cold(&apos;-&apos;);
+        var y = cold(&apos;|&apos;);
+        var xsubs = &apos;         ^         !          &apos;;
+        var ysubs = &apos;                   (^!)       &apos;;
+        var e1 = hot(&apos;---------x---------y---------|&apos;);
+        var e1subs = &apos;^                            !&apos;;
+        var expected = &apos;-----------------------------|&apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner never and throw&apos;, function () {
+        var x = cold(&apos;-&apos;);
+        var y = cold(&apos;#&apos;, null, &apos;sad&apos;);
+        var xsubs = &apos;         ^         !          &apos;;
+        var ysubs = &apos;                   (^!)       &apos;;
+        var e1 = hot(&apos;---------x---------y---------|&apos;);
+        var e1subs = &apos;^                  !          &apos;;
+        var expected = &apos;-------------------#          &apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected, undefined, &apos;sad&apos;);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch inner empty and throw&apos;, function () {
+        var x = cold(&apos;|&apos;);
+        var y = cold(&apos;#&apos;, null, &apos;sad&apos;);
+        var xsubs = &apos;         (^!)                 &apos;;
+        var ysubs = &apos;                   (^!)       &apos;;
+        var e1 = hot(&apos;---------x---------y---------|&apos;);
+        var e1subs = &apos;^                  !          &apos;;
+        var expected = &apos;-------------------#          &apos;;
+        var observableLookup = { x: x, y: y };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected, undefined, &apos;sad&apos;);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle outer empty&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        var result = e1.switchMap(function (value) { return Observable.of(value); });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle outer never&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        var result = e1.switchMap(function (value) { return Observable.of(value); });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle outer throw&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        var result = e1.switchMap(function (value) { return Observable.of(value); });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should handle outer error&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|&apos;);
+        var xsubs = &apos;         ^         !       &apos;;
+        var e1 = hot(&apos;---------x---------#       &apos;);
+        var e1subs = &apos;^                  !       &apos;;
+        var expected = &apos;-----------a--b--c-#       &apos;;
+        var observableLookup = { x: x };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should switch with resultSelector goodness&apos;, function () {
+        var x = cold(&apos;--a--b--c--d--e--|           &apos;);
+        var xsubs = &apos;         ^         !                  &apos;;
+        var y = cold(&apos;---f---g---h---i--|&apos;);
+        var ysubs = &apos;                   ^                 !&apos;;
+        var e1 = hot(&apos;---------x---------y---------|        &apos;);
+        var e1subs = &apos;^                                    !&apos;;
+        var expected = &apos;-----------a--b--c----f---g---h---i--|&apos;;
+        var observableLookup = { x: x, y: y };
+        var expectedValues = {
+            a: [&apos;x&apos;, &apos;a&apos;, 0, 0],
+            b: [&apos;x&apos;, &apos;b&apos;, 0, 1],
+            c: [&apos;x&apos;, &apos;c&apos;, 0, 2],
+            f: [&apos;y&apos;, &apos;f&apos;, 1, 0],
+            g: [&apos;y&apos;, &apos;g&apos;, 1, 1],
+            h: [&apos;y&apos;, &apos;h&apos;, 1, 2],
+            i: [&apos;y&apos;, &apos;i&apos;, 1, 3]
+        };
+        var result = e1.switchMap(function (value) { return observableLookup[value]; }, function (innerValue, outerValue, innerIndex, outerIndex) { return [innerValue, outerValue, innerIndex, outerIndex]; });
+        expectObservable(result).toBe(expected, expectedValues);
+        expectSubscriptions(x.subscriptions).toBe(xsubs);
+        expectSubscriptions(y.subscriptions).toBe(ysubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+});
+//# sourceMappingURL=switchMap-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

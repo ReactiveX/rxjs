@@ -1,0 +1,906 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "distinctUntilChanged",
+            "range": [
+              9,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "distinctUntilChanged",
+            "range": [
+              9,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          },
+          "range": [
+            9,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./distinctUntilChanged",
+        "raw": "'./distinctUntilChanged'",
+        "range": [
+          37,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 37
+          },
+          "end": {
+            "line": 1,
+            "column": 61
+          }
+        }
+      },
+      "range": [
+        0,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 62
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "range": [
+            63,
+            916
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "distinctUntilKeyChanged",
+          "range": [
+            933,
+            956
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 16
+            },
+            "end": {
+              "line": 13,
+              "column": 39
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "key",
+            "range": [
+              957,
+              960
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 40
+              },
+              "end": {
+                "line": 13,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "compare",
+            "range": [
+              962,
+              969
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 45
+              },
+              "end": {
+                "line": 13,
+                "column": 52
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "distinctUntilChanged",
+                    "range": [
+                      984,
+                      1004
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 14,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 14,
+                        "column": 31
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "call",
+                    "range": [
+                      1005,
+                      1009
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 14,
+                        "column": 32
+                      },
+                      "end": {
+                        "line": 14,
+                        "column": 36
+                      }
+                    }
+                  },
+                  "range": [
+                    984,
+                    1009
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 36
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1010,
+                      1014
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 14,
+                        "column": 37
+                      },
+                      "end": {
+                        "line": 14,
+                        "column": 41
+                      }
+                    }
+                  },
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "x",
+                        "range": [
+                          1026,
+                          1027
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 14,
+                            "column": 53
+                          },
+                          "end": {
+                            "line": 14,
+                            "column": 54
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "y",
+                        "range": [
+                          1029,
+                          1030
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 14,
+                            "column": 56
+                          },
+                          "end": {
+                            "line": 14,
+                            "column": 57
+                          }
+                        }
+                      }
+                    ],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "IfStatement",
+                          "test": {
+                            "type": "Identifier",
+                            "name": "compare",
+                            "range": [
+                              1046,
+                              1053
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 15,
+                                "column": 12
+                              },
+                              "end": {
+                                "line": 15,
+                                "column": 19
+                              }
+                            }
+                          },
+                          "consequent": {
+                            "type": "BlockStatement",
+                            "body": [
+                              {
+                                "type": "ReturnStatement",
+                                "argument": {
+                                  "type": "CallExpression",
+                                  "callee": {
+                                    "type": "Identifier",
+                                    "name": "compare",
+                                    "range": [
+                                      1076,
+                                      1083
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 16,
+                                        "column": 19
+                                      },
+                                      "end": {
+                                        "line": 16,
+                                        "column": 26
+                                      }
+                                    }
+                                  },
+                                  "arguments": [
+                                    {
+                                      "type": "MemberExpression",
+                                      "computed": true,
+                                      "object": {
+                                        "type": "Identifier",
+                                        "name": "x",
+                                        "range": [
+                                          1084,
+                                          1085
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 16,
+                                            "column": 27
+                                          },
+                                          "end": {
+                                            "line": 16,
+                                            "column": 28
+                                          }
+                                        }
+                                      },
+                                      "property": {
+                                        "type": "Identifier",
+                                        "name": "key",
+                                        "range": [
+                                          1086,
+                                          1089
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 16,
+                                            "column": 29
+                                          },
+                                          "end": {
+                                            "line": 16,
+                                            "column": 32
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        1084,
+                                        1090
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 16,
+                                          "column": 27
+                                        },
+                                        "end": {
+                                          "line": 16,
+                                          "column": 33
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "MemberExpression",
+                                      "computed": true,
+                                      "object": {
+                                        "type": "Identifier",
+                                        "name": "y",
+                                        "range": [
+                                          1092,
+                                          1093
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 16,
+                                            "column": 35
+                                          },
+                                          "end": {
+                                            "line": 16,
+                                            "column": 36
+                                          }
+                                        }
+                                      },
+                                      "property": {
+                                        "type": "Identifier",
+                                        "name": "key",
+                                        "range": [
+                                          1094,
+                                          1097
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 16,
+                                            "column": 37
+                                          },
+                                          "end": {
+                                            "line": 16,
+                                            "column": 40
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        1092,
+                                        1098
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 16,
+                                          "column": 35
+                                        },
+                                        "end": {
+                                          "line": 16,
+                                          "column": 41
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "range": [
+                                    1076,
+                                    1099
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 16,
+                                      "column": 19
+                                    },
+                                    "end": {
+                                      "line": 16,
+                                      "column": 42
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  1069,
+                                  1100
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 16,
+                                    "column": 12
+                                  },
+                                  "end": {
+                                    "line": 16,
+                                    "column": 43
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1055,
+                              1110
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 15,
+                                "column": 21
+                              },
+                              "end": {
+                                "line": 17,
+                                "column": 9
+                              }
+                            }
+                          },
+                          "alternate": null,
+                          "range": [
+                            1042,
+                            1110
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 15,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 17,
+                              "column": 9
+                            }
+                          }
+                        },
+                        {
+                          "type": "ReturnStatement",
+                          "argument": {
+                            "type": "BinaryExpression",
+                            "operator": "===",
+                            "left": {
+                              "type": "MemberExpression",
+                              "computed": true,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "x",
+                                "range": [
+                                  1126,
+                                  1127
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 18,
+                                    "column": 15
+                                  },
+                                  "end": {
+                                    "line": 18,
+                                    "column": 16
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "key",
+                                "range": [
+                                  1128,
+                                  1131
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 18,
+                                    "column": 17
+                                  },
+                                  "end": {
+                                    "line": 18,
+                                    "column": 20
+                                  }
+                                }
+                              },
+                              "range": [
+                                1126,
+                                1132
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 18,
+                                  "column": 15
+                                },
+                                "end": {
+                                  "line": 18,
+                                  "column": 21
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "MemberExpression",
+                              "computed": true,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "y",
+                                "range": [
+                                  1137,
+                                  1138
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 18,
+                                    "column": 26
+                                  },
+                                  "end": {
+                                    "line": 18,
+                                    "column": 27
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "key",
+                                "range": [
+                                  1139,
+                                  1142
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 18,
+                                    "column": 28
+                                  },
+                                  "end": {
+                                    "line": 18,
+                                    "column": 31
+                                  }
+                                }
+                              },
+                              "range": [
+                                1137,
+                                1143
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 18,
+                                  "column": 26
+                                },
+                                "end": {
+                                  "line": 18,
+                                  "column": 32
+                                }
+                              }
+                            },
+                            "range": [
+                              1126,
+                              1143
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 18,
+                                "column": 15
+                              },
+                              "end": {
+                                "line": 18,
+                                "column": 32
+                              }
+                            }
+                          },
+                          "range": [
+                            1119,
+                            1144
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 18,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 18,
+                              "column": 33
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        1032,
+                        1150
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 14,
+                          "column": 59
+                        },
+                        "end": {
+                          "line": 19,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      1016,
+                      1150
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 14,
+                        "column": 43
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 5
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  984,
+                  1151
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 19,
+                    "column": 6
+                  }
+                }
+              },
+              "range": [
+                977,
+                1152
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 4
+                },
+                "end": {
+                  "line": 19,
+                  "column": 7
+                }
+              }
+            }
+          ],
+          "range": [
+            971,
+            1154
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 54
+            },
+            "end": {
+              "line": 20,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          924,
+          1154
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 7
+          },
+          "end": {
+            "line": 20,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+            "range": [
+              63,
+              916
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 12,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+            "range": [
+              1155,
+              1206
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 0
+              },
+              "end": {
+                "line": 21,
+                "column": 51
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        917,
+        1154
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "range": [
+            63,
+            916
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+          "range": [
+            1155,
+            1206
+          ],
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 51
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1154
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 20,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+      "range": [
+        63,
+        916
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+      "range": [
+        1155,
+        1206
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 51
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Overview</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual" data-toc-name="overview">
+    <h1 class="manual-toc-title"><a href="manual/overview.html" data-ice="title">Overview</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#introduction" data-ice="link">Introduction</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#observable" data-ice="link">Observable</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#pull-versus-push" data-ice="link">Pull versus Push</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#observables-as-generalizations-of-functions" data-ice="link">Observables as generalizations of functions</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#anatomy-of-an-observable" data-ice="link">Anatomy of an Observable</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#creating-observables" data-ice="link">Creating Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#subscribing-to-observables" data-ice="link">Subscribing to Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#executing-observables" data-ice="link">Executing Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#disposing-observable-executions" data-ice="link">Disposing Observable Executions</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#observer" data-ice="link">Observer</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#subscription" data-ice="link">Subscription</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#subject" data-ice="link">Subject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#multicasted-observables" data-ice="link">Multicasted Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#reference-counting" data-ice="link">Reference counting</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#behaviorsubject" data-ice="link">BehaviorSubject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#replaysubject" data-ice="link">ReplaySubject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#asyncsubject" data-ice="link">AsyncSubject</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#operators" data-ice="link">Operators</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#what-are-operators-" data-ice="link">What are operators?</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#instance-operators-versus-static-operators" data-ice="link">Instance operators versus static operators</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#marble-diagrams" data-ice="link">Marble diagrams</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#categories-of-operators" data-ice="link">Categories of operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#creation-operators" data-ice="link">Creation Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#transformation-operators" data-ice="link">Transformation Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#filtering-operators" data-ice="link">Filtering Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#combination-operators" data-ice="link">Combination Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#multicasting-operators" data-ice="link">Multicasting Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#error-handling-operators" data-ice="link">Error Handling Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#utility-operators" data-ice="link">Utility Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#conditional-and-boolean-operators" data-ice="link">Conditional and Boolean Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#mathematical-and-aggregate-operators" data-ice="link">Mathematical and Aggregate Operators</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#scheduler" data-ice="link">Scheduler</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#scheduler-types" data-ice="link">Scheduler Types</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#using-schedulers" data-ice="link">Using Schedulers</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="installation">
+    <h1 class="manual-toc-title"><a href="manual/installation.html" data-ice="title">Installation</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#es6-via-npm" data-ice="link">ES6 via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#commonjs-via-npm" data-ice="link">CommonJS via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#all-module-types-cjs-es6-amd-typescript-via-npm" data-ice="link">All Module Types (CJS/ES6/AMD/TypeScript) via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#cdn" data-ice="link">CDN</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="reference">
+    <h1 class="manual-toc-title"><a href="identifiers.html" data-ice="title">Reference</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#class" data-ice="link">Class</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown">
+  <div class="manual-breadcrumb-list">
+    <a href="./manual/./index.html">Manual</a>
+    <span>&#xBB;</span>
+    <span data-ice="title">Overview</span>
+  </div>
+  <div data-ice="content"><h1 id="introduction">Introduction</h1>
+<p>RxJS is a library for composing asynchronous and event-based programs by using observable sequences. It provides one core type, the <a href="./manual/./overview.html#observable">Observable</a>, satellite types (Observer, Schedulers, Subjects) and operators inspired by <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.6">Array#extras</a> (map, filter, reduce, every, etc) to allow handling asynchronous events as collections.</p>
+<p><span class="informal">Think of RxJS as lodash for events.</span></p>
+<p>ReactiveX combines the <a href="https://en.wikipedia.org/wiki/Observer_pattern">Observer pattern</a> with the <a href="https://en.wikipedia.org/wiki/Iterator_pattern">Iterator pattern</a> and <a href="http://martinfowler.com/articles/collection-pipeline/#NestedOperatorExpressions">functional programming with collections</a> to fill the need for an ideal way of managing sequences of events.</p>
+<p>The essential concepts in RxJS which solve async event management are:</p>
+<ul>
+<li><strong>Observable:</strong> represents the idea of an invokable collection of future values or events.</li>
+<li><strong>Observer:</strong> is a collection of callbacks that knows how to listen to values delivered by the Observable.</li>
+<li><strong>Subscription:</strong> represents the execution of an Observable, is primarily useful for cancelling the execution.</li>
+<li><strong>Operators:</strong> are pure functions that enable a functional programming style of dealing with collections with operations like <code>map</code>, <code>filter</code>, <code>concat</code>, <code>flatMap</code>, etc.</li>
+<li><strong>Subject:</strong> is the equivalent to an EventEmitter, and the only way of multicasting a value or event to multiple Observers.</li>
+<li><strong>Schedulers:</strong> are centralized dispatchers to control concurrency, allowing us to coordinate when computation happens on e.g. <code>setTimeout</code> or <code>requestAnimationFrame</code> or others.</li>
+</ul>
+<h1 id="observable">Observable</h1>
+<p>Observables are lazy Push collections of multiple values. They fill the missing spot in the following table:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Single</th>
+<th>Multiple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pull</strong></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Glossary/Function"><code>Function</code></a></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols">Iterator</a></td>
+</tr>
+<tr>
+<td><strong>Push</strong></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise"><code>Promise</code></a></td>
+<td><a href="./manual/../class/es6/Observable.js~Observable.html"><code>Observable</code></a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example.</strong> The following is an Observable that pushes the values <code>1</code>, <code>2</code>, <code>3</code> immediately (synchronously) when subscribed, and the value <code>4</code> after one second has passed since the subscribe call, then completes:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function (observer) {
+  observer.next(1);
+  observer.next(2);
+  observer.next(3);
+  setTimeout(() =&gt; {
+    observer.next(4);
+    observer.complete();
+  }, 1000);
+});</code>
+</code></pre>
+<p>To invoke the Observable and see these values, we need to <em>subscribe</em> to it:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function (observer) {
+  observer.next(1);
+  observer.next(2);
+  observer.next(3);
+  setTimeout(() =&gt; {
+    observer.next(4);
+    observer.complete();
+  }, 1000);
+});
+
+console.log(&apos;just before subscribe&apos;);
+observable.subscribe({
+  next: x =&gt; console.log(&apos;got value &apos; + x),
+  error: err =&gt; console.error(&apos;something wrong occurred: &apos; + err),
+  complete: () =&gt; console.log(&apos;done&apos;),
+});
+console.log(&apos;just after subscribe&apos;);</code>
+</code></pre>
+<p>Which executes as such on the console:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">just before subscribe
+got value 1
+got value 2
+got value 3
+just after subscribe
+got value 4
+done</code>
+</code></pre>
+<h2 id="pull-versus-push">Pull versus Push</h2>
+<p><em>Pull</em> and <em>Push</em> are two different protocols how a data <em>Producer</em> can communicate with a data <em>Consumer</em>.</p>
+<p><strong>What is Pull?</strong> In Pull systems, the Consumer determines when it receives data from the data Producer. The Producer itself is unaware of when the data will be delivered to the Consumer.</p>
+<p>Every JavaScript Function is a Pull system. The function is a Producer of data, and the code that calls the function is consuming it by &quot;pulling&quot; out a <em>single</em> return value from its call.</p>
+<p>ES2015 introduced <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">generator functions and iterators</a> (<code>function*</code>), another type of Pull system. Code that calls <code>iterator.next()</code> is the Consumer, &quot;pulling&quot; out <em>multiple</em> values from the iterator (the Producer).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Producer</th>
+<th>Consumer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pull</strong></td>
+<td><strong>Passive:</strong> produces data when requested.</td>
+<td><strong>Active:</strong> decides when data is requested.</td>
+</tr>
+<tr>
+<td><strong>Push</strong></td>
+<td><strong>Active:</strong> produces data at its own pace.</td>
+<td><strong>Passive:</strong> just reacts to data sent to it.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What is Push?</strong> In Push systems, the Producer determines when to send data to the Consumer The Consumer itself is unaware of when the data will be received.</p>
+<p>Promises are the most common type of Push system in JavaScript today. A Promise (the Producer) delivers a resolved value to registered callbacks (the Consumers), but unlike functions, it is the Promise which is in charge of determining precisely when that value is &quot;pushed&quot; to the callbacks.</p>
+<p>RxJS introduces Observables, a new Push system for JavaScript. An Observable is a Producer of multiple values, &quot;pushing&quot; them to Observers (Consumers).</p>
+<ul>
+<li>A <strong>Function</strong> is a lazily evaluated computation that synchronously returns a single value on invocation.</li>
+<li>A <strong>generator</strong> is a lazily evaluated computation that synchronously returns zero to (potentially) infinite values on iteration.</li>
+<li>A <strong>Promise</strong> is a computation that may (or may not) eventually return a single value.</li>
+<li>An <strong>Observable</strong> is a lazily evaluated computation that can synchronously or asynchronously return zero to (potentially) infinite values from the time it&apos;s invoked onwards.</li>
+</ul>
+<h2 id="observables-as-generalizations-of-functions">Observables as generalizations of functions</h2>
+<p>Contrary to popular claims, Observables are not like EventEmitters nor are they like Promises for multiple values. Observables <em>may act</em> like EventEmitters in some cases, namely when they are multicasted using RxJS Subjects, but usually they don&apos;t act like EventEmitters.</p>
+<p><span class="informal">Observables are like functions with zero arguments, but generalize those to allow multiple values.</span></p>
+<p>Consider the following:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">function foo() {
+  console.log(&apos;Hello&apos;);
+  return 42;
+}
+
+var x = foo.call(); // same as foo()
+console.log(x);
+var y = foo.call(); // same as foo()
+console.log(y);</code>
+</code></pre>
+<p>We expect to see as output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">&quot;Hello&quot;
+42
+&quot;Hello&quot;
+42</code>
+</code></pre>
+<p>You can write the same behavior above, but with Observables:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var foo = Rx.Observable.create(function (observer) {
+  console.log(&apos;Hello&apos;);
+  observer.next(42);
+});
+
+foo.subscribe(function (x) {
+  console.log(x);
+});
+foo.subscribe(function (y) {
+  console.log(y);
+});</code>
+</code></pre>
+<p>And the output is the same:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">&quot;Hello&quot;
+42
+&quot;Hello&quot;
+42</code>
+</code></pre>
+<p>This happens because both functions and Observables are lazy computations. If you don&apos;t call the function, the <code>console.log(&apos;Hello&apos;)</code> won&apos;t happen. Also with Observables, if you don&apos;t &quot;call&quot; it (with <code>subscribe</code>), the <code>console.log(&apos;Hello&apos;)</code> won&apos;t happen. Plus, &quot;calling&quot; or &quot;subscribing&quot; is an isolated operation: two function calls trigger two separate side effects, and two Observable subscribes trigger two separate side effects. As opposed to EventEmitters which share the side effects and have eager execution regardless of the existence of subscribers, Observables have no shared execution and are lazy.</p>
+<p><span class="informal">Subscribing to an Observable is analogous to calling a Function.</span></p>
+<p>Some people claim that Observables are asynchronous. That is not true. If you surround a function call with logs, like this:</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">console.log(&apos;before&apos;);
+console.log(foo.call());
+console.log(&apos;after&apos;);</code>
+</code></pre>
+<p>You will obviously see the output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">&quot;before&quot;
+&quot;Hello&quot;
+42
+&quot;after&quot;</code>
+</code></pre>
+<p>And this is the same behavior with Observables:</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">console.log(&apos;before&apos;);
+foo.subscribe(function (x) {
+  console.log(x);
+});
+console.log(&apos;after&apos;);</code>
+</code></pre>
+<p>And the output is:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">&quot;before&quot;
+&quot;Hello&quot;
+42
+&quot;after&quot;</code>
+</code></pre>
+<p>Which proves the subscription of <code>foo</code> was entirely synchronous, just like a function.</p>
+<p><span class="informal">Observables are able to deliver values either synchronously or asynchronously.</span></p>
+<p>What is the difference between an Observable and a function? <strong>Observables can &quot;return&quot; multiple values over time</strong>, something which functions cannot. You can&apos;t do this:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">function foo() {
+  console.log(&apos;Hello&apos;);
+  return 42;
+  return 100; // dead code. will never happen
+}</code>
+</code></pre>
+<p>Functions can only return one value. Observables, however, can do this:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var foo = Rx.Observable.create(function (observer) {
+  console.log(&apos;Hello&apos;);
+  observer.next(42);
+  observer.next(100); // &quot;return&quot; another value
+  observer.next(200); // &quot;return&quot; yet another
+});
+
+console.log(&apos;before&apos;);
+foo.subscribe(function (x) {
+  console.log(x);
+});
+console.log(&apos;after&apos;);</code>
+</code></pre>
+<p>With synchronous output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">&quot;before&quot;
+&quot;Hello&quot;
+42
+100
+200
+&quot;after&quot;</code>
+</code></pre>
+<p>But you can also &quot;return&quot; values asynchronously:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var foo = Rx.Observable.create(function (observer) {
+  console.log(&apos;Hello&apos;);
+  observer.next(42);
+  observer.next(100);
+  observer.next(200);
+  setTimeout(() =&gt; {
+    observer.next(300); // happens asynchronously
+  }, 1000);
+});
+
+console.log(&apos;before&apos;);
+foo.subscribe(function (x) {
+  console.log(x);
+});
+console.log(&apos;after&apos;);</code>
+</code></pre>
+<p>With output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">&quot;before&quot;
+&quot;Hello&quot;
+42
+100
+200
+&quot;after&quot;
+300</code>
+</code></pre>
+<p>Conclusion:</p>
+<ul>
+<li><code>func.call()</code> means &quot;<em>give me one value synchronously</em>&quot;</li>
+<li><code>observable.subscribe()</code> means &quot;<em>give me any amount of values, either synchronously or asynchronously</em>&quot;</li>
+</ul>
+<h2 id="anatomy-of-an-observable">Anatomy of an Observable</h2>
+<p>Observables are <strong>created</strong> using <code>Rx.Observable.create</code> or a creation operator, are <strong>subscribed</strong> to with an Observer, <strong>execute</strong> to deliver <code>next</code> / <code>error</code> / <code>complete</code> notifications to the Observer, and their execution may be <strong>disposed</strong>. These four aspects are all encoded in an Observable instance, but some of these aspects are related to other types, like Observer an Subscription.</p>
+<p>Four core Observable concerns:</p>
+<ul>
+<li><strong>Creation</strong></li>
+<li><strong>Subscribe</strong></li>
+<li><strong>Execution</strong></li>
+<li><strong>Disposal</strong></li>
+</ul>
+<h3 id="creating-observables">Creating Observables</h3>
+<p><code>Rx.Observable.create</code> is an alias for the <code>Observable</code> constructor, and it takes one argument: the <code>subscribe</code> function.</p>
+<p>The following example creates an Observable to emit the string <code>&apos;hi&apos;</code> every one second to an Observer.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function subscribe(observer) {
+  var id = setInterval(() =&gt; {
+    observer.next(&apos;hi&apos;)
+  }, 1000);
+});</code>
+</code></pre>
+<p><span class="informal">Observables can be created with <code>create</code>, but usually we use the so-called <a href="./manual/./overview.html#creation-operators">creation operators</a>, like <code>of</code>, <code>from</code>, <code>interval</code>, etc.</span></p>
+<p>In the example above, the <code>subscribe</code> function is the most important piece to describe the Observable. Let&apos;s look at what subscribing means.</p>
+<h3 id="subscribing-to-observables">Subscribing to Observables</h3>
+<p>The Observable <code>observable</code> in the example can be <em>subscribed</em> to, like this:</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">observable.subscribe(x =&gt; console.log(x));</code>
+</code></pre>
+<p>It is not a coincidence that <code>observable.subscribe</code> and <code>subscribe</code> in <code>Observable.create(function subscribe(observer) {...})</code> have the same name. In the library, they are different, but for practical purposes you can consider them conceptually equal.</p>
+<p>This shows how a <code>subscribe</code> calls are not at all shared among multiple Observers of the same Observable. When calling <code>observable.subscribe</code> with an Observer, the function <code>subscribe</code> in <code>Observable.create(function subscribe(observer) {...})</code> is run for that given Observer. Each call to <code>observable.subscribe</code> triggers its own independent for that given Observer.</p>
+<p><span class="informal">Subscribing to an Observable is like calling a function, providing callbacks where the data will be delivered to.</span></p>
+<p>This is drastically different to event handler APIs like <code>addEventListener</code> / <code>removeEventListener</code>. With <code>observable.subscribe</code>, the given Observer is not registered as a listener in the Observable. The Observable does not even maintain a list of attached Observers.</p>
+<p>A <code>subscribe</code> call is simply a way to start an &quot;Observable execution&quot; and deliver values or events to an Observer of that execution.</p>
+<h3 id="executing-observables">Executing Observables</h3>
+<p>The code inside <code>Observable.create(function subscribe(observer) {...})</code> represents an &quot;Observable execution&quot;, a lazy computation that only happens for each Observer that subscribes. The execution produces multiple values over time, either synchronously or asynchronously.</p>
+<p>There are three types of values an Observable Execution can deliver:</p>
+<ul>
+<li>&quot;Next&quot; notification: an actual value such as a Number, a String, an Object, etc.</li>
+<li>&quot;Error&quot; notification: a JavaScript Error or exception.</li>
+<li>&quot;Complete&quot; notification: a valueless event.</li>
+</ul>
+<p>Next notifications are the most important and most common type: they represent actual data being delivered to an Observer. Error and Complete notifications may happen only once during the Observable Execution, and there can only be either one of them.</p>
+<p>These constraints are expressed best in the so-called <em>Observable Grammar</em> or <em>Contract</em>, written as a regular expression:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">next*(error|complete)?</code>
+</code></pre>
+<p><span class="informal">In an Observable Execution, zero to infinite Next notifications may be delivered. If either an Error or Complete notification is delivered, then nothing else can be delivered afterwards.</span></p>
+<p>The following is an example of an Observable execution that delivers three Next notifications, then completes:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function subscribe(observer) {
+  observer.next(1);
+  observer.next(2);
+  observer.next(3);
+  observer.complete();
+});</code>
+</code></pre>
+<p>Observables strictly adhere to the Observable Contract, so the following code would not deliver the Next notification <code>4</code>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function subscribe(observer) {
+  observer.next(1);
+  observer.next(2);
+  observer.next(3);
+  observer.complete();
+  observer.next(4); // Is not delivered because it would violate the contract
+});</code>
+</code></pre>
+<p>It is a good idea to wrap any code in <code>subscribe</code> with <code>try</code>/<code>catch</code> block that will deliver an Error notification if it catches an exception:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function subscribe(observer) {
+  try {
+    observer.next(1);
+    observer.next(2);
+    observer.next(3);
+    observer.complete();
+  } catch (err) {
+    observer.error(err); // delivers an error if it caught one
+  }
+});</code>
+</code></pre>
+<h3 id="disposing-observable-executions">Disposing Observable Executions</h3>
+<p>Because Observable Executions may be infinite, and it&apos;s common for an Observer to want abort execution in finite time, we need an API for canceling an execution. Since each execution is exclusive to one Observer only, once the Observer is done receiving values, it has to have a way to stop the execution, in order to avoid wasting computation power or memory resources.</p>
+<p>When <code>observable.subscribe</code> is called, the Observer gets attached to the newly created Observable execution, but also this call returns an object, the <code>Subscription</code>:</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var subscription = observable.subscribe(x =&gt; console.log(x));</code>
+</code></pre>
+<p>The Subscription represents the ongoing execution, and has a minimal API, which primarily simply allows you to cancel that execution. Read more about the <a href="./manual/./overview.html#subscription"><code>Subscription</code> type here</a>. With <code>subscription.unsubscribe()</code> you can cancel the ongoing execution:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.fromArray([10, 20, 30]);
+var subscription = observable.subscribe(x =&gt; console.log(x));
+// Later:
+subscription.unsubscribe();</code>
+</code></pre>
+<p><span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Just call <code>unsubscribe()</code> to cancel the execution.</span></p>
+<p>Each Observable must define how to dispose resources of that execution when we create the Observable using <code>create()</code>. You can do that by returning a custom <code>unsubscribe</code> function from within <code>function subscribe()</code>.</p>
+<p>For instance, this is how we clear an interval execution set with <code>setInterval</code>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function subscribe(observer) {
+  // Keep track of the interval resource
+  var intervalID = setInterval(() =&gt; {
+    observer.next(&apos;hi&apos;);
+  }, 1000);
+
+  // Provide a way of canceling and disposing the interval resource
+  return function unsubscribe() {
+    clearInterval(intervalID);
+  };
+});</code>
+</code></pre>
+<p>Just like <code>observable.subscribe</code> resembles <code>Observable.create(function subscribe() {...})</code>, the <code>unsubscribe</code> we return from <code>subscribe</code> is conceptually equal to <code>subscription.unsubscribe</code>. In fact, if we remove the ReactiveX types surrounding these concepts, we get some JavaScript that is clearly simple:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">function subscribe(observer) {
+  var intervalID = setInterval(() =&gt; {
+    observer.next(&apos;hi&apos;);
+  }, 1000);
+
+  return function unsubscribe() {
+    clearInterval(intervalID);
+  };
+}
+
+var unsubscribe = subscribe({next: (x) =&gt; console.log(x)});
+
+// Later:
+unsubscribe(); // dispose the resources</code>
+</code></pre>
+<p>The reason why we use Rx types like Observable, Observer, and Subscription is to get safety (such as the Observable Contract) and composability with Operators.</p>
+<h1 id="observer">Observer</h1>
+<p><strong>What is an Observer?</strong> An Observer is a consumer of values delivered by an Observable. Observers are simply a set of callbacks, one for each type of notification delivered by the Observable: <code>next</code>, <code>error</code>, and <code>complete</code>. The following is an example of a typical Observer object:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observer = {
+  next: x =&gt; console.log(&apos;Observer got a next value: &apos; + x),
+  error: err =&gt; console.error(&apos;Observer got an error: &apos; + err),
+  complete: () =&gt; console.log(&apos;Observer got a complete notification&apos;),
+};</code>
+</code></pre>
+<p>To use the Observer, provide it to the <code>subscribe</code> of an Observable:</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">observable.subscribe(observer);</code>
+</code></pre>
+<p><span class="informal">Observers are just objects with three callbacks, one for each type of notification that an Observable may deliver.</span></p>
+<p>Observers in RxJS may also be <em>partial</em>. If you don&apos;t provide one of the callbacks, the execution of the Observable will still happen normally, except some types of notifications will be ignored, because they don&apos;t have a corresponding callback in the Observer.</p>
+<p>The example below is an Observer without the <code>complete</code> callback:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observer = {
+  next: x =&gt; console.log(&apos;Observer got a next value: &apos; + x),
+  error: err =&gt; console.error(&apos;Observer got an error: &apos; + err),
+};</code>
+</code></pre>
+<p>When subscribing to an Observable, you may also just provide the callbacks as arguments, without being attached to an Observer object, for instance like this:</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">observable.subscribe(x =&gt; console.log(&apos;Observer got a next value: &apos; + x));</code>
+</code></pre>
+<p>Internally in <code>observable.subscribe</code>, it will create an Observer object using the first callback argument as the <code>next</code> handler. All three types of callbacks may be provided as arguments:</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">observable.subscribe(
+  x =&gt; console.log(&apos;Observer got a next value: &apos; + x),
+  err =&gt; console.error(&apos;Observer got an error: &apos; + err),
+  () =&gt; console.log(&apos;Observer got a complete notification&apos;)
+);</code>
+</code></pre>
+<h1 id="subscription">Subscription</h1>
+<p><strong>What is a Subscription?</strong> A Subscription is an object that represents a disposable resource, usually the execution of an Observable. A Subscription has one important method, <code>unsubscribe</code>, that takes no argument and just disposes the resource held by the subscription. In previous versions of RxJS, Subscription was called &quot;Disposable&quot;.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.interval(1000);
+var subscription = observable.subscribe(x =&gt; console.log(x));
+// Later:
+// This cancels the ongoing Observable execution which
+// was started by calling subscribe with an Observer.
+subscription.unsubscribe();</code>
+</code></pre>
+<p><span class="informal">A Subscription essentially just has an <code>unsubscribe()</code> function to release resources or cancel Observable executions.</span></p>
+<p>Subscriptions can also be put together, so that a call to an <code>unsubscribe()</code> of one Subscription may unsubscribe multiple Subscriptions. You can do this by &quot;adding&quot; one subscription into another:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable1 = Rx.Observable.interval(400);
+var observable2 = Rx.Observable.interval(300);
+
+var subscription = observable1.subscribe(x =&gt; console.log(&apos;first: &apos; + x));
+var childSubscription = observable2.subscribe(x =&gt; console.log(&apos;second: &apos; + x));
+
+subscription.add(childSubscription);
+
+setTimeout(() =&gt; {
+  // Unsubscribes BOTH subscription and childSubscription
+  subscription.unsubscribe();
+}, 1000);</code>
+</code></pre>
+<p>When executed, we see in the console:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">second: 0
+first: 0
+second: 1
+first: 1
+second: 2</code>
+</code></pre>
+<p>Subscriptions also have a <code>remove(otherSubscription)</code> method, in order to undo the addition of a child Subscription.</p>
+<h1 id="subject">Subject</h1>
+<p><strong>What is a Subject?</strong> An RxJS Subject is a special type of Observable that allows values to be multicasted to many Observers. While plain Observables are unicast (each subscribed Observer owns an independent execution of the Observable), Subjects are multicast.</p>
+<p><span class="informal">A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners.</span></p>
+<p><strong>Every Subject is an Observable.</strong> Given a Subject, you can <code>subscribe</code> to it, providing an Observer, which will start receiving values normally. From the perspective of the Observer, it cannot tell whether the Observable execution is coming from a plain unicast Observable or a Subject.</p>
+<p>Internally to the Subject, <code>subscribe</code> does not invoke a new execution that delivers values. It simply registers the given Observer in a list of Observers, similarly to how <code>addListener</code> usually works in other libraries and languages.</p>
+<p><strong>Every Subject is an Observer.</strong> It is an object with the methods <code>next(v)</code>, <code>error(e)</code>, and <code>complete()</code>. To feed a new value to the Subject, just call <code>next(theValue)</code>, and it will be multicasted to the Observers registered to listen to the Subject.</p>
+<p>In the example below, we have two Observers attached to a Subject, and we feed some values to the Subject:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var subject = new Rx.Subject();
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+});
+
+subject.next(1);
+subject.next(2);</code>
+</code></pre>
+<p>With the following output on the console:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">observerA: 1
+observerB: 1
+observerA: 2
+observerB: 2</code>
+</code></pre>
+<p>Since a Subject is an Observer, this also means you may provide a Subject as the argument to the <code>subscribe</code> of any Observable, like the example below shows:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var subject = new Rx.Subject();
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+});
+
+var observable = Rx.Observable.fromArray([1, 2, 3]);
+
+observable.subscribe(subject); // You can subscribe providing a Subject</code>
+</code></pre>
+<p>Which executes as:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">observerA: 1
+observerB: 1
+observerA: 2
+observerB: 2
+observerA: 3
+observerB: 3</code>
+</code></pre>
+<p>With the approach above, we essentially just converted a unicast Observable execution to multicast, through the Subject. This demonstrates how Subjects are the only way of making any Observable execution be shared to multiple Observers.</p>
+<p>There are also a few specializations of the <code>Subject</code> type: <code>BehaviorSubject</code>, <code>ReplaySubject</code>, and <code>AsyncSubject</code>.</p>
+<h2 id="multicasted-observables">Multicasted Observables</h2>
+<p>Whenever we refer to &quot;a multicasted Observable&quot;, that means an Observable execution that passes through a Subject. Otherwise, a &quot;plain (unicast) Observable&quot; behaves like an <em>invokable collection of future values</em>, with no sharing assumed.</p>
+<p><span class="informal">A multicasted Observable uses a Subject under the hood to make multiple Observers see the same Observable execution.</span></p>
+<p>Under the hood, this is how the <code>multicast</code> operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used <code>observable.subscribe(subject)</code>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var source = Rx.Observable.fromArray([1, 2, 3]);
+var subject = new Rx.Subject();
+var multicasted = source.multicast(subject);
+
+// These are, under the hood, `subject.subscribe({...})`:
+multicasted.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+multicasted.subscribe({
+  next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+});
+
+// This is, under the hood, `source.subscribe(subject)`:
+multicasted.connect();</code>
+</code></pre>
+<p><code>multicast</code> returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. <code>multicast</code> returns a <code>ConnectableObservable</code>, which is simply an Observable with the <code>connect()</code> method.</p>
+<p>The <code>connect()</code> method is important to determine exactly when will the shared Observable execution start. Because <code>connect()</code> does <code>source.subscribe(subject)</code> under the hood, <code>connect()</code> returns a Subscription, which you can unsubscribe in order to cancel the shared Observable execution.</p>
+<h3 id="reference-counting">Reference counting</h3>
+<p>Calling <code>connect()</code> manually and handling the Subscription is often cumbersome. Usually, we want to <em>automatically</em> connect when the first Observer arrives, and automatically cancel the shared execution when the last Observer unsubscribes. </p>
+<p>Consider the following example where subscriptions occur as outlined by this list:</p>
+<ol>
+<li>First Observer subscribes to the multicasted Observable</li>
+<li><strong>The multicasted Observable is connected</strong></li>
+<li>The <code>next</code> value <code>0</code> is delivered to the first Observer</li>
+<li>Second Observer subscribes to the multicasted Observable</li>
+<li>The <code>next</code> value <code>1</code> is delivered to the first Observer</li>
+<li>The <code>next</code> value <code>1</code> is delivered to the second Observer</li>
+<li>First Observer unsubscribes from the multicasted Observable</li>
+<li>The <code>next</code> value <code>2</code> is delivered to the second Observer</li>
+<li>Second Observer unsubscribes from the multicasted Observable</li>
+<li><strong>The connection to the multicasted Observable is unsubscribed</strong></li>
+</ol>
+<p>To achieve that with explicit calls to <code>connect()</code>, we write the following code:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var source = Rx.Observable.interval(500);
+var subject = new Rx.Subject();
+var multicasted = source.multicast(subject);
+var subscription1, subscription2, subscriptionConnect;
+
+subscription1 = multicasted.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+// We should call `connect()` here, because the first 
+// subscriber to `multicasted` is interested in consuming values
+subscriptionConnect = multicasted.connect();
+
+setTimeout(() =&gt; {
+  subscription2 = multicasted.subscribe({
+    next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+  });
+}, 600);
+
+setTimeout(() =&gt; {
+  subscription1.unsubscribe();
+}, 1200);
+
+// We should unsubscribe the shared Observable execution here,
+// because `multicasted` would have no more subscribers after this
+setTimeout(() =&gt; {
+  subscription2.unsubscribe();
+  subscriptionConnect.unsubscribe(); // for the shared Observable execution
+}, 2000);</code>
+</code></pre>
+<p>If we wish to avoid explicit calls to <code>connect()</code>, we use the method <code>refCount()</code> on the ConnectableObservable. It does reference counting: keeps track of how many subscribers are registered on the ConnectableObservable. <code>refCount()</code> calls <code>connect()</code> when that number goes from <code>0</code> to <code>1</code>, and keeps the subscription for the shared execution. When the number of subscribers goes from <code>1</code> to <code>0</code>, it finally unsubscribes the subscription to the shared execution. </p>
+<p><span class="informal"><code>refCount</code> makes the multicasted Observable automatically start executing when the first subscriber arrives, and stop executing when the last subscriber leaves.</span></p>
+<p>Below is an example:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var source = Rx.Observable.interval(500);
+var subject = new Rx.Subject();
+var refCounted = source.multicast(subject).refCount();
+var subscription1, subscription2, subscriptionConnect;
+
+// This calls `connect()`, because
+// it is the first subscriber to `refCounted`
+console.log(&apos;observerA subscribed&apos;);
+subscription1 = refCounted.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+
+setTimeout(() =&gt; {
+  console.log(&apos;observerB subscribed&apos;);
+  subscription2 = refCounted.subscribe({
+    next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+  });
+}, 600);
+
+setTimeout(() =&gt; {
+  console.log(&apos;observerA unsubscribed&apos;);
+  subscription1.unsubscribe();
+}, 1200);
+
+// This is when the shared Observable execution will stop, because
+// `refCounted` would have no more subscribers after this
+setTimeout(() =&gt; {
+  console.log(&apos;observerB unsubscribed&apos;);
+  subscription2.unsubscribe();
+}, 2000);</code>
+</code></pre>
+<p>Which executes with the output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">observerA subscribed
+observerA: 0
+observerB subscribed
+observerA: 1
+observerB: 1
+observerA unsubscribed
+observerB: 2
+observerB unsubscribed</code>
+</code></pre>
+<p>The <code>refCount()</code> method only exists on ConnectableObservables, and it returns an <code>Observable</code>, not another ConnectableObservable.</p>
+<h2 id="behaviorsubject">BehaviorSubject</h2>
+<p>One of the variants of Subjects is the <code>BehaviorSubject</code>, which has a notion of &quot;the current value&quot;. It stores the latest value emitted to its consumers, and whenever a new Observer subscribes, it will immediately receive the &quot;current value&quot; from the <code>BehaviorSubject</code>.</p>
+<p><span class="informal">BehaviorSubjects are useful for representing &quot;values over time&quot;. For instance, an event stream of birthdays is a Subject, but the stream of a person&apos;s age would be a BehaviorSubject.</span></p>
+<p>Notice in the following example how the BehaviorSubject is initialized with the value <code>0</code> which the first Observer receives when it subscribes. Also, the second Observer subscribes after the value <code>2</code> was sent, but will still receive that value:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var subject = new Rx.BehaviorSubject(0 /* the initial value */);
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+
+subject.next(1);
+subject.next(2);
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+});
+
+subject.next(3);</code>
+</code></pre>
+<p>With output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">observerA: 0
+observerA: 1
+observerA: 2
+observerB: 2
+observerA: 3
+observerB: 3</code>
+</code></pre>
+<h2 id="replaysubject">ReplaySubject</h2>
+<p>The <code>ReplaySubject</code> subclass of <code>Subject</code> is like <code>BehaviorSubject</code> in that it can send old values to new incoming subscribers, but it in general is able to <em>record</em> a part of the Observable execution.</p>
+<p><span class="informal">A <code>ReplaySubject</code> records multiple values from the Observable execution and replays them to new subscribers.</span></p>
+<p>You may, for instance, specify how many values to replay, e.g.:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var subject = new Rx.ReplaySubject(3 /* bufferSize */);
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+
+subject.next(1);
+subject.next(2);
+subject.next(3);
+subject.next(4);
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+});
+
+subject.next(5);</code>
+</code></pre>
+<p>With output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">observerA: 1
+observerA: 2
+observerA: 3
+observerA: 4
+observerB: 2
+observerB: 3
+observerB: 4
+observerA: 5
+observerB: 5</code>
+</code></pre>
+<p>You can also specify a <em>window time</em> in milliseconds, besides of the buffer size, to determine how old the recorded values can be. In the following example we use a large buffer size of <code>100</code>, but a window time parameter of just <code>500</code> milliseconds.</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var subject = new Rx.ReplaySubject(100, 500 /* windowTime */);
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+
+var i = 1;
+setInterval(() =&gt; subject.next(i++), 200);
+
+setTimeout(() =&gt; {
+  subject.subscribe({
+    next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+  });
+}, 1000);</code>
+</code></pre>
+<p>With the following output where the second Observer gets events <code>3</code>, <code>4</code> and <code>5</code> that happened in the last <code>500</code> milliseconds prior to its subscription:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">observerA: 1
+observerA: 2
+observerA: 3
+observerA: 4
+observerA: 5
+observerB: 3
+observerB: 4
+observerB: 5
+observerA: 6
+observerB: 6
+...</code>
+</code></pre>
+<h2 id="asyncsubject">AsyncSubject</h2>
+<p>The AsyncSubject is a variant where only the last value of the Observable execution is sent to its observers, and only when the execution completes.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var subject = new Rx.AsyncSubject();
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerA: &apos; + v)
+});
+
+subject.next(1);
+subject.next(2);
+subject.next(3);
+subject.next(4);
+
+subject.subscribe({
+  next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
+});
+
+subject.next(5);
+subject.complete();</code>
+</code></pre>
+<p>With output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">observerA: 5
+observerB: 5</code>
+</code></pre>
+<p>The AsyncSubject is similar to the <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-last"><code>last()</code></a> operator, in that it waits for the <code>complete</code> notification in order to deliver a single value.</p>
+<h1 id="operators">Operators</h1>
+<p>RxJS is mostly useful for its <em>operators</em>, even though the Observable is the foundation. Operators are the essential pieces that allow complex asynchronous code to be easily composed in a declarative manner.</p>
+<h2 id="what-are-operators-">What are operators?</h2>
+<p>Operators are <strong>methods</strong> on the Observable type, such as <code>.map(...)</code>, <code>.filter(...)</code>, <code>.merge(...)</code>, etc. When called, they do not <em>change</em> the existing Observable instance. Instead, they return a <em>new</em> Observable, whose subscription logic is based on the first Observable.</p>
+<p><span class="informal">An Operator is a function take creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span></p>
+<p>An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. A subscribe on the output Observable will causa also a subscribe on the input Observable. In the following example, we create a custom operator/function that simply multiplies by 10 each value delivered by the input Observable:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">function multiplyByTen(input) {
+  var output = Rx.Observable.create(function subscribe(observer) {
+    input.subscribe({
+      next: (v) =&gt; observer.next(10 * v),
+      error: (err) =&gt; observer.error(err),
+      complete: () =&gt; observer.complete()
+    });
+  });
+  return output;
+}
+
+var input = Rx.Observable.fromArray([1, 2, 3, 4]);
+var output = multiplyByTen(input);
+output.subscribe(x =&gt; console.log(x));</code>
+</code></pre>
+<p>Which outputs:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">10
+20
+30
+40</code>
+</code></pre>
+<p>Notice that a subscribe to <code>output</code> will cause <code>input</code> Observable to be subscribed. We call this an &quot;operator subscription chain&quot;.</p>
+<h2 id="instance-operators-versus-static-operators">Instance operators versus static operators</h2>
+<p><strong>What is an instance operator?</strong> Typically when referring to operators, we assume <em>instance</em> operators, which are methods on Observable instances. For instance, if the operator <code>multiplyByTen</code> would be an official instance operator, it would look roughly like this:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">Rx.Observable.prototype.multiplyByTen = function multiplyByTen() {
+  var input = this;
+  return Rx.Observable.create(function subscribe(observer) {
+    input.subscribe({
+      next: (v) =&gt; observer.next(10 * v),
+      error: (err) =&gt; observer.error(err),
+      complete: () =&gt; observer.complete()
+    });
+  });
+}</code>
+</code></pre>
+<p><span class="informal">Instance operators are functions that use the <code>this</code> keyword to infer what is the input Observable.</span></p>
+<p>Notice how the <code>input</code> Observable is not a function argument anymore, it is assumed to be the <code>this</code> object. This is how we would use such instance operator:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.fromArray([1, 2, 3, 4]).multiplyByTen();
+
+observable.subscribe(x =&gt; console.log(x));</code>
+</code></pre>
+<p><strong>What is a static operator?</strong> Besides instance operators, static operators are functions attached to the Observable class directly. A static operator uses no <code>this</code> keyword internally, but instead relies entirely on its arguments.</p>
+<p><span class="informal">Static operators are pure functions attached to the Observable class, and usually are used to create Observables from scratch.</span></p>
+<p>The most common type of static operators are the so-called <em>Creation Operators</em>. Instead of transforming an input Observable to an output Observable, they simply take a non-Observable argument, like a number, and <em>create</em> a new Observable.</p>
+<p>A typical example of a static creation operator would be the <code>interval</code> function. It takes a number (not an Observable) as input argument, and produces an Observable as output:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.interval(1000 /* number of milliseconds */);</code>
+</code></pre>
+<p>Another example of a creation operator is <code>create</code>, which we have been using extensively in previous examples. See the list of <a href="#creation-operators">all static creation operators here</a>.</p>
+<p>However, static operators may be of different nature than simply creation. Some <em>Combination Operators</em> may be static, such as <code>merge</code>, <code>combineLatest</code>, <code>concat</code>, etc. These make sense as static operators because they take <em>multiple</em> Observables as input, not just one, for instance:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable1 = Rx.Observable.interval(1000);
+var observable2 = Rx.Observable.interval(400);
+
+var merged = Rx.Observable.merge(observable1, observable2);</code>
+</code></pre>
+<h2 id="marble-diagrams">Marble diagrams</h2>
+<p>To explain how operators work, textual descriptions are often not enough. Many operators are related to time, they may for instance delay, sample, throttle, or debounce value emissions in different ways. Diagrams are often a better tool for that. <em>Marble Diagrams</em> are visual representations of how operators work, and include the input Observable(s), the operator and its parameters, and the output Observable.</p>
+<p><span class="informal">In a marble diagram, time flows to the right, and the diagram describes how values (&quot;marbles&quot;) are emitted on the Observable execution.</span></p>
+<p>Below you can see the anatomy of a marble diagram.</p>
+<p><img src="./manual/./asset/marble-diagram-anatomy.svg"></p>
+<p>Throughout this documentation site, we extensively use marble diagrams to explain how operators work. They may be really useful in other contexts too, like on a whiteboard or even in our unit tests (as ASCII diagrams).</p>
+<h2 id="categories-of-operators">Categories of operators</h2>
+<p>There are operators for different purposes, and they may be categorized as: creation, transformation, filtering, combination, multicasting, error handling, utility, etc. In the following list you will find all the operators organized in categories.</p>
+<h3 id="creation-operators">Creation Operators</h3>
+<ul>
+<li><code>ajax</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-bindCallback"><code>bindCallback</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-bindNodeCallback"><code>bindNodeCallback</code></a></li>
+<li><code>create</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-defer"><code>defer</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-empty"><code>empty</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-from"><code>from</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromArray"><code>fromArray</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromEvent"><code>fromEvent</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromEventPattern"><code>fromEventPattern</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromPromise"><code>fromPromise</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-interval"><code>interval</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-never"><code>never</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-of"><code>of</code></a></li>
+<li><code>repeat</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-range"><code>range</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-throw"><code>throw</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-timer"><code>timer</code></a></li>
+</ul>
+<h3 id="transformation-operators">Transformation Operators</h3>
+<ul>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-buffer"><code>buffer</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-bufferCount"><code>bufferCount</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-bufferTime"><code>bufferTime</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-bufferToggle"><code>bufferToggle</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-bufferWhen"><code>bufferWhen</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-concatMap"><code>concatMap</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-concatMapTo"><code>concatMapTo</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-exhaustMap"><code>exhaustMap</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-expand"><code>expand</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-groupBy"><code>groupBy</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-map"><code>map</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-mapTo"><code>mapTo</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-mergeMap"><code>mergeMap</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-mergeMapTo"><code>mergeMapTo</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-mergeScan"><code>mergeScan</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-pairwise"><code>pairwise</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-partition"><code>partition</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-pluck"><code>pluck</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-scan"><code>scan</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-switchMap"><code>switchMap</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-switchMapTo"><code>switchMapTo</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-window"><code>window</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-windowCount"><code>windowCount</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-windowTime"><code>windowTime</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-windowToggle"><code>windowToggle</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-windowWhen"><code>windowWhen</code></a></li>
+</ul>
+<h3 id="filtering-operators">Filtering Operators</h3>
+<ul>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-debounce"><code>debounce</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-debounceTime"><code>debounceTime</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-distinct"><code>distinct</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-distinctKey"><code>distinctKey</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged"><code>distinctUntilChanged</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-distinctUntilKeyChanged"><code>distinctUntilKeyChanged</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-elementAt"><code>elementAt</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-filter"><code>filter</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-first"><code>first</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-ignoreElements"><code>ignoreElements</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-inspect"><code>inspect</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-inspectTime"><code>inspectTime</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-last"><code>last</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-sample"><code>sample</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-sampleTime"><code>sampleTime</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-single"><code>single</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-skip"><code>skip</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-skipUntil"><code>skipUntil</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-skipWhile"><code>skipWhile</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-take"><code>take</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-takeLast"><code>takeLast</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-takeUntil"><code>takeUntil</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-takeWhile"><code>takeWhile</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-throttle"><code>throttle</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-throttleTime"><code>throttleTime</code></a></li>
+</ul>
+<h3 id="combination-operators">Combination Operators</h3>
+<ul>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-combineAll"><code>combineAll</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-combineLatest"><code>combineLatest</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-concat"><code>concat</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-concatAll"><code>concatAll</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-exhaust"><code>exhaust</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-forkJoin"><code>forkJoin</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-merge"><code>merge</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-mergeAll"><code>mergeAll</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-race"><code>race</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-startWith"><code>startWith</code></a></li>
+<li><code>switch</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-withLatestFrom"><code>withLatestFrom</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-zip"><code>zip</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-zipAll"><code>zipAll</code></a></li>
+</ul>
+<h3 id="multicasting-operators">Multicasting Operators</h3>
+<ul>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-cache"><code>cache</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-multicast"><code>multicast</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-publish"><code>publish</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-publishBehavior"><code>publishBehavior</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-publishLast"><code>publishLast</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-publishReplay"><code>publishReplay</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-share"><code>share</code></a></li>
+</ul>
+<h3 id="error-handling-operators">Error Handling Operators</h3>
+<ul>
+<li><code>catch</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-retry"><code>retry</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-retryWhen"><code>retryWhen</code></a></li>
+</ul>
+<h3 id="utility-operators">Utility Operators</h3>
+<ul>
+<li><code>do</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-delay"><code>delay</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-delayWhen"><code>delayWhen</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-dematerialize"><code>dematerialize</code></a></li>
+<li><code>finally</code></li>
+<li><code>let</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-materialize"><code>materialize</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-observeOn"><code>observeOn</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-subscribeOn"><code>subscribeOn</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-timeInterval"><code>timeInterval</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-timeout"><code>timeout</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-timeoutWith"><code>timeoutWith</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-toArray"><code>toArray</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-toPromise"><code>toPromise</code></a></li>
+</ul>
+<h3 id="conditional-and-boolean-operators">Conditional and Boolean Operators</h3>
+<ul>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-defaultIfEmpty"><code>defaultIfEmpty</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-every"><code>every</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-find"><code>find</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-findIndex"><code>findIndex</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-isEmpty"><code>isEmpty</code></a></li>
+</ul>
+<h3 id="mathematical-and-aggregate-operators">Mathematical and Aggregate Operators</h3>
+<ul>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-count"><code>count</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-max"><code>max</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-min"><code>min</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-reduce"><code>reduce</code></a></li>
+</ul>
+<h1 id="scheduler">Scheduler</h1>
+<p><strong>What is a Scheduler?</strong> A scheduler controls when a subscription starts and when notifications are delivered. It consists of three components.</p>
+<ul>
+<li><strong>A Scheduler is a data structure.</strong> It knows how to store and queue tasks based on priority or other criteria.</li>
+<li><strong>A Scheduler is an execution context.</strong> It denotes where and when the task is executed (e.g. immediately, or in another callback mechanism such as setTimeout or process.nextTick, or the animation frame).</li>
+<li><strong>A Scheduler has a (virtual) clock.</strong> It provides a notion of &quot;time&quot; by a getter method <code>now()</code> on the scheduler. Tasks being scheduled on a particular scheduler will adhere only to the time denoted by that clock.</li>
+</ul>
+<p><span class="informal">A Scheduler lets you define in what execution context will an Observable delivers notifications to its Observer.</span></p>
+<p>In the example below, we take the usual simple Observable that emits values <code>1</code>, <code>2</code>, <code>3</code> synchronously, and use the operator <code>observeOn</code> to specify the <code>async</code> scheduler to use for delivering those values.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function (observer) {
+  observer.next(1);
+  observer.next(2);
+  observer.next(3);
+  observer.complete();
+})
+.observeOn(Rx.Scheduler.async);
+
+console.log(&apos;just before subscribe&apos;);
+observable.subscribe({
+  next: x =&gt; console.log(&apos;got value &apos; + x),
+  error: err =&gt; console.error(&apos;something wrong occurred: &apos; + err),
+  complete: () =&gt; console.log(&apos;done&apos;),
+});
+console.log(&apos;just after subscribe&apos;);</code>
+</code></pre>
+<p>Which executes with the output:</p>
+<pre><code class="lang-none"><code class="source-code prettyprint">just before subscribe
+just after subscribe
+got value 1
+got value 2
+got value 3
+done</code>
+</code></pre>
+<p>Notice how the notifications <code>got value...</code> were delivered after <code>just before subscribe</code>, which is different to the default behavior we have seen so far. This is because <code>observeOn(Rx.Scheduler.async)</code> introduces a proxy Observer between <code>Observable.create</code> and the final Observer. Let&apos;s rename some identifiers to make that distinction obvious in the example code:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.create(function (proxyObserver) {
+  proxyObserver.next(1);
+  proxyObserver.next(2);
+  proxyObserver.next(3);
+  proxyObserver.complete();
+})
+.observeOn(Rx.Scheduler.async);
+
+var finalObserver = {
+  next: x =&gt; console.log(&apos;got value &apos; + x),
+  error: err =&gt; console.error(&apos;something wrong occurred: &apos; + err),
+  complete: () =&gt; console.log(&apos;done&apos;),
+};
+
+console.log(&apos;just before subscribe&apos;);
+observable.subscribe(finalObserver);
+console.log(&apos;just after subscribe&apos;);</code>
+</code></pre>
+<p>The <code>proxyObserver</code> is created in <code>observeOn(Rx.Scheduler.async)</code>, and its <code>next(val)</code> function is approximately the following:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var proxyObserver = {
+  next: (val) =&gt; {
+    Rx.Scheduler.async.schedule(
+      (x) =&gt; finalObserver.next(x), 
+      0 /* delay */, 
+      val /* will be the x for the function above */
+    );
+  },
+
+  // ...
+}</code>
+</code></pre>
+<p>The <code>async</code> Scheduler operates with a <code>setTimeout</code> or <code>setInterval</code>, even if the given <code>delay</code> was zero. As usual, in JavaScript, <code>setTimeout(fn, 0)</code> is known to run the function <code>fn</code> earliest on the next event loop iteration. This explains why <code>got value 1</code> is delivered to the <code>finalObserver</code> after <code>just after subscribe</code> happened.</p>
+<p>The <code>schedule()</code> method of a Scheduler takes a <code>delay</code> argument, which refers to a quantity of time relative to the Scheduler&apos;s own internal clock. A Scheduler&apos;s clock need not have any relation to the actual wall-clock time. This is how temporal operators like <code>delay</code> operate not on actual time, but on time dictated by the Scheduler&apos;s clock. This is specially useful in testing, where a <em>virtual time Scheduler</em> may be used to fake wall-clock time while in reality executing scheduled tasks synchronously.</p>
+<h2 id="scheduler-types">Scheduler Types</h2>
+<p>The <code>async</code> Scheduler is one of the built-in schedulers provided by RxJS. Each of these can be created and returned by using static properties of the <code>Scheduler</code> object.</p>
+<table>
+<thead>
+<tr>
+<th>Scheduler</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null</code></td>
+<td>By not passing any scheduler, notifications are delivered synchronously and recursively. Use this for constant-time operations or tail recursive operations.</td>
+</tr>
+<tr>
+<td><code>Rx.Scheduler.queue</code></td>
+<td>Schedules on a queue in the current event frame (trampoline scheduler). Use this for iteration operations.</td>
+</tr>
+<tr>
+<td><code>Rx.Scheduler.asap</code></td>
+<td>Schedules on the micro task queue, which uses the fastest transport mechanism available, either Node.js&apos; <code>process.nextTick()</code> or Web Worker MessageChannel or setTimeout or others. Use this for asynchronous conversions.</td>
+</tr>
+<tr>
+<td><code>Rx.Scheduler.async</code></td>
+<td>Schedules work with <code>setInterval</code>. Use this for time-based operations.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="using-schedulers">Using Schedulers</h2>
+<p>You may have already used schedulers in your RxJS code without explicitly stating the type of schedulers to be used. This is because all Observable operators that deal with concurrency have optional schedulers. If you do not provide the scheduler, RxJS will pick a default scheduler by using the principle of least concurrency. This means that the scheduler which introduces the least amount of concurrency that satisfies the needs of the operator is chosen. For example, for operators returning an observable with a finite and small number of messages, RxJS uses no Scheduler, i.e. <code>null</code> or <code>undefined</code>.  For operators returning a potentially large or infinite number of messages, <code>queue</code> Scheduler is used. For operators which use timers, <code>async</code> is used.</p>
+<p>Because RxJS uses the least concurrency scheduler, you can pick a different scheduler if you want to introduce concurrency for performance purpose.  To specify a particular scheduler, you can use those operator methods that take a scheduler, e.g., <code>fromArray([10, 20, 30], Rx.Scheduler.async)</code>.</p>
+<p><strong>Static creation operators usually take a Scheduler as argument.</strong> For instance, <code>fromArray(array, scheduler)</code> lets you specify the Scheduler to use when delivering each notification converted from the <code>array</code>. It is usually the last argument to the operator. The following static creation operators take a Scheduler argument:</p>
+<ul>
+<li><code>bindCallback</code></li>
+<li><code>bindNodeCallback</code></li>
+<li><code>combineLatest</code></li>
+<li><code>concat</code></li>
+<li><code>empty</code></li>
+<li><code>from</code></li>
+<li><code>fromArray</code></li>
+<li><code>fromPromise</code></li>
+<li><code>interval</code></li>
+<li><code>merge</code></li>
+<li><code>of</code></li>
+<li><code>range</code></li>
+<li><code>throw</code></li>
+<li><code>timer</code></li>
+</ul>
+<p><strong>Use <code>subscribeOn</code> to schedule in what context will the <code>subscribe()</code> call happen.</strong> By default, a <code>subscribe()</code> call on an Observable will happen synchronously and immediately. However, you may delay or schedule the actual subscription to happen on a given Scheduler, using the instance operator <code>subscribeOn(scheduler)</code>, where <code>scheduler</code> is an argument you provide.</p>
+<p><strong>Use <code>observeOn</code> to schedule in what context will notifications be delivered.</strong> As we saw in the examples above, instance operator <code>observeOn(scheduler)</code> introduces a mediator Observer between the source Observable and the destination Observer, where the mediator schedules calls to the destination Observer using your given <code>scheduler</code>.</p>
+<p><strong>Instance operators may take a Scheduler as argument.</strong> </p>
+<p>Time-related operators like <code>bufferTime</code>, <code>debounceTime</code>, <code>delay</code>, <code>inspectTime</code>, <code>sampleTime</code>, <code>throttleTime</code>, <code>timeInterval</code>, <code>timeout</code>, <code>timeoutWith</code>, <code>windowTime</code> all take a Scheduler as the last argument, and otherwise operate by default on the <code>Rx.Scheduler.async</code> Scheduler.</p>
+<p>Other instance operators that take a Scheduler as argument: <code>cache</code>, <code>combineLatest</code>, <code>concat</code>, <code>expand</code>, <code>merge</code>, <code>publishReplay</code>, <code>startWith</code>.</p>
+<p>Notice that both <code>cache</code> and <code>publishReplay</code> accept a Scheduler because they utilize a ReplaySubject. The constructor of a ReplaySubjects takes an optional Scheduler as the last argument because ReplaySubject may deal with time, which only makes sense in the context of a Scheduler. By default, a ReplaySubject uses the <code>queue</code> Scheduler to provide a clock.</p>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

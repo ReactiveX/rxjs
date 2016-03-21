@@ -90,7 +90,27 @@
           "line": 1,
           "column": 76
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Asynchronously subscribes Observers to this Observable on the specified Scheduler.\n *\n * <img src=\"./img/subscribeOn.png\" width=\"100%\">\n *\n * @param {Scheduler} the Scheduler to perform subscription actions on.\n * @return {Observable<T>} the source Observable modified so that its subscriptions happen on the specified Scheduler\n .\n * @method subscribeOn\n * @owner Observable\n ",
+          "range": [
+            77,
+            463
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "ExportNamedDeclaration",
@@ -100,16 +120,16 @@
           "type": "Identifier",
           "name": "subscribeOn",
           "range": [
-            93,
-            104
+            480,
+            491
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 13,
               "column": 16
             },
             "end": {
-              "line": 2,
+              "line": 13,
               "column": 27
             }
           }
@@ -119,16 +139,16 @@
             "type": "Identifier",
             "name": "scheduler",
             "range": [
-              105,
-              114
+              492,
+              501
             ],
             "loc": {
               "start": {
-                "line": 2,
+                "line": 13,
                 "column": 28
               },
               "end": {
-                "line": 2,
+                "line": 13,
                 "column": 37
               }
             }
@@ -139,16 +159,16 @@
               "type": "Identifier",
               "name": "delay",
               "range": [
-                116,
-                121
+                503,
+                508
               ],
               "loc": {
                 "start": {
-                  "line": 2,
+                  "line": 13,
                   "column": 39
                 },
                 "end": {
-                  "line": 2,
+                  "line": 13,
                   "column": 44
                 }
               }
@@ -158,31 +178,31 @@
               "value": 0,
               "raw": "0",
               "range": [
-                124,
-                125
+                511,
+                512
               ],
               "loc": {
                 "start": {
-                  "line": 2,
+                  "line": 13,
                   "column": 47
                 },
                 "end": {
-                  "line": 2,
+                  "line": 13,
                   "column": 48
                 }
               }
             },
             "range": [
-              116,
-              125
+              503,
+              512
             ],
             "loc": {
               "start": {
-                "line": 2,
+                "line": 13,
                 "column": 39
               },
               "end": {
-                "line": 2,
+                "line": 13,
                 "column": 48
               }
             }
@@ -199,16 +219,16 @@
                   "type": "Identifier",
                   "name": "SubscribeOnObservable",
                   "range": [
-                    144,
-                    165
+                    531,
+                    552
                   ],
                   "loc": {
                     "start": {
-                      "line": 3,
+                      "line": 14,
                       "column": 15
                     },
                     "end": {
-                      "line": 3,
+                      "line": 14,
                       "column": 36
                     }
                   }
@@ -217,16 +237,16 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      166,
-                      170
+                      553,
+                      557
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 14,
                         "column": 37
                       },
                       "end": {
-                        "line": 3,
+                        "line": 14,
                         "column": 41
                       }
                     }
@@ -235,16 +255,16 @@
                     "type": "Identifier",
                     "name": "delay",
                     "range": [
-                      172,
-                      177
+                      559,
+                      564
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 14,
                         "column": 43
                       },
                       "end": {
-                        "line": 3,
+                        "line": 14,
                         "column": 48
                       }
                     }
@@ -253,63 +273,63 @@
                     "type": "Identifier",
                     "name": "scheduler",
                     "range": [
-                      179,
-                      188
+                      566,
+                      575
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
+                        "line": 14,
                         "column": 50
                       },
                       "end": {
-                        "line": 3,
+                        "line": 14,
                         "column": 59
                       }
                     }
                   }
                 ],
                 "range": [
-                  140,
-                  189
+                  527,
+                  576
                 ],
                 "loc": {
                   "start": {
-                    "line": 3,
+                    "line": 14,
                     "column": 11
                   },
                   "end": {
-                    "line": 3,
+                    "line": 14,
                     "column": 60
                   }
                 }
               },
               "range": [
-                133,
-                190
+                520,
+                577
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 14,
                   "column": 4
                 },
                 "end": {
-                  "line": 3,
+                  "line": 14,
                   "column": 61
                 }
               }
             }
           ],
           "range": [
-            127,
-            192
+            514,
+            579
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 13,
               "column": 50
             },
             "end": {
-              "line": 4,
+              "line": 15,
               "column": 1
             }
           }
@@ -317,35 +337,54 @@
         "generator": false,
         "expression": false,
         "range": [
-          84,
-          192
+          471,
+          579
         ],
         "loc": {
           "start": {
-            "line": 2,
+            "line": 13,
             "column": 7
           },
           "end": {
-            "line": 4,
+            "line": 15,
             "column": 1
           }
         },
-        "leadingComments": [],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Asynchronously subscribes Observers to this Observable on the specified Scheduler.\n *\n * <img src=\"./img/subscribeOn.png\" width=\"100%\">\n *\n * @param {Scheduler} the Scheduler to perform subscription actions on.\n * @return {Observable<T>} the source Observable modified so that its subscriptions happen on the specified Scheduler\n .\n * @method subscribeOn\n * @owner Observable\n ",
+            "range": [
+              77,
+              463
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 12,
+                "column": 3
+              }
+            }
+          }
+        ],
         "trailingComments": [
           {
             "type": "Line",
             "value": "# sourceMappingURL=subscribeOn.js.map",
             "range": [
-              193,
-              232
+              580,
+              619
             ],
             "loc": {
               "start": {
-                "line": 5,
+                "line": 16,
                 "column": 0
               },
               "end": {
-                "line": 5,
+                "line": 16,
                 "column": 39
               }
             }
@@ -355,34 +394,54 @@
       "specifiers": [],
       "source": null,
       "range": [
-        77,
-        192
+        464,
+        579
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 13,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 15,
           "column": 1
         }
       },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Asynchronously subscribes Observers to this Observable on the specified Scheduler.\n *\n * <img src=\"./img/subscribeOn.png\" width=\"100%\">\n *\n * @param {Scheduler} the Scheduler to perform subscription actions on.\n * @return {Observable<T>} the source Observable modified so that its subscriptions happen on the specified Scheduler\n .\n * @method subscribeOn\n * @owner Observable\n ",
+          "range": [
+            77,
+            463
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ],
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=subscribeOn.js.map",
           "range": [
-            193,
-            232
+            580,
+            619
           ],
           "loc": {
             "start": {
-              "line": 5,
+              "line": 16,
               "column": 0
             },
             "end": {
-              "line": 5,
+              "line": 16,
               "column": 39
             }
           }
@@ -393,7 +452,7 @@
   "sourceType": "module",
   "range": [
     0,
-    192
+    579
   ],
   "loc": {
     "start": {
@@ -401,25 +460,43 @@
       "column": 0
     },
     "end": {
-      "line": 4,
+      "line": 15,
       "column": 1
     }
   },
   "comments": [
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=subscribeOn.js.map",
+      "type": "Block",
+      "value": "*\n * Asynchronously subscribes Observers to this Observable on the specified Scheduler.\n *\n * <img src=\"./img/subscribeOn.png\" width=\"100%\">\n *\n * @param {Scheduler} the Scheduler to perform subscription actions on.\n * @return {Observable<T>} the source Observable modified so that its subscriptions happen on the specified Scheduler\n .\n * @method subscribeOn\n * @owner Observable\n ",
       "range": [
-        193,
-        232
+        77,
+        463
       ],
       "loc": {
         "start": {
-          "line": 5,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 5,
+          "line": 12,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=subscribeOn.js.map",
+      "range": [
+        580,
+        619
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
           "column": 39
         }
       }

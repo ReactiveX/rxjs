@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/observables/concat-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/concat-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+/* globals describe, it, expect, expectObservable, expectSubscriptions, cold */
+var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
+var Observable = Rx.Observable;
+var queueScheduler = Rx.Scheduler.queue;
+/** @test {concat} */
+describe(&apos;Observable.concat&apos;, function () {
+    it(&apos;should emit elements from multiple sources&apos;, function () {
+        var e1 = cold(&apos;-a-b-c-|&apos;);
+        var e1subs = &apos;^      !&apos;;
+        var e2 = cold(&apos;-0-1-|&apos;);
+        var e2subs = &apos;       ^    !&apos;;
+        var e3 = cold(&apos;-w-x-y-z-|&apos;);
+        var e3subs = &apos;            ^        !&apos;;
+        var expected = &apos;-a-b-c--0-1--w-x-y-z-|&apos;;
+        expectObservable(Observable.concat(e1, e2, e3)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+        expectSubscriptions(e3.subscriptions).toBe(e3subs);
+    });
+    it(&apos;should concat the same cold observable multiple times&apos;, function () {
+        var inner = cold(&apos;--i-j-k-l-|                              &apos;);
+        var innersubs = [&apos;^         !                              &apos;,
+            &apos;          ^         !                    &apos;,
+            &apos;                    ^         !          &apos;,
+            &apos;                              ^         !&apos;];
+        var expected = &apos;--i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|&apos;;
+        var result = Observable.concat(inner, inner, inner, inner);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concat the same cold observable multiple times, &apos; +
+        &apos;but the result is unsubscribed early&apos;, function () {
+        var inner = cold(&apos;--i-j-k-l-|     &apos;);
+        var unsub = &apos;               !&apos;;
+        var innersubs = [&apos;^         !     &apos;,
+            &apos;          ^    !&apos;];
+        var expected = &apos;--i-j-k-l---i-j-&apos;;
+        var result = Observable.concat(inner, inner, inner, inner);
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var inner = cold(&apos;--i-j-k-l-|     &apos;);
+        var innersubs = [&apos;^         !     &apos;,
+            &apos;          ^    !&apos;];
+        var expected = &apos;--i-j-k-l---i-j-&apos;;
+        var unsub = &apos;               !&apos;;
+        var innerWrapped = inner.mergeMap(function (x) { return Observable.of(x); });
+        var result = Observable
+            .concat(innerWrapped, innerWrapped, innerWrapped, innerWrapped)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should complete without emit if both sources are empty&apos;, function () {
+        var e1 = cold(&apos;--|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = cold(&apos;----|&apos;);
+        var e2subs = &apos;  ^   !&apos;;
+        var expected = &apos;------|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should not complete if first source does not completes&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var e2 = cold(&apos;--|&apos;);
+        var e2subs = [];
+        var expected = &apos;-&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should not complete if second source does not completes&apos;, function () {
+        var e1 = cold(&apos;--|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = cold(&apos;---&apos;);
+        var e2subs = &apos;  ^&apos;;
+        var expected = &apos;---&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should not complete if both sources do not complete&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var e2 = cold(&apos;-&apos;);
+        var e2subs = [];
+        var expected = &apos;-&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should raise error when first source is empty, second source raises error&apos;, function () {
+        var e1 = cold(&apos;--|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = cold(&apos;----#&apos;);
+        var e2subs = &apos;  ^   !&apos;;
+        var expected = &apos;------#&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should raise error when first source raises error, second source is empty&apos;, function () {
+        var e1 = cold(&apos;---#&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var e2 = cold(&apos;----|&apos;);
+        var e2subs = [];
+        var expected = &apos;---#&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should raise first error when both source raise error&apos;, function () {
+        var e1 = cold(&apos;---#&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var e2 = cold(&apos;------#&apos;);
+        var e2subs = [];
+        var expected = &apos;---#&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should concat if first source emits once, second source is empty&apos;, function () {
+        var e1 = cold(&apos;--a--|&apos;);
+        var e1subs = &apos;^    !&apos;;
+        var e2 = cold(&apos;--------|&apos;);
+        var e2subs = &apos;     ^       !&apos;;
+        var expected = &apos;--a----------|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should concat if first source is empty, second source emits once&apos;, function () {
+        var e1 = cold(&apos;--|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = cold(&apos;--a--|&apos;);
+        var e2subs = &apos;  ^    !&apos;;
+        var expected = &apos;----a--|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should emit element from first source, and should not complete if second &apos; +
+        &apos;source does not completes&apos;, function () {
+        var e1 = cold(&apos;--a--|&apos;);
+        var e1subs = &apos;^    !&apos;;
+        var e2 = cold(&apos;-&apos;);
+        var e2subs = &apos;     ^&apos;;
+        var expected = &apos;--a---&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should not complete if first source does not complete&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var e2 = cold(&apos;--a--|&apos;);
+        var e2subs = [];
+        var expected = &apos;-&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should emit elements from each source when source emit once&apos;, function () {
+        var e1 = cold(&apos;---a|&apos;);
+        var e1subs = &apos;^   !&apos;;
+        var e2 = cold(&apos;-----b--|&apos;);
+        var e2subs = &apos;    ^       !&apos;;
+        var expected = &apos;---a-----b--|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should unsubscribe to inner source if outer is unsubscribed early&apos;, function () {
+        var e1 = cold(&apos;---a-a--a|            &apos;);
+        var e1subs = &apos;^        !            &apos;;
+        var e2 = cold(&apos;-----b-b--b-|&apos;);
+        var e2subs = &apos;         ^       !    &apos;;
+        var unsub = &apos;                 !    &apos;;
+        var expected = &apos;---a-a--a-----b-b     &apos;;
+        expectObservable(Observable.concat(e1, e2), unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should raise error from first source and does not emit from second source&apos;, function () {
+        var e1 = cold(&apos;--#&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = cold(&apos;----a--|&apos;);
+        var e2subs = [];
+        var expected = &apos;--#&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should emit element from first source then raise error from second source&apos;, function () {
+        var e1 = cold(&apos;--a--|&apos;);
+        var e1subs = &apos;^    !&apos;;
+        var e2 = cold(&apos;-------#&apos;);
+        var e2subs = &apos;     ^      !&apos;;
+        var expected = &apos;--a---------#&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should emit all elements from both hot observable sources if first source &apos; +
+        &apos;completes before second source starts emit&apos;, function () {
+        var e1 = hot(&apos;--a--b-|&apos;);
+        var e1subs = &apos;^      !&apos;;
+        var e2 = hot(&apos;--------x--y--|&apos;);
+        var e2subs = &apos;       ^      !&apos;;
+        var expected = &apos;--a--b--x--y--|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should emit elements from second source regardless of completion time &apos; +
+        &apos;when second source is cold observable&apos;, function () {
+        var e1 = hot(&apos;--a--b--c---|&apos;);
+        var e1subs = &apos;^           !&apos;;
+        var e2 = cold(&apos;-x-y-z-|&apos;);
+        var e2subs = &apos;            ^      !&apos;;
+        var expected = &apos;--a--b--c----x-y-z-|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should not emit collapsing element from second source&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--|&apos;);
+        var e1subs = &apos;^          !&apos;;
+        var e2 = hot(&apos;--------x--y--z--|&apos;);
+        var e2subs = &apos;           ^     !&apos;;
+        var expected = &apos;--a--b--c--y--z--|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should return empty if concatenating an empty source&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = [&apos;(^!)&apos;, &apos;(^!)&apos;];
+        var expected = &apos;|&apos;;
+        var result = Observable.concat(e1, e1);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should error immediately if given a just-throw source&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        var result = Observable.concat(e1, e1);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should emit elements from second source regardless of completion time &apos; +
+        &apos;when second source is cold observable&apos;, function () {
+        var e1 = hot(&apos;--a--b--c---|&apos;);
+        var e1subs = &apos;^           !&apos;;
+        var e2 = cold(&apos;-x-y-z-|&apos;);
+        var e2subs = &apos;            ^      !&apos;;
+        var expected = &apos;--a--b--c----x-y-z-|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should not emit collapsing element from second source&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--|&apos;);
+        var e1subs = &apos;^          !&apos;;
+        var e2 = hot(&apos;--------x--y--z--|&apos;);
+        var e2subs = &apos;           ^     !&apos;;
+        var expected = &apos;--a--b--c--y--z--|&apos;;
+        expectObservable(Observable.concat(e1, e2)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should concat an immediately-scheduled source with an immediately-scheduled second&apos;, function (done) {
+        var a = Observable.of(1, 2, 3, queueScheduler);
+        var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
+        var r = [1, 2, 3, 4, 5, 6, 7, 8];
+        Observable.concat(a, b, queueScheduler).subscribe(function (vals) {
+            expect(vals).toBe(r.shift());
+        }, null, done);
+    });
+});
+//# sourceMappingURL=concat-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

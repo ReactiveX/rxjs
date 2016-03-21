@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/publishLast-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/publishLast-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {publishLast} */
+describe(&apos;Observable.prototype.publishLast&apos;, function () {
+    asDiagram(&apos;publishLast&apos;)(&apos;should emit last notification of a simple source Observable&apos;, function () {
+        var source = cold(&apos;--1-2---3-4--5-|&apos;);
+        var sourceSubs = &apos;^              !&apos;;
+        var published = source.publishLast();
+        var expected = &apos;---------------(5|)&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        published.connect();
+    });
+    it(&apos;should return a ConnectableObservable&apos;, function () {
+        var source = Observable.of(1).publishLast();
+        expect(source instanceof Rx.ConnectableObservable).toBe(true);
+    });
+    it(&apos;should do nothing if connect is not called, despite subscriptions&apos;, function () {
+        var source = cold(&apos;--1-2---3-4--5-|&apos;);
+        var sourceSubs = [];
+        var published = source.publishLast();
+        var expected = &apos;-&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should multicast the same values to multiple observers&apos;, function () {
+        var source = cold(&apos;-1-2-3----4-|&apos;);
+        var sourceSubs = &apos;^           !&apos;;
+        var published = source.publishLast();
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(published);
+        var expected1 = &apos;------------(4|)&apos;;
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(published);
+        var expected2 = &apos;    --------(4|)&apos;;
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(published);
+        var expected3 = &apos;        ----(4|)&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        published.connect();
+    });
+    it(&apos;should multicast an error from the source to multiple observers&apos;, function () {
+        var source = cold(&apos;-1-2-3----4-#&apos;);
+        var sourceSubs = &apos;^           !&apos;;
+        var published = source.publishLast();
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(published);
+        var expected1 = &apos;------------#&apos;;
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(published);
+        var expected2 = &apos;    --------#&apos;;
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(published);
+        var expected3 = &apos;        ----#&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        published.connect();
+    });
+    it(&apos;should not cast any values to multiple observers, &apos; +
+        &apos;when source is unsubscribed explicitly and early&apos;, function () {
+        var source = cold(&apos;-1-2-3----4-|&apos;);
+        var sourceSubs = &apos;^        !   &apos;;
+        var published = source.publishLast();
+        var unsub = &apos;         u   &apos;;
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(published);
+        var expected1 = &apos;----------   &apos;;
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(published);
+        var expected2 = &apos;    ------   &apos;;
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(published);
+        var expected3 = &apos;        --   &apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        // Set up unsubscription action
+        var connection;
+        expectObservable(hot(unsub).do(function () {
+            connection.unsubscribe();
+        })).toBe(unsub);
+        connection = published.connect();
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var source = cold(&apos;-1-2-3----4-|&apos;);
+        var sourceSubs = &apos;^        !   &apos;;
+        var published = source
+            .mergeMap(function (x) { return Observable.of(x); })
+            .publishLast();
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(published);
+        var expected1 = &apos;----------   &apos;;
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(published);
+        var expected2 = &apos;    ------   &apos;;
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(published);
+        var expected3 = &apos;        --   &apos;;
+        var unsub = &apos;         u   &apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        // Set up unsubscription action
+        var connection;
+        expectObservable(hot(unsub).do(function () {
+            connection.unsubscribe();
+        })).toBe(unsub);
+        connection = published.connect();
+    });
+    describe(&apos;with refCount()&apos;, function () {
+        it(&apos;should connect when first subscriber subscribes&apos;, function () {
+            var source = cold(&apos;-1-2-3----4-|&apos;);
+            var sourceSubs = &apos;   ^           !&apos;;
+            var replayed = source.publishLast().refCount();
+            var subscriber1 = hot(&apos;   a|           &apos;).mergeMapTo(replayed);
+            var expected1 = &apos;   ------------(4|)&apos;;
+            var subscriber2 = hot(&apos;       b|       &apos;).mergeMapTo(replayed);
+            var expected2 = &apos;       --------(4|)&apos;;
+            var subscriber3 = hot(&apos;           c|   &apos;).mergeMapTo(replayed);
+            var expected3 = &apos;           ----(4|)&apos;;
+            expectObservable(subscriber1).toBe(expected1);
+            expectObservable(subscriber2).toBe(expected2);
+            expectObservable(subscriber3).toBe(expected3);
+            expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        });
+        it(&apos;should disconnect when last subscriber unsubscribes&apos;, function () {
+            var source = cold(&apos;-1-2-3----4-|&apos;);
+            var sourceSubs = &apos;   ^        !   &apos;;
+            var replayed = source.publishLast().refCount();
+            var subscriber1 = hot(&apos;   a|           &apos;).mergeMapTo(replayed);
+            var unsub1 = &apos;          !     &apos;;
+            var expected1 = &apos;   --------     &apos;;
+            var subscriber2 = hot(&apos;       b|       &apos;).mergeMapTo(replayed);
+            var unsub2 = &apos;            !   &apos;;
+            var expected2 = &apos;       ------   &apos;;
+            expectObservable(subscriber1, unsub1).toBe(expected1);
+            expectObservable(subscriber2, unsub2).toBe(expected2);
+            expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        });
+        it(&apos;should NOT be retryable&apos;, function () {
+            var source = cold(&apos;-1-2-3----4-#&apos;);
+            var sourceSubs = &apos;^           !&apos;;
+            var published = source.publishLast().refCount().retry(3);
+            var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(published);
+            var expected1 = &apos;------------#&apos;;
+            var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(published);
+            var expected2 = &apos;    --------#&apos;;
+            var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(published);
+            var expected3 = &apos;        ----#&apos;;
+            expectObservable(subscriber1).toBe(expected1);
+            expectObservable(subscriber2).toBe(expected2);
+            expectObservable(subscriber3).toBe(expected3);
+            expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        });
+    });
+    it(&apos;should multicast an empty source&apos;, function () {
+        var source = cold(&apos;|&apos;);
+        var sourceSubs = &apos;(^!)&apos;;
+        var published = source.publishLast();
+        var expected = &apos;|&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        published.connect();
+    });
+    it(&apos;should multicast a never source&apos;, function () {
+        var source = cold(&apos;-&apos;);
+        var sourceSubs = &apos;^&apos;;
+        var published = source.publishLast();
+        var expected = &apos;-&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        published.connect();
+    });
+    it(&apos;should multicast a throw source&apos;, function () {
+        var source = cold(&apos;#&apos;);
+        var sourceSubs = &apos;(^!)&apos;;
+        var published = source.publishLast();
+        var expected = &apos;#&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        published.connect();
+    });
+    it(&apos;should multicast one observable to multiple observers&apos;, function (done) {
+        var results1 = [];
+        var results2 = [];
+        var subscriptions = 0;
+        var source = new Observable(function (observer) {
+            subscriptions++;
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.next(4);
+            observer.complete();
+        });
+        var connectable = source.publishLast();
+        connectable.subscribe(function (x) {
+            results1.push(x);
+        });
+        connectable.subscribe(function (x) {
+            results2.push(x);
+        });
+        expect(results1).toEqual([]);
+        expect(results2).toEqual([]);
+        connectable.connect();
+        expect(results1).toEqual([4]);
+        expect(results2).toEqual([4]);
+        expect(subscriptions).toBe(1);
+        done();
+    });
+});
+//# sourceMappingURL=publishLast-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

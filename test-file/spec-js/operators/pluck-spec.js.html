@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/pluck-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/pluck-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {pluck} */
+describe(&apos;Observable.prototype.pluck&apos;, function () {
+    it(&apos;should work for one object&apos;, function () {
+        var a = cold(&apos;--x--|&apos;, { x: { prop: 42 } });
+        var asubs = &apos;^    !&apos;;
+        var expected = &apos;--y--|&apos;;
+        var r = a.pluck(&apos;prop&apos;);
+        expectObservable(r).toBe(expected, { y: 42 });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should work for multiple objects&apos;, function () {
+        var inputs = {
+            a: { prop: &apos;1&apos; },
+            b: { prop: &apos;2&apos; },
+            c: { prop: &apos;3&apos; },
+            d: { prop: &apos;4&apos; },
+            e: { prop: &apos;5&apos; },
+        };
+        var a = cold(&apos;--a-b--c-d---e-|&apos;, inputs);
+        var asubs = &apos;^              !&apos;;
+        var expected = &apos;--1-2--3-4---5-|&apos;;
+        var r = a.pluck(&apos;prop&apos;);
+        expectObservable(r).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should work with deep nested properties&apos;, function () {
+        var inputs = {
+            a: { a: { b: { c: &apos;1&apos; } } },
+            b: { a: { b: { c: &apos;2&apos; } } },
+            c: { a: { b: { c: &apos;3&apos; } } },
+            d: { a: { b: { c: &apos;4&apos; } } },
+            e: { a: { b: { c: &apos;5&apos; } } },
+        };
+        var a = cold(&apos;--a-b--c-d---e-|&apos;, inputs);
+        var asubs = &apos;^              !&apos;;
+        var expected = &apos;--1-2--3-4---5-|&apos;;
+        var r = a.pluck(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;);
+        expectObservable(r).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should work with edge cases of deep nested properties&apos;, function () {
+        var inputs = {
+            a: { a: { b: { c: 1 } } },
+            b: { a: { b: 2 } },
+            c: { a: { c: { c: 3 } } },
+            d: {},
+            e: { a: { b: { c: 5 } } },
+        };
+        var a = cold(&apos;--a-b--c-d---e-|&apos;, inputs);
+        var asubs = &apos;^              !&apos;;
+        var expected = &apos;--r-x--y-z---w-|&apos;;
+        var values = { r: 1, x: undefined, y: undefined, z: undefined, w: 5 };
+        var r = a.pluck(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;);
+        expectObservable(r).toBe(expected, values);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should throw an error if not property is passed&apos;, function () {
+        expect(function () {
+            Observable.of({ prop: 1 }, { prop: 2 }).pluck();
+        }).toThrow(new Error(&apos;List of properties cannot be empty.&apos;));
+    });
+    it(&apos;should propagate errors from observable that emits only errors&apos;, function () {
+        var a = cold(&apos;#&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        var r = a.pluck(&apos;whatever&apos;);
+        expectObservable(r).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should propagate errors from observable that emit values&apos;, function () {
+        var a = cold(&apos;--a--b--#&apos;, { a: { prop: &apos;1&apos; }, b: { prop: &apos;2&apos; } }, &apos;too bad&apos;);
+        var asubs = &apos;^       !&apos;;
+        var expected = &apos;--1--2--#&apos;;
+        var r = a.pluck(&apos;prop&apos;);
+        expectObservable(r).toBe(expected, undefined, &apos;too bad&apos;);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should not pluck an empty observable&apos;, function () {
+        var a = cold(&apos;|&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        var invoked = 0;
+        var r = a
+            .pluck(&apos;whatever&apos;)
+            .do(null, null, function () {
+            expect(invoked).toBe(0);
+        });
+        expectObservable(r).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should allow unsubscribing explicitly and early&apos;, function () {
+        var a = cold(&apos;--a--b--c--|&apos;, { a: { prop: &apos;1&apos; }, b: { prop: &apos;2&apos; } });
+        var unsub = &apos;      !     &apos;;
+        var asubs = &apos;^     !     &apos;;
+        var expected = &apos;--1--2-     &apos;;
+        var r = a.pluck(&apos;prop&apos;);
+        expectObservable(r, unsub).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should pluck twice&apos;, function () {
+        var inputs = {
+            a: { a: { b: { c: &apos;1&apos; } } },
+            b: { a: { b: { c: &apos;2&apos; } } },
+            c: { a: { b: { c: &apos;3&apos; } } },
+            d: { a: { b: { c: &apos;4&apos; } } },
+            e: { a: { b: { c: &apos;5&apos; } } },
+        };
+        var a = cold(&apos;--a-b--c-d---e-|&apos;, inputs);
+        var asubs = &apos;^              !&apos;;
+        var expected = &apos;--1-2--3-4---5-|&apos;;
+        var r = a.pluck(&apos;a&apos;, &apos;b&apos;).pluck(&apos;c&apos;);
+        expectObservable(r).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+    it(&apos;should not break unsubscription chain when unsubscribed explicitly&apos;, function () {
+        var a = cold(&apos;--a--b--c--|&apos;, { a: { prop: &apos;1&apos; }, b: { prop: &apos;2&apos; } });
+        var unsub = &apos;      !     &apos;;
+        var asubs = &apos;^     !     &apos;;
+        var expected = &apos;--1--2-     &apos;;
+        var r = a
+            .mergeMap(function (x) { return Observable.of(x); })
+            .pluck(&apos;prop&apos;)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(r, unsub).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+    });
+});
+//# sourceMappingURL=pluck-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

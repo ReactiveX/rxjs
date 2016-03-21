@@ -60,11 +60,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./mergeMap-support",
-        "raw": "'./mergeMap-support'",
+        "value": "./mergeMap",
+        "raw": "'./mergeMap'",
         "range": [
           33,
-          53
+          45
         ],
         "loc": {
           "start": {
@@ -73,13 +73,13 @@
           },
           "end": {
             "line": 1,
-            "column": 53
+            "column": 45
           }
         }
       },
       "range": [
         0,
-        54
+        46
       ],
       "loc": {
         "start": {
@@ -88,16 +88,16 @@
         },
         "end": {
           "line": 1,
-          "column": 54
+          "column": 46
         }
       },
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [projectResult] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @returns {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n ",
+          "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [resultSelector] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n * @method concatMap\n * @owner Observable\n ",
           "range": [
-            55,
-            1323
+            47,
+            1357
           ],
           "loc": {
             "start": {
@@ -105,7 +105,7 @@
               "column": 0
             },
             "end": {
-              "line": 20,
+              "line": 22,
               "column": 3
             }
           }
@@ -120,16 +120,16 @@
           "type": "Identifier",
           "name": "concatMap",
           "range": [
-            1340,
-            1349
+            1374,
+            1383
           ],
           "loc": {
             "start": {
-              "line": 21,
+              "line": 23,
               "column": 16
             },
             "end": {
-              "line": 21,
+              "line": 23,
               "column": 25
             }
           }
@@ -139,35 +139,35 @@
             "type": "Identifier",
             "name": "project",
             "range": [
-              1350,
-              1357
+              1384,
+              1391
             ],
             "loc": {
               "start": {
-                "line": 21,
+                "line": 23,
                 "column": 26
               },
               "end": {
-                "line": 21,
+                "line": 23,
                 "column": 33
               }
             }
           },
           {
             "type": "Identifier",
-            "name": "projectResult",
+            "name": "resultSelector",
             "range": [
-              1359,
-              1372
+              1393,
+              1407
             ],
             "loc": {
               "start": {
-                "line": 21,
+                "line": 23,
                 "column": 35
               },
               "end": {
-                "line": 21,
-                "column": 48
+                "line": 23,
+                "column": 49
               }
             }
           }
@@ -185,16 +185,16 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      1387,
-                      1391
+                      1422,
+                      1426
                     ],
                     "loc": {
                       "start": {
-                        "line": 22,
+                        "line": 24,
                         "column": 11
                       },
                       "end": {
-                        "line": 22,
+                        "line": 24,
                         "column": 15
                       }
                     }
@@ -203,31 +203,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      1392,
-                      1396
+                      1427,
+                      1431
                     ],
                     "loc": {
                       "start": {
-                        "line": 22,
+                        "line": 24,
                         "column": 16
                       },
                       "end": {
-                        "line": 22,
+                        "line": 24,
                         "column": 20
                       }
                     }
                   },
                   "range": [
-                    1387,
-                    1396
+                    1422,
+                    1431
                   ],
                   "loc": {
                     "start": {
-                      "line": 22,
+                      "line": 24,
                       "column": 11
                     },
                     "end": {
-                      "line": 22,
+                      "line": 24,
                       "column": 20
                     }
                   }
@@ -239,16 +239,16 @@
                       "type": "Identifier",
                       "name": "MergeMapOperator",
                       "range": [
-                        1401,
-                        1417
+                        1436,
+                        1452
                       ],
                       "loc": {
                         "start": {
-                          "line": 22,
+                          "line": 24,
                           "column": 25
                         },
                         "end": {
-                          "line": 22,
+                          "line": 24,
                           "column": 41
                         }
                       }
@@ -258,35 +258,35 @@
                         "type": "Identifier",
                         "name": "project",
                         "range": [
-                          1418,
-                          1425
+                          1453,
+                          1460
                         ],
                         "loc": {
                           "start": {
-                            "line": 22,
+                            "line": 24,
                             "column": 42
                           },
                           "end": {
-                            "line": 22,
+                            "line": 24,
                             "column": 49
                           }
                         }
                       },
                       {
                         "type": "Identifier",
-                        "name": "projectResult",
+                        "name": "resultSelector",
                         "range": [
-                          1427,
-                          1440
+                          1462,
+                          1476
                         ],
                         "loc": {
                           "start": {
-                            "line": 22,
+                            "line": 24,
                             "column": 51
                           },
                           "end": {
-                            "line": 22,
-                            "column": 64
+                            "line": 24,
+                            "column": 65
                           }
                         }
                       },
@@ -295,79 +295,79 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          1442,
-                          1443
+                          1478,
+                          1479
                         ],
                         "loc": {
                           "start": {
-                            "line": 22,
-                            "column": 66
+                            "line": 24,
+                            "column": 67
                           },
                           "end": {
-                            "line": 22,
-                            "column": 67
+                            "line": 24,
+                            "column": 68
                           }
                         }
                       }
                     ],
                     "range": [
-                      1397,
-                      1444
+                      1432,
+                      1480
                     ],
                     "loc": {
                       "start": {
-                        "line": 22,
+                        "line": 24,
                         "column": 21
                       },
                       "end": {
-                        "line": 22,
-                        "column": 68
+                        "line": 24,
+                        "column": 69
                       }
                     }
                   }
                 ],
                 "range": [
-                  1387,
-                  1445
+                  1422,
+                  1481
                 ],
                 "loc": {
                   "start": {
-                    "line": 22,
+                    "line": 24,
                     "column": 11
                   },
                   "end": {
-                    "line": 22,
-                    "column": 69
+                    "line": 24,
+                    "column": 70
                   }
                 }
               },
               "range": [
-                1380,
-                1446
+                1415,
+                1482
               ],
               "loc": {
                 "start": {
-                  "line": 22,
+                  "line": 24,
                   "column": 4
                 },
                 "end": {
-                  "line": 22,
-                  "column": 70
+                  "line": 24,
+                  "column": 71
                 }
               }
             }
           ],
           "range": [
-            1374,
-            1448
+            1409,
+            1484
           ],
           "loc": {
             "start": {
-              "line": 21,
-              "column": 50
+              "line": 23,
+              "column": 51
             },
             "end": {
-              "line": 23,
+              "line": 25,
               "column": 1
             }
           }
@@ -375,26 +375,26 @@
         "generator": false,
         "expression": false,
         "range": [
-          1331,
-          1448
+          1365,
+          1484
         ],
         "loc": {
           "start": {
-            "line": 21,
+            "line": 23,
             "column": 7
           },
           "end": {
-            "line": 23,
+            "line": 25,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [projectResult] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @returns {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n ",
+            "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [resultSelector] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n * @method concatMap\n * @owner Observable\n ",
             "range": [
-              55,
-              1323
+              47,
+              1357
             ],
             "loc": {
               "start": {
@@ -402,7 +402,7 @@
                 "column": 0
               },
               "end": {
-                "line": 20,
+                "line": 22,
                 "column": 3
               }
             }
@@ -413,16 +413,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=concatMap.js.map",
             "range": [
-              1449,
-              1486
+              1485,
+              1522
             ],
             "loc": {
               "start": {
-                "line": 24,
+                "line": 26,
                 "column": 0
               },
               "end": {
-                "line": 24,
+                "line": 26,
                 "column": 37
               }
             }
@@ -432,26 +432,26 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1324,
-        1448
+        1358,
+        1484
       ],
       "loc": {
         "start": {
-          "line": 21,
+          "line": 23,
           "column": 0
         },
         "end": {
-          "line": 23,
+          "line": 25,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [projectResult] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @returns {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n ",
+          "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [resultSelector] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n * @method concatMap\n * @owner Observable\n ",
           "range": [
-            55,
-            1323
+            47,
+            1357
           ],
           "loc": {
             "start": {
@@ -459,7 +459,7 @@
               "column": 0
             },
             "end": {
-              "line": 20,
+              "line": 22,
               "column": 3
             }
           }
@@ -470,16 +470,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=concatMap.js.map",
           "range": [
-            1449,
-            1486
+            1485,
+            1522
           ],
           "loc": {
             "start": {
-              "line": 24,
+              "line": 26,
               "column": 0
             },
             "end": {
-              "line": 24,
+              "line": 26,
               "column": 37
             }
           }
@@ -490,7 +490,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1448
+    1484
   ],
   "loc": {
     "start": {
@@ -498,17 +498,17 @@
       "column": 0
     },
     "end": {
-      "line": 23,
+      "line": 25,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [projectResult] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @returns {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n ",
+      "value": "*\n * Maps values from the source observable into new Observables, then merges them in a serialized fashion,\n * waiting for each one to complete before merging the next.\n *\n * __Warning:__ if incoming values arrive endlessly and faster than the observables they're being mapped\n * to can complete, it will result in memory issues as created observables amass in an unbounded buffer\n * waiting for their turn to be subscribed to.\n *\n * @param {function} project a function to map incoming values into Observables to be concatenated. accepts\n * the `value` and the `index` as arguments.\n * @param {function} [resultSelector] an optional result selector that is applied to values before they're\n * merged into the returned observable. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} an observable of values merged from the projected Observables as they were subscribed to,\n * one at a time. Optionally, these values may have been projected from a passed `projectResult` argument.\n * @method concatMap\n * @owner Observable\n ",
       "range": [
-        55,
-        1323
+        47,
+        1357
       ],
       "loc": {
         "start": {
@@ -516,7 +516,7 @@
           "column": 0
         },
         "end": {
-          "line": 20,
+          "line": 22,
           "column": 3
         }
       }
@@ -525,16 +525,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=concatMap.js.map",
       "range": [
-        1449,
-        1486
+        1485,
+        1522
       ],
       "loc": {
         "start": {
-          "line": 24,
+          "line": 26,
           "column": 0
         },
         "end": {
-          "line": 24,
+          "line": 26,
           "column": 37
         }
       }

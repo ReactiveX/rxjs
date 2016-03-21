@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/expand-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/expand-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {expand} */
+describe(&apos;Observable.prototype.expand&apos;, function () {
+    it(&apos;should map and recursively flatten&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;(a|)&apos;, values);
+        var e1subs = &apos;^           !   &apos;;
+        var e2shape = &apos;---(z|)         &apos;;
+        var expected = &apos;a--b--c--d--(e|)&apos;;
+        /*
+          expectation explanation: (conjunction junction?) ...
+    
+          since `cold(&apos;---(z|)&apos;)` emits `x + x` and completes on frame 30
+          but the next &quot;expanded&quot; return value is synchronously subscribed to in
+          that same frame, it stacks like so:
+    
+          a
+          ---(b|)
+             ---(c|)
+                ---(d|)
+                   ---(e|)      (...which flattens into:)
+          a--b--c--d--(e|)
+        */
+        var result = e1.expand(function (x, index) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            else {
+                return cold(e2shape, { z: x + x });
+            }
+        });
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should map and recursively flatten, and handle event raised error&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;(a|)&apos;, values);
+        var e1subs = &apos;^        !   &apos;;
+        var e2shape = &apos;---(z|)      &apos;;
+        var expected = &apos;a--b--c--(d#)&apos;;
+        var result = e1.expand(function (x) {
+            if (x === 8) {
+                return cold(&apos;#&apos;);
+            }
+            return cold(e2shape, { z: x + x });
+        });
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should map and recursively flatten, and propagate error thrown from projection&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;(a|)&apos;, values);
+        var e1subs = &apos;^        !   &apos;;
+        var e2shape = &apos;---(z|)      &apos;;
+        var expected = &apos;a--b--c--(d#)&apos;;
+        var result = e1.expand(function (x) {
+            if (x === 8) {
+                throw &apos;error&apos;;
+            }
+            return cold(e2shape, { z: x + x });
+        });
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow unsubscribing early&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;(a|)&apos;, values);
+        var unsub = &apos;       !  &apos;;
+        var e1subs = &apos;^      !  &apos;;
+        var e2shape = &apos;---(z|)   &apos;;
+        var expected = &apos;a--b--c-  &apos;;
+        var result = e1.expand(function (x) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            return cold(e2shape, { z: x + x });
+        });
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;(a|)&apos;, values);
+        var e1subs = &apos;^      !  &apos;;
+        var e2shape = &apos;---(z|)   &apos;;
+        var expected = &apos;a--b--c-  &apos;;
+        var unsub = &apos;       !  &apos;;
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .expand(function (x) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            return cold(e2shape, { z: x + x });
+        })
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow concurrent expansions&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;a-a|              &apos;, values);
+        var e1subs = &apos;^             !   &apos;;
+        var e2shape = &apos;---(z|)           &apos;;
+        var expected = &apos;a-ab-bc-cd-de-(e|)&apos;;
+        var result = e1.expand(function (x) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            return cold(e2shape, { z: x + x });
+        });
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow configuring the concurrency limit parameter to 1&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+            u: 10,
+            v: 20,
+            x: 40,
+            y: 80,
+            z: 160,
+        };
+        var e1 = hot(&apos;a-u|&apos;, values);
+        var e2shape = &apos;---(z|)&apos;;
+        //                 ---(z|)
+        //                    ---(z|)
+        //                       ---(z|)
+        //                          ---(z|)
+        //                             ---(z|)
+        //                                ---(z|)
+        //                                   ---(z|)
+        // Notice how for each column, there is at most 1 `-` character.
+        var e1subs = &apos;^                       !    &apos;;
+        var expected = &apos;a--u--b--v--c--x--d--y--(ez|)&apos;;
+        var concurrencyLimit = 1;
+        var result = e1.expand(function (x) {
+            if (x === 16 || x === 160) {
+                return Observable.empty();
+            }
+            return cold(e2shape, { z: x + x });
+        }, concurrencyLimit);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow configuring the concurrency limit parameter to 2&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            u: 10,
+            v: 20,
+            x: 40,
+        };
+        var e1 = hot(&apos;a---au|&apos;, values);
+        var e2shape = &apos;------(z|)&apos;;
+        //                  ------(z|)
+        //                    ------(z|)
+        //                        ------(z|)
+        //                          ------(z|)
+        //                              ------(z|)
+        //                                ------(z|)
+        // Notice how for each column, there is at most 2 `-` characters.
+        var e1subs = &apos;^                     !   &apos;;
+        var expected = &apos;a---a-u---b-b---v-(cc)(x|)&apos;;
+        var concurrencyLimit = 2;
+        var result = e1.expand(function (x) {
+            if (x === 4 || x === 40) {
+                return Observable.empty();
+            }
+            return cold(e2shape, { z: x + x });
+        }, concurrencyLimit);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should ignore concurrency limit if it is not passed&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+            u: 10,
+            v: 20,
+            x: 40,
+            y: 80,
+            z: 160,
+        };
+        var e1 = hot(&apos;a-u|              &apos;, values);
+        var e1subs = &apos;^             !   &apos;;
+        var e2shape = &apos;---(z|)           &apos;;
+        var expected = &apos;a-ub-vc-xd-ye-(z|)&apos;;
+        var concurrencyLimit = 100;
+        var result = e1.expand(function (x) {
+            if (x === 16 || x === 160) {
+                return Observable.empty();
+            }
+            return cold(e2shape, { z: x + x });
+        }, concurrencyLimit);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should map and recursively flatten with scalars&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;(a|)&apos;, values);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;(abcde|)&apos;;
+        var result = e1.expand(function (x) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            return Observable.of(x + x); // scalar
+        });
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should recursively flatten promises&apos;, function (done) {
+        var expected = [1, 2, 4, 8, 16];
+        Observable.of(1)
+            .expand(function (x) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            return Promise.resolve(x + x);
+        })
+            .subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, null, function () {
+            expect(expected.length).toBe(0);
+            done();
+        });
+    });
+    it(&apos;should recursively flatten Arrays&apos;, function (done) {
+        var expected = [1, 2, 4, 8, 16];
+        Observable.of(1)
+            .expand(function (x) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            return [x + x];
+        })
+            .subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, null, function () {
+            expect(expected.length).toBe(0);
+            done();
+        });
+    });
+    it(&apos;should recursively flatten lowercase-o observables&apos;, function (done) {
+        var expected = [1, 2, 4, 8, 16];
+        var project = function (x, index) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            var ish = {
+                subscribe: function (observer) {
+                    observer.next(x + x);
+                    observer.complete();
+                }
+            };
+            ish[Symbol.observable] = function () {
+                return this;
+            };
+            return ish;
+        };
+        Observable.of(1)
+            .expand(project)
+            .subscribe(function (x) {
+            expect(x).toBe(expected.shift());
+        }, null, function () {
+            expect(expected.length).toBe(0);
+            done();
+        });
+    });
+    it(&apos;should work when passing undefined for the optional arguments&apos;, function () {
+        var values = {
+            a: 1,
+            b: 1 + 1,
+            c: 2 + 2,
+            d: 4 + 4,
+            e: 8 + 8,
+        };
+        var e1 = hot(&apos;(a|)&apos;, values);
+        var e1subs = &apos;^           !   &apos;;
+        var e2shape = &apos;---(z|)         &apos;;
+        var expected = &apos;a--b--c--d--(e|)&apos;;
+        var project = function (x, index) {
+            if (x === 16) {
+                return Observable.empty();
+            }
+            return cold(e2shape, { z: x + x });
+        };
+        var result = e1.expand(project, undefined, undefined);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+});
+//# sourceMappingURL=expand-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

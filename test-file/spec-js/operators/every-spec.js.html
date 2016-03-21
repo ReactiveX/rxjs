@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/every-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/every-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {every} */
+describe(&apos;Observable.prototype.every&apos;, function () {
+    function truePredicate(x) {
+        return true;
+    }
+    function predicate(x) {
+        return x % 5 === 0;
+    }
+    asDiagram(&apos;every(x =&gt; x % 5 === 0)&apos;)(&apos;should return false if only some of element matches with predicate&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--|&apos;, { a: 5, b: 10, c: 15, d: 18, e: 20 });
+        var sourceSubs = &apos;^          !      &apos;;
+        var expected = &apos;-----------(F|)   &apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { F: false });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should accept thisArg with scalar observables&apos;, function () {
+        var thisArg = {};
+        Observable.of(1).every(function (value, index) {
+            expect(this).toBe(thisArg);
+            return true;
+        }, thisArg).subscribe();
+    });
+    it(&apos;should accept thisArg with array observables&apos;, function () {
+        var thisArg = {};
+        Observable.of(1, 2, 3, 4).every(function (value, index) {
+            expect(this).toBe(thisArg);
+            return true;
+        }, thisArg).subscribe();
+    });
+    it(&apos;should accept thisArg with ordinary observables&apos;, function () {
+        var thisArg = {};
+        Observable.create(function (observer) {
+            observer.next(1);
+            observer.complete();
+        })
+            .every(function (value, index) {
+            expect(this).toBe(thisArg);
+        }, thisArg).subscribe();
+    });
+    it(&apos;should emit true if source is empty&apos;, function () {
+        var source = hot(&apos;-----|&apos;);
+        var sourceSubs = &apos;^    !&apos;;
+        var expected = &apos;-----(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: true });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit false if single source of element does not match with predicate&apos;, function () {
+        var source = hot(&apos;--a--|&apos;);
+        var sourceSubs = &apos;^ !&apos;;
+        var expected = &apos;--(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: false });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit false if none of element does not match with predicate&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--|&apos;);
+        var sourceSubs = &apos;^ !&apos;;
+        var expected = &apos;--(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: false });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should return false if only some of element matches with predicate&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--|&apos;, { a: 5, b: 10, c: 15 });
+        var sourceSubs = &apos;^          !&apos;;
+        var expected = &apos;-----------(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: false });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should allow unsubscribing early and explicitly&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--|&apos;, { a: 5, b: 10, c: 15 });
+        var sourceSubs = &apos;^      !          &apos;;
+        var expected = &apos;--------          &apos;;
+        var unsub = &apos;       !          &apos;;
+        var result = source.every(predicate);
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should not break unsubscription chains when result Observable is unsubscribed&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--|&apos;, { a: 5, b: 10, c: 15 });
+        var sourceSubs = &apos;^      !          &apos;;
+        var expected = &apos;--------          &apos;;
+        var unsub = &apos;       !          &apos;;
+        var result = source
+            .mergeMap(function (x) { return Observable.of(x); })
+            .every(predicate)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should propagate error if predicate eventually throws&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--|&apos;);
+        var sourceSubs = &apos;^       !&apos;;
+        var expected = &apos;--------#&apos;;
+        function faultyPredicate(x) {
+            if (x === &apos;c&apos;) {
+                throw &apos;error&apos;;
+            }
+            else {
+                return true;
+            }
+        }
+        expectObservable(source.every(faultyPredicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit true if single source element match with predicate&apos;, function () {
+        var source = hot(&apos;--a--|&apos;, { a: 5 });
+        var sourceSubs = &apos;^    !&apos;;
+        var expected = &apos;-----(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: true });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit true if Scalar source matches with predicate&apos;, function () {
+        var source = Observable.of(5);
+        var expected = &apos;(T|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { T: true });
+    });
+    it(&apos;should emit false if Scalar source does not match with predicate&apos;, function () {
+        var source = Observable.of(3);
+        var expected = &apos;(F|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { F: false });
+    });
+    it(&apos;should propagate error if predicate throws on Scalar source&apos;, function () {
+        var source = Observable.of(3);
+        var expected = &apos;#&apos;;
+        function faultyPredicate(x) {
+            throw &apos;error&apos;;
+        }
+        expectObservable(source.every(faultyPredicate)).toBe(expected);
+    });
+    it(&apos;should emit true if Array source matches with predicate&apos;, function () {
+        var source = Observable.of(5, 10, 15, 20);
+        var expected = &apos;(T|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { T: true });
+    });
+    it(&apos;should emit false if Array source does not match with predicate&apos;, function () {
+        var source = Observable.of(5, 9, 15, 20);
+        var expected = &apos;(F|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { F: false });
+    });
+    it(&apos;should propagate error if predicate eventually throws on Array source&apos;, function () {
+        var source = Observable.of(5, 10, 15, 20);
+        var expected = &apos;#&apos;;
+        function faultyPredicate(x) {
+            if (x === 15) {
+                throw &apos;error&apos;;
+            }
+            return true;
+        }
+        expectObservable(source.every(faultyPredicate)).toBe(expected);
+    });
+    it(&apos;should emit true if all source element matches with predicate&apos;, function () {
+        var source = hot(&apos;--a--b--c--d--e--|&apos;, { a: 5, b: 10, c: 15, d: 20, e: 25 });
+        var sourceSubs = &apos;^                !&apos;;
+        var expected = &apos;-----------------(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: true });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should raise error if source raises error&apos;, function () {
+        var source = hot(&apos;--#&apos;);
+        var sourceSubs = &apos;^ !&apos;;
+        var expected = &apos;--#&apos;;
+        expectObservable(source.every(truePredicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should not completes if source never emits&apos;, function () {
+        var source = cold(&apos;-&apos;);
+        var sourceSubs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(source.every(truePredicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit true if source element matches with predicate after subscription&apos;, function () {
+        var source = hot(&apos;--z--^--a--b--c--d--e--|&apos;, { a: 5, b: 10, c: 15, d: 20, e: 25 });
+        var sourceSubs = &apos;^                 !&apos;;
+        var expected = &apos;------------------(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: true });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit false if source element does not match with predicate after subscription&apos;, function () {
+        var source = hot(&apos;--z--^--b--c--z--d--|&apos;, { a: 5, b: 10, c: 15, d: 20 });
+        var sourceSubs = &apos;^        !&apos;;
+        var expected = &apos;---------(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: false });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should raise error if source raises error after subscription&apos;, function () {
+        var source = hot(&apos;--z--^--#&apos;);
+        var sourceSubs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        expectObservable(source.every(truePredicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit true if source does not emit after subscription&apos;, function () {
+        var source = hot(&apos;--z--^-----|&apos;);
+        var sourceSubs = &apos;^     !&apos;;
+        var expected = &apos;------(x|)&apos;;
+        expectObservable(source.every(predicate)).toBe(expected, { x: true });
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+});
+//# sourceMappingURL=every-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

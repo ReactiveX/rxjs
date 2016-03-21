@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/observables/from-promise-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/from-promise-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {fromPromise} */
+describe(&apos;Observable.fromPromise&apos;, function () {
+    it(&apos;should emit one value from a resolved promise&apos;, function (done) {
+        var promise = Promise.resolve(42);
+        Observable.fromPromise(promise)
+            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+    });
+    it(&apos;should raise error from a rejected promise&apos;, function (done) {
+        var promise = Promise.reject(&apos;bad&apos;);
+        Observable.fromPromise(promise)
+            .subscribe(function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function (e) {
+            expect(e).toBe(&apos;bad&apos;);
+            done();
+        }, done.fail);
+    });
+    it(&apos;should share the underlying promise with multiple subscribers&apos;, function (done) {
+        var promise = Promise.resolve(42);
+        var observable = Observable.fromPromise(promise);
+        observable
+            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, null);
+        setTimeout(function () {
+            observable
+                .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+        });
+    });
+    it(&apos;should accept already-resolved Promise&apos;, function (done) {
+        var promise = Promise.resolve(42);
+        promise.then(function (x) {
+            expect(x).toBe(42);
+            Observable.fromPromise(promise)
+                .subscribe(function (y) { expect(y).toBe(42); }, done.fail, done);
+        }, done.fail);
+    });
+    it(&apos;should emit a value from a resolved promise on a separate scheduler&apos;, function (done) {
+        var promise = Promise.resolve(42);
+        Observable.fromPromise(promise, Rx.Scheduler.asap)
+            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+    });
+    it(&apos;should raise error from a rejected promise on a separate scheduler&apos;, function (done) {
+        var promise = Promise.reject(&apos;bad&apos;);
+        Observable.fromPromise(promise, Rx.Scheduler.asap)
+            .subscribe(function (x) { done.fail(&apos;should not be called&apos;); }, function (e) {
+            expect(e).toBe(&apos;bad&apos;);
+            done();
+        }, done.fail);
+    });
+    it(&apos;should share the underlying promise with multiple subscribers on a separate scheduler&apos;, function (done) {
+        var promise = Promise.resolve(42);
+        var observable = Observable.fromPromise(promise, Rx.Scheduler.asap);
+        observable
+            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, null);
+        setTimeout(function () {
+            observable
+                .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+        });
+    });
+    it(&apos;should not emit, throw or complete if immediately unsubscribed&apos;, function (done) {
+        var nextSpy = jasmine.createSpy(&apos;next&apos;);
+        var throwSpy = jasmine.createSpy(&apos;throw&apos;);
+        var completeSpy = jasmine.createSpy(&apos;complete&apos;);
+        var promise = Promise.resolve(42);
+        var subscription = Observable.fromPromise(promise)
+            .subscribe(nextSpy, throwSpy, completeSpy);
+        subscription.unsubscribe();
+        setTimeout(function () {
+            expect(nextSpy).not.toHaveBeenCalled();
+            expect(throwSpy).not.toHaveBeenCalled();
+            expect(completeSpy).not.toHaveBeenCalled();
+            done();
+        });
+    });
+    if (typeof process === &apos;object&apos; &amp;&amp; Object.prototype.toString.call(process) === &apos;[object process]&apos;) {
+        it(&apos;should globally throw unhandled errors on process&apos;, function (done) {
+            var invoked = false;
+            process.on(&apos;uncaughtException&apos;, function (reason, p) {
+                if (invoked) {
+                    return;
+                }
+                invoked = true;
+                expect(reason).toBe(&apos;fail&apos;);
+                done();
+            });
+            Observable.fromPromise(Promise.reject(&apos;bad&apos;))
+                .subscribe(function (x) { done.fail(&apos;should not be called&apos;); }, function (e) {
+                expect(e).toBe(&apos;bad&apos;);
+                throw &apos;fail&apos;;
+            }, done.fail);
+        });
+    }
+    else if (typeof window === &apos;object&apos; &amp;&amp; Object.prototype.toString.call(window) === &apos;[object global]&apos;) {
+        it(&apos;should globally throw unhandled errors on window&apos;, function (done) {
+            var invoked = false;
+            function onException(e) {
+                if (invoked) {
+                    return;
+                }
+                invoked = true;
+                expect(e).toBe(&apos;Uncaught fail&apos;);
+                done();
+            }
+            window.onerror = onException;
+            Observable.fromPromise(Promise.reject(&apos;bad&apos;))
+                .subscribe(function (x) { done.fail(&apos;should not be called&apos;); }, function (e) {
+                expect(e).toBe(&apos;bad&apos;);
+                throw &apos;fail&apos;;
+            }, done.fail);
+        });
+    }
+});
+//# sourceMappingURL=from-promise-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

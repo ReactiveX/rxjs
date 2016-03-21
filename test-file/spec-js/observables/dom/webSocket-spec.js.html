@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">spec-js/observables/dom/webSocket-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/dom/webSocket-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../../dist/cjs/Rx.DOM&apos;);
+var ajax_helper_1 = require(&apos;../../helpers/ajax-helper&apos;);
+var Observable = Rx.Observable;
+var __ws;
+function setupMockWebSocket() {
+    ajax_helper_1.MockWebSocket.clearSockets();
+    __ws = __root__.WebSocket;
+    __root__.WebSocket = ajax_helper_1.MockWebSocket;
+}
+function teardownMockWebSocket() {
+    __root__.WebSocket = __ws;
+    ajax_helper_1.MockWebSocket.clearSockets();
+}
+/** @test {webSocket} */
+describe(&apos;Observable.webSocket&apos;, function () {
+    beforeEach(function () {
+        setupMockWebSocket();
+    });
+    afterEach(function () {
+        teardownMockWebSocket();
+    });
+    it(&apos;should send and receive messages&apos;, function () {
+        var messageReceived = false;
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.next(&apos;ping&apos;);
+        subject.subscribe(function (x) {
+            expect(x).toBe(&apos;pong&apos;);
+            messageReceived = true;
+        });
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        expect(socket.url).toBe(&apos;ws://mysocket&apos;);
+        socket.open();
+        expect(socket.lastMessageSent).toBe(&apos;ping&apos;);
+        socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
+        expect(messageReceived).toBe(true);
+        subject.unsubscribe();
+    });
+    it(&apos;receive multiple messages&apos;, function () {
+        var expected = [&apos;what&apos;, &apos;do&apos;, &apos;you&apos;, &apos;do&apos;, &apos;with&apos;, &apos;a&apos;, &apos;drunken&apos;, &apos;sailor?&apos;];
+        var results = [];
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe(function (x) {
+            results.push(x);
+        });
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        socket.open();
+        expected.forEach(function (x) {
+            socket.triggerMessage(JSON.stringify(x));
+        });
+        expect(results).toEqual(expected);
+        subject.unsubscribe();
+    });
+    it(&apos;should queue messages prior to subscription&apos;, function () {
+        var expected = [&apos;make&apos;, &apos;him&apos;, &apos;walk&apos;, &apos;the&apos;, &apos;plank&apos;];
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        expected.forEach(function (x) {
+            subject.next(x);
+        });
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        expect(socket).not.toBeDefined();
+        subject.subscribe();
+        socket = ajax_helper_1.MockWebSocket.lastSocket;
+        expect(socket.sent.length).toBe(0);
+        socket.open();
+        expect(socket.sent.length).toBe(expected.length);
+        subject.unsubscribe();
+    });
+    it(&apos;should send messages immediately if already open&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        socket.open();
+        subject.next(&apos;avast!&apos;);
+        expect(socket.lastMessageSent).toBe(&apos;avast!&apos;);
+        subject.next(&apos;ye swab!&apos;);
+        expect(socket.lastMessageSent).toBe(&apos;ye swab!&apos;);
+        subject.unsubscribe();
+    });
+    it(&apos;should close the socket when completed&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        socket.open();
+        expect(socket.readyState).toBe(1); // open
+        spyOn(socket, &apos;close&apos;).and.callThrough();
+        expect(socket.close).not.toHaveBeenCalled();
+        subject.complete();
+        expect(socket.close).toHaveBeenCalled();
+        expect(socket.readyState).toBe(3); // closed
+        subject.unsubscribe();
+    });
+    it(&apos;should close the socket with a code and a reason when errored&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        socket.open();
+        spyOn(socket, &apos;close&apos;).and.callThrough();
+        expect(socket.close).not.toHaveBeenCalled();
+        subject.error({ code: 1337, reason: &apos;Too bad, so sad :(&apos; });
+        expect(socket.close).toHaveBeenCalledWith(1337, &apos;Too bad, so sad :(&apos;);
+        subject.unsubscribe();
+    });
+    it(&apos;should allow resubscription after closure via complete&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket1 = ajax_helper_1.MockWebSocket.lastSocket;
+        socket1.open();
+        subject.complete();
+        subject.next(&apos;a mariner yer not. yarrr.&apos;);
+        subject.subscribe();
+        var socket2 = ajax_helper_1.MockWebSocket.lastSocket;
+        socket2.open();
+        expect(socket2).not.toBe(socket1);
+        expect(socket2.lastMessageSent).toBe(&apos;a mariner yer not. yarrr.&apos;);
+        subject.unsubscribe();
+    });
+    it(&apos;should allow resubscription after closure via error&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket1 = ajax_helper_1.MockWebSocket.lastSocket;
+        socket1.open();
+        subject.error({ code: 1337 });
+        subject.next(&apos;yo-ho! yo-ho!&apos;);
+        subject.subscribe();
+        var socket2 = ajax_helper_1.MockWebSocket.lastSocket;
+        socket2.open();
+        expect(socket2).not.toBe(socket1);
+        expect(socket2.lastMessageSent).toBe(&apos;yo-ho! yo-ho!&apos;);
+        subject.unsubscribe();
+    });
+    it(&apos;should have a default resultSelector that parses message data as JSON&apos;, function () {
+        var result;
+        var expected = { mork: &apos;shazbot!&apos; };
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe(function (x) {
+            result = x;
+        });
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        socket.open();
+        socket.triggerMessage(JSON.stringify(expected));
+        expect(result).toEqual(expected);
+        subject.unsubscribe();
+    });
+    describe(&apos;with a config object&apos;, function () {
+        it(&apos;should send and receive messages&apos;, function () {
+            var messageReceived = false;
+            var subject = Observable.webSocket({ url: &apos;ws://mysocket&apos; });
+            subject.next(&apos;ping&apos;);
+            subject.subscribe(function (x) {
+                expect(x).toBe(&apos;pong&apos;);
+                messageReceived = true;
+            });
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            expect(socket.url).toBe(&apos;ws://mysocket&apos;);
+            socket.open();
+            expect(socket.lastMessageSent).toBe(&apos;ping&apos;);
+            socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
+            expect(messageReceived).toBe(true);
+            subject.unsubscribe();
+        });
+        it(&apos;should take a protocol and set it properly on the web socket&apos;, function () {
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                protocol: &apos;someprotocol&apos;
+            });
+            subject.subscribe();
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            expect(socket.protocol).toBe(&apos;someprotocol&apos;);
+            subject.unsubscribe();
+        });
+        it(&apos;should take a resultSelector&apos;, function () {
+            var results = [];
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                resultSelector: function (e) {
+                    return e.data + &apos;!&apos;;
+                }
+            });
+            subject.subscribe(function (x) {
+                results.push(x);
+            });
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.open();
+            [&apos;ahoy&apos;, &apos;yarr&apos;, &apos;shove off&apos;].forEach(function (x) {
+                socket.triggerMessage(x);
+            });
+            expect(results).toEqual([&apos;ahoy!&apos;, &apos;yarr!&apos;, &apos;shove off!&apos;]);
+            subject.unsubscribe();
+        });
+        it(&apos;if the resultSelector fails it should go down the error path&apos;, function () {
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                resultSelector: function (e) {
+                    throw new Error(&apos;I am a bad error&apos;);
+                }
+            });
+            subject.subscribe(function (x) {
+                expect(x).toBe(&apos;this should not happen&apos;);
+            }, function (err) {
+                expect(err).toEqual(new Error(&apos;I am a bad error&apos;));
+            });
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.open();
+            socket.triggerMessage(&apos;weee!&apos;);
+            subject.unsubscribe();
+        });
+        it(&apos;should accept a closingObserver&apos;, function () {
+            var calls = 0;
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                closingObserver: {
+                    next: function (x) {
+                        calls++;
+                        expect(x).toBe(undefined);
+                    }
+                }
+            });
+            subject.subscribe();
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.open();
+            expect(calls).toBe(0);
+            subject.complete();
+            expect(calls).toBe(1);
+            subject.subscribe();
+            socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.open();
+            subject.error({ code: 1337 });
+            expect(calls).toBe(2);
+            subject.unsubscribe();
+        });
+        it(&apos;should accept a closeObserver&apos;, function () {
+            var expected = [{ wasClean: true }, { wasClean: false }];
+            var closes = [];
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                closeObserver: {
+                    next: function (e) {
+                        closes.push(e);
+                    }
+                }
+            });
+            subject.subscribe();
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.open();
+            expect(closes.length).toBe(0);
+            socket.triggerClose(expected[0]);
+            expect(closes.length).toBe(1);
+            subject.subscribe(null, function (err) {
+                expect(err).toBe(expected[1]);
+            });
+            socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.open();
+            socket.triggerClose(expected[1]);
+            expect(closes.length).toBe(2);
+            expect(closes[0]).toBe(expected[0]);
+            expect(closes[1]).toBe(expected[1]);
+            subject.unsubscribe();
+        });
+    });
+    describe(&apos;multiplex&apos;, function () {
+        it(&apos;should multiplex over the websocket&apos;, function () {
+            var results = [];
+            var subject = Observable.webSocket(&apos;ws://websocket&apos;);
+            var source = subject.multiplex(function () {
+                return { sub: &apos;foo&apos; };
+            }, function () {
+                return { unsub: &apos;foo&apos; };
+            }, function (value) {
+                return value.name === &apos;foo&apos;;
+            });
+            var sub = source.subscribe(function (x) {
+                results.push(x.value);
+            });
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.open();
+            expect(socket.lastMessageSent).toEqual({ sub: &apos;foo&apos; });
+            [1, 2, 3, 4, 5].map(function (x) {
+                return {
+                    name: x % 3 === 0 ? &apos;bar&apos; : &apos;foo&apos;,
+                    value: x
+                };
+            }).forEach(function (x) {
+                socket.triggerMessage(JSON.stringify(x));
+            });
+            expect(results).toEqual([1, 2, 4, 5]);
+            spyOn(socket, &apos;close&apos;).and.callThrough();
+            sub.unsubscribe();
+            expect(socket.lastMessageSent).toEqual({ unsub: &apos;foo&apos; });
+            expect(socket.close).toHaveBeenCalled();
+        });
+    });
+});
+//# sourceMappingURL=webSocket-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

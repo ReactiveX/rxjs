@@ -95,108 +95,185 @@
     {
       "type": "ExportNamedDeclaration",
       "declaration": {
-        "type": "FunctionDeclaration",
+        "type": "ClassDeclaration",
         "id": {
           "type": "Identifier",
-          "name": "defaultCallFn",
+          "name": "Operator",
           "range": [
-            59,
-            72
+            56,
+            64
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 16
+              "column": 13
             },
             "end": {
               "line": 2,
-              "column": 29
+              "column": 21
             }
           }
         },
-        "params": [
-          {
-            "type": "Identifier",
-            "name": "observer",
-            "range": [
-              73,
-              81
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 30
-              },
-              "end": {
-                "line": 2,
-                "column": 38
-              }
-            }
-          }
-        ],
+        "superClass": null,
         "body": {
-          "type": "BlockStatement",
+          "type": "ClassBody",
           "body": [
             {
-              "type": "ReturnStatement",
-              "argument": {
-                "type": "NewExpression",
-                "callee": {
-                  "type": "Identifier",
-                  "name": "Subscriber",
-                  "range": [
-                    100,
-                    110
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 3,
-                      "column": 15
-                    },
-                    "end": {
-                      "line": 3,
-                      "column": 25
-                    }
-                  }
-                },
-                "arguments": [
-                  {
-                    "type": "Identifier",
-                    "name": "observer",
-                    "range": [
-                      111,
-                      119
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 3,
-                        "column": 26
-                      },
-                      "end": {
-                        "line": 3,
-                        "column": 34
-                      }
-                    }
-                  }
-                ],
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "call",
                 "range": [
-                  96,
-                  120
+                  71,
+                  75
                 ],
                 "loc": {
                   "start": {
                     "line": 3,
-                    "column": 11
+                    "column": 4
                   },
                   "end": {
                     "line": 3,
-                    "column": 35
+                    "column": 8
                   }
                 }
               },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [
+                  {
+                    "type": "Identifier",
+                    "name": "subscriber",
+                    "range": [
+                      76,
+                      86
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 19
+                      }
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "NewExpression",
+                        "callee": {
+                          "type": "Identifier",
+                          "name": "Subscriber",
+                          "range": [
+                            109,
+                            119
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 4,
+                              "column": 19
+                            },
+                            "end": {
+                              "line": 4,
+                              "column": 29
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "name": "subscriber",
+                            "range": [
+                              120,
+                              130
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 4,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 4,
+                                "column": 40
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          105,
+                          131
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 4,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 4,
+                            "column": 41
+                          }
+                        }
+                      },
+                      "range": [
+                        98,
+                        132
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 42
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    88,
+                    138
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 21
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 5
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  75,
+                  138
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 5
+                  }
+                }
+              },
+              "kind": "method",
+              "computed": false,
               "range": [
-                89,
-                121
+                71,
+                138
               ],
               "loc": {
                 "start": {
@@ -204,32 +281,31 @@
                   "column": 4
                 },
                 "end": {
-                  "line": 3,
-                  "column": 36
+                  "line": 5,
+                  "column": 5
                 }
-              }
+              },
+              "static": false
             }
           ],
           "range": [
-            83,
-            123
+            65,
+            140
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 40
+              "column": 22
             },
             "end": {
-              "line": 4,
+              "line": 6,
               "column": 1
             }
           }
         },
-        "generator": false,
-        "expression": false,
         "range": [
           50,
-          123
+          140
         ],
         "loc": {
           "start": {
@@ -237,7 +313,7 @@
             "column": 7
           },
           "end": {
-            "line": 4,
+            "line": 6,
             "column": 1
           }
         },
@@ -247,16 +323,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=Operator.js.map",
             "range": [
-              124,
-              160
+              141,
+              177
             ],
             "loc": {
               "start": {
-                "line": 5,
+                "line": 7,
                 "column": 0
               },
               "end": {
-                "line": 5,
+                "line": 7,
                 "column": 36
               }
             }
@@ -267,7 +343,7 @@
       "source": null,
       "range": [
         43,
-        123
+        140
       ],
       "loc": {
         "start": {
@@ -275,7 +351,7 @@
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 6,
           "column": 1
         }
       },
@@ -284,16 +360,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=Operator.js.map",
           "range": [
-            124,
-            160
+            141,
+            177
           ],
           "loc": {
             "start": {
-              "line": 5,
+              "line": 7,
               "column": 0
             },
             "end": {
-              "line": 5,
+              "line": 7,
               "column": 36
             }
           }
@@ -304,7 +380,7 @@
   "sourceType": "module",
   "range": [
     0,
-    123
+    140
   ],
   "loc": {
     "start": {
@@ -312,7 +388,7 @@
       "column": 0
     },
     "end": {
-      "line": 4,
+      "line": 6,
       "column": 1
     }
   },
@@ -321,16 +397,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=Operator.js.map",
       "range": [
-        124,
-        160
+        141,
+        177
       ],
       "loc": {
         "start": {
-          "line": 5,
+          "line": 7,
           "column": 0
         },
         "end": {
-          "line": 5,
+          "line": 7,
           "column": 36
         }
       }

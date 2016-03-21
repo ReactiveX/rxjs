@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/zip-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/zip-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+var queueScheduler = Rx.Scheduler.queue;
+/** @test {zip} */
+describe(&apos;Observable.prototype.zip&apos;, function () {
+    it(&apos;should combine a source with a second&apos;, function () {
+        var a = hot(&apos;---1---2---3---&apos;);
+        var asubs = &apos;^&apos;;
+        var b = hot(&apos;--4--5--6--7--8--&apos;);
+        var bsubs = &apos;^&apos;;
+        var expected = &apos;---x---y---z&apos;;
+        expectObservable(a.zip(b))
+            .toBe(expected, { x: [&apos;1&apos;, &apos;4&apos;], y: [&apos;2&apos;, &apos;5&apos;], z: [&apos;3&apos;, &apos;6&apos;] });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should zip the provided observables&apos;, function (done) {
+        var expected = [&apos;a1&apos;, &apos;b2&apos;, &apos;c3&apos;];
+        var i = 0;
+        Observable.fromArray([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]).zip(Observable.fromArray([1, 2, 3]), function (a, b) {
+            return a + b;
+        })
+            .subscribe(function (x) {
+            expect(x).toBe(expected[i++]);
+        }, null, done);
+    });
+    it(&apos;should end once one observable completes and its buffer is empty&apos;, function () {
+        var e1 = hot(&apos;---a--b--c--|               &apos;);
+        var e1subs = &apos;^           !               &apos;;
+        var e2 = hot(&apos;------d----e----f--------|  &apos;);
+        var e2subs = &apos;^                 !         &apos;;
+        var e3 = hot(&apos;--------h----i----j---------&apos;); // doesn&apos;t complete
+        var e3subs = &apos;^                 !         &apos;;
+        var expected = &apos;--------x----y----(z|)      &apos;; // e1 complete and buffer empty
+        var values = {
+            x: [&apos;a&apos;, &apos;d&apos;, &apos;h&apos;],
+            y: [&apos;b&apos;, &apos;e&apos;, &apos;i&apos;],
+            z: [&apos;c&apos;, &apos;f&apos;, &apos;j&apos;]
+        };
+        expectObservable(e1.zip(e2, e3)).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+        expectSubscriptions(e3.subscriptions).toBe(e3subs);
+    });
+    it(&apos;should end once one observable nexts and zips value from completed other &apos; +
+        &apos;observable whose buffer is empty&apos;, function () {
+        var e1 = hot(&apos;---a--b--c--|             &apos;);
+        var e1subs = &apos;^           !             &apos;;
+        var e2 = hot(&apos;------d----e----f|        &apos;);
+        var e2subs = &apos;^                !        &apos;;
+        var e3 = hot(&apos;--------h----i----j-------&apos;); // doesn&apos;t complete
+        var e3subs = &apos;^                 !       &apos;;
+        var expected = &apos;--------x----y----(z|)    &apos;; // e2 buffer empty and signaled complete
+        var values = {
+            x: [&apos;a&apos;, &apos;d&apos;, &apos;h&apos;],
+            y: [&apos;b&apos;, &apos;e&apos;, &apos;i&apos;],
+            z: [&apos;c&apos;, &apos;f&apos;, &apos;j&apos;]
+        };
+        expectObservable(e1.zip(e2, e3)).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+        expectSubscriptions(e3.subscriptions).toBe(e3subs);
+    });
+    describe(&apos;with iterables&apos;, function () {
+        it(&apos;should zip them with values&apos;, function () {
+            var myIterator = {
+                count: 0,
+                next: function () {
+                    return { value: this.count++, done: false };
+                }
+            };
+            myIterator[Symbol.iterator] = function () { return this; };
+            var e1 = hot(&apos;---a---b---c---d---|&apos;);
+            var e1subs = &apos;^                  !&apos;;
+            var expected = &apos;---w---x---y---z---|&apos;;
+            var values = {
+                w: [&apos;a&apos;, 0],
+                x: [&apos;b&apos;, 1],
+                y: [&apos;c&apos;, 2],
+                z: [&apos;d&apos;, 3]
+            };
+            expectObservable(e1.zip(myIterator)).toBe(expected, values);
+            expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        });
+        it(&apos;should only call `next` as needed&apos;, function () {
+            var nextCalled = 0;
+            var myIterator = {
+                count: 0,
+                next: function () {
+                    nextCalled++;
+                    return { value: this.count++, done: false };
+                }
+            };
+            myIterator[Symbol.iterator] = function () { return this; };
+            Observable.of(1, 2, 3).zip(myIterator)
+                .subscribe();
+            // since zip will call `next()` in advance, total calls when
+            // zipped with 3 other values should be 4.
+            expect(nextCalled).toBe(4);
+        });
+        it(&apos;should work with never observable and empty iterable&apos;, function () {
+            var a = cold(&apos;-&apos;);
+            var asubs = &apos;^&apos;;
+            var b = [];
+            var expected = &apos;-&apos;;
+            expectObservable(a.zip(b)).toBe(expected);
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with empty observable and empty iterable&apos;, function () {
+            var a = cold(&apos;|&apos;);
+            var asubs = &apos;(^!)&apos;;
+            var b = [];
+            var expected = &apos;|&apos;;
+            expectObservable(a.zip(b)).toBe(expected);
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with empty observable and non-empty iterable&apos;, function () {
+            var a = cold(&apos;|&apos;);
+            var asubs = &apos;(^!)&apos;;
+            var b = [1];
+            var expected = &apos;|&apos;;
+            expectObservable(a.zip(b)).toBe(expected);
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with non-empty observable and empty iterable&apos;, function () {
+            var a = hot(&apos;---^----a--|&apos;);
+            var asubs = &apos;^       !&apos;;
+            var b = [];
+            var expected = &apos;--------|&apos;;
+            expectObservable(a.zip(b)).toBe(expected);
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with never observable and non-empty iterable&apos;, function () {
+            var a = cold(&apos;-&apos;);
+            var asubs = &apos;^&apos;;
+            var b = [1];
+            var expected = &apos;-&apos;;
+            expectObservable(a.zip(b)).toBe(expected);
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with non-empty observable and non-empty iterable&apos;, function () {
+            var a = hot(&apos;---^----1--|&apos;);
+            var asubs = &apos;^    !   &apos;;
+            var b = [2];
+            var expected = &apos;-----(x|)&apos;;
+            expectObservable(a.zip(b)).toBe(expected, { x: [&apos;1&apos;, 2] });
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with non-empty observable and empty iterable&apos;, function () {
+            var a = hot(&apos;---^----#&apos;);
+            var asubs = &apos;^    !&apos;;
+            var b = [];
+            var expected = &apos;-----#&apos;;
+            expectObservable(a.zip(b)).toBe(expected);
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with observable which raises error and non-empty iterable&apos;, function () {
+            var a = hot(&apos;---^----#&apos;);
+            var asubs = &apos;^    !&apos;;
+            var b = [1];
+            var expected = &apos;-----#&apos;;
+            expectObservable(a.zip(b)).toBe(expected);
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with non-empty many observable and non-empty many iterable&apos;, function () {
+            var a = hot(&apos;---^--1--2--3--|&apos;);
+            var asubs = &apos;^        !   &apos;;
+            var b = [4, 5, 6];
+            var expected = &apos;---x--y--(z|)&apos;;
+            expectObservable(a.zip(b)).toBe(expected, { x: [&apos;1&apos;, 4], y: [&apos;2&apos;, 5], z: [&apos;3&apos;, 6] });
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+        it(&apos;should work with non-empty observable and non-empty iterable selector that throws&apos;, function () {
+            var a = hot(&apos;---^--1--2--3--|&apos;);
+            var asubs = &apos;^     !&apos;;
+            var b = [4, 5, 6];
+            var expected = &apos;---x--#&apos;;
+            var selector = function (x, y) {
+                if (y === 5) {
+                    throw new Error(&apos;too bad&apos;);
+                }
+                else {
+                    return x + y;
+                }
+            };
+            expectObservable(a.zip(b, selector)).toBe(expected, { x: &apos;14&apos; }, new Error(&apos;too bad&apos;));
+            expectSubscriptions(a.subscriptions).toBe(asubs);
+        });
+    });
+    it(&apos;should combine two observables and selector&apos;, function () {
+        var a = hot(&apos;---1---2---3---&apos;);
+        var asubs = &apos;^&apos;;
+        var b = hot(&apos;--4--5--6--7--8--&apos;);
+        var bsubs = &apos;^&apos;;
+        var expected = &apos;---x---y---z&apos;;
+        expectObservable(a.zip(b, function (e1, e2) { return e1 + e2; }))
+            .toBe(expected, { x: &apos;14&apos;, y: &apos;25&apos;, z: &apos;36&apos; });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with n-ary symmetric&apos;, function () {
+        var a = hot(&apos;---1-^-1----4----|&apos;);
+        var asubs = &apos;^         !  &apos;;
+        var b = hot(&apos;---1-^--2--5----| &apos;);
+        var bsubs = &apos;^         !  &apos;;
+        var c = hot(&apos;---1-^---3---6-|  &apos;);
+        var expected = &apos;----x---y-|  &apos;;
+        expectObservable(a.zip(b, c)).toBe(expected, { x: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;], y: [&apos;4&apos;, &apos;5&apos;, &apos;6&apos;] });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with n-ary symmetric selector&apos;, function () {
+        var a = hot(&apos;---1-^-1----4----|&apos;);
+        var asubs = &apos;^         !  &apos;;
+        var b = hot(&apos;---1-^--2--5----| &apos;);
+        var bsubs = &apos;^         !  &apos;;
+        var c = hot(&apos;---1-^---3---6-|  &apos;);
+        var expected = &apos;----x---y-|  &apos;;
+        var observable = a.zip(b, c, function (r0, r1, r2) { return [r0, r1, r2]; });
+        expectObservable(observable).toBe(expected, { x: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;], y: [&apos;4&apos;, &apos;5&apos;, &apos;6&apos;] });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with n-ary symmetric array selector&apos;, function () {
+        var a = hot(&apos;---1-^-1----4----|&apos;);
+        var asubs = &apos;^         !  &apos;;
+        var b = hot(&apos;---1-^--2--5----| &apos;);
+        var bsubs = &apos;^         !  &apos;;
+        var c = hot(&apos;---1-^---3---6-|  &apos;);
+        var expected = &apos;----x---y-|  &apos;;
+        var observable = a.zip(b, c, function (r0, r1, r2) { return [r0, r1, r2]; });
+        expectObservable(observable).toBe(expected, { x: [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;], y: [&apos;4&apos;, &apos;5&apos;, &apos;6&apos;] });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with some data asymmetric 1&apos;, function () {
+        var a = hot(&apos;---1-^-1-3-5-7-9-x-y-z-w-u-|&apos;);
+        var asubs = &apos;^                 !    &apos;;
+        var b = hot(&apos;---1-^--2--4--6--8--0--|    &apos;);
+        var bsubs = &apos;^                 !    &apos;;
+        var expected = &apos;---a--b--c--d--e--|    &apos;;
+        expectObservable(a.zip(b, function (r1, r2) { return r1 + r2; }))
+            .toBe(expected, { a: &apos;12&apos;, b: &apos;34&apos;, c: &apos;56&apos;, d: &apos;78&apos;, e: &apos;90&apos; });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with some data asymmetric 2&apos;, function () {
+        var a = hot(&apos;---1-^--2--4--6--8--0--|    &apos;);
+        var asubs = &apos;^                 !    &apos;;
+        var b = hot(&apos;---1-^-1-3-5-7-9-x-y-z-w-u-|&apos;);
+        var bsubs = &apos;^                 !    &apos;;
+        var expected = &apos;---a--b--c--d--e--|    &apos;;
+        expectObservable(a.zip(b, function (r1, r2) { return r1 + r2; }))
+            .toBe(expected, { a: &apos;21&apos;, b: &apos;43&apos;, c: &apos;65&apos;, d: &apos;87&apos;, e: &apos;09&apos; });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with some data symmetric&apos;, function () {
+        var a = hot(&apos;---1-^-1-3-5-7-9------| &apos;);
+        var asubs = &apos;^                ! &apos;;
+        var b = hot(&apos;---1-^--2--4--6--8--0--|&apos;);
+        var bsubs = &apos;^                ! &apos;;
+        var expected = &apos;---a--b--c--d--e-| &apos;;
+        expectObservable(a.zip(b, function (r1, r2) { return r1 + r2; }))
+            .toBe(expected, { a: &apos;12&apos;, b: &apos;34&apos;, c: &apos;56&apos;, d: &apos;78&apos;, e: &apos;90&apos; });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with selector throws&apos;, function () {
+        var a = hot(&apos;---1-^-2---4----|  &apos;);
+        var asubs = &apos;^       !     &apos;;
+        var b = hot(&apos;---1-^--3----5----|&apos;);
+        var bsubs = &apos;^       !     &apos;;
+        var expected = &apos;---x----#     &apos;;
+        var selector = function (x, y) {
+            if (y === &apos;5&apos;) {
+                throw new Error(&apos;too bad&apos;);
+            }
+            else {
+                return x + y;
+            }
+        };
+        var observable = a.zip(b, selector);
+        expectObservable(observable).toBe(expected, { x: &apos;23&apos; }, new Error(&apos;too bad&apos;));
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with right completes first&apos;, function () {
+        var a = hot(&apos;---1-^-2-----|&apos;);
+        var asubs = &apos;^     !&apos;;
+        var b = hot(&apos;---1-^--3--|&apos;);
+        var bsubs = &apos;^     !&apos;;
+        var expected = &apos;---x--|&apos;;
+        expectObservable(a.zip(b)).toBe(expected, { x: [&apos;2&apos;, &apos;3&apos;] });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with two nevers&apos;, function () {
+        var a = cold(&apos;-&apos;);
+        var asubs = &apos;^&apos;;
+        var b = cold(&apos;-&apos;);
+        var bsubs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with never and empty&apos;, function () {
+        var a = cold(&apos;-&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = cold(&apos;|&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with empty and never&apos;, function () {
+        var a = cold(&apos;|&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = cold(&apos;-&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with empty and empty&apos;, function () {
+        var a = cold(&apos;|&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = cold(&apos;|&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with empty and non-empty&apos;, function () {
+        var a = cold(&apos;|&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = hot(&apos;---1--|&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with non-empty and empty&apos;, function () {
+        var a = hot(&apos;---1--|&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = cold(&apos;|&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with never and non-empty&apos;, function () {
+        var a = cold(&apos;-&apos;);
+        var asubs = &apos;^&apos;;
+        var b = hot(&apos;---1--|&apos;);
+        var bsubs = &apos;^     !&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with non-empty and never&apos;, function () {
+        var a = hot(&apos;---1--|&apos;);
+        var asubs = &apos;^     !&apos;;
+        var b = cold(&apos;-&apos;);
+        var bsubs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with empty and error&apos;, function () {
+        var a = cold(&apos;|&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = hot(&apos;------#&apos;, null, &apos;too bad&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with error and empty&apos;, function () {
+        var a = hot(&apos;------#&apos;, null, &apos;too bad&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = cold(&apos;|&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with error&apos;, function () {
+        var a = hot(&apos;----------|&apos;);
+        var asubs = &apos;^     !    &apos;;
+        var b = hot(&apos;------#    &apos;);
+        var bsubs = &apos;^     !    &apos;;
+        var expected = &apos;------#    &apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with never and error&apos;, function () {
+        var a = cold(&apos;-&apos;);
+        var asubs = &apos;^     !&apos;;
+        var b = hot(&apos;------#&apos;);
+        var bsubs = &apos;^     !&apos;;
+        var expected = &apos;------#&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with error and never&apos;, function () {
+        var a = hot(&apos;------#&apos;);
+        var asubs = &apos;^     !&apos;;
+        var b = cold(&apos;-&apos;);
+        var bsubs = &apos;^     !&apos;;
+        var expected = &apos;------#&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with error and error&apos;, function () {
+        var a = hot(&apos;------#&apos;, null, &apos;too bad&apos;);
+        var asubs = &apos;^     !&apos;;
+        var b = hot(&apos;----------#&apos;, null, &apos;too bad 2&apos;);
+        var bsubs = &apos;^     !&apos;;
+        var expected = &apos;------#&apos;;
+        expectObservable(a.zip(b)).toBe(expected, null, &apos;too bad&apos;);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with two sources that eventually raise errors&apos;, function () {
+        var a = hot(&apos;--w-----#----&apos;, { w: 1 }, &apos;too bad&apos;);
+        var asubs = &apos;^       !&apos;;
+        var b = hot(&apos;-----z-----#-&apos;, { z: 2 }, &apos;too bad 2&apos;);
+        var bsubs = &apos;^       !&apos;;
+        var expected = &apos;-----x--#&apos;;
+        expectObservable(a.zip(b)).toBe(expected, { x: [1, 2] }, &apos;too bad&apos;);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with two sources that eventually raise errors (swapped)&apos;, function () {
+        var a = hot(&apos;-----z-----#-&apos;, { z: 2 }, &apos;too bad 2&apos;);
+        var asubs = &apos;^       !&apos;;
+        var b = hot(&apos;--w-----#----&apos;, { w: 1 }, &apos;too bad&apos;);
+        var bsubs = &apos;^       !&apos;;
+        var expected = &apos;-----x--#&apos;;
+        expectObservable(a.zip(b)).toBe(expected, { x: [2, 1] }, &apos;too bad&apos;);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should work with error and some&apos;, function () {
+        var a = cold(&apos;#&apos;);
+        var asubs = &apos;(^!)&apos;;
+        var b = hot(&apos;--1--2--3--&apos;);
+        var bsubs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        expectObservable(a.zip(b)).toBe(expected);
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+    it(&apos;should combine an immediately-scheduled source with an immediately-scheduled second&apos;, function (done) {
+        var a = Observable.of(1, 2, 3, queueScheduler);
+        var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
+        var r = [[1, 4], [2, 5], [3, 6]];
+        var i = 0;
+        a.zip(b).subscribe(function (vals) {
+            expect(vals).toDeepEqual(r[i++]);
+        }, null, done);
+    });
+    it(&apos;should not break unsubscription chain when unsubscribed explicitly&apos;, function () {
+        var a = hot(&apos;---1---2---3---|&apos;);
+        var unsub = &apos;         !&apos;;
+        var asubs = &apos;^        !&apos;;
+        var b = hot(&apos;--4--5--6--7--8--|&apos;);
+        var bsubs = &apos;^        !&apos;;
+        var expected = &apos;---x---y--&apos;;
+        var r = a
+            .mergeMap(function (x) { return Observable.of(x); })
+            .zip(b)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(r, unsub).toBe(expected, { x: [&apos;1&apos;, &apos;4&apos;], y: [&apos;2&apos;, &apos;5&apos;] });
+        expectSubscriptions(a.subscriptions).toBe(asubs);
+        expectSubscriptions(b.subscriptions).toBe(bsubs);
+    });
+});
+//# sourceMappingURL=zip-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -247,10 +247,10 @@
           },
           "property": {
             "type": "Identifier",
-            "name": "mergeMapTo",
+            "name": "flatMapTo",
             "range": [
               124,
-              134
+              133
             ],
             "loc": {
               "start": {
@@ -259,13 +259,13 @@
               },
               "end": {
                 "line": 3,
-                "column": 31
+                "column": 30
               }
             }
           },
           "range": [
             103,
-            134
+            133
           ],
           "loc": {
             "start": {
@@ -274,7 +274,7 @@
             },
             "end": {
               "line": 3,
-              "column": 31
+              "column": 30
             }
           }
         },
@@ -282,23 +282,23 @@
           "type": "Identifier",
           "name": "mergeMapTo",
           "range": [
-            137,
-            147
+            136,
+            146
           ],
           "loc": {
             "start": {
               "line": 3,
-              "column": 34
+              "column": 33
             },
             "end": {
               "line": 3,
-              "column": 44
+              "column": 43
             }
           }
         },
         "range": [
           103,
-          147
+          146
         ],
         "loc": {
           "start": {
@@ -307,13 +307,13 @@
           },
           "end": {
             "line": 3,
-            "column": 44
+            "column": 43
           }
         }
       },
       "range": [
         103,
-        148
+        147
       ],
       "loc": {
         "start": {
@@ -322,16 +322,93 @@
         },
         "end": {
           "line": 3,
-          "column": 45
+          "column": 44
         }
-      },
-      "trailingComments": [
-        {
-          "type": "Line",
-          "value": "# sourceMappingURL=mergeMapTo.js.map",
+      }
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "AssignmentExpression",
+        "operator": "=",
+        "left": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "MemberExpression",
+            "computed": false,
+            "object": {
+              "type": "Identifier",
+              "name": "Observable",
+              "range": [
+                148,
+                158
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 0
+                },
+                "end": {
+                  "line": 4,
+                  "column": 10
+                }
+              }
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "prototype",
+              "range": [
+                159,
+                168
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 11
+                },
+                "end": {
+                  "line": 4,
+                  "column": 20
+                }
+              }
+            },
+            "range": [
+              148,
+              168
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 20
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "mergeMapTo",
+            "range": [
+              169,
+              179
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 21
+              },
+              "end": {
+                "line": 4,
+                "column": 31
+              }
+            }
+          },
           "range": [
-            149,
-            187
+            148,
+            179
           ],
           "loc": {
             "start": {
@@ -340,6 +417,72 @@
             },
             "end": {
               "line": 4,
+              "column": 31
+            }
+          }
+        },
+        "right": {
+          "type": "Identifier",
+          "name": "mergeMapTo",
+          "range": [
+            182,
+            192
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 34
+            },
+            "end": {
+              "line": 4,
+              "column": 44
+            }
+          }
+        },
+        "range": [
+          148,
+          192
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 44
+          }
+        }
+      },
+      "range": [
+        148,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 45
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=mergeMapTo.js.map",
+          "range": [
+            194,
+            232
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
               "column": 38
             }
           }
@@ -350,7 +493,7 @@
   "sourceType": "module",
   "range": [
     0,
-    148
+    193
   ],
   "loc": {
     "start": {
@@ -358,7 +501,7 @@
       "column": 0
     },
     "end": {
-      "line": 3,
+      "line": 4,
       "column": 45
     }
   },
@@ -367,16 +510,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=mergeMapTo.js.map",
       "range": [
-        149,
-        187
+        194,
+        232
       ],
       "loc": {
         "start": {
-          "line": 4,
+          "line": 5,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 5,
           "column": 38
         }
       }

@@ -17,7 +17,9 @@
   }
 
   if (location.hash) {
-    var line = document.querySelector(location.hash);
+    // ``[ ] . ' " @`` are not valid in DOM id. so must escape these.
+    var id = location.hash.replace(/([\[\].'"@$])/g, '\\$1');
+    var line = document.querySelector(id);
     if (line) line.classList.add('active');
   }
 })();

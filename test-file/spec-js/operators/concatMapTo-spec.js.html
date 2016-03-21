@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/concatMapTo-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/concatMapTo-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {concatMapTo} */
+describe(&apos;Observable.prototype.concatMapTo&apos;, function () {
+    it(&apos;should concatMapTo many outer values to many inner values&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d---|                        &apos;);
+        var e1subs = &apos;^                                        !&apos;;
+        var inner = cold(&apos;--i-j-k-l-|                              &apos;, values);
+        var innersubs = [&apos; ^         !                              &apos;,
+            &apos;           ^         !                    &apos;,
+            &apos;                     ^         !          &apos;,
+            &apos;                               ^         !&apos;];
+        var expected = &apos;---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should handle an empty source&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var inner = cold(&apos;-1-2-3|&apos;);
+        var innersubs = [];
+        var expected = &apos;|&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should handle a never source&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var inner = cold(&apos;-1-2-3|&apos;);
+        var innersubs = [];
+        var expected = &apos;-&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should error immediately if given a just-throw source&apos;, function () {
+        var e1 = cold(&apos;#&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var inner = cold(&apos;-1-2-3|&apos;);
+        var innersubs = [];
+        var expected = &apos;#&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should return a silenced version of the source if the mapped inner is empty&apos;, function () {
+        var e1 = cold(&apos;--a-b--c-|&apos;);
+        var e1subs = &apos;^        !&apos;;
+        var inner = cold(&apos;|&apos;);
+        var innersubs = [&apos;  (^!)     &apos;,
+            &apos;    (^!)   &apos;,
+            &apos;       (^!)&apos;];
+        var expected = &apos;---------|&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should return a never if the mapped inner is never&apos;, function () {
+        var e1 = cold(&apos;--a-b--c-|&apos;);
+        var e1subs = &apos;^         &apos;;
+        var inner = cold(&apos;-&apos;);
+        var innersubs = &apos;  ^       &apos;;
+        var expected = &apos;----------&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should propagate errors if the mapped inner is a just-throw Observable&apos;, function () {
+        var e1 = cold(&apos;--a-b--c-|&apos;);
+        var e1subs = &apos;^ !       &apos;;
+        var inner = cold(&apos;#&apos;);
+        var innersubs = &apos;  (^!)    &apos;;
+        var expected = &apos;--#&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concatMapTo many outer to many inner, complete late&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d----------------------------------|&apos;);
+        var e1subs = &apos;^                                               !&apos;;
+        var inner = cold(&apos;--i-j-k-l-|                                     &apos;, values);
+        var innersubs = [&apos; ^         !                                     &apos;,
+            &apos;           ^         !                           &apos;,
+            &apos;                     ^         !                 &apos;,
+            &apos;                               ^         !       &apos;];
+        var expected = &apos;---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l--------|&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concatMapTo many outer to many inner, outer never completes&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d-----------------------------------&apos;);
+        var e1subs = &apos;^                                                &apos;;
+        var inner = cold(&apos;--i-j-k-l-|                                     &apos;, values);
+        var innersubs = [&apos; ^         !                                     &apos;,
+            &apos;           ^         !                           &apos;,
+            &apos;                     ^         !                 &apos;,
+            &apos;                               ^         !       &apos;];
+        var expected = &apos;---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l---------&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d---| &apos;);
+        var e1subs = &apos;^                 !&apos;;
+        var inner = cold(&apos;--i-j-k-l-|       &apos;, values);
+        var innersubs = [&apos; ^         !       &apos;,
+            &apos;           ^      !&apos;];
+        var expected = &apos;---i-j-k-l---i-j-k-&apos;;
+        var unsub = &apos;                  !&apos;;
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .concatMapTo(inner)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concatMapTo many outer to many inner, inner never completes&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d---|&apos;);
+        var e1subs = &apos;^                 &apos;;
+        var inner = cold(&apos;--i-j-k-l-       &apos;, values);
+        var innersubs = &apos; ^                &apos;;
+        var expected = &apos;---i-j-k-l--------&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concatMapTo many outer to many inner, and inner throws&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d---|&apos;);
+        var e1subs = &apos;^          !      &apos;;
+        var inner = cold(&apos;--i-j-k-l-#      &apos;, values);
+        var innersubs = &apos; ^         !      &apos;;
+        var expected = &apos;---i-j-k-l-#      &apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concatMapTo many outer to many inner, and outer throws&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d---#&apos;);
+        var e1subs = &apos;^                !&apos;;
+        var inner = cold(&apos;--i-j-k-l-|      &apos;, values);
+        var innersubs = [&apos; ^         !      &apos;,
+            &apos;           ^     !&apos;];
+        var expected = &apos;---i-j-k-l---i-j-#&apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concatMapTo many outer to many inner, both inner and outer throw&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a---b---c---d---#&apos;);
+        var e1subs = &apos;^          !      &apos;;
+        var inner = cold(&apos;--i-j-k-l-#      &apos;, values);
+        var innersubs = &apos; ^         !      &apos;;
+        var expected = &apos;---i-j-k-l-#      &apos;;
+        var result = e1.concatMapTo(inner);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+    });
+    it(&apos;should concatMapTo many outer to an array&apos;, function () {
+        var e1 = hot(&apos;2-----4--------3--------2-------|&apos;);
+        var expected = &apos;(0123)(0123)---(0123)---(0123)--|&apos;;
+        var result = e1.concatMapTo([&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;]);
+        expectObservable(result).toBe(expected);
+    });
+    it(&apos;should concatMapTo many outer to inner arrays, using resultSelector&apos;, function () {
+        var e1 = hot(&apos;2-----4--------3--------2-------|&apos;);
+        var expected = &apos;(2345)(4567)---(3456)---(2345)--|&apos;;
+        var result = e1.concatMapTo([&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;], function (x, y) { return String(parseInt(x) + parseInt(y)); });
+        expectObservable(result).toBe(expected);
+    });
+    it(&apos;should concatMapTo many outer to inner arrays, and outer throws&apos;, function () {
+        var e1 = hot(&apos;2-----4--------3--------2-------#&apos;);
+        var expected = &apos;(0123)(0123)---(0123)---(0123)--#&apos;;
+        var result = e1.concatMapTo([&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;]);
+        expectObservable(result).toBe(expected);
+    });
+    it(&apos;should concatMapTo many outer to inner arrays, resultSelector, outer throws&apos;, function () {
+        var e1 = hot(&apos;2-----4--------3--------2-------#&apos;);
+        var expected = &apos;(2345)(4567)---(3456)---(2345)--#&apos;;
+        var result = e1.concatMapTo([&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;], function (x, y) { return String(parseInt(x) + parseInt(y)); });
+        expectObservable(result).toBe(expected);
+    });
+    it(&apos;should mergeMap many outer to inner arrays, outer unsubscribed early&apos;, function () {
+        var e1 = hot(&apos;2-----4--------3--------2-------|&apos;);
+        var unsub = &apos;             !&apos;;
+        var expected = &apos;(0123)(0123)--&apos;;
+        var result = e1.concatMapTo([&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;]);
+        expectObservable(result, unsub).toBe(expected);
+    });
+    it(&apos;should concatMapTo many outer to inner arrays, resultSelector, outer unsubscribed&apos;, function () {
+        var e1 = hot(&apos;2-----4--------3--------2-------|&apos;);
+        var unsub = &apos;             !&apos;;
+        var expected = &apos;(2345)(4567)--&apos;;
+        var result = e1.concatMapTo([&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;], function (x, y) { return String(parseInt(x) + parseInt(y)); });
+        expectObservable(result, unsub).toBe(expected);
+    });
+    it(&apos;should concatMapTo many outer to inner arrays, resultSelector throws&apos;, function () {
+        var e1 = hot(&apos;2-----4--------3--------2-------|&apos;);
+        var expected = &apos;(2345)(4567)---#&apos;;
+        var result = e1.concatMapTo([&apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;], function (x, y) {
+            if (x === &apos;3&apos;) {
+                throw &apos;error&apos;;
+            }
+            return String(parseInt(x) + parseInt(y));
+        });
+        expectObservable(result).toBe(expected);
+    });
+    it(&apos;should map values to constant resolved promises and concatenate&apos;, function (done) {
+        var source = Rx.Observable.from([4, 3, 2, 1]);
+        var results = [];
+        source.concatMapTo(Observable.from(Promise.resolve(42))).subscribe(function (x) {
+            results.push(x);
+        }, function (err) {
+            done.fail(&apos;Subscriber error handler not supposed to be called.&apos;);
+        }, function () {
+            expect(results).toEqual([42, 42, 42, 42]);
+            done();
+        });
+    });
+    it(&apos;should map values to constant rejected promises and concatenate&apos;, function (done) {
+        var source = Rx.Observable.from([4, 3, 2, 1]);
+        source.concatMapTo(Observable.from(Promise.reject(42))).subscribe(function (x) {
+            done.fail(&apos;Subscriber next handler not supposed to be called.&apos;);
+        }, function (err) {
+            expect(err).toEqual(42);
+            done();
+        }, function () {
+            done.fail(&apos;Subscriber complete handler not supposed to be called.&apos;);
+        });
+    });
+    it(&apos;should concatMapTo values to resolved promises with resultSelector&apos;, function (done) {
+        var source = Rx.Observable.from([4, 3, 2, 1]);
+        var resultSelectorCalledWith = [];
+        var inner = Observable.from(Promise.resolve(42));
+        var resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
+            resultSelectorCalledWith.push([].slice.call(arguments));
+            return 8;
+        };
+        var results = [];
+        var expectedCalls = [
+            [4, 42, 0, 0],
+            [3, 42, 1, 0],
+            [2, 42, 2, 0],
+            [1, 42, 3, 0]
+        ];
+        source.concatMapTo(inner, resultSelector).subscribe(function (x) {
+            results.push(x);
+        }, function (err) {
+            done.fail(&apos;Subscriber error handler not supposed to be called.&apos;);
+        }, function () {
+            expect(results).toEqual([8, 8, 8, 8]);
+            expect(resultSelectorCalledWith).toDeepEqual(expectedCalls);
+            done();
+        });
+    });
+    it(&apos;should concatMapTo values to rejected promises with resultSelector&apos;, function (done) {
+        var source = Rx.Observable.from([4, 3, 2, 1]);
+        var inner = Observable.from(Promise.reject(42));
+        var resultSelector = function () {
+            throw &apos;this should not be called&apos;;
+        };
+        source.concatMapTo(inner, resultSelector).subscribe(function (x) {
+            done.fail(&apos;Subscriber next handler not supposed to be called.&apos;);
+        }, function (err) {
+            expect(err).toEqual(42);
+            done();
+        }, function () {
+            done.fail(&apos;Subscriber complete handler not supposed to be called.&apos;);
+        });
+    });
+});
+//# sourceMappingURL=concatMapTo-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

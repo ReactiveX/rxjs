@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/util/Immediate-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/util/Immediate-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Immediate_1 = require(&apos;../../dist/cjs/util/Immediate&apos;);
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+/** @test {ImmediateDefinition} */
+describe(&apos;ImmediateDefinition&apos;, function () {
+    it(&apos;should have setImmediate and clearImmediate methods&apos;, function () {
+        var result = new Immediate_1.ImmediateDefinition(__root__);
+        expect(typeof result.setImmediate).toBe(&apos;function&apos;);
+        expect(typeof result.clearImmediate).toBe(&apos;function&apos;);
+    });
+    describe(&apos;when setImmediate exists on root&apos;, function () {
+        it(&apos;should use the setImmediate and clearImmediate methods from root&apos;, function () {
+            var setImmediateCalled = false;
+            var clearImmediateCalled = false;
+            var root = {
+                setImmediate: function () {
+                    setImmediateCalled = true;
+                },
+                clearImmediate: function () {
+                    clearImmediateCalled = true;
+                }
+            };
+            var result = new Immediate_1.ImmediateDefinition(root);
+            result.setImmediate(function () {
+                //noop
+            });
+            result.clearImmediate(null);
+            expect(setImmediateCalled).toBeTruthy();
+            expect(clearImmediateCalled).toBeTruthy();
+        });
+    });
+    describe(&apos;prototype.createProcessNextTickSetImmediate()&apos;, function () {
+        it(&apos;should create the proper flavor of setImmediate using process.nextTick&apos;, function () {
+            var instance = {
+                root: {
+                    process: {
+                        nextTick: jasmine.createSpy(&apos;nextTick&apos;)
+                    }
+                },
+                runIfPresent: function () {
+                    //noop
+                },
+                partiallyApplied: jasmine.createSpy(&apos;partiallyApplied&apos;),
+                addFromSetImmediateArguments: jasmine.createSpy(&apos;addFromSetImmediateArguments&apos;).and.returnValue(123456)
+            };
+            var setImmediateImpl = Immediate_1.ImmediateDefinition.prototype.createProcessNextTickSetImmediate.call(instance);
+            expect(typeof setImmediateImpl).toBe(&apos;function&apos;);
+            var action = function () {
+                //noop
+            };
+            var handle = setImmediateImpl(action);
+            expect(handle).toBe(123456);
+            expect(instance.addFromSetImmediateArguments).toHaveBeenCalled();
+            expect(instance.partiallyApplied).toHaveBeenCalledWith(instance.runIfPresent, handle);
+        });
+    });
+    describe(&apos;prototype.createPostMessageSetImmediate()&apos;, function () {
+        it(&apos;should create the proper flavor of setImmediate using postMessage&apos;, function () {
+            var addEventListenerCalledWith = null;
+            var instance = {
+                root: {
+                    addEventListener: function (name, callback) {
+                        addEventListenerCalledWith = [name, callback];
+                    },
+                    postMessage: jasmine.createSpy(&apos;root.postMessage&apos;),
+                    Math: {
+                        random: jasmine.createSpy(&apos;Math.random&apos;).and.returnValue(42)
+                    }
+                },
+                runIfPresent: jasmine.createSpy(&apos;runIfPresent&apos;),
+                addFromSetImmediateArguments: jasmine.createSpy(&apos;addFromSetImmediateArguments&apos;).and.returnValue(123456)
+            };
+            var setImmediateImpl = Immediate_1.ImmediateDefinition.prototype.createPostMessageSetImmediate.call(instance);
+            expect(typeof setImmediateImpl).toBe(&apos;function&apos;);
+            expect(addEventListenerCalledWith[0]).toBe(&apos;message&apos;);
+            addEventListenerCalledWith[1]({ data: &apos;setImmediate$42$123456&apos;, source: instance.root });
+            expect(instance.runIfPresent).toHaveBeenCalledWith(123456);
+            var action = function () {
+                //noop
+            };
+            var handle = setImmediateImpl(action);
+            expect(handle).toBe(123456);
+            expect(instance.addFromSetImmediateArguments).toHaveBeenCalled();
+            expect(instance.root.postMessage).toHaveBeenCalledWith(&apos;setImmediate$42$123456&apos;, &apos;*&apos;);
+        });
+    });
+    describe(&apos;prototype.createMessageChannelSetImmediate&apos;, function () {
+        it(&apos;should create the proper flavor of setImmediate that uses message channels&apos;, function () {
+            var port1 = {};
+            var port2 = {
+                postMessage: jasmine.createSpy(&apos;MessageChannel.port2.postMessage&apos;)
+            };
+            function MockMessageChannel() {
+                this.port1 = port1;
+                this.port2 = port2;
+            }
+            var instance = {
+                root: {
+                    MessageChannel: MockMessageChannel
+                },
+                runIfPresent: jasmine.createSpy(&apos;runIfPresent&apos;),
+                addFromSetImmediateArguments: jasmine.createSpy(&apos;addFromSetImmediateArguments&apos;).and.returnValue(123456)
+            };
+            var setImmediateImpl = Immediate_1.ImmediateDefinition.prototype.createMessageChannelSetImmediate.call(instance);
+            expect(typeof setImmediateImpl).toBe(&apos;function&apos;);
+            expect(typeof port1.onmessage).toBe(&apos;function&apos;);
+            port1.onmessage({ data: &apos;something&apos; });
+            expect(instance.runIfPresent).toHaveBeenCalledWith(&apos;something&apos;);
+            var action = function () {
+                //noop
+            };
+            var handle = setImmediateImpl(action);
+            expect(handle).toBe(123456);
+            expect(port2.postMessage).toHaveBeenCalledWith(123456);
+        });
+    });
+    describe(&apos;prototype.createReadyStateChangeSetImmediate&apos;, function () {
+        it(&apos;should create the proper flavor of setImmediate that uses readystatechange on a DOM element&apos;, function () {
+            var fakeScriptElement = {};
+            var instance = {
+                root: {
+                    document: {
+                        createElement: jasmine.createSpy(&apos;document.createElement&apos;).and.returnValue(fakeScriptElement),
+                        documentElement: {
+                            appendChild: jasmine.createSpy(&apos;documentElement.appendChild&apos;),
+                            removeChild: jasmine.createSpy(&apos;documentElement.removeChild&apos;)
+                        }
+                    }
+                },
+                runIfPresent: jasmine.createSpy(&apos;runIfPresent&apos;),
+                addFromSetImmediateArguments: jasmine.createSpy(&apos;addFromSetImmediateArguments&apos;).and.returnValue(123456)
+            };
+            var setImmediateImpl = Immediate_1.ImmediateDefinition.prototype.createReadyStateChangeSetImmediate.call(instance);
+            expect(typeof setImmediateImpl).toBe(&apos;function&apos;);
+            var action = function () {
+                //noop
+            };
+            var handle = setImmediateImpl(action);
+            expect(handle).toBe(123456);
+            expect(instance.root.document.createElement).toHaveBeenCalledWith(&apos;script&apos;);
+            expect(typeof fakeScriptElement.onreadystatechange).toBe(&apos;function&apos;);
+            expect(instance.root.document.documentElement.appendChild).toHaveBeenCalledWith(fakeScriptElement);
+            fakeScriptElement.onreadystatechange();
+            expect(instance.runIfPresent).toHaveBeenCalledWith(handle);
+            expect(fakeScriptElement.onreadystatechange).toBe(null);
+            expect(instance.root.document.documentElement.removeChild).toHaveBeenCalledWith(fakeScriptElement);
+        });
+    });
+    describe(&apos;when setImmediate does *not* exist on root&apos;, function () {
+        describe(&apos;when it can use process.nextTick&apos;, function () {
+            it(&apos;should use the post message impl&apos;, function () {
+                var nextTickImpl = function () {
+                    //noop
+                };
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseProcessNextTick&apos;).and.returnValue(true);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUsePostMessage&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseMessageChannel&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseReadyStateChange&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;createProcessNextTickSetImmediate&apos;).and.returnValue(nextTickImpl);
+                var result = new Immediate_1.ImmediateDefinition({});
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseProcessNextTick).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUsePostMessage).not.toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseMessageChannel).not.toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange).not.toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.createProcessNextTickSetImmediate).toHaveBeenCalled();
+                expect(result.setImmediate).toBe(nextTickImpl);
+            });
+        });
+        describe(&apos;when it cannot use process.nextTick&apos;, function () {
+            it(&apos;should use the post message impl&apos;, function () {
+                var postMessageImpl = function () {
+                    //noop
+                };
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseProcessNextTick&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUsePostMessage&apos;).and.returnValue(true);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseMessageChannel&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseReadyStateChange&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;createPostMessageSetImmediate&apos;).and.returnValue(postMessageImpl);
+                var result = new Immediate_1.ImmediateDefinition({});
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseProcessNextTick).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUsePostMessage).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseMessageChannel).not.toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange).not.toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.createPostMessageSetImmediate).toHaveBeenCalled();
+                expect(result.setImmediate).toBe(postMessageImpl);
+            });
+        });
+        describe(&apos;when it cannot use process.nextTick or postMessage&apos;, function () {
+            it(&apos;should use the readystatechange impl&apos;, function () {
+                var messageChannelImpl = function () {
+                    //noop
+                };
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseProcessNextTick&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUsePostMessage&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseMessageChannel&apos;).and.returnValue(true);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseReadyStateChange&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;createMessageChannelSetImmediate&apos;).and.returnValue(messageChannelImpl);
+                var result = new Immediate_1.ImmediateDefinition({});
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseProcessNextTick).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUsePostMessage).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseMessageChannel).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange).not.toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.createMessageChannelSetImmediate).toHaveBeenCalled();
+                expect(result.setImmediate).toBe(messageChannelImpl);
+            });
+        });
+        describe(&apos;when it cannot use process.nextTick, postMessage or Message channels&apos;, function () {
+            it(&apos;should use the readystatechange impl&apos;, function () {
+                var readyStateChangeImpl = function () {
+                    //noop
+                };
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseProcessNextTick&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUsePostMessage&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseMessageChannel&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseReadyStateChange&apos;).and.returnValue(true);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;createReadyStateChangeSetImmediate&apos;).and.returnValue(readyStateChangeImpl);
+                var result = new Immediate_1.ImmediateDefinition({});
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseProcessNextTick).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUsePostMessage).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseMessageChannel).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.createReadyStateChangeSetImmediate).toHaveBeenCalled();
+                expect(result.setImmediate).toBe(readyStateChangeImpl);
+            });
+        });
+        describe(&apos;when no other methods to implement setImmediate are available&apos;, function () {
+            it(&apos;should use the setTimeout impl&apos;, function () {
+                var setTimeoutImpl = function () {
+                    //noop
+                };
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseProcessNextTick&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUsePostMessage&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseMessageChannel&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseReadyStateChange&apos;).and.returnValue(false);
+                spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;createSetTimeoutSetImmediate&apos;).and.returnValue(setTimeoutImpl);
+                var result = new Immediate_1.ImmediateDefinition({});
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseProcessNextTick).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUsePostMessage).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseMessageChannel).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange).toHaveBeenCalled();
+                expect(Immediate_1.ImmediateDefinition.prototype.createSetTimeoutSetImmediate).toHaveBeenCalled();
+                expect(result.setImmediate).toBe(setTimeoutImpl);
+            });
+        });
+    });
+    describe(&apos;partiallyApplied&apos;, function () {
+        describe(&apos;when passed a function as the first argument&apos;, function () {
+            it(&apos;should return a function that takes no arguments and will be called with the passed arguments&apos;, function () {
+                var fn = jasmine.createSpy(&apos;spy&apos;);
+                var result = Immediate_1.ImmediateDefinition.prototype.partiallyApplied(fn, &apos;arg1&apos;, &apos;arg2&apos;, &apos;arg3&apos;);
+                expect(typeof result).toBe(&apos;function&apos;);
+                expect(fn).not.toHaveBeenCalled();
+                result();
+                expect(fn).toHaveBeenCalledWith(&apos;arg1&apos;, &apos;arg2&apos;, &apos;arg3&apos;);
+            });
+        });
+        describe(&apos;when passed a non-function as an argument&apos;, function () {
+            it(&apos;should coerce to a string and convert to a function which will be called by the returned function&apos;, function () {
+                __root__.__wasCalled = null;
+                var fnStr = &apos;__wasCalled = true;&apos;;
+                var result = Immediate_1.ImmediateDefinition.prototype.partiallyApplied(fnStr);
+                expect(typeof result).toBe(&apos;function&apos;);
+                result();
+                expect(__root__.__wasCalled).toEqual(true);
+                delete __root__.__wasCalled;
+            });
+        });
+    });
+    describe(&apos;prototype.identify&apos;, function () {
+        it(&apos;should use Object.toString to return an identifier string&apos;, function () {
+            function MockObject() {
+                //noop
+            }
+            MockObject.prototype.toString = jasmine.createSpy(&apos;Object.prototype.toString&apos;).and.returnValue(&apos;[object HEYO!]&apos;);
+            var instance = {
+                root: {
+                    Object: MockObject
+                }
+            };
+            var result = Immediate_1.ImmediateDefinition.prototype.identify.call(instance);
+            expect(result).toBe(&apos;[object HEYO!]&apos;);
+        });
+    });
+    describe(&apos;prototype.canUseProcessNextTick&apos;, function () {
+        describe(&apos;when root.process does not identify as [object process]&apos;, function () {
+            it(&apos;should return false&apos;, function () {
+                var instance = {
+                    root: {
+                        process: {}
+                    },
+                    identify: jasmine.createSpy(&apos;identify&apos;).and.returnValue(&apos;[object it-is-not-a-tumor]&apos;)
+                };
+                var result = Immediate_1.ImmediateDefinition.prototype.canUseProcessNextTick.call(instance);
+                expect(result).toBe(false);
+                expect(instance.identify).toHaveBeenCalledWith(instance.root.process);
+            });
+        });
+        describe(&apos;when root.process identifies as [object process]&apos;, function () {
+            it(&apos;should return true&apos;, function () {
+                var instance = {
+                    root: {
+                        process: {}
+                    },
+                    identify: jasmine.createSpy(&apos;identify&apos;).and.returnValue(&apos;[object process]&apos;)
+                };
+                var result = Immediate_1.ImmediateDefinition.prototype.canUseProcessNextTick.call(instance);
+                expect(result).toBe(true);
+                expect(instance.identify).toHaveBeenCalledWith(instance.root.process);
+            });
+        });
+    });
+    describe(&apos;prototype.canUsePostMessage&apos;, function () {
+        describe(&apos;when there is a global postMessage function&apos;, function () {
+            describe(&apos;and importScripts does NOT exist&apos;, function () {
+                it(&apos;should maintain any existing onmessage handler&apos;, function () {
+                    var originalOnMessage = function () {
+                        //noop
+                    };
+                    var instance = {
+                        root: {
+                            onmessage: originalOnMessage
+                        }
+                    };
+                    Immediate_1.ImmediateDefinition.prototype.canUsePostMessage.call(instance);
+                    expect(instance.root.onmessage).toBe(originalOnMessage);
+                });
+                describe(&apos;and postMessage is synchronous&apos;, function () {
+                    it(&apos;should return false&apos;, function () {
+                        var postMessageCalled = false;
+                        var instance = {
+                            root: {
+                                postMessage: function () {
+                                    postMessageCalled = true;
+                                    this.onmessage();
+                                }
+                            }
+                        };
+                        var result = Immediate_1.ImmediateDefinition.prototype.canUsePostMessage.call(instance);
+                        expect(result).toBe(false);
+                        expect(postMessageCalled).toBe(true);
+                    });
+                });
+                describe(&apos;and postMessage is asynchronous&apos;, function () {
+                    it(&apos;should return true&apos;, function () {
+                        var postMessageCalled = false;
+                        var instance = {
+                            root: {
+                                postMessage: function () {
+                                    postMessageCalled = true;
+                                    var _onmessage = this.onmessage;
+                                    setTimeout(function () { _onmessage(); });
+                                }
+                            }
+                        };
+                        var result = Immediate_1.ImmediateDefinition.prototype.canUsePostMessage.call(instance);
+                        expect(result).toBe(true);
+                        expect(postMessageCalled).toBe(true);
+                    });
+                });
+            });
+            describe(&apos;and importScripts *does* exist because it is a worker&apos;, function () {
+                it(&apos;should return false&apos;, function () {
+                    var instance = {
+                        root: {
+                            postMessage: function () {
+                                //noop
+                            },
+                            importScripts: function () {
+                                //noop
+                            }
+                        }
+                    };
+                    var result = Immediate_1.ImmediateDefinition.prototype.canUsePostMessage.call(instance);
+                    expect(result).toBe(false);
+                });
+            });
+        });
+        describe(&apos;when there is NOT a global postMessage function&apos;, function () {
+            it(&apos;should return false&apos;, function () {
+                var instance = {
+                    root: {}
+                };
+                var result = Immediate_1.ImmediateDefinition.prototype.canUsePostMessage.call(instance);
+                expect(result).toBe(false);
+            });
+        });
+    });
+    describe(&apos;prototype.canUseMessageChannel&apos;, function () {
+        it(&apos;should return true if MessageChannel exists&apos;, function () {
+            var instance = {
+                root: {
+                    MessageChannel: function () {
+                        //noop
+                    }
+                }
+            };
+            var result = Immediate_1.ImmediateDefinition.prototype.canUseMessageChannel.call(instance);
+            expect(result).toBe(true);
+        });
+        it(&apos;should return false if MessageChannel does NOT exist&apos;, function () {
+            var instance = {
+                root: {}
+            };
+            var result = Immediate_1.ImmediateDefinition.prototype.canUseMessageChannel.call(instance);
+            expect(result).toBe(false);
+        });
+    });
+    describe(&apos;prototype.canUseReadyStateChange&apos;, function () {
+        describe(&apos;when there is a document in global scope&apos;, function () {
+            it(&apos;should return true if created script elements have an onreadystatechange property&apos;, function () {
+                var fakeScriptElement = {
+                    onreadystatechange: null
+                };
+                var instance = {
+                    root: {
+                        document: {
+                            createElement: jasmine.createSpy(&apos;document.createElement&apos;).and.returnValue(fakeScriptElement)
+                        }
+                    }
+                };
+                var result = Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange.call(instance);
+                expect(result).toBe(true);
+                expect(instance.root.document.createElement).toHaveBeenCalledWith(&apos;script&apos;);
+            });
+            it(&apos;should return false if created script elements do NOT have an onreadystatechange property&apos;, function () {
+                var fakeScriptElement = {};
+                var instance = {
+                    root: {
+                        document: {
+                            createElement: jasmine.createSpy(&apos;document.createElement&apos;).and.returnValue(fakeScriptElement)
+                        }
+                    }
+                };
+                var result = Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange.call(instance);
+                expect(result).toBe(false);
+                expect(instance.root.document.createElement).toHaveBeenCalledWith(&apos;script&apos;);
+            });
+        });
+        it(&apos;should return false if there is no document in global scope&apos;, function () {
+            var instance = {
+                root: {}
+            };
+            var result = Immediate_1.ImmediateDefinition.prototype.canUseReadyStateChange.call(instance);
+            expect(result).toBe(false);
+        });
+    });
+    describe(&apos;prototype.addFromSetImmediateArguments&apos;, function () {
+        it(&apos;should add to tasksByHandle and increment the nextHandle&apos;, function () {
+            var partiallyAppliedResult = {};
+            var instance = {
+                tasksByHandle: {},
+                nextHandle: 42,
+                partiallyApplied: jasmine.createSpy(&apos;partiallyApplied&apos;).and.returnValue(partiallyAppliedResult)
+            };
+            var args = [function () {
+                    //noop
+                }, &apos;foo&apos;, &apos;bar&apos;];
+            var handle = Immediate_1.ImmediateDefinition.prototype.addFromSetImmediateArguments.call(instance, args);
+            expect(handle).toBe(42);
+            expect(instance.nextHandle).toBe(43);
+            expect(instance.tasksByHandle[42]).toBe(partiallyAppliedResult);
+        });
+    });
+    describe(&apos;clearImmediate&apos;, function () {
+        it(&apos;should delete values from tasksByHandle&apos;, function () {
+            var setTimeoutImpl = function () {
+                //noop
+            };
+            spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseProcessNextTick&apos;).and.returnValue(false);
+            spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUsePostMessage&apos;).and.returnValue(false);
+            spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseMessageChannel&apos;).and.returnValue(false);
+            spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;canUseReadyStateChange&apos;).and.returnValue(false);
+            spyOn(Immediate_1.ImmediateDefinition.prototype, &apos;createSetTimeoutSetImmediate&apos;).and.returnValue(setTimeoutImpl);
+            var Immediate = new Immediate_1.ImmediateDefinition({});
+            Immediate.tasksByHandle[123456] = function () {
+                //noop
+            };
+            expect(&apos;123456&apos; in Immediate.tasksByHandle).toBe(true);
+            Immediate.clearImmediate(123456);
+            expect(&apos;123456&apos; in Immediate.tasksByHandle).toBe(false);
+        });
+    });
+    describe(&apos;prototype.runIfPresent&apos;, function () {
+        it(&apos;should delay running the task if it is currently running a task&apos;, function () {
+            var mockApplied = function () {
+                //noop
+            };
+            var instance = {
+                root: {
+                    setTimeout: jasmine.createSpy(&apos;setTimeout&apos;),
+                    Object: Object
+                },
+                currentlyRunningATask: true,
+                partiallyApplied: jasmine.createSpy(&apos;partiallyApplied&apos;).and.returnValue(mockApplied)
+            };
+            Immediate_1.ImmediateDefinition.prototype.runIfPresent.call(instance, 123456);
+            expect(instance.partiallyApplied).toHaveBeenCalledWith(instance.runIfPresent, 123456);
+            expect(instance.root.setTimeout).toHaveBeenCalledWith(mockApplied, 0);
+        });
+        it(&apos;should not error if there is no task currently running and the handle passed is not found&apos;, function () {
+            expect(function () {
+                var instance = {
+                    root: {
+                        setTimeout: jasmine.createSpy(&apos;setTimeout&apos;),
+                        Object: Object
+                    },
+                    currentlyRunningATask: false,
+                    tasksByHandle: {}
+                };
+                Immediate_1.ImmediateDefinition.prototype.runIfPresent.call(instance, 888888);
+            }).not.toThrow();
+        });
+        describe(&apos;when a task is found for the handle&apos;, function () {
+            it(&apos;should execute the task and clean up after&apos;, function () {
+                var instance = {
+                    root: {
+                        setTimeout: jasmine.createSpy(&apos;setTimeout&apos;),
+                        Object: Object
+                    },
+                    currentlyRunningATask: false,
+                    tasksByHandle: {},
+                    clearImmediate: jasmine.createSpy(&apos;clearImmediate&apos;)
+                };
+                instance.tasksByHandle[123456] = jasmine.createSpy(&apos;task&apos;).and.callFake(function () {
+                    expect(instance.currentlyRunningATask).toBe(true);
+                });
+                Immediate_1.ImmediateDefinition.prototype.runIfPresent.call(instance, 123456);
+                expect(instance.clearImmediate).toHaveBeenCalledWith(123456);
+            });
+        });
+    });
+    describe(&apos;prototype.createSetTimeoutSetImmediate&apos;, function () {
+        it(&apos;should create a proper setImmediate implementation that uses setTimeout&apos;, function () {
+            var mockApplied = function () {
+                //noop
+            };
+            var instance = {
+                root: {
+                    setTimeout: jasmine.createSpy(&apos;setTimeout&apos;)
+                },
+                addFromSetImmediateArguments: jasmine.createSpy(&apos;addFromSetImmediateArguments&apos;).and.returnValue(123456),
+                runIfPresent: function () {
+                    //noop
+                },
+                partiallyApplied: jasmine.createSpy(&apos;partiallyApplied&apos;).and.returnValue(mockApplied)
+            };
+            var setImmediateImpl = Immediate_1.ImmediateDefinition.prototype.createSetTimeoutSetImmediate.call(instance);
+            var handle = setImmediateImpl();
+            expect(handle).toBe(123456);
+            expect(instance.addFromSetImmediateArguments).toHaveBeenCalled();
+            expect(instance.root.setTimeout).toHaveBeenCalledWith(mockApplied, 0);
+        });
+    });
+    describe(&apos;integration test&apos;, function () {
+        it(&apos;should work&apos;, function (done) {
+            var results = [];
+            Rx.Observable.fromArray([1, 2, 3], Rx.Scheduler.asap)
+                .subscribe(function (x) {
+                results.push(x);
+            }, done.fail, function () {
+                expect(results).toEqual([1, 2, 3]);
+                done();
+            });
+        });
+    });
+});
+//# sourceMappingURL=Immediate-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

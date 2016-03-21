@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">es6/scheduler/FutureAction.js | API Document</title>
+  <title data-ice="title">es6/scheduler/FutureAction.js | RxJS API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   
   
   <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
@@ -33,64 +37,136 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buffer">buffer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferCount">bufferCount</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferTime">bufferTime</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferToggle">bufferToggle</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bufferWhen">bufferWhen</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineAll">combineAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-combineLatest">combineLatest</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatAll">concatAll</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMap">concatMap</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatMapTo">concatMapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-count">count</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-filter">filter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-map">map</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapTo">mapTo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-withLatestFrom">withLatestFrom</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rxSubscriber">rxSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/scheduler/FutureAction.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { QueueAction } from &apos;./QueueAction&apos;;
-export class FutureAction extends QueueAction {
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { root } from &apos;../util/root&apos;;
+import { Subscription } from &apos;../Subscription&apos;;
+export class FutureAction extends Subscription {
     constructor(scheduler, work) {
-        super(scheduler, work);
+        super();
         this.scheduler = scheduler;
         this.work = work;
+        this.pending = false;
+    }
+    execute() {
+        if (this.isUnsubscribed) {
+            this.error = new Error(&apos;executing a cancelled action&apos;);
+        }
+        else {
+            try {
+                this.work(this.state);
+            }
+            catch (e) {
+                this.unsubscribe();
+                this.error = e;
+            }
+        }
     }
     schedule(state, delay = 0) {
         if (this.isUnsubscribed) {
             return this;
         }
-        this.delay = delay;
+        return this._schedule(state, delay);
+    }
+    _schedule(state, delay = 0) {
+        // Always replace the current state with the new state.
         this.state = state;
+        // Set the pending flag indicating that this action has been scheduled, or
+        // has recursively rescheduled itself.
+        this.pending = true;
         const id = this.id;
-        if (id != null) {
-            this.id = undefined;
-            clearTimeout(id);
+        // If this action has an intervalID and the specified delay matches the
+        // delay we used to create the intervalID, don&apos;t call `setInterval` again.
+        if (id != null &amp;&amp; this.delay === delay) {
+            return this;
         }
-        const scheduler = this.scheduler;
-        this.id = setTimeout(() =&gt; {
-            this.id = void 0;
+        this.delay = delay;
+        // If this action has an intervalID, but was rescheduled with a different
+        // `delay` time, cancel the current intervalID and call `setInterval` with
+        // the new `delay` time.
+        if (id != null) {
+            this.id = null;
+            root.clearInterval(id);
+        }
+        //
+        // Important implementation note:
+        //
+        // By default, FutureAction only executes once. However, Actions have the
+        // ability to be rescheduled from within the scheduled callback (mimicking
+        // recursion for asynchronous methods). This allows us to implement single
+        // and repeated actions with the same code path without adding API surface
+        // area, and implement tail-call optimization over asynchronous boundaries.
+        //
+        // However, JS runtimes make a distinction between intervals scheduled by
+        // repeatedly calling `setTimeout` vs. a single `setInterval` call, with
+        // the latter providing a better guarantee of precision.
+        //
+        // In order to accommodate both single and repeatedly rescheduled actions,
+        // use `setInterval` here for both cases. By default, the interval will be
+        // canceled after its first execution, or if the action schedules itself to
+        // run again with a different `delay` time.
+        //
+        // If the action recursively schedules itself to run again with the same
+        // `delay` time, the interval is not canceled, but allowed to loop again.
+        // The check of whether the interval should be canceled or not is run every
+        // time the interval is executed. The first time an action fails to
+        // reschedule itself, the interval is canceled.
+        //
+        this.id = root.setInterval(() =&gt; {
+            this.pending = false;
+            const { id, scheduler } = this;
             scheduler.actions.push(this);
             scheduler.flush();
-        }, this.delay);
+            //
+            // Terminate this interval if the action didn&apos;t reschedule itself.
+            // Don&apos;t call `this.unsubscribe()` here, because the action could be
+            // rescheduled later. For example:
+            //
+            // ```
+            // scheduler.schedule(function doWork(counter) {
+            //   /* ... I&apos;m a busy worker bee ... */
+            //   var originalAction = this;
+            //   /* wait 100ms before rescheduling this action again */
+            //   setTimeout(function () {
+            //     originalAction.schedule(counter + 1);
+            //   }, 100);
+            // }, 1000);
+            // ```
+            if (this.pending === false &amp;&amp; id != null) {
+                this.id = null;
+                root.clearInterval(id);
+            }
+        }, delay);
         return this;
     }
-    unsubscribe() {
-        const id = this.id;
+    _unsubscribe() {
+        this.pending = false;
+        const { id, scheduler } = this;
+        const { actions } = scheduler;
+        const index = actions.indexOf(this);
         if (id != null) {
-            this.id = void 0;
-            clearTimeout(id);
+            this.id = null;
+            root.clearInterval(id);
         }
-        super.unsubscribe();
+        if (index !== -1) {
+            actions.splice(index, 1);
+        }
+        this.work = null;
+        this.state = null;
+        this.scheduler = null;
     }
 }
 //# sourceMappingURL=FutureAction.js.map</code></pre>
@@ -98,7 +174,7 @@ export class FutureAction extends QueueAction {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

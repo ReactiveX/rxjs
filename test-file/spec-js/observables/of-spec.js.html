@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/observables/of-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/of-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
+var ArrayObservable_1 = require(&apos;../../dist/cjs/observable/ArrayObservable&apos;);
+var ScalarObservable_1 = require(&apos;../../dist/cjs/observable/ScalarObservable&apos;);
+var EmptyObservable_1 = require(&apos;../../dist/cjs/observable/EmptyObservable&apos;);
+var Observable = Rx.Observable;
+/** @test {of} */
+describe(&apos;Observable.of&apos;, function () {
+    it(&apos;should create an observable from the provided values&apos;, function (done) {
+        var x = { foo: &apos;bar&apos; };
+        var expected = [1, &apos;a&apos;, x];
+        var i = 0;
+        Observable.of(1, &apos;a&apos;, x)
+            .subscribe(function (y) {
+            expect(y).toBe(expected[i++]);
+        }, done.fail, done);
+    });
+    it(&apos;should return a scalar observable if only passed one value&apos;, function () {
+        var obs = Observable.of(&apos;one&apos;);
+        expect(obs instanceof ScalarObservable_1.ScalarObservable).toBe(true);
+    });
+    it(&apos;should return a scalar observable if only passed one value and a scheduler&apos;, function () {
+        var obs = Observable.of(&apos;one&apos;, Rx.Scheduler.queue);
+        expect(obs instanceof ScalarObservable_1.ScalarObservable).toBe(true);
+    });
+    it(&apos;should return an array observable if passed many values&apos;, function () {
+        var obs = Observable.of(&apos;one&apos;, &apos;two&apos;, &apos;three&apos;);
+        expect(obs instanceof ArrayObservable_1.ArrayObservable).toBe(true);
+    });
+    it(&apos;should return an empty observable if passed no values&apos;, function () {
+        var obs = Observable.of();
+        expect(obs instanceof EmptyObservable_1.EmptyObservable).toBe(true);
+    });
+    it(&apos;should return an empty observable if passed only a scheduler&apos;, function () {
+        var obs = Observable.of(Rx.Scheduler.queue);
+        expect(obs instanceof EmptyObservable_1.EmptyObservable).toBe(true);
+    });
+    it(&apos;should emit one value&apos;, function (done) {
+        var calls = 0;
+        Observable.of(42).subscribe(function (x) {
+            expect(++calls).toBe(1);
+            expect(x).toBe(42);
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+    });
+    it(&apos;should handle an Observable as the only value&apos;, function () {
+        var source = Observable.of(Observable.of(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, rxTestScheduler), rxTestScheduler);
+        expect(source instanceof ScalarObservable_1.ScalarObservable).toBe(true);
+        var result = source.concatAll();
+        expectObservable(result).toBe(&apos;(abc|)&apos;);
+    });
+    it(&apos;should handle many Observable as the given values&apos;, function () {
+        var source = Observable.of(Observable.of(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, rxTestScheduler), Observable.of(&apos;d&apos;, &apos;e&apos;, &apos;f&apos;, rxTestScheduler), rxTestScheduler);
+        expect(source instanceof ArrayObservable_1.ArrayObservable).toBe(true);
+        var result = source.concatAll();
+        expectObservable(result).toBe(&apos;(abcdef|)&apos;);
+    });
+});
+//# sourceMappingURL=of-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

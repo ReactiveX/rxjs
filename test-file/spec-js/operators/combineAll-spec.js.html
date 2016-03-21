@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/combineAll-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/combineAll-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Observable = Rx.Observable;
+var queueScheduler = Rx.Scheduler.queue;
+/** @test {combineAll} */
+describe(&apos;Observable.prototype.combineAll&apos;, function () {
+    asDiagram(&apos;combineAll&apos;)(&apos;should combine events from two observables&apos;, function () {
+        var x = cold(&apos;-a-----b---|&apos;);
+        var y = cold(&apos;--1-2-|     &apos;);
+        var outer = hot(&apos;-x----y--------|           &apos;, { x: x, y: y });
+        var expected = &apos;-----------------A-B--C---|&apos;;
+        var result = outer.combineAll(function (a, b) { return String(a) + String(b); });
+        expectObservable(result).toBe(expected, { A: &apos;a1&apos;, B: &apos;a2&apos;, C: &apos;b2&apos; });
+    });
+    it(&apos;should work with two nevers&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var e2 = cold(&apos;-&apos;);
+        var e2subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with never and empty&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var e2 = cold(&apos;|&apos;);
+        var e2subs = &apos;(^!)&apos;;
+        var expected = &apos;-&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with empty and never&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var e2 = cold(&apos;-&apos;);
+        var e2subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with empty and empty&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var e2 = cold(&apos;|&apos;);
+        var e2subs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with hot-empty and hot-single&apos;, function () {
+        var e1 = hot(&apos;-a-^-|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;-b-^-c-|&apos;);
+        var e2subs = &apos;^   !&apos;;
+        var expected = &apos;----|&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with hot-single and hot-empty&apos;, function () {
+        var e1 = hot(&apos;-a-^-|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;-b-^-c-|&apos;);
+        var e2subs = &apos;^   !&apos;;
+        var expected = &apos;----|&apos;;
+        var result = Observable.of(e2, e1).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with hot-single and never&apos;, function () {
+        var e1 = hot(&apos;-a-^-|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;------&apos;); //never
+        var e2subs = &apos;^  &apos;;
+        var expected = &apos;-&apos;; //never
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with never and hot-single&apos;, function () {
+        var e1 = hot(&apos;--------&apos;); //never
+        var e1subs = &apos;^    &apos;;
+        var e2 = hot(&apos;-a-^-b-|&apos;);
+        var e2subs = &apos;^   !&apos;;
+        var expected = &apos;-----&apos;; //never
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with hot and hot&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c--|&apos;);
+        var e1subs = &apos;^        !&apos;;
+        var e2 = hot(&apos;---e-^---f--g--|&apos;);
+        var e2subs = &apos;^         !&apos;;
+        var expected = &apos;----x-yz--|&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, { x: &apos;bf&apos;, y: &apos;cf&apos;, z: &apos;cg&apos; });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should allow unsubscribing early and explicitly&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c---d-| &apos;);
+        var e1subs = &apos;^        !    &apos;;
+        var e2 = hot(&apos;---e-^---f--g---h-|&apos;);
+        var e2subs = &apos;^        !    &apos;;
+        var expected = &apos;----x-yz--    &apos;;
+        var unsub = &apos;         !    &apos;;
+        var values = { x: &apos;bf&apos;, y: &apos;cf&apos;, z: &apos;cg&apos; };
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should not break unsubscription chains when unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c---d-| &apos;);
+        var e1subs = &apos;^        !    &apos;;
+        var e2 = hot(&apos;---e-^---f--g---h-|&apos;);
+        var e2subs = &apos;^        !    &apos;;
+        var expected = &apos;----x-yz--    &apos;;
+        var unsub = &apos;         !    &apos;;
+        var values = { x: &apos;bf&apos;, y: &apos;cf&apos;, z: &apos;cg&apos; };
+        var result = Observable.of(e1, e2)
+            .mergeMap(function (x) { return Observable.of(x); })
+            .combineAll(function (x, y) { return x + y; })
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should combine 3 observables&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c--|&apos;);
+        var e1subs = &apos;^        !&apos;;
+        var e2 = hot(&apos;---e-^---f--g--|&apos;);
+        var e2subs = &apos;^         !&apos;;
+        var e3 = hot(&apos;---h-^----i--j-|&apos;);
+        var e3subs = &apos;^         !&apos;;
+        var expected = &apos;-----wxyz-|&apos;;
+        var result = Observable.of(e1, e2, e3).combineAll(function (x, y, z) { return x + y + z; });
+        expectObservable(result).toBe(expected, { w: &apos;bfi&apos;, x: &apos;cfi&apos;, y: &apos;cgi&apos;, z: &apos;cgj&apos; });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+        expectSubscriptions(e3.subscriptions).toBe(e3subs);
+    });
+    it(&apos;should work with empty and error&apos;, function () {
+        var e1 = hot(&apos;----------|&apos;); //empty
+        var e1subs = &apos;^     !&apos;;
+        var e2 = hot(&apos;------#&apos;, undefined, &apos;shazbot!&apos;); //error
+        var e2subs = &apos;^     !&apos;;
+        var expected = &apos;------#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;shazbot!&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with error and empty&apos;, function () {
+        var e1 = hot(&apos;--^---#&apos;, undefined, &apos;too bad, honk&apos;); //error
+        var e1subs = &apos;^   !&apos;;
+        var e2 = hot(&apos;--^--------|&apos;); //empty
+        var e2subs = &apos;^   !&apos;;
+        var expected = &apos;----#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;too bad, honk&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with hot and throw&apos;, function () {
+        var e1 = hot(&apos;-a-^--b--c--|&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;---^-#&apos;, undefined, &apos;bazinga&apos;);
+        var e2subs = &apos;^ !&apos;;
+        var expected = &apos;--#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;bazinga&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with throw and hot&apos;, function () {
+        var e1 = hot(&apos;---^-#&apos;, undefined, &apos;bazinga&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;-a-^--b--c--|&apos;);
+        var e2subs = &apos;^ !&apos;;
+        var expected = &apos;--#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;bazinga&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with throw and throw&apos;, function () {
+        var e1 = hot(&apos;---^----#&apos;, undefined, &apos;jenga&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;---^-#&apos;, undefined, &apos;bazinga&apos;);
+        var e2subs = &apos;^ !&apos;;
+        var expected = &apos;--#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;bazinga&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with error and throw&apos;, function () {
+        var e1 = hot(&apos;-a-^--b--#&apos;, undefined, &apos;wokka wokka&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;---^-#&apos;, undefined, &apos;flurp&apos;);
+        var e2subs = &apos;^ !&apos;;
+        var expected = &apos;--#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;flurp&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with throw and error&apos;, function () {
+        var e1 = hot(&apos;---^-#&apos;, undefined, &apos;flurp&apos;);
+        var e1subs = &apos;^ !&apos;;
+        var e2 = hot(&apos;-a-^--b--#&apos;, undefined, &apos;wokka wokka&apos;);
+        var e2subs = &apos;^ !&apos;;
+        var expected = &apos;--#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;flurp&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with never and throw&apos;, function () {
+        var e1 = hot(&apos;---^-----------&apos;);
+        var e1subs = &apos;^     !&apos;;
+        var e2 = hot(&apos;---^-----#&apos;, undefined, &apos;wokka wokka&apos;);
+        var e2subs = &apos;^     !&apos;;
+        var expected = &apos;------#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;wokka wokka&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with throw and never&apos;, function () {
+        var e1 = hot(&apos;---^----#&apos;, undefined, &apos;wokka wokka&apos;);
+        var e1subs = &apos;^    !&apos;;
+        var e2 = hot(&apos;---^-----------&apos;);
+        var e2subs = &apos;^    !&apos;;
+        var expected = &apos;-----#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;wokka wokka&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with some and throw&apos;, function () {
+        var e1 = hot(&apos;---^----a---b--|&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var e2 = hot(&apos;---^--#&apos;, undefined, &apos;wokka wokka&apos;);
+        var e2subs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, { a: 1, b: 2 }, &apos;wokka wokka&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should work with throw and some&apos;, function () {
+        var e1 = hot(&apos;---^--#&apos;, undefined, &apos;wokka wokka&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var e2 = hot(&apos;---^----a---b--|&apos;);
+        var e2subs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;wokka wokka&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should handle throw after complete left&apos;, function () {
+        var left = hot(&apos;--a--^--b---|&apos;);
+        var leftSubs = &apos;^      !&apos;;
+        var right = hot(&apos;-----^--------#&apos;, undefined, &apos;bad things&apos;);
+        var rightSubs = &apos;^        !&apos;;
+        var expected = &apos;---------#&apos;;
+        var result = Observable.of(left, right).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;bad things&apos;);
+        expectSubscriptions(left.subscriptions).toBe(leftSubs);
+        expectSubscriptions(right.subscriptions).toBe(rightSubs);
+    });
+    it(&apos;should handle throw after complete right&apos;, function () {
+        var left = hot(&apos;-----^--------#&apos;, undefined, &apos;bad things&apos;);
+        var leftSubs = &apos;^        !&apos;;
+        var right = hot(&apos;--a--^--b---|&apos;);
+        var rightSubs = &apos;^      !&apos;;
+        var expected = &apos;---------#&apos;;
+        var result = Observable.of(left, right).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;bad things&apos;);
+        expectSubscriptions(left.subscriptions).toBe(leftSubs);
+        expectSubscriptions(right.subscriptions).toBe(rightSubs);
+    });
+    it(&apos;should handle interleaved with tail&apos;, function () {
+        var e1 = hot(&apos;-a--^--b---c---|&apos;);
+        var e1subs = &apos;^          !&apos;;
+        var e2 = hot(&apos;--d-^----e---f--|&apos;);
+        var e2subs = &apos;^           !&apos;;
+        var expected = &apos;-----x-y-z--|&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, { x: &apos;be&apos;, y: &apos;ce&apos;, z: &apos;cf&apos; });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should handle two consecutive hot observables&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c--|&apos;);
+        var e1subs = &apos;^        !&apos;;
+        var e2 = hot(&apos;-----^----------d--e--f--|&apos;);
+        var e2subs = &apos;^                   !&apos;;
+        var expected = &apos;-----------x--y--z--|&apos;;
+        var result = Observable.of(e1, e2).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, { x: &apos;cd&apos;, y: &apos;ce&apos;, z: &apos;cf&apos; });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should handle two consecutive hot observables with error left&apos;, function () {
+        var left = hot(&apos;--a--^--b--c--#&apos;, undefined, &apos;jenga&apos;);
+        var leftSubs = &apos;^        !&apos;;
+        var right = hot(&apos;-----^----------d--e--f--|&apos;);
+        var rightSubs = &apos;^        !&apos;;
+        var expected = &apos;---------#&apos;;
+        var result = Observable.of(left, right).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, null, &apos;jenga&apos;);
+        expectSubscriptions(left.subscriptions).toBe(leftSubs);
+        expectSubscriptions(right.subscriptions).toBe(rightSubs);
+    });
+    it(&apos;should handle two consecutive hot observables with error right&apos;, function () {
+        var left = hot(&apos;--a--^--b--c--|&apos;);
+        var leftSubs = &apos;^        !&apos;;
+        var right = hot(&apos;-----^----------d--e--f--#&apos;, undefined, &apos;dun dun dun&apos;);
+        var rightSubs = &apos;^                   !&apos;;
+        var expected = &apos;-----------x--y--z--#&apos;;
+        var result = Observable.of(left, right).combineAll(function (x, y) { return x + y; });
+        expectObservable(result).toBe(expected, { x: &apos;cd&apos;, y: &apos;ce&apos;, z: &apos;cf&apos; }, &apos;dun dun dun&apos;);
+        expectSubscriptions(left.subscriptions).toBe(leftSubs);
+        expectSubscriptions(right.subscriptions).toBe(rightSubs);
+    });
+    it(&apos;should handle selector throwing&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--|&apos;);
+        var e1subs = &apos;^  !&apos;;
+        var e2 = hot(&apos;--c--^--d--|&apos;);
+        var e2subs = &apos;^  !&apos;;
+        var expected = &apos;---#&apos;;
+        var result = Observable.of(e1, e2).combineAll((function (x, y) { throw &apos;ha ha &apos; + x + &apos;, &apos; + y; }));
+        expectObservable(result).toBe(expected, null, &apos;ha ha b, d&apos;);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should combine two observables&apos;, function (done) {
+        var a = Observable.of(1, 2, 3);
+        var b = Observable.of(4, 5, 6, 7, 8);
+        var expected = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
+        Observable.of(a, b).combineAll().subscribe(function (vals) {
+            expect(vals).toEqual(expected.shift());
+        }, null, function () {
+            expect(expected.length).toBe(0);
+            done();
+        });
+    });
+    it(&apos;should combine two immediately-scheduled observables&apos;, function (done) {
+        var a = Observable.of(1, 2, 3, queueScheduler);
+        var b = Observable.of(4, 5, 6, 7, 8, queueScheduler);
+        var r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
+        Observable.of(a, b, queueScheduler).combineAll()
+            .subscribe(function (vals) {
+            expect(vals).toDeepEqual(r.shift());
+        }, null, function () {
+            expect(r.length).toEqual(0);
+            done();
+        });
+    });
+});
+//# sourceMappingURL=combineAll-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

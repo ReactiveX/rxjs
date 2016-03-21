@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/observables/forkJoin-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/forkJoin-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
+var test_helper_1 = require(&apos;../helpers/test-helper&apos;);
+var Observable = Rx.Observable;
+/** @test {forkJoin} */
+describe(&apos;Observable.forkJoin&apos;, function () {
+    it(&apos;should join the last values of the provided observables into an array&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;(b|)&apos;), hot(&apos;--1--2--3--|&apos;));
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: [&apos;d&apos;, &apos;b&apos;, &apos;3&apos;] });
+    });
+    it(&apos;should allow emit null or undefined&apos;, function () {
+        var e2 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;, { d: null }), hot(&apos;(b|)&apos;), hot(&apos;--1--2--3--|&apos;), hot(&apos;-----r--t--u--|&apos;, { u: undefined }));
+        var expected2 = &apos;--------------(x|)&apos;;
+        expectObservable(e2).toBe(expected2, { x: [null, &apos;b&apos;, &apos;3&apos;, undefined] });
+    });
+    it(&apos;should join the last values of the provided observables with selector&apos;, function () {
+        function selector(x, y, z) {
+            return x + y + z;
+        }
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;(b|)&apos;), hot(&apos;--1--2--3--|&apos;), selector);
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: &apos;db3&apos; });
+    });
+    it(&apos;should accept single observable&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;));
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: [&apos;d&apos;] });
+    });
+    it(&apos;should accept array of observable contains single&apos;, function () {
+        var e1 = Observable.forkJoin([hot(&apos;--a--b--c--d--|&apos;)]);
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: [&apos;d&apos;] });
+    });
+    it(&apos;should accept single observable with selector&apos;, function () {
+        function selector(x) {
+            return x + x;
+        }
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), selector);
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: &apos;dd&apos; });
+    });
+    it(&apos;should accept array of observable contains single with selector&apos;, function () {
+        function selector(x) {
+            return x + x;
+        }
+        var e1 = Observable.forkJoin([hot(&apos;--a--b--c--d--|&apos;)], selector);
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: &apos;dd&apos; });
+    });
+    it(&apos;should accept lowercase-o observables&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;(b|)&apos;), test_helper_1.lowerCaseO(&apos;1&apos;, &apos;2&apos;, &apos;3&apos;));
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: [&apos;d&apos;, &apos;b&apos;, &apos;3&apos;] });
+    });
+    it(&apos;should accept promise&apos;, function (done) {
+        var e1 = Observable.forkJoin(Observable.of(1), Promise.resolve(2));
+        e1.subscribe(function (x) {
+            expect(x).toEqual([1, 2]);
+        }, function (err) {
+            done.fail(&apos;should not be called&apos;);
+        }, done);
+    });
+    it(&apos;should accept array of observables&apos;, function () {
+        var e1 = Observable.forkJoin([hot(&apos;--a--b--c--d--|&apos;),
+            hot(&apos;(b|)&apos;),
+            hot(&apos;--1--2--3--|&apos;)]);
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: [&apos;d&apos;, &apos;b&apos;, &apos;3&apos;] });
+    });
+    it(&apos;should accept array of observables with selector&apos;, function () {
+        function selector(x, y, z) {
+            return x + y + z;
+        }
+        var e1 = Observable.forkJoin([hot(&apos;--a--b--c--d--|&apos;),
+            hot(&apos;(b|)&apos;),
+            hot(&apos;--1--2--3--|&apos;)], selector);
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: &apos;db3&apos; });
+    });
+    it(&apos;should not emit if any of source observable is empty&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;(b|)&apos;), hot(&apos;------------------|&apos;));
+        var expected = &apos;------------------|&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should complete early if any of source is empty and completes before than others&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;(b|)&apos;), hot(&apos;---------|&apos;));
+        var expected = &apos;---------|&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should complete when all sources are empty&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;--------------|&apos;), hot(&apos;---------|&apos;));
+        var expected = &apos;---------|&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should complete if source is not provided&apos;, function () {
+        var e1 = Observable.forkJoin();
+        var expected = &apos;|&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should complete if sources list is empty&apos;, function () {
+        var e1 = Observable.forkJoin([]);
+        var expected = &apos;|&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should complete when any of source is empty with selector&apos;, function () {
+        function selector(x, y) {
+            return x + y;
+        }
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;---------|&apos;), selector);
+        var expected = &apos;---------|&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should emit results by resultselector&apos;, function () {
+        function selector(x, y) {
+            return x + y;
+        }
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;---2-----|&apos;), selector);
+        var expected = &apos;--------------(x|)&apos;;
+        expectObservable(e1).toBe(expected, { x: &apos;d2&apos; });
+    });
+    it(&apos;should raise error when any of source raises error with empty observable&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;------#&apos;), hot(&apos;---------|&apos;));
+        var expected = &apos;------#&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should raise error when any of source raises error with selector with empty observable&apos;, function () {
+        function selector(x, y) {
+            return x + y;
+        }
+        var e1 = Observable.forkJoin(hot(&apos;------#&apos;), hot(&apos;---------|&apos;), selector);
+        var expected = &apos;------#&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should raise error when source raises error&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;------#&apos;), hot(&apos;---a-----|&apos;));
+        var expected = &apos;------#&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should raise error when source raises error with selector&apos;, function () {
+        function selector(x, y) {
+            return x + y;
+        }
+        var e1 = Observable.forkJoin(hot(&apos;------#&apos;), hot(&apos;-------b-|&apos;), selector);
+        var expected = &apos;------#&apos;;
+        expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should allow unsubscribing early and explicitly&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c---d-| &apos;);
+        var e1subs = &apos;^        !    &apos;;
+        var e2 = hot(&apos;---e-^---f--g---h-|&apos;);
+        var e2subs = &apos;^        !    &apos;;
+        var expected = &apos;----------    &apos;;
+        var unsub = &apos;         !    &apos;;
+        var result = Observable.forkJoin(e1, e2);
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+});
+//# sourceMappingURL=forkJoin-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
