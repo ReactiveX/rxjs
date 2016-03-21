@@ -6,8 +6,8 @@ import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
- * Converts a higher-order Observable into a first-order Observable by only the
- * most recently emitted of those nested Observables.
+ * Converts a higher-order Observable into a first-order Observable by
+ * subscribing to only the most recently emitted of those nested Observables.
  *
  * <span class="informal">Flattens an Observable-of-Observables by dropping the
  * previous nested Observable once a new one appears.</span>
@@ -16,12 +16,12 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *
  * `switch` subscribes to an Observable that emits Observables,
  * also known as a higher-order Observable. Each time it observes one of these
- * emitted nested Observables, the output Observable begins emitting the items
- * emitted by that nested Observable. So far, it behaves like {@link mergeAll}.
- * However, when a new nested Observable is emitted, `switch` stops emitting
- * items from the earlier-emitted nested Observable and begins emitting items
- * from the new one. It continues to behave like this for subsequent nested
- * Observables.
+ * emitted nested Observables, the output Observable subscribes to the nested
+ * Observable and begins emitting the items emitted by that. So far, it behaves
+ * like {@link mergeAll}. However, when a new nested Observable is emitted,
+ * `switch` unsubscribes from the earlier-emitted nested Observable and
+ * subscribes to the new nested Observable and begins emitting items from it. It
+ * continues to behave like this for subsequent nested Observables.
  *
  * @example <caption>Rerun an interval Observable on every click event</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
