@@ -84,7 +84,7 @@
     "lint": "npm-run-all lint_src lint_spec lint_perf",
     "perf": "protractor protractor.conf.js",
     "perf_micro": "node ./perf/micro/index.js",
-    "prepublish": "npm run build_all",
+    "prepublish": "rm -rf ./typings && typings install && npm run build_all",
     "publish_docs": "./publish_docs.sh",
     "test_jasmine": "jasmine",
     "test_karma": "karma start karma.conf.js",
