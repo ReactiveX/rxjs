@@ -122,10 +122,6 @@ Rx.Observable.of('hello world')
   .subscribe(function(x) { console.log(x); });
 ```
 
-## API Documentation
-
-Automatically generated documentation can be found on the ReactiveX website: http://reactivex.io/RxJS
-
 ## Goals
 
 - Provide better performance than preceding versions of RxJS
