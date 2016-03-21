@@ -133,7 +133,7 @@ then it must cover the following cases:
 One of the primary goals of this library is (and will continue to be) great performance. As such, we've employed a variety of performance
 testing techniques.
 
-  - DON'T labor over minute variations in ops/sec or milliseconds, there will always be varience in perf test results.
+  - DON'T labor over minute variations in ops/sec or milliseconds, there will always be variance in perf test results.
   - DON'T alter a performance test unless absolutely necessary. Performance tests may be compared to previous results from previous builds.
   - DO run tests multiple times and make sure the margins of error are low
   - DO run tests in your feature branches and compare them to master
@@ -150,7 +150,7 @@ that create a lot of child subscriptions, or operators that emit new objects lik
 macro performance tests for.
 
 Other scenarios for macro performance testing may include common end-to-end scenarios from real-world apps. If you have a situation in your
-app where you feal RxJS is performing poorly, please [submit and issue](/ReactiveX/RxJS/issues) and include a minimal code example showing
+app where you feel RxJS is performing poorly, please [submit an issue](https://github.com/ReactiveX/rxjs/issues/) and include a minimal code example showing
 your performance issues. We would love to solve perf for your real-world problems and add those tests to our perf test battery.
 
 Macro performance tests can be run by hosting the root directory with any web server (we use [http-server](https://www.npmjs.com/package/http-server)),
@@ -185,7 +185,7 @@ node perf/micro zip
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more
 readable messages** that are easy to follow when looking through the **project history**. But also,
 we use the git commit messages to **generate the RxJS change log**. Helper script `npm run commit`
-provides commandline based wizard to format commit message easily.
+provides command line based wizard to format commit message easily.
 
 ### Commit Message Format
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special

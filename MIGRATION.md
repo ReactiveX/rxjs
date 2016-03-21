@@ -222,7 +222,7 @@ To reduce polymorphism and get better performance out of operators, some operato
 
 ## Schedulers Renamed
 
-The names of the Schedulers in RxJS 4 were based off of the Rx.NET implentation. Consequently, some of the names
+The names of the Schedulers in RxJS 4 were based off of the Rx.NET implementation. Consequently, some of the names
 didn't make sense in a JavaScript context (for example: `currentThread` when there's only one thread anyhow).
 
 |RxJS 4|RxJS 5||
