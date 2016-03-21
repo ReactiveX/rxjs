@@ -11,5 +11,5 @@ git rebase upstream/gh-pages
 cp -r ./tmp/docs/ ./
 rm -rf tmp/
 git add .
-git commit -am "docs generated automatically"
+git commit -am "chore(docs): docs generated automatically"
 git push upstream gh-pages
