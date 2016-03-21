@@ -268,6 +268,101 @@ describe('Observable.ajax', () => {
     });
   });
 
+  describe('ajax request body', () => {
+    let rFormData: FormData;
+
+    beforeEach(() => {
+      rFormData = root.FormData;
+      root.FormData = root.FormData || class {};
+    });
+
+    afterEach(() => {
+      root.FormData = rFormData;
+    });
+
+    it('can take string body', () => {
+      const obj = {
+        url: '/flibbertyJibbet',
+        method: '',
+        body: 'foobar'
+      };
+
+      Rx.Observable.ajax(obj).subscribe();
+
+      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).toBe('foobar');
+    });
+
+    it('can take FormData body', () => {
+      const body = new root.FormData();
+      const obj = {
+        url: '/flibbertyJibbet',
+        method: '',
+        body: body
+      };
+
+      Rx.Observable.ajax(obj).subscribe();
+
+      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).toBe(body);
+    });
+
+    it('should not fail when FormData is undefined', () => {
+      root.FormData = void 0;
+
+      const obj = {
+        url: '/flibbertyJibbet',
+        method: '',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: { '🌟': '🚀' }
+      };
+
+      Rx.Observable.ajax(obj).subscribe();
+
+      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    });
+
+    it('should send by form-urlencoded format', () => {
+      const body = {
+        '🌟': '🚀'
+      };
+      const obj = {
+        url: '/flibbertyJibbet',
+        method: '',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body
+      };
+
+      Rx.Observable.ajax(obj).subscribe();
+
+      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).toBe('%F0%9F%8C%9F=%F0%9F%9A%80');
+    });
+
+    it('should send by JSON', () => {
+      const body = {
+        '🌟': '🚀'
+      };
+      const obj = {
+        url: '/flibbertyJibbet',
+        method: '',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: body
+      };
+
+      Rx.Observable.ajax(obj).subscribe();
+
+      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).toBe('{"🌟":"🚀"}');
+    });
+  });
+
   describe('ajax.get', () => {
     it('should succeed on 200', () => {
       const expected = { foo: 'bar' };

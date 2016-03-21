@@ -245,6 +245,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private serializeBody(body: any, contentType: string) {
     if (!body || typeof body === 'string') {
       return body;
+    } else if (root.FormData && body instanceof root.FormData) {
+      return body;
     }
 
     const splitIndex = contentType.indexOf(';');
@@ -254,7 +256,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     switch (contentType) {
       case 'application/x-www-form-urlencoded':
-        return Object.keys(body).map(key => `${key}=${encodeURI(body[key])}`).join('&');
+        return Object.keys(body).map(key => `${encodeURI(key)}=${encodeURI(body[key])}`).join('&');
       case 'application/json':
         return JSON.stringify(body);
     }
