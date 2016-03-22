@@ -49,7 +49,6 @@
   },
   "scripts": {
     "info": "npm-scripts-info",
-    "postinstall": "typings install",
     "build_all": "npm-run-all build_es6 build_amd build_cjs build_global generate_packages",
     "build_amd": "npm-run-all clean_dist_amd copy_src_amd compile_dist_amd",
     "build_cjs": "npm-run-all clean_dist_cjs copy_src_cjs compile_dist_cjs",
