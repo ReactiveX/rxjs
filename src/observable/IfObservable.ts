@@ -1,7 +1,9 @@
-import {Observable} from '../Observable';
+import {Observable, SubscribableOrPromise} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
+import {subscribeToResult} from '../util/subscribeToResult';
+import {OuterSubscriber} from '../OuterSubscriber';
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -9,39 +11,49 @@ import {Subscription} from '../Subscription';
  */
 export class IfObservable<T, R> extends Observable<T> {
 
-  static create<T, R>(condition: () => boolean,
-                      thenSource?: Observable<T>,
-                      elseSource?: Observable<R>): Observable<T|R> {
+  static create<T, R>(condition: () => boolean | void,
+                      thenSource?: SubscribableOrPromise<T> | void,
+                      elseSource?: SubscribableOrPromise<R> | void): Observable<T|R> {
     return new IfObservable(condition, thenSource, elseSource);
   }
 
-  constructor(private condition: () => boolean,
-              private thenSource?: Observable<T>,
-              private elseSource?: Observable<R>) {
+  constructor(private condition: () => boolean | void,
+              private thenSource?: SubscribableOrPromise<T> | void,
+              private elseSource?: SubscribableOrPromise<R> | void) {
     super();
   }
 
   protected _subscribe(subscriber: Subscriber<T|R>): Subscription | Function | void {
-
     const { condition, thenSource, elseSource } = this;
 
-    let result: boolean, error: any, errorHappened = false;
+    return new IfSubscriber(subscriber, condition, thenSource, elseSource);
+  }
+}
 
+class IfSubscriber<T, R> extends OuterSubscriber<T, T> {
+  constructor(destination: Subscriber<T>,
+              private condition: () => boolean | void,
+              private thenSource?: SubscribableOrPromise<T> | void,
+              private elseSource?: SubscribableOrPromise<R> | void) {
+    super(destination);
+    this.tryIf();
+  }
+
+  private tryIf(): void {
+    const { condition, thenSource, elseSource } = this;
+
+    let result: boolean;
     try {
-      result = condition();
-    } catch (e) {
-      error = e;
-      errorHappened = true;
-    }
+      result = <boolean>condition();
+      const source = result ? thenSource : elseSource;
 
-    if (errorHappened) {
-      subscriber.error(error);
-    } else if (result && thenSource) {
-      return thenSource.subscribe(subscriber);
-    } else if (elseSource) {
-      return elseSource.subscribe(subscriber);
-    } else {
-      subscriber.complete();
+      if (source) {
+        this.add(subscribeToResult(this, source));
+      } else {
+        this._complete();
+      }
+    } catch (err) {
+      this._error(err);
     }
   }
 }
