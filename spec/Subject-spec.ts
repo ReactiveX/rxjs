@@ -356,11 +356,12 @@ describe('Subject', () => {
 
     subject.subscribe(function (x) {
       expect(x).toBe(expected.shift());
-    }, null, done);
+    });
 
     subject.next('foo');
     subject.complete();
-    subject.next('bar');
+    expect(() => subject.next('bar')).toThrow(new Rx.ObjectUnsubscribedError());
+    done();
   });
 
   it('should clean out unsubscribed subscribers', (done: DoneSignature) => {

@@ -32,4 +32,57 @@ describe('Subscriber', () => {
       expect(completeSpy).not.toHaveBeenCalled();
     });
   });
+
+  it('should ignore next messages after unsubscription', () => {
+    let times = 0;
+
+    const sub = new Subscriber({
+      next() { times += 1; }
+    });
+
+    sub.next();
+    sub.next();
+    sub.unsubscribe();
+    sub.next();
+
+    expect(times).toBe(2);
+  });
+
+  it('should ignore error messages after unsubscription', () => {
+    let times = 0;
+    let errorCalled = false;
+
+    const sub = new Subscriber({
+      next() { times += 1; },
+      error() { errorCalled = true; }
+    });
+
+    sub.next();
+    sub.next();
+    sub.unsubscribe();
+    sub.next();
+    sub.error();
+
+    expect(times).toBe(2);
+    expect(errorCalled).toBe(false);
+  });
+
+  it('should ignore complete messages after unsubscription', () => {
+    let times = 0;
+    let completeCalled = false;
+
+    const sub = new Subscriber({
+      next() { times += 1; },
+      complete() { completeCalled = true; }
+    });
+
+    sub.next();
+    sub.next();
+    sub.unsubscribe();
+    sub.next();
+    sub.complete();
+
+    expect(times).toBe(2);
+    expect(completeCalled).toBe(false);
+  });
 });
