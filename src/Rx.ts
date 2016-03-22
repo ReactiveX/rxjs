@@ -59,7 +59,7 @@ import './add/operator/finally';
 import './add/operator/first';
 import './add/operator/groupBy';
 import './add/operator/ignoreElements';
-import './add/operator/inspect';
+import './add/operator/audit';
 import './add/operator/inspectTime';
 import './add/operator/last';
 import './add/operator/let';

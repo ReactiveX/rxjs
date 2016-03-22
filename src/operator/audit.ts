@@ -11,27 +11,27 @@ import {subscribeToResult} from '../util/subscribeToResult';
 /**
  * @param durationSelector
  * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
- * @method inspect
+ * @method audit
  * @owner Observable
  */
-export function inspect<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T> {
-  return this.lift(new InspectOperator(durationSelector));
+export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T> {
+  return this.lift(new AuditOperator(durationSelector));
 }
 
-export interface InspectSignature<T> {
+export interface AuditSignature<T> {
   (durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T>;
 }
 
-class InspectOperator<T> implements Operator<T, T> {
+class AuditOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new InspectSubscriber<T, T>(subscriber, this.durationSelector);
+    return new AuditSubscriber<T, T>(subscriber, this.durationSelector);
   }
 }
 
-class InspectSubscriber<T, R> extends OuterSubscriber<T, R> {
+class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private value: T;
   private hasValue: boolean = false;
