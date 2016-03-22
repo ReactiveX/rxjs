@@ -73,12 +73,16 @@ class DeferSubscriber<T> extends OuterSubscriber<T, T> {
 
   private tryDefer(): void {
     try {
-      const result = this.factory.call(this);
-      if (result) {
-        this.add(subscribeToResult(this, result));
-      }
+      this._callFactory();
     } catch (err) {
       this._error(err);
+    }
+  }
+
+  private _callFactory(): void {
+    const result = this.factory();
+    if (result) {
+      this.add(subscribeToResult(this, result));
     }
   }
 }
