@@ -9,27 +9,27 @@ import {Subscription} from '../Subscription';
  * @param delay
  * @param scheduler
  * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
- * @method inspectTime
+ * @method auditTime
  * @owner Observable
  */
-export function inspectTime<T>(delay: number, scheduler: Scheduler = async): Observable<T> {
-  return this.lift(new InspectTimeOperator(delay, scheduler));
+export function auditTime<T>(delay: number, scheduler: Scheduler = async): Observable<T> {
+  return this.lift(new AuditTimeOperator(delay, scheduler));
 }
 
-export interface InspectTimeSignature<T> {
+export interface AuditTimeSignature<T> {
   (delay: number, scheduler?: Scheduler): Observable<T>;
 }
 
-class InspectTimeOperator<T> implements Operator<T, T> {
+class AuditTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 
   call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new InspectTimeSubscriber(subscriber, this.delay, this.scheduler);
+    return new AuditTimeSubscriber(subscriber, this.delay, this.scheduler);
   }
 }
 
-class InspectTimeSubscriber<T> extends Subscriber<T> {
+class AuditTimeSubscriber<T> extends Subscriber<T> {
 
   private value: T;
   private hasValue: boolean = false;
@@ -64,6 +64,6 @@ class InspectTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNext<T>(subscriber: InspectTimeSubscriber<T>): void {
+function dispatchNext<T>(subscriber: AuditTimeSubscriber<T>): void {
   subscriber.clearThrottle();
 }
