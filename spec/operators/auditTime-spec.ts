@@ -5,22 +5,22 @@ import {DoneSignature} from '../helpers/test-helper';
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
-/** @test {inspectTime} */
-describe('Observable.prototype.inspectTime', () => {
-  asDiagram('inspectTime(50)')('should emit the last value in each time window', () => {
+/** @test {auditTime} */
+describe('Observable.prototype.auditTime', () => {
+  asDiagram('auditTime(50)')('should emit the last value in each time window', () => {
     const e1 =   hot('-a-x-y----b---x-cx---|');
     const subs =     '^                    !';
     const expected = '------y--------x-----|';
 
-    const result = e1.inspectTime(50, rxTestScheduler);
+    const result = e1.auditTime(50, rxTestScheduler);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should inspect events by 50 time units', (done: DoneSignature) => {
+  it('should auditTime events by 50 time units', (done: DoneSignature) => {
     Observable.of(1, 2, 3)
-      .inspectTime(50)
+      .auditTime(50)
       .subscribe((x: number) => {
         done.fail('should not be called');
       }, null, () => {
@@ -28,13 +28,13 @@ describe('Observable.prototype.inspectTime', () => {
       });
   });
 
-  it('should inspect events multiple times', () => {
+  it('should auditTime events multiple times', () => {
     const expected = ['1-2', '2-2'];
     Observable.concat(
       Observable.timer(0, 10, rxTestScheduler).take(3).map((x: number) => '1-' + x),
       Observable.timer(80, 10, rxTestScheduler).take(5).map((x: number) => '2-' + x)
       )
-      .inspectTime(50, rxTestScheduler)
+      .auditTime(50, rxTestScheduler)
       .subscribe((x: string) => {
         expect(x).toBe(expected.shift());
       });
@@ -47,7 +47,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '^                    !';
     const expected = '------a--------b-----|';
 
-    expectObservable(e1.inspectTime(50, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(50, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -56,7 +56,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '^                        !';
     const expected = '-----f-----f-----f-----f-|';
 
-    expectObservable(e1.inspectTime(50, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(50, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -65,7 +65,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '^    !';
     const expected = '-----|';
 
-    expectObservable(e1.inspectTime(50, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(50, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -74,7 +74,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '^    !';
     const expected = '-----#';
 
-    expectObservable(e1.inspectTime(10, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(10, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -83,7 +83,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '(^!)';
     const expected = '|';
 
-    expectObservable(e1.inspectTime(30, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(30, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -92,7 +92,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '^';
     const expected = '-';
 
-    expectObservable(e1.inspectTime(30, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(30, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -101,7 +101,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '(^!)';
     const expected = '#';
 
-    expectObservable(e1.inspectTime(30, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(30, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -111,7 +111,7 @@ describe('Observable.prototype.inspectTime', () => {
     const subs =     '^                              !';
     const expected = '------c-------------d-----------';
 
-    expectObservable(e1.inspectTime(50, rxTestScheduler), unsub).toBe(expected);
+    expectObservable(e1.auditTime(50, rxTestScheduler), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -123,19 +123,19 @@ describe('Observable.prototype.inspectTime', () => {
 
     const result = e1
       .mergeMap((x: string) => Observable.of(x))
-      .inspectTime(50, rxTestScheduler)
+      .auditTime(50, rxTestScheduler)
       .mergeMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should inspect values until source raises error', () => {
+  it('should auditTime values until source raises error', () => {
     const e1 =   hot('-a--(bc)-------d---------------#');
     const subs =     '^                              !';
     const expected = '------c-------------d----------#';
 
-    expectObservable(e1.inspectTime(50, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.auditTime(50, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 });

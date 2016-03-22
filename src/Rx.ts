@@ -60,7 +60,7 @@ import './add/operator/first';
 import './add/operator/groupBy';
 import './add/operator/ignoreElements';
 import './add/operator/audit';
-import './add/operator/inspectTime';
+import './add/operator/auditTime';
 import './add/operator/last';
 import './add/operator/let';
 import './add/operator/every';

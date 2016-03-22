@@ -67,12 +67,12 @@ The `proxyObserver` is created in `observeOn(Rx.Scheduler.async)`, and its `next
 var proxyObserver = {
   next: (val) => {
     Rx.Scheduler.async.schedule(
-      (x) => finalObserver.next(x), 
-      0 /* delay */, 
+      (x) => finalObserver.next(x),
+      0 /* delay */,
       val /* will be the x for the function above */
     );
   },
-  
+
   // ...
 }
 ```
@@ -91,7 +91,7 @@ The `async` Scheduler is one of the built-in schedulers provided by RxJS. Each o
 | `Rx.Scheduler.queue` | Schedules on a queue in the current event frame (trampoline scheduler). Use this for iteration operations. |
 | `Rx.Scheduler.asap` | Schedules on the micro task queue, which uses the fastest transport mechanism available, either Node.js' `process.nextTick()` or Web Worker MessageChannel or setTimeout or others. Use this for asynchronous conversions. |
 | `Rx.Scheduler.async` | Schedules work with `setInterval`. Use this for time-based operations. |
- 
+
 ## Using Schedulers
 
 You may have already used schedulers in your RxJS code without explicitly stating the type of schedulers to be used. This is because all Observable operators that deal with concurrency have optional schedulers. If you do not provide the scheduler, RxJS will pick a default scheduler by using the principle of least concurrency. This means that the scheduler which introduces the least amount of concurrency that satisfies the needs of the operator is chosen. For example, for operators returning an observable with a finite and small number of messages, RxJS uses no Scheduler, i.e. `null` or `undefined`.  For operators returning a potentially large or infinite number of messages, `queue` Scheduler is used. For operators which use timers, `async` is used.
@@ -119,9 +119,9 @@ Because RxJS uses the least concurrency scheduler, you can pick a different sche
 
 **Use `observeOn` to schedule in what context will notifications be delivered.** As we saw in the examples above, instance operator `observeOn(scheduler)` introduces a mediator Observer between the source Observable and the destination Observer, where the mediator schedules calls to the destination Observer using your given `scheduler`.
 
-**Instance operators may take a Scheduler as argument.** 
+**Instance operators may take a Scheduler as argument.**
 
-Time-related operators like `bufferTime`, `debounceTime`, `delay`, `inspectTime`, `sampleTime`, `throttleTime`, `timeInterval`, `timeout`, `timeoutWith`, `windowTime` all take a Scheduler as the last argument, and otherwise operate by default on the `Rx.Scheduler.async` Scheduler.
+Time-related operators like `bufferTime`, `debounceTime`, `delay`, `auditTime`, `sampleTime`, `throttleTime`, `timeInterval`, `timeout`, `timeoutWith`, `windowTime` all take a Scheduler as the last argument, and otherwise operate by default on the `Rx.Scheduler.async` Scheduler.
 
 Other instance operators that take a Scheduler as argument: `cache`, `combineLatest`, `concat`, `expand`, `merge`, `publishReplay`, `startWith`.
 
