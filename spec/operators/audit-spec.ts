@@ -4,9 +4,9 @@ import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
-/** @test {inspect} */
-describe('Observable.prototype.inspect', () => {
-  asDiagram('inspect')('should emit the last value in each time window', () => {
+/** @test {audit} */
+describe('Observable.prototype.audit', () => {
+  asDiagram('audit')('should emit the last value in each time window', () => {
     const e1 =   hot('-a-xy-----b--x--cxxx-|');
     const e1subs =   '^                    !';
     const e2 =  cold( '----|                ');
@@ -15,7 +15,7 @@ describe('Observable.prototype.inspect', () => {
                    '                ^   ! '];
     const expected = '-----y--------x-----x|';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -31,14 +31,14 @@ describe('Observable.prototype.inspect', () => {
                    '                ^   ! '];
     const expected = '-----a--------b-----c|';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should inspect with duration Observable using next to close the duration', () => {
+  it('should audit with duration Observable using next to close the duration', () => {
     const e1 =   hot('-a-xy-----b--x--cxxx-|');
     const e1subs =   '^                    !';
     const e2 =  cold( '----x-y-z            ');
@@ -47,7 +47,7 @@ describe('Observable.prototype.inspect', () => {
                    '                ^   ! '];
     const expected = '-----y--------x-----x|';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -64,7 +64,7 @@ describe('Observable.prototype.inspect', () => {
                    '             ^!               '];
     const expected = '------y-----z--               ';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -83,7 +83,7 @@ describe('Observable.prototype.inspect', () => {
 
     const result = e1
       .mergeMap((x: string) => Observable.of(x))
-      .inspect(() => e2)
+      .audit(() => e2)
       .mergeMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
@@ -102,7 +102,7 @@ describe('Observable.prototype.inspect', () => {
                    '                        ^!'];
     const expected = '-----f-----f-----f-----f-|';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -115,7 +115,7 @@ describe('Observable.prototype.inspect', () => {
     const e2 =  cold('|');
     const expected = 'abcdefabcdefabcdefabcdefa|';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -128,7 +128,7 @@ describe('Observable.prototype.inspect', () => {
     const e2subs =   '    ^                        !';
     const expected = '-----------------------------|';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -142,7 +142,7 @@ describe('Observable.prototype.inspect', () => {
     const e2subs =   '    ^                        !';
     const expected = '-----------------------------#';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -156,14 +156,14 @@ describe('Observable.prototype.inspect', () => {
     const e2subs =   '    (^!)                      ';
     const expected = '----(-#)                      ';
 
-    const result = e1.inspect(() => e2);
+    const result = e1.audit(() => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should inspect using durations of constying lengths', () => {
+  it('should audit using durations of constying lengths', () => {
     const e1 =   hot('abcdefabcdabcdefghabca|   ');
     const e1subs =   '^                     !   ';
     const e2 = [cold('-----|                    '),
@@ -179,7 +179,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = '-----f---d-------h--c-|   ';
 
     let i = 0;
-    const result = e1.inspect(() => e2[i++]);
+    const result = e1.audit(() => e2[i++]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -200,7 +200,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = '-----f---d-------#        ';
 
     let i = 0;
-    const result = e1.inspect(() => e2[i++]);
+    const result = e1.audit(() => e2[i++]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -220,7 +220,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = '-----f---d#               ';
 
     let i = 0;
-    const result = e1.inspect(() => {
+    const result = e1.audit(() => {
       if (i === 2) {
         throw 'error';
       }
@@ -240,7 +240,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = '-----|';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.inspect(durationSelector)).toBe(expected);
+    expectObservable(e1.audit(durationSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -250,7 +250,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = '-----#';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.inspect(durationSelector)).toBe(expected);
+    expectObservable(e1.audit(durationSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -260,7 +260,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = '|';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.inspect(durationSelector)).toBe(expected);
+    expectObservable(e1.audit(durationSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -270,7 +270,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = '-';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.inspect(durationSelector)).toBe(expected);
+    expectObservable(e1.audit(durationSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -280,15 +280,15 @@ describe('Observable.prototype.inspect', () => {
     const expected = '#';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.inspect(durationSelector)).toBe(expected);
+    expectObservable(e1.audit(durationSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should inspect by promise resolves', (done: DoneSignature) => {
+  it('should audit by promise resolves', (done: DoneSignature) => {
     const e1 = Observable.interval(10).take(5);
     const expected = [0, 1, 2, 3];
 
-    e1.inspect(() => {
+    e1.audit(() => {
       return new Promise((resolve: any) => { resolve(42); });
     }).subscribe(
       (x: number) => {
@@ -308,7 +308,7 @@ describe('Observable.prototype.inspect', () => {
     const expected = [0, 1, 2];
     const error = new Error('error');
 
-    e1.inspect((x: number) => {
+    e1.audit((x: number) => {
       if (x === 3) {
         return new Promise((resolve: any, reject: any) => { reject(error); });
       } else {

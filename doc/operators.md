@@ -166,7 +166,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`filter`](../class/es6/Observable.js~Observable.html#instance-method-filter)
 - [`first`](../class/es6/Observable.js~Observable.html#instance-method-first)
 - [`ignoreElements`](../class/es6/Observable.js~Observable.html#instance-method-ignoreElements)
-- [`inspect`](../class/es6/Observable.js~Observable.html#instance-method-inspect)
+- [`audit`](../class/es6/Observable.js~Observable.html#instance-method-audit)
 - [`inspectTime`](../class/es6/Observable.js~Observable.html#instance-method-inspectTime)
 - [`last`](../class/es6/Observable.js~Observable.html#instance-method-last)
 - [`sample`](../class/es6/Observable.js~Observable.html#instance-method-sample)
