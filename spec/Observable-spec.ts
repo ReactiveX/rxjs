@@ -251,6 +251,76 @@ describe('Observable', () => {
       expect(messageErrorValue).toBe('boo!');
     });
 
+    it('should ignore next messages after unsubscription', () => {
+      let times = 0;
+
+      new Observable((observer: Rx.Observer<number>) => {
+        observer.next(0);
+        observer.next(0);
+        observer.next(0);
+        observer.next(0);
+      })
+      .do(() => times += 1)
+      .subscribe(
+        function() {
+          if (times === 2) {
+            this.unsubscribe();
+          }
+        }
+      );
+
+      expect(times).toBe(2);
+    });
+
+    it('should ignore error messages after unsubscription', () => {
+      let times = 0;
+      let errorCalled = false;
+
+      new Observable((observer: Rx.Observer<number>) => {
+        observer.next(0);
+        observer.next(0);
+        observer.next(0);
+        observer.error(0);
+      })
+      .do(() => times += 1)
+      .subscribe(
+        function() {
+          if (times === 2) {
+            this.unsubscribe();
+          }
+        },
+        function() { errorCalled = true; }
+      );
+
+      expect(times).toBe(2);
+      expect(errorCalled).toBe(false);
+    });
+
+    it('should ignore complete messages after unsubscription', () => {
+      let times = 0;
+      let completeCalled = false;
+
+      new Observable((observer: Rx.Observer<number>) => {
+        observer.next(0);
+        observer.next(0);
+        observer.next(0);
+        observer.complete();
+      })
+      .do(() => times += 1)
+      .subscribe(
+        function() {
+          if (times === 2) {
+            this.unsubscribe();
+          }
+        },
+        null,
+        function() { completeCalled = true; }
+      );
+
+      expect(times).toBe(2);
+      expect(completeCalled).toBe(false);
+    });
+
     describe('when called with an anonymous observer', () => {
       it('should accept an anonymous observer with just a next function and call the next function in the context' +
         ' of the anonymous observer', (done: DoneSignature) => {
@@ -299,7 +369,7 @@ describe('Observable', () => {
         }).not.toThrow();
       });
 
-      it('should not run unsubscription logic when an error is thrown sending messages synchronously to an' +
+      it('should run unsubscription logic when an error is thrown sending messages synchronously to an' +
         ' anonymous observer', () => {
         let messageError = false;
         let messageErrorValue = false;
@@ -332,6 +402,75 @@ describe('Observable', () => {
         expect(unsubscribeCalled).toBe(true);
         expect(messageError).toBe(true);
         expect(messageErrorValue).toBe('boo!');
+      });
+
+      it('should ignore next messages after unsubscription', () => {
+        let times = 0;
+
+        new Observable((observer: Rx.Observer<number>) => {
+          observer.next(0);
+          observer.next(0);
+          observer.next(0);
+          observer.next(0);
+        })
+        .do(() => times += 1)
+        .subscribe({
+          next() {
+            if (times === 2) {
+              this.unsubscribe();
+            }
+          }
+        });
+
+        expect(times).toBe(2);
+      });
+
+      it('should ignore error messages after unsubscription', () => {
+        let times = 0;
+        let errorCalled = false;
+
+        new Observable((observer: Rx.Observer<number>) => {
+          observer.next(0);
+          observer.next(0);
+          observer.next(0);
+          observer.error(0);
+        })
+        .do(() => times += 1)
+        .subscribe({
+          next() {
+            if (times === 2) {
+              this.unsubscribe();
+            }
+          },
+          error() { errorCalled = true; }
+        });
+
+        expect(times).toBe(2);
+        expect(errorCalled).toBe(false);
+      });
+
+      it('should ignore complete messages after unsubscription', () => {
+        let times = 0;
+        let completeCalled = false;
+
+        new Observable((observer: Rx.Observer<number>) => {
+          observer.next(0);
+          observer.next(0);
+          observer.next(0);
+          observer.complete();
+        })
+        .do(() => times += 1)
+        .subscribe({
+          next() {
+            if (times === 2) {
+              this.unsubscribe();
+            }
+          },
+          complete() { completeCalled = true; }
+        });
+
+        expect(times).toBe(2);
+        expect(completeCalled).toBe(false);
       });
     });
   });
