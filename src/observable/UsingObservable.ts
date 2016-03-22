@@ -1,7 +1,9 @@
-import {Observable} from '../Observable';
+import {Observable, SubscribableOrPromise} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 
+import {subscribeToResult} from '../util/subscribeToResult';
+import {OuterSubscriber} from '../OuterSubscriber';
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -9,47 +11,47 @@ import {Subscription} from '../Subscription';
  */
 export class UsingObservable<T> extends Observable<T> {
 
-  static create<T>(resourceFactory: () => Subscription,
-                   observableFactory: (resource: Subscription) => Observable<T>): Observable<T> {
+  static create<T>(resourceFactory: () => Subscription | void,
+                   observableFactory: (resource: Subscription) => SubscribableOrPromise<T> | void): Observable<T> {
     return new UsingObservable<T>(resourceFactory, observableFactory);
   }
 
-  constructor(private resourceFactory: () => Subscription,
-              private observableFactory: (resource: Subscription) => Observable<T>) {
+  constructor(private resourceFactory: () => Subscription | void,
+              private observableFactory: (resource: Subscription) => SubscribableOrPromise<T> | void) {
     super();
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
-
     const { resourceFactory, observableFactory } = this;
 
-    let resource: Subscription,
-        source: Observable<T>,
-        error: any, errorHappened = false;
+    let resource: Subscription;
 
     try {
-      resource = resourceFactory();
-    } catch (e) {
-      error = e;
-      errorHappened = true;
+      resource = <Subscription>resourceFactory();
+      return new UsingSubscriber(subscriber, resource, observableFactory);
+    } catch (err) {
+      subscriber.error(err);
     }
+  }
+}
 
-    if (errorHappened) {
-      subscriber.error(error);
-    } else {
-      subscriber.add(resource);
-      try {
-        source = observableFactory(resource);
-      } catch (e) {
-        error = e;
-        errorHappened = true;
-      }
+class UsingSubscriber<T> extends OuterSubscriber<T, T> {
+  constructor(destination: Subscriber<T>,
+              private resource: Subscription,
+              private observableFactory: (resource: Subscription) => SubscribableOrPromise<T> | void) {
+    super(destination);
+    destination.add(resource);
+    this.tryUse();
+  }
 
-      if (errorHappened) {
-        subscriber.error(error);
-      } else {
-        return source.subscribe(subscriber);
+  private tryUse(): void {
+    try {
+      const source = this.observableFactory.call(this, this.resource);
+      if (source) {
+        this.add(subscribeToResult(this, source));
       }
+    } catch (err) {
+      this._error(err);
     }
   }
 }
