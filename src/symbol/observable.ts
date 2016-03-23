@@ -1,8 +1,9 @@
+/// <reference path="./symbol.d.ts" />
 import {root} from '../util/root';
 
-const Symbol: any = root.Symbol;
+const Symbol = root.Symbol;
 
-export let $$observable: any;
+export let $$observable: symbol;
 
 if (typeof Symbol === 'function') {
   if (Symbol.observable) {
@@ -16,5 +17,5 @@ if (typeof Symbol === 'function') {
     Symbol.observable = $$observable;
   }
 } else {
-  $$observable = '@@observable';
+  $$observable = <any>'@@observable';
 }
