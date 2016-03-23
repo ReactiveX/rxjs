@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {Subscriber} from '../Subscriber';
@@ -50,7 +50,7 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
     if (result === errorObject) {
       subscriber.error(result.e);
     }
-    subscriber.add(new Subscription(() => {
+    subscriber.add(new CompositeSubscription(() => {
       //TODO: determine whether or not to forward to error handler
       removeHandler(handler);
     }));

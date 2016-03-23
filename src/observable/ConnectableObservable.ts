@@ -1,7 +1,7 @@
 import {Subject} from '../Subject';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription, Subscription} from '../Subscription';
 
 /**
  * @class ConnectableObservable<T>
@@ -53,7 +53,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
-class ConnectableSubscription extends Subscription {
+class ConnectableSubscription extends CompositeSubscription {
   constructor(protected connectable: ConnectableObservable<any>) {
     super();
   }

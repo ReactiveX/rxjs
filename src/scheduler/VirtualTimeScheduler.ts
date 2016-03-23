@@ -1,5 +1,5 @@
 import {Scheduler} from '../Scheduler';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription, Subscription} from '../Subscription';
 import {Action} from './Action';
 
 export class VirtualTimeScheduler implements Scheduler {
@@ -66,7 +66,7 @@ export class VirtualTimeScheduler implements Scheduler {
   }
 }
 
-class VirtualAction<T> extends Subscription implements Action {
+class VirtualAction<T> extends CompositeSubscription implements Action {
   state: T;
   delay: number;
   calls = 0;

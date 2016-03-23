@@ -1,5 +1,5 @@
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
@@ -23,7 +23,7 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
     super(function (subscriber: Subscriber<any>) {
       const observable: ColdObservable<T> = this;
       const index = observable.logSubscribedFrame();
-      subscriber.add(new Subscription(() => {
+      subscriber.add(new CompositeSubscription(() => {
         observable.logUnsubscribedFrame(index);
       }));
       observable.scheduleMessages(subscriber);

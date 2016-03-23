@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription, Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -121,7 +121,7 @@ class BufferToggleSubscriber<T, O> extends Subscriber<T> {
     } else {
       let context = {
         buffer: <T[]>[],
-        subscription: new Subscription()
+        subscription: new CompositeSubscription()
       };
       contexts.push(context);
       const subscriber = new BufferToggleClosingsSubscriber<T>(this, context);

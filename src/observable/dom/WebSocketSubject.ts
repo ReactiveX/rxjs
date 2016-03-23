@@ -2,7 +2,7 @@ import {Subject} from '../../Subject';
 import {Subscriber} from '../../Subscriber';
 import {Observable} from '../../Observable';
 import {Operator} from '../../Operator';
-import {Subscription} from '../../Subscription';
+import {CompositeSubscription, Subscription} from '../../Subscription';
 import {root} from '../../util/root';
 import {ReplaySubject} from '../../subject/ReplaySubject';
 import {Observer} from '../../Observer';
@@ -201,7 +201,7 @@ export class WebSocketSubject<T> extends Subject<T> {
       };
     }
 
-    return new Subscription(() => {
+    return new CompositeSubscription(() => {
       subscription.unsubscribe();
       if (!this.observers || this.observers.length === 0) {
         const { socket } = this;

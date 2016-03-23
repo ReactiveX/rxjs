@@ -1,9 +1,9 @@
 import {root} from '../util/root';
 import {Action} from './Action';
 import {Scheduler} from '../Scheduler';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription, Subscription} from '../Subscription';
 
-export class FutureAction<T> extends Subscription implements Action {
+export class FutureAction<T> extends CompositeSubscription implements Action {
 
   public id: number;
   public state: T;

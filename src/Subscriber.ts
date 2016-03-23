@@ -1,10 +1,10 @@
 import {isFunction} from './util/isFunction';
 import {Observer, PartialObserver} from './Observer';
-import {Subscription} from './Subscription';
+import {CompositeSubscription} from './Subscription';
 import {$$rxSubscriber} from './symbol/rxSubscriber';
 import {empty as emptyObserver} from './Observer';
 
-export class Subscriber<T> extends Subscription implements Observer<T> {
+export class Subscriber<T> extends CompositeSubscription implements Observer<T> {
 
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,

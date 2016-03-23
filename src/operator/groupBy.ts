@@ -1,5 +1,5 @@
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription} from '../Subscription';
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subject} from '../Subject';
@@ -234,7 +234,7 @@ export class GroupedObservable<K, T> extends Observable<T> {
   }
 
   protected _subscribe(subscriber: Subscriber<T>) {
-    const subscription = new Subscription();
+    const subscription = new CompositeSubscription();
     const {refCountSubscription, groupSubject} = this;
     if (refCountSubscription && !refCountSubscription.isUnsubscribed) {
       subscription.add(new InnerRefCountSubscription(refCountSubscription));
@@ -244,7 +244,7 @@ export class GroupedObservable<K, T> extends Observable<T> {
   }
 }
 
-class InnerRefCountSubscription extends Subscription {
+class InnerRefCountSubscription extends CompositeSubscription {
   constructor(private parent: RefCountSubscription) {
     super();
     parent.count++;

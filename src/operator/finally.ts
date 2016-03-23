@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription} from '../Subscription';
 import {Observable} from '../Observable';
 
 /**
@@ -31,6 +31,6 @@ class FinallyOperator<T> implements Operator<T, T> {
 class FinallySubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>, finallySelector: () => void) {
     super(destination);
-    this.add(new Subscription(finallySelector));
+    this.add(new CompositeSubscription(finallySelector));
   }
 }

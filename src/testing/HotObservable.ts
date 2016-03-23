@@ -1,6 +1,6 @@
 import {Subject} from '../Subject';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription, Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
@@ -27,7 +27,7 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
   protected _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
     const subject: HotObservable<T> = this;
     const index = subject.logSubscribedFrame();
-    subscriber.add(new Subscription(() => {
+    subscriber.add(new CompositeSubscription(() => {
       subject.logUnsubscribedFrame(index);
     }));
     return super._subscribe(subscriber);
