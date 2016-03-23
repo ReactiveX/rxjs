@@ -4,7 +4,7 @@ import {Subscription} from '../Subscription';
 import {QueueScheduler} from './QueueScheduler';
 
 export class AsyncScheduler extends QueueScheduler {
-  scheduleNow<T>(work: (x?: any) => Subscription, state?: any): Action {
+  scheduleNow<T>(work: (x?: T) => Subscription, state?: T): Action<T> {
     return new FutureAction(this, work).schedule(state, 0);
   }
 }

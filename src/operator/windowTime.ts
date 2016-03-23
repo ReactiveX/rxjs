@@ -79,6 +79,13 @@ class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
   }
 }
 
+type CreationState<T> = {
+  windowTimeSpan: number;
+  windowCreationInterval: number;
+  subscriber: WindowTimeSubscriber<T>;
+  scheduler: Scheduler;
+};
+
 class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
 
@@ -90,7 +97,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     if (windowCreationInterval !== null && windowCreationInterval >= 0) {
       let window = this.openWindow();
       const closeState = { subscriber: this, window, context: <any>null };
-      const creationState = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
+      const creationState: CreationState<T> = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
       this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
       this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
     } else {
@@ -161,10 +168,10 @@ function dispatchWindowTimeSpanOnly<T>(state: TimeSpanOnlyState<T>) {
   (<any>this).schedule(state, windowTimeSpan);
 }
 
-function dispatchWindowCreation(state: any) {
+function dispatchWindowCreation<T>(state: CreationState<T>) {
   let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
   let window = subscriber.openWindow();
-  let action = <Action>this;
+  let action = <Action<CreationState<T>>>this;
   let context = { action, subscription: <any>null };
   const timeSpanState = { subscriber, window, context };
   context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);

@@ -3,7 +3,7 @@ import {Subscription} from '../Subscription';
 import {Action} from './Action';
 
 export class VirtualTimeScheduler implements Scheduler {
-  actions: Action[] = [];
+  actions: Action<any>[] = []; // XXX: use `any` to remove type param `T` from `VirtualTimeScheduler`.
   active: boolean = false;
   scheduledId: number = null;
   index: number = 0;
@@ -38,8 +38,8 @@ export class VirtualTimeScheduler implements Scheduler {
     this.frame = 0;
   }
 
-  addAction<T>(action: Action) {
-    const actions = this.actions;
+  addAction<T>(action: Action<T>): void {
+    const actions: Action<T>[] = this.actions;
 
     actions.push(action);
 
@@ -66,7 +66,7 @@ export class VirtualTimeScheduler implements Scheduler {
   }
 }
 
-class VirtualAction<T> extends Subscription implements Action {
+class VirtualAction<T> extends Subscription implements Action<T> {
   state: T;
   delay: number;
   calls = 0;
@@ -83,7 +83,7 @@ class VirtualAction<T> extends Subscription implements Action {
       return this;
     }
     const scheduler = this.scheduler;
-    let action: Action;
+    let action: Action<T> = null;
     if (this.calls++ === 0) {
       // the action is not being rescheduled.
       action = this;

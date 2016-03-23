@@ -3,7 +3,7 @@ import {Action} from './Action';
 import {Scheduler} from '../Scheduler';
 import {Subscription} from '../Subscription';
 
-export class FutureAction<T> extends Subscription implements Action {
+export class FutureAction<T> extends Subscription implements Action<T> {
 
   public id: number;
   public state: T;
@@ -30,14 +30,14 @@ export class FutureAction<T> extends Subscription implements Action {
     }
   }
 
-  schedule(state?: T, delay: number = 0): Action {
+  schedule(state?: T, delay: number = 0): Action<T> {
     if (this.isUnsubscribed) {
       return this;
     }
     return this._schedule(state, delay);
   }
 
-  protected _schedule(state?: T, delay: number = 0): Action {
+  protected _schedule(state?: T, delay: number = 0): Action<T> {
 
     // Always replace the current state with the new state.
     this.state = state;

@@ -6,6 +6,6 @@ export interface Scheduler {
   schedule<T>(work: (state?: T) => Subscription | void, delay?: number, state?: T): Subscription;
   flush(): void;
   active: boolean;
-  actions: Action[];
+  actions: Action<any>[]; // XXX: use `any` to remove type param `T` from `Scheduler`.
   scheduledId: number;
 }
