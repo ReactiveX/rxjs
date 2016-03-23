@@ -2,7 +2,7 @@ import {root} from './root';
 import {isArray} from './isArray';
 import {isPromise} from './isPromise';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, ObservableInput} from '../Observable';
 import {$$iterator} from '../symbol/iterator';
 import {$$observable} from '../symbol/observable';
 import {Subscription} from '../Subscription';
@@ -12,8 +12,12 @@ import {OuterSubscriber} from '../OuterSubscriber';
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
                                         outerValue?: T,
-                                        outerIndex?: number): Subscription {
-  let destination: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+                                        outerIndex?: number): Subscription;
+export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
+                                     result: ObservableInput<T>,
+                                     outerValue?: T,
+                                     outerIndex?: number): Subscription {
+  let destination: Subscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
   if (destination.isUnsubscribed) {
     return;
@@ -21,7 +25,7 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
 
   if (result instanceof Observable) {
     if (result._isScalar) {
-      destination.next(result.value);
+      destination.next((<any>result).value);
       destination.complete();
       return;
     } else {
@@ -38,9 +42,9 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
     }
   } else if (isPromise(result)) {
     result.then(
-      (value: any) => {
+      (value) => {
         if (!destination.isUnsubscribed) {
-          destination.next(value);
+          destination.next(<any>value);
           destination.complete();
         }
       },
@@ -52,8 +56,8 @@ export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
     });
     return destination;
   } else if (typeof result[$$iterator] === 'function') {
-    for (let item of result) {
-      destination.next(item);
+    for (let item of <any>result) {
+      destination.next(<any>item);
       if (destination.isUnsubscribed) {
         break;
       }

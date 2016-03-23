@@ -1,8 +1,9 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
+import {Observablesque} from '../../dist/cjs/Observable';
 
-declare const {expectObservable, Symbol};
+declare const {expectObservable, Symbol, type};
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
@@ -26,7 +27,7 @@ describe('Observable.from', () => {
   it('should handle an ArrayLike', function (done: MochaDone) {
     this.timeout(300);
 
-    const arrayLike = {
+    const arrayLike: ArrayLike<number> = {
       length: 3,
       0: 1,
       1: 2,
@@ -64,7 +65,7 @@ describe('Observable.from', () => {
   it('should handle an ArrayLike with a mapFn', function (done: MochaDone) {
     this.timeout(300);
 
-    const arrayLike = {
+    const arrayLike: ArrayLike<number> = {
       length: 3,
       0: 1,
       1: 2,
@@ -83,7 +84,7 @@ describe('Observable.from', () => {
   });
 
   it('should handle an ArrayLike with a thisArg', (done: MochaDone) => {
-    const arrayLike = {
+    const arrayLike: ArrayLike<number> = {
       length: 3,
       0: 1,
       1: 2,
@@ -116,7 +117,7 @@ describe('Observable.from', () => {
   });
 
   it('should handle an "observableque" object', (done: MochaDone) => {
-    const observablesque = {};
+    const observablesque: Observablesque<any> = <any>{};
 
     observablesque[Symbol.observable] = () => {
       return {
@@ -137,7 +138,7 @@ describe('Observable.from', () => {
   });
 
   it('should accept scheduler for observableque object', () => {
-    const observablesque = {};
+    const observablesque: Observablesque<any> = <any>{};
 
     observablesque[Symbol.observable] = () => {
       return {
@@ -166,7 +167,7 @@ describe('Observable.from', () => {
   });
 
   it('should handle any iterable thing', (done: MochaDone) => {
-    const iterable = {};
+    const iterable: Iterable<string> = <any>{};
     const iteratorResults = [
       { value: 'one', done: false },
       { value: 'two', done: false },
@@ -195,7 +196,7 @@ describe('Observable.from', () => {
 
   it('should throw for non observable object', () => {
     const r = () => {
-      Observable.from({}).subscribe();
+      Observable.from(<any>{}).subscribe();
     };
 
     expect(r).to.throw();
@@ -210,6 +211,25 @@ describe('Observable.from', () => {
       done(new Error('should not be called'));
     }, () => {
       done();
+    });
+  });
+
+  it('should return T for ObservableLike objects', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
+      let o2: Rx.Observable<string> = Observable.from(<Iterable<string>>{});
+      let o3: Rx.Observable<{ a: string }> = Observable.from(Observable.empty<{ a: string }>());
+      let o4: Rx.Observable<{ b: number }> = Observable.from(new Promise<{b: number}>(resolve => resolve()));
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should return T and map for arrays', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      let o1: Rx.Observable<number> = Observable.from(<number[]>[], x => x.toString(), null, Rx.Scheduler.asap);
+      /* tslint:enable:no-unused-variable */
     });
   });
 });
