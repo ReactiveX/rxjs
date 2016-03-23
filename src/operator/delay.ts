@@ -10,7 +10,7 @@ import {Observable} from '../Observable';
  * Delays the emission of items from the source Observable by a given timeout or
  * until a given Date.
  *
- * <span class="informal">Time order shifts each item by some specified amount of
+ * <span class="informal">Time shifts each item by some specified amount of
  * milliseconds.</span>
  *
  * <img src="./img/delay.png" width="100%">
