@@ -6,7 +6,7 @@ import {Action} from './Action';
 
 export class QueueScheduler implements Scheduler {
   public active: boolean = false;
-  public actions: QueueAction<any>[] = [];
+  public actions: QueueAction<any>[] = []; // XXX: use `any` to remove type param `T` from `VirtualTimeScheduler`.
   public scheduledId: number = null;
 
   now() {
@@ -19,7 +19,8 @@ export class QueueScheduler implements Scheduler {
     }
     this.active = true;
     const actions = this.actions;
-    for (let action: QueueAction<any>; action = actions.shift(); ) {
+    // XXX: use `any` to remove type param `T` from `VirtualTimeScheduler`.
+    for (let action: QueueAction<any> = null; action = actions.shift(); ) {
       action.execute();
       if (action.error) {
         this.active = false;
@@ -35,11 +36,11 @@ export class QueueScheduler implements Scheduler {
       this.scheduleLater(work, delay, state);
   }
 
-  scheduleNow<T>(work: (x?: T) => Subscription | void, state?: T): Action {
+  scheduleNow<T>(work: (x?: T) => Subscription | void, state?: T): Action<T> {
     return new QueueAction(this, work).schedule(state);
   }
 
-  scheduleLater<T>(work: (x?: T) => Subscription | void, delay: number, state?: T): Action {
+  scheduleLater<T>(work: (x?: T) => Subscription | void, delay: number, state?: T): Action<T> {
     return new FutureAction(this, work).schedule(state, delay);
   }
 }

@@ -68,6 +68,13 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
   }
 }
 
+type CreationState<T> = {
+  bufferTimeSpan: number;
+  bufferCreationInterval: number,
+  subscriber: BufferTimeSubscriber<T>;
+  scheduler: Scheduler;
+};
+
 class BufferTimeSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
 
@@ -79,7 +86,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     const buffer = this.openBuffer();
     if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
       const closeState = { subscriber: this, buffer };
-      const creationState = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+      const creationState: CreationState<T> = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
       this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
       this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
     } else {
@@ -140,10 +147,10 @@ function dispatchBufferTimeSpanOnly(state: any) {
   }
 }
 
-function dispatchBufferCreation(state: any) {
+function dispatchBufferCreation<T>(state: CreationState<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const buffer = subscriber.openBuffer();
-  const action = <Action>this;
+  const action = <Action<CreationState<T>>>this;
   if (!subscriber.isUnsubscribed) {
     action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
     action.schedule(state, bufferCreationInterval);

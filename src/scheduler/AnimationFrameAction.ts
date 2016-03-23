@@ -4,7 +4,7 @@ import {AnimationFrame} from '../util/AnimationFrame';
 
 export class AnimationFrameAction<T> extends FutureAction<T> {
 
-  protected _schedule(state?: T, delay: number = 0): Action {
+  protected _schedule(state?: T, delay: number = 0): Action<T> {
     if (delay > 0) {
       return super._schedule(state, delay);
     }
