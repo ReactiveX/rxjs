@@ -7,15 +7,43 @@ import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 
 /**
- * Returns an Observable that emits items based on applying a function that you supply to each item emitted by the
- * source Observable, where that function returns an Observable, and then merging those resulting Observables and
- * emitting the results of this merger.
+ * Projects each source value to an Observable which is merged in the output
+ * Observable.
+ *
+ * <span class="informal">Maps each value to an Observable, then flattens all of
+ * these inner Observables.</span>
  *
  * <img src="./img/mergeMap.png" width="100%">
  *
- * @param {Function} a function that, when applied to an item emitted by the source Observable, returns an Observable.
- * @return {Observable} an Observable that emits the result of applying the transformation function to each item
- * emitted by the source Observable and merging the results of the Observables obtained from this transformation
+ * Returns an Observable that emits items based on applying a function that you
+ * supply to each item emitted by the source Observable, where that function
+ * returns an Observable, and then merging those resulting Observables and
+ * emitting the results of this merger.
+ *
+ * @example <caption>Map and flatten each letter to an Observable ticking every 1 second</caption>
+ * var letters = Rx.Observable.of('a', 'b', 'c');
+ * var result = letters.mergeMap(x =>
+ *   Rx.Observable.interval(1000).map(i => x+i)
+ * );
+ * result.subscribe(x => console.log(x));
+ *
+ * @see {@link merge}
+ * @see {@link mergeAll}
+ * @see {@link mergeMapTo}
+ * @see {@link mergeScan}
+ *
+ * @param {function(value: T, ?index: number): Observable} project A function
+ * that, when applied to an item emitted by the source Observable, returns an
+ * Observable.
+ * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
+ * A function to produce the value on the output Observable based on the values
+ * and the indices of the source (outer) emission and the inner Observable
+ * emission.
+ * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
+ * Observables being subscribed to concurrently.
+ * @return {Observable} An Observable that emits the result of applying the
+ * transformation function to each item emitted by the source Observable and
+ * merging the results of the Observables obtained from this transformation.
  * @method mergeMap
  * @owner Observable
  */
