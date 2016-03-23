@@ -15,7 +15,11 @@ describe('Observable.from', () => {
 
     Observable.from(expected).subscribe((x: number) => {
       expect(x).toBe(expected[i++]);
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   }, 300);
 
   it('should handle an ArrayLike', (done: DoneSignature) => {
@@ -29,7 +33,11 @@ describe('Observable.from', () => {
 
     Observable.from(arrayLike).subscribe((x: number) =>  {
       expect(x).toBe(expected.shift());
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   }, 300);
 
   it('should handle an ArrayLike from arguments', (done: DoneSignature) => {
@@ -38,7 +46,11 @@ describe('Observable.from', () => {
 
       Observable.from(arguments).subscribe((x: number) => {
         expect(x).toBe(expected.shift());
-      }, done.fail, done);
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
     }
 
     makeArrayLike(1, 2, 3);
@@ -56,7 +68,11 @@ describe('Observable.from', () => {
 
     Observable.from(arrayLike, mapFn).subscribe((x: number) =>  {
       expect(x).toBe(expected.shift());
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   }, 300);
 
   it('should handle an ArrayLike with a thisArg', (done: DoneSignature) => {
@@ -73,7 +89,11 @@ describe('Observable.from', () => {
 
     Observable.from(arrayLike, mapFn, {thing: 123}).subscribe((x: number) =>  {
       expect(x).toBe(expected.shift());
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('should handle a promise', (done: DoneSignature) => {
@@ -81,7 +101,11 @@ describe('Observable.from', () => {
 
     Observable.from(promise).subscribe((x: string) =>  {
       expect(x).toBe('pinky swear');
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('should handle an "observableque" object', (done: DoneSignature) => {
@@ -98,7 +122,11 @@ describe('Observable.from', () => {
 
     Observable.from(observablesque).subscribe((x: string) =>  {
       expect(x).toBe('test');
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('should accept scheduler for observableque object', () => {
@@ -123,7 +151,11 @@ describe('Observable.from', () => {
     const expected = ['a', 'b', 'c'];
     Observable.from('abc').subscribe((x: string) =>  {
       expect(x).toBe(expected.shift());
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('should handle any iterable thing', (done: DoneSignature) => {
@@ -147,7 +179,11 @@ describe('Observable.from', () => {
 
     Observable.from(iterable).subscribe((x: string) =>  {
       expect(x).toBe(expected.shift());
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('should throw for non observable object', () => {
@@ -165,6 +201,8 @@ describe('Observable.from', () => {
       expect(x).toBe(value);
     }, (err: any) => {
       done.fail('should not be called');
-    }, done);
+    }, () => {
+      done();
+    });
   });
 });

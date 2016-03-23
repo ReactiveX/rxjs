@@ -223,6 +223,8 @@ describe('Observable.prototype.catch', () => {
         //noop
        }, (err: any) => {
           done.fail('should not be called');
-        }, done);
+        }, () => {
+          done();
+        });
   });
 });

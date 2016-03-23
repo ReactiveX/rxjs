@@ -14,6 +14,10 @@ describe('Observable.prototype.let', () => {
       .let(foo)
       .subscribe(function (x) {
         expect(x).toBe(expected[i++]);
-      }, done.fail, done);
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 });

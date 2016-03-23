@@ -677,8 +677,9 @@ describe('ImmediateDefinition', () => {
       Rx.Observable.fromArray([1, 2, 3], Rx.Scheduler.asap)
         .subscribe((x: number) => {
           results.push(x);
-        }, done.fail,
-        () => {
+        }, () => {
+          done.fail();
+        }, () => {
           expect(results).toEqual([1, 2, 3]);
           done();
         });

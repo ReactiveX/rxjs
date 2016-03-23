@@ -78,7 +78,9 @@ describe('Observable.fromEventPattern', () => {
         expect(x).toBe('testme!');
       }, (err: any) => {
         done.fail('should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
 
     trigger('test', 'me');
   });

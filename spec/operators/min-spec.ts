@@ -73,30 +73,33 @@ describe('Observable.prototype.min', () => {
     (<any>Rx.Observable.range(1, 10000)).min().subscribe(
       (value: number) => {
         expect(value).toEqual(1);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should min a range().skip(1) source observable', (done: DoneSignature) => {
     (<any>Rx.Observable.range(1, 10)).skip(1).min().subscribe(
       (value: number) => {
         expect(value).toEqual(2);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should min a range().take(1) source observable', (done: DoneSignature) => {
     (<any>Rx.Observable.range(1, 10)).take(1).min().subscribe(
       (value: number) => {
         expect(value).toEqual(1);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should work with error', () => {

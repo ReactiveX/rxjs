@@ -360,7 +360,9 @@ describe('Observable.prototype.debounce', () => {
       return new Promise((resolve: any) => { resolve(42); });
     }).subscribe((x: number) => {
       expect(x).toEqual(expected.shift()); },
-      done.fail,
+      (x) => {
+        done.fail('should not be called');
+      },
       () => {
         expect(expected.length).toBe(0);
         done();
@@ -388,6 +390,8 @@ describe('Observable.prototype.debounce', () => {
         expect(err).toBe(error);
         expect(expected.length).toBe(0);
         done();
-      }, done.fail);
+      }, () => {
+        done.fail('should not be called');
+      });
   });
 });

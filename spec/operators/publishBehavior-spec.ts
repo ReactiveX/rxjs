@@ -43,11 +43,16 @@ describe('Observable.prototype.publishBehavior', () => {
       (x: number) => {
         expect(x).toBe(expected[i++]);
       },
-      done.fail,
-      () => {
+      (x) => {
+        done.fail('should not be called');
+      }, () => {
         source.subscribe((x: any) => {
           done.fail('should not be called');
-        }, done.fail, done);
+        }, (x) => {
+          done.fail('should not be called');
+        }, () => {
+          done();
+        });
 
         source.connect();
       });
@@ -248,7 +253,9 @@ describe('Observable.prototype.publishBehavior', () => {
 
     connectable.subscribe(function (x) {
       results2.push(x);
-    }, done.fail, () => {
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
       expect(results2).toEqual([]);
       done();
     });

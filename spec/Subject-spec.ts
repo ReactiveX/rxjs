@@ -482,10 +482,11 @@ describe('Subject', () => {
     subject.subscribe(
       function (x) {
         expect(x).toBe(expected.shift());
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
 
     source.subscribe(subject);
   });
@@ -499,9 +500,11 @@ describe('Subject', () => {
     subject.subscribe(
       function (x) {
         expect(x).toBe(expected.shift());
-      },
-      done.fail,
-      done);
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
 
     source.subscribe(subject);
   });

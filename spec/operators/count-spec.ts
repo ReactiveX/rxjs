@@ -73,30 +73,33 @@ describe('Observable.prototype.count', () => {
     Rx.Observable.range(1, 10).count().subscribe(
       (value: number) => {
         expect(value).toEqual(10);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should count a range().skip(1) source observable', (done: DoneSignature) => {
     Rx.Observable.range(1, 10).skip(1).count().subscribe(
       (value: number) => {
         expect(value).toEqual(9);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should count a range().take(1) source observable', (done: DoneSignature) => {
     Rx.Observable.range(1, 10).take(1).count().subscribe(
       (value: number) => {
         expect(value).toEqual(1);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should work with error', () => {

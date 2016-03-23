@@ -29,7 +29,11 @@ describe('Observable.prototype.merge', () => {
 
     a.merge(b).subscribe((val: number) => {
       expect(val).toBe(r.shift());
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('should merge an immediately-scheduled source with an immediately-scheduled second', (done: DoneSignature) => {
@@ -39,7 +43,11 @@ describe('Observable.prototype.merge', () => {
 
     a.merge(b, queueScheduler).subscribe((val: number) => {
       expect(val).toBe(r.shift());
-    }, done.fail, done);
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('should merge cold and cold', () => {

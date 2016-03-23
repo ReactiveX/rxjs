@@ -253,7 +253,9 @@ describe('Observable.prototype.filter', () => {
       }, (err: any) => {
         expect(err).toBe('bad');
         done();
-      }, done.fail);
+      }, () => {
+        done.fail('should not be called');
+      });
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {

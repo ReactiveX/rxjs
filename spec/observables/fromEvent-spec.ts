@@ -111,7 +111,9 @@ describe('Observable.fromEvent', () => {
         expect(e).toBe('test');
       }, (err: any) => {
         done.fail('should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
 
     send('test');
   });
@@ -136,7 +138,9 @@ describe('Observable.fromEvent', () => {
         expect(e).toBe('test!');
       }, (err: any) => {
         done.fail('should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
 
     send('test');
   });
@@ -161,7 +165,9 @@ describe('Observable.fromEvent', () => {
         expect(e).toBeUndefined();
       }, (err: any) => {
         done.fail('should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
 
     send();
   });
@@ -186,7 +192,9 @@ describe('Observable.fromEvent', () => {
         expect(e).toBe('no arguments');
       }, (err: any) => {
         done.fail('should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
 
     send();
   });
@@ -211,7 +219,9 @@ describe('Observable.fromEvent', () => {
         expect(e).toEqual([1, 2, 3]);
       }, (err: any) => {
         done.fail('should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
 
     send(1, 2, 3);
   });

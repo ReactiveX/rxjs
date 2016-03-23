@@ -26,7 +26,9 @@ describe('Observable.combineLatest', () => {
     //type definition need to be updated
     Observable.combineLatest(a, b, queueScheduler).subscribe((vals: any) => {
       (<any>expect(vals)).toDeepEqual(r.shift());
-    }, done.fail, () => {
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
       expect(r.length).toBe(0);
       done();
     });

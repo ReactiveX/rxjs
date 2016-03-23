@@ -176,10 +176,11 @@ describe('BehaviorSubject', () => {
     subject.subscribe(
       (x: number) => {
         expect(x).toBe(expected.shift());
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
 
     source.subscribe(subject);
   });

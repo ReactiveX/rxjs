@@ -310,7 +310,9 @@ describe('Observable.prototype.bufferWhen', () => {
         expect(val.length).toBe(0);
       }, (err: any) => {
         done.fail('should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
   });
 
   it('should handle inner throw', () => {

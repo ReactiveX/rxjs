@@ -205,7 +205,8 @@ describe('Observable.prototype.retry', () => {
           expect(err).toBe('bad!');
           expect(expected.length).toBe(0);
           done();
-        },
-        done.fail);
+        }, () => {
+          done.fail();
+        });
   });
 });

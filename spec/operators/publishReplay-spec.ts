@@ -314,7 +314,9 @@ describe('Observable.prototype.publishReplay', () => {
 
     connectable.subscribe((x: number) => {
       results2.push(x);
-    }, done.fail, () => {
+    }, (x) => {
+      done.fail('should not be called');
+    }, () => {
       expect(results2).toEqual([3, 4]);
       done();
     });
@@ -368,14 +370,18 @@ describe('Observable.prototype.publishReplay', () => {
     source.subscribe(
       (x: number) => {
         expect(x).toBe(expected[i++]);
-      },
-      done.fail,
-      () => {
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
         i = 0;
 
         source.subscribe((x: number) => {
           results.push(x);
-        }, done.fail, done);
+        }, (x) => {
+          done.fail('should not be called');
+        }, () => {
+          done();
+        });
 
         source.connect();
       });

@@ -23,7 +23,9 @@ describe('Observable.prototype.inspectTime', () => {
       .inspectTime(50)
       .subscribe((x: number) => {
         done.fail('should not be called');
-      }, null, done);
+      }, null, () => {
+        done();
+      });
   });
 
   it('should inspect events multiple times', () => {

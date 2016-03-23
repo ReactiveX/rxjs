@@ -113,8 +113,9 @@ describe('Observable.forkJoin', () => {
     },
     (err: any) => {
       done.fail('should not be called');
-    },
-    done);
+    }, () => {
+      done();
+    });
   });
 
   it('should accept array of observables', () => {

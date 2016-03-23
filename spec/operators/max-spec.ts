@@ -98,30 +98,33 @@ describe('Observable.prototype.max', () => {
     (<any>Rx.Observable.range(1, 10000)).max().subscribe(
       (value: number) => {
         expect(value).toEqual(10000);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should max a range().skip(1) source observable', (done: DoneSignature) => {
     (<any>Rx.Observable.range(1, 10)).skip(1).max().subscribe(
       (value: number) => {
         expect(value).toEqual(10);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should max a range().take(1) source observable', (done: DoneSignature) => {
     (<any>Rx.Observable.range(1, 10)).take(1).max().subscribe(
       (value: number) => {
         expect(value).toEqual(1);
-      },
-      done.fail,
-      done
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should work with error', () => {

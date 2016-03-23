@@ -29,9 +29,9 @@ describe('Observable.prototype.concat', () => {
 
     s1.subscribe((x: number) => {
           results.push('Next: ' + x);
-        },
-        done.fail,
-        () => {
+        }, (x) => {
+          done.fail('should not be called');
+        }, () => {
           results.push('Completed');
           expect(results).toEqual(['Next: 1', 'Next: 2', 'Completed']);
           done();

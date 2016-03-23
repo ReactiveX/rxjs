@@ -25,8 +25,11 @@ describe('Observable.prototype.multicast', () => {
     const connectable = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
 
     connectable.subscribe((x: number) => { expect(x).toBe(expected.shift()); },
-        done.fail,
-        done);
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
+          done();
+        });
 
     connectable.connect();
   });
@@ -37,8 +40,11 @@ describe('Observable.prototype.multicast', () => {
     const connectable = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
 
     connectable.subscribe((x: number) => { expect(x).toBe(expected.shift()); },
-        done.fail,
-        done);
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
+          done();
+        });
 
     connectable.connect();
   });
@@ -514,7 +520,9 @@ describe('Observable.prototype.multicast', () => {
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).toBe(expected.shift());
-        }, done.fail, () => {
+        }, (x) => {
+          done.fail('should not be called');
+        }, () => {
           expect(expected.length).toBe(0);
           done();
         });
@@ -534,8 +542,10 @@ describe('Observable.prototype.multicast', () => {
         null,
         () => {
           source.subscribe((x: number) => {
-            done.fail('this should not be called');
-          }, null, done);
+            done.fail('should not be called');
+          }, null, () => {
+            done();
+          });
 
           source.connect();
         });
@@ -555,7 +565,9 @@ describe('Observable.prototype.multicast', () => {
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).toBe(expected.shift());
-        }, done.fail, () => {
+        }, (x) => {
+          done.fail('should not be called');
+        }, () => {
           expect(expected.length).toBe(0);
           done();
         });

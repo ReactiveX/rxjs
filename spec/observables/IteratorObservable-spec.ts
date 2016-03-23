@@ -43,8 +43,9 @@ describe('IteratorObservable', () => {
     IteratorObservable.create([10, 20, 30, 40])
       .subscribe(
         (x: number) => { expect(x).toBe(expected.shift()); },
-        done.fail,
-        () => {
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
           expect(expected.length).toBe(0);
           done();
         }
@@ -100,10 +101,11 @@ describe('IteratorObservable', () => {
           subscriber.unsubscribe();
           done();
         }
-      },
-      done.fail,
-      done.fail
-    );
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done.fail('should not be called');
+      });
 
     source.subscribe(subscriber);
   });
@@ -113,8 +115,9 @@ describe('IteratorObservable', () => {
     IteratorObservable.create([10, 20, 30, 40], (x: number) => x * x)
       .subscribe(
         (x: number) => { expect(x).toBe(expected.shift()); },
-        done.fail,
-        () => {
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
           expect(expected.length).toBe(0);
           done();
         }
@@ -139,9 +142,9 @@ describe('IteratorObservable', () => {
           expect(expected.length).toBe(0);
           expect(err.message).toBe('boom');
           done();
-        },
-        done.fail
-      );
+        }, () => {
+          done.fail('should not be called');
+        });
   });
 
   it('should emit characters of a string iterator', (done: DoneSignature) => {
@@ -149,8 +152,9 @@ describe('IteratorObservable', () => {
     IteratorObservable.create('foo')
       .subscribe(
         (x: number) => { expect(x).toBe(expected.shift()); },
-        done.fail,
-        () => {
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
           expect(expected.length).toBe(0);
           done();
         }
@@ -162,8 +166,9 @@ describe('IteratorObservable', () => {
     IteratorObservable.create('foo', (x: string) => x.toUpperCase())
       .subscribe(
         (x: string) => { expect(x).toBe(expected.shift()); },
-        done.fail,
-        () => {
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
           expect(expected.length).toBe(0);
           done();
         }
@@ -180,9 +185,11 @@ describe('IteratorObservable', () => {
           subscriber.unsubscribe();
           done();
         }
-      },
-      done.fail,
-      done.fail
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done.fail('should not be called');
+      }
     );
 
     IteratorObservable.create([10, 20, 30, 40, 50, 60]).subscribe(subscriber);

@@ -11,8 +11,11 @@ describe('Observable.fromPromise', () => {
     Observable.fromPromise(promise)
       .subscribe(
         (x: number) => { expect(x).toBe(42); },
-        done.fail,
-        done);
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
+          done();
+        });
   });
 
   it('should raise error from a rejected promise', (done: DoneSignature) => {
@@ -24,8 +27,9 @@ describe('Observable.fromPromise', () => {
         (e: any) => {
           expect(e).toBe('bad');
           done();
-        },
-        done.fail);
+        }, () => {
+         done.fail('should not be called');
+       });
   });
 
   it('should share the underlying promise with multiple subscribers', (done: DoneSignature) => {
@@ -35,14 +39,18 @@ describe('Observable.fromPromise', () => {
     observable
       .subscribe(
         (x: number) => { expect(x).toBe(42); },
-        done.fail,
-        null);
+        (x) => {
+          done.fail('should not be called');
+        }, null);
     setTimeout(() => {
       observable
         .subscribe(
           (x: number) => { expect(x).toBe(42); },
-          done.fail,
-          done);
+          (x) => {
+            done.fail('should not be called');
+          }, () => {
+            done();
+          });
     });
   });
 
@@ -53,9 +61,14 @@ describe('Observable.fromPromise', () => {
       Observable.fromPromise(promise)
         .subscribe(
           (y: number) => { expect(y).toBe(42); },
-          done.fail,
-          done);
-    }, done.fail);
+          (x) => {
+            done.fail('should not be called');
+          }, () => {
+            done();
+          });
+    }, () => {
+      done.fail('should not be called');
+    });
   });
 
   it('should emit a value from a resolved promise on a separate scheduler', (done: DoneSignature) => {
@@ -63,8 +76,11 @@ describe('Observable.fromPromise', () => {
     Observable.fromPromise(promise, Rx.Scheduler.asap)
       .subscribe(
         (x: number) => { expect(x).toBe(42); },
-        done.fail,
-        done);
+        (x) => {
+          done.fail('should not be called');
+        }, () => {
+          done();
+        });
   });
 
   it('should raise error from a rejected promise on a separate scheduler', (done: DoneSignature) => {
@@ -75,8 +91,9 @@ describe('Observable.fromPromise', () => {
         (e: any) => {
           expect(e).toBe('bad');
           done();
-        },
-        done.fail);
+        }, () => {
+          done.fail('should not be called');
+        });
   });
 
   it('should share the underlying promise with multiple subscribers on a separate scheduler', (done: DoneSignature) => {
@@ -86,14 +103,19 @@ describe('Observable.fromPromise', () => {
     observable
       .subscribe(
         (x: number) => { expect(x).toBe(42); },
-        done.fail,
+        (x) => {
+          done.fail('should not be called');
+        },
         null);
     setTimeout(() => {
       observable
         .subscribe(
           (x: number) => { expect(x).toBe(42); },
-          done.fail,
-          done);
+          (x) => {
+            done.fail('should not be called');
+          }, () => {
+            done();
+          });
     });
   });
 
@@ -132,8 +154,9 @@ describe('Observable.fromPromise', () => {
           (e: any) => {
             expect(e).toBe('bad');
             throw 'fail';
-          },
-          done.fail);
+          }, () => {
+            done.fail('should not be called');
+          });
     });
   } else if (typeof window === 'object' && Object.prototype.toString.call(window) === '[object global]') {
     it('should globally throw unhandled errors on window', (done: DoneSignature) => {
@@ -155,8 +178,9 @@ describe('Observable.fromPromise', () => {
           (e: any) => {
             expect(e).toBe('bad');
             throw 'fail';
-          },
-          done.fail);
+          }, () => {
+            done.fail('should not be called');
+          });
     });
   }
 });

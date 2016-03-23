@@ -76,7 +76,9 @@ describe('Observable.prototype.retryWhen', () => {
         expect(n).toBe(expected.shift());
       }, (err: any) => {
         done.fail('error should not be called');
-      }, done);
+      }, () => {
+        done();
+      });
   });
 
   it('should apply an empty notifier on an empty source', () => {

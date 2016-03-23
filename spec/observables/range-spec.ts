@@ -29,7 +29,9 @@ describe('Observable.range', () => {
       expect(x).toBe(exp);
     }, function (x) {
       done.fail('should not be called');
-    }, done);
+    }, () => {
+      done();
+    });
   });
 });
 

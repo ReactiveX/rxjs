@@ -18,9 +18,11 @@ describe('Observable.of', () => {
     Observable.of<any>(1, 'a', x)
       .subscribe((y: any) => {
         expect(y).toBe(expected[i++]);
-      },
-      done.fail,
-      done);
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should return a scalar observable if only passed one value', () => {
@@ -56,7 +58,9 @@ describe('Observable.of', () => {
       expect(x).toBe(42);
     }, (err: any) => {
       done.fail('should not be called');
-    }, done);
+    }, () => {
+      done();
+    });
   });
 
   it('should handle an Observable as the only value', () => {

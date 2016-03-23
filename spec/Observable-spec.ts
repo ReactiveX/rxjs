@@ -388,9 +388,11 @@ describe('Observable.lift', () => {
     result.subscribe(
       function (x) {
         expect(x).toBe(expected.shift());
-      },
-      done.fail,
-      done);
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 
   it('should allow injecting behaviors into all subscribers in an operator ' +
@@ -447,8 +449,9 @@ describe('Observable.lift', () => {
       function (x) {
         expect(x).toBe(expected.shift());
       },
-      done.fail,
-      () => {
+      (x) => {
+        done.fail('should not be called');
+      }, () => {
         expect(log).toEqual([
           'next 10', // map
           'next 20', // map

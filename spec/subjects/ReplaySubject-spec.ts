@@ -30,7 +30,9 @@ describe('ReplaySubject', () => {
       }
     }, (err: any) => {
       done.fail('should not be called');
-    }, done);
+    }, () => {
+      done();
+    });
   });
 
   it('should replay values and complete', (done: DoneSignature) => {
@@ -76,7 +78,9 @@ describe('ReplaySubject', () => {
       }
     }, (err: any) => {
       done.fail('should not be called');
-    }, done);
+    }, () => {
+      done();
+    });
   });
 
   describe('with bufferSize=2', () => {
@@ -228,9 +232,11 @@ describe('ReplaySubject', () => {
     subject.subscribe(
       (x: number) => {
         expect(x).toBe(expected.shift());
-      },
-      done.fail,
-      done
+      }, () => {
+        done.fail();
+      }, () => {
+        done();
+      }
     );
   });
 });

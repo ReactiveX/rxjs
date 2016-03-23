@@ -1380,6 +1380,10 @@ describe('Observable.prototype.groupBy', () => {
         g.subscribe((x: any) => {
           expect(x).toBe(expectedGroup.values.shift());
         });
-      }, done.fail, done);
+      }, (x) => {
+        done.fail('should not be called');
+      }, () => {
+        done();
+      });
   });
 });
