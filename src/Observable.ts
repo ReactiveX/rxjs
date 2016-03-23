@@ -13,9 +13,13 @@ export interface Subscribable<T> {
   subscribe(observer: Observer<T>): AnonymousSubscription;
 }
 
-export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
-export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T>;
-export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayOrIterator<T>;
+export interface Observablesque<T> {
+  [Symbol.observable](): Subscribable<T>;
+}
+
+export type SubscribableOrPromise<T> = Observablesque<T> | Subscribable<T> | Promise<T>;
+export type ArrayOrIterable<T> = Iterable<T> | ArrayLike<T>;
+export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayOrIterable<T>;
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
