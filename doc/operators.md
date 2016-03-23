@@ -227,6 +227,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`observeOn`](../class/es6/Observable.js~Observable.html#instance-method-observeOn)
 - [`subscribeOn`](../class/es6/Observable.js~Observable.html#instance-method-subscribeOn)
 - [`timeInterval`](../class/es6/Observable.js~Observable.html#instance-method-timeInterval)
+- [`timestamp`](../class/es6/Observable.js~Observable.html#instance-method-timestamp)
 - [`timeout`](../class/es6/Observable.js~Observable.html#instance-method-timeout)
 - [`timeoutWith`](../class/es6/Observable.js~Observable.html#instance-method-timeoutWith)
 - [`toArray`](../class/es6/Observable.js~Observable.html#instance-method-toArray)

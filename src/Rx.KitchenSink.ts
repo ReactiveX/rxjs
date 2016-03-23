@@ -20,7 +20,9 @@ import './add/operator/mergeScan';
 import './add/operator/min';
 import './add/operator/pairwise';
 import './add/operator/timeInterval';
+import './add/operator/timestamp';
 
 export {TimeInterval} from './operator/timeInterval';
+export {Timestamp} from './operator/timestamp';
 export {TestScheduler} from './testing/TestScheduler';
 export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
