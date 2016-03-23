@@ -1,11 +1,25 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, expectObservable, expectSubscriptions, type};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions, type};
 
 const Observable = Rx.Observable;
 
 /** @test {mergeMapTo} */
 describe('Observable.prototype.mergeMapTo', () => {
+  asDiagram('mergeMapTo(Observable.of(10, 10, 10))')
+  ('should map-and-flatten each item to an Observable', () => {
+    const e1 =    hot('--1-----3-----5----|');
+    const e1subs =    '^                  !';
+    const e2 =   cold('xxx|                ', {x: 10});
+    const expected =  '--xxx---xxx---xxx--|';
+    const values = {x: 10};
+
+    const result = e1.mergeMapTo(e2);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should mergeMapTo many regular interval inners', () => {
     const x =   cold('----1---2---3---(4|)                        ');
     const xsubs =   ['^               !                           ',
