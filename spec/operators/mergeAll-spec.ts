@@ -61,7 +61,7 @@ describe('Observable.prototype.mergeAll', () => {
     const e1subs =    '^                         !';
     const expected =  '--a---b---c---d---e---f---|';
 
-    expectObservable((<any>e1).mergeAll(1)).toBe(expected);
+    expectObservable(e1.mergeAll(1)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -78,7 +78,7 @@ describe('Observable.prototype.mergeAll', () => {
     const e1subs =    '^                     !';
     const expected =  '--a--db--ec--f--g---h-|';
 
-    expectObservable((<any>e1).mergeAll(2)).toBe(expected);
+    expectObservable(e1.mergeAll(2)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(z.subscriptions).toBe(zsubs);
@@ -94,7 +94,7 @@ describe('Observable.prototype.mergeAll', () => {
     const e1subs =    '^                        !';
     const expected =  '---a---b---c-----e---f---|';
 
-    expectObservable((<any>e1).mergeAll(1)).toBe(expected);
+    expectObservable(e1.mergeAll(1)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -111,7 +111,7 @@ describe('Observable.prototype.mergeAll', () => {
     const e1subs =    '^                      !';
     const expected =  '---a--db--ec--f--g---h-|';
 
-    expectObservable((<any>e1).mergeAll(2)).toBe(expected);
+    expectObservable(e1.mergeAll(2)).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(z.subscriptions).toBe(zsubs);
