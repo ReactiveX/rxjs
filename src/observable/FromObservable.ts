@@ -36,7 +36,12 @@ export class FromObservable<T> extends Observable<T> {
    * @name from
    * @owner Observable
    */
-  static create<T>(ish: any, mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T), thisArg?: any, lastScheduler?: Scheduler): Observable<T> {
+  static create<T>(ish: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
+  static create<T, R>(ish: ArrayLike<T>, mapFn: (x: any, y: number) => R, thisArg?: any, scheduler?: Scheduler): Observable<R>;
+  static create<T>(ish: ObservableInput<T>,
+                   mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T),
+                   thisArg?: any,
+                   lastScheduler?: Scheduler): Observable<T> {
     let scheduler: Scheduler = null;
     let mapFn: (x: any, i: number) => T = null;
     if (isFunction(mapFnOrScheduler)) {

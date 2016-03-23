@@ -43,7 +43,7 @@ describe('Observable.prototype.mergeMap', () => {
   it('should map values to constant rejected promises and merge', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = function (value) {
-      return Observable.from(Promise.reject(42));
+      return Observable.from(Promise.reject<number>(42));
     };
 
     source.mergeMap(project).subscribe(
@@ -82,11 +82,11 @@ describe('Observable.prototype.mergeMap', () => {
   it('should map values to rejected promises and merge', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = function (value, index) {
-      return Observable.from(Promise.reject('' + value + '-' + index));
+      return Observable.from(Promise.reject<string>('' + value + '-' + index));
     };
 
     source.mergeMap(project).subscribe(
-      (x: number) => {
+      (x: string) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
       (err: any) => {

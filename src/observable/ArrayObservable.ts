@@ -24,7 +24,14 @@ export class ArrayObservable<T> extends Observable<T> {
    * @name of
    * @owner Observable
    */
-  static of<T>(...array: Array<T | Scheduler>): Observable<T> {
+   static of<T>(item1: T, scheduler?: Scheduler): Observable<T>;
+   static of<T>(item1: T, item2: T, scheduler?: Scheduler): Observable<T>;
+   static of<T>(item1: T, item2: T, item3: T, scheduler?: Scheduler): Observable<T>;
+   static of<T>(item1: T, item2: T, item3: T, item4: T, scheduler?: Scheduler): Observable<T>;
+   static of<T>(item1: T, item2: T, item3: T, item4: T, item5: T, scheduler?: Scheduler): Observable<T>;
+   static of<T>(item1: T, item2: T, item3: T, item4: T, item5: T, item6: T, scheduler?: Scheduler): Observable<T>;
+   static of<T>(...array: Array<T | Scheduler>): Observable<T>;
+   static of<T>(...array: Array<T | Scheduler>): Observable<T> {
     let scheduler = <Scheduler>array[array.length - 1];
     if (isScheduler(scheduler)) {
       array.pop();
