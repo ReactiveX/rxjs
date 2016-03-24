@@ -38,8 +38,8 @@ export class Subject<T> extends Observable<T> implements Observer<T>, ISubscript
     return <any>subject;
   }
 
-  add(subscription: TeardownLogic): void {
-    Subscription.prototype.add.call(this, subscription);
+  add(subscription: TeardownLogic): Subscription {
+    return Subscription.prototype.add.call(this, subscription);
   }
 
   remove(subscription: Subscription): void {

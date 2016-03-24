@@ -13,7 +13,7 @@ export type TeardownLogic = AnonymousSubscription | Function | void;
 export interface ISubscription extends AnonymousSubscription {
   unsubscribe(): void;
   isUnsubscribed: boolean;
-  add(teardown: TeardownLogic): void;
+  add(teardown: TeardownLogic): ISubscription;
   remove(sub: ISubscription): void;
 }
 
@@ -92,8 +92,11 @@ export class Subscription implements ISubscription {
    * will be executed immediately
    *
    * @param {TeardownLogic} teardown the additional logic to execute on teardown.
+   * @returns {Subscription} returns the subscription used or created to be added to the inner
+   *  subscriptions list. This subscription can be used with `remove()` to remove the passed teardown
+   *  logic from the inner subscriptions list.
    */
-  add(teardown: TeardownLogic): void {
+  add(teardown: TeardownLogic): Subscription {
     if (!teardown || (
         teardown === this) || (
         teardown === Subscription.EMPTY)) {
@@ -117,6 +120,8 @@ export class Subscription implements ISubscription {
       default:
         throw new Error('Unrecognized teardown ' + teardown + ' added to Subscription.');
     }
+
+    return sub;
   }
 
   /**
