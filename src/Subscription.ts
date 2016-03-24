@@ -4,7 +4,20 @@ import {isFunction} from './util/isFunction';
 import {tryCatch} from './util/tryCatch';
 import {errorObject} from './util/errorObject';
 
-export class Subscription {
+export interface AnonymousSubscription {
+  unsubscribe(): void;
+}
+
+export type TeardownLogic = AnonymousSubscription | Function | void;
+
+export interface ISubscription extends AnonymousSubscription {
+  unsubscribe(): void;
+  isUnsubscribed: boolean;
+  add(teardown: TeardownLogic): void;
+  remove(sub: ISubscription): void;
+}
+
+export class Subscription implements ISubscription {
   public static EMPTY: Subscription = (function(empty: any){
     empty.isUnsubscribed = true;
     return empty;
@@ -68,22 +81,30 @@ export class Subscription {
     }
   }
 
-  add(subscription: Subscription | Function | void): void {
-    // return early if:
-    //  1. the subscription is null
-    //  2. we're attempting to add our this
-    //  3. we're attempting to add the static `empty` Subscription
-    if (!subscription || (
-        subscription === this) || (
-        subscription === Subscription.EMPTY)) {
+  /**
+   * Adds a tear down to be called during the unsubscribe() of this subscription.
+   *
+   * If the tear down being added is a subscription that is already unsubscribed,
+   * is the same reference `add` is being called on, or is `Subscription.EMPTY`,
+   * it will not be added.
+   *
+   * If this subscription is already in an `isUnsubscribed` state, the passed tear down logic
+   * will be executed immediately
+   *
+   * @param {TeardownLogic} teardown the additional logic to execute on teardown.
+   */
+  add(teardown: TeardownLogic): void {
+    if (!teardown || (
+        teardown === this) || (
+        teardown === Subscription.EMPTY)) {
       return;
     }
 
-    let sub = (<Subscription> subscription);
+    let sub = (<Subscription> teardown);
 
-    switch (typeof subscription) {
+    switch (typeof teardown) {
       case 'function':
-        sub = new Subscription(<(() => void) > subscription);
+        sub = new Subscription(<(() => void) > teardown);
       case 'object':
         if (sub.isUnsubscribed || typeof sub.unsubscribe !== 'function') {
           break;
@@ -94,16 +115,18 @@ export class Subscription {
         }
         break;
       default:
-        throw new Error('Unrecognized subscription ' + subscription + ' added to Subscription.');
+        throw new Error('Unrecognized teardown ' + teardown + ' added to Subscription.');
     }
   }
 
+  /**
+   * removes a subscription from the internal list of subscriptions that will unsubscribe
+   * during unsubscribe process of this subscription.
+   * @param {Subscription} subscription the subscription to remove
+   */
   remove(subscription: Subscription): void {
 
-    // return early if:
-    //  1. the subscription is null
-    //  2. we're attempting to remove ourthis
-    //  3. we're attempting to remove the static `empty` Subscription
+    // HACK: This might be redundant because of the logic in `add()`
     if (subscription == null   || (
         subscription === this) || (
         subscription === Subscription.EMPTY)) {

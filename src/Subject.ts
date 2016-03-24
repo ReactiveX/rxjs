@@ -2,7 +2,7 @@ import {Operator} from './Operator';
 import {Observer} from './Observer';
 import {Observable} from './Observable';
 import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
+import {Subscription, ISubscription, TeardownLogic} from './Subscription';
 import {SubjectSubscription} from './subject/SubjectSubscription';
 import {$$rxSubscriber} from './symbol/rxSubscriber';
 
@@ -12,7 +12,7 @@ import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 /**
  * @class Subject<T>
  */
-export class Subject<T> extends Observable<T> implements Observer<T>, Subscription {
+export class Subject<T> extends Observable<T> implements Observer<T>, ISubscription {
 
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): Subject<T> => {
     return new Subject<T>(destination, source);
@@ -38,7 +38,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
     return <any>subject;
   }
 
-  add(subscription: Subscription|Function|void): void {
+  add(subscription: TeardownLogic): void {
     Subscription.prototype.add.call(this, subscription);
   }
 
