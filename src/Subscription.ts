@@ -7,11 +7,14 @@ import {errorObject} from './util/errorObject';
 export interface Subscription {
   isUnsubscribed: boolean;
   unsubscribe(): void;
+}
+
+export interface SubscriptionList extends Subscription {
   add(subscription: Subscription | Function | void): void;
   remove(subscription: Subscription): void;
 }
 
-export class CompositeSubscription implements Subscription {
+export class CompositeSubscription implements SubscriptionList {
   public static EMPTY: Subscription = (function(empty: any){
     empty.isUnsubscribed = true;
     return empty;
