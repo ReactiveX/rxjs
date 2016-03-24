@@ -3,7 +3,7 @@ import {Observable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './EmptyObservable';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -59,7 +59,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     let index = 0;
     const { arrayLike, mapFn, scheduler } = this;
     const length = arrayLike.length;

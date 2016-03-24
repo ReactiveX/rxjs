@@ -4,7 +4,7 @@ import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './EmptyObservable';
 import {Subscriber} from '../Subscriber';
 import {isScheduler} from '../util/isScheduler';
-import {Subscription} from '../Subscription';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -81,7 +81,7 @@ export class ArrayObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     let index = 0;
     const array = this.array;
     const count = array.length;

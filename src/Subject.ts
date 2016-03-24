@@ -50,7 +50,7 @@ export class Subject<T> extends Observable<T> implements Observer<T>, ISubscript
     Subscription.prototype.unsubscribe.call(this);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     if (this.source) {
       return this.source.subscribe(subscriber);
     } else {

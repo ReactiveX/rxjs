@@ -6,7 +6,7 @@ import {Observable} from '../Observable';
 import {isFunction} from '../util/isFunction';
 import {$$iterator} from '../symbol/iterator';
 import {errorObject} from '../util/errorObject';
-import {Subscription} from '../Subscription';
+import {TeardownLogic} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
 /**
@@ -89,7 +89,7 @@ export class IteratorObservable<T> extends Observable<T> {
     this.iterator = getIterator(iterator);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
 
     let index = 0;
     const { iterator, project, thisArg, scheduler } = this;

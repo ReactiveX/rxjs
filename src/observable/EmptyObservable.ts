@@ -1,7 +1,7 @@
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -29,7 +29,7 @@ export class EmptyObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
 
     const scheduler = this.scheduler;
 

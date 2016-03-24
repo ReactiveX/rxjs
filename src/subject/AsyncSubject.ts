@@ -1,6 +1,6 @@
 import {Subject} from '../Subject';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * @class AsyncSubject<T>
@@ -9,7 +9,7 @@ export class AsyncSubject<T> extends Subject<T> {
   value: T = null;
   hasNext: boolean = false;
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription|Function|void {
+  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     if (this.hasCompleted && this.hasNext) {
       subscriber.next(this.value);
     }

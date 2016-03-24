@@ -1,7 +1,7 @@
 import {PartialObserver, Observer} from './Observer';
 import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
+import {Subscription, AnonymousSubscription, TeardownLogic} from './Subscription';
 import {root} from './util/root';
 import {$$observable} from './symbol/observable';
 import {toSubscriber} from './util/toSubscriber';
@@ -10,7 +10,7 @@ import {IfObservable} from './observable/IfObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
 
 export interface Subscribable<T> {
-  subscribe(observer: Observer<T>): Subscription;
+  subscribe(observer: Observer<T>): AnonymousSubscription;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
@@ -37,7 +37,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) {
+  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -53,7 +53,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
    * @return {Observable} a new cold observable
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => Subscription | Function | void) => {
+  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
   };
 
@@ -80,7 +80,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
    *  the error will be thrown as unhandled
    * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
-   * @return {Subscription} a subscription reference to the registered handlers
+   * @return {ISubscription} a subscription reference to the registered handlers
    */
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
@@ -156,7 +156,7 @@ export class Observable<T> implements Subscribable<T> {
     });
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     return this.source.subscribe(subscriber);
   }
 

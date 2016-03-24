@@ -1,6 +1,6 @@
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {TeardownLogic} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
 /**
@@ -55,7 +55,7 @@ export class RangeObservable extends Observable<number> {
     this.scheduler = scheduler;
   }
 
-  protected _subscribe(subscriber: Subscriber<number>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<number>): TeardownLogic {
     let index = 0;
     let start = this.start;
     const end = this.end;

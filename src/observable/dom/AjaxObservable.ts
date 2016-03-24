@@ -3,7 +3,7 @@ import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
 import {Observable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
-import {Subscription} from '../../Subscription';
+import {TeardownLogic} from '../../Subscription';
 
 export interface AjaxRequest {
   url?: string;
@@ -148,7 +148,7 @@ export class AjaxObservable<T> extends Observable<T> {
     this.request = request;
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     return new AjaxSubscriber(subscriber, this.request);
   }
 }

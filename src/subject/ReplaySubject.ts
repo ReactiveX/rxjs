@@ -2,7 +2,7 @@ import {Subject} from '../Subject';
 import {Scheduler} from '../Scheduler';
 import {queue} from '../scheduler/queue';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {TeardownLogic} from '../Subscription';
 import {ObserveOnSubscriber} from '../operator/observeOn';
 
 /**
@@ -30,7 +30,7 @@ export class ReplaySubject<T> extends Subject<T> {
     super._next(value);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     const events = this._trimBufferThenGetEvents(this._getNow());
     const scheduler = this.scheduler;
 
