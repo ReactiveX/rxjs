@@ -37,6 +37,8 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link concatAll}
  * @see {@link exhaust}
  * @see {@link mergeAll}
+ * @see {@link switchMap}
+ * @see {@link switchMapTo}
  * @see {@link zipAll}
  *
  * @return {Observable<T>} An Observable that emits the items emitted by the
