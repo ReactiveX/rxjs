@@ -1,11 +1,25 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
 /** @test {concatMapTo} */
 describe('Observable.prototype.concatMapTo', () => {
+  asDiagram('concatMapTo( 10\u2014\u201410\u2014\u201410\u2014| )')
+  ('should map-and-flatten each item to an Observable', () => {
+    const e1 =    hot('--1-----3--5-------|');
+    const e1subs =    '^                  !';
+    const e2 =   cold('x-x-x|              ', {x: 10});
+    const expected =  '--x-x-x-x-x-xx-x-x-|';
+    const values = {x: 10};
+
+    const result = e1.concatMapTo(e2);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should concatMapTo many outer values to many inner values', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a---b---c---d---|                        ');

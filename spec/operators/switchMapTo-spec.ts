@@ -1,11 +1,25 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
 /** @test {switchMapTo} */
 describe('Observable.prototype.switchMapTo', () => {
+  asDiagram('switchMapTo( 10\u2014\u201410\u2014\u201410\u2014| )')
+  ('should map-and-flatten each item to an Observable', () => {
+    const e1 =    hot('--1-----3--5-------|');
+    const e1subs =    '^                  !';
+    const e2 =   cold('x-x-x|              ', {x: 10});
+    const expected =  '--x-x-x-x-xx-x-x---|';
+    const values = {x: 10};
+
+    const result = e1.switchMapTo(e2);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should switch a synchronous many outer to a synchronous many inner', (done: MochaDone) => {
     const a = Observable.of(1, 2, 3);
     const expected = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];

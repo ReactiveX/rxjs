@@ -1,10 +1,24 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-declare const {hot, cold, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
 /** @test {exhaustMap} */
 describe('Observable.prototype.exhaustMap', () => {
+  asDiagram('exhaustMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
+  ('should map-and-flatten each item to an Observable', () => {
+    const e1 =    hot('--1-----3--5-------|');
+    const e1subs =    '^                  !';
+    const e2 =   cold('x-x-x|              ', {x: 10});
+    const expected =  '--x-x-x-y-y-y------|';
+    const values = {x: 10, y: 30, z: 50};
+
+    const result = e1.exhaustMap(x => e2.map(i => i * x));
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should handle outer throw', () => {
     const x =   cold('--a--b--c--|');
     const xsubs = [];
