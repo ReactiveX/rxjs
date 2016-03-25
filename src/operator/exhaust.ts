@@ -35,7 +35,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link exhaustMap}
  * @see {@link zipAll}
  *
- * @return {Observable} Returns an Observable that takes a source of observables
+ * @return {Observable} Returns an Observable that takes a source of Observables
  * and propagates the first observable exclusively until it completes before
  * subscribing to the next.
  * @method exhaust
