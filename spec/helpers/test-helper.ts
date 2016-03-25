@@ -40,10 +40,11 @@ function assertAction(done: DoneSignature, assertion: (done?: DoneSignature) => 
     errorHappened = true;
     error = e;
   } finally {
+    global.rxTestScheduler = null;
     if (errorHappened) {
-      setTimeout(function () { done.fail(error); });
+      done.fail(error);
     } else {
-      setTimeout(function () { done(); });
+      done();
     }
   }
 }
