@@ -36,12 +36,17 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
  * A function to produce the value on the output Observable based on the values
  * and the indices of the source (outer) emission and the inner Observable
- * emission.
+ * emission. The arguments passed to this function are:
+ * - `outerValue`: the value that came from the source
+ * - `innerValue`: the value that came from the projected Observable
+ * - `outerIndex`: the "index" of the value that came from the source
+ * - `innerIndex`: the "index" of the value from the projected Observable
  * @return {Observable} An Observable that emits items from the given
  * `innerObservable` every time a value is emitted on the source Observable.
- * @return {Observable} An Observable that emits the result of applying the
- * projection function to each item emitted by the source Observable and
- * taking only the values from the most recently projected inner Observable.
+ * @return {Observable} An Observable that emits items from the given
+ * `innerObservable` (and optionally transformed through `resultSelector`) every
+ * time a value is emitted on the source Observable, and taking only the values
+ * from the most recently projected inner Observable.
  * @method switchMapTo
  * @owner Observable
  */
