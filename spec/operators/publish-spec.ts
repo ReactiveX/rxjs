@@ -40,7 +40,7 @@ describe('Observable.prototype.publish', () => {
       source.connect();
     });
 
-    source.connect();
+    expect(() => source.connect()).toThrow(new Rx.ObjectUnsubscribedError());
   });
 
   it('should return a ConnectableObservable', () => {
