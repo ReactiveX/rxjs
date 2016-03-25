@@ -29,8 +29,8 @@ class TakeLastOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new TakeLastSubscriber(subscriber, this.total);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new TakeLastSubscriber(subscriber, this.total));
   }
 }
 

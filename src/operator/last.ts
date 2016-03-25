@@ -38,8 +38,8 @@ class LastOperator<T, R> implements Operator<T, R> {
               private source?: Observable<T>) {
   }
 
-  call(observer: Subscriber<R>): Subscriber<T> {
-    return new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source);
+  call(observer: Subscriber<R>, source: any): any {
+    return source._subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
   }
 }
 

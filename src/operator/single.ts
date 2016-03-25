@@ -31,8 +31,8 @@ class SingleOperator<T> implements Operator<T, T> {
               private source?: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new SingleSubscriber(subscriber, this.predicate, this.source);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
   }
 }
 

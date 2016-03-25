@@ -91,27 +91,18 @@ export class Observable<T> implements Subscribable<T> {
             complete?: () => void): Subscription {
 
     const { operator } = this;
-    const target = toSubscriber(observerOrNext, error, complete);
-    const transformer = operator && operator.call(target) || target;
+    const sink = toSubscriber(observerOrNext, error, complete);
 
-    if (transformer !== target) {
-      target.add(transformer);
-    }
+    sink.add(operator ? operator.call(sink, this) : this._subscribe(sink));
 
-    const subscription = this._subscribe(transformer);
-
-    if (subscription !== target) {
-      target.add(subscription);
-    }
-
-    if (target.syncErrorThrowable) {
-      target.syncErrorThrowable = false;
-      if (target.syncErrorThrown) {
-        throw target.syncErrorValue;
+    if (sink.syncErrorThrowable) {
+      sink.syncErrorThrowable = false;
+      if (sink.syncErrorThrown) {
+        throw sink.syncErrorValue;
       }
     }
 
-    return target;
+    return sink;
   }
 
   /**

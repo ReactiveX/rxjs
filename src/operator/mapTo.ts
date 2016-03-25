@@ -28,8 +28,8 @@ class MapToOperator<T, R> implements Operator<T, R> {
     this.value = value;
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new MapToSubscriber(subscriber, this.value);
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new MapToSubscriber(subscriber, this.value));
   }
 }
 

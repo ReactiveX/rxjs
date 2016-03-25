@@ -29,8 +29,8 @@ class TakeOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new TakeSubscriber(subscriber, this.total);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new TakeSubscriber(subscriber, this.total));
   }
 }
 

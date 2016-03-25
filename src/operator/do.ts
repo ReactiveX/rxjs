@@ -30,8 +30,8 @@ class DoOperator<T> implements Operator<T, T> {
               private error?: (e: any) => void,
               private complete?: () => void) {
   }
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
   }
 }
 

@@ -25,8 +25,8 @@ class SkipOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new SkipSubscriber(subscriber, this.total);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new SkipSubscriber(subscriber, this.total));
   }
 }
 

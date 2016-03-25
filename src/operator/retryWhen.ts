@@ -39,8 +39,8 @@ class RetryWhenOperator<T> implements Operator<T, T> {
               protected source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new RetryWhenSubscriber(subscriber, this.notifier, this.source);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
   }
 }
 

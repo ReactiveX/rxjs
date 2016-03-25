@@ -32,10 +32,10 @@ class TimeoutOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>) {
-    return new TimeoutSubscriber<T>(
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new TimeoutSubscriber<T>(
       subscriber, this.absoluteTimeout, this.waitFor, this.errorToSend, this.scheduler
-    );
+    ));
   }
 }
 

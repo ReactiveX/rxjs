@@ -55,8 +55,8 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
   constructor(private closingSelector: () => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>): Subscriber<T> {
-    return new BufferWhenSubscriber(subscriber, this.closingSelector);
+  call(subscriber: Subscriber<T[]>, source: any): any {
+    return source._subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
   }
 }
 

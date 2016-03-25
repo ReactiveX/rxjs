@@ -35,8 +35,8 @@ class RepeatOperator<T> implements Operator<T, T> {
   constructor(private count: number,
               private source: Observable<T>) {
   }
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new RepeatSubscriber(subscriber, this.count, this.source);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
   }
 }
 

@@ -33,8 +33,8 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
   constructor(private project: (acc: R, value: T) => R, private seed?: R) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new ReduceSubscriber(subscriber, this.project, this.seed);
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new ReduceSubscriber(subscriber, this.project, this.seed));
   }
 }
 

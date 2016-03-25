@@ -50,8 +50,8 @@ export interface SwitchFirstSignature<T> {
 }
 
 class SwitchFirstOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new SwitchFirstSubscriber(subscriber);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new SwitchFirstSubscriber(subscriber));
   }
 }
 

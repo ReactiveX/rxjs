@@ -25,8 +25,8 @@ class ThrottleOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new ThrottleSubscriber(subscriber, this.durationSelector);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
   }
 }
 

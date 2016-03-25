@@ -27,8 +27,8 @@ class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
               private keySelector: (x: T) => K) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
   }
 }
 

@@ -28,8 +28,8 @@ export class FindValueOperator<T> implements Operator<T, T> {
               private thisArg?: any) {
   }
 
-  call(observer: Subscriber<T>): Subscriber<T> {
-    return new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg);
+  call(observer: Subscriber<T>, source: any): any {
+    return source._subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
   }
 }
 

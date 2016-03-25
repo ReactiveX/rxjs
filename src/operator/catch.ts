@@ -28,8 +28,8 @@ class CatchOperator<T, R> implements Operator<T, R> {
   constructor(private selector: (err: any, caught: Observable<any>) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new CatchSubscriber(subscriber, this.selector, this.caught);
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
   }
 }
 

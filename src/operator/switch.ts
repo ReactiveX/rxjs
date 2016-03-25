@@ -56,8 +56,8 @@ export interface SwitchSignature<T> {
 }
 
 class SwitchOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new SwitchSubscriber(subscriber);
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new SwitchSubscriber(subscriber));
   }
 }
 

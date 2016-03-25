@@ -25,8 +25,8 @@ export interface MaterializeSignature<T> {
 }
 
 class MaterializeOperator<T> implements Operator<T, Notification<T>> {
-  call(subscriber: Subscriber<Notification<T>>): Subscriber<T> {
-    return new MaterializeSubscriber(subscriber);
+  call(subscriber: Subscriber<Notification<T>>, source: any): any {
+    return source._subscribe(new MaterializeSubscriber(subscriber));
   }
 }
 

@@ -22,8 +22,8 @@ export interface PairwiseSignature<T> {
 }
 
 class PairwiseOperator<T> implements Operator<T, [T, T]> {
-  call(subscriber: Subscriber<[T, T]>): Subscriber<T> {
-    return new PairwiseSubscriber(subscriber);
+  call(subscriber: Subscriber<[T, T]>, source: any): any {
+    return source._subscribe(new PairwiseSubscriber(subscriber));
   }
 }
 

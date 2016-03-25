@@ -31,8 +31,8 @@ class FirstOperator<T, R> implements Operator<T, R> {
               private source?: Observable<T>) {
   }
 
-  call(observer: Subscriber<R>): Subscriber<T> {
-    return new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source);
+  call(observer: Subscriber<R>, source: any): any {
+    return source._subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
   }
 }
 

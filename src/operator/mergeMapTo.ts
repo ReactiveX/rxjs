@@ -75,8 +75,8 @@ export class MergeMapToOperator<T, I, R> implements Operator<Observable<T>, R> {
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
-  call(observer: Subscriber<R>): Subscriber<any> {
-    return new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent);
+  call(observer: Subscriber<R>, source: any): any {
+    return source._subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
   }
 }
 

@@ -24,8 +24,8 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
   constructor(private scheduler: Scheduler, private delay: number = 0) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new ObserveOnSubscriber(subscriber, this.scheduler, this.delay);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
   }
 }
 

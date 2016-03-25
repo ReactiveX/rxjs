@@ -24,8 +24,8 @@ class AuditTimeOperator<T> implements Operator<T, T> {
   constructor(private delay: number, private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new AuditTimeSubscriber(subscriber, this.delay, this.scheduler);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new AuditTimeSubscriber(subscriber, this.delay, this.scheduler));
   }
 }
 

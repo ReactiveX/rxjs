@@ -31,8 +31,8 @@ class SampleOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>) {
-    return new SampleSubscriber(subscriber, this.notifier);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new SampleSubscriber(subscriber, this.notifier));
   }
 }
 

@@ -48,18 +48,17 @@ export interface RefCountSubscription {
   attemptedToUnsubscribe: boolean;
 }
 
-class GroupByOperator<T, K, R> extends Operator<T, GroupedObservable<K, R>> {
+class GroupByOperator<T, K, R> implements Operator<T, GroupedObservable<K, R>> {
   constructor(public source: Observable<T>,
               private keySelector: (value: T) => K,
               private elementSelector?: (value: T) => R,
               private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>) {
-    super();
   }
 
-  call(subscriber: Subscriber<GroupedObservable<K, R>>): Subscriber<T> {
-    return new GroupBySubscriber(
+  call(subscriber: Subscriber<GroupedObservable<K, R>>, source: any): any {
+    return source._subscribe(new GroupBySubscriber(
       subscriber, this.keySelector, this.elementSelector, this.durationSelector
-    );
+    ));
   }
 }
 

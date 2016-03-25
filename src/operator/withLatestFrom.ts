@@ -78,8 +78,8 @@ class WithLatestFromOperator<T, R> implements Operator<T, R> {
               private project?: (...values: any[]) => Observable<R>) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new WithLatestFromSubscriber(subscriber, this.observables, this.project);
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
   }
 }
 
