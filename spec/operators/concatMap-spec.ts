@@ -1,11 +1,25 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
 /** @test {concatMap} */
 describe('Observable.prototype.concatMap', () => {
+  asDiagram('concatMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
+  ('should map-and-flatten each item to an Observable', () => {
+    const e1 =    hot('--1-----3--5-------|');
+    const e1subs =    '^                  !';
+    const e2 =   cold('x-x-x|              ', {x: 10});
+    const expected =  '--x-x-x-y-y-yz-z-z-|';
+    const values = {x: 10, y: 30, z: 50};
+
+    const result = e1.concatMap(x => e2.map(i => i * x));
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should concatenate many regular interval inners', () => {
     const a =   cold('--a-a-a-(a|)                            ');
     const asubs =    '^       !                               ';

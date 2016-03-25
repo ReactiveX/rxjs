@@ -6,12 +6,12 @@ const Observable = Rx.Observable;
 
 /** @test {mergeMapTo} */
 describe('Observable.prototype.mergeMapTo', () => {
-  asDiagram('mergeMapTo(Observable.of(10, 10, 10))')
+  asDiagram('mergeMapTo( 10\u2014\u201410\u2014\u201410\u2014| )')
   ('should map-and-flatten each item to an Observable', () => {
-    const e1 =    hot('--1-----3-----5----|');
+    const e1 =    hot('--1-----3--5-------|');
     const e1subs =    '^                  !';
-    const e2 =   cold('xxx|                ', {x: 10});
-    const expected =  '--xxx---xxx---xxx--|';
+    const e2 =   cold('x-x-x|              ', {x: 10});
+    const expected =  '--x-x-x-x-xxxx-x---|';
     const values = {x: 10};
 
     const result = e1.mergeMapTo(e2);
