@@ -14,10 +14,10 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *
  * <img src="./img/switch.png" width="100%">
  *
- * `switch` subscribes to an Observable that emits Observables,
- * also known as a higher-order Observable. Each time it observes one of these
- * emitted inner Observables, the output Observable subscribes to the inner
- * Observable and begins emitting the items emitted by that. So far, it behaves
+ * `switch` subscribes to an Observable that emits Observables, also known as a
+ * higher-order Observable. Each time it observes one of these emitted inner
+ * Observables, the output Observable subscribes to the inner Observable and
+ * begins emitting the items emitted by that. So far, it behaves
  * like {@link mergeAll}. However, when a new inner Observable is emitted,
  * `switch` unsubscribes from the earlier-emitted inner Observable and
  * subscribes to the new inner Observable and begins emitting items from it. It
