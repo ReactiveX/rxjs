@@ -20,16 +20,17 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * of the source value, and then merges those resulting Observables into one
  * single Observable, which is the output Observable.
  *
- *
  * @example <caption>For each click event, start an interval Observable ticking every 1 second</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.mergeMapTo(Rx.Observable.interval(1000));
  * result.subscribe(x => console.log(x));
  *
+ * @see {@link concatMapTo}
  * @see {@link merge}
  * @see {@link mergeAll}
  * @see {@link mergeMap}
  * @see {@link mergeScan}
+ * @see {@link switchMapTo}
  *
  * @param {Observable} innerObservable An Observable to replace each value from
  * the source Observable.

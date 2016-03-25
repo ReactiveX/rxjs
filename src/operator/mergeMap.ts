@@ -11,7 +11,7 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * Observable.
  *
  * <span class="informal">Maps each value to an Observable, then flattens all of
- * these inner Observables.</span>
+ * these inner Observables using {@link mergeAll}.</span>
  *
  * <img src="./img/mergeMap.png" width="100%">
  *
@@ -27,10 +27,13 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * );
  * result.subscribe(x => console.log(x));
  *
+ * @see {@link concatMap}
+ * @see {@link exhaustMap}
  * @see {@link merge}
  * @see {@link mergeAll}
  * @see {@link mergeMapTo}
  * @see {@link mergeScan}
+ * @see {@link switchMap}
  *
  * @param {function(value: T, ?index: number): Observable} project A function
  * that, when applied to an item emitted by the source Observable, returns an
@@ -42,8 +45,8 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
  * @return {Observable} An Observable that emits the result of applying the
- * transformation function to each item emitted by the source Observable and
- * merging the results of the Observables obtained from this transformation.
+ * projection function to each item emitted by the source Observable and merging
+ * the results of the Observables obtained from this transformation.
  * @method mergeMap
  * @owner Observable
  */
