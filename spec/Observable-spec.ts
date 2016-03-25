@@ -572,8 +572,8 @@ describe('Observable.lift', () => {
         super();
       }
 
-      call(subscriber: Rx.Subscriber<R>): Rx.Subscriber<T> {
-        return this.childOperator.call(new LogSubscriber<R>(subscriber));
+      call(subscriber: Rx.Subscriber<R>, source: any): Rx.Subscription | Function | void {
+        return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
       }
     }
 

@@ -31,8 +31,8 @@ class ElementAtOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new ElementAtSubscriber(subscriber, this.index, this.defaultValue);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
   }
 }
 

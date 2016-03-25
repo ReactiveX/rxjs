@@ -29,8 +29,8 @@ class MapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => R, private thisArg: any) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new MapSubscriber(subscriber, this.project, this.thisArg);
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
   }
 }
 

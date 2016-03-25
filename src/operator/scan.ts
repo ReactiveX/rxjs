@@ -27,8 +27,8 @@ class ScanOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, value: T) => R, private seed?: T | R) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new ScanSubscriber(subscriber, this.accumulator, this.seed);
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed));
   }
 }
 

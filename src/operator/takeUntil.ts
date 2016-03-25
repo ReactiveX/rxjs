@@ -24,8 +24,8 @@ class TakeUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new TakeUntilSubscriber(subscriber, this.notifier);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
   }
 }
 

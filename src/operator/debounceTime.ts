@@ -31,8 +31,8 @@ class DebounceTimeOperator<T> implements Operator<T, T> {
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
   }
 }
 

@@ -32,10 +32,10 @@ export class MergeScanOperator<T, R> implements Operator<T, R> {
               private concurrent: number) {
   }
 
-  call(subscriber: Subscriber<R>): Subscriber<T> {
-    return new MergeScanSubscriber(
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new MergeScanSubscriber(
       subscriber, this.project, this.seed, this.concurrent
-    );
+    ));
   }
 }
 

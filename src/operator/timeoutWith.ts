@@ -36,10 +36,10 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>) {
-    return new TimeoutWithSubscriber(
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new TimeoutWithSubscriber(
       subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler
-    );
+    ));
   }
 }
 

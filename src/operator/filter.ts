@@ -25,8 +25,8 @@ class FilterOperator<T> implements Operator<T, T> {
   constructor(private select: (value: T, index: number) => boolean, private thisArg?: any) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new FilterSubscriber(subscriber, this.select, this.thisArg);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new FilterSubscriber(subscriber, this.select, this.thisArg));
   }
 }
 

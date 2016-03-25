@@ -61,8 +61,8 @@ class DelayOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new DelaySubscriber(subscriber, this.delay, this.scheduler);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
   }
 }
 

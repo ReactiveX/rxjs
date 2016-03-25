@@ -23,8 +23,8 @@ class FinallyOperator<T> implements Operator<T, T> {
   constructor(private finallySelector: () => void) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new FinallySubscriber(subscriber, this.finallySelector);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new FinallySubscriber(subscriber, this.finallySelector));
   }
 }
 

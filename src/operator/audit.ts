@@ -26,8 +26,8 @@ class AuditOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new AuditSubscriber<T, T>(subscriber, this.durationSelector);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new AuditSubscriber<T, T>(subscriber, this.durationSelector));
   }
 }
 

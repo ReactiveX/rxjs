@@ -69,8 +69,8 @@ class SwitchMapOperator<T, I, R> implements Operator<T, I> {
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
   }
 
-  call(subscriber: Subscriber<I>): Subscriber<T> {
-    return new SwitchMapSubscriber(subscriber, this.project, this.resultSelector);
+  call(subscriber: Subscriber<I>, source: any): any {
+    return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
   }
 }
 

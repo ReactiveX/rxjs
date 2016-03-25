@@ -32,8 +32,8 @@ class RetryOperator<T> implements Operator<T, T> {
               private source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>): Subscriber<T> {
-    return new RetrySubscriber(subscriber, this.count, this.source);
+  call(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new RetrySubscriber(subscriber, this.count, this.source));
   }
 }
 
