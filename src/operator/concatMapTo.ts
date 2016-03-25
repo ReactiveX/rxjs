@@ -29,6 +29,7 @@ import {MergeMapToOperator} from './mergeMapTo';
  * var result = clicks.concatMapTo(Rx.Observable.interval(1000).take(4));
  * result.subscribe(x => console.log(x));
  *
+ * @see {@link concat}
  * @see {@link concatAll}
  * @see {@link concatMap}
  * @see {@link mergeMapTo}

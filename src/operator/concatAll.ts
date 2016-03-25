@@ -29,11 +29,11 @@ import {MergeAllOperator} from './mergeAll';
  * firstOrder.subscribe(x => console.log(x));
  *
  * @see {@link combineAll}
- * @see {@link concatAll}
- * @see {@link exhaust}
  * @see {@link concat}
  * @see {@link concatMap}
  * @see {@link concatMapTo}
+ * @see {@link exhaust}
+ * @see {@link mergeAll}
  * @see {@link switch}
  * @see {@link zipAll}
  *
