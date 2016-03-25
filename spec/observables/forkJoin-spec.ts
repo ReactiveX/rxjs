@@ -102,6 +102,17 @@ describe('Observable.forkJoin', () => {
     expectObservable(e1).toBe(expected, {x: ['d', 'b', '3']});
   });
 
+  it('should accept empty lowercase-o observables', () => {
+    const e1 = Observable.forkJoin(
+               hot('--a--b--c--d--|'),
+               hot('(b|)'),
+               lowerCaseO()
+            );
+    const expected = '|';
+
+    expectObservable(e1).toBe(expected);
+  });
+
   it('should accept promise', (done: DoneSignature) => {
     const e1 = Observable.forkJoin(
                Observable.of(1),
