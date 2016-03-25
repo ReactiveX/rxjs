@@ -29,6 +29,7 @@ import {Observable, ObservableInput} from '../Observable';
  * var result = clicks.concatMap(ev => Rx.Observable.interval(1000).take(4));
  * result.subscribe(x => console.log(x));
  *
+ * @see {@link concat}
  * @see {@link concatAll}
  * @see {@link concatMapTo}
  * @see {@link exhaustMap}

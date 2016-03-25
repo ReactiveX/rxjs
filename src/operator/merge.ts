@@ -5,8 +5,8 @@ import {MergeAllOperator} from './mergeAll';
 import {isScheduler} from '../util/isScheduler';
 
 /**
- * Creates an output Observable which emits all values from every given input
- * Observable.
+ * Creates an output Observable which concurrently emits all values from every
+ * given input Observable.
  *
  * <span class="informal">Flattens multiple Observables together by blending
  * their values into one Observable.</span>
@@ -91,8 +91,8 @@ export function mergeStatic<T>(...observables: (ObservableInput<T> | Scheduler |
 export function mergeStatic<T, R>(...observables: (ObservableInput<any> | Scheduler | number)[]): Observable<R>;
 /* tslint:enable:max-line-length */
 /**
- * Creates an output Observable which emits all values from every given input
- * Observable.
+ * Creates an output Observable which concurrently emits all values from every
+ * given input Observable.
  *
  * <span class="informal">Flattens multiple Observables together by blending
  * their values into one Observable.</span>
@@ -124,10 +124,8 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | Schedu
  * @see {@link mergeMapTo}
  * @see {@link mergeScan}
  *
- * @param {Observable} input1 An input Observable to merge with the source
- * Observable.
- * @param {Observable} input2 An input Observable to merge with the source
- * Observable. More than one input Observables may be given as argument.
+ * @param {Observable} input1 An input Observable to merge with others.
+ * @param {Observable} input2 An input Observable to merge with others.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
  * @param {Scheduler} [scheduler=null] The Scheduler to use for managing

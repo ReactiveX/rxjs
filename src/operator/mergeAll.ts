@@ -7,7 +7,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
 
 /**
  * Converts a higher-order Observable into a first-order Observable which
- * delivers all values that are emitted on the input inner Observables.
+ * concurrently delivers all values that are emitted on the inner Observables.
  *
  * <span class="informal">Flattens an Observable-of-Observables.</span>
  *
