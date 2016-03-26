@@ -674,7 +674,7 @@ describe('ImmediateDefinition', () => {
   describe('integration test', () => {
     it('should work', (done: DoneSignature) => {
       const results = [];
-      Rx.Observable.fromArray([1, 2, 3], Rx.Scheduler.asap)
+      Rx.Observable.from([1, 2, 3], Rx.Scheduler.asap)
         .subscribe((x: number) => {
           results.push(x);
         }, () => {

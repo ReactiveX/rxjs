@@ -4,12 +4,14 @@ var RxNew = require('../../../../index');
 var source = Array.apply(null, { length: 25 });
 
 module.exports = function (suite) {
-  var oldSwitchWithImmediateScheduler = RxOld.Observable.fromArray(
+  var oldSwitchWithImmediateScheduler = RxOld.Observable.from(
     source.map(function () { return RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate); }),
+    null,
+    this,
     RxOld.Scheduler.immediate
   )
     .switch();
-  var newSwitchWithImmediateScheduler = RxNew.Observable.fromArray(
+  var newSwitchWithImmediateScheduler = RxNew.Observable.from(
     source.map(function () { return RxNew.Observable.range(0, 25); })
   )
     .switch();

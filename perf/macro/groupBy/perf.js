@@ -14,8 +14,8 @@ var source = Array.apply(null, { length: numIterations }).map(function (item, in
 var Rx2GroupBy = document.querySelector('#rx-2-groupBy');
 var RxNextGroupBy = document.querySelector('#rx-3-groupBy');
 
-var Rx2TestObservable = Rx.Observable.fromArray(source);
-var RxNextTestObservable = RxNext.Observable.fromArray(source);
+var Rx2TestObservable = Rx.Observable.from(source);
+var RxNextTestObservable = RxNext.Observable.from(source);
 
 function group(x) {
   return x.key;

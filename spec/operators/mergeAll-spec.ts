@@ -16,7 +16,7 @@ describe('Observable.prototype.mergeAll', () => {
   });
 
   it('should merge all observables in an observable', () => {
-    const e1 = Observable.fromArray([
+    const e1 = Observable.from([
       Observable.of('a'),
       Observable.of('b'),
       Observable.of('c')
@@ -27,7 +27,7 @@ describe('Observable.prototype.mergeAll', () => {
   });
 
   it('should throw if any child observable throws', () => {
-    const e1 = Observable.fromArray([
+    const e1 = Observable.from([
       Observable.of('a'),
       Observable.throw('error'),
       Observable.of('c')
@@ -372,7 +372,7 @@ describe('Observable.prototype.mergeAll', () => {
   });
 
   it('should merge all promises in an observable', (done: DoneSignature) => {
-    const e1 = Rx.Observable.fromArray([
+    const e1 = Rx.Observable.from([
       new Promise((res: any) => { res('a'); }),
       new Promise((res: any) => { res('b'); }),
       new Promise((res: any) => { res('c'); }),
@@ -392,7 +392,7 @@ describe('Observable.prototype.mergeAll', () => {
 
   it('should raise error when promise rejects', (done: DoneSignature) => {
     const error = 'error';
-    const e1 = Rx.Observable.fromArray([
+    const e1 = Rx.Observable.from([
       new Promise((res: any) => { res('a'); }),
       new Promise((res: any, rej: any) => { rej(error); }),
       new Promise((res: any) => { res('c'); }),

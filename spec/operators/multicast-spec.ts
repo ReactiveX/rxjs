@@ -473,7 +473,7 @@ describe('Observable.prototype.multicast', () => {
     const expected = [1, 2, 3, 4];
     let i = 0;
 
-    const source = Observable.fromArray([1, 2, 3, 4]).multicast(subject);
+    const source = Observable.from([1, 2, 3, 4]).multicast(subject);
 
     source.subscribe((x: number) => {
       expect(x).toBe(expected[i++]);

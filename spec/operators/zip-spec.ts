@@ -25,11 +25,9 @@ describe('Observable.prototype.zip', () => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
 
-    Observable.fromArray(['a', 'b', 'c']).zip(
-      Observable.fromArray([1, 2, 3]),
-      function (a, b) {
-        return a + b;
-      }
+    Observable.from(['a', 'b', 'c']).zip(
+      Observable.from([1, 2, 3]),
+      (a: string, b: number): string => a + b
     )
     .subscribe(function (x) {
       expect(x).toBe(expected[i++]);

@@ -10,9 +10,9 @@ module.exports = function (suite) {
     return x.key;
   }
 
-  var oldGroupByWithImmediateScheduler = RxOld.Observable.fromArray(source, RxOld.Scheduler.immediate)
+  var oldGroupByWithImmediateScheduler = RxOld.Observable.from(source, null, this, RxOld.Scheduler.immediate)
     .groupBy(group);
-  var newGroupByWithImmediateScheduler = RxNew.Observable.fromArray(source)
+  var newGroupByWithImmediateScheduler = RxNew.Observable.from(source)
     .groupBy(group);
 
   function _next(x) { }

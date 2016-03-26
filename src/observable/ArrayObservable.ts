@@ -13,14 +13,6 @@ import {TeardownLogic} from '../Subscription';
  */
 export class ArrayObservable<T> extends Observable<T> {
 
-  /**
-   * @param array
-   * @param scheduler
-   * @return {Observable}
-   * @static true
-   * @name fromArray
-   * @owner Observable
-   */
   static create<T>(array: T[], scheduler?: Scheduler): Observable<T> {
     return new ArrayObservable(array, scheduler);
   }

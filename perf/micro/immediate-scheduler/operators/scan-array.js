@@ -6,7 +6,10 @@ module.exports = function (suite) {
     return x + x;
   }
 
-  var oldScanArrayWithImmediateScheduler = RxOld.Observable.fromArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], RxOld.Scheduler.immediate).scan(add);
+  var oldScanArrayWithImmediateScheduler = RxOld.Observable.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    null,
+    this,RxOld.Scheduler.immediate
+  ).scan(add);
   var newScanArrayWithImmediateScheduler = RxNew.Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).scan(add);
 
   function _next(x) { }

@@ -4,12 +4,14 @@ var RxNew = require('../../../../index');
 var source = Array.apply(null, { length: 25 });
 
 module.exports = function (suite) {
-  var oldConcatAllWithImmediateScheduler = RxOld.Observable.fromArray(
+  var oldConcatAllWithImmediateScheduler = RxOld.Observable.from(
     source.map(function () { return RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate); }),
+    null,
+    this,
     RxOld.Scheduler.immediate
   )
     .concatAll();
-  var newConcatAllWithImmediateScheduler = RxNew.Observable.fromArray(
+  var newConcatAllWithImmediateScheduler = RxNew.Observable.from(
     source.map(function () { return RxNew.Observable.range(0, 25); })
   )
     .concatAll();

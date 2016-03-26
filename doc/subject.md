@@ -47,7 +47,7 @@ subject.subscribe({
   next: (v) => console.log('observerB: ' + v)
 });
 
-var observable = Rx.Observable.fromArray([1, 2, 3]);
+var observable = Rx.Observable.from([1, 2, 3]);
 
 observable.subscribe(subject); // You can subscribe providing a Subject
 ```
@@ -76,7 +76,7 @@ Whenever we refer to "a multicasted Observable", that means an Observable execut
 Under the hood, this is how the `multicast` operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used `observable.subscribe(subject)`:
 
 ```js
-var source = Rx.Observable.fromArray([1, 2, 3]);
+var source = Rx.Observable.from([1, 2, 3]);
 var subject = new Rx.Subject();
 var multicasted = source.multicast(subject);
 

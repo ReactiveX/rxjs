@@ -10,9 +10,9 @@ module.exports = function (suite) {
     return { key: index % 5 };
   });
 
-  var oldGroupByWithCurrentThreadScheduler = RxOld.Observable.fromArray(source, RxOld.Scheduler.currentThread)
+  var oldGroupByWithCurrentThreadScheduler = RxOld.Observable.from(source, null, this, RxOld.Scheduler.currentThread)
     .groupBy(group);
-  var newGroupByWithCurrentThreadScheduler = RxNew.Observable.fromArray(source, RxNew.Scheduler.queue)
+  var newGroupByWithCurrentThreadScheduler = RxNew.Observable.from(source, RxNew.Scheduler.queue)
     .groupBy(group);
 
   function _next(x) { }

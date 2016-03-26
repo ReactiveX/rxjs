@@ -6,7 +6,7 @@ module.exports = function (suite) {
     return x === 'hi';
   };
 
-  var oldEveryPredicateArgs = RxOld.Observable.fromArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], RxOld.Scheduler.immediate)
+  var oldEveryPredicateArgs = RxOld.Observable.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], null, this, RxOld.Scheduler.immediate)
     .every(predicate);
   var newEveryPredicateArgs = RxNew.Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     .every(predicate);
