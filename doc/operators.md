@@ -22,7 +22,7 @@ function multiplyByTen(input) {
   return output;
 }
 
-var input = Rx.Observable.fromArray([1, 2, 3, 4]);
+var input = Rx.Observable.from([1, 2, 3, 4]);
 var output = multiplyByTen(input);
 output.subscribe(x => console.log(x));
 ```
@@ -60,7 +60,7 @@ Rx.Observable.prototype.multiplyByTen = function multiplyByTen() {
 Notice how the `input` Observable is not a function argument anymore, it is assumed to be the `this` object. This is how we would use such instance operator:
 
 ```js
-var observable = Rx.Observable.fromArray([1, 2, 3, 4]).multiplyByTen();
+var observable = Rx.Observable.from([1, 2, 3, 4]).multiplyByTen();
 
 observable.subscribe(x => console.log(x));
 ```
@@ -113,7 +113,6 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`defer`](../class/es6/Observable.js~Observable.html#static-method-defer)
 - [`empty`](../class/es6/Observable.js~Observable.html#static-method-empty)
 - [`from`](../class/es6/Observable.js~Observable.html#static-method-from)
-- [`fromArray`](../class/es6/Observable.js~Observable.html#static-method-fromArray)
 - [`fromEvent`](../class/es6/Observable.js~Observable.html#static-method-fromEvent)
 - [`fromEventPattern`](../class/es6/Observable.js~Observable.html#static-method-fromEventPattern)
 - [`fromPromise`](../class/es6/Observable.js~Observable.html#static-method-fromPromise)

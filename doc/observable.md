@@ -376,7 +376,7 @@ var subscription = observable.subscribe(x => console.log(x));
 The Subscription represents the ongoing execution, and has a minimal API, which primarily simply allows you to cancel that execution. Read more about the [`Subscription` type here](./overview.html#subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
 
 ```js
-var observable = Rx.Observable.fromArray([10, 20, 30]);
+var observable = Rx.Observable.from([10, 20, 30]);
 var subscription = observable.subscribe(x => console.log(x));
 // Later:
 subscription.unsubscribe();

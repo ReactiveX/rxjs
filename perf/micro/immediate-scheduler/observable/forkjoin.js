@@ -5,12 +5,12 @@ module.exports = function forkJoin(suite) {
   var oldForkJoinWithImmediateScheduler = RxOld.Observable.forkJoin(
     RxOld.Observable.of(25, RxOld.Scheduler.immediate),
     RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate),
-    RxOld.Observable.fromArray([1, 2, 3, 4, 5], RxOld.Scheduler.immediate));
+    RxOld.Observable.from([1, 2, 3, 4, 5], null, this, RxOld.Scheduler.immediate));
 
   var newForkJoinWithImmediateScheduler = RxNew.Observable.forkJoin(
     RxNew.Observable.of(25),
     RxNew.Observable.range(0,25),
-    RxNew.Observable.fromArray([1, 2, 3, 4, 5]));
+    RxNew.Observable.from([1, 2, 3, 4, 5]));
 
   function _next(x) { }
   function _error(e) { }

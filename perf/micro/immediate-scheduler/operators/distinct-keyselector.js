@@ -3,8 +3,8 @@ var RxNew = require('../../../../dist/cjs/Rx.KitchenSink');
 
 module.exports = function (suite) {
   var source = Array.from({ length: 25 }, function (_, i) { return { value: i % 3 }; });
-  var _old = RxOld.Observable.fromArray(source).distinct(function (x) { return x.value; });
-  var _new = RxNew.Observable.fromArray(source).distinct(function (x) { return x.value; });
+  var _old = RxOld.Observable.from(source).distinct(function (x) { return x.value; });
+  var _new = RxNew.Observable.from(source).distinct(function (x) { return x.value; });
 
   function _next(x) { }
   function _error(e) { }

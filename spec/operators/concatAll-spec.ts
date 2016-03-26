@@ -20,7 +20,7 @@ describe('Observable.prototype.concatAll', () => {
   });
 
   it('should concat sources from promise', (done: DoneSignature) => {
-    const sources = Rx.Observable.fromArray([
+    const sources = Rx.Observable.from([
       new Promise((res: any) => { res(0); }),
       new Promise((res: any) => { res(1); }),
       new Promise((res: any) => { res(2); }),
@@ -38,7 +38,7 @@ describe('Observable.prototype.concatAll', () => {
   }, 2000);
 
   it('should concat and raise error from promise', (done: DoneSignature) => {
-    const sources = Rx.Observable.fromArray([
+    const sources = Rx.Observable.from([
       new Promise((res: any) => { res(0); }),
       new Promise((res: any, rej: any) => { rej(1); }),
       new Promise((res: any) => { res(2); }),
@@ -57,7 +57,7 @@ describe('Observable.prototype.concatAll', () => {
   }, 2000);
 
   it('should concat all observables in an observable', () => {
-    const e1 = Rx.Observable.fromArray([
+    const e1 = Rx.Observable.from([
       Rx.Observable.of('a'),
       Rx.Observable.of('b'),
       Rx.Observable.of('c')
@@ -68,7 +68,7 @@ describe('Observable.prototype.concatAll', () => {
   });
 
   it('should throw if any child observable throws', () => {
-    const e1 = Rx.Observable.fromArray([
+    const e1 = Rx.Observable.from([
       Rx.Observable.of('a'),
       Rx.Observable.throw('error'),
       Rx.Observable.of('c')

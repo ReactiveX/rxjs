@@ -4,12 +4,14 @@ var RxNew = require('../../../../index');
 var source = Array.apply(null, { length: 25 });
 
 module.exports = function (suite) {
-  var oldMergeAllWithCurrentThreadScheduler = RxOld.Observable.fromArray(
+  var oldMergeAllWithCurrentThreadScheduler = RxOld.Observable.from(
     source.map(function () { return RxOld.Observable.range(0, 25, RxOld.Scheduler.currentThread); }),
+    null,
+    this,
     RxOld.Scheduler.currentThread
   )
     .switchFirst();
-  var newMergeAllWithCurrentThreadScheduler = RxNew.Observable.fromArray(
+  var newMergeAllWithCurrentThreadScheduler = RxNew.Observable.from(
     source.map(function () { return RxNew.Observable.range(0, 25, RxNew.Scheduler.queue); }),
     RxNew.Scheduler.queue
   )

@@ -3,8 +3,8 @@ var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
   var source = Array.from({ length: 100 }, function (_, i) { return i; });
-  var _old = RxOld.Observable.fromArray(source);
-  var _new = RxNew.Observable.fromArray(source);
+  var _old = RxOld.Observable.from(source);
+  var _new = RxNew.Observable.from(source);
 
   function _next(x) { }
   function _error(e) { }

@@ -16,7 +16,6 @@ import './add/observable/defer';
 import './add/observable/empty';
 import './add/observable/forkJoin';
 import './add/observable/from';
-import './add/observable/fromArray';
 import './add/observable/fromEvent';
 import './add/observable/fromEventPattern';
 import './add/observable/fromPromise';
