@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription, SubscriptionList} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -63,7 +63,7 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
 class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[];
   private subscribing: boolean = false;
-  private closingSubscription: Subscription;
+  private closingSubscription: SubscriptionList;
 
   constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
     super(destination);
@@ -122,7 +122,7 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
     if (closingNotifier === errorObject) {
       this.error(errorObject.e);
     } else {
-      closingSubscription = new Subscription();
+      closingSubscription = new CompositeSubscription();
       this.closingSubscription = closingSubscription;
       this.add(closingSubscription);
       this.subscribing = true;

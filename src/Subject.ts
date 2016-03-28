@@ -2,7 +2,7 @@ import {Operator} from './Operator';
 import {Observer} from './Observer';
 import {Observable} from './Observable';
 import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
+import {CompositeSubscription, Subscription} from './Subscription';
 import {SubjectSubscription} from './subject/SubjectSubscription';
 import {$$rxSubscriber} from './symbol/rxSubscriber';
 
@@ -39,15 +39,15 @@ export class Subject<T> extends Observable<T> implements Observer<T>, Subscripti
   }
 
   add(subscription: Subscription|Function|void): void {
-    Subscription.prototype.add.call(this, subscription);
+    CompositeSubscription.prototype.add.call(this, subscription);
   }
 
   remove(subscription: Subscription): void {
-    Subscription.prototype.remove.call(this, subscription);
+    CompositeSubscription.prototype.remove.call(this, subscription);
   }
 
   unsubscribe(): void {
-    Subscription.prototype.unsubscribe.call(this);
+    CompositeSubscription.prototype.unsubscribe.call(this);
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {

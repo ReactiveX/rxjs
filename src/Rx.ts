@@ -119,7 +119,7 @@ import './add/operator/zipAll';
 /* tslint:disable:no-unused-variable */
 export {Operator} from './Operator';
 export {Observer} from './Observer';
-export {Subscription, UnsubscriptionError} from './Subscription';
+export {CompositeSubscription, Subscription, UnsubscriptionError} from './Subscription';
 export {Subscriber} from './Subscriber';
 export {AsyncSubject} from './subject/AsyncSubject';
 export {ReplaySubject} from './subject/ReplaySubject';

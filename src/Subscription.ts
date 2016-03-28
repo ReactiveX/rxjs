@@ -4,11 +4,21 @@ import {isFunction} from './util/isFunction';
 import {tryCatch} from './util/tryCatch';
 import {errorObject} from './util/errorObject';
 
-export class Subscription {
+export interface Subscription {
+  isUnsubscribed: boolean;
+  unsubscribe(): void;
+}
+
+export interface SubscriptionList extends Subscription {
+  add(subscription: Subscription | Function | void): void;
+  remove(subscription: Subscription): void;
+}
+
+export class CompositeSubscription implements SubscriptionList {
   public static EMPTY: Subscription = (function(empty: any){
     empty.isUnsubscribed = true;
     return empty;
-  }(new Subscription()));
+  }(new CompositeSubscription()));
 
   public isUnsubscribed: boolean = false;
 
@@ -75,7 +85,7 @@ export class Subscription {
     //  3. we're attempting to add the static `empty` Subscription
     if (!subscription || (
         subscription === this) || (
-        subscription === Subscription.EMPTY)) {
+        subscription === CompositeSubscription.EMPTY)) {
       return;
     }
 
@@ -83,7 +93,7 @@ export class Subscription {
 
     switch (typeof subscription) {
       case 'function':
-        sub = new Subscription(<(() => void) > subscription);
+        sub = new CompositeSubscription(<(() => void) > subscription);
       case 'object':
         if (sub.isUnsubscribed || typeof sub.unsubscribe !== 'function') {
           break;
@@ -106,7 +116,7 @@ export class Subscription {
     //  3. we're attempting to remove the static `empty` Subscription
     if (subscription == null   || (
         subscription === this) || (
-        subscription === Subscription.EMPTY)) {
+        subscription === CompositeSubscription.EMPTY)) {
       return;
     }
 

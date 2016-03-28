@@ -1,6 +1,6 @@
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {Subscription, SubscriptionList} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -96,7 +96,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
 }
 
 function dispatch<T>(state: { source: BoundNodeCallbackObservable<T>, subscriber: Subscriber<T> }) {
-  const self = (<Subscription> this);
+  const self = (<SubscriptionList> this);
   const { source, subscriber } = state;
   const { callbackFunc, args, scheduler } = source;
   let subject = source.subject;

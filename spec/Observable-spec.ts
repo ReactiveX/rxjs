@@ -189,7 +189,7 @@ describe('Observable', () => {
       const sub = source.subscribe(() => {
         //noop
        });
-      expect(sub instanceof Rx.Subscription).toBe(true);
+      expect(sub instanceof Rx.CompositeSubscription).toBe(true);
       expect(unsubscribeCalled).toBe(false);
       expect(typeof sub.unsubscribe).toBe('function');
 

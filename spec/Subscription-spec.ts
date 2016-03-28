@@ -2,7 +2,7 @@ import * as Rx from '../dist/cjs/Rx';
 import {DoneSignature} from './helpers/test-helper';
 
 const Observable = Rx.Observable;
-const Subscription = Rx.Subscription;
+const Subscription = Rx.CompositeSubscription;
 
 /** @test {Subscription} */
 describe('Subscription', () => {

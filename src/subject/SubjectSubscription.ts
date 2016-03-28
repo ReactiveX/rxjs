@@ -1,8 +1,8 @@
 import {Subject} from '../Subject';
 import {Observer} from '../Observer';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription} from '../Subscription';
 
-export class SubjectSubscription extends Subscription {
+export class SubjectSubscription extends CompositeSubscription {
   isUnsubscribed: boolean = false;
 
   constructor(public subject: Subject<any>, public observer: Observer<any>) {

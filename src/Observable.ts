@@ -1,7 +1,7 @@
 import {PartialObserver, Observer} from './Observer';
 import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
+import {Subscription, SubscriptionList} from './Subscription';
 import {root} from './util/root';
 import {$$observable} from './symbol/observable';
 import {toSubscriber} from './util/toSubscriber';
@@ -84,7 +84,7 @@ export class Observable<T> implements Subscribable<T> {
    */
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
-            complete?: () => void): Subscription {
+            complete?: () => void): SubscriptionList {
 
     const { operator } = this;
     const target = toSubscriber(observerOrNext, error, complete);

@@ -2,7 +2,7 @@ import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {it} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
-const Subscription = Rx.Subscription;
+const Subscription = Rx.CompositeSubscription;
 
 describe('Observable.using', () => {
   it('should dispose of the resource when the subscription is disposed', (done) => {

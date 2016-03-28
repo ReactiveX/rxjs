@@ -1,7 +1,7 @@
 import {Observable} from '../Observable';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {Subscription} from '../Subscription';
+import {CompositeSubscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
 
 export type NodeStyleEventEmmitter = {
@@ -75,7 +75,7 @@ export class FromEventObservable<T, R> extends Observable<T> {
       unsubscribe = () => sourceObj.removeListener(eventName, handler);
     }
 
-    subscriber.add(new Subscription(unsubscribe));
+    subscriber.add(new CompositeSubscription(unsubscribe));
   }
 
   protected _subscribe(subscriber: Subscriber<T>) {
