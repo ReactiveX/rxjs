@@ -56,73 +56,20 @@ export class ForkJoinObservable<T> extends Observable<T> {
   }
 }
 
-interface ForkJoinContext {
-  completed: number;
-  total: number;
-  values: Array<any>;
-  haveValues: Array<boolean>;
-  selector: Function;
-}
-
 class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
-  private context: ForkJoinContext = null;
+  private completed = 0;
+  private total: number;
+  private values: any[];
+  private haveValues = 0;
 
   constructor(destination: Subscriber<T>,
               private sources: Array<SubscribableOrPromise<any>>,
-              resultSelector?: (...values: Array<any>) => T) {
+              private resultSelector?: (...values: Array<any>) => T) {
     super(destination);
 
     const len = sources.length;
-    this.context = { completed: 0,
-                      total: len,
-                      values: new Array(len),
-                      haveValues: new Array(len),
-                      selector: resultSelector };
-
-    this.tryForkJoin();
-  }
-
-  notifyNext(outerValue: any, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
-    const context = this.context;
-
-    context.values[outerIndex] = innerValue;
-    context.haveValues[outerIndex] = true;
-  }
-
-  notifyComplete(innerSub: InnerSubscriber<T, T>): void {
-    const outerIndex = (<any>innerSub).outerIndex;
-    this.tryComplete(outerIndex);
-  }
-
-  private tryComplete(index: number): void {
-    const destination = this.destination;
-    const context = this.context;
-
-    context.completed++;
-
-    if (!context.haveValues[index]) {
-      destination.complete();
-    }
-
-    const values = context.values;
-    if (context.completed !== values.length) {
-      return;
-    }
-
-    if (context.haveValues.every(x => x === true)) {
-      const value = context.selector ? context.selector.apply(this, values) :
-                                     values;
-      destination.next(value);
-    }
-
-    destination.complete();
-  }
-
-  private tryForkJoin(): void {
-    const sources = this.sources;
-    const len = sources.length;
+    this.total = len;
+    this.values = new Array(len);
 
     for (let i = 0; i < len; i++) {
       const source = sources[i];
@@ -133,5 +80,39 @@ class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
         this.add(innerSubscription);
       }
     }
+  }
+
+  notifyNext(outerValue: any, innerValue: T,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, T>): void {
+    this.values[outerIndex] = innerValue;
+    if (!(<any>innerSub)._hasValue) {
+      (<any>innerSub)._hasValue = true;
+      this.haveValues++;
+    }
+  }
+
+  notifyComplete(innerSub: InnerSubscriber<T, T>): void {
+    const destination = this.destination;
+    const { haveValues, resultSelector, values } = this;
+    const len = values.length;
+
+    if (!(<any>innerSub)._hasValue) {
+      destination.complete();
+      return;
+    }
+
+    this.completed++;
+
+    if (this.completed !== len) {
+      return;
+    }
+
+    if (haveValues === len) {
+      const value = resultSelector ? resultSelector.apply(this, values) : values;
+      destination.next(value);
+    }
+
+    destination.complete();
   }
 }
