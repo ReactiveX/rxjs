@@ -34,6 +34,8 @@ describe('Observable.prototype.toPromise', () => {
     Observable.of(42).toPromise().then((x: number) => {
       expect(wasCalled).to.be.true;
       expect(x).to.equal(42);
+
+      delete __root__.Rx;
       done();
     });
   });
