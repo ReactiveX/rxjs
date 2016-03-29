@@ -36,10 +36,6 @@ export function expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): 
   return global.rxTestScheduler.expectSubscriptions.apply(global.rxTestScheduler, arguments);
 }
 
-export function assertDeepEqual(actual: any, expected: any): void {
-  (<any>expect(actual)).toDeepEqual(expected);
-}
-
 export function time(marbles: string): number {
   if (!global.rxTestScheduler) {
     throw 'tried to use time() in async test';
