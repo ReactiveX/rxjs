@@ -1,6 +1,6 @@
 import {Observable, SubscribableOrPromise} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {AnonymousSubscription, TeardownLogic} from '../Subscription';
 
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -11,23 +11,23 @@ import {OuterSubscriber} from '../OuterSubscriber';
  */
 export class UsingObservable<T> extends Observable<T> {
 
-  static create<T>(resourceFactory: () => Subscription | void,
-                   observableFactory: (resource: Subscription) => SubscribableOrPromise<T> | void): Observable<T> {
+  static create<T>(resourceFactory: () => AnonymousSubscription | void,
+                   observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void): Observable<T> {
     return new UsingObservable<T>(resourceFactory, observableFactory);
   }
 
-  constructor(private resourceFactory: () => Subscription | void,
-              private observableFactory: (resource: Subscription) => SubscribableOrPromise<T> | void) {
+  constructor(private resourceFactory: () => AnonymousSubscription | void,
+              private observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void) {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription | Function | void {
+  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     const { resourceFactory, observableFactory } = this;
 
-    let resource: Subscription;
+    let resource: AnonymousSubscription;
 
     try {
-      resource = <Subscription>resourceFactory();
+      resource = <AnonymousSubscription>resourceFactory();
       return new UsingSubscriber(subscriber, resource, observableFactory);
     } catch (err) {
       subscriber.error(err);
@@ -37,8 +37,8 @@ export class UsingObservable<T> extends Observable<T> {
 
 class UsingSubscriber<T> extends OuterSubscriber<T, T> {
   constructor(destination: Subscriber<T>,
-              private resource: Subscription,
-              private observableFactory: (resource: Subscription) => SubscribableOrPromise<T> | void) {
+              private resource: AnonymousSubscription,
+              private observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void) {
     super(destination);
     destination.add(resource);
     this.tryUse();
