@@ -1,11 +1,26 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {cold, expectObservable, expectSubscriptions};
+declare const {cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
 /** @test {pluck} */
 describe('Observable.prototype.pluck', () => {
+  asDiagram('pluck(\'v\')')('should dematerialize an Observable', () => {
+    const values = {
+      a: '{v:1}',
+      b: '{v:2}',
+      c: '{v:3}'
+    };
+
+    const e1 =  cold('--a--b--c--|', values);
+    const expected = '--x--y--z--|';
+
+    const result = e1.map((x: string) => ({v: x.charAt(3)})).pluck('v');
+
+    expectObservable(result).toBe(expected, {x: '1', y: '2', z: '3'});
+  });
+
   it('should work for one object', () => {
     const a =   cold('--x--|', {x: {prop: 42}});
     const asubs =    '^    !';
