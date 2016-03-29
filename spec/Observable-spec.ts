@@ -64,6 +64,7 @@ describe('Observable', () => {
         expect(x).to.equal(42);
       }).then(() => {
         expect(wasCalled).to.be.true;
+        delete __root__.Rx;
         done();
       });
     });
