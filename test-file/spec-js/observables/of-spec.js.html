@@ -67,7 +67,11 @@ describe(&apos;Observable.of&apos;, function () {
         Observable.of(1, &apos;a&apos;, x)
             .subscribe(function (y) {
             expect(y).toBe(expected[i++]);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should return a scalar observable if only passed one value&apos;, function () {
         var obs = Observable.of(&apos;one&apos;);
@@ -96,7 +100,9 @@ describe(&apos;Observable.of&apos;, function () {
             expect(x).toBe(42);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should handle an Observable as the only value&apos;, function () {
         var source = Observable.of(Observable.of(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, rxTestScheduler), rxTestScheduler);

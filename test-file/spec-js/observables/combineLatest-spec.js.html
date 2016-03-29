@@ -72,7 +72,9 @@ describe(&apos;Observable.combineLatest&apos;, function () {
         //type definition need to be updated
         Observable.combineLatest(a, b, queueScheduler).subscribe(function (vals) {
             expect(vals).toDeepEqual(r.shift());
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(r.length).toBe(0);
             done();
         });

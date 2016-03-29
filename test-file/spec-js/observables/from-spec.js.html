@@ -63,7 +63,11 @@ describe(&apos;Observable.from&apos;, function () {
         var i = 0;
         Observable.from(expected).subscribe(function (x) {
             expect(x).toBe(expected[i++]);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     }, 300);
     it(&apos;should handle an ArrayLike&apos;, function (done) {
         var arrayLike = {
@@ -75,7 +79,11 @@ describe(&apos;Observable.from&apos;, function () {
         var expected = [1, 2, 3];
         Observable.from(arrayLike).subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     }, 300);
     it(&apos;should handle an ArrayLike from arguments&apos;, function (done) {
         function makeArrayLike() {
@@ -86,7 +94,11 @@ describe(&apos;Observable.from&apos;, function () {
             var expected = [1, 2, 3];
             Observable.from(arguments).subscribe(function (x) {
                 expect(x).toBe(expected.shift());
-            }, done.fail, done);
+            }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
+                done();
+            });
         }
         makeArrayLike(1, 2, 3);
     }, 300);
@@ -101,7 +113,11 @@ describe(&apos;Observable.from&apos;, function () {
         var mapFn = function (v, k) { return v - k; };
         Observable.from(arrayLike, mapFn).subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     }, 300);
     it(&apos;should handle an ArrayLike with a thisArg&apos;, function (done) {
         var arrayLike = {
@@ -116,13 +132,21 @@ describe(&apos;Observable.from&apos;, function () {
         };
         Observable.from(arrayLike, mapFn, { thing: 123 }).subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should handle a promise&apos;, function (done) {
         var promise = Promise.resolve(&apos;pinky swear&apos;);
         Observable.from(promise).subscribe(function (x) {
             expect(x).toBe(&apos;pinky swear&apos;);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should handle an &quot;observableque&quot; object&apos;, function (done) {
         var observablesque = {};
@@ -136,7 +160,11 @@ describe(&apos;Observable.from&apos;, function () {
         };
         Observable.from(observablesque).subscribe(function (x) {
             expect(x).toBe(&apos;test&apos;);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should accept scheduler for observableque object&apos;, function () {
         var observablesque = {};
@@ -156,7 +184,11 @@ describe(&apos;Observable.from&apos;, function () {
         var expected = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;];
         Observable.from(&apos;abc&apos;).subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should handle any iterable thing&apos;, function (done) {
         var iterable = {};
@@ -176,7 +208,11 @@ describe(&apos;Observable.from&apos;, function () {
         };
         Observable.from(iterable).subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should throw for non observable object&apos;, function () {
         var r = function () {
@@ -190,7 +226,9 @@ describe(&apos;Observable.from&apos;, function () {
             expect(x).toBe(value);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
 });
 //# sourceMappingURL=from-spec.js.map</code></pre>

@@ -123,7 +123,9 @@ describe(&apos;Observable.fromEventPattern&apos;, function () {
             expect(x).toBe(&apos;testme!&apos;);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
         trigger(&apos;test&apos;, &apos;me&apos;);
     });
     it(&apos;should send errors in the selector down the error path&apos;, function (done) {

@@ -78,6 +78,47 @@ describe(&apos;Subscriber&apos;, function () {
             expect(completeSpy).not.toHaveBeenCalled();
         });
     });
+    it(&apos;should ignore next messages after unsubscription&apos;, function () {
+        var times = 0;
+        var sub = new Subscriber({
+            next: function () { times += 1; }
+        });
+        sub.next();
+        sub.next();
+        sub.unsubscribe();
+        sub.next();
+        expect(times).toBe(2);
+    });
+    it(&apos;should ignore error messages after unsubscription&apos;, function () {
+        var times = 0;
+        var errorCalled = false;
+        var sub = new Subscriber({
+            next: function () { times += 1; },
+            error: function () { errorCalled = true; }
+        });
+        sub.next();
+        sub.next();
+        sub.unsubscribe();
+        sub.next();
+        sub.error();
+        expect(times).toBe(2);
+        expect(errorCalled).toBe(false);
+    });
+    it(&apos;should ignore complete messages after unsubscription&apos;, function () {
+        var times = 0;
+        var completeCalled = false;
+        var sub = new Subscriber({
+            next: function () { times += 1; },
+            complete: function () { completeCalled = true; }
+        });
+        sub.next();
+        sub.next();
+        sub.unsubscribe();
+        sub.next();
+        sub.complete();
+        expect(times).toBe(2);
+        expect(completeCalled).toBe(false);
+    });
 });
 //# sourceMappingURL=Subscriber-spec.js.map</code></pre>
 

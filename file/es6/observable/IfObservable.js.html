@@ -53,6 +53,8 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/observable/IfObservable.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;../Observable&apos;;
+import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -70,25 +72,32 @@ export class IfObservable extends Observable {
     }
     _subscribe(subscriber) {
         const { condition, thenSource, elseSource } = this;
-        let result, error, errorHappened = false;
+        return new IfSubscriber(subscriber, condition, thenSource, elseSource);
+    }
+}
+class IfSubscriber extends OuterSubscriber {
+    constructor(destination, condition, thenSource, elseSource) {
+        super(destination);
+        this.condition = condition;
+        this.thenSource = thenSource;
+        this.elseSource = elseSource;
+        this.tryIf();
+    }
+    tryIf() {
+        const { condition, thenSource, elseSource } = this;
+        let result;
         try {
             result = condition();
+            const source = result ? thenSource : elseSource;
+            if (source) {
+                this.add(subscribeToResult(this, source));
+            }
+            else {
+                this._complete();
+            }
         }
-        catch (e) {
-            error = e;
-            errorHappened = true;
-        }
-        if (errorHappened) {
-            subscriber.error(error);
-        }
-        else if (result &amp;&amp; thenSource) {
-            return thenSource.subscribe(subscriber);
-        }
-        else if (elseSource) {
-            return elseSource.subscribe(subscriber);
-        }
-        else {
-            subscriber.complete();
+        catch (err) {
+            this._error(err);
         }
     }
 }

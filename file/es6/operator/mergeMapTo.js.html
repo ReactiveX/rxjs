@@ -63,6 +63,10 @@ import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
  * @owner Observable
  */
 export function mergeMapTo(observable, resultSelector, concurrent = Number.POSITIVE_INFINITY) {
+    if (typeof resultSelector === &apos;number&apos;) {
+        concurrent = resultSelector;
+        resultSelector = null;
+    }
     return this.lift(new MergeMapToOperator(observable, resultSelector, concurrent));
 }
 // TODO: Figure out correct signature here: an Operator&lt;Observable&lt;T&gt;, R&gt;

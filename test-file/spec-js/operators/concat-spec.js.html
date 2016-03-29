@@ -75,7 +75,9 @@ describe(&apos;Observable.prototype.concat&apos;, function () {
             .concat(Observable.of(2));
         s1.subscribe(function (x) {
             results.push(&apos;Next: &apos; + x);
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             results.push(&apos;Completed&apos;);
             expect(results).toEqual([&apos;Next: 1&apos;, &apos;Next: 2&apos;, &apos;Completed&apos;]);
             done();

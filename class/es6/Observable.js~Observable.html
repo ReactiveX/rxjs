@@ -91,8 +91,8 @@ of RxJS.</p>
     <ul>
       
     <li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber18">Observable</a></span></li>
-<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber294">Observable.create</a></span></li>
-<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber316">Observable.lift</a></span></li>
+<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber406">Observable.create</a></span></li>
+<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber428">Observable.lift</a></span></li>
 </ul>
   </div>
 
@@ -296,31 +296,6 @@ url, headers, etc or a string for a URL.</p>
       <div>
         <p>
            <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-from">from</a></span></span><span data-ice="signature">(ish: <span>*</span>, mapFnOrScheduler: <span>*</span>, thisArg: <span>*</span>, lastScheduler: <span>*</span>): <span>any</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      <span data-ice="static">static</span>
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromArray">fromArray</a></span></span><span data-ice="signature">(array: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
@@ -693,6 +668,56 @@ url, headers, etc or a string for a URL.</p>
         
         <div data-ice="description"><p>An interop point defined by the es7-observable spec <a href="https://github.com/zenparsing/es-observable">https://github.com/zenparsing/es-observable</a></p>
 </div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-audit">audit</a></span></span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-auditTime">auditTime</a></span></span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
       </div>
     </td>
     <td>
@@ -1625,56 +1650,6 @@ and emits these grouped items as <code>GroupedObservables</code>, one
         
         <div data-ice="description"><p>Ignores all items emitted by the source Observable and only passes calls of <code>complete</code> or <code>error</code>.</p>
 </div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-inspect">inspect</a></span></span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-inspectTime">inspectTime</a></span></span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
       </div>
     </td>
     <td>
@@ -2667,7 +2642,7 @@ source Observable.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-subscribe">subscribe</a></span></span><span data-ice="signature">(observerOrNext: <span>PartialObserver</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>Subscription</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-subscribe">subscribe</a></span></span><span data-ice="signature">(observerOrNext: <span>PartialObserver</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>ISubscription</span></span>
         </p>
       </div>
       <div>
@@ -3000,6 +2975,31 @@ returns an Observable, and then emitting the items emitted by the most recently 
       <div>
         <p>
            <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timeoutWith">timeoutWith</a></span></span><span data-ice="signature">(due: <span>*</span>, withObservable: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timestamp">timestamp</a></span></span><span data-ice="signature">(scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>Timestamp</span>&lt;<span>any</span>&gt;&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -3777,7 +3777,7 @@ the most recent values from each observable.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/ForkJoinObservable.js.html#lineNumber25">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/ForkJoinObservable.js.html#lineNumber24">source</a></span></span>
     </span>
   </h3>
 
@@ -3924,78 +3924,6 @@ the most recent values from each observable.</p>
     <li data-ice="test"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber6">Observable.from</a></span></li>
 </ul>
   </div>
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-method-fromArray">
-    <span class="access" data-ice="access">public</span>
-    <span data-ice="static">static</span>
-    
-    
-    
-    <span data-ice="name">fromArray</span><span data-ice="signature">(array: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/es6/observable/ArrayObservable.js.html#lineNumber28">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">array</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">scheduler</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
-        
-      </tr>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
 
   
   
@@ -4451,7 +4379,7 @@ the most recent values from each observable.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/ArrayObservable.js.html#lineNumber38">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/ArrayObservable.js.html#lineNumber30">source</a></span></span>
     </span>
   </h3>
 
@@ -4667,8 +4595,8 @@ the most recent values from each observable.</p>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/observables/throw-spec.js.html#lineNumber5">Observable.throw</a></span></li>
-<li data-ice="test"><span><a href="test-file/spec-js/observables/ErrorObservable-spec.js.html#lineNumber4">ErrorObservable</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/observables/ErrorObservable-spec.js.html#lineNumber4">ErrorObservable</a></span></li>
+<li data-ice="test"><span><a href="test-file/spec-js/observables/throw-spec.js.html#lineNumber5">Observable.throw</a></span></li>
 </ul>
   </div>
 
@@ -4982,7 +4910,7 @@ can be <code>next</code>ed, or an <code>error</code> method can be called to rai
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber119">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber121">source</a></span></span>
     </span>
   </h3>
 
@@ -5019,6 +4947,156 @@ can be <code>next</code>ed, or an <code>error</code> method can be called to rai
   
 
   
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-audit">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">audit</span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operator/audit.js.html#lineNumber11">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">durationSelector</td>
+      <td data-ice="type"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</td>
+        
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="tests">
+    <h4>Test:</h4>
+    <ul>
+      
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/audit-spec.js.html#lineNumber5">Observable.prototype.audit</a></span></li>
+</ul>
+  </div>
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-auditTime">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">auditTime</span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operator/auditTime.js.html#lineNumber10">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">delay</td>
+      <td data-ice="type"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">scheduler</td>
+      <td data-ice="type"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</td>
+        
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="tests">
+    <h4>Test:</h4>
+    <ul>
+      
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/auditTime-spec.js.html#lineNumber5">Observable.prototype.auditTime</a></span></li>
+</ul>
+  </div>
 
   
   
@@ -6493,7 +6571,7 @@ Optionally takes a scheduler for manging timers.</p>
   
   <div data-ice="description"><p>Delays the emission of items from the source Observable by a given timeout or
 until a given Date.</p>
-<p><span class="informal">Time order shifts each item by some specified amount of
+<p><span class="informal">Time shifts each item by some specified amount of
 milliseconds.</span></p>
 <p><img src="./img/delay.png" width="100%"></p>
 <p>If the delay argument is a Number, this operator time shifts the source
@@ -7790,7 +7868,7 @@ Throws an error if matching element is not found.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber72">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber74">source</a></span></span>
     </span>
   </h3>
 
@@ -8007,156 +8085,6 @@ or <code>error</code>, based on which one is called by the source Observable.</p
     <ul>
       
     <li data-ice="test"><span><a href="test-file/spec-js/operators/ignoreElements-spec.js.html#lineNumber5">Observable.prototype.ignoreElements</a></span></li>
-</ul>
-  </div>
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-inspect">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">inspect</span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/es6/operator/inspect.js.html#lineNumber11">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">durationSelector</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</td>
-        
-      </tr>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  <div data-ice="tests">
-    <h4>Test:</h4>
-    <ul>
-      
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/inspect-spec.js.html#lineNumber5">Observable.prototype.inspect</a></span></li>
-</ul>
-  </div>
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-inspectTime">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">inspectTime</span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/es6/operator/inspectTime.js.html#lineNumber10">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">delay</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">scheduler</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</td>
-        
-      </tr>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  <div data-ice="tests">
-    <h4>Test:</h4>
-    <ul>
-      
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/inspectTime-spec.js.html#lineNumber5">Observable.prototype.inspectTime</a></span></li>
 </ul>
   </div>
 
@@ -8971,7 +8899,7 @@ emitted by the source Observable and merging the results of the Observables obta
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/mergeMap-spec.js.html#lineNumber5">Observable.prototype.mergeMap</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/mergeMap-spec.js.html#lineNumber6">Observable.prototype.mergeMap</a></span></li>
 </ul>
   </div>
 
@@ -9055,7 +8983,7 @@ emitted by the source Observable and merging the results of the Observables obta
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/mergeMapTo-spec.js.html#lineNumber5">Observable.prototype.mergeMapTo</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/mergeMapTo-spec.js.html#lineNumber6">Observable.prototype.mergeMapTo</a></span></li>
 </ul>
   </div>
 
@@ -10996,7 +10924,7 @@ emitted by the source Observable.</p>
     
     
     
-    <span data-ice="name">subscribe</span><span data-ice="signature">(observerOrNext: <span>PartialObserver</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>Subscription</span></span>
+    <span data-ice="name">subscribe</span><span data-ice="signature">(observerOrNext: <span>PartialObserver</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>ISubscription</span></span>
     <span class="right-info">
       
       
@@ -11053,7 +10981,7 @@ emitted by the source Observable.</p>
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>Subscription</span></td>
+        <td class="return-type" data-ice="returnType"><span>ISubscription</span></td>
         <td class="return-desc" data-ice="returnDescription"><p>a subscription reference to the registered handlers</p>
 </td>
       </tr>
@@ -12069,6 +11997,78 @@ the most recently emitted item emitted by the source Observable.</p>
     <ul>
       
     <li data-ice="test"><span><a href="test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber5">Observable.prototype.timeoutWith</a></span></li>
+</ul>
+  </div>
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-timestamp">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">timestamp</span><span data-ice="signature">(scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>Timestamp</span>&lt;<span>any</span>&gt;&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/es6/operator/timestamp.js.html#lineNumber9">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">scheduler</td>
+      <td data-ice="type"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>Timestamp</span>&lt;<span>any</span>&gt;&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</td>
+        
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="tests">
+    <h4>Test:</h4>
+    <ul>
+      
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/timestamp-spec.js.html#lineNumber5">Observable.prototype.timestamp</a></span></li>
 </ul>
   </div>
 

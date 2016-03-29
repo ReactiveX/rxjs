@@ -86,7 +86,9 @@ describe(&apos;IteratorObservable&apos;, function () {
     it(&apos;should emit members of an array iterator&apos;, function (done) {
         var expected = [10, 20, 30, 40];
         IteratorObservable_1.IteratorObservable.create([10, 20, 30, 40])
-            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, function () {
+            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(expected.length).toBe(0);
             done();
         });
@@ -116,13 +118,19 @@ describe(&apos;IteratorObservable&apos;, function () {
                 subscriber.unsubscribe();
                 done();
             }
-        }, done.fail, done.fail);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
         source.subscribe(subscriber);
     });
     it(&apos;should emit members of an array iterator, and project them&apos;, function (done) {
         var expected = [100, 400, 900, 1600];
         IteratorObservable_1.IteratorObservable.create([10, 20, 30, 40], function (x) { return x * x; })
-            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, function () {
+            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(expected.length).toBe(0);
             done();
         });
@@ -144,12 +152,16 @@ describe(&apos;IteratorObservable&apos;, function () {
             expect(expected.length).toBe(0);
             expect(err.message).toBe(&apos;boom&apos;);
             done();
-        }, done.fail);
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
     });
     it(&apos;should emit characters of a string iterator&apos;, function (done) {
         var expected = [&apos;f&apos;, &apos;o&apos;, &apos;o&apos;];
         IteratorObservable_1.IteratorObservable.create(&apos;foo&apos;)
-            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, function () {
+            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(expected.length).toBe(0);
             done();
         });
@@ -157,7 +169,9 @@ describe(&apos;IteratorObservable&apos;, function () {
     it(&apos;should emit characters of a string iterator, and project them&apos;, function (done) {
         var expected = [&apos;F&apos;, &apos;O&apos;, &apos;O&apos;];
         IteratorObservable_1.IteratorObservable.create(&apos;foo&apos;, function (x) { return x.toUpperCase(); })
-            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, function () {
+            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(expected.length).toBe(0);
             done();
         });
@@ -170,7 +184,11 @@ describe(&apos;IteratorObservable&apos;, function () {
                 subscriber.unsubscribe();
                 done();
             }
-        }, done.fail, done.fail);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
         IteratorObservable_1.IteratorObservable.create([10, 20, 30, 40, 50, 60]).subscribe(subscriber);
     });
 });

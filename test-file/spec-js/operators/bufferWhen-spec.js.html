@@ -320,7 +320,9 @@ describe(&apos;Observable.prototype.bufferWhen&apos;, function () {
             expect(val.length).toBe(0);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should handle inner throw&apos;, function () {
         var e1 = hot(&apos;--a--^---b---c---d---e---f---g---h------|&apos;);

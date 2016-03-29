@@ -70,13 +70,21 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
     it(&apos;should accept Subjects&apos;, function (done) {
         var expected = [1, 2, 3, 4];
         var connectable = Observable.of(1, 2, 3, 4).multicast(new Subject());
-        connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, done);
+        connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
         connectable.connect();
     });
     it(&apos;should accept Subject factory functions&apos;, function (done) {
         var expected = [1, 2, 3, 4];
         var connectable = Observable.of(1, 2, 3, 4).multicast(function () { return new Subject(); });
-        connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, done);
+        connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
         connectable.connect();
     });
     it(&apos;should do nothing if connect is not called, despite subscriptions&apos;, function () {
@@ -433,7 +441,7 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
         var subject = new Subject();
         var expected = [1, 2, 3, 4];
         var i = 0;
-        var source = Observable.fromArray([1, 2, 3, 4]).multicast(subject);
+        var source = Observable.from([1, 2, 3, 4]).multicast(subject);
         source.subscribe(function (x) {
             expect(x).toBe(expected[i++]);
         }, null, function () {
@@ -468,7 +476,9 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
                 .switchMap(function (letter) { return source.map(function (n) { return String(letter + n); }); })
                 .subscribe(function (x) {
                 expect(x).toBe(expected.shift());
-            }, done.fail, function () {
+            }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
                 expect(expected.length).toBe(0);
                 done();
             });
@@ -483,8 +493,10 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
                 expect(x).toBe(expected[i++]);
             }, null, function () {
                 source.subscribe(function (x) {
-                    done.fail(&apos;this should not be called&apos;);
-                }, null, done);
+                    done.fail(&apos;should not be called&apos;);
+                }, null, function () {
+                    done();
+                });
                 source.connect();
             });
             source.connect();
@@ -499,7 +511,9 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
                 .switchMap(function (letter) { return source.map(function (n) { return String(letter + n); }); })
                 .subscribe(function (x) {
                 expect(x).toBe(expected.shift());
-            }, done.fail, function () {
+            }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
                 expect(expected.length).toBe(0);
                 done();
             });

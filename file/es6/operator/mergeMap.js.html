@@ -68,6 +68,10 @@ import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
  * @owner Observable
  */
 export function mergeMap(project, resultSelector, concurrent = Number.POSITIVE_INFINITY) {
+    if (typeof resultSelector === &apos;number&apos;) {
+        concurrent = resultSelector;
+        resultSelector = null;
+    }
     return this.lift(new MergeMapOperator(project, resultSelector, concurrent));
 }
 export class MergeMapOperator {

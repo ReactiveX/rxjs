@@ -67,7 +67,7 @@ describe(&apos;Observable.prototype.concatAll&apos;, function () {
         expectObservable(result).toBe(expected);
     });
     it(&apos;should concat sources from promise&apos;, function (done) {
-        var sources = Rx.Observable.fromArray([
+        var sources = Rx.Observable.from([
             new Promise(function (res) { res(0); }),
             new Promise(function (res) { res(1); }),
             new Promise(function (res) { res(2); }),
@@ -80,7 +80,7 @@ describe(&apos;Observable.prototype.concatAll&apos;, function () {
         });
     }, 2000);
     it(&apos;should concat and raise error from promise&apos;, function (done) {
-        var sources = Rx.Observable.fromArray([
+        var sources = Rx.Observable.from([
             new Promise(function (res) { res(0); }),
             new Promise(function (res, rej) { rej(1); }),
             new Promise(function (res) { res(2); }),
@@ -94,7 +94,7 @@ describe(&apos;Observable.prototype.concatAll&apos;, function () {
         }, function () { done.fail(&apos;should not be called.&apos;); });
     }, 2000);
     it(&apos;should concat all observables in an observable&apos;, function () {
-        var e1 = Rx.Observable.fromArray([
+        var e1 = Rx.Observable.from([
             Rx.Observable.of(&apos;a&apos;),
             Rx.Observable.of(&apos;b&apos;),
             Rx.Observable.of(&apos;c&apos;)
@@ -103,7 +103,7 @@ describe(&apos;Observable.prototype.concatAll&apos;, function () {
         expectObservable(e1.concatAll()).toBe(expected);
     });
     it(&apos;should throw if any child observable throws&apos;, function () {
-        var e1 = Rx.Observable.fromArray([
+        var e1 = Rx.Observable.from([
             Rx.Observable.of(&apos;a&apos;),
             Rx.Observable.throw(&apos;error&apos;),
             Rx.Observable.of(&apos;c&apos;)

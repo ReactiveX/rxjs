@@ -312,7 +312,9 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
         expect(subscriptions).toBe(1);
         connectable.subscribe(function (x) {
             results2.push(x);
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(results2).toEqual([3, 4]);
             done();
         });
@@ -351,11 +353,17 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
         var results = [];
         source.subscribe(function (x) {
             expect(x).toBe(expected[i++]);
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             i = 0;
             source.subscribe(function (x) {
                 results.push(x);
-            }, done.fail, done);
+            }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
+                done();
+            });
             source.connect();
         });
         source.connect();

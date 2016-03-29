@@ -84,13 +84,19 @@ describe(&apos;Observable.prototype.publishBehavior&apos;, function () {
         var source = Observable.of(1, 2, 3, 4).publishBehavior(0);
         source.subscribe(function (x) {
             expect(x).toBe(expected[i++]);
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             source.subscribe(function (x) {
                 done.fail(&apos;should not be called&apos;);
-            }, done.fail, done);
+            }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
+                done();
+            });
             source.connect();
         });
-        source.connect();
+        expect(function () { return source.connect(); }).toThrow(new Rx.ObjectUnsubscribedError());
     });
     it(&apos;should multicast the same values to multiple observers&apos;, function () {
         var source = cold(&apos;-1-2-3----4-|&apos;);
@@ -256,7 +262,9 @@ describe(&apos;Observable.prototype.publishBehavior&apos;, function () {
         expect(subscriptions).toBe(1);
         connectable.subscribe(function (x) {
             results2.push(x);
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(results2).toEqual([]);
             done();
         });

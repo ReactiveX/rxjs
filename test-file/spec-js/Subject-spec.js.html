@@ -251,10 +251,11 @@ describe(&apos;Subject&apos;, function () {
         var expected = [&apos;foo&apos;];
         subject.subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, null, done);
+        });
         subject.next(&apos;foo&apos;);
         subject.complete();
-        subject.next(&apos;bar&apos;);
+        expect(function () { return subject.next(&apos;bar&apos;); }).toThrow(new Rx.ObjectUnsubscribedError());
+        done();
     });
     it(&apos;should clean out unsubscribed subscribers&apos;, function (done) {
         var subject = new Subject();
@@ -353,7 +354,11 @@ describe(&apos;Subject&apos;, function () {
         var expected = [1, 2, 3, 4, 5];
         subject.subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
         source.subscribe(subject);
     });
     it(&apos;should be usable as an Observer of a finite delayed Observable&apos;, function (done) {
@@ -362,7 +367,11 @@ describe(&apos;Subject&apos;, function () {
         var expected = [1, 2, 3];
         subject.subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
         source.subscribe(subject);
     });
     it(&apos;should throw ObjectUnsubscribedError when emit after unsubscribed&apos;, function () {

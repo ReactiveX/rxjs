@@ -56,7 +56,10 @@
 const Symbol = root.Symbol;
 export let $$observable;
 if (typeof Symbol === &apos;function&apos;) {
-    if (!Symbol.observable) {
+    if (Symbol.observable) {
+        $$observable = Symbol.observable;
+    }
+    else {
         if (typeof Symbol.for === &apos;function&apos;) {
             $$observable = Symbol.for(&apos;observable&apos;);
         }

@@ -107,13 +107,20 @@ describe(&apos;Observable.forkJoin&apos;, function () {
         var expected = &apos;--------------(x|)&apos;;
         expectObservable(e1).toBe(expected, { x: [&apos;d&apos;, &apos;b&apos;, &apos;3&apos;] });
     });
+    it(&apos;should accept empty lowercase-o observables&apos;, function () {
+        var e1 = Observable.forkJoin(hot(&apos;--a--b--c--d--|&apos;), hot(&apos;(b|)&apos;), test_helper_1.lowerCaseO());
+        var expected = &apos;|&apos;;
+        expectObservable(e1).toBe(expected);
+    });
     it(&apos;should accept promise&apos;, function (done) {
         var e1 = Observable.forkJoin(Observable.of(1), Promise.resolve(2));
         e1.subscribe(function (x) {
             expect(x).toEqual([1, 2]);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should accept array of observables&apos;, function () {
         var e1 = Observable.forkJoin([hot(&apos;--a--b--c--d--|&apos;),

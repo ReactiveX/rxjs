@@ -55,23 +55,76 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
 var marble_testing_1 = require(&apos;../helpers/marble-testing&apos;);
-var test_helper_1 = require(&apos;../helpers/test-helper&apos;);
 var Observable = Rx.Observable;
 describe(&apos;Observable.if&apos;, function () {
-    test_helper_1.it(&apos;should subscribe to thenSource when the conditional returns true&apos;, function () {
+    it(&apos;should subscribe to thenSource when the conditional returns true&apos;, function () {
         var e1 = Observable.if(function () { return true; }, Observable.of(&apos;a&apos;));
         var expected = &apos;(a|)&apos;;
         marble_testing_1.expectObservable(e1).toBe(expected);
     });
-    test_helper_1.it(&apos;should subscribe to elseSource when the conditional returns false&apos;, function () {
+    it(&apos;should subscribe to elseSource when the conditional returns false&apos;, function () {
         var e1 = Observable.if(function () { return false; }, Observable.of(&apos;a&apos;), Observable.of(&apos;b&apos;));
         var expected = &apos;(b|)&apos;;
         marble_testing_1.expectObservable(e1).toBe(expected);
     });
-    test_helper_1.it(&apos;should complete without an elseSource when the conditional returns false&apos;, function () {
+    it(&apos;should complete without an elseSource when the conditional returns false&apos;, function () {
         var e1 = Observable.if(function () { return false; }, Observable.of(&apos;a&apos;));
         var expected = &apos;|&apos;;
         marble_testing_1.expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should raise error when conditional throws&apos;, function () {
+        var e1 = Observable.if(function () {
+            throw &apos;error&apos;;
+        }, Observable.of(&apos;a&apos;));
+        var expected = &apos;#&apos;;
+        marble_testing_1.expectObservable(e1).toBe(expected);
+    });
+    it(&apos;should accept resolved promise as thenSource&apos;, function (done) {
+        var expected = 42;
+        var e1 = Observable.if(function () { return true; }, new Promise(function (resolve) { resolve(expected); }));
+        e1.subscribe(function (x) {
+            expect(x).toBe(expected);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
+    });
+    it(&apos;should accept resolved promise as elseSource&apos;, function (done) {
+        var expected = 42;
+        var e1 = Observable.if(function () { return false; }, Observable.of(&apos;a&apos;), new Promise(function (resolve) { resolve(expected); }));
+        e1.subscribe(function (x) {
+            expect(x).toBe(expected);
+            done();
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
+    });
+    it(&apos;should accept rejected promise as elseSource&apos;, function (done) {
+        var expected = 42;
+        var e1 = Observable.if(function () { return false; }, Observable.of(&apos;a&apos;), new Promise(function (resolve, reject) { reject(expected); }));
+        e1.subscribe(function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function (x) {
+            expect(x).toBe(expected);
+            done();
+        }, function () {
+            done.fail();
+        });
+    });
+    it(&apos;should accept rejected promise as thenSource&apos;, function (done) {
+        var expected = 42;
+        var e1 = Observable.if(function () { return true; }, new Promise(function (resolve, reject) { reject(expected); }));
+        e1.subscribe(function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function (x) {
+            expect(x).toBe(expected);
+            done();
+        }, function () {
+            done.fail();
+        });
     });
 });
 //# sourceMappingURL=if-spec.js.map</code></pre>

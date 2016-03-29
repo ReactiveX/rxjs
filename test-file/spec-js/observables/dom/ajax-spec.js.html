@@ -277,6 +277,86 @@ describe(&apos;Observable.ajax&apos;, function () {
             &apos;responseText&apos;: expected
         });
     });
+    describe(&apos;ajax request body&apos;, function () {
+        var rFormData;
+        beforeEach(function () {
+            rFormData = root_1.root.FormData;
+            root_1.root.FormData = root_1.root.FormData || (function () {
+                function class_1() {
+                }
+                return class_1;
+            }());
+        });
+        afterEach(function () {
+            root_1.root.FormData = rFormData;
+        });
+        it(&apos;can take string body&apos;, function () {
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                body: &apos;foobar&apos;
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(&apos;foobar&apos;);
+        });
+        it(&apos;can take FormData body&apos;, function () {
+            var body = new root_1.root.FormData();
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                body: body
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(body);
+        });
+        it(&apos;should not fail when FormData is undefined&apos;, function () {
+            root_1.root.FormData = void 0;
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                headers: {
+                    &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
+                },
+                body: { &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos; }
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        });
+        it(&apos;should send by form-urlencoded format&apos;, function () {
+            var body = {
+                &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos;
+            };
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                headers: {
+                    &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
+                },
+                body: body
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(&apos;%F0%9F%8C%9F=%F0%9F%9A%80&apos;);
+        });
+        it(&apos;should send by JSON&apos;, function () {
+            var body = {
+                &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos;
+            };
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                headers: {
+                    &apos;Content-Type&apos;: &apos;application/json&apos;
+                },
+                body: body
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(&apos;{&quot;&#x1F31F;&quot;:&quot;&#x1F680;&quot;}&apos;);
+        });
+    });
     describe(&apos;ajax.get&apos;, function () {
         it(&apos;should succeed on 200&apos;, function () {
             var expected = { foo: &apos;bar&apos; };

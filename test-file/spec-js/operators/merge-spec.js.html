@@ -75,7 +75,11 @@ describe(&apos;Observable.prototype.merge&apos;, function () {
         var r = [1, 2, 3, 4, 5, 6, 7, 8];
         a.merge(b).subscribe(function (val) {
             expect(val).toBe(r.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should merge an immediately-scheduled source with an immediately-scheduled second&apos;, function (done) {
         var a = Observable.of(1, 2, 3, queueScheduler);
@@ -83,7 +87,11 @@ describe(&apos;Observable.prototype.merge&apos;, function () {
         var r = [1, 2, 4, 3, 5, 6, 7, 8];
         a.merge(b, queueScheduler).subscribe(function (val) {
             expect(val).toBe(r.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should merge cold and cold&apos;, function () {
         var e1 = cold(&apos;---a-----b-----c----|&apos;);

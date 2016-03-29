@@ -73,7 +73,7 @@ describe(&apos;Observable.zip&apos;, function () {
     it(&apos;should zip the provided observables&apos;, function (done) {
         var expected = [&apos;a1&apos;, &apos;b2&apos;, &apos;c3&apos;];
         var i = 0;
-        Observable.zip(Observable.fromArray([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]), Observable.fromArray([1, 2, 3]), function (a, b) { return a + b; })
+        Observable.zip(Observable.from([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]), Observable.from([1, 2, 3]), function (a, b) { return a + b; })
             .subscribe(function (x) {
             expect(x).toBe(expected[i++]);
         }, null, done);

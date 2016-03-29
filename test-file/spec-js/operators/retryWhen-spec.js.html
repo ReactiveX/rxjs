@@ -119,7 +119,9 @@ describe(&apos;Observable.prototype.retryWhen&apos;, function () {
             expect(n).toBe(expected.shift());
         }, function (err) {
             done.fail(&apos;error should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should apply an empty notifier on an empty source&apos;, function () {
         var source = cold(&apos;|&apos;);

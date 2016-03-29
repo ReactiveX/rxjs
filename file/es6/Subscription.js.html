@@ -105,18 +105,29 @@ export class Subscription {
             throw new UnsubscriptionError(errors);
         }
     }
-    add(subscription) {
-        // return early if:
-        //  1. the subscription is null
-        //  2. we&apos;re attempting to add our this
-        //  3. we&apos;re attempting to add the static `empty` Subscription
-        if (!subscription || (subscription === this) || (subscription === Subscription.EMPTY)) {
+    /**
+     * Adds a tear down to be called during the unsubscribe() of this subscription.
+     *
+     * If the tear down being added is a subscription that is already unsubscribed,
+     * is the same reference `add` is being called on, or is `Subscription.EMPTY`,
+     * it will not be added.
+     *
+     * If this subscription is already in an `isUnsubscribed` state, the passed tear down logic
+     * will be executed immediately
+     *
+     * @param {TeardownLogic} teardown the additional logic to execute on teardown.
+     * @returns {Subscription} returns the subscription used or created to be added to the inner
+     *  subscriptions list. This subscription can be used with `remove()` to remove the passed teardown
+     *  logic from the inner subscriptions list.
+     */
+    add(teardown) {
+        if (!teardown || (teardown === this) || (teardown === Subscription.EMPTY)) {
             return;
         }
-        let sub = subscription;
-        switch (typeof subscription) {
+        let sub = teardown;
+        switch (typeof teardown) {
             case &apos;function&apos;:
-                sub = new Subscription(subscription);
+                sub = new Subscription(teardown);
             case &apos;object&apos;:
                 if (sub.isUnsubscribed || typeof sub.unsubscribe !== &apos;function&apos;) {
                     break;
@@ -129,14 +140,17 @@ export class Subscription {
                 }
                 break;
             default:
-                throw new Error(&apos;Unrecognized subscription &apos; + subscription + &apos; added to Subscription.&apos;);
+                throw new Error(&apos;Unrecognized teardown &apos; + teardown + &apos; added to Subscription.&apos;);
         }
+        return sub;
     }
+    /**
+     * removes a subscription from the internal list of subscriptions that will unsubscribe
+     * during unsubscribe process of this subscription.
+     * @param {Subscription} subscription the subscription to remove
+     */
     remove(subscription) {
-        // return early if:
-        //  1. the subscription is null
-        //  2. we&apos;re attempting to remove ourthis
-        //  3. we&apos;re attempting to remove the static `empty` Subscription
+        // HACK: This might be redundant because of the logic in `add()`
         if (subscription == null || (subscription === this) || (subscription === Subscription.EMPTY)) {
             return;
         }

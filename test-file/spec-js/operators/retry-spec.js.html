@@ -217,7 +217,9 @@ describe(&apos;Observable.prototype.retry&apos;, function () {
             expect(err).toBe(&apos;bad!&apos;);
             expect(expected.length).toBe(0);
             done();
-        }, done.fail);
+        }, function () {
+            done.fail();
+        });
     });
 });
 //# sourceMappingURL=retry-spec.js.map</code></pre>

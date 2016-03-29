@@ -269,6 +269,58 @@ describe(&apos;Observable&apos;, function () {
             expect(messageError).toBe(true);
             expect(messageErrorValue).toBe(&apos;boo!&apos;);
         });
+        it(&apos;should ignore next messages after unsubscription&apos;, function () {
+            var times = 0;
+            new Observable(function (observer) {
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+            })
+                .do(function () { return times += 1; })
+                .subscribe(function () {
+                if (times === 2) {
+                    this.unsubscribe();
+                }
+            });
+            expect(times).toBe(2);
+        });
+        it(&apos;should ignore error messages after unsubscription&apos;, function () {
+            var times = 0;
+            var errorCalled = false;
+            new Observable(function (observer) {
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+                observer.error(0);
+            })
+                .do(function () { return times += 1; })
+                .subscribe(function () {
+                if (times === 2) {
+                    this.unsubscribe();
+                }
+            }, function () { errorCalled = true; });
+            expect(times).toBe(2);
+            expect(errorCalled).toBe(false);
+        });
+        it(&apos;should ignore complete messages after unsubscription&apos;, function () {
+            var times = 0;
+            var completeCalled = false;
+            new Observable(function (observer) {
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+                observer.complete();
+            })
+                .do(function () { return times += 1; })
+                .subscribe(function () {
+                if (times === 2) {
+                    this.unsubscribe();
+                }
+            }, null, function () { completeCalled = true; });
+            expect(times).toBe(2);
+            expect(completeCalled).toBe(false);
+        });
         describe(&apos;when called with an anonymous observer&apos;, function () {
             it(&apos;should accept an anonymous observer with just a next function and call the next function in the context&apos; +
                 &apos; of the anonymous observer&apos;, function (done) {
@@ -310,7 +362,7 @@ describe(&apos;Observable&apos;, function () {
                     Observable.empty().subscribe({});
                 }).not.toThrow();
             });
-            it(&apos;should not run unsubscription logic when an error is thrown sending messages synchronously to an&apos; +
+            it(&apos;should run unsubscription logic when an error is thrown sending messages synchronously to an&apos; +
                 &apos; anonymous observer&apos;, function () {
                 var messageError = false;
                 var messageErrorValue = false;
@@ -340,6 +392,66 @@ describe(&apos;Observable&apos;, function () {
                 expect(unsubscribeCalled).toBe(true);
                 expect(messageError).toBe(true);
                 expect(messageErrorValue).toBe(&apos;boo!&apos;);
+            });
+            it(&apos;should ignore next messages after unsubscription&apos;, function () {
+                var times = 0;
+                new Observable(function (observer) {
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                })
+                    .do(function () { return times += 1; })
+                    .subscribe({
+                    next: function () {
+                        if (times === 2) {
+                            this.unsubscribe();
+                        }
+                    }
+                });
+                expect(times).toBe(2);
+            });
+            it(&apos;should ignore error messages after unsubscription&apos;, function () {
+                var times = 0;
+                var errorCalled = false;
+                new Observable(function (observer) {
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                    observer.error(0);
+                })
+                    .do(function () { return times += 1; })
+                    .subscribe({
+                    next: function () {
+                        if (times === 2) {
+                            this.unsubscribe();
+                        }
+                    },
+                    error: function () { errorCalled = true; }
+                });
+                expect(times).toBe(2);
+                expect(errorCalled).toBe(false);
+            });
+            it(&apos;should ignore complete messages after unsubscription&apos;, function () {
+                var times = 0;
+                var completeCalled = false;
+                new Observable(function (observer) {
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                    observer.complete();
+                })
+                    .do(function () { return times += 1; })
+                    .subscribe({
+                    next: function () {
+                        if (times === 2) {
+                            this.unsubscribe();
+                        }
+                    },
+                    complete: function () { completeCalled = true; }
+                });
+                expect(times).toBe(2);
+                expect(completeCalled).toBe(false);
             });
         });
     });
@@ -392,7 +504,11 @@ describe(&apos;Observable.lift&apos;, function () {
         var expected = [10, 20, 30];
         result.subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should allow injecting behaviors into all subscribers in an operator &apos; +
         &apos;chain when overridden&apos;, function (done) {
@@ -451,7 +567,9 @@ describe(&apos;Observable.lift&apos;, function () {
         var expected = [2];
         result.subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(log).toEqual([
                 &apos;next 10&apos;,
                 &apos;next 20&apos;,

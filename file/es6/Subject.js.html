@@ -81,7 +81,7 @@ export class Subject extends Observable {
         return subject;
     }
     add(subscription) {
-        Subscription.prototype.add.call(this, subscription);
+        return Subscription.prototype.add.call(this, subscription);
     }
     remove(subscription) {
         Subscription.prototype.remove.call(this, subscription);

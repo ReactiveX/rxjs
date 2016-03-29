@@ -341,7 +341,9 @@ describe(&apos;Observable.prototype.debounce&apos;, function () {
             return new Promise(function (resolve) { resolve(42); });
         }).subscribe(function (x) {
             expect(x).toEqual(expected.shift());
-        }, done.fail, function () {
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(expected.length).toBe(0);
             done();
         });
@@ -363,7 +365,9 @@ describe(&apos;Observable.prototype.debounce&apos;, function () {
             expect(err).toBe(error);
             expect(expected.length).toBe(0);
             done();
-        }, done.fail);
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
     });
 });
 //# sourceMappingURL=debounce-spec.js.map</code></pre>

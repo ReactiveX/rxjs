@@ -71,14 +71,6 @@ export class ArrayObservable extends Observable {
             this.value = array[0];
         }
     }
-    /**
-     * @param array
-     * @param scheduler
-     * @return {Observable}
-     * @static true
-     * @name fromArray
-     * @owner Observable
-     */
     static create(array, scheduler) {
         return new ArrayObservable(array, scheduler);
     }

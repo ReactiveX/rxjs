@@ -319,31 +319,6 @@ url, headers, etc or a string for a URL.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromArray">fromArray</a></span></span><span data-ice="signature">(array: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      <span data-ice="static">static</span>
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
            <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEvent">fromEvent</a></span></span><span data-ice="signature">(sourceObj: <span>*</span>, eventName: <span>*</span>, selector: <span>*</span>): <span>FromEventObservable</span></span>
         </p>
       </div>
@@ -652,6 +627,56 @@ url, headers, etc or a string for a URL.</p>
         
         <div data-ice="description"><p>An interop point defined by the es7-observable spec <a href="https://github.com/zenparsing/es-observable">https://github.com/zenparsing/es-observable</a></p>
 </div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-audit">audit</a></span></span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-auditTime">auditTime</a></span></span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
       </div>
     </td>
     <td>
@@ -1584,56 +1609,6 @@ and emits these grouped items as <code>GroupedObservables</code>, one
         
         <div data-ice="description"><p>Ignores all items emitted by the source Observable and only passes calls of <code>complete</code> or <code>error</code>.</p>
 </div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-inspect">inspect</a></span></span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-inspectTime">inspectTime</a></span></span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
       </div>
     </td>
     <td>
@@ -2626,7 +2601,7 @@ source Observable.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-subscribe">subscribe</a></span></span><span data-ice="signature">(observerOrNext: <span>PartialObserver</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>Subscription</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-subscribe">subscribe</a></span></span><span data-ice="signature">(observerOrNext: <span>PartialObserver</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>ISubscription</span></span>
         </p>
       </div>
       <div>
@@ -2959,6 +2934,31 @@ returns an Observable, and then emitting the items emitted by the most recently 
       <div>
         <p>
            <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timeoutWith">timeoutWith</a></span></span><span data-ice="signature">(due: <span>*</span>, withObservable: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timestamp">timestamp</a></span></span><span data-ice="signature">(scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>Timestamp</span>&lt;<span>any</span>&gt;&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>

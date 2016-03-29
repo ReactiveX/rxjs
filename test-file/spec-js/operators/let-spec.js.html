@@ -61,11 +61,15 @@ describe(&apos;Observable.prototype.let&apos;, function () {
         var i = 0;
         var foo = function (observable) { return observable.map(function (x) { return x + x; }); };
         Rx.Observable
-            .fromArray([&apos;a&apos;, &apos;b&apos;])
+            .from([&apos;a&apos;, &apos;b&apos;])
             .let(foo)
             .subscribe(function (x) {
             expect(x).toBe(expected[i++]);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
 });
 //# sourceMappingURL=let-spec.js.map</code></pre>

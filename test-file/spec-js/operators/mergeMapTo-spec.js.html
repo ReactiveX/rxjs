@@ -54,6 +54,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/mergeMapTo-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var test_helper_1 = require(&apos;../helpers/test-helper&apos;);
 var Observable = Rx.Observable;
 /** @test {mergeMapTo} */
 describe(&apos;Observable.prototype.mergeMapTo&apos;, function () {
@@ -289,6 +290,34 @@ describe(&apos;Observable.prototype.mergeMapTo&apos;, function () {
         expectSubscriptions(inner.subscriptions).toBe(innersubs);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+    it(&apos;should mergeMapTo many cold Observable, with parameter concurrency=1, without resultSelector&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a-------b-------c---|                                        &apos;);
+        var e1subs = &apos;^                                                            !&apos;;
+        var inner = cold(&apos;----i---j---k---l---|                                        &apos;, values);
+        var innersubs = [&apos; ^                   !                                        &apos;,
+            &apos;                     ^                   !                    &apos;,
+            &apos;                                         ^                   !&apos;];
+        var expected = &apos;-----i---j---k---l-------i---j---k---l-------i---j---k---l---|&apos;;
+        var result = e1.mergeMapTo(inner, 1);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should mergeMap to many cold Observable, with parameter concurrency=2, without resultSelector&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a-------b-------c---|                    &apos;);
+        var e1subs = &apos;^                                        !&apos;;
+        var inner = cold(&apos;----i---j---k---l---|                    &apos;, values);
+        var innersubs = [&apos; ^                   !                    &apos;,
+            &apos;         ^                   !            &apos;,
+            &apos;                     ^                   !&apos;];
+        var expected = &apos;-----i---j---(ki)(lj)k---(li)j---k---l---|&apos;;
+        var result = e1.mergeMapTo(inner, 2);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
     it(&apos;should mergeMapTo many outer to arrays&apos;, function () {
         var e1 = hot(&apos;2-----4--------3--------2-------|&apos;);
         var e1subs = &apos;^                               !&apos;;
@@ -375,6 +404,18 @@ describe(&apos;Observable.prototype.mergeMapTo&apos;, function () {
             completed = true;
         });
         expect(completed).toBe(true);
+    });
+    it(&apos;should support type signatures&apos;, function () {
+        test_helper_1.type(function () {
+            var o;
+            var m;
+            /* tslint:disable:no-unused-variable */
+            var a1 = o.mergeMapTo(m);
+            var a2 = o.mergeMapTo(m, 3);
+            var a3 = o.mergeMapTo(m, function (o, i) { return ({ o: o, i: i }); });
+            var a4 = o.mergeMapTo(m, function (o, i) { return ({ o: o, i: i }); }, 3);
+            /* tslint:enable:no-unused-variable */
+        });
     });
 });
 //# sourceMappingURL=mergeMapTo-spec.js.map</code></pre>

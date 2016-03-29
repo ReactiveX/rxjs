@@ -146,6 +146,10 @@ class SafeSubscriber extends Subscriber {
             next = observerOrNext.next;
             error = observerOrNext.error;
             complete = observerOrNext.complete;
+            if (isFunction(context.unsubscribe)) {
+                this.add(context.unsubscribe.bind(context));
+            }
+            context.unsubscribe = this.unsubscribe.bind(this);
         }
         this._context = context;
         this._next = next;

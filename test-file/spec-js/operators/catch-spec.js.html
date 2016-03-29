@@ -234,7 +234,9 @@ describe(&apos;Observable.prototype.catch&apos;, function () {
             //noop
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
 });
 //# sourceMappingURL=catch-spec.js.map</code></pre>

@@ -109,17 +109,29 @@ describe(&apos;Observable.prototype.min&apos;, function () {
     it(&apos;should min a range() source observable&apos;, function (done) {
         Rx.Observable.range(1, 10000).min().subscribe(function (value) {
             expect(value).toEqual(1);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should min a range().skip(1) source observable&apos;, function (done) {
         Rx.Observable.range(1, 10).skip(1).min().subscribe(function (value) {
             expect(value).toEqual(2);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should min a range().take(1) source observable&apos;, function (done) {
         Rx.Observable.range(1, 10).take(1).min().subscribe(function (value) {
             expect(value).toEqual(1);
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should work with error&apos;, function () {
         var e1 = hot(&apos;-x-^--y--z--#&apos;, { x: 1, y: 2, z: 3 }, &apos;too bad&apos;);

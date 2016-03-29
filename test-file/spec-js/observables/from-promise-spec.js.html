@@ -60,7 +60,11 @@ describe(&apos;Observable.fromPromise&apos;, function () {
     it(&apos;should emit one value from a resolved promise&apos;, function (done) {
         var promise = Promise.resolve(42);
         Observable.fromPromise(promise)
-            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+            .subscribe(function (x) { expect(x).toBe(42); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should raise error from a rejected promise&apos;, function (done) {
         var promise = Promise.reject(&apos;bad&apos;);
@@ -70,16 +74,24 @@ describe(&apos;Observable.fromPromise&apos;, function () {
         }, function (e) {
             expect(e).toBe(&apos;bad&apos;);
             done();
-        }, done.fail);
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
     });
     it(&apos;should share the underlying promise with multiple subscribers&apos;, function (done) {
         var promise = Promise.resolve(42);
         var observable = Observable.fromPromise(promise);
         observable
-            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, null);
+            .subscribe(function (x) { expect(x).toBe(42); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, null);
         setTimeout(function () {
             observable
-                .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+                .subscribe(function (x) { expect(x).toBe(42); }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
+                done();
+            });
         });
     });
     it(&apos;should accept already-resolved Promise&apos;, function (done) {
@@ -87,13 +99,23 @@ describe(&apos;Observable.fromPromise&apos;, function () {
         promise.then(function (x) {
             expect(x).toBe(42);
             Observable.fromPromise(promise)
-                .subscribe(function (y) { expect(y).toBe(42); }, done.fail, done);
-        }, done.fail);
+                .subscribe(function (y) { expect(y).toBe(42); }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
+                done();
+            });
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
     });
     it(&apos;should emit a value from a resolved promise on a separate scheduler&apos;, function (done) {
         var promise = Promise.resolve(42);
         Observable.fromPromise(promise, Rx.Scheduler.asap)
-            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+            .subscribe(function (x) { expect(x).toBe(42); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should raise error from a rejected promise on a separate scheduler&apos;, function (done) {
         var promise = Promise.reject(&apos;bad&apos;);
@@ -101,16 +123,24 @@ describe(&apos;Observable.fromPromise&apos;, function () {
             .subscribe(function (x) { done.fail(&apos;should not be called&apos;); }, function (e) {
             expect(e).toBe(&apos;bad&apos;);
             done();
-        }, done.fail);
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
     });
     it(&apos;should share the underlying promise with multiple subscribers on a separate scheduler&apos;, function (done) {
         var promise = Promise.resolve(42);
         var observable = Observable.fromPromise(promise, Rx.Scheduler.asap);
         observable
-            .subscribe(function (x) { expect(x).toBe(42); }, done.fail, null);
+            .subscribe(function (x) { expect(x).toBe(42); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, null);
         setTimeout(function () {
             observable
-                .subscribe(function (x) { expect(x).toBe(42); }, done.fail, done);
+                .subscribe(function (x) { expect(x).toBe(42); }, function (x) {
+                done.fail(&apos;should not be called&apos;);
+            }, function () {
+                done();
+            });
         });
     });
     it(&apos;should not emit, throw or complete if immediately unsubscribed&apos;, function (done) {
@@ -143,7 +173,9 @@ describe(&apos;Observable.fromPromise&apos;, function () {
                 .subscribe(function (x) { done.fail(&apos;should not be called&apos;); }, function (e) {
                 expect(e).toBe(&apos;bad&apos;);
                 throw &apos;fail&apos;;
-            }, done.fail);
+            }, function () {
+                done.fail(&apos;should not be called&apos;);
+            });
         });
     }
     else if (typeof window === &apos;object&apos; &amp;&amp; Object.prototype.toString.call(window) === &apos;[object global]&apos;) {
@@ -162,7 +194,9 @@ describe(&apos;Observable.fromPromise&apos;, function () {
                 .subscribe(function (x) { done.fail(&apos;should not be called&apos;); }, function (e) {
                 expect(e).toBe(&apos;bad&apos;);
                 throw &apos;fail&apos;;
-            }, done.fail);
+            }, function () {
+                done.fail(&apos;should not be called&apos;);
+            });
         });
     }
 });

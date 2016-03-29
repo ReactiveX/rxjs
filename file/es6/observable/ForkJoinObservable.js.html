@@ -53,11 +53,10 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/observable/ForkJoinObservable.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;../Observable&apos;;
-import { Subscriber } from &apos;../Subscriber&apos;;
-import { PromiseObservable } from &apos;./PromiseObservable&apos;;
 import { EmptyObservable } from &apos;./EmptyObservable&apos;;
-import { isPromise } from &apos;../util/isPromise&apos;;
 import { isArray } from &apos;../util/isArray&apos;;
+import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -95,56 +94,53 @@ export class ForkJoinObservable extends Observable {
         return new ForkJoinObservable(sources, resultSelector);
     }
     _subscribe(subscriber) {
-        const sources = this.sources;
-        const len = sources.length;
-        const context = { completed: 0,
-            total: len,
-            values: new Array(len),
-            haveValues: new Array(len),
-            selector: this.resultSelector };
-        for (let i = 0; i &lt; len; i++) {
-            let source = sources[i];
-            if (isPromise(source)) {
-                source = new PromiseObservable(source);
-            }
-            subscriber.add(source
-                .subscribe(new AllSubscriber(subscriber, i, context)));
-        }
+        return new ForkJoinSubscriber(subscriber, this.sources, this.resultSelector);
     }
 }
-class AllSubscriber extends Subscriber {
-    constructor(destination, index, context) {
+class ForkJoinSubscriber extends OuterSubscriber {
+    constructor(destination, sources, resultSelector) {
         super(destination);
-        this.index = index;
-        this.context = context;
-    }
-    _next(value) {
-        const context = this.context;
-        const index = this.index;
-        context.values[index] = value;
-        context.haveValues[index] = true;
-    }
-    _complete() {
-        const destination = this.destination;
-        const context = this.context;
-        if (!context.haveValues[this.index]) {
-            destination.complete();
+        this.sources = sources;
+        this.resultSelector = resultSelector;
+        this.completed = 0;
+        this.haveValues = 0;
+        const len = sources.length;
+        this.total = len;
+        this.values = new Array(len);
+        for (let i = 0; i &lt; len; i++) {
+            const source = sources[i];
+            const innerSubscription = subscribeToResult(this, source, null, i);
+            if (innerSubscription) {
+                innerSubscription.outerIndex = i;
+                this.add(innerSubscription);
+            }
         }
-        context.completed++;
-        const values = context.values;
-        if (context.completed !== values.length) {
+    }
+    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        this.values[outerIndex] = innerValue;
+        if (!innerSub._hasValue) {
+            innerSub._hasValue = true;
+            this.haveValues++;
+        }
+    }
+    notifyComplete(innerSub) {
+        const destination = this.destination;
+        const { haveValues, resultSelector, values } = this;
+        const len = values.length;
+        if (!innerSub._hasValue) {
+            destination.complete();
             return;
         }
-        if (context.haveValues.every(hasValue)) {
-            const value = context.selector ? context.selector.apply(this, values) :
-                values;
+        this.completed++;
+        if (this.completed !== len) {
+            return;
+        }
+        if (haveValues === len) {
+            const value = resultSelector ? resultSelector.apply(this, values) : values;
             destination.next(value);
         }
         destination.complete();
     }
-}
-function hasValue(x) {
-    return x === true;
 }
 //# sourceMappingURL=ForkJoinObservable.js.map</code></pre>
 

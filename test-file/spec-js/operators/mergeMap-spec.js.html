@@ -54,6 +54,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/mergeMap-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var test_helper_1 = require(&apos;../helpers/test-helper&apos;);
 var Observable = Rx.Observable;
 /** @test {mergeMap} */
 describe(&apos;Observable.prototype.mergeMap&apos;, function () {
@@ -334,6 +335,76 @@ describe(&apos;Observable.prototype.mergeMap&apos;, function () {
         expectSubscriptions(hotB.subscriptions).toBe(bsubs);
         expectSubscriptions(hotC.subscriptions).toBe(csubs);
     });
+    it(&apos;should mergeMap to many cold Observable, with parameter concurrency=1, without resultSelector&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a-------b-------c---|                                        &apos;);
+        var e1subs = &apos;^                                                            !&apos;;
+        var inner = cold(&apos;----i---j---k---l---|                                        &apos;, values);
+        var innersubs = [&apos; ^                   !                                        &apos;,
+            &apos;                     ^                   !                    &apos;,
+            &apos;                                         ^                   !&apos;];
+        var expected = &apos;-----i---j---k---l-------i---j---k---l-------i---j---k---l---|&apos;;
+        function project() { return inner; }
+        var result = e1.mergeMap(project, 1);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should mergeMap to many cold Observable, with parameter concurrency=2, without resultSelector&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a-------b-------c---|                    &apos;);
+        var e1subs = &apos;^                                        !&apos;;
+        var inner = cold(&apos;----i---j---k---l---|                    &apos;, values);
+        var innersubs = [&apos; ^                   !                    &apos;,
+            &apos;         ^                   !            &apos;,
+            &apos;                     ^                   !&apos;];
+        var expected = &apos;-----i---j---(ki)(lj)k---(li)j---k---l---|&apos;;
+        function project() { return inner; }
+        var result = e1.mergeMap(project, 2);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(inner.subscriptions).toBe(innersubs);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should mergeMap to many hot Observable, with parameter concurrency=1, without resultSelector&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a-------b-------c---|                                        &apos;);
+        var e1subs = &apos;^                                                            !&apos;;
+        var hotA = hot(&apos;x----i---j---k---l---|                                        &apos;, values);
+        var hotB = hot(&apos;-x-x-xxxx-x-x-xxxxx-x----i---j---k---l---|                    &apos;, values);
+        var hotC = hot(&apos;x-xxxx---x-x-x-x-x-xx--x--x-x--x--xxxx-x-----i---j---k---l---|&apos;, values);
+        var asubs = &apos; ^                   !                                        &apos;;
+        var bsubs = &apos;                     ^                   !                    &apos;;
+        var csubs = &apos;                                         ^                   !&apos;;
+        var expected = &apos;-----i---j---k---l-------i---j---k---l-------i---j---k---l---|&apos;;
+        var inners = { a: hotA, b: hotB, c: hotC };
+        function project(x) { return inners[x]; }
+        var result = e1.mergeMap(project, 1);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(hotA.subscriptions).toBe(asubs);
+        expectSubscriptions(hotB.subscriptions).toBe(bsubs);
+        expectSubscriptions(hotC.subscriptions).toBe(csubs);
+    });
+    it(&apos;should mergeMap to many hot Observable, with parameter concurrency=2, without resultSelector&apos;, function () {
+        var values = { i: &apos;foo&apos;, j: &apos;bar&apos;, k: &apos;baz&apos;, l: &apos;qux&apos; };
+        var e1 = hot(&apos;-a-------b-------c---|                    &apos;);
+        var e1subs = &apos;^                                        !&apos;;
+        var hotA = hot(&apos;x----i---j---k---l---|                    &apos;, values);
+        var hotB = hot(&apos;-x-x-xxxx----i---j---k---l---|            &apos;, values);
+        var hotC = hot(&apos;x-xxxx---x-x-x-x-x-xx----i---j---k---l---|&apos;, values);
+        var asubs = &apos; ^                   !                    &apos;;
+        var bsubs = &apos;         ^                   !            &apos;;
+        var csubs = &apos;                     ^                   !&apos;;
+        var expected = &apos;-----i---j---(ki)(lj)k---(li)j---k---l---|&apos;;
+        var inners = { a: hotA, b: hotB, c: hotC };
+        function project(x) { return inners[x]; }
+        var result = e1.mergeMap(project, 2);
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(hotA.subscriptions).toBe(asubs);
+        expectSubscriptions(hotB.subscriptions).toBe(bsubs);
+        expectSubscriptions(hotC.subscriptions).toBe(csubs);
+    });
     it(&apos;should mergeMap many complex, where all inners are finite&apos;, function () {
         var a = cold(&apos;-#&apos;);
         var b = cold(&apos;-#&apos;);
@@ -579,6 +650,17 @@ describe(&apos;Observable.prototype.mergeMap&apos;, function () {
             completed = true;
         });
         expect(completed).toBe(true);
+    });
+    it(&apos;should support type signatures&apos;, function () {
+        test_helper_1.type(function () {
+            var o;
+            /* tslint:disable:no-unused-variable */
+            var a1 = o.mergeMap(function (x) { return x.toString(); });
+            var a2 = o.mergeMap(function (x) { return x.toString(); }, 3);
+            var a3 = o.mergeMap(function (x) { return x.toString(); }, function (o, i) { return ({ o: o, i: i }); });
+            var a4 = o.mergeMap(function (x) { return x.toString(); }, function (o, i) { return ({ o: o, i: i }); }, 3);
+            /* tslint:enable:no-unused-variable */
+        });
     });
 });
 //# sourceMappingURL=mergeMap-spec.js.map</code></pre>

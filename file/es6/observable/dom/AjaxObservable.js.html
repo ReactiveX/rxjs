@@ -57,7 +57,7 @@ import { tryCatch } from &apos;../../util/tryCatch&apos;;
 import { errorObject } from &apos;../../util/errorObject&apos;;
 import { Observable } from &apos;../../Observable&apos;;
 import { Subscriber } from &apos;../../Subscriber&apos;;
-const createXHRDefault = () =&gt; {
+function createXHRDefault() {
     let xhr = new root.XMLHttpRequest();
     if (this.crossDomain) {
         if (&apos;withCredentials&apos; in xhr) {
@@ -74,7 +74,7 @@ const createXHRDefault = () =&gt; {
     else {
         return xhr;
     }
-};
+}
 function defaultGetResultSelector(response) {
     return response.response;
 }
@@ -247,13 +247,16 @@ export class AjaxSubscriber extends Subscriber {
         if (!body || typeof body === &apos;string&apos;) {
             return body;
         }
+        else if (root.FormData &amp;&amp; body instanceof root.FormData) {
+            return body;
+        }
         const splitIndex = contentType.indexOf(&apos;;&apos;);
         if (splitIndex !== -1) {
             contentType = contentType.substring(0, splitIndex);
         }
         switch (contentType) {
             case &apos;application/x-www-form-urlencoded&apos;:
-                return Object.keys(body).map(key =&gt; `${key}=${encodeURI(body[key])}`).join(&apos;&amp;&apos;);
+                return Object.keys(body).map(key =&gt; `${encodeURI(key)}=${encodeURI(body[key])}`).join(&apos;&amp;&apos;);
             case &apos;application/json&apos;:
                 return JSON.stringify(body);
         }

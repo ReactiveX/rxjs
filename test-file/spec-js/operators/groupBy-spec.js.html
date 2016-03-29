@@ -1223,7 +1223,11 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
             g.subscribe(function (x) {
                 expect(x).toBe(expectedGroup.values.shift());
             });
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
     });
 });
 //# sourceMappingURL=groupBy-spec.js.map</code></pre>

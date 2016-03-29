@@ -404,6 +404,21 @@ describe(&apos;Observable.prototype.windowToggle&apos;, function () {
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
         expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
+    it(&apos;should handle empty closing observable&apos;, function () {
+        var e1 = hot(&apos;--a--^---b---c---d---e---f---g---h------|&apos;);
+        var e1subs = &apos;^                                  !&apos;;
+        var e2 = cold(&apos;---o---------------o-----------|    &apos;);
+        var e2subs = &apos;^                              !    &apos;;
+        var e3 = Observable.empty();
+        var expected = &apos;---x---------------y---------------|&apos;;
+        var x = cold(&apos;|&apos;);
+        var y = cold(&apos;|&apos;);
+        var values = { x: x, y: y };
+        var result = e1.windowToggle(e2, function () { return e3; });
+        expectObservable(result).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
 });
 //# sourceMappingURL=windowToggle-spec.js.map</code></pre>
 

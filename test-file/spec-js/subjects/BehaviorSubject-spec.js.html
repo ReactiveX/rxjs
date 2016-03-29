@@ -190,7 +190,11 @@ describe(&apos;BehaviorSubject&apos;, function () {
         var expected = [0, 1, 2, 3, 4, 5];
         subject.subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
         source.subscribe(subject);
     });
 });

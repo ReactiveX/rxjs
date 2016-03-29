@@ -424,7 +424,7 @@ console.log(&apos;after&apos;);</code>
 <pre><code class="lang-js"><code class="source-code prettyprint">var subscription = observable.subscribe(x =&gt; console.log(x));</code>
 </code></pre>
 <p>The Subscription represents the ongoing execution, and has a minimal API, which primarily simply allows you to cancel that execution. Read more about the <a href="./manual/./overview.html#subscription"><code>Subscription</code> type here</a>. With <code>subscription.unsubscribe()</code> you can cancel the ongoing execution:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.fromArray([10, 20, 30]);
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.from([10, 20, 30]);
 var subscription = observable.subscribe(x =&gt; console.log(x));
 // Later:
 subscription.unsubscribe();</code>
@@ -563,7 +563,7 @@ subject.subscribe({
   next: (v) =&gt; console.log(&apos;observerB: &apos; + v)
 });
 
-var observable = Rx.Observable.fromArray([1, 2, 3]);
+var observable = Rx.Observable.from([1, 2, 3]);
 
 observable.subscribe(subject); // You can subscribe providing a Subject</code>
 </code></pre>
@@ -581,7 +581,7 @@ observerB: 3</code>
 <p>Whenever we refer to &quot;a multicasted Observable&quot;, that means an Observable execution that passes through a Subject. Otherwise, a &quot;plain (unicast) Observable&quot; behaves like an <em>invokable collection of future values</em>, with no sharing assumed.</p>
 <p><span class="informal">A multicasted Observable uses a Subject under the hood to make multiple Observers see the same Observable execution.</span></p>
 <p>Under the hood, this is how the <code>multicast</code> operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used <code>observable.subscribe(subject)</code>:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">var source = Rx.Observable.fromArray([1, 2, 3]);
+<pre><code class="lang-js"><code class="source-code prettyprint">var source = Rx.Observable.from([1, 2, 3]);
 var subject = new Rx.Subject();
 var multicasted = source.multicast(subject);
 
@@ -820,7 +820,7 @@ observerB: 5</code>
   return output;
 }
 
-var input = Rx.Observable.fromArray([1, 2, 3, 4]);
+var input = Rx.Observable.from([1, 2, 3, 4]);
 var output = multiplyByTen(input);
 output.subscribe(x =&gt; console.log(x));</code>
 </code></pre>
@@ -846,7 +846,7 @@ output.subscribe(x =&gt; console.log(x));</code>
 </code></pre>
 <p><span class="informal">Instance operators are functions that use the <code>this</code> keyword to infer what is the input Observable.</span></p>
 <p>Notice how the <code>input</code> Observable is not a function argument anymore, it is assumed to be the <code>this</code> object. This is how we would use such instance operator:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.fromArray([1, 2, 3, 4]).multiplyByTen();
+<pre><code class="lang-js"><code class="source-code prettyprint">var observable = Rx.Observable.from([1, 2, 3, 4]).multiplyByTen();
 
 observable.subscribe(x =&gt; console.log(x));</code>
 </code></pre>
@@ -880,7 +880,6 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-defer"><code>defer</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-empty"><code>empty</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-from"><code>from</code></a></li>
-<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromArray"><code>fromArray</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromEvent"><code>fromEvent</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromEventPattern"><code>fromEventPattern</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromPromise"><code>fromPromise</code></a></li>
@@ -933,8 +932,8 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-filter"><code>filter</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-first"><code>first</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-ignoreElements"><code>ignoreElements</code></a></li>
-<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-inspect"><code>inspect</code></a></li>
-<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-inspectTime"><code>inspectTime</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-audit"><code>audit</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-auditTime"><code>auditTime</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-last"><code>last</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-sample"><code>sample</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-sampleTime"><code>sampleTime</code></a></li>
@@ -994,6 +993,7 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-observeOn"><code>observeOn</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-subscribeOn"><code>subscribeOn</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-timeInterval"><code>timeInterval</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-timestamp"><code>timestamp</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-timeout"><code>timeout</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-timeoutWith"><code>timeoutWith</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-toArray"><code>toArray</code></a></li>
@@ -1070,8 +1070,8 @@ console.log(&apos;just after subscribe&apos;);</code>
 <pre><code class="lang-js"><code class="source-code prettyprint">var proxyObserver = {
   next: (val) =&gt; {
     Rx.Scheduler.async.schedule(
-      (x) =&gt; finalObserver.next(x), 
-      0 /* delay */, 
+      (x) =&gt; finalObserver.next(x),
+      0 /* delay */,
       val /* will be the x for the function above */
     );
   },
@@ -1131,8 +1131,8 @@ console.log(&apos;just after subscribe&apos;);</code>
 </ul>
 <p><strong>Use <code>subscribeOn</code> to schedule in what context will the <code>subscribe()</code> call happen.</strong> By default, a <code>subscribe()</code> call on an Observable will happen synchronously and immediately. However, you may delay or schedule the actual subscription to happen on a given Scheduler, using the instance operator <code>subscribeOn(scheduler)</code>, where <code>scheduler</code> is an argument you provide.</p>
 <p><strong>Use <code>observeOn</code> to schedule in what context will notifications be delivered.</strong> As we saw in the examples above, instance operator <code>observeOn(scheduler)</code> introduces a mediator Observer between the source Observable and the destination Observer, where the mediator schedules calls to the destination Observer using your given <code>scheduler</code>.</p>
-<p><strong>Instance operators may take a Scheduler as argument.</strong> </p>
-<p>Time-related operators like <code>bufferTime</code>, <code>debounceTime</code>, <code>delay</code>, <code>inspectTime</code>, <code>sampleTime</code>, <code>throttleTime</code>, <code>timeInterval</code>, <code>timeout</code>, <code>timeoutWith</code>, <code>windowTime</code> all take a Scheduler as the last argument, and otherwise operate by default on the <code>Rx.Scheduler.async</code> Scheduler.</p>
+<p><strong>Instance operators may take a Scheduler as argument.</strong></p>
+<p>Time-related operators like <code>bufferTime</code>, <code>debounceTime</code>, <code>delay</code>, <code>auditTime</code>, <code>sampleTime</code>, <code>throttleTime</code>, <code>timeInterval</code>, <code>timeout</code>, <code>timeoutWith</code>, <code>windowTime</code> all take a Scheduler as the last argument, and otherwise operate by default on the <code>Rx.Scheduler.async</code> Scheduler.</p>
 <p>Other instance operators that take a Scheduler as argument: <code>cache</code>, <code>combineLatest</code>, <code>concat</code>, <code>expand</code>, <code>merge</code>, <code>publishReplay</code>, <code>startWith</code>.</p>
 <p>Notice that both <code>cache</code> and <code>publishReplay</code> accept a Scheduler because they utilize a ReplaySubject. The constructor of a ReplaySubjects takes an optional Scheduler as the last argument because ReplaySubject may deal with time, which only makes sense in the context of a Scheduler. By default, a ReplaySubject uses the <code>queue</code> Scheduler to provide a clock.</p>
 </div>

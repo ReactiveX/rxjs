@@ -77,7 +77,9 @@ describe(&apos;ReplaySubject&apos;, function () {
             }
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
     it(&apos;should replay values and complete&apos;, function (done) {
         var subject = new ReplaySubject();
@@ -120,7 +122,9 @@ describe(&apos;ReplaySubject&apos;, function () {
             }
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
     });
     describe(&apos;with bufferSize=2&apos;, function () {
         it(&apos;should replay 2 previous values when subscribed&apos;, function () {
@@ -221,7 +225,11 @@ describe(&apos;ReplaySubject&apos;, function () {
         source.subscribe(subject);
         subject.subscribe(function (x) {
             expect(x).toBe(expected.shift());
-        }, done.fail, done);
+        }, function () {
+            done.fail();
+        }, function () {
+            done();
+        });
     });
 });
 //# sourceMappingURL=ReplaySubject-spec.js.map</code></pre>

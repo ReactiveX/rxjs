@@ -147,7 +147,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             expect(e).toBe(&apos;test&apos;);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
         send(&apos;test&apos;);
     });
     it(&apos;should pass through events that occur and use the selector if provided&apos;, function (done) {
@@ -168,7 +170,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             expect(e).toBe(&apos;test!&apos;);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
         send(&apos;test&apos;);
     });
     it(&apos;should not fail if no event arguments are passed and the selector does not return&apos;, function (done) {
@@ -189,7 +193,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             expect(e).toBeUndefined();
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
         send();
     });
     it(&apos;should return a value from the selector if no event arguments are passed&apos;, function (done) {
@@ -210,7 +216,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             expect(e).toBe(&apos;no arguments&apos;);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
         send();
     });
     it(&apos;should pass multiple arguments to selector from event emitter&apos;, function (done) {
@@ -231,7 +239,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             expect(e).toEqual([1, 2, 3]);
         }, function (err) {
             done.fail(&apos;should not be called&apos;);
-        }, done);
+        }, function () {
+            done();
+        });
         send(1, 2, 3);
     });
 });

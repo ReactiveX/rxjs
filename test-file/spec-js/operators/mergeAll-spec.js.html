@@ -65,7 +65,7 @@ describe(&apos;Observable.prototype.mergeAll&apos;, function () {
         expectObservable(e1.mergeAll()).toBe(expected);
     });
     it(&apos;should merge all observables in an observable&apos;, function () {
-        var e1 = Observable.fromArray([
+        var e1 = Observable.from([
             Observable.of(&apos;a&apos;),
             Observable.of(&apos;b&apos;),
             Observable.of(&apos;c&apos;)
@@ -74,7 +74,7 @@ describe(&apos;Observable.prototype.mergeAll&apos;, function () {
         expectObservable(e1.mergeAll()).toBe(expected);
     });
     it(&apos;should throw if any child observable throws&apos;, function () {
-        var e1 = Observable.fromArray([
+        var e1 = Observable.from([
             Observable.of(&apos;a&apos;),
             Observable.throw(&apos;error&apos;),
             Observable.of(&apos;c&apos;)
@@ -372,7 +372,7 @@ describe(&apos;Observable.prototype.mergeAll&apos;, function () {
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
     it(&apos;should merge all promises in an observable&apos;, function (done) {
-        var e1 = Rx.Observable.fromArray([
+        var e1 = Rx.Observable.from([
             new Promise(function (res) { res(&apos;a&apos;); }),
             new Promise(function (res) { res(&apos;b&apos;); }),
             new Promise(function (res) { res(&apos;c&apos;); }),
@@ -387,7 +387,7 @@ describe(&apos;Observable.prototype.mergeAll&apos;, function () {
     });
     it(&apos;should raise error when promise rejects&apos;, function (done) {
         var error = &apos;error&apos;;
-        var e1 = Rx.Observable.fromArray([
+        var e1 = Rx.Observable.from([
             new Promise(function (res) { res(&apos;a&apos;); }),
             new Promise(function (res, rej) { rej(error); }),
             new Promise(function (res) { res(&apos;c&apos;); }),

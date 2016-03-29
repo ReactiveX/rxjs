@@ -53,6 +53,8 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/observable/UsingObservable.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;../Observable&apos;;
+import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -69,32 +71,33 @@ export class UsingObservable extends Observable {
     }
     _subscribe(subscriber) {
         const { resourceFactory, observableFactory } = this;
-        let resource, source, error, errorHappened = false;
+        let resource;
         try {
             resource = resourceFactory();
+            return new UsingSubscriber(subscriber, resource, observableFactory);
         }
-        catch (e) {
-            error = e;
-            errorHappened = true;
+        catch (err) {
+            subscriber.error(err);
         }
-        if (errorHappened) {
-            subscriber.error(error);
+    }
+}
+class UsingSubscriber extends OuterSubscriber {
+    constructor(destination, resource, observableFactory) {
+        super(destination);
+        this.resource = resource;
+        this.observableFactory = observableFactory;
+        destination.add(resource);
+        this.tryUse();
+    }
+    tryUse() {
+        try {
+            const source = this.observableFactory.call(this, this.resource);
+            if (source) {
+                this.add(subscribeToResult(this, source));
+            }
         }
-        else {
-            subscriber.add(resource);
-            try {
-                source = observableFactory(resource);
-            }
-            catch (e) {
-                error = e;
-                errorHappened = true;
-            }
-            if (errorHappened) {
-                subscriber.error(error);
-            }
-            else {
-                return source.subscribe(subscriber);
-            }
+        catch (err) {
+            this._error(err);
         }
     }
 }

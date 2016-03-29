@@ -282,7 +282,9 @@ describe(&apos;Observable.prototype.repeat&apos;, function () {
             .multicast(function () { return new Rx.Subject(); })
             .refCount()
             .repeat(5)
-            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, done.fail, function () {
+            .subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
             expect(expected.length).toBe(0);
             done();
         });

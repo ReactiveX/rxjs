@@ -54,11 +54,10 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/using-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
-var test_helper_1 = require(&apos;../helpers/test-helper&apos;);
 var Observable = Rx.Observable;
 var Subscription = Rx.Subscription;
 describe(&apos;Observable.using&apos;, function () {
-    test_helper_1.it(&apos;should dispose of the resource when the subscription is disposed&apos;, function (done) {
+    it(&apos;should dispose of the resource when the subscription is disposed&apos;, function (done) {
         var disposed = false;
         var source = Observable.using(function () { return new Subscription(function () { return disposed = true; }); }, function (resource) { return Observable.range(0, 3); })
             .take(2);
@@ -69,6 +68,63 @@ describe(&apos;Observable.using&apos;, function () {
         else {
             done.fail(&apos;disposed should be true but was false&apos;);
         }
+    });
+    it(&apos;should accept factory returns promise resolves&apos;, function (done) {
+        var expected = 42;
+        var disposed = false;
+        var e1 = Observable.using(function () { return new Subscription(function () { return disposed = true; }); }, function (resource) { return new Promise(function (resolve) { resolve(expected); }); });
+        e1.subscribe(function (x) {
+            expect(x).toBe(expected);
+        }, function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function () {
+            done();
+        });
+    });
+    it(&apos;should accept factory returns promise rejects&apos;, function (done) {
+        var expected = 42;
+        var disposed = false;
+        var e1 = Observable.using(function () { return new Subscription(function () { return disposed = true; }); }, function (resource) { return new Promise(function (resolve, reject) { reject(expected); }); });
+        e1.subscribe(function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function (x) {
+            expect(x).toBe(expected);
+            done();
+        }, function () {
+            done.fail(&apos;should not be called&apos;);
+        });
+    });
+    it(&apos;should raise error when resource factory throws&apos;, function (done) {
+        var expectedError = &apos;expected&apos;;
+        var error = &apos;error&apos;;
+        var source = Observable.using(function () {
+            throw expectedError;
+        }, function (resource) {
+            throw error;
+        });
+        source.subscribe(function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function (x) {
+            expect(x).toBe(expectedError);
+            done();
+        }, function () {
+            done.fail();
+        });
+    });
+    it(&apos;should raise error when observable factory throws&apos;, function (done) {
+        var error = &apos;error&apos;;
+        var disposed = false;
+        var source = Observable.using(function () { return new Subscription(function () { return disposed = true; }); }, function (resource) {
+            throw error;
+        });
+        source.subscribe(function (x) {
+            done.fail(&apos;should not be called&apos;);
+        }, function (x) {
+            expect(x).toBe(error);
+            done();
+        }, function () {
+            done.fail();
+        });
     });
 });
 //# sourceMappingURL=using-spec.js.map</code></pre>

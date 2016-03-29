@@ -97,24 +97,26 @@ export class Observable {
      * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
      *  the error will be thrown as unhandled
      * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
-     * @return {Subscription} a subscription reference to the registered handlers
+     * @return {ISubscription} a subscription reference to the registered handlers
      */
     subscribe(observerOrNext, error, complete) {
         const { operator } = this;
-        const subscriber = toSubscriber(observerOrNext, error, complete);
-        if (operator) {
-            subscriber.add(this._subscribe(operator.call(subscriber)));
+        const target = toSubscriber(observerOrNext, error, complete);
+        const transformer = operator &amp;&amp; operator.call(target) || target;
+        if (transformer !== target) {
+            target.add(transformer);
         }
-        else {
-            subscriber.add(this._subscribe(subscriber));
+        const subscription = this._subscribe(transformer);
+        if (subscription !== target) {
+            target.add(subscription);
         }
-        if (subscriber.syncErrorThrowable) {
-            subscriber.syncErrorThrowable = false;
-            if (subscriber.syncErrorThrown) {
-                throw subscriber.syncErrorValue;
+        if (target.syncErrorThrowable) {
+            target.syncErrorThrowable = false;
+            if (target.syncErrorThrown) {
+                throw target.syncErrorValue;
             }
         }
-        return subscriber;
+        return target;
     }
     /**
      * @method forEach
