@@ -35,6 +35,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *
  * @see {@link combineAll}
  * @see {@link merge}
+ * @see {@link withLatestFrom}
  *
  * @param {Observable} other An input Observable to combine with the source
  * Observable. More than one input Observables may be given as argument.
