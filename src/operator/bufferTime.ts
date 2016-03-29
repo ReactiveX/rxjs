@@ -1,9 +1,11 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
 import {async} from '../scheduler/async';
+import {isScheduler} from '../util/isScheduler';
 
 /**
  * Buffers the source Observable values for a specific time period.
@@ -18,7 +20,9 @@ import {async} from '../scheduler/async';
  * resets the buffer every `bufferTimeSpan` milliseconds. If
  * `bufferCreationInterval` is given, this operator opens the buffer every
  * `bufferCreationInterval` milliseconds and closes (emits and resets) the
- * buffer every `bufferTimeSpan` milliseconds.
+ * buffer every `bufferTimeSpan` milliseconds. When the optional argument
+ * `maxBufferSize` is specified, the buffer will be closed either after
+ * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.
  *
  * @example <caption>Every second, emit an array of the recent click events</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
@@ -39,33 +43,58 @@ import {async} from '../scheduler/async';
  * @param {number} bufferTimeSpan The amount of time to fill each buffer array.
  * @param {number} [bufferCreationInterval] The interval at which to start new
  * buffers.
+ * @param {number} [maxBufferSize] The maximum buffer size.
  * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine buffer boundaries.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @method bufferTime
  * @owner Observable
  */
-export function bufferTime<T>(bufferTimeSpan: number,
-                              bufferCreationInterval: number = null,
-                              scheduler: Scheduler = async): Observable<T[]> {
-  return this.lift(new BufferTimeOperator<T>(bufferTimeSpan, bufferCreationInterval, scheduler));
+export function bufferTime<T>(bufferTimeSpan: number): Observable<T[]> {
+  let length: number = arguments.length;
+
+  let scheduler: Scheduler = async;
+  if (isScheduler(arguments[arguments.length - 1])) {
+    scheduler = arguments[arguments.length - 1];
+    length--;
+  }
+
+  let bufferCreationInterval: number = null;
+  if (length >= 2) {
+    bufferCreationInterval = arguments[1];
+  }
+
+  let maxBufferSize: number = Number.POSITIVE_INFINITY;
+  if (length >= 3) {
+    maxBufferSize = arguments[2];
+  }
+
+  return this.lift(new BufferTimeOperator<T>(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler));
 }
 
 export interface BufferTimeSignature<T> {
-  (bufferTimeSpan: number, bufferCreationInterval?: number, scheduler?: Scheduler): Observable<T[]>;
+  (bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
+  (bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
+  (bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
 }
 
 class BufferTimeOperator<T> implements Operator<T, T[]> {
   constructor(private bufferTimeSpan: number,
               private bufferCreationInterval: number,
+              private maxBufferSize: number,
               private scheduler: Scheduler) {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
     return source._subscribe(new BufferTimeSubscriber(
-      subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler
+      subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler
     ));
   }
+}
+
+class Context<T> {
+  buffer: T[] = [];
+  closeAction: Subscription;
 }
 
 type CreationState<T> = {
@@ -81,93 +110,121 @@ type CreationState<T> = {
  * @extends {Ignored}
  */
 class BufferTimeSubscriber<T> extends Subscriber<T> {
-  private buffers: Array<T[]> = [];
+  private contexts: Array<Context<T>> = [];
+  private timespanOnly: boolean;
 
   constructor(destination: Subscriber<T[]>,
               private bufferTimeSpan: number,
               private bufferCreationInterval: number,
+              private maxBufferSize: number,
               private scheduler: Scheduler) {
     super(destination);
-    const buffer = this.openBuffer();
-    if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
-      const closeState = { subscriber: this, buffer };
-      const creationState: CreationState<T> = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
-      this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
-      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
+    const context = this.openContext();
+    this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval < 0;
+    if (this.timespanOnly) {
+      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
+      this.add(context.closeAction = scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
     } else {
-      const timeSpanOnlyState = { subscriber: this, buffer, bufferTimeSpan };
-      this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+      const closeState = { subscriber: this, context };
+      const creationState: CreationState<T> = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+      this.add(context.closeAction = scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
+      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
     }
   }
 
   protected _next(value: T) {
-    const buffers = this.buffers;
-    const len = buffers.length;
+    const contexts = this.contexts;
+    const len = contexts.length;
+    let filledBufferContext: Context<T>;
     for (let i = 0; i < len; i++) {
-      buffers[i].push(value);
+      const context = contexts[i];
+      const buffer = context.buffer;
+      buffer.push(value);
+      if (buffer.length == this.maxBufferSize) {
+        filledBufferContext = context;
+      }
+    }
+
+    if (filledBufferContext) {
+      this.onBufferFull(filledBufferContext);
     }
   }
 
   protected _error(err: any) {
-    this.buffers.length = 0;
+    this.contexts.length = 0;
     super._error(err);
   }
 
   protected _complete() {
-    const { buffers, destination } = this;
-    while (buffers.length > 0) {
-      destination.next(buffers.shift());
+    const { contexts, destination } = this;
+    while (contexts.length > 0) {
+      const context = contexts.shift();
+      destination.next(context.buffer);
     }
     super._complete();
   }
 
   protected _unsubscribe() {
-    this.buffers = null;
+    this.contexts = null;
   }
 
-  openBuffer(): T[] {
-    let buffer: T[] = [];
-    this.buffers.push(buffer);
-    return buffer;
+  protected onBufferFull(context: Context<T>) {
+    this.closeContext(context);
+    const closeAction = context.closeAction;
+    closeAction.unsubscribe();
+    this.remove(closeAction);
+
+    if (this.timespanOnly) {
+      context = this.openContext();
+      const bufferTimeSpan = this.bufferTimeSpan;
+      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
+      this.add(context.closeAction = this.scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+    }
   }
 
-  closeBuffer(buffer: T[]) {
-    this.destination.next(buffer);
-    const buffers = this.buffers;
-    buffers.splice(buffers.indexOf(buffer), 1);
+  openContext(): Context<T> {
+    let context: Context<T> = new Context<T>();
+    this.contexts.push(context);
+    return context;
+  }
+
+  closeContext(context: Context<T>) {
+    this.destination.next(context.buffer);
+    const contexts = this.contexts;
+    contexts.splice(contexts.indexOf(context), 1);
   }
 }
 
 function dispatchBufferTimeSpanOnly(state: any) {
   const subscriber: BufferTimeSubscriber<any> = state.subscriber;
 
-  const prevBuffer = state.buffer;
-  if (prevBuffer) {
-    subscriber.closeBuffer(prevBuffer);
+  const prevContext = state.context;
+  if (prevContext) {
+    subscriber.closeContext(prevContext);
   }
 
-  state.buffer = subscriber.openBuffer();
+  state.context = subscriber.openContext();
   if (!subscriber.isUnsubscribed) {
-    (<any>this).schedule(state, state.bufferTimeSpan);
+    state.context.closeAction = (<any>this).schedule(state, state.bufferTimeSpan);
   }
 }
 
 interface DispatchArg<T> {
   subscriber: BufferTimeSubscriber<T>;
-  buffer: Array<T>;
+  context: Context<T>;
 }
 
 function dispatchBufferCreation<T>(state: CreationState<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
-  const buffer = subscriber.openBuffer();
+  const context = subscriber.openContext();
   const action = <Action<CreationState<T>>>this;
   if (!subscriber.isUnsubscribed) {
-    action.add(scheduler.schedule<DispatchArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
+    subscriber.add(context.closeAction = scheduler.schedule<DispatchArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
     action.schedule(state, bufferCreationInterval);
   }
 }
 
 function dispatchBufferClose<T>(arg: DispatchArg<T>) {
-  const { subscriber, buffer } = arg;
-  subscriber.closeBuffer(buffer);
+  const { subscriber, context } = arg;
+  subscriber.closeContext(context);
 }
