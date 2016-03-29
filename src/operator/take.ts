@@ -47,6 +47,7 @@ class TakeSubscriber<T> extends Subscriber<T> {
       this.destination.next(value);
       if (this.count === total) {
         this.destination.complete();
+        this.unsubscribe();
       }
     }
   }
