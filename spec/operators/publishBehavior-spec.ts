@@ -56,8 +56,7 @@ describe('Observable.prototype.publishBehavior', () => {
 
         source.connect();
       });
-
-    source.connect();
+    expect(() => source.connect()).toThrow(new Rx.ObjectUnsubscribedError());
   });
 
   it('should multicast the same values to multiple observers', () => {
