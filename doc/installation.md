@@ -65,6 +65,19 @@ map.call(Observable.of(1,2,3), function (x) { return x + '!!!'; });
 
 You can also use the above method to build your own Observable and export it from your own module.
 
+### CommonJS with TypeScript
+If you recieve an error like `error TS2304: Cannot find name 'Symbol'` or `error TS2304: Cannot find name 'Iterable'` when using RxJS you may need to install a supplemental set of typings.  This small set of interfaces allows RxJS to target ES6, while still allowing the TypeScript compiler to target ES5.
+
+1. For [`typings`](https://github.com/typings/typings) users:
+
+    `typings install rxjs-symbol-typings`
+    
+2. If you're not using typings the interfaces can be copied from [/spec/es5.d.ts](https://github.com/ReactiveX/rxjs/blob/master/spec/es5.d.ts) or from the [typings repo](https://github.com/david-driscoll/rxjs-symbol-typings/blob/master/rxjs-symbol-shim.d.ts).
+
+3. Change your `tsconfig.json` to target `es6` or `es2015`.
+   
+   Keep in mind that targeting ES6 may have unintended consequnces and allow you to use features that may not exist on your target platform or browser.  In this case it is recommended to use another compiler such as [babel](http://babeljs.io/) in your compile pipeline to run after the TypeScript compiler.  
+    
 ## All Module Types (CJS/ES6/AMD/TypeScript) via npm
 
 To install this library via [npm](https://www.npmjs.org) **version 3**, use the following command:
