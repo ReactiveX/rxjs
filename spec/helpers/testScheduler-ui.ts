@@ -2,7 +2,6 @@
 ///<reference path='ambient.d.ts'/>
 
 import * as _ from 'lodash';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import * as mocha from 'mocha';
 import * as Suite from 'mocha/lib/suite';
 import * as Test from 'mocha/lib/test';
@@ -10,6 +9,9 @@ import * as commonInterface from 'mocha/lib/interfaces/common';
 import * as escapeRe from 'escape-string-regexp';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
+
+import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as marble from './marble-testing';
 
 //setup sinon-chai
 chai.use(sinonChai);
@@ -32,6 +34,17 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
     context.beforeEach = common.beforeEach;
     context.afterEach = common.afterEach;
     context.run = mocha.options.delay && common.runWithSuite(suite);
+
+    //setting up per-context test scheduler
+    context.rxTestScheduler = null;
+
+    //setting up assertion, helper for marble testing
+    context.hot = marble.hot;
+    context.cold = marble.cold;
+    context.expectObservable = marble.expectObservable;
+    context.expectSubscriptions = marble.expectSubscriptions;
+    context.time = marble.time;
+
     /**
      * Describe a "suite" with the given `title`
      * and callback `fn` containing nested suites
@@ -69,16 +82,16 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
       return suite;
     };
 
-    context.type = function () {
+    /**
+     * Describe a test case to test type definition
+     * sanity on build time. Recommended only for
+     * exceptional type definition won't be used in test cases.
+     */
+
+    context.type = function (title, fn) {
       //intentionally does not execute to avoid unexpected side effect occurs by subscription,
       //or infinite source. Suffecient to check build time only.
     };
-
-    /**
-     * Describe a specification or test-case
-     * with the given `title` and callback `fn`
-     * acting as a thunk.
-     */
 
     function stringify(x): string {
       return JSON.stringify(x, function (key, value) {
@@ -98,6 +111,7 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
     /**
      * custom assertion formatter for expectObservable test
      */
+
     function observableMatcher(actual, expected) {
       if (Array.isArray(actual) && Array.isArray(expected)) {
         const passed = _.isEqual(actual, expected);
@@ -117,22 +131,28 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
       }
     }
 
+    /**
+     * Describe a specification or test-case
+     * with the given `title` and callback `fn`
+     * acting as a thunk.
+     */
+
     const it = context.it = context.specify = function(title, fn) {
-      global.rxTestScheduler = null;
+      context.rxTestScheduler = null;
       let modified = fn;
 
       if (fn && fn.length === 0) {
         modified = function (done: MochaDone) {
-          global.rxTestScheduler = new Rx.TestScheduler(observableMatcher);
+          context.rxTestScheduler = new Rx.TestScheduler(observableMatcher);
           let error: any = null;
 
           try {
             fn();
-            global.rxTestScheduler.flush();
+            context.rxTestScheduler.flush();
           } catch (e) {
             error = e;
           } finally {
-            global.rxTestScheduler = null;
+            context.rxTestScheduler = null;
             error ? done(error) : done();
           }
         };
@@ -148,6 +168,11 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
       return test;
     };
 
+    /**
+     * Describe a specification or test-case
+     * to be represented as marble diagram png.
+     * It will still serve as normal test cases as well.
+     */
     context.asDiagram = function (label) {
       if (diagramFunction) {
         return diagramFunction(label, it);

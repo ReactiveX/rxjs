@@ -4,13 +4,6 @@ declare const Symbol: any;
 
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {root} from '../../dist/cjs/util/root';
-import * as marbleHelpers from './marble-testing';
-
-global.cold = marbleHelpers.cold;
-global.hot = marbleHelpers.hot;
-global.time = marbleHelpers.time;
-global.expectObservable = marbleHelpers.expectObservable;
-global.expectSubscriptions = marbleHelpers.expectSubscriptions;
 
 export function lowerCaseO<T>(...args): Rx.Observable<T> {
   const values = [].slice.apply(arguments);

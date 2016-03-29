@@ -1,8 +1,6 @@
 var root = require('../../../dist/cjs/util/root').root;
 var Rx = require('../../../dist/cjs/Rx.KitchenSink');
-var marbleHelpers = require('../marble-testing');
 var painter = require('./painter');
-
 
 function getInputStreams(rxTestScheduler) {
   return Array.prototype.concat.call([],

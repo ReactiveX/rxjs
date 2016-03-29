@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {expectObservable} from '../helpers/marble-testing';
 
 const Observable = Rx.Observable;
 

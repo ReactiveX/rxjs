@@ -89,7 +89,7 @@
     "test_mocha": "mocha --opts spec/support/default.opts spec-js",
     "test_karma": "karma start karma.conf.js",
     "test": "npm-run-all clean_spec build_spec test_mocha clean_spec",
-    "tests2png": "npm run build_spec && mkdirp tmp/docs/img && mkdirp spec-js/support && cp spec/support/*.json spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",
+    "tests2png": "npm run build_spec && mkdirp tmp/docs/img && mkdirp spec-js/support && cp spec/support/*.opts spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",
     "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15"
   },
   "repository": {
