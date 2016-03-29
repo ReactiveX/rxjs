@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -26,7 +27,7 @@ describe('Observable.prototype.every', () => {
     const thisArg = {};
 
     Observable.of(1).every(function (value: number, index: number) {
-      expect(this).toBe(thisArg);
+      expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
 
@@ -36,7 +37,7 @@ describe('Observable.prototype.every', () => {
     const thisArg = {};
 
     Observable.of(1, 2, 3, 4).every(function (value: number, index: number) {
-      expect(this).toBe(thisArg);
+      expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
   });
@@ -49,7 +50,7 @@ describe('Observable.prototype.every', () => {
       observer.complete();
     })
     .every(function (value: number, index: number) {
-      expect(this).toBe(thisArg);
+      expect(this).to.deep.equal(thisArg);
     }, thisArg).subscribe();
   });
 

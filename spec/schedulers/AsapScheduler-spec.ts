@@ -1,26 +1,26 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {DoneSignature} from '../helpers/test-helper';
 
 const asap = Rx.Scheduler.asap;
 
 /** @test {AsapScheduler} */
 describe('AsapScheduler', () => {
   it('should exist', () => {
-    expect(asap).toBeDefined();
+    expect(asap).exist;
   });
 
-  it('should schedule an action to happen later', (done: DoneSignature) => {
+  it('should schedule an action to happen later', (done: MochaDone) => {
     let actionHappened = false;
     asap.schedule(() => {
       actionHappened = true;
       done();
     });
     if (actionHappened) {
-      done.fail('Scheduled action happened synchronously');
+      done(new Error('Scheduled action happened synchronously'));
     }
   });
 
-  it('should execute the rest of the scheduled actions if the first action is canceled', (done: DoneSignature) => {
+  it('should execute the rest of the scheduled actions if the first action is canceled', (done: MochaDone) => {
     let actionHappened = false;
     let firstSubscription = null;
     let secondSubscription = null;
@@ -30,7 +30,7 @@ describe('AsapScheduler', () => {
       if (secondSubscription) {
         secondSubscription.unsubscribe();
       }
-      done.fail('The first action should not have executed.');
+      done(new Error('The first action should not have executed.'));
     });
 
     secondSubscription = asap.schedule(() => {
@@ -40,7 +40,7 @@ describe('AsapScheduler', () => {
     });
 
     if (actionHappened) {
-      done.fail('Scheduled action happened synchronously');
+      done(new Error('Scheduled action happened synchronously'));
     } else {
       firstSubscription.unsubscribe();
     }

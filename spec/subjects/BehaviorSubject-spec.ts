@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, expectObservable};
-import {DoneSignature} from '../helpers/test-helper';
 
 const BehaviorSubject = Rx.BehaviorSubject;
 const Observable = Rx.Observable;
@@ -8,9 +8,9 @@ const ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
-  it('should extend Subject', (done: DoneSignature) => {
+  it('should extend Subject', (done: MochaDone) => {
     const subject = new BehaviorSubject(null);
-    expect(subject instanceof Rx.Subject).toBe(true);
+    expect(subject instanceof Rx.Subject).to.be.true;
     done();
   });
 
@@ -19,7 +19,7 @@ describe('BehaviorSubject', () => {
     subject.error(new Error('derp'));
     expect(() => {
       subject.getValue();
-    }).toThrow(new Error('derp'));
+    }).to.throw(Error, 'derp');
   });
 
   it('should throw an ObjectUnsubscribedError if getValue() is called ' +
@@ -28,16 +28,16 @@ describe('BehaviorSubject', () => {
     subject.unsubscribe();
     expect(() => {
       subject.getValue();
-    }).toThrow(new ObjectUnsubscribedError());
+    }).to.throw(ObjectUnsubscribedError);
   });
 
   it('should have a getValue() method to retrieve the current value', () => {
     const subject = new BehaviorSubject('staltz');
-    expect(subject.getValue()).toBe('staltz');
+    expect(subject.getValue()).to.equal('staltz');
 
     subject.next('oj');
 
-    expect(subject.getValue()).toBe('oj');
+    expect(subject.getValue()).to.equal('oj');
   });
 
   it('should not allow you to set `value` directly', () => {
@@ -49,56 +49,56 @@ describe('BehaviorSubject', () => {
       //noop
     }
 
-    expect(subject.getValue()).toBe('flibberty');
-    expect(subject.value).toBe('flibberty');
+    expect(subject.getValue()).to.equal('flibberty');
+    expect(subject.value).to.equal('flibberty');
   });
 
   it('should still allow you to retrieve the value from the value property', () => {
     const subject = new BehaviorSubject('fuzzy');
-    expect(subject.value).toBe('fuzzy');
+    expect(subject.value).to.equal('fuzzy');
     subject.next('bunny');
-    expect(subject.value).toBe('bunny');
+    expect(subject.value).to.equal('bunny');
   });
 
-  it('should start with an initialization value', (done: DoneSignature) => {
+  it('should start with an initialization value', (done: MochaDone) => {
     const subject = new BehaviorSubject('foo');
     const expected = ['foo', 'bar'];
     let i = 0;
 
     subject.subscribe((x: string) => {
-      expect(x).toBe(expected[i++]);
+      expect(x).to.equal(expected[i++]);
     }, null, done);
 
     subject.next('bar');
     subject.complete();
   });
 
-  it('should pump values to multiple subscribers', (done: DoneSignature) => {
+  it('should pump values to multiple subscribers', (done: MochaDone) => {
     const subject = new BehaviorSubject('init');
     const expected = ['init', 'foo', 'bar'];
     let i = 0;
     let j = 0;
 
     subject.subscribe((x: string) => {
-      expect(x).toBe(expected[i++]);
+      expect(x).to.equal(expected[i++]);
     });
 
     subject.subscribe((x: string) => {
-      expect(x).toBe(expected[j++]);
+      expect(x).to.equal(expected[j++]);
     }, null, done);
 
-    expect(subject.observers.length).toBe(2);
+    expect(subject.observers.length).to.equal(2);
     subject.next('foo');
     subject.next('bar');
     subject.complete();
   });
 
-  it('should not allow values to be nexted after a return', (done: DoneSignature) => {
+  it('should not allow values to be nexted after a return', (done: MochaDone) => {
     const subject = new BehaviorSubject('init');
     const expected = ['init', 'foo'];
 
     subject.subscribe((x: string) => {
-      expect(x).toBe(expected.shift());
+      expect(x).to.equal(expected.shift());
     }, null, done);
 
     subject.next('foo');
@@ -106,25 +106,25 @@ describe('BehaviorSubject', () => {
 
     expect(() => {
       subject.next('bar');
-    }).toThrow(new Rx.ObjectUnsubscribedError());
+    }).to.throw(Rx.ObjectUnsubscribedError);
   });
 
-  it('should clean out unsubscribed subscribers', (done: DoneSignature) => {
+  it('should clean out unsubscribed subscribers', (done: MochaDone) => {
     const subject = new BehaviorSubject('init');
 
     const sub1 = subject.subscribe((x: string) => {
-      expect(x).toBe('init');
+      expect(x).to.equal('init');
     });
 
     const sub2 = subject.subscribe((x: string) => {
-      expect(x).toBe('init');
+      expect(x).to.equal('init');
     });
 
-    expect(subject.observers.length).toBe(2);
+    expect(subject.observers.length).to.equal(2);
     sub1.unsubscribe();
-    expect(subject.observers.length).toBe(1);
+    expect(subject.observers.length).to.equal(1);
     sub2.unsubscribe();
-    expect(subject.observers.length).toBe(0);
+    expect(subject.observers.length).to.equal(0);
     done();
   });
 
@@ -168,16 +168,16 @@ describe('BehaviorSubject', () => {
     expectObservable(subscriber1).toBe(expected1);
   });
 
-  it('should be an Observer which can be given to Observable.subscribe', (done: DoneSignature) => {
+  it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
     const source = Observable.of(1, 2, 3, 4, 5);
     const subject = new BehaviorSubject(0);
     const expected = [0, 1, 2, 3, 4, 5];
 
     subject.subscribe(
       (x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });

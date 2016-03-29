@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -18,11 +18,11 @@ describe('Observable.prototype.auditTime', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should auditTime events by 50 time units', (done: DoneSignature) => {
+  it('should auditTime events by 50 time units', (done: MochaDone) => {
     Observable.of(1, 2, 3)
       .auditTime(50)
       .subscribe((x: number) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, null, () => {
         done();
       });
@@ -36,7 +36,7 @@ describe('Observable.prototype.auditTime', () => {
       )
       .auditTime(50, rxTestScheduler)
       .subscribe((x: string) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       });
 
     rxTestScheduler.flush();

@@ -1,6 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-declare const {time, expectObservable};
 
+declare const {time, expectObservable};
 declare const rxTestScheduler: Rx.TestScheduler;
 
 const Observable = Rx.Observable;

@@ -1,7 +1,7 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {GroupedObservable} from '../../dist/cjs/operator/groupBy';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -34,7 +34,7 @@ describe('Observable.prototype.groupBy', () => {
     return out;
   }
 
-  it('should group values', (done: DoneSignature) => {
+  it('should group values', (done: MochaDone) => {
     const expectedGroups = [
       { key: 1, values: [1, 3] },
       { key: 0, values: [2] }
@@ -44,15 +44,15 @@ describe('Observable.prototype.groupBy', () => {
       .groupBy((x: number) => x % 2)
       .subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift();
-        expect(g.key).toBe(expectedGroup.key);
+        expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
-          expect(x).toBe(expectedGroup.values.shift());
+          expect(x).to.deep.equal(expectedGroup.values.shift());
         });
       }, null, done);
   });
 
-  it('should group values with an element selector', (done: DoneSignature) => {
+  it('should group values with an element selector', (done: MochaDone) => {
     const expectedGroups = [
       { key: 1, values: ['1!', '3!'] },
       { key: 0, values: ['2!'] }
@@ -62,15 +62,15 @@ describe('Observable.prototype.groupBy', () => {
       .groupBy((x: number) => x % 2, (x: number) => x + '!')
       .subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift();
-        expect(g.key).toBe(expectedGroup.key);
+        expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
-          expect(x).toBe(expectedGroup.values.shift());
+          expect(x).to.deep.equal(expectedGroup.values.shift());
         });
       }, null, done);
   });
 
-  it('should group values with a duration selector', (done: DoneSignature) => {
+  it('should group values with a duration selector', (done: MochaDone) => {
     const expectedGroups = [
       { key: 1, values: [1, 3] },
       { key: 0, values: [2, 4] },
@@ -85,10 +85,10 @@ describe('Observable.prototype.groupBy', () => {
         (g: any) => g.skip(1))
       .subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift();
-        expect(g.key).toBe(expectedGroup.key);
+        expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
-          expect(x).toBe(expectedGroup.values.shift());
+          expect(x).to.deep.equal(expectedGroup.values.shift());
         });
       }, null, done);
   });
@@ -188,8 +188,8 @@ describe('Observable.prototype.groupBy', () => {
     const source = e1
       .groupBy((val: string) => val.toLowerCase().trim())
       .do((group: any) => {
-        expect(group.key).toBe('foo');
-        expect(group instanceof GroupedObservable).toBe(true);
+        expect(group.key).to.equal('foo');
+        expect(group instanceof GroupedObservable).to.be.true;
       })
       .map((group: any) => { return group.key; });
 
@@ -1345,7 +1345,7 @@ describe('Observable.prototype.groupBy', () => {
     expectSubscriptions(e1.subscriptions).toBe(expectedSubs);
   });
 
-  it('should not break lift() composability', (done: DoneSignature) => {
+  it('should not break lift() composability', (done: MochaDone) => {
     class MyCustomObservable<T> extends Rx.Observable<T> {
       lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
         const observable = new MyCustomObservable<R>();
@@ -1365,7 +1365,7 @@ describe('Observable.prototype.groupBy', () => {
       (x: string) => x + '!'
     );
 
-    expect(result instanceof MyCustomObservable).toBe(true);
+    expect(result instanceof MyCustomObservable).to.be.true;
 
     const expectedGroups = [
       { key: 1, values: ['1!', '3!'] },
@@ -1375,13 +1375,13 @@ describe('Observable.prototype.groupBy', () => {
     result
       .subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift();
-        expect(g.key).toBe(expectedGroup.key);
+        expect(g.key).to.equal(expectedGroup.key);
 
         g.subscribe((x: any) => {
-          expect(x).toBe(expectedGroup.values.shift());
+          expect(x).to.deep.equal(expectedGroup.values.shift());
         });
       }, (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });

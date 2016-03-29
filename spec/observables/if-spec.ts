@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {expectObservable} from '../helpers/marble-testing';
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -27,71 +27,70 @@ describe('Observable.if', () => {
   });
 
   it('should raise error when conditional throws', () => {
-    const e1 = Observable.if(() => {
+    const e1 = Observable.if(<any>(() => {
       throw 'error';
-    }, Observable.of('a'));
+    }), Observable.of('a'));
 
     const expected = '#';
 
     expectObservable(e1).toBe(expected);
   });
 
-  it('should accept resolved promise as thenSource', (done: DoneSignature) => {
+  it('should accept resolved promise as thenSource', (done: MochaDone) => {
     const expected = 42;
     const e1 = Observable.if(() => true, new Promise((resolve: any) => { resolve(expected); }));
 
     e1.subscribe(x => {
-      expect(x).toBe(expected);
+      expect(x).to.equal(expected);
     }, (x) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
       done();
     });
   });
 
-  it('should accept resolved promise as elseSource', (done: DoneSignature) => {
+  it('should accept resolved promise as elseSource', (done: MochaDone) => {
     const expected = 42;
     const e1 = Observable.if(() => false,
       Observable.of('a'),
       new Promise((resolve: any) => { resolve(expected); }));
 
     e1.subscribe(x => {
-      expect(x).toBe(expected);
-      done();
+      expect(x).to.equal(expected);
     }, (x) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
       done();
     });
   });
 
-  it('should accept rejected promise as elseSource', (done: DoneSignature) => {
+  it('should accept rejected promise as elseSource', (done: MochaDone) => {
     const expected = 42;
     const e1 = Observable.if(() => false,
       Observable.of('a'),
       new Promise((resolve: any, reject: any) => { reject(expected); }));
 
     e1.subscribe(x => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, (x) => {
-      expect(x).toBe(expected);
+      expect(x).to.equal(expected);
       done();
     }, () => {
-      done.fail();
+      done(new Error('should not be called'));
     });
   });
 
-  it('should accept rejected promise as thenSource', (done: DoneSignature) => {
+  it('should accept rejected promise as thenSource', (done: MochaDone) => {
     const expected = 42;
     const e1 = Observable.if(() => true, new Promise((resolve: any, reject: any) => { reject(expected); }));
 
     e1.subscribe(x => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, (x) => {
-      expect(x).toBe(expected);
+      expect(x).to.equal(expected);
       done();
     }, () => {
-      done.fail();
+      done(new Error('should not be called'));
     });
   });
 });

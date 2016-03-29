@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../../dist/cjs/Rx.DOM';
 import {root} from '../../../dist/cjs/util/root';
 import {MockXMLHttpRequest} from '../../helpers/ajax-helper';
@@ -38,8 +39,8 @@ describe('Observable.ajax', () => {
 
     const request = MockXMLHttpRequest.mostRecent;
 
-    expect(request.url).toBe('/talk-to-me-goose');
-    expect(request.requestHeaders).toEqual({
+    expect(request.url).to.equal('/talk-to-me-goose');
+    expect(request.requestHeaders).to.deep.equal({
       'Content-Type': 'kenny/loggins',
       'Fly-Into-The': 'Dangah Zone!',
       'Take-A-Ride-Into-The': 'Danger ZoooOoone!',
@@ -65,7 +66,7 @@ describe('Observable.ajax', () => {
         complete = true;
       });
 
-    expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
     MockXMLHttpRequest.mostRecent.respondWith({
       'status': 200,
@@ -73,8 +74,8 @@ describe('Observable.ajax', () => {
       'responseText': expected
     });
 
-    expect(result).toBe(expected);
-    expect(complete).toBe(true);
+    expect(result).to.equal(expected);
+    expect(complete).to.be.true;
   });
 
   it('should have error when resultSelector errors', () => {
@@ -98,7 +99,7 @@ describe('Observable.ajax', () => {
         throw 'should not complete';
       });
 
-    expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
     MockXMLHttpRequest.mostRecent.respondWith({
       'status': 200,
@@ -106,7 +107,7 @@ describe('Observable.ajax', () => {
       'responseText': expected
     });
 
-    expect(error).toEqual(new Error('ha! ha! fooled you!'));
+    expect(error).to.be.an('error', 'ha! ha! fooled you!');
   });
 
   it('should error if createXHR throws', () => {
@@ -128,7 +129,7 @@ describe('Observable.ajax', () => {
         throw 'should not complete';
       });
 
-    expect(error).toEqual(new Error('wokka wokka'));
+    expect(error).to.be.an('error', 'wokka wokka');
   });
 
   it('should succeed on 200', () => {
@@ -148,7 +149,7 @@ describe('Observable.ajax', () => {
         complete = true;
       });
 
-    expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
     MockXMLHttpRequest.mostRecent.respondWith({
       'status': 200,
@@ -156,9 +157,9 @@ describe('Observable.ajax', () => {
       'responseText': JSON.stringify(expected)
     });
 
-    expect(result.xhr).toBeDefined();
-    expect(result.response).toBe(JSON.stringify({ foo: 'bar' }));
-    expect(complete).toBe(true);
+    expect(result.xhr).exist;
+    expect(result.response).to.deep.equal(JSON.stringify({ foo: 'bar' }));
+    expect(complete).to.be.true;
   });
 
   it('should fail on 404', () => {
@@ -181,7 +182,7 @@ describe('Observable.ajax', () => {
         throw 'should not complete';
       });
 
-    expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
     MockXMLHttpRequest.mostRecent.respondWith({
       'status': 404,
@@ -189,9 +190,9 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(error instanceof Rx.AjaxError).toBe(true);
-    expect(error.message).toBe('ajax error 404');
-    expect(error.status).toBe(404);
+    expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(error.message).to.equal('ajax error 404');
+    expect(error.status).to.equal(404);
   });
 
   it('should fail on 404', () => {
@@ -213,7 +214,7 @@ describe('Observable.ajax', () => {
         throw 'should not complete';
       });
 
-    expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
     MockXMLHttpRequest.mostRecent.respondWith({
       'status': 300,
@@ -221,9 +222,9 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(error instanceof Rx.AjaxError).toBe(true);
-    expect(error.message).toBe('ajax error 300');
-    expect(error.status).toBe(300);
+    expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(error.message).to.equal('ajax error 300');
+    expect(error.status).to.equal(300);
   });
 
   it('should succeed no settings', () => {
@@ -231,14 +232,14 @@ describe('Observable.ajax', () => {
 
     Rx.Observable.ajax('/flibbertyJibbet')
         .subscribe((x: any) => {
-          expect(x.status).toBe(200);
-          expect(x.xhr.method).toBe('GET');
-          expect(x.xhr.responseText).toBe(expected);
+          expect(x.status).to.equal(200);
+          expect(x.xhr.method).to.equal('GET');
+          expect(x.xhr.responseText).to.equal(expected);
         }, () => {
           throw 'should not have been called';
         });
 
-    expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
       'status': 200,
       'contentType': 'text/plain',
@@ -253,14 +254,14 @@ describe('Observable.ajax', () => {
         .subscribe(() => {
           throw 'should not have been called';
         }, (x: any) => {
-          expect(x.status).toBe(500);
-          expect(x.xhr.method).toBe('GET');
-          expect(x.xhr.responseText).toBe(expected);
+          expect(x.status).to.equal(500);
+          expect(x.xhr.method).to.equal('GET');
+          expect(x.xhr.responseText).to.equal(expected);
         }, () => {
           throw 'should not have been called';
         });
 
-    expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     MockXMLHttpRequest.mostRecent.respondWith({
       'status': 500,
       'contentType': 'text/plain',
@@ -289,8 +290,8 @@ describe('Observable.ajax', () => {
 
       Rx.Observable.ajax(obj).subscribe();
 
-      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).toBe('foobar');
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal('foobar');
     });
 
     it('can take FormData body', () => {
@@ -303,8 +304,8 @@ describe('Observable.ajax', () => {
 
       Rx.Observable.ajax(obj).subscribe();
 
-      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).toBe(body);
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
     });
 
     it('should not fail when FormData is undefined', () => {
@@ -321,7 +322,7 @@ describe('Observable.ajax', () => {
 
       Rx.Observable.ajax(obj).subscribe();
 
-      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     });
 
     it('should send by form-urlencoded format', () => {
@@ -339,8 +340,8 @@ describe('Observable.ajax', () => {
 
       Rx.Observable.ajax(obj).subscribe();
 
-      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).toBe('%F0%9F%8C%9F=%F0%9F%9A%80');
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal('%F0%9F%8C%9F=%F0%9F%9A%80');
     });
 
     it('should send by JSON', () => {
@@ -358,8 +359,8 @@ describe('Observable.ajax', () => {
 
       Rx.Observable.ajax(obj).subscribe();
 
-      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).toBe('{"🌟":"🚀"}');
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"🌟":"🚀"}');
     });
   });
 
@@ -379,7 +380,7 @@ describe('Observable.ajax', () => {
 
       const request = MockXMLHttpRequest.mostRecent;
 
-      expect(request.url).toBe('/flibbertyJibbet');
+      expect(request.url).to.equal('/flibbertyJibbet');
 
       request.respondWith({
         'status': 200,
@@ -387,8 +388,8 @@ describe('Observable.ajax', () => {
         'responseText': JSON.stringify(expected)
       });
 
-      expect(result).toEqual(expected);
-      expect(complete).toBe(true);
+      expect(result).to.deep.equal(expected);
+      expect(complete).to.be.true;
     });
 
     it('should succeed on 200 with a resultSelector', () => {
@@ -408,7 +409,7 @@ describe('Observable.ajax', () => {
           complete = true;
         });
 
-      expect(MockXMLHttpRequest.mostRecent.url).toBe('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
       MockXMLHttpRequest.mostRecent.respondWith({
         'status': 200,
@@ -416,10 +417,10 @@ describe('Observable.ajax', () => {
         'responseText': JSON.stringify(expected)
       });
 
-      expect(innerResult.xhr).toBeDefined();
-      expect(innerResult.response).toEqual({ larf: 'hahahahaha' });
-      expect(result).toBe('HAHAHAHAHA');
-      expect(complete).toBe(true);
+      expect(innerResult.xhr).exist;
+      expect(innerResult.response).to.deep.equal({ larf: 'hahahahaha' });
+      expect(result).to.equal('HAHAHAHAHA');
+      expect(complete).to.be.true;
     });
   });
 
@@ -439,9 +440,9 @@ describe('Observable.ajax', () => {
 
       const request = MockXMLHttpRequest.mostRecent;
 
-      expect(request.method).toBe('POST');
-      expect(request.url).toBe('/flibbertyJibbet');
-      expect(request.requestHeaders).toEqual({
+      expect(request.method).to.equal('POST');
+      expect(request.url).to.equal('/flibbertyJibbet');
+      expect(request.requestHeaders).to.deep.equal({
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       });
@@ -452,9 +453,9 @@ describe('Observable.ajax', () => {
         'responseText': JSON.stringify(expected)
       });
 
-      expect(request.data).toEqual('foo=bar&hi=there%20you');
-      expect(result.response).toEqual(expected);
-      expect(complete).toBe(true);
+      expect(request.data).to.equal('foo=bar&hi=there%20you');
+      expect(result.response).to.deep.equal(expected);
+      expect(complete).to.be.true;
     });
   });
 });

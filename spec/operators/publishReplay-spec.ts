@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -20,7 +20,7 @@ describe('Observable.prototype.publishReplay', () => {
 
   it('should return a ConnectableObservable', () => {
     const source = Observable.of(1).publishReplay();
-    expect(source instanceof Rx.ConnectableObservable).toBe(true);
+    expect(source instanceof Rx.ConnectableObservable).to.be.true;
   });
 
   it('should do nothing if connect is not called, despite subscriptions', () => {
@@ -214,7 +214,7 @@ describe('Observable.prototype.publishReplay', () => {
     });
   });
 
-  it('should multicast one observable to multiple observers', (done: DoneSignature) => {
+  it('should multicast one observable to multiple observers', (done: MochaDone) => {
     const results1 = [];
     const results2 = [];
     let subscriptions = 0;
@@ -237,18 +237,18 @@ describe('Observable.prototype.publishReplay', () => {
       results2.push(x);
     });
 
-    expect(results1).toEqual([]);
-    expect(results2).toEqual([]);
+    expect(results1).to.deep.equal([]);
+    expect(results2).to.deep.equal([]);
 
     connectable.connect();
 
-    expect(results1).toEqual([1, 2, 3, 4]);
-    expect(results2).toEqual([1, 2, 3, 4]);
-    expect(subscriptions).toBe(1);
+    expect(results1).to.deep.equal([1, 2, 3, 4]);
+    expect(results2).to.deep.equal([1, 2, 3, 4]);
+    expect(subscriptions).to.equal(1);
     done();
   });
 
-  it('should replay as many events as specified by the bufferSize', (done: DoneSignature) => {
+  it('should replay as many events as specified by the bufferSize', (done: MochaDone) => {
     const results1 = [];
     const results2 = [];
     let subscriptions = 0;
@@ -268,8 +268,8 @@ describe('Observable.prototype.publishReplay', () => {
       results1.push(x);
     });
 
-    expect(results1).toEqual([]);
-    expect(results2).toEqual([]);
+    expect(results1).to.deep.equal([]);
+    expect(results2).to.deep.equal([]);
 
     connectable.connect();
 
@@ -277,13 +277,13 @@ describe('Observable.prototype.publishReplay', () => {
       results2.push(x);
     });
 
-    expect(results1).toEqual([1, 2, 3, 4]);
-    expect(results2).toEqual([3, 4]);
-    expect(subscriptions).toBe(1);
+    expect(results1).to.deep.equal([1, 2, 3, 4]);
+    expect(results2).to.deep.equal([3, 4]);
+    expect(subscriptions).to.equal(1);
     done();
   });
 
-  it('should emit replayed values plus completed when subscribed after completed', (done: DoneSignature) => {
+  it('should emit replayed values plus completed when subscribed after completed', (done: MochaDone) => {
     const results1 = [];
     const results2 = [];
     let subscriptions = 0;
@@ -303,21 +303,21 @@ describe('Observable.prototype.publishReplay', () => {
       results1.push(x);
     });
 
-    expect(results1).toEqual([]);
-    expect(results2).toEqual([]);
+    expect(results1).to.deep.equal([]);
+    expect(results2).to.deep.equal([]);
 
     connectable.connect();
 
-    expect(results1).toEqual([1, 2, 3, 4]);
-    expect(results2).toEqual([]);
-    expect(subscriptions).toBe(1);
+    expect(results1).to.deep.equal([1, 2, 3, 4]);
+    expect(results2).to.deep.equal([]);
+    expect(subscriptions).to.equal(1);
 
     connectable.subscribe((x: number) => {
       results2.push(x);
     }, (x) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
-      expect(results2).toEqual([3, 4]);
+      expect(results2).to.deep.equal([3, 4]);
       done();
     });
   });
@@ -359,7 +359,7 @@ describe('Observable.prototype.publishReplay', () => {
     published.connect();
   });
 
-  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', (done: DoneSignature) => {
+  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', (done: MochaDone) => {
     const expected = [1, 2, 3, 4];
     let i = 0;
 
@@ -369,25 +369,23 @@ describe('Observable.prototype.publishReplay', () => {
 
     source.subscribe(
       (x: number) => {
-        expect(x).toBe(expected[i++]);
+        expect(x).to.equal(expected[i++]);
       }, (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
-        i = 0;
-
         source.subscribe((x: number) => {
           results.push(x);
         }, (x) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         }, () => {
           done();
         });
 
-        source.connect();
+        expect(() => source.connect()).to.throw(Rx.ObjectUnsubscribedError);
       });
 
     source.connect();
 
-    expect(results).toEqual([4]);
+    expect(results).to.deep.equal([4]);
   });
 });

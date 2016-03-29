@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -139,7 +140,7 @@ describe('Observable.prototype.skipWhile', () => {
 
     expectObservable(
       source.skipWhile(predicate).do(null, null, () => {
-        expect(invoked).toBe(3);
+        expect(invoked).to.equal(3);
       })
     ).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

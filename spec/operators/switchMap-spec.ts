@@ -1,17 +1,17 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
 /** @test {switchMap} */
 describe('Observable.prototype.switchMap', () => {
-  it('should switch with a selector function', (done: DoneSignature) => {
+  it('should switch with a selector function', (done: MochaDone) => {
     const a = Observable.of(1, 2, 3);
     const expected = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2', 'a3', 'b3', 'c3'];
     a.switchMap((x: number) => Observable.of('a' + x, 'b' + x, 'c' + x))
       .subscribe((x: string) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, null, done);
   });
 
@@ -26,7 +26,7 @@ describe('Observable.prototype.switchMap', () => {
         };
       })).subscribe();
 
-    expect(unsubbed).toEqual(['a', 'b']);
+    expect(unsubbed).to.deep.equal(['a', 'b']);
   });
 
   it('should switch inner cold observables', () => {

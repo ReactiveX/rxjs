@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
@@ -16,7 +16,7 @@ describe('Observable.prototype.switch', () => {
     expectObservable(e1.switch()).toBe(expected);
   });
 
-  it('should switch to each immediately-scheduled inner Observable', (done: DoneSignature) => {
+  it('should switch to each immediately-scheduled inner Observable', (done: MochaDone) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, queueScheduler);
     const r = [1, 4, 5, 6];
@@ -24,7 +24,7 @@ describe('Observable.prototype.switch', () => {
     Observable.of<Rx.Observable<number>>(a, b, queueScheduler)
       .switch()
       .subscribe((x: number) => {
-        expect(x).toBe(r[i++]);
+        expect(x).to.equal(r[i++]);
       }, null, done);
   });
 
@@ -41,16 +41,16 @@ describe('Observable.prototype.switch', () => {
     .mergeAll()
     .subscribe();
 
-    expect(unsubbed).toEqual(['a', 'b']);
+    expect(unsubbed).to.deep.equal(['a', 'b']);
   });
 
-  it('should switch to each inner Observable', (done: DoneSignature) => {
+  it('should switch to each inner Observable', (done: MochaDone) => {
     const a = Observable.of(1, 2, 3);
     const b = Observable.of(4, 5, 6);
     const r = [1, 2, 3, 4, 5, 6];
     let i = 0;
     Observable.of(a, b).switch().subscribe((x: number) => {
-      expect(x).toBe(r[i++]);
+      expect(x).to.equal(r[i++]);
     }, null, done);
   });
 
@@ -176,29 +176,29 @@ describe('Observable.prototype.switch', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should handle an observable of promises', (done: DoneSignature) => {
+  it('should handle an observable of promises', (done: MochaDone) => {
     const expected = [3];
 
     (<any>Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)))
       .switch()
       .subscribe((x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, null, () => {
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
         done();
       });
   });
 
-  it('should handle an observable of promises, where last rejects', (done: DoneSignature) => {
+  it('should handle an observable of promises, where last rejects', (done: MochaDone) => {
     Observable.of<any>(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
       .switch()
       .subscribe(() => {
-        done.fail();
+        done(new Error('should not be called'));
       }, (err: any) => {
-        expect(err).toBe(3);
+        expect(err).to.equal(3);
         done();
       }, () => {
-        done.fail();
+        done(new Error('should not be called'));
       });
   });
 
@@ -209,12 +209,12 @@ describe('Observable.prototype.switch', () => {
     Observable.of<any>(Observable.never(), Observable.never(), [1, 2, 3, 4])
       .switch()
       .subscribe((x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, null, () => {
         completed = true;
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
       });
 
-    expect(completed).toBe(true);
+    expect(completed).to.be.true;
   });
 });

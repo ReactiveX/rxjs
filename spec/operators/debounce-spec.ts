@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -348,7 +348,7 @@ describe('Observable.prototype.debounce', () => {
     }
   });
 
-  it('should delay by promise resolves', (done: DoneSignature) => {
+  it('should delay by promise resolves', (done: MochaDone) => {
     const e1 = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
@@ -359,17 +359,17 @@ describe('Observable.prototype.debounce', () => {
     e1.debounce(() => {
       return new Promise((resolve: any) => { resolve(42); });
     }).subscribe((x: number) => {
-      expect(x).toEqual(expected.shift()); },
+      expect(x).to.equal(expected.shift()); },
       (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       },
       () => {
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
         done();
       });
   });
 
-  it('should raises error when promise rejects', (done: DoneSignature) => {
+  it('should raises error when promise rejects', (done: MochaDone) => {
     const e1 = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
@@ -385,13 +385,13 @@ describe('Observable.prototype.debounce', () => {
         return new Promise((resolve: any) => { resolve(42); });
       }
     }).subscribe((x: number) => {
-      expect(x).toEqual(expected.shift()); },
+      expect(x).to.equal(expected.shift()); },
       (err: any) => {
-        expect(err).toBe(error);
-        expect(expected.length).toBe(0);
+        expect(err).to.be.an('error', 'error');
+        expect(expected.length).to.equal(0);
         done();
       }, () => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       });
   });
 });

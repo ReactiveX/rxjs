@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -371,7 +371,7 @@ describe('Observable.prototype.mergeAll', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should merge all promises in an observable', (done: DoneSignature) => {
+  it('should merge all promises in an observable', (done: MochaDone) => {
     const e1 = Rx.Observable.from([
       new Promise((res: any) => { res('a'); }),
       new Promise((res: any) => { res('b'); }),
@@ -383,14 +383,14 @@ describe('Observable.prototype.mergeAll', () => {
     const res = [];
     (<any>e1.mergeAll()).subscribe(
       (x: any) => { res.push(x); },
-      (err: any) => { done.fail('should not be called'); },
+      (err: any) => { done(new Error('should not be called')); },
       () => {
-        expect(res).toEqual(expected);
+        expect(res).to.deep.equal(expected);
         done();
       });
   });
 
-  it('should raise error when promise rejects', (done: DoneSignature) => {
+  it('should raise error when promise rejects', (done: MochaDone) => {
     const error = 'error';
     const e1 = Rx.Observable.from([
       new Promise((res: any) => { res('a'); }),
@@ -403,10 +403,10 @@ describe('Observable.prototype.mergeAll', () => {
     (<any>e1.mergeAll()).subscribe(
       (x: any) => { res.push(x); },
       (err: any) => {
-        expect(res.length).toEqual(1);
-        expect(err).toBe(error);
+        expect(res.length).to.equal(1);
+        expect(err).to.equal('error');
         done();
       },
-      () => { done.fail('should not be called'); });
+      () => { done(new Error('should not be called')); });
   });
 });

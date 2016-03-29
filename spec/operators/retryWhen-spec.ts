@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -34,7 +34,7 @@ describe('Observable.prototype.retryWhen', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry when notified via returned notifier on thrown error', (done: DoneSignature) => {
+  it('should retry when notified via returned notifier on thrown error', (done: MochaDone) => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
@@ -46,23 +46,23 @@ describe('Observable.prototype.retryWhen', () => {
         return n;
       })
       .retryWhen((errors: any) => errors.map((x: any) => {
-          expect(x).toBe('bad');
+          expect(x).to.equal('bad');
           if (retried) {
-            throw 'done';
+            throw new Error('done');
           }
           retried = true;
           return x;
       }))
       .subscribe((x: any) => {
-        expect(x).toBe(expected[i++]);
+        expect(x).to.equal(expected[i++]);
       },
       (err: any) => {
-        expect(err).toBe('done');
+        expect(err).to.be.an('error', 'done');
         done();
       });
   });
 
-  it('should retry when notified and complete on returned completion', (done: DoneSignature) => {
+  it('should retry when notified and complete on returned completion', (done: MochaDone) => {
     const expected = [1, 2, 1, 2];
     Observable.of(1, 2, 3)
       .map((n: number) => {
@@ -73,9 +73,9 @@ describe('Observable.prototype.retryWhen', () => {
       })
       .retryWhen((errors: any) => Observable.empty())
       .subscribe((n: number) => {
-        expect(n).toBe(expected.shift());
+        expect(n).to.equal(expected.shift());
       }, (err: any) => {
-        done.fail('error should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });

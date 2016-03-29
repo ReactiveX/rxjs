@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
@@ -18,18 +18,18 @@ describe('Observable.combineLatest', () => {
     expectObservable(combined).toBe(expected, {u: 'ad', v: 'ae', w: 'af', x: 'bf', y: 'bg', z: 'cg'});
   });
 
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: DoneSignature) => {
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: MochaDone) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
 
     //type definition need to be updated
     Observable.combineLatest(a, b, queueScheduler).subscribe((vals: any) => {
-      (<any>expect(vals)).toDeepEqual(r.shift());
+      expect(vals).to.deep.equal(r.shift());
     }, (x) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
-      expect(r.length).toBe(0);
+      expect(r.length).to.equal(0);
       done();
     });
   });

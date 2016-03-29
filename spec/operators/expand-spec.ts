@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const Symbol: any;
 const Observable = Rx.Observable;
@@ -295,7 +295,7 @@ describe('Observable.prototype.expand', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should recursively flatten promises', (done: DoneSignature) => {
+  it('should recursively flatten promises', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
     (<any>Observable.of(1))
       .expand((x: number): any => {
@@ -305,14 +305,14 @@ describe('Observable.prototype.expand', () => {
         return Promise.resolve(x + x);
       })
       .subscribe((x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, null, () => {
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
         done();
       });
   });
 
-  it('should recursively flatten Arrays', (done: DoneSignature) => {
+  it('should recursively flatten Arrays', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
     (<any>Observable).of(1)
       .expand((x: number): any => {
@@ -322,14 +322,14 @@ describe('Observable.prototype.expand', () => {
         return [x + x];
       })
       .subscribe((x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, null, () => {
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
         done();
       });
   });
 
-  it('should recursively flatten lowercase-o observables', (done: DoneSignature) => {
+  it('should recursively flatten lowercase-o observables', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
     const project = (x: any, index: number) => {
       if (x === 16) {
@@ -352,9 +352,9 @@ describe('Observable.prototype.expand', () => {
     (<any>Observable.of(1))
       .expand(project)
       .subscribe((x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, null, () => {
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
         done();
       });
   });

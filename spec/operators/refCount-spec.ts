@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {cold, expectObservable, asDiagram, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -28,14 +28,14 @@ describe('ConnectableObservable.prototype.refCount', () => {
     const sub3 = source.subscribe({ next: function () { //noop
       } });
 
-    expect((<any>source).refCount).toBe(3);
+    expect((<any>source).refCount).to.equal(3);
 
     sub1.unsubscribe();
     sub2.unsubscribe();
     sub3.unsubscribe();
   });
 
-  it('should unsub from the source when all other subscriptions are unsubbed', (done: DoneSignature) => {
+  it('should unsub from the source when all other subscriptions are unsubbed', (done: MochaDone) => {
     let unsubscribeCalled = false;
     const source = new Observable((observer: Rx.Observer<boolean>) => {
       observer.next(true);
@@ -52,15 +52,15 @@ describe('ConnectableObservable.prototype.refCount', () => {
       //noop
     });
     const sub3 = source.subscribe((x: any) => {
-      expect((<any>source).refCount).toBe(1);
+      expect((<any>source).refCount).to.equal(1);
     });
 
     sub1.unsubscribe();
     sub2.unsubscribe();
     sub3.unsubscribe();
 
-    expect((<any>source).refCount).toBe(0);
-    expect(unsubscribeCalled).toBe(true);
+    expect((<any>source).refCount).to.equal(0);
+    expect(unsubscribeCalled).to.be.true;
     done();
   });
 });

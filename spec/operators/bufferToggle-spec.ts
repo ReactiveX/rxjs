@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -38,7 +39,7 @@ describe('Observable.prototype.bufferToggle', () => {
     const innerVals = ['x', 'y', 'z'];
 
     expectObservable(e1.bufferToggle(e2, (x: string) => {
-      expect(x).toBe(innerVals.shift());
+      expect(x).to.equal(innerVals.shift());
       return e3;
     })).toBe(expected, values);
   });

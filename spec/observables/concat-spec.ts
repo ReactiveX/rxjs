@@ -1,7 +1,6 @@
-/* globals describe, it, expect, expectObservable, expectSubscriptions, cold */
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
@@ -334,13 +333,13 @@ describe('Observable.concat', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should concat an immediately-scheduled source with an immediately-scheduled second', (done: DoneSignature) => {
+  it('should concat an immediately-scheduled source with an immediately-scheduled second', (done: MochaDone) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
     Observable.concat(a, b, queueScheduler).subscribe((vals: number) => {
-      expect(vals).toBe(r.shift());
+      expect(vals).to.equal(r.shift());
     }, null, done);
   });
 });

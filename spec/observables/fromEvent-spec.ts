@@ -1,5 +1,5 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -29,10 +29,10 @@ describe('Observable.fromEvent', () => {
 
     subscription.unsubscribe();
 
-    expect(onEventName).toBe('click');
-    expect(typeof onHandler).toBe('function');
-    expect(offEventName).toBe(onEventName);
-    expect(offHandler).toBe(onHandler);
+    expect(onEventName).to.equal('click');
+    expect(typeof onHandler).to.equal('function');
+    expect(offEventName).to.equal(onEventName);
+    expect(offHandler).to.equal(onHandler);
   });
 
   it('should setup an event observable on objects with "addEventListener" and "removeEventListener" ', () => {
@@ -59,10 +59,10 @@ describe('Observable.fromEvent', () => {
 
     subscription.unsubscribe();
 
-    expect(onEventName).toBe('click');
-    expect(typeof onHandler).toBe('function');
-    expect(offEventName).toBe(onEventName);
-    expect(offHandler).toBe(onHandler);
+    expect(onEventName).to.equal('click');
+    expect(typeof onHandler).to.equal('function');
+    expect(offEventName).to.equal(onEventName);
+    expect(offHandler).to.equal(onHandler);
   });
 
   it('should setup an event observable on objects with "addListener" and "removeListener" ', () => {
@@ -89,13 +89,13 @@ describe('Observable.fromEvent', () => {
 
     subscription.unsubscribe();
 
-    expect(onEventName).toBe('click');
-    expect(typeof onHandler).toBe('function');
-    expect(offEventName).toBe(onEventName);
-    expect(offHandler).toBe(onHandler);
+    expect(onEventName).to.equal('click');
+    expect(typeof onHandler).to.equal('function');
+    expect(offEventName).to.equal(onEventName);
+    expect(offHandler).to.equal(onHandler);
   });
 
-  it('should pass through events that occur', (done: DoneSignature) => {
+  it('should pass through events that occur', (done: MochaDone) => {
     let send;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -108,9 +108,9 @@ describe('Observable.fromEvent', () => {
 
     Observable.fromEvent(obj, 'click').take(1)
       .subscribe((e: any) => {
-        expect(e).toBe('test');
+        expect(e).to.equal('test');
       }, (err: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });
@@ -118,7 +118,7 @@ describe('Observable.fromEvent', () => {
     send('test');
   });
 
-  it('should pass through events that occur and use the selector if provided', (done: DoneSignature) => {
+  it('should pass through events that occur and use the selector if provided', (done: MochaDone) => {
     let send;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -135,9 +135,9 @@ describe('Observable.fromEvent', () => {
 
     Observable.fromEvent(obj, 'click', selector).take(1)
       .subscribe((e: any) => {
-        expect(e).toBe('test!');
+        expect(e).to.equal('test!');
       }, (err: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });
@@ -145,7 +145,7 @@ describe('Observable.fromEvent', () => {
     send('test');
   });
 
-  it('should not fail if no event arguments are passed and the selector does not return', (done: DoneSignature) => {
+  it('should not fail if no event arguments are passed and the selector does not return', (done: MochaDone) => {
     let send;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -162,9 +162,9 @@ describe('Observable.fromEvent', () => {
 
     Observable.fromEvent(obj, 'click', selector).take(1)
       .subscribe((e: any) => {
-        expect(e).toBeUndefined();
+        expect(e).not.exist;
       }, (err: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });
@@ -172,7 +172,7 @@ describe('Observable.fromEvent', () => {
     send();
   });
 
-  it('should return a value from the selector if no event arguments are passed', (done: DoneSignature) => {
+  it('should return a value from the selector if no event arguments are passed', (done: MochaDone) => {
     let send;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -189,9 +189,9 @@ describe('Observable.fromEvent', () => {
 
     Observable.fromEvent(obj, 'click', selector).take(1)
       .subscribe((e: any) => {
-        expect(e).toBe('no arguments');
+        expect(e).to.equal('no arguments');
       }, (err: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });
@@ -199,7 +199,7 @@ describe('Observable.fromEvent', () => {
     send();
   });
 
-  it('should pass multiple arguments to selector from event emitter', (done: DoneSignature) => {
+  it('should pass multiple arguments to selector from event emitter', (done: MochaDone) => {
     let send;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -216,9 +216,9 @@ describe('Observable.fromEvent', () => {
 
     Observable.fromEvent(obj, 'click', selector).take(1)
       .subscribe((e: any) => {
-        expect(e).toEqual([1, 2, 3]);
+        expect(e).to.deep.equal([1, 2, 3]);
       }, (err: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });

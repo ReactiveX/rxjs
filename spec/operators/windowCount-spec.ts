@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, asDiagram, time, expectObservable, expectSubscriptions};
 
@@ -148,7 +149,7 @@ describe('Observable.prototype.windowCount', () => {
     rxTestScheduler.schedule(() => {
       expect(() => {
         window.subscribe();
-      }).toThrow(new Rx.ObjectUnsubscribedError());
+      }).to.throw(Rx.ObjectUnsubscribedError);
     }, late);
   });
 

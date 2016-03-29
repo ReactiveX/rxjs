@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
@@ -19,14 +19,14 @@ describe('Observable.prototype.multicast', () => {
     multicasted.connect();
   });
 
-  it('should accept Subjects', (done: DoneSignature) => {
+  it('should accept Subjects', (done: MochaDone) => {
     const expected = [1, 2, 3, 4];
 
     const connectable = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
 
-    connectable.subscribe((x: number) => { expect(x).toBe(expected.shift()); },
+    connectable.subscribe((x: number) => { expect(x).to.equal(expected.shift()); },
         (x) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         }, () => {
           done();
         });
@@ -34,14 +34,14 @@ describe('Observable.prototype.multicast', () => {
     connectable.connect();
   });
 
-  it('should accept Subject factory functions', (done: DoneSignature) => {
+  it('should accept Subject factory functions', (done: MochaDone) => {
     const expected = [1, 2, 3, 4];
 
     const connectable = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
 
-    connectable.subscribe((x: number) => { expect(x).toBe(expected.shift()); },
+    connectable.subscribe((x: number) => { expect(x).to.equal(expected.shift()); },
         (x) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         }, () => {
           done();
         });
@@ -431,7 +431,7 @@ describe('Observable.prototype.multicast', () => {
     });
   });
 
-  it('should multicast one observable to multiple observers', (done: DoneSignature) => {
+  it('should multicast one observable to multiple observers', (done: MochaDone) => {
     const results1 = [];
     const results2 = [];
     let subscriptions = 0;
@@ -457,18 +457,18 @@ describe('Observable.prototype.multicast', () => {
       results2.push(x);
     });
 
-    expect(results1).toEqual([]);
-    expect(results2).toEqual([]);
+    expect(results1).to.deep.equal([]);
+    expect(results2).to.deep.equal([]);
 
     connectable.connect();
 
-    expect(results1).toEqual([1, 2, 3, 4]);
-    expect(results1).toEqual([1, 2, 3, 4]);
-    expect(subscriptions).toBe(1);
+    expect(results1).to.deep.equal([1, 2, 3, 4]);
+    expect(results1).to.deep.equal([1, 2, 3, 4]);
+    expect(subscriptions).to.equal(1);
     done();
   });
 
-  it('should remove all subscribers from the subject when disconnected', (done: DoneSignature) => {
+  it('should remove all subscribers from the subject when disconnected', (done: MochaDone) => {
     const subject = new Subject<number>();
     const expected = [1, 2, 3, 4];
     let i = 0;
@@ -476,9 +476,9 @@ describe('Observable.prototype.multicast', () => {
     const source = Observable.from([1, 2, 3, 4]).multicast(subject);
 
     source.subscribe((x: number) => {
-      expect(x).toBe(expected[i++]);
+      expect(x).to.equal(expected[i++]);
     }, null, () => {
-      expect(subject.isUnsubscribed).toBe(true);
+      expect(subject.isUnsubscribed).to.be.true;
       done();
     });
 
@@ -486,20 +486,20 @@ describe('Observable.prototype.multicast', () => {
   });
 
   describe('when given a subject factory', () => {
-    it('should allow you to reconnect by subscribing again', (done: DoneSignature) => {
+    it('should allow you to reconnect by subscribing again', (done: MochaDone) => {
       const expected = [1, 2, 3, 4];
       let i = 0;
 
       const source = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
 
       source.subscribe((x: number) => {
-        expect(x).toBe(expected[i++]);
+        expect(x).to.equal(expected[i++]);
       }, null,
         () => {
           i = 0;
 
           source.subscribe((x: number) => {
-            expect(x).toBe(expected[i++]);
+            expect(x).to.equal(expected[i++]);
           }, null, done);
 
           source.connect();
@@ -509,7 +509,7 @@ describe('Observable.prototype.multicast', () => {
     });
 
     it('should not throw ObjectUnsubscribedError when used in ' +
-    'a switchMap', (done: DoneSignature) => {
+    'a switchMap', (done: MochaDone) => {
       const source = Observable.of(1, 2, 3)
         .multicast(() => new Subject<number>())
         .refCount();
@@ -519,42 +519,42 @@ describe('Observable.prototype.multicast', () => {
       Observable.of('a', 'b', 'c')
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
-          expect(x).toBe(expected.shift());
+          expect(x).to.equal(expected.shift());
         }, (x) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         }, () => {
-          expect(expected.length).toBe(0);
+          expect(expected.length).to.equal(0);
           done();
         });
     });
   });
 
   describe('when given a subject', () => {
-    it('should NOT allow you to reconnect by subscribing again', (done: DoneSignature) => {
+    it('should NOT allow you to reconnect by subscribing again', (done: MochaDone) => {
       const expected = [1, 2, 3, 4];
       let i = 0;
 
       const source = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
 
       source.subscribe((x: number) => {
-        expect(x).toBe(expected[i++]);
+        expect(x).to.equal(expected[i++]);
       },
         null,
         () => {
           source.subscribe((x: number) => {
-            done.fail('should not be called');
+            done(new Error('should not be called'));
           }, null, () => {
             done();
           });
 
-          source.connect();
+          expect(() => source.connect()).to.throw(Rx.ObjectUnsubscribedError);
         });
 
       source.connect();
     });
 
     it('should not throw ObjectUnsubscribedError when used in ' +
-    'a switchMap', (done: DoneSignature) => {
+    'a switchMap', (done: MochaDone) => {
       const source = Observable.of(1, 2, 3)
         .multicast(new Subject<number>())
         .refCount();
@@ -564,11 +564,11 @@ describe('Observable.prototype.multicast', () => {
       Observable.of('a', 'b', 'c')
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
-          expect(x).toBe(expected.shift());
+          expect(x).to.equal(expected.shift());
         }, (x) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         }, () => {
-          expect(expected.length).toBe(0);
+          expect(expected.length).to.equal(0);
           done();
         });
     });

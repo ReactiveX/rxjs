@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const Symbol: any;
 const Observable = Rx.Observable;
@@ -32,7 +32,7 @@ describe('Observable.prototype.zipAll', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should take all observables from the source and zip them', (done: DoneSignature) => {
+  it('should take all observables from the source and zip them', (done: MochaDone) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
     Observable.of<any>(
@@ -41,7 +41,7 @@ describe('Observable.prototype.zipAll', () => {
     )
     .zipAll((a: any, b: any) => a + b)
     .subscribe((x: any) => {
-      expect(x).toBe(expected[i++]);
+      expect(x).to.equal(expected[i++]);
     }, null, done);
   });
 
@@ -127,7 +127,7 @@ describe('Observable.prototype.zipAll', () => {
 
       // since zip will call `next()` in advance, total calls when
       // zipped with 3 other values should be 4.
-      expect(nextCalled).toBe(4);
+      expect(nextCalled).to.equal(4);
     });
 
     it('should work with never observable and empty iterable', () => {
@@ -367,7 +367,7 @@ describe('Observable.prototype.zipAll', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should zip until one child terminates', (done: DoneSignature) => {
+  it('should zip until one child terminates', (done: MochaDone) => {
     const expected = ['a1', 'b2'];
     let i = 0;
     Observable.of<any>(
@@ -376,7 +376,7 @@ describe('Observable.prototype.zipAll', () => {
     )
     .zipAll((a: any, b: any) => a + b)
     .subscribe((x: any) => {
-      expect(x).toBe(expected[i++]);
+      expect(x).to.equal(expected[i++]);
     }, null, done);
   });
 
@@ -673,7 +673,7 @@ describe('Observable.prototype.zipAll', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should combine two immediately-scheduled observables', (done: DoneSignature) => {
+  it('should combine two immediately-scheduled observables', (done: MochaDone) => {
     const a = Observable.of<any>(1, 2, 3, queueScheduler);
     const b = Observable.of<any>(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 5], [3, 6]];
@@ -682,11 +682,11 @@ describe('Observable.prototype.zipAll', () => {
     const result = Observable.of<any>(a, b, queueScheduler).zipAll();
 
     result.subscribe((vals: any) => {
-      (<any>expect(vals)).toDeepEqual(r[i++]);
+      expect(vals).to.deep.equal(r[i++]);
     }, null, done);
   });
 
-  it('should combine a source with an immediately-scheduled source', (done: DoneSignature) => {
+  it('should combine a source with an immediately-scheduled source', (done: MochaDone) => {
     const a = Observable.of<any>(1, 2, 3, queueScheduler);
     const b = Observable.of<any>(4, 5, 6, 7, 8);
     const r = [[1, 4], [2, 5], [3, 6]];
@@ -695,7 +695,7 @@ describe('Observable.prototype.zipAll', () => {
     const result = Observable.of<any>(a, b, queueScheduler).zipAll();
 
     result.subscribe((vals: any) => {
-      (<any>expect(vals)).toDeepEqual(r[i++]);
+      expect(vals).to.deep.equal(r[i++]);
     }, null, done);
   });
 

@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -97,7 +98,7 @@ describe('Observable.prototype.elementAt', () => {
 
   it('should throw if index is smaller than zero', () => {
     expect(() => { (<any>Observable.range(0, 10)).elementAt(-1); })
-      .toThrow(new Rx.ArgumentOutOfRangeError());
+      .to.throw(Rx.ArgumentOutOfRangeError);
   });
 
   it('should raise error if index is out of range but does not have default value', () => {

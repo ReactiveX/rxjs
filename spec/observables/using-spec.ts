@@ -1,11 +1,11 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const Subscription = Rx.Subscription;
 
 describe('Observable.using', () => {
-  it('should dispose of the resource when the subscription is disposed', (done: DoneSignature) => {
+  it('should dispose of the resource when the subscription is disposed', (done) => {
     let disposed = false;
     const source = Observable.using(
       () => new Subscription(() => disposed = true),
@@ -18,11 +18,11 @@ describe('Observable.using', () => {
     if (disposed) {
       done();
     } else {
-      done.fail('disposed should be true but was false');
+      done(new Error('disposed should be true but was false'));
     }
   });
 
-  it('should accept factory returns promise resolves', (done: DoneSignature) => {
+  it('should accept factory returns promise resolves', (done: MochaDone) => {
     const expected = 42;
 
     let disposed = false;
@@ -31,15 +31,15 @@ describe('Observable.using', () => {
       (resource) => new Promise((resolve: any) => { resolve(expected); }));
 
     e1.subscribe(x => {
-      expect(x).toBe(expected);
+      expect(x).to.equal(expected);
     }, (x) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
       done();
     });
   });
 
-  it('should accept factory returns promise rejects', (done: DoneSignature) => {
+  it('should accept factory returns promise rejects', (done: MochaDone) => {
     const expected = 42;
 
     let disposed = false;
@@ -48,16 +48,16 @@ describe('Observable.using', () => {
       (resource) => new Promise((resolve: any, reject: any) => { reject(expected); }));
 
     e1.subscribe(x => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, (x) => {
-      expect(x).toBe(expected);
+      expect(x).to.equal(expected);
       done();
     }, () => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     });
   });
 
-  it('should raise error when resource factory throws', (done: DoneSignature) => {
+  it('should raise error when resource factory throws', (done: MochaDone) => {
     const expectedError = 'expected';
     const error = 'error';
 
@@ -71,16 +71,16 @@ describe('Observable.using', () => {
     );
 
     source.subscribe((x) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, (x) => {
-      expect(x).toBe(expectedError);
+      expect(x).to.equal(expectedError);
       done();
     }, () => {
-      done.fail();
+      done(new Error('should not be called'));
     });
   });
 
-  it('should raise error when observable factory throws', (done: DoneSignature) => {
+  it('should raise error when observable factory throws', (done: MochaDone) => {
     const error = 'error';
     let disposed = false;
 
@@ -92,12 +92,12 @@ describe('Observable.using', () => {
     );
 
     source.subscribe((x) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, (x) => {
-      expect(x).toBe(error);
+      expect(x).to.equal(error);
       done();
     }, () => {
-      done.fail();
+      done(new Error('should not be called'));
     });
   });
 });

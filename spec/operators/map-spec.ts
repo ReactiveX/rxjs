@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -35,7 +36,7 @@ describe('Observable.prototype.map', () => {
   it('should throw an error if not passed a function', () => {
     expect(() => {
       Observable.of(1, 2, 3).map(<any>'potato');
-    }).toThrow(new TypeError('argument is not a function. Are you looking for `mapTo()`?'));
+    }).to.throw(TypeError, 'argument is not a function. Are you looking for `mapTo()`?');
   });
 
   it('should map multiple values', () => {
@@ -89,7 +90,7 @@ describe('Observable.prototype.map', () => {
         .subscribe(throwError);
     };
 
-    expect(r).toThrow();
+    expect(r).to.throw();
   });
 
   it('should not map an empty observable', () => {
@@ -101,7 +102,7 @@ describe('Observable.prototype.map', () => {
     const r = a
       .map((x: any) => { invoked++; return x; })
       .do(null, null, () => {
-        expect(invoked).toBe(0);
+        expect(invoked).to.equal(0);
       });
 
     expectObservable(r).toBe(expected);
@@ -131,7 +132,7 @@ describe('Observable.prototype.map', () => {
       invoked++;
       return (parseInt(x) + 1) + (index * 10);
     }).do(null, null, () => {
-      expect(invoked).toBe(4);
+      expect(invoked).to.equal(4);
     });
 
     expectObservable(r).toBe(expected, values);
@@ -149,7 +150,7 @@ describe('Observable.prototype.map', () => {
       invoked++;
       return (parseInt(x) + 1) + (index * 10);
     }).do(null, null, () => {
-      expect(invoked).toBe(4);
+      expect(invoked).to.equal(4);
     });
 
     expectObservable(r).toBe(expected, values);
@@ -167,7 +168,7 @@ describe('Observable.prototype.map', () => {
       invoked++;
       return (parseInt(x) + 1) + (index * 10);
     }).do(null, null, () => {
-      expect(invoked).toBe(4);
+      expect(invoked).to.equal(4);
     });
 
     expectObservable(r).toBe(expected, values, 'too bad');
@@ -185,11 +186,11 @@ describe('Observable.prototype.map', () => {
     const r = a
       .map(function (x: string, index: number) {
         invoked++;
-        expect(this).toEqual(foo);
+        expect(this).to.equal(foo);
         return (parseInt(x) + 1) + (index * 10);
       }, 42)
       .do(null, null, () => {
-        expect(invoked).toBe(4);
+        expect(invoked).to.equal(4);
       });
 
     expectObservable(r).toBe(expected, values);
@@ -208,8 +209,8 @@ describe('Observable.prototype.map', () => {
       .map((x: string) => { invoked1++; return parseInt(x) * 2; })
       .map((x: number) => { invoked2++; return x / 2; })
       .do(null, null, () => {
-        expect(invoked1).toBe(7);
-        expect(invoked2).toBe(7);
+        expect(invoked1).to.equal(7);
+        expect(invoked2).to.equal(7);
       });
 
     expectObservable(r).toBe(expected, values);

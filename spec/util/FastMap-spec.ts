@@ -1,9 +1,10 @@
+import {expect} from 'chai';
 import {FastMap} from '../../dist/cjs/util/FastMap';
 
 /** @test {FastMap} */
 describe('FastMap', () => {
   it('should exist', () => {
-    expect(typeof FastMap).toBe('function');
+    expect(FastMap).to.be.a('function');
   });
 
   it('should accept string as keys', () => {
@@ -14,8 +15,8 @@ describe('FastMap', () => {
     map.set(key1, 'yo');
     map.set(key2, 'what up');
 
-    expect(map.get(key1)).toBe('yo');
-    expect(map.get(key2)).toBe('what up');
+    expect(map.get(key1)).to.equal('yo');
+    expect(map.get(key2)).to.equal('what up');
   });
 
   it('should allow setting keys twice', () => {
@@ -25,7 +26,7 @@ describe('FastMap', () => {
     map.set(key1, 'sing');
     map.set(key1, 'yodel');
 
-    expect(map.get(key1)).toBe('yodel');
+    expect(map.get(key1)).to.equal('yodel');
   });
 
   it('should have a delete method that removes keys', () => {
@@ -34,8 +35,8 @@ describe('FastMap', () => {
 
     map.set(key1, 'sing');
 
-    expect(map.delete(key1)).toBe(true);
-    expect(map.get(key1)).toBe(null);
+    expect(map.delete(key1)).to.be.true;
+    expect(map.get(key1)).to.be.a('null');
   });
 
   it('should clear all', () => {
@@ -48,14 +49,14 @@ describe('FastMap', () => {
 
     map.clear();
 
-    expect(map.get(key1)).toBe(undefined);
-    expect(map.get(key2)).toBe(undefined);
+    expect(map.get(key1)).to.be.a('undefined');
+    expect(map.get(key2)).to.be.a('undefined');
   });
 
   describe('prototype.forEach', () => {
     it('should exist', () => {
       const map = new FastMap();
-      expect(typeof map.forEach).toBe('function');
+      expect(map.forEach).to.be.a('function');
     });
 
     it('should iterate over keys and values', () => {
@@ -68,13 +69,13 @@ describe('FastMap', () => {
       const thisArg = {};
 
       map.forEach(function (value, key) {
-        expect(this).toBe(thisArg);
-        expect(value).toBe(expectedValues.shift());
-        expect(key).toBe(expectedKeys.shift());
+        expect(this).to.equal(thisArg);
+        expect(value).to.equal(expectedValues.shift());
+        expect(key).to.equal(expectedKeys.shift());
       }, thisArg);
 
-      expect(expectedValues.length).toBe(0);
-      expect(expectedKeys.length).toBe(0);
+      expect(expectedValues.length).to.equal(0);
+      expect(expectedKeys.length).to.equal(0);
     });
   });
 });

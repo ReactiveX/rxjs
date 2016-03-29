@@ -1,6 +1,7 @@
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
 import {RangeObservable} from '../../dist/cjs/observable/RangeObservable';
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const asap = Rx.Scheduler.asap;
@@ -12,26 +13,28 @@ describe('Observable.range', () => {
     Observable.range(12, 4).subscribe(function (x) {
       results.push(x);
     });
-    expect(results).toEqual([12, 13, 14, 15]);
+    expect(results).to.deep.equal([12, 13, 14, 15]);
   });
 
-  it('should accept a scheduler', (done: DoneSignature) => {
+  it('should accept a scheduler', (done: MochaDone) => {
     const expected = [12, 13, 14, 15];
-    spyOn(asap, 'schedule').and.callThrough();
+    sinon.spy(asap, 'schedule');
 
     const source = Observable.range(12, 4, asap);
 
-    expect((<any>source).scheduler).toBe(asap);
+    expect((<any>source).scheduler).to.deep.equal(asap);
 
     source.subscribe(function (x) {
-      expect(asap.schedule).toHaveBeenCalled();
+      expect(asap.schedule).have.been.called;
       const exp = expected.shift();
-      expect(x).toBe(exp);
+      expect(x).to.equal(exp);
     }, function (x) {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
+      (<any>asap.schedule).restore();
       done();
     });
+
   });
 });
 
@@ -39,18 +42,20 @@ describe('RangeObservable', () => {
   describe('create', () => {
     it('should create a RangeObservable', () => {
       const observable = RangeObservable.create(12, 4);
-      expect(observable instanceof RangeObservable).toBe(true);
+      expect(observable instanceof RangeObservable).to.be.true;
     });
 
     it('should accept a scheduler', () => {
       const observable = RangeObservable.create(12, 4, asap);
-      expect((<any>observable).scheduler).toBe(asap);
+      expect((<any>observable).scheduler).to.deep.equal(asap);
     });
   });
 
   describe('dispatch', () => {
     it('should complete if index >= end', () => {
-      const obj: Rx.Subscriber<any> = jasmine.createSpyObj('subscriber', ['next', 'error', 'complete']);
+      const o = new Rx.Subscriber();
+      const obj: Rx.Subscriber<any> = <any>sinon.stub(o);
+
       const state = {
         subscriber: obj,
         index: 10,
@@ -60,12 +65,14 @@ describe('RangeObservable', () => {
 
       RangeObservable.dispatch(state);
 
-      expect(state.subscriber.complete).toHaveBeenCalled();
-      expect(state.subscriber.next).not.toHaveBeenCalled();
+      expect(state.subscriber.complete).have.been.called;
+      expect(state.subscriber.next).not.have.been.called;
     });
 
     it('should next out another value and increment the index and start', () => {
-      const obj: Rx.Subscriber<any> = jasmine.createSpyObj('subscriber', ['next', 'error', 'complete']);
+      const o = new Rx.Subscriber();
+      const obj: Rx.Subscriber<any> = <any>sinon.stub(o);
+
       const state = {
         subscriber: obj,
         index: 1,
@@ -74,16 +81,16 @@ describe('RangeObservable', () => {
       };
 
       const thisArg = {
-        schedule: jasmine.createSpy('schedule')
+        schedule: sinon.spy()
       };
 
       RangeObservable.dispatch.call(thisArg, state);
 
-      expect(state.subscriber.complete).not.toHaveBeenCalled();
-      expect(state.subscriber.next).toHaveBeenCalledWith(5);
-      expect(state.start).toBe(6);
-      expect(state.index).toBe(2);
-      expect(thisArg.schedule).toHaveBeenCalledWith(state);
+      expect(state.subscriber.complete).not.have.been.called;
+      expect(state.subscriber.next).have.been.calledWith(5);
+      expect(state.start).to.equal(6);
+      expect(state.index).to.equal(2);
+      expect(thisArg.schedule).have.been.calledWith(state);
     });
   });
 });

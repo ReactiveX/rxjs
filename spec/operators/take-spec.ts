@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -107,7 +108,7 @@ describe('Observable.prototype.take', () => {
 
   it('should throw if total is less than zero', () => {
     expect(() => { Observable.range(0, 10).take(-1); })
-      .toThrow(new Rx.ArgumentOutOfRangeError());
+      .to.throw(Rx.ArgumentOutOfRangeError);
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {

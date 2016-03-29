@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -147,7 +148,7 @@ describe('Observable.prototype.takeWhile', () => {
     }
 
     const source = e1.takeWhile(predicate).do(null, null, () => {
-      expect(invoked).toBe(3);
+      expect(invoked).to.equal(3);
     });
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

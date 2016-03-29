@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -19,7 +19,7 @@ describe('Observable.prototype.retry', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry a number of times, without error, then complete', (done: DoneSignature) => {
+  it('should retry a number of times, without error, then complete', (done: MochaDone) => {
     let errors = 0;
     const retries = 2;
     Observable.create((observer: Rx.Observer<number>) => {
@@ -36,14 +36,14 @@ describe('Observable.prototype.retry', () => {
       .retry(retries)
       .subscribe(
         (x: number) => {
-          expect(x).toBe(42);
+          expect(x).to.equal(42);
         },
         (err: any) => {
-          expect('this was called').toBe(false);
+          expect('this was called').to.be.true;
         }, done);
   });
 
-  it('should retry a number of times, then call error handler', (done: DoneSignature) => {
+  it('should retry a number of times, then call error handler', (done: MochaDone) => {
     let errors = 0;
     const retries = 2;
     Observable.create((observer: Rx.Observer<number>) => {
@@ -57,17 +57,17 @@ describe('Observable.prototype.retry', () => {
       .retry(retries - 1)
       .subscribe(
         (x: number) => {
-          expect(x).toBe(42);
+          expect(x).to.equal(42);
         },
         (err: any) => {
-          expect(errors).toBe(2);
+          expect(errors).to.equal(2);
           done();
         }, () => {
-          expect('this was called').toBe(false);
+          expect('this was called').to.be.true;
         });
   });
 
-  it('should retry until successful completion', (done: DoneSignature) => {
+  it('should retry until successful completion', (done: MochaDone) => {
     let errors = 0;
     const retries = 10;
     Observable.create((observer: Rx.Observer<number>) => {
@@ -85,10 +85,10 @@ describe('Observable.prototype.retry', () => {
       .take(retries)
       .subscribe(
         (x: number) => {
-          expect(x).toBe(42);
+          expect(x).to.equal(42);
         },
         (err: any) => {
-          expect('this was called').toBe(false);
+          expect('this was called').to.be.true;
         }, done);
   });
 
@@ -192,7 +192,7 @@ describe('Observable.prototype.retry', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry a synchronous source (multicasted and refCounted) multiple times', (done: DoneSignature) => {
+  it('should retry a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     Observable.of(1, 2, 3).concat(Observable.throw('bad!'))
@@ -200,13 +200,13 @@ describe('Observable.prototype.retry', () => {
       .refCount()
       .retry(4)
       .subscribe(
-        (x: number) => { expect(x).toBe(expected.shift()); },
+        (x: number) => { expect(x).to.equal(expected.shift()); },
         (err: any) => {
-          expect(err).toBe('bad!');
-          expect(expected.length).toBe(0);
+          expect(err).to.equal('bad!');
+          expect(expected.length).to.equal(0);
           done();
         }, () => {
-          done.fail();
+          done(new Error('should not be called'));
         });
   });
 });

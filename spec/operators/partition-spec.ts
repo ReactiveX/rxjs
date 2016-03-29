@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -222,6 +223,6 @@ describe('Observable.prototype.partition', () => {
 
   it('should throw without predicate', () => {
     const e1 = hot('--a-b---a------d----');
-    expect(e1.partition).toThrow();
+    expect(e1.partition).to.throw();
   });
 });

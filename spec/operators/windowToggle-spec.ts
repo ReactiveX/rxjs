@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, asDiagram, time, expectObservable, expectSubscriptions};
 
@@ -51,7 +52,7 @@ describe('Observable.prototype.windowToggle', () => {
     const values = { x: x, y: y, z: z };
 
     const source = e1.windowToggle(e2, (value: string) => {
-      expect(value).toBe('x');
+      expect(value).to.equal('x');
       return e3;
     });
 
@@ -217,7 +218,7 @@ describe('Observable.prototype.windowToggle', () => {
     rxTestScheduler.schedule(() => {
       expect(() => {
         window.subscribe();
-      }).toThrow(new Rx.ObjectUnsubscribedError());
+      }).to.throw(Rx.ObjectUnsubscribedError);
     }, late);
   });
 

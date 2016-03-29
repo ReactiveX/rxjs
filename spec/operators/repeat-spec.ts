@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -218,7 +218,7 @@ describe('Observable.prototype.repeat', () => {
     expect(() => {
       e1.repeat(3);
       rxTestScheduler.flush();
-    }).toThrow();
+    }).to.throw();
   });
 
   it('should terminate repeat and throw if source subscription to _complete throws', () => {
@@ -232,7 +232,7 @@ describe('Observable.prototype.repeat', () => {
     expect(() => {
       e1.repeat(3);
       rxTestScheduler.flush();
-    }).toThrow();
+    }).to.throw();
   });
 
   it('should terminate repeat and throw if source subscription to _next throws when repeating infinitely', () => {
@@ -242,7 +242,7 @@ describe('Observable.prototype.repeat', () => {
     expect(() => {
       e1.repeat();
       rxTestScheduler.flush();
-    }).toThrow();
+    }).to.throw();
   });
 
   it('should terminate repeat and throw if source subscription to _complete throws when repeating infinitely', () => {
@@ -256,7 +256,7 @@ describe('Observable.prototype.repeat', () => {
     expect(() => {
       e1.repeat();
       rxTestScheduler.flush();
-    }).toThrow();
+    }).to.throw();
   });
 
   it('should raise error after first emit succeed', () => {
@@ -275,7 +275,7 @@ describe('Observable.prototype.repeat', () => {
     expectObservable(e1.repeat(2)).toBe(expected);
   });
 
-  it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done: DoneSignature) => {
+  it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     Observable.of(1, 2, 3)
@@ -283,11 +283,11 @@ describe('Observable.prototype.repeat', () => {
       .refCount()
       .repeat(5)
       .subscribe(
-        (x: number) => { expect(x).toBe(expected.shift()); },
+        (x: number) => { expect(x).to.equal(expected.shift()); },
         (x) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         }, () => {
-          expect(expected.length).toBe(0);
+          expect(expected.length).to.equal(0);
           done();
         });
   });

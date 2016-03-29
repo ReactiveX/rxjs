@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -69,34 +69,34 @@ describe('Observable.prototype.min', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should min a range() source observable', (done: DoneSignature) => {
+  it('should min a range() source observable', (done: MochaDone) => {
     (<any>Rx.Observable.range(1, 10000)).min().subscribe(
       (value: number) => {
-        expect(value).toEqual(1);
+        expect(value).to.equal(1);
       }, (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });
   });
 
-  it('should min a range().skip(1) source observable', (done: DoneSignature) => {
+  it('should min a range().skip(1) source observable', (done: MochaDone) => {
     (<any>Rx.Observable.range(1, 10)).skip(1).min().subscribe(
       (value: number) => {
-        expect(value).toEqual(2);
+        expect(value).to.equal(2);
       }, (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });
   });
 
-  it('should min a range().take(1) source observable', (done: DoneSignature) => {
+  it('should min a range().take(1) source observable', (done: MochaDone) => {
     (<any>Rx.Observable.range(1, 10)).take(1).min().subscribe(
       (value: number) => {
-        expect(value).toEqual(1);
+        expect(value).to.equal(1);
       }, (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });

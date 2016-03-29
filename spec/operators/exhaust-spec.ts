@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -187,29 +187,29 @@ describe('Observable.prototype.exhaust', () => {
     expectSubscriptions(x.subscriptions).toBe(xsubs);
   });
 
-  it('should handle an observable of promises', (done: DoneSignature) => {
+  it('should handle an observable of promises', (done: MochaDone) => {
     const expected = [1];
 
     (<any>Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)))
       .exhaust()
       .subscribe((x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, null, () => {
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
         done();
       });
   });
 
-  it('should handle an observable of promises, where one rejects', (done: DoneSignature) => {
+  it('should handle an observable of promises, where one rejects', (done: MochaDone) => {
     (<any>Observable.of<any>(Promise.reject(2), Promise.resolve(1)))
       .exhaust()
       .subscribe((x: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, (err: any) => {
-        expect(err).toBe(2);
+        expect(err).to.equal(2);
         done();
       }, () => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       });
   });
 });

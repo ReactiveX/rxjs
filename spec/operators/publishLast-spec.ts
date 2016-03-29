@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -21,7 +21,7 @@ describe('Observable.prototype.publishLast', () => {
   it('should return a ConnectableObservable', () => {
     const source = Observable.of(1).publishLast();
 
-    expect(source instanceof Rx.ConnectableObservable).toBe(true);
+    expect(source instanceof Rx.ConnectableObservable).to.be.true;
   });
 
   it('should do nothing if connect is not called, despite subscriptions', () => {
@@ -215,7 +215,7 @@ describe('Observable.prototype.publishLast', () => {
     published.connect();
   });
 
-  it('should multicast one observable to multiple observers', (done: DoneSignature) => {
+  it('should multicast one observable to multiple observers', (done: MochaDone) => {
     const results1 = [];
     const results2 = [];
     let subscriptions = 0;
@@ -239,14 +239,14 @@ describe('Observable.prototype.publishLast', () => {
       results2.push(x);
     });
 
-    expect(results1).toEqual([]);
-    expect(results2).toEqual([]);
+    expect(results1).to.deep.equal([]);
+    expect(results2).to.deep.equal([]);
 
     connectable.connect();
 
-    expect(results1).toEqual([4]);
-    expect(results2).toEqual([4]);
-    expect(subscriptions).toBe(1);
+    expect(results1).to.deep.equal([4]);
+    expect(results2).to.deep.equal([4]);
+    expect(subscriptions).to.equal(1);
     done();
   });
 });

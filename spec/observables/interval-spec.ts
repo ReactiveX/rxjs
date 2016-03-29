@@ -1,8 +1,8 @@
-/* globals describe, it, expect, spyOn */
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-declare const {expectObservable};
-import {DoneSignature} from '../helpers/test-helper';
 
+declare const expectObservable;
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
@@ -14,9 +14,9 @@ describe('Observable.interval', () => {
   });
 
   it('should specify default scheduler if incorrect scheduler specified', () => {
-    const scheduler = (<any>Observable.interval(10, <any>jasmine.createSpy('dummy'))).scheduler;
+    const scheduler = (<any>Observable.interval(10, <any>sinon.stub())).scheduler;
 
-    expect(scheduler).toBe(Rx.Scheduler.async);
+    expect(scheduler).to.equal(Rx.Scheduler.async);
   });
 
   it('should emit when relative interval set to zero', () => {
@@ -33,7 +33,7 @@ describe('Observable.interval', () => {
     expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
   });
 
-  it('should emit values until unsubscribed', (done: DoneSignature) => {
+  it('should emit values until unsubscribed', (done: MochaDone) => {
     const values = [];
     const expected = [0, 1, 2, 3, 4, 5, 6];
     const e1 = Observable.interval(5);
@@ -41,13 +41,13 @@ describe('Observable.interval', () => {
       values.push(x);
       if (x === 6) {
         subscription.unsubscribe();
-        expect(values).toEqual(expected);
+        expect(values).to.deep.equal(expected);
         done();
       }
     }, (err: any) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     });
   });
 });

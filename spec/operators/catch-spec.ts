@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestSchdeuler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -213,16 +213,16 @@ describe('Observable.prototype.catch', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should pass the error as the first argument', (done: DoneSignature) => {
+  it('should pass the error as the first argument', (done: MochaDone) => {
     Observable.throw('bad')
       .catch((err: any) => {
-        expect(err).toBe('bad');
+        expect(err).to.equal('bad');
         return Observable.empty();
       })
       .subscribe(() => {
         //noop
        }, (err: any) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         }, () => {
           done();
         });

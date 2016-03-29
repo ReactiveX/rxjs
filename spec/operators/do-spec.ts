@@ -1,5 +1,5 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-import {DoneSignature} from '../helpers/test-helper';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
@@ -26,7 +26,7 @@ describe('Observable.prototype.do', () => {
     })
     .subscribe();
 
-    expect(value).toBe(42);
+    expect(value).to.equal(42);
   });
 
   it('should complete with a callback', () => {
@@ -35,13 +35,13 @@ describe('Observable.prototype.do', () => {
       err = x;
     })
     .subscribe(null, function (ex) {
-      expect(ex).toBe('bad');
+      expect(ex).to.equal('bad');
     });
 
-    expect(err).toBe('bad');
+    expect(err).to.equal('bad');
   });
 
-  it('should handle everything with an observer', (done: DoneSignature) => {
+  it('should handle everything with an observer', (done: MochaDone) => {
     const expected = [1, 2, 3];
     const results = [];
 
@@ -51,16 +51,16 @@ describe('Observable.prototype.do', () => {
           results.push(x);
         },
         error: (err: any) => {
-          done.fail('should not be called');
+          done(new Error('should not be called'));
         },
         complete: () => {
-          expect(results).toEqual(expected);
+          expect(results).to.deep.equal(expected);
           done();
         }
       }).subscribe();
   });
 
-  it('should handle everything with a Subject', (done: DoneSignature) => {
+  it('should handle everything with a Subject', (done: MochaDone) => {
     const expected = [1, 2, 3];
     const results = [];
     const subject = new Subject();
@@ -70,10 +70,10 @@ describe('Observable.prototype.do', () => {
         results.push(x);
       },
       error: (err: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       },
       complete: () => {
-        expect(results).toEqual(expected);
+        expect(results).to.deep.equal(expected);
         done();
       }
     });
@@ -86,27 +86,27 @@ describe('Observable.prototype.do', () => {
   it('should handle an error with a callback', () => {
     let errored = false;
     Observable.throw('bad').do(null, (err: any) => {
-      expect(err).toBe('bad');
+      expect(err).to.equal('bad');
     })
     .subscribe(null, (err: any) => {
       errored = true;
-      expect(err).toBe('bad');
+      expect(err).to.equal('bad');
     });
 
-    expect(errored).toBe(true);
+    expect(errored).to.be.true;
   });
 
   it('should handle an error with observer', () => {
     let errored = false;
     Observable.throw('bad').do(<any>{ error: function (err) {
-      expect(err).toBe('bad');
+      expect(err).to.equal('bad');
     } })
     .subscribe(null, function (err) {
       errored = true;
-      expect(err).toBe('bad');
+      expect(err).to.equal('bad');
     });
 
-    expect(errored).toBe(true);
+    expect(errored).to.be.true;
   });
 
   it('should handle complete with observer', () => {
@@ -118,7 +118,7 @@ describe('Observable.prototype.do', () => {
       }
     }).subscribe();
 
-    expect(completed).toBe(true);
+    expect(completed).to.be.true;
   });
 
   it('should handle next with observer', () => {
@@ -130,7 +130,7 @@ describe('Observable.prototype.do', () => {
       }
     }).subscribe();
 
-    expect(value).toBe('hi');
+    expect(value).to.equal('hi');
   });
 
   it('should raise error if next handler raises error', () => {
@@ -139,7 +139,7 @@ describe('Observable.prototype.do', () => {
         throw new Error('bad');
       }
     }).subscribe(null, (err: any) => {
-      expect(err.message).toBe('bad');
+      expect(err.message).to.equal('bad');
     });
   });
 
@@ -149,7 +149,7 @@ describe('Observable.prototype.do', () => {
         throw new Error('bad');
       }
     }).subscribe(null, (err: any) => {
-      expect(err.message).toBe('bad');
+      expect(err.message).to.equal('bad');
     });
   });
 
@@ -159,7 +159,7 @@ describe('Observable.prototype.do', () => {
         throw new Error('bad');
       }
     }).subscribe(null, (err: any) => {
-      expect(err.message).toBe('bad');
+      expect(err.message).to.equal('bad');
     });
   });
 

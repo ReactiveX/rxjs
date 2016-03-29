@@ -1,5 +1,5 @@
+import {expect} from 'chai';
 import * as Rx from '../dist/cjs/Rx';
-import {DoneSignature} from './helpers/test-helper';
 
 const Subscriber = Rx.Subscriber;
 const Observable = Rx.Observable;
@@ -7,48 +7,50 @@ const Observable = Rx.Observable;
 declare const __root__: any;
 
 function expectFullObserver(val) {
-  expect(typeof val).toBe('object');
-  expect(typeof val.next).toBe('function');
-  expect(typeof val.error).toBe('function');
-  expect(typeof val.complete).toBe('function');
-  expect(typeof val.isUnsubscribed).toBe('boolean');
+  expect(val).to.be.a('object');
+  expect(val.next).to.be.a('function');
+  expect(val.error).to.be.a('function');
+  expect(val.complete).to.be.a('function');
+  expect(val.isUnsubscribed).to.be.a('boolean');
 }
 
 /** @test {Observable} */
 describe('Observable', () => {
-  it('should be constructed with a subscriber function', (done: DoneSignature) => {
+  it('should be constructed with a subscriber function', (done: MochaDone) => {
     const source = new Observable(function (observer) {
       expectFullObserver(observer);
       observer.next(1);
       observer.complete();
     });
 
-    source.subscribe(function (x) { expect(x).toBe(1); }, null, done);
+    source.subscribe(function (x) { expect(x).to.equal(1); }, null, done);
   });
 
   describe('forEach', () => {
-    it('should iterate and return a Promise', (done: DoneSignature) => {
+    it('should iterate and return a Promise', (done: MochaDone) => {
       const expected = [1, 2, 3];
       const result = Observable.of(1, 2, 3).forEach(function (x) {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, Promise)
-      .then(done);
+      .then(() => {
+        done();
+      });
 
-      expect(typeof result.then).toBe('function');
+      expect(result.then).to.be.a('function');
     });
 
-    it('should reject promise when in error', (done: DoneSignature) => {
+    it('should reject promise when in error', (done: MochaDone) => {
       Observable.throw('bad').forEach((x: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, Promise).then(() => {
-        done.fail('should not complete');
+        done(new Error('should not complete'));
       }, (err: any) => {
-        expect(err).toBe('bad');
+        expect(err).to.equal('bad');
         done();
       });
     });
 
-    it('should allow Promise to be globally configured', (done: DoneSignature) => {
+    it('should allow Promise to be globally configured', (done: MochaDone) => {
       let wasCalled = false;
 
       __root__.Rx = {};
@@ -59,29 +61,33 @@ describe('Observable', () => {
       };
 
       Observable.of(42).forEach((x: number) => {
-        expect(x).toBe(42);
-      }, null).then(() => {
-        expect(wasCalled).toBe(true);
+        expect(x).to.equal(42);
+      }).then(() => {
+        expect(wasCalled).to.be.true;
         done();
       });
     });
 
-    it('should reject promise if nextHandler throws', (done: DoneSignature) => {
+    it('should reject promise if nextHandler throws', (done: MochaDone) => {
       const results = [];
+
       Observable.of(1, 2, 3).forEach((x: number) => {
         if (x === 3) {
           throw new Error('NO THREES!');
         }
         results.push(x);
-      }, null)
-      .then(<any>done.fail, function (err) {
-        expect(err).toEqual(new Error('NO THREES!'));
-        expect(results).toEqual([1, 2]);
-      })
-      .then(done);
+      }, Promise)
+      .then(() => {
+        done(new Error('should not be called'));
+      }, (err) => {
+        expect(err).to.be.an('error', 'NO THREES!');
+        expect(results).to.deep.equal([1, 2]);
+      }).then(() => {
+        done();
+      });
     });
 
-    it('should handle a synchronous throw from the next handler and tear down', (done: DoneSignature) => {
+    it('should handle a synchronous throw from the next handler and tear down', (done: MochaDone) => {
       let unsubscribeCalled = false;
       const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
         observer.next(1);
@@ -100,16 +106,18 @@ describe('Observable', () => {
           throw new Error('I told, you Bobby Boucher, twos are the debil!');
         }
       }).then(
-        () => done.fail(),
+        () => {
+          done(new Error('should not be called'));
+        },
         (err) => {
           results.push(err);
-          expect(results).toEqual([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
-          expect(unsubscribeCalled).toBe(true);
+          expect(results).to.deep.equal([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
+          expect(unsubscribeCalled).to.be.true;
           done();
         });
     });
 
-    it('should handle an asynchronous throw from the next handler and tear down', (done: DoneSignature) => {
+    it('should handle an asynchronous throw from the next handler and tear down', (done: MochaDone) => {
       let unsubscribeCalled = false;
       const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
         let i = 1;
@@ -128,11 +136,13 @@ describe('Observable', () => {
           throw new Error('I told, you Bobby Boucher, twos are the debil!');
         }
       }).then(
-        () => done.fail(),
+        () => {
+          done(new Error('should not be called'));
+        },
         (err) => {
           results.push(err);
-          expect(results).toEqual([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
-          expect(unsubscribeCalled).toBe(true);
+          expect(results).to.deep.equal([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
+          expect(unsubscribeCalled).to.be.true;
           done();
         });
     });
@@ -146,12 +156,12 @@ describe('Observable', () => {
       const source = new Observable((observer: Rx.Observer<string>) => {
         subscribed = true;
         observer.next('wee');
-        expect(nexted).toBe('wee');
+        expect(nexted).to.equal('wee');
         observer.complete();
-        expect(completed).toBe(true);
+        expect(completed).to.be.true;
       });
 
-      expect(subscribed).toBe(false);
+      expect(subscribed).to.be.false;
 
       let mutatedByNext = false;
       let mutatedByComplete = false;
@@ -164,8 +174,8 @@ describe('Observable', () => {
         mutatedByComplete = true;
       });
 
-      expect(mutatedByNext).toBe(true);
-      expect(mutatedByComplete).toBe(true);
+      expect(mutatedByNext).to.be.true;
+      expect(mutatedByComplete).to.be.true;
     });
 
     it('should work when subscribe is called with no arguments', () => {
@@ -189,12 +199,12 @@ describe('Observable', () => {
       const sub = source.subscribe(() => {
         //noop
        });
-      expect(sub instanceof Rx.Subscription).toBe(true);
-      expect(unsubscribeCalled).toBe(false);
-      expect(typeof sub.unsubscribe).toBe('function');
+      expect(sub instanceof Rx.Subscription).to.be.true;
+      expect(unsubscribeCalled).to.be.false;
+      expect(sub.unsubscribe).to.be.a('function');
 
       sub.unsubscribe();
-      expect(unsubscribeCalled).toBe(true);
+      expect(unsubscribeCalled).to.be.true;
     });
 
     it('should run unsubscription logic when an error is thrown sending messages synchronously', () => {
@@ -217,10 +227,10 @@ describe('Observable', () => {
         messageErrorValue = e;
       }
 
-      expect(sub).toBe(undefined);
-      expect(unsubscribeCalled).toBe(true);
-      expect(messageError).toBe(true);
-      expect(messageErrorValue).toBe('boo!');
+      expect(sub).to.be.a('undefined');
+      expect(unsubscribeCalled).to.be.true;
+      expect(messageError).to.be.true;
+      expect(messageErrorValue).to.equal('boo!');
     });
 
     it('should dispose of the subscriber when an error is thrown sending messages synchronously', () => {
@@ -244,11 +254,11 @@ describe('Observable', () => {
         messageErrorValue = e;
       }
 
-      expect(sub).toBe(undefined);
-      expect(subscriber.isUnsubscribed).toBe(true);
-      expect(unsubscribeCalled).toBe(true);
-      expect(messageError).toBe(true);
-      expect(messageErrorValue).toBe('boo!');
+      expect(sub).to.be.a('undefined');
+      expect(subscriber.isUnsubscribed).to.be.true;
+      expect(unsubscribeCalled).to.be.true;
+      expect(messageError).to.be.true;
+      expect(messageErrorValue).to.equal('boo!');
     });
 
     it('should ignore next messages after unsubscription', () => {
@@ -269,7 +279,7 @@ describe('Observable', () => {
         }
       );
 
-      expect(times).toBe(2);
+      expect(times).to.equal(2);
     });
 
     it('should ignore error messages after unsubscription', () => {
@@ -292,8 +302,8 @@ describe('Observable', () => {
         function() { errorCalled = true; }
       );
 
-      expect(times).toBe(2);
-      expect(errorCalled).toBe(false);
+      expect(times).to.equal(2);
+      expect(errorCalled).to.be.false;
     });
 
     it('should ignore complete messages after unsubscription', () => {
@@ -317,18 +327,18 @@ describe('Observable', () => {
         function() { completeCalled = true; }
       );
 
-      expect(times).toBe(2);
-      expect(completeCalled).toBe(false);
+      expect(times).to.equal(2);
+      expect(completeCalled).to.be.false;
     });
 
     describe('when called with an anonymous observer', () => {
       it('should accept an anonymous observer with just a next function and call the next function in the context' +
-        ' of the anonymous observer', (done: DoneSignature) => {
+        ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
           next: function next(x) {
-            expect(this).toBe(o);
-            expect(x).toBe(1);
+            expect(this).to.equal(o);
+            expect(x).to.equal(1);
             done();
           }
         };
@@ -337,12 +347,12 @@ describe('Observable', () => {
       });
 
       it('should accept an anonymous observer with just an error function and call the error function in the context' +
-        ' of the anonymous observer', (done: DoneSignature) => {
+        ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
           error: function error(err) {
-            expect(this).toBe(o);
-            expect(err).toBe('bad');
+            expect(this).to.equal(o);
+            expect(err).to.equal('bad');
             done();
           }
         };
@@ -351,11 +361,11 @@ describe('Observable', () => {
       });
 
       it('should accept an anonymous observer with just a complete function and call the complete function in the' +
-        ' context of the anonymous observer', (done: DoneSignature) => {
+        ' context of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
          const o = {
           complete: function complete() {
-            expect(this).toBe(o);
+            expect(this).to.equal(o);
             done();
           }
         };
@@ -366,7 +376,7 @@ describe('Observable', () => {
       it('should accept an anonymous observer with no functions at all', () => {
         expect(() => {
           Observable.empty().subscribe(<any>{});
-        }).not.toThrow();
+        }).not.to.throw();
       });
 
       it('should run unsubscription logic when an error is thrown sending messages synchronously to an' +
@@ -378,7 +388,7 @@ describe('Observable', () => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
           next: function next(x) {
-            expect(this).toBe(o);
+            expect(this).to.equal(o);
             throw x;
           }
         };
@@ -398,10 +408,10 @@ describe('Observable', () => {
           messageErrorValue = e;
         }
 
-        expect(sub).toBe(undefined);
-        expect(unsubscribeCalled).toBe(true);
-        expect(messageError).toBe(true);
-        expect(messageErrorValue).toBe('boo!');
+        expect(sub).to.be.a('undefined');
+        expect(unsubscribeCalled).to.be.true;
+        expect(messageError).to.be.true;
+        expect(messageErrorValue).to.equal('boo!');
       });
 
       it('should ignore next messages after unsubscription', () => {
@@ -422,7 +432,7 @@ describe('Observable', () => {
           }
         });
 
-        expect(times).toBe(2);
+        expect(times).to.equal(2);
       });
 
       it('should ignore error messages after unsubscription', () => {
@@ -445,8 +455,8 @@ describe('Observable', () => {
           error() { errorCalled = true; }
         });
 
-        expect(times).toBe(2);
-        expect(errorCalled).toBe(false);
+        expect(times).to.equal(2);
+        expect(errorCalled).to.be.false;
       });
 
       it('should ignore complete messages after unsubscription', () => {
@@ -469,8 +479,8 @@ describe('Observable', () => {
           complete() { completeCalled = true; }
         });
 
-        expect(times).toBe(2);
-        expect(completeCalled).toBe(false);
+        expect(times).to.equal(2);
+        expect(completeCalled).to.be.false;
       });
     });
   });
@@ -482,7 +492,7 @@ describe('Observable.create', () => {
     const result = Observable.create(() => {
       //noop
      });
-    expect(result instanceof Observable).toBe(true);
+    expect(result instanceof Observable).to.be.true;
   });
 
   it('should provide an observer to the function', () => {
@@ -493,17 +503,17 @@ describe('Observable.create', () => {
       observer.complete();
     });
 
-    expect(called).toBe(false);
+    expect(called).to.be.false;
     result.subscribe(() => {
       //noop
     });
-    expect(called).toBe(true);
+    expect(called).to.be.true;
   });
 });
 
 /** @test {Observable} */
 describe('Observable.lift', () => {
-  it('should be overrideable in a custom Observable type that composes', (done: DoneSignature) => {
+  it('should be overrideable in a custom Observable type that composes', (done: MochaDone) => {
     class MyCustomObservable<T> extends Rx.Observable<T> {
       lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
         const observable = new MyCustomObservable<R>();
@@ -520,22 +530,22 @@ describe('Observable.lift', () => {
       observer.complete();
     }).map((x: number) => { return 10 * x; });
 
-    expect(result instanceof MyCustomObservable).toBe(true);
+    expect(result instanceof MyCustomObservable).to.be.true;
 
     const expected = [10, 20, 30];
 
     result.subscribe(
       function (x) {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });
   });
 
   it('should allow injecting behaviors into all subscribers in an operator ' +
-  'chain when overridden', (done: DoneSignature) => {
+  'chain when overridden', (done: MochaDone) => {
     // The custom Subscriber
     const log: Array<string> = [];
 
@@ -580,18 +590,18 @@ describe('Observable.lift', () => {
     .filter((x: number) => { return x > 15; })
     .count();
 
-    expect(result instanceof LogObservable).toBe(true);
+    expect(result instanceof LogObservable).to.be.true;
 
     const expected = [2];
 
     result.subscribe(
       function (x) {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       },
       (x) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
-        expect(log).toEqual([
+        expect(log).to.deep.equal([
           'next 10', // map
           'next 20', // map
           'next 20', // filter

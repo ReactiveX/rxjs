@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -61,7 +62,7 @@ describe('Observable.prototype.mapTo', () => {
         .subscribe(throwError);
     };
 
-    expect(r).toThrow();
+    expect(r).to.throw();
   });
 
   it('should not map an empty observable', () => {

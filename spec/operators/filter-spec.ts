@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -116,7 +116,7 @@ describe('Observable.prototype.filter', () => {
     const r = source
       .filter(predicate)
       .do(null, null, () => {
-        expect(invoked).toEqual(7);
+        expect(invoked).to.equal(7);
       });
 
     expectObservable(r).toBe(expected);
@@ -244,17 +244,17 @@ describe('Observable.prototype.filter', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should send errors down the error path', (done: DoneSignature) => {
+  it('should send errors down the error path', (done: MochaDone) => {
     Observable.of(42).filter(<any>((x: number, index: number) => {
       throw 'bad';
     }))
       .subscribe((x: number) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, (err: any) => {
-        expect(err).toBe('bad');
+        expect(err).to.equal('bad');
         done();
       }, () => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       });
   });
 

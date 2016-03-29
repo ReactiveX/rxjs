@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const Symbol: any;
 const Observable = Rx.Observable;
@@ -21,7 +21,7 @@ describe('Observable.prototype.zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should zip the provided observables', (done: DoneSignature) => {
+  it('should zip the provided observables', (done: MochaDone) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
 
@@ -30,7 +30,7 @@ describe('Observable.prototype.zip', () => {
       (a: string, b: number): string => a + b
     )
     .subscribe(function (x) {
-      expect(x).toBe(expected[i++]);
+      expect(x).to.equal(expected[i++]);
     }, null, done);
   });
 
@@ -116,7 +116,7 @@ describe('Observable.prototype.zip', () => {
 
       // since zip will call `next()` in advance, total calls when
       // zipped with 3 other values should be 4.
-      expect(nextCalled).toBe(4);
+      expect(nextCalled).to.equal(4);
     });
 
     it('should work with never observable and empty iterable', () => {
@@ -562,14 +562,14 @@ describe('Observable.prototype.zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: DoneSignature) => {
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: MochaDone) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 5], [3, 6]];
     let i = 0;
 
     a.zip(b).subscribe(function (vals) {
-      (<any>expect(vals)).toDeepEqual(r[i++]);
+      expect(vals).to.deep.equal(r[i++]);
     }, null, done);
   });
 

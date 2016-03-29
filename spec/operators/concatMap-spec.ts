@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -637,7 +637,7 @@ describe('Observable.prototype.concatMap', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should map values to constant resolved promises and concatenate', (done: DoneSignature) => {
+  it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: any) => Observable.from(Promise.resolve(42));
 
@@ -646,29 +646,29 @@ describe('Observable.prototype.concatMap', () => {
       (x: any) => {
         results.push(x);
       }, (err: any) => {
-        done.fail('Subscriber error handler not supposed to be called.');
+        done(new Error('Subscriber error handler not supposed to be called.'));
       }, () => {
-        expect(results).toEqual([42, 42, 42, 42]);
+        expect(results).to.deep.equal([42, 42, 42, 42]);
         done();
       });
   });
 
-  it('should map values to constant rejected promises and concatenate', (done: DoneSignature) => {
+  it('should map values to constant rejected promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: any) => Observable.from(Promise.reject(42));
 
     source.concatMap(project).subscribe(
       (x: any) => {
-        done.fail('Subscriber next handler not supposed to be called.');
+        done(new Error('Subscriber next handler not supposed to be called.'));
       }, (err: any) => {
-        expect(err).toEqual(42);
+        expect(err).to.deep.equal(42);
         done();
       }, () => {
-        done.fail('Subscriber complete handler not supposed to be called.');
+        done(new Error('Subscriber complete handler not supposed to be called.'));
       });
   });
 
-  it('should map values to resolved promises and concatenate', (done: DoneSignature) => {
+  it('should map values to resolved promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: number, index: number) => Observable.from(Promise.resolve(value + index));
 
@@ -677,29 +677,29 @@ describe('Observable.prototype.concatMap', () => {
       (x: any) => {
         results.push(x);
       }, (err: any) => {
-        done.fail('Subscriber error handler not supposed to be called.');
+        done(new Error('Subscriber error handler not supposed to be called.'));
       }, () => {
-        expect(results).toEqual([4, 4, 4, 4]);
+        expect(results).to.deep.equal([4, 4, 4, 4]);
         done();
       });
   });
 
-  it('should map values to rejected promises and concatenate', (done: DoneSignature) => {
+  it('should map values to rejected promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: number, index: number) => Observable.from(Promise.reject('' + value + '-' + index));
 
     source.concatMap(project).subscribe(
       (x: any) => {
-        done.fail('Subscriber next handler not supposed to be called.');
+        done(new Error('Subscriber next handler not supposed to be called.'));
       }, (err: any) => {
-        expect(err).toEqual('4-0');
+        expect(err).to.deep.equal('4-0');
         done();
       }, () => {
-        done.fail('Subscriber complete handler not supposed to be called.');
+        done(new Error('Subscriber complete handler not supposed to be called.'));
       });
   });
 
-  it('should concatMap values to resolved promises with resultSelector', (done: DoneSignature) => {
+  it('should concatMap values to resolved promises with resultSelector', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const resultSelectorCalledWith = [];
     const project = (value: number, index: number) => Observable.from((Promise.resolve([value, index])));
@@ -720,15 +720,15 @@ describe('Observable.prototype.concatMap', () => {
       (x: any) => {
         results.push(x);
       }, (err: any) => {
-        done.fail('Subscriber error handler not supposed to be called.');
+        done(new Error('Subscriber error handler not supposed to be called.'));
       }, () => {
-        expect(results).toEqual([8, 8, 8, 8]);
-        (<any>expect(resultSelectorCalledWith)).toDeepEqual(expectedCalls);
+        expect(results).to.deep.equal([8, 8, 8, 8]);
+        expect(resultSelectorCalledWith).to.deep.equal(expectedCalls);
         done();
       });
   });
 
-  it('should concatMap values to rejected promises with resultSelector', (done: DoneSignature) => {
+  it('should concatMap values to rejected promises with resultSelector', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: number, index: number) => Observable.from(Promise.reject('' + value + '-' + index));
 
@@ -738,12 +738,12 @@ describe('Observable.prototype.concatMap', () => {
 
     source.concatMap(project, resultSelector).subscribe(
       (x: any) => {
-        done.fail('Subscriber next handler not supposed to be called.');
+        done(new Error('Subscriber next handler not supposed to be called.'));
       }, (err: any) => {
-        expect(err).toEqual('4-0');
+        expect(err).to.deep.equal('4-0');
         done();
       }, () => {
-        done.fail('Subscriber complete handler not supposed to be called.');
+        done(new Error('Subscriber complete handler not supposed to be called.'));
       });
   });
 });

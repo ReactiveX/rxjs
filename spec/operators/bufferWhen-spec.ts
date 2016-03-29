@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -297,7 +297,7 @@ describe('Observable.prototype.bufferWhen', () => {
   // closing Observables, because doing such would constantly recreate a new
   // buffer in a synchronous infinite loop until the stack overflows. This also
   // happens with buffer in RxJS 4.
-  it('should NOT handle hot inner empty', (done: DoneSignature) => {
+  it('should NOT handle hot inner empty', (done: MochaDone) => {
     const source = Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
     const closing = Observable.empty();
     const TOO_MANY_INVOCATIONS = 30;
@@ -306,10 +306,10 @@ describe('Observable.prototype.bufferWhen', () => {
       .bufferWhen(() => closing)
       .takeWhile((val: any, index: number) => index < TOO_MANY_INVOCATIONS)
       .subscribe((val: any) => {
-        expect(Array.isArray(val)).toBe(true);
-        expect(val.length).toBe(0);
+        expect(Array.isArray(val)).to.be.true;
+        expect(val.length).to.equal(0);
       }, (err: any) => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }, () => {
         done();
       });

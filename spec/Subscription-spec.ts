@@ -1,12 +1,12 @@
+import {expect} from 'chai';
 import * as Rx from '../dist/cjs/Rx';
-import {DoneSignature} from './helpers/test-helper';
 
 const Observable = Rx.Observable;
 const Subscription = Rx.Subscription;
 
 /** @test {Subscription} */
 describe('Subscription', () => {
-  it('should not leak', (done: DoneSignature) => {
+  it('should not leak', (done: MochaDone) => {
     const tearDowns = [];
 
     const source1 = Observable.create((observer: Rx.Observer<any>) => {
@@ -33,13 +33,13 @@ describe('Subscription', () => {
     setTimeout(() => {
       expect(() => {
         subscription.unsubscribe();
-      }).toThrow(new Rx.UnsubscriptionError([new Error('oops, I am a bad unsubscribe!')]));
-      expect(tearDowns).toEqual([1, 2, 3]);
+      }).to.throw(Rx.UnsubscriptionError);
+      expect(tearDowns).to.deep.equal([1, 2, 3]);
       done();
     });
   });
 
-  it('should not leak when adding a bad custom subscription to a subscription', (done: DoneSignature) => {
+  it('should not leak when adding a bad custom subscription to a subscription', (done: MochaDone) => {
     const tearDowns = [];
 
     const sub = new Subscription();
@@ -55,7 +55,7 @@ describe('Subscription', () => {
         tearDowns.push(2);
         sub.add(<any>({
           unsubscribe: () => {
-            expect(sub.isUnsubscribed).toBe(true);
+            expect(sub.isUnsubscribed).to.be.true;
             throw new Error('Who is your daddy, and what does he do?');
           }
         }));
@@ -73,8 +73,8 @@ describe('Subscription', () => {
     setTimeout(() => {
       expect(() => {
         sub.unsubscribe();
-      }).toThrow(new Rx.UnsubscriptionError([new Error('Who is your daddy, and what does he do?')]));
-      expect(tearDowns).toEqual([1, 2, 3]);
+      }).to.throw(Rx.UnsubscriptionError);
+      expect(tearDowns).to.deep.equal([1, 2, 3]);
       done();
     });
   });

@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, expectObservable, expectSubscriptions};
 
@@ -24,7 +25,7 @@ describe('Observable.merge(...observables)', () => {
     const e1 = Observable.of('a');
     const result = Observable.merge(e1);
 
-    expect(e1).toBe(result);
+    expect(e1).to.equal(result);
   });
 
   it('should merge hot and hot', () => {

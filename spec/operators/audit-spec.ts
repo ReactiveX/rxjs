@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -284,7 +284,7 @@ describe('Observable.prototype.audit', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should audit by promise resolves', (done: DoneSignature) => {
+  it('should audit by promise resolves', (done: MochaDone) => {
     const e1 = Observable.interval(10).take(5);
     const expected = [0, 1, 2, 3];
 
@@ -292,18 +292,18 @@ describe('Observable.prototype.audit', () => {
       return new Promise((resolve: any) => { resolve(42); });
     }).subscribe(
       (x: number) => {
-        expect(x).toEqual(expected.shift()); },
+        expect(x).to.equal(expected.shift()); },
       () => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       },
       () => {
-        expect(expected.length).toBe(0);
+        expect(expected.length).to.equal(0);
         done();
       }
     );
   });
 
-  it('should raise error when promise rejects', (done: DoneSignature) => {
+  it('should raise error when promise rejects', (done: MochaDone) => {
     const e1 = Observable.interval(10).take(10);
     const expected = [0, 1, 2];
     const error = new Error('error');
@@ -316,14 +316,14 @@ describe('Observable.prototype.audit', () => {
       }
     }).subscribe(
       (x: number) => {
-        expect(x).toEqual(expected.shift()); },
+        expect(x).to.equal(expected.shift()); },
       (err: any) => {
-        expect(err).toBe(error);
-        expect(expected.length).toBe(0);
+        expect(err).to.be.an('error', 'error');
+        expect(expected.length).to.equal(0);
         done();
       },
       () => {
-        done.fail('should not be called');
+        done(new Error('should not be called'));
       }
     );
   });

@@ -1,4 +1,4 @@
-/* globals describe, it, expect, expectObservable, expectSubscriptions, rxTestScheduler, hot, cold */
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 declare const {hot, cold, time, expectObservable, expectSubscriptions};
 
@@ -9,14 +9,14 @@ const TestScheduler = Rx.TestScheduler;
 /** @test {TestScheduler} */
 describe('TestScheduler', () => {
   it('should exist', () => {
-    expect(TestScheduler).toBeDefined();
-    expect(typeof TestScheduler).toBe('function');
+    expect(TestScheduler).exist;
+    expect(TestScheduler).to.be.a('function');
   });
 
   describe('parseMarbles()', () => {
     it('should parse a marble string into a series of notifications and types', () => {
       const result = TestScheduler.parseMarbles('-------a---b---|', { a: 'A', b: 'B' });
-      (<any>expect(result)).toDeepEqual([
+      expect(result).deep.equal([
         { frame: 70, notification: Notification.createNext('A') },
         { frame: 110, notification: Notification.createNext('B') },
         { frame: 150, notification: Notification.createComplete() }
@@ -25,7 +25,7 @@ describe('TestScheduler', () => {
 
     it('should parse a marble string, allowing spaces too', () => {
       const result = TestScheduler.parseMarbles('--a--b--|   ', { a: 'A', b: 'B' });
-      (<any>expect(result)).toDeepEqual([
+      expect(result).deep.equal([
         { frame: 20, notification: Notification.createNext('A') },
         { frame: 50, notification: Notification.createNext('B') },
         { frame: 80, notification: Notification.createComplete() }
@@ -34,7 +34,7 @@ describe('TestScheduler', () => {
 
     it('should parse a marble string with a subscription point', () => {
       const result = TestScheduler.parseMarbles('---^---a---b---|', { a: 'A', b: 'B' });
-      (<any>expect(result)).toDeepEqual([
+      expect(result).deep.equal([
         { frame: 40, notification: Notification.createNext('A') },
         { frame: 80, notification: Notification.createNext('B') },
         { frame: 120, notification: Notification.createComplete() }
@@ -43,7 +43,7 @@ describe('TestScheduler', () => {
 
     it('should parse a marble string with an error', () => {
       const result = TestScheduler.parseMarbles('-------a---b---#', { a: 'A', b: 'B' }, 'omg error!');
-      (<any>expect(result)).toDeepEqual([
+      expect(result).deep.equal([
         { frame: 70, notification: Notification.createNext('A') },
         { frame: 110, notification: Notification.createNext('B') },
         { frame: 150, notification: Notification.createError('omg error!') }
@@ -52,7 +52,7 @@ describe('TestScheduler', () => {
 
     it('should default in the letter for the value if no value hash was passed', () => {
       const result = TestScheduler.parseMarbles('--a--b--c--');
-      (<any>expect(result)).toDeepEqual([
+      expect(result).deep.equal([
         { frame: 20, notification: Notification.createNext('a') },
         { frame: 50, notification: Notification.createNext('b') },
         { frame: 80, notification: Notification.createNext('c') },
@@ -61,7 +61,7 @@ describe('TestScheduler', () => {
 
     it('should handle grouped values', () => {
       const result = TestScheduler.parseMarbles('---(abc)---');
-      (<any>expect(result)).toDeepEqual([
+      expect(result).deep.equal([
         { frame: 30, notification: Notification.createNext('a') },
         { frame: 30, notification: Notification.createNext('b') },
         { frame: 30, notification: Notification.createNext('c') }
@@ -72,20 +72,20 @@ describe('TestScheduler', () => {
   describe('parseMarblesAsSubscriptions()', () => {
     it('should parse a subscription marble string into a subscriptionLog', () => {
       const result = TestScheduler.parseMarblesAsSubscriptions('---^---!-');
-      expect(result.subscribedFrame).toEqual(30);
-      expect(result.unsubscribedFrame).toEqual(70);
+      expect(result.subscribedFrame).to.equal(30);
+      expect(result.unsubscribedFrame).to.equal(70);
     });
 
     it('should parse a subscription marble string with an unsubscription', () => {
       const result = TestScheduler.parseMarblesAsSubscriptions('---^-');
-      expect(result.subscribedFrame).toEqual(30);
-      expect(result.unsubscribedFrame).toEqual(Number.POSITIVE_INFINITY);
+      expect(result.subscribedFrame).to.equal(30);
+      expect(result.unsubscribedFrame).to.equal(Number.POSITIVE_INFINITY);
     });
 
     it('should parse a subscription marble string with a synchronous unsubscription', () => {
       const result = TestScheduler.parseMarblesAsSubscriptions('---(^!)-');
-      expect(result.subscribedFrame).toEqual(30);
-      expect(result.unsubscribedFrame).toEqual(30);
+      expect(result.subscribedFrame).to.equal(30);
+      expect(result.unsubscribedFrame).to.equal(30);
     });
   });
 
@@ -93,14 +93,14 @@ describe('TestScheduler', () => {
     it('should parse a simple time marble string to a number', () => {
       const scheduler = new TestScheduler(null);
       const time = scheduler.createTime('-----|');
-      expect(time).toBe(50);
+      expect(time).to.equal(50);
     });
 
     it('should throw if not given good marble input', () => {
       const scheduler = new TestScheduler(null);
       expect(() => {
         scheduler.createTime('-a-b-#');
-      }).toThrow();
+      }).to.throw();
     });
   });
 
@@ -109,12 +109,12 @@ describe('TestScheduler', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
       const source = scheduler.createColdObservable('--a---b--|', { a: 'A', b: 'B' });
-      expect(source instanceof Rx.Observable).toBe(true);
+      expect(source instanceof Rx.Observable).to.be.true;
       source.subscribe((x: string) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       });
       scheduler.flush();
-      expect(expected.length).toBe(0);
+      expect(expected.length).to.equal(0);
     });
   });
 
@@ -123,35 +123,35 @@ describe('TestScheduler', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
       const source = scheduler.createHotObservable('--a---b--|', { a: 'A', b: 'B' });
-      expect(source instanceof Rx.Subject).toBe(true);
+      expect(source instanceof Rx.Subject).to.be.true;
       source.subscribe((x: string) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       });
       scheduler.flush();
-      expect(expected.length).toBe(0);
+      expect(expected.length).to.equal(0);
     });
   });
 
   describe('jasmine helpers', () => {
     describe('rxTestScheduler', () => {
       it('should exist', () => {
-        expect(rxTestScheduler instanceof TestScheduler).toBe(true);
+        expect(rxTestScheduler instanceof TestScheduler).to.be.true;
       });
     });
 
     describe('cold()', () => {
       it('should exist', () => {
-        expect(cold).toBeDefined();
-        expect(typeof cold).toBe('function');
+        expect(cold).to.exist;
+        expect(cold).to.be.a('function');
       });
 
       it('should create a cold observable', () => {
         const expected = [1, 2];
         const source = cold('-a-b-|', { a: 1, b: 2 });
         source.subscribe((x: number) => {
-          expect(x).toBe(expected.shift());
+          expect(x).to.equal(expected.shift());
         }, null, () => {
-          expect(expected.length).toBe(0);
+          expect(expected.length).to.equal(0);
         });
         expectObservable(source).toBe('-a-b-|', { a: 1, b: 2 });
       });
@@ -159,41 +159,41 @@ describe('TestScheduler', () => {
 
     describe('hot()', () => {
       it('should exist', () => {
-        expect(hot).toBeDefined();
-        expect(typeof hot).toBe('function');
+        expect(hot).to.exist;
+        expect(hot).to.be.a('function');
       });
 
       it('should create a hot observable', () => {
         const source = hot('---^-a-b-|', { a: 1, b: 2 });
-        expect(source instanceof Rx.Subject).toBe(true);
+        expect(source instanceof Rx.Subject).to.be.true;
         expectObservable(source).toBe('--a-b-|', { a: 1, b: 2 });
       });
     });
 
     describe('time()', () => {
       it('should exist', () => {
-        expect(time).toBeDefined();
-        expect(typeof time).toBe('function');
+        expect(time).to.exist;
+        expect(time).to.be.a('function');
       });
 
       it('should parse a simple time marble string to a number', () => {
-        expect(time('-----|')).toBe(50);
+        expect(time('-----|')).to.equal(50);
       });
     });
 
     describe('expectObservable()', () => {
       it('should exist', () => {
-        expect(expectObservable).toBeDefined();
-        expect(typeof expectObservable).toBe('function');
+        expect(expectObservable).to.exist;
+        expect(expectObservable).to.be.a('function');
       });
 
       it('should return an object with a toBe function', () => {
-        expect(typeof (expectObservable(Rx.Observable.of(1)).toBe)).toBe('function');
+        expect(expectObservable(Rx.Observable.of(1)).toBe).to.be.a('function');
       });
 
       it('should append to flushTests array', () => {
         expectObservable(Rx.Observable.empty());
-        expect((<any>rxTestScheduler).flushTests.length).toBe(1);
+        expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
       });
 
       it('should handle empty', () => {
@@ -215,17 +215,17 @@ describe('TestScheduler', () => {
 
     describe('expectSubscriptions()', () => {
       it('should exist', () => {
-        expect(expectSubscriptions).toBeDefined();
-        expect(typeof expectSubscriptions).toBe('function');
+        expect(expectSubscriptions).to.exist;
+        expect(expectSubscriptions).to.be.a('function');
       });
 
       it('should return an object with a toBe function', () => {
-        expect(typeof (expectSubscriptions([]).toBe)).toBe('function');
+        expect(expectSubscriptions([]).toBe).to.be.a('function');
       });
 
       it('should append to flushTests array', () => {
         expectSubscriptions([]);
-        expect((<any>rxTestScheduler).flushTests.length).toBe(1);
+        expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
       });
 
       it('should assert subscriptions of a cold observable', () => {

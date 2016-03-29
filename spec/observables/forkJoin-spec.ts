@@ -1,6 +1,7 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
-declare const {hot, expectObservable};
-import {DoneSignature, lowerCaseO} from '../helpers/test-helper';
+declare const {hot, expectObservable, expectSubscriptions};
+import {lowerCaseO} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 
@@ -113,17 +114,17 @@ describe('Observable.forkJoin', () => {
     expectObservable(e1).toBe(expected);
   });
 
-  it('should accept promise', (done: DoneSignature) => {
+  it('should accept promise', (done: MochaDone) => {
     const e1 = Observable.forkJoin(
                Observable.of(1),
                Promise.resolve(2)
             );
 
     e1.subscribe((x: Array<number>) => {
-      expect(x).toEqual([1, 2]);
+      expect(x).to.deep.equal([1, 2]);
     },
     (err: any) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
       done();
     });

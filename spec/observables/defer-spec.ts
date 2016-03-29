@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-import {DoneSignature} from '../helpers/test-helper';
-declare const {hot, expectObservable, expectSubscriptions, type};
+declare const {hot, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
@@ -28,33 +28,33 @@ describe('Observable.defer', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should accept factory returns promise resolves', (done: DoneSignature) => {
+  it('should accept factory returns promise resolves', (done: MochaDone) => {
     const expected = 42;
     const e1 = Observable.defer(() => {
       return new Promise((resolve: any) => { resolve(expected); });
     });
 
     e1.subscribe((x: number) => {
-      expect(x).toBe(expected);
+      expect(x).to.equal(expected);
       done();
     }, x => {
-      done.fail();
+      done(new Error('should not be called'));
     });
   });
 
-  it('should accept factory returns promise rejects', (done: DoneSignature) => {
+  it('should accept factory returns promise rejects', (done: MochaDone) => {
     const expected = 42;
     const e1 = Observable.defer(() => {
       return new Promise((resolve: any, reject: any) => { reject(expected); });
     });
 
     e1.subscribe((x: number) => {
-      done.fail();
+      done(new Error('should not be called'));
     }, x => {
-      expect(x).toBe(expected);
+      expect(x).to.equal(expected);
       done();
     }, () => {
-      done.fail();
+      done(new Error('should not be called'));
     });
   });
 

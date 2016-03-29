@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -24,12 +25,12 @@ describe('Observable.prototype.share', () => {
 
     const source = obs.share();
 
-    expect(subscriptionCount).toBe(0);
+    expect(subscriptionCount).to.equal(0);
 
     source.subscribe();
     source.subscribe();
 
-    expect(subscriptionCount).toBe(1);
+    expect(subscriptionCount).to.equal(1);
   });
 
   it('should not change the output of the observable when error', () => {

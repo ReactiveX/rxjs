@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -102,8 +103,8 @@ describe('Observable.prototype.last', () => {
 
     const predicate = function (x) { return x === 'c'; };
     const resultSelector = function (x, i) {
-      expect(i).toBe(1);
-      expect(x).toBe('c');
+      expect(i).to.equal(1);
+      expect(x).to.equal('c');
       return 'x';
     };
 

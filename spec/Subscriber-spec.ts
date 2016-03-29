@@ -1,17 +1,20 @@
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../dist/cjs/Rx';
+
 const Subscriber = Rx.Subscriber;
 
 /** @test {Subscriber} */
 describe('Subscriber', () => {
   it('should have the rxSubscriber symbol', () => {
     const sub = new Subscriber();
-    expect(sub[Rx.Symbol.rxSubscriber]()).toBe(sub);
+    expect(sub[Rx.Symbol.rxSubscriber]()).to.equal(sub);
   });
 
   describe('when created through create()', () => {
     it('should not call error() if next() handler throws an error', () => {
-      const errorSpy = jasmine.createSpy('error');
-      const completeSpy = jasmine.createSpy('complete');
+      const errorSpy = sinon.spy();
+      const completeSpy = sinon.spy();
 
       const subscriber = Subscriber.create(
         (value: any) => {
@@ -26,10 +29,10 @@ describe('Subscriber', () => {
       subscriber.next(1);
       expect(() => {
         subscriber.next(2);
-      }).toThrow('error!');
+      }).to.throw('error!');
 
-      expect(errorSpy).not.toHaveBeenCalled();
-      expect(completeSpy).not.toHaveBeenCalled();
+      expect(errorSpy).not.have.been.called;
+      expect(completeSpy).not.have.been.called;
     });
   });
 
@@ -45,7 +48,7 @@ describe('Subscriber', () => {
     sub.unsubscribe();
     sub.next();
 
-    expect(times).toBe(2);
+    expect(times).to.equal(2);
   });
 
   it('should ignore error messages after unsubscription', () => {
@@ -63,8 +66,8 @@ describe('Subscriber', () => {
     sub.next();
     sub.error();
 
-    expect(times).toBe(2);
-    expect(errorCalled).toBe(false);
+    expect(times).to.equal(2);
+    expect(errorCalled).to.be.false;
   });
 
   it('should ignore complete messages after unsubscription', () => {
@@ -82,7 +85,7 @@ describe('Subscriber', () => {
     sub.next();
     sub.complete();
 
-    expect(times).toBe(2);
-    expect(completeCalled).toBe(false);
+    expect(times).to.equal(2);
+    expect(completeCalled).to.be.false;
   });
 });

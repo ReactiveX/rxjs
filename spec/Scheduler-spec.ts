@@ -1,5 +1,5 @@
+import {expect} from 'chai';
 import * as Rx from '../dist/cjs/Rx';
-import {DoneSignature} from './helpers/test-helper';
 
 const Scheduler = Rx.Scheduler;
 
@@ -15,27 +15,27 @@ describe('Scheduler.queue', () => {
         call2 = true;
       });
     });
-    expect(call1).toBe(true);
-    expect(call2).toBe(true);
+    expect(call1).to.be.true;
+    expect(call2).to.be.true;
   });
 
-  it('should schedule things in the future too', (done: DoneSignature) => {
+  it('should schedule things in the future too', (done: MochaDone) => {
     let called = false;
     Scheduler.queue.schedule(() => {
       called = true;
     }, 50);
 
     setTimeout(() => {
-      expect(called).toBe(false);
+      expect(called).to.be.false;
     }, 40);
 
     setTimeout(() => {
-      expect(called).toBe(true);
+      expect(called).to.be.true;
       done();
     }, 70);
   });
 
-  it('should be reusable after an error is thrown during execution', (done: DoneSignature) => {
+  it('should be reusable after an error is thrown during execution', (done: MochaDone) => {
     const results = [];
 
     expect(() => {
@@ -46,7 +46,7 @@ describe('Scheduler.queue', () => {
       Scheduler.queue.schedule(() => {
         throw new Error('bad');
       });
-    }).toThrow(new Error('bad'));
+    }).to.throw(Error, 'bad');
 
     setTimeout(() => {
       Scheduler.queue.schedule(() => {

@@ -1,7 +1,9 @@
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {SubscribeOnObservable} from '../../dist/cjs/observable/SubscribeOnObservable';
-declare const {hot, expectObservable, expectSubscriptions};
 
+declare const {hot, expectObservable, expectSubscriptions};
 declare const rxTestScheduler: Rx.TestScheduler;
 
 describe('SubscribeOnObservable', () => {
@@ -17,18 +19,18 @@ describe('SubscribeOnObservable', () => {
 
   it('should specify default scheduler if incorrect scheduler specified', () => {
     const e1 = hot('--a--b--|');
-    const obj: any = jasmine.createSpy('dummy');
+    const obj: any = sinon.spy();
 
     const scheduler = (<any>new SubscribeOnObservable(e1, 0, obj)).scheduler;
 
-    expect(scheduler).toBe(Rx.Scheduler.asap);
+    expect(scheduler).to.deep.equal(Rx.Scheduler.asap);
   });
 
   it('should create observable via staic create function', () => {
     const s = new SubscribeOnObservable(null, null, rxTestScheduler);
     const r = SubscribeOnObservable.create(null, null, rxTestScheduler);
 
-    expect(s).toEqual(r);
+    expect(s).to.deep.equal(r);
   });
 
   it('should subscribe after specified delay', () => {

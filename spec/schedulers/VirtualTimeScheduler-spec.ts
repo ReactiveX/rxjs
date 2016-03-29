@@ -1,4 +1,4 @@
-/* globals describe, it, expect */
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 
 const VirtualTimeScheduler = Rx.VirtualTimeScheduler;
@@ -6,8 +6,8 @@ const VirtualTimeScheduler = Rx.VirtualTimeScheduler;
 /** @test {VirtualTimeScheduler} */
 describe('VirtualTimeScheduler', () => {
   it('should exist', () => {
-    expect(VirtualTimeScheduler).toBeDefined();
-    expect(typeof VirtualTimeScheduler).toBe('function');
+    expect(VirtualTimeScheduler).exist;
+    expect(VirtualTimeScheduler).to.be.a('function');
   });
 
   it('should schedule things in order when flushed if each this is scheduled synchrously', () => {
@@ -24,7 +24,7 @@ describe('VirtualTimeScheduler', () => {
 
     v.flush();
 
-    expect(invoked).toEqual([1, 2, 3, 4, 5]);
+    expect(invoked).to.deep.equal([1, 2, 3, 4, 5]);
   });
 
   it('should schedule things in order when flushed if each this is scheduled at random', () => {
@@ -42,7 +42,7 @@ describe('VirtualTimeScheduler', () => {
 
     v.flush();
 
-    expect(invoked).toEqual([1, 3, 5, 2, 6, 4]);
+    expect(invoked).to.deep.equal([1, 3, 5, 2, 6, 4]);
   });
 
   it('should schedule things in order when there are negative delays', () => {
@@ -60,7 +60,7 @@ describe('VirtualTimeScheduler', () => {
 
     v.flush();
 
-    expect(invoked).toEqual([6, 4, 1, 3, 5, 2]);
+    expect(invoked).to.deep.equal([6, 4, 1, 3, 5, 2]);
   });
 
   it('should support recursive scheduling', () => {
@@ -72,11 +72,11 @@ describe('VirtualTimeScheduler', () => {
       if (++count === 3) {
         return;
       }
-      expect(this.delay).toBe(expected.shift());
+      expect(this.delay).to.equal(expected.shift());
       this.schedule(state, this.delay);
     }, 100, 'test');
 
     v.flush();
-    expect(count).toBe(3);
+    expect(count).to.equal(3);
   });
 });

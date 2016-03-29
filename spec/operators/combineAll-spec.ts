@@ -1,6 +1,6 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
-import {DoneSignature} from '../helpers/test-helper';
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
@@ -448,28 +448,28 @@ describe('Observable.prototype.combineAll', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should combine two observables', (done: DoneSignature) => {
+  it('should combine two observables', (done: MochaDone) => {
     const a = Observable.of(1, 2, 3);
     const b = Observable.of(4, 5, 6, 7, 8);
     const expected = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
     Observable.of(a, b).combineAll().subscribe((vals: any) => {
-      expect(vals).toEqual(expected.shift());
+      expect(vals).to.deep.equal(expected.shift());
     }, null, () => {
-      expect(expected.length).toBe(0);
+      expect(expected.length).to.equal(0);
       done();
     });
   });
 
-  it('should combine two immediately-scheduled observables', (done: DoneSignature) => {
+  it('should combine two immediately-scheduled observables', (done: MochaDone) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
 
     Observable.of<Rx.Observable<number>>(a, b, queueScheduler).combineAll()
       .subscribe((vals: any) => {
-        (<any>expect(vals)).toDeepEqual(r.shift());
+        expect(vals).to.deep.equal(r.shift());
     }, null, () => {
-      expect(r.length).toEqual(0);
+      expect(r.length).to.equal(0);
       done();
     });
   });

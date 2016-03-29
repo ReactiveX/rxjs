@@ -1,7 +1,7 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import {TestScheduler} from '../../dist/cjs/testing/TestScheduler';
 declare const {hot, expectObservable};
-import {DoneSignature} from '../helpers/test-helper';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -10,13 +10,13 @@ const Observable = Rx.Observable;
 
 /** @test {ReplaySubject} */
 describe('ReplaySubject', () => {
-  it('should extend Subject', (done: DoneSignature) => {
+  it('should extend Subject', (done: MochaDone) => {
     const subject = new ReplaySubject();
-    expect(subject instanceof Rx.Subject).toBe(true);
+    expect(subject instanceof Rx.Subject).to.be.true;
     done();
   });
 
-  it('should replay values upon subscription', (done: DoneSignature) => {
+  it('should replay values upon subscription', (done: MochaDone) => {
     const subject = new ReplaySubject();
     const expects = [1, 2, 3];
     let i = 0;
@@ -24,18 +24,18 @@ describe('ReplaySubject', () => {
     subject.next(2);
     subject.next(3);
     subject.subscribe((x: number) => {
-      expect(x).toBe(expects[i++]);
+      expect(x).to.equal(expects[i++]);
       if (i === 3) {
         subject.complete();
       }
     }, (err: any) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
       done();
     });
   });
 
-  it('should replay values and complete', (done: DoneSignature) => {
+  it('should replay values and complete', (done: MochaDone) => {
     const subject = new ReplaySubject();
     const expects = [1, 2, 3];
     let i = 0;
@@ -44,11 +44,11 @@ describe('ReplaySubject', () => {
     subject.next(3);
     subject.complete();
     subject.subscribe((x: number) => {
-      expect(x).toBe(expects[i++]);
+      expect(x).to.equal(expects[i++]);
     }, null, done);
   });
 
-  it('should replay values and error', (done: DoneSignature) => {
+  it('should replay values and error', (done: MochaDone) => {
     const subject = new ReplaySubject();
     const expects = [1, 2, 3];
     let i = 0;
@@ -57,14 +57,14 @@ describe('ReplaySubject', () => {
     subject.next(3);
     subject.error('fooey');
     subject.subscribe((x: number) => {
-      expect(x).toBe(expects[i++]);
+      expect(x).to.equal(expects[i++]);
     }, (err: any) => {
-      expect(err).toBe('fooey');
+      expect(err).to.equal('fooey');
       done();
     });
   });
 
-  it('should only replay values within its buffer size', (done: DoneSignature) => {
+  it('should only replay values within its buffer size', (done: MochaDone) => {
     const subject = new ReplaySubject(2);
     const expects = [2, 3];
     let i = 0;
@@ -72,12 +72,12 @@ describe('ReplaySubject', () => {
     subject.next(2);
     subject.next(3);
     subject.subscribe((x: number) => {
-      expect(x).toBe(expects[i++]);
+      expect(x).to.equal(expects[i++]);
       if (i === 2) {
         subject.complete();
       }
     }, (err: any) => {
-      done.fail('should not be called');
+      done(new Error('should not be called'));
     }, () => {
       done();
     });
@@ -172,9 +172,9 @@ describe('ReplaySubject', () => {
 
       subscription3.unsubscribe();
 
-      expect(results1).toEqual([3, 4, 5, 6, 7]);
-      expect(results2).toEqual([4, 5, 6, 7, 8]);
-      expect(results3).toEqual([9, 10, 11]);
+      expect(results1).to.deep.equal([3, 4, 5, 6, 7]);
+      expect(results2).to.deep.equal([4, 5, 6, 7, 8]);
+      expect(results3).to.deep.equal([9, 10, 11]);
 
       subject.complete();
     });
@@ -222,7 +222,7 @@ describe('ReplaySubject', () => {
     });
   });
 
-  it('should be an Observer which can be given to Observable.subscribe', (done: DoneSignature) => {
+  it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
     const source = Observable.of(1, 2, 3, 4, 5);
     const subject = new ReplaySubject(3);
     const expected = [3, 4, 5];
@@ -231,9 +231,9 @@ describe('ReplaySubject', () => {
 
     subject.subscribe(
       (x: number) => {
-        expect(x).toBe(expected.shift());
+        expect(x).to.equal(expected.shift());
       }, () => {
-        done.fail();
+        done(new Error());
       }, () => {
         done();
       }

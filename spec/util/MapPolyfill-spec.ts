@@ -1,9 +1,10 @@
+import {expect} from 'chai';
 import {MapPolyfill} from '../../dist/cjs/util/MapPolyfill';
 
 /** @test {MapPolyfill} */
 describe('MapPolyfill', () => {
   it('should exist', () => {
-    expect(typeof MapPolyfill).toBe('function');
+    expect(MapPolyfill).to.be.a('function');
   });
 
   it('should act like a hashtable that accepts objects as keys', () => {
@@ -15,10 +16,10 @@ describe('MapPolyfill', () => {
     map.set(key1, 'yo');
     map.set(key2, 'what up');
 
-    expect(map.get('test')).toBe('hi');
-    expect(map.get(key1)).toBe('yo');
-    expect(map.get(key2)).toBe('what up');
-    expect(map.size).toBe(3);
+    expect(map.get('test')).to.equal('hi');
+    expect(map.get(key1)).to.equal('yo');
+    expect(map.get(key2)).to.equal('what up');
+    expect(map.size).to.equal(3);
   });
 
   it('should allow setting keys twice', () => {
@@ -28,8 +29,8 @@ describe('MapPolyfill', () => {
     map.set(key1, 'sing');
     map.set(key1, 'yodel');
 
-    expect(map.get(key1)).toBe('yodel');
-    expect(map.size).toBe(1);
+    expect(map.get(key1)).to.equal('yodel');
+    expect(map.size).to.equal(1);
   });
 
   it('should have a delete method that removes keys', () => {
@@ -37,18 +38,18 @@ describe('MapPolyfill', () => {
     const key1 = {};
 
     map.set(key1, 'sing');
-    expect(map.size).toBe(1);
+    expect(map.size).to.equal(1);
 
     map.delete(key1);
 
-    expect(map.size).toBe(0);
-    expect(map.get(key1)).toBe(undefined);
+    expect(map.size).to.equal(0);
+    expect(map.get(key1)).to.be.a('undefined');
   });
 
   describe('prototype.forEach', () => {
     it('should exist', () => {
       const map = new MapPolyfill();
-      expect(typeof map.forEach).toBe('function');
+      expect(map.forEach).to.be.a('function');
     });
 
     it('should iterate over keys and values', () => {
@@ -65,13 +66,13 @@ describe('MapPolyfill', () => {
 
       //intentionally not using lambda to avoid typescript's this context capture
       map.forEach(function (value, key) {
-        expect(this).toBe(thisArg);
-        expect(value).toBe(expectedValues.shift());
-        expect(key).toBe(expectedKeys.shift());
+        expect(this).to.equal(thisArg);
+        expect(value).to.equal(expectedValues.shift());
+        expect(key).to.equal(expectedKeys.shift());
       }, thisArg);
 
-      expect(expectedValues.length).toBe(0);
-      expect(expectedKeys.length).toBe(0);
+      expect(expectedValues.length).to.equal(0);
+      expect(expectedKeys.length).to.equal(0);
     });
   });
 });
