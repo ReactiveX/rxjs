@@ -22,7 +22,6 @@ cache:
 env:
   global:
   - CXX=g++-4.8
-  - alias jasmine=./node_modules/.bin/jasmine
   - alias tsc=./node_modules/.bin/tsc
 
 before_install:
@@ -31,10 +30,10 @@ install:
   - npm install && npm run lint
 
 script:
-  - npm run build_spec && npm run test_jasmine && node ./node_modules/markdown-doctest/bin/cmd.js
+  - npm run build_spec && npm run test_mocha && node ./node_modules/markdown-doctest/bin/cmd.js
   - npm run check_circular_dependencies
-  - npm run cover
 
 after_success:
+  - npm run cover
   - cat ./coverage/coverage-remapped.lcov | ./node_modules/coveralls/bin/coveralls.js
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ -n "${SAUCE_ACCESS_KEY}" ] && npm run test_karma || false'
+  #- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ -n "${SAUCE_ACCESS_KEY}" ] && npm run test_karma || false'
