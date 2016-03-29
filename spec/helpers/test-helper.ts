@@ -31,19 +31,4 @@ export function lowerCaseO<T>(...args): Rx.Observable<T> {
   return <any>o;
 };
 
-//overrides JSON.toStringfy to serialize error object
-Object.defineProperty(Error.prototype, 'toJSON', {
-  value: function () {
-    const alt = {};
-
-    Object.getOwnPropertyNames(this).forEach(function (key) {
-      if (key !== 'stack') {
-        alt[key] = this[key];
-      }
-    }, this);
-    return alt;
-  },
-  configurable: true
-});
-
 global.__root__ = root;

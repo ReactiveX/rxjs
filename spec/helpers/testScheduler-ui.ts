@@ -1,6 +1,7 @@
 ///<reference path='../../typings/main.d.ts'/>
 ///<reference path='ambient.d.ts'/>
 
+import * as _ from 'lodash';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import * as mocha from 'mocha';
 import * as Suite from 'mocha/lib/suite';
@@ -79,11 +80,41 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
      * acting as a thunk.
      */
 
-    function tearDown(done: MochaDone, error?: any) {
-      setTimeout(function () {
-        error ? done(error) : done();
-        global.rxTestScheduler = null;
-      });
+    function stringify(x): string {
+      return JSON.stringify(x, function (key, value) {
+        if (Array.isArray(value)) {
+          return '[' + value
+            .map(function (i) {
+              return '\n\t' + stringify(i);
+            }) + '\n]';
+        }
+        return value;
+      })
+      .replace(/\\"/g, '"')
+      .replace(/\\t/g, '\t')
+      .replace(/\\n/g, '\n');
+    }
+
+    /**
+     * custom assertion formatter for expectObservable test
+     */
+    function observableMatcher(actual, expected) {
+      if (Array.isArray(actual) && Array.isArray(expected)) {
+        const passed = _.isEqual(actual, expected);
+        if (passed) {
+          return;
+        }
+
+        let message = '\nExpected \n';
+        actual.forEach((x) => message += `\t${stringify(x)}\n`);
+
+        message += '\t\nto deep equal \n';
+        expected.forEach((x) => message += `\t${stringify(x)}\n`);
+
+        chai.assert(passed, message);
+      } else {
+        chai.assert.deepEqual(actual, expected);
+      }
     }
 
     const it = context.it = context.specify = function(title, fn) {
@@ -92,7 +123,7 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
 
       if (fn && fn.length === 0) {
         modified = function (done: MochaDone) {
-          global.rxTestScheduler = new Rx.TestScheduler(chai.assert.deepEqual);
+          global.rxTestScheduler = new Rx.TestScheduler(observableMatcher);
           let error: any = null;
 
           try {
@@ -101,7 +132,8 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
           } catch (e) {
             error = e;
           } finally {
-            tearDown(done, error);
+            global.rxTestScheduler = null;
+            error ? done(error) : done();
           }
         };
       }
@@ -150,3 +182,18 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
     };
   });
 };
+
+//overrides JSON.toStringfy to serialize error object
+Object.defineProperty(Error.prototype, 'toJSON', {
+  value: function () {
+    const alt = {};
+
+    Object.getOwnPropertyNames(this).forEach(function (key) {
+      if (key !== 'stack') {
+        alt[key] = this[key];
+      }
+    }, this);
+    return alt;
+  },
+  configurable: true
+});
