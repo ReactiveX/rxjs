@@ -5,7 +5,7 @@ import {Operator} from '../../Operator';
 import {Subscription} from '../../Subscription';
 import {root} from '../../util/root';
 import {ReplaySubject} from '../../subject/ReplaySubject';
-import {Observer} from '../../Observer';
+import {Observer, NextObserver} from '../../Observer';
 import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
 import {assign} from '../../util/assign';
@@ -14,9 +14,9 @@ export interface WebSocketSubjectConfig {
   url: string;
   protocol?: string | Array<string>;
   resultSelector?: <T>(e: MessageEvent) => T;
-  openObserver?: Observer<Event>;
-  closeObserver?: Observer<CloseEvent>;
-  closingObserver?: Observer<void>;
+  openObserver?: NextObserver<Event>;
+  closeObserver?: NextObserver<CloseEvent>;
+  closingObserver?: NextObserver<void>;
   WebSocketCtor?: { new(url: string, protocol?: string|Array<string>): WebSocket };
 }
 
@@ -29,9 +29,9 @@ export class WebSocketSubject<T> extends Subject<T> {
   url: string;
   protocol: string|Array<string>;
   socket: WebSocket;
-  openObserver: Observer<Event>;
-  closeObserver: Observer<CloseEvent>;
-  closingObserver: Observer<void>;
+  openObserver: NextObserver<Event>;
+  closeObserver: NextObserver<CloseEvent>;
+  closingObserver: NextObserver<void>;
   WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
 
   resultSelector(e: MessageEvent) {
