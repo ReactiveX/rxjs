@@ -1,5 +1,5 @@
 import {Observable} from '../../Observable';
-import {zipStatic} from '../../operator/zip';
+import {zip as zipStatic} from '../../observable/zip';
 
 Observable.zip = zipStatic;
 
