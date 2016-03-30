@@ -4,7 +4,7 @@ import {Observable} from '../../Observable';
 import {Operator} from '../../Operator';
 import {Subscription} from '../../Subscription';
 import {root} from '../../util/root';
-import {ReplaySubject} from '../../subject/ReplaySubject';
+import {ReplaySubject} from '../../ReplaySubject';
 import {Observer, NextObserver} from '../../Observer';
 import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';

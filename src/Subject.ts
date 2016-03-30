@@ -3,7 +3,7 @@ import {Observer} from './Observer';
 import {Observable} from './Observable';
 import {Subscriber} from './Subscriber';
 import {Subscription, ISubscription, TeardownLogic} from './Subscription';
-import {SubjectSubscription} from './subject/SubjectSubscription';
+import {SubjectSubscription} from './SubjectSubscription';
 import {$$rxSubscriber} from './symbol/rxSubscriber';
 
 import {throwError} from './util/throwError';

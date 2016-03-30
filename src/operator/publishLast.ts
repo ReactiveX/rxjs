@@ -1,4 +1,4 @@
-import {AsyncSubject} from '../subject/AsyncSubject';
+import {AsyncSubject} from '../AsyncSubject';
 import {multicast} from './multicast';
 import {ConnectableObservable} from '../observable/ConnectableObservable';
 

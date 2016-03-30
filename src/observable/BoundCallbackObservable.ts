@@ -4,7 +4,7 @@ import {Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {AsyncSubject} from '../subject/AsyncSubject';
+import {AsyncSubject} from '../AsyncSubject';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

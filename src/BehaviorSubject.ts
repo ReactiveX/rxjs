@@ -1,8 +1,8 @@
-import {Subject} from '../Subject';
-import {Subscriber} from '../Subscriber';
-import {TeardownLogic, ISubscription} from '../Subscription';
-import {throwError} from '../util/throwError';
-import {ObjectUnsubscribedError} from '../util/ObjectUnsubscribedError';
+import {Subject} from './Subject';
+import {Subscriber} from './Subscriber';
+import {TeardownLogic, ISubscription} from './Subscription';
+import {throwError} from './util/throwError';
+import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 
 /**
  * @class BehaviorSubject<T>
