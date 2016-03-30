@@ -1,4 +1,4 @@
 import {Observable} from '../../Observable';
-import {ErrorObservable} from '../../observable/ErrorObservable';
+import {_throw} from '../../observable/throw';
 
-Observable.throw = ErrorObservable.create;
+Observable.throw = _throw;

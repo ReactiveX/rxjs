@@ -48,6 +48,7 @@
     "watch": "Watch codebase, trigger compile when source code changes"
   },
   "scripts": {
+    "install": "typings install",
     "info": "npm-scripts-info",
     "build_all": "npm-run-all build_es6 build_amd build_cjs build_global generate_packages",
     "build_amd": "npm-run-all clean_dist_amd copy_src_amd compile_dist_amd",

@@ -1,10 +1,11 @@
 import {Observable} from '../../../Observable';
-import {AjaxObservable} from '../../../observable/dom/AjaxObservable';
+import {ajax as staticAjax} from '../../../observable/dom/ajax';
+import {AjaxCreationMethod} from '../../../observable/dom/AjaxObservable';
 
-Observable.ajax = AjaxObservable.create;
+Observable.ajax = staticAjax;
 
 declare module '../../../Observable' {
   namespace Observable {
-    export let ajax: typeof AjaxObservable.create;
+    export let ajax: AjaxCreationMethod;
   }
 }

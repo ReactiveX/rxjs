@@ -1,10 +1,10 @@
 import {Observable} from '../../Observable';
-import {FromObservable} from '../../observable/FromObservable';
+import {from as staticFrom} from '../../observable/from';
 
-Observable.from = FromObservable.create;
+Observable.from = staticFrom;
 
 declare module '../../Observable' {
   namespace Observable {
-    export let from: typeof FromObservable.create;
+    export let from: typeof staticFrom;
   }
 }

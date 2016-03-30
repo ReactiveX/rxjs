@@ -1,4 +1,4 @@
 import {Observable} from '../../Observable';
-import {IfObservable} from '../../observable/IfObservable';
+import {_if} from '../../observable/if';
 
-Observable.if = IfObservable.create;
+Observable.if = _if;

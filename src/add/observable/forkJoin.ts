@@ -1,10 +1,10 @@
 import {Observable} from '../../Observable';
-import {ForkJoinObservable} from '../../observable/ForkJoinObservable';
+import {forkJoin as staticForkJoin} from '../../observable/forkJoin';
 
-Observable.forkJoin = ForkJoinObservable.create;
+Observable.forkJoin = staticForkJoin;
 
 declare module '../../Observable' {
   namespace Observable {
-    export let forkJoin: typeof ForkJoinObservable.create;
+    export let forkJoin: typeof staticForkJoin;
   }
 }

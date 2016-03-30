@@ -1,10 +1,10 @@
 import {Observable} from '../../Observable';
-import {ArrayObservable} from '../../observable/ArrayObservable';
+import {of as staticOf} from '../../observable/of';
 
-Observable.of = ArrayObservable.of;
+Observable.of = staticOf;
 
 declare module '../../Observable' {
   namespace Observable {
-    export let of: typeof ArrayObservable.of;
+    export let of: typeof staticOf; //formOf an iceberg!
   }
 }
