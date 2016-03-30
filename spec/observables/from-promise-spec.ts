@@ -139,13 +139,11 @@ describe('Observable.fromPromise', () => {
 
   if (typeof process === 'object' && Object.prototype.toString.call(process) === '[object process]') {
     it('should globally throw unhandled errors on process', (done: MochaDone) => {
-        const originalException = process.listeners('uncaughtException').pop();
-        process.removeListener('uncaughtException', originalException);
-
+        const originalException = process.listeners('uncaughtException');
+        process.removeAllListeners('uncaughtException');
         process.once('uncaughtException', function (error) {
             expect(error).to.be.an('error', 'fail');
-            process.listeners('uncaughtException').push(originalException);
-
+            originalException.forEach(l => process.addListener('uncaughtException', l));
             done();
         });
 
