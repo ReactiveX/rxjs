@@ -1,3 +1,4 @@
+/// <reference path="./symbol/symbol.d.ts" />
 import {PartialObserver, Observer} from './Observer';
 import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
