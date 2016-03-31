@@ -1,0 +1,530 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "Observable",
+            "range": [
+              9,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "Observable",
+            "range": [
+              9,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            9,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./Observable",
+        "raw": "'./Observable'",
+        "range": [
+          27,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 27
+          },
+          "end": {
+            "line": 1,
+            "column": 41
+          }
+        }
+      },
+      "range": [
+        0,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 42
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @extends {Ignored}\n * @hide true\n ",
+          "range": [
+            43,
+            137
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "ClassDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "ObservableDoc",
+          "range": [
+            151,
+            164
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 13
+            },
+            "end": {
+              "line": 7,
+              "column": 26
+            }
+          }
+        },
+        "superClass": null,
+        "body": {
+          "type": "ClassBody",
+          "body": [
+            {
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "create",
+                "range": [
+                  2285,
+                  2291
+                ],
+                "loc": {
+                  "start": {
+                    "line": 54,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 54,
+                    "column": 17
+                  }
+                }
+              },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [
+                  {
+                    "type": "Identifier",
+                    "name": "subscribe",
+                    "range": [
+                      2292,
+                      2301
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 54,
+                        "column": 18
+                      },
+                      "end": {
+                        "line": 54,
+                        "column": 27
+                      }
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "NewExpression",
+                        "callee": {
+                          "type": "Identifier",
+                          "name": "Observable",
+                          "range": [
+                            2324,
+                            2334
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 55,
+                              "column": 19
+                            },
+                            "end": {
+                              "line": 55,
+                              "column": 29
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "name": "subscribe",
+                            "range": [
+                              2335,
+                              2344
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 55,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 55,
+                                "column": 39
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          2320,
+                          2345
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 55,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 55,
+                            "column": 40
+                          }
+                        }
+                      },
+                      "range": [
+                        2313,
+                        2346
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 55,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 55,
+                          "column": 41
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2303,
+                    2352
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 54,
+                      "column": 29
+                    },
+                    "end": {
+                      "line": 56,
+                      "column": 5
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  2291,
+                  2352
+                ],
+                "loc": {
+                  "start": {
+                    "line": 54,
+                    "column": 17
+                  },
+                  "end": {
+                    "line": 56,
+                    "column": 5
+                  }
+                }
+              },
+              "kind": "method",
+              "computed": false,
+              "range": [
+                2278,
+                2352
+              ],
+              "loc": {
+                "start": {
+                  "line": 54,
+                  "column": 4
+                },
+                "end": {
+                  "line": 56,
+                  "column": 5
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n     * Creates a new Observable that will execute the specified function when a\n     * {@link Subscriber} subscribes to it.\n     *\n     * <span class=\"informal\">Creates an Observable with custom logic given in\n     * the `subscribe` function.</span>\n     *\n     * <img src=\"./img/create.png\" width=\"100%\">\n     *\n     * `create` converts a `subscribe` function to an actual Observable. This is\n     * equivalent to calling the Observable constructor. Write the `subscribe`\n     * function so that it behaves as an Observable: It should invoke the\n     * Subscriber's `next`, `error`, and `complete` methods following the\n     * *Observable Contract*. A well-formed Observable must invoke either the\n     * Subscriber's `complete` method exactly once or its `error` method exactly\n     * once, and invoke nothing else thereafter.\n     *\n     * Most of the times you should not need to use `create` because existing\n     * creation operators (together with instance combination operators) allow you\n     * to create an Observable for most of the use cases. However, `create` is\n     * low-level and is able to create any Observable.\n     *\n     * @example <caption>Emit three random numbers, then complete.</caption>\n     * var result = Rx.Observable.create(function (subscriber) {\n     *   subscriber.next(Math.random());\n     *   subscriber.next(Math.random());\n     *   subscriber.next(Math.random());\n     *   subscriber.complete();\n     * });\n     * result.subscribe(x => console.log(x));\n     *\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @param {function(subscriber: Subscriber): TeardownLogic} [subscribe] A\n     * function that accepts a {@link Subscriber}, and invokes its `next`,\n     * `error`, and `complete` methods as appropriate, and should return some\n     * logic for tear down, either as a {@link Subscription} or as a function.\n     * @return {Observable} An Observable that, when subscribed, will execute the\n     * specified function.\n     * @static true\n     * @name create\n     * @owner Observable\n     ",
+                  "range": [
+                    171,
+                    2273
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 53,
+                      "column": 7
+                    }
+                  }
+                }
+              ],
+              "static": true
+            }
+          ],
+          "range": [
+            165,
+            2360
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 27
+            },
+            "end": {
+              "line": 58,
+              "column": 1
+            }
+          }
+        },
+        "range": [
+          145,
+          2360
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 7
+          },
+          "end": {
+            "line": 58,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @extends {Ignored}\n * @hide true\n ",
+            "range": [
+              43,
+              137
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 6,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=MiscJSDoc.js.map",
+            "range": [
+              2361,
+              2398
+            ],
+            "loc": {
+              "start": {
+                "line": 59,
+                "column": 0
+              },
+              "end": {
+                "line": 59,
+                "column": 37
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        138,
+        2360
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 58,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @extends {Ignored}\n * @hide true\n ",
+          "range": [
+            43,
+            137
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=MiscJSDoc.js.map",
+          "range": [
+            2361,
+            2398
+          ],
+          "loc": {
+            "start": {
+              "line": 59,
+              "column": 0
+            },
+            "end": {
+              "line": 59,
+              "column": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2360
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 58,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @extends {Ignored}\n * @hide true\n ",
+      "range": [
+        43,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * Creates a new Observable that will execute the specified function when a\n     * {@link Subscriber} subscribes to it.\n     *\n     * <span class=\"informal\">Creates an Observable with custom logic given in\n     * the `subscribe` function.</span>\n     *\n     * <img src=\"./img/create.png\" width=\"100%\">\n     *\n     * `create` converts a `subscribe` function to an actual Observable. This is\n     * equivalent to calling the Observable constructor. Write the `subscribe`\n     * function so that it behaves as an Observable: It should invoke the\n     * Subscriber's `next`, `error`, and `complete` methods following the\n     * *Observable Contract*. A well-formed Observable must invoke either the\n     * Subscriber's `complete` method exactly once or its `error` method exactly\n     * once, and invoke nothing else thereafter.\n     *\n     * Most of the times you should not need to use `create` because existing\n     * creation operators (together with instance combination operators) allow you\n     * to create an Observable for most of the use cases. However, `create` is\n     * low-level and is able to create any Observable.\n     *\n     * @example <caption>Emit three random numbers, then complete.</caption>\n     * var result = Rx.Observable.create(function (subscriber) {\n     *   subscriber.next(Math.random());\n     *   subscriber.next(Math.random());\n     *   subscriber.next(Math.random());\n     *   subscriber.complete();\n     * });\n     * result.subscribe(x => console.log(x));\n     *\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @param {function(subscriber: Subscriber): TeardownLogic} [subscribe] A\n     * function that accepts a {@link Subscriber}, and invokes its `next`,\n     * `error`, and `complete` methods as appropriate, and should return some\n     * logic for tear down, either as a {@link Subscription} or as a function.\n     * @return {Observable} An Observable that, when subscribed, will execute the\n     * specified function.\n     * @static true\n     * @name create\n     * @owner Observable\n     ",
+      "range": [
+        171,
+        2273
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 53,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=MiscJSDoc.js.map",
+      "range": [
+        2361,
+        2398
+      ],
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 0
+        },
+        "end": {
+          "line": 59,
+          "column": 37
+        }
+      }
+    }
+  ]
+}

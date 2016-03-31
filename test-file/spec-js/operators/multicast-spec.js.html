@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/multicast-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var Observable = Rx.Observable;
 var Subject = Rx.Subject;
@@ -70,8 +73,8 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
     it(&apos;should accept Subjects&apos;, function (done) {
         var expected = [1, 2, 3, 4];
         var connectable = Observable.of(1, 2, 3, 4).multicast(new Subject());
-        connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
-            done.fail(&apos;should not be called&apos;);
+        connectable.subscribe(function (x) { chai_1.expect(x).to.equal(expected.shift()); }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -80,8 +83,8 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
     it(&apos;should accept Subject factory functions&apos;, function (done) {
         var expected = [1, 2, 3, 4];
         var connectable = Observable.of(1, 2, 3, 4).multicast(function () { return new Subject(); });
-        connectable.subscribe(function (x) { expect(x).toBe(expected.shift()); }, function (x) {
-            done.fail(&apos;should not be called&apos;);
+        connectable.subscribe(function (x) { chai_1.expect(x).to.equal(expected.shift()); }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -429,12 +432,12 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
         connectable.subscribe(function (x) {
             results2.push(x);
         });
-        expect(results1).toEqual([]);
-        expect(results2).toEqual([]);
+        chai_1.expect(results1).to.deep.equal([]);
+        chai_1.expect(results2).to.deep.equal([]);
         connectable.connect();
-        expect(results1).toEqual([1, 2, 3, 4]);
-        expect(results1).toEqual([1, 2, 3, 4]);
-        expect(subscriptions).toBe(1);
+        chai_1.expect(results1).to.deep.equal([1, 2, 3, 4]);
+        chai_1.expect(results1).to.deep.equal([1, 2, 3, 4]);
+        chai_1.expect(subscriptions).to.equal(1);
         done();
     });
     it(&apos;should remove all subscribers from the subject when disconnected&apos;, function (done) {
@@ -443,9 +446,9 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
         var i = 0;
         var source = Observable.from([1, 2, 3, 4]).multicast(subject);
         source.subscribe(function (x) {
-            expect(x).toBe(expected[i++]);
+            chai_1.expect(x).to.equal(expected[i++]);
         }, null, function () {
-            expect(subject.isUnsubscribed).toBe(true);
+            chai_1.expect(subject.isUnsubscribed).to.be.true;
             done();
         });
         source.connect();
@@ -456,11 +459,11 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
             var i = 0;
             var source = Observable.of(1, 2, 3, 4).multicast(function () { return new Subject(); });
             source.subscribe(function (x) {
-                expect(x).toBe(expected[i++]);
+                chai_1.expect(x).to.equal(expected[i++]);
             }, null, function () {
                 i = 0;
                 source.subscribe(function (x) {
-                    expect(x).toBe(expected[i++]);
+                    chai_1.expect(x).to.equal(expected[i++]);
                 }, null, done);
                 source.connect();
             });
@@ -475,11 +478,11 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
             Observable.of(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;)
                 .switchMap(function (letter) { return source.map(function (n) { return String(letter + n); }); })
                 .subscribe(function (x) {
-                expect(x).toBe(expected.shift());
+                chai_1.expect(x).to.equal(expected.shift());
             }, function (x) {
-                done.fail(&apos;should not be called&apos;);
+                done(new Error(&apos;should not be called&apos;));
             }, function () {
-                expect(expected.length).toBe(0);
+                chai_1.expect(expected.length).to.equal(0);
                 done();
             });
         });
@@ -490,14 +493,14 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
             var i = 0;
             var source = Observable.of(1, 2, 3, 4).multicast(new Subject());
             source.subscribe(function (x) {
-                expect(x).toBe(expected[i++]);
+                chai_1.expect(x).to.equal(expected[i++]);
             }, null, function () {
                 source.subscribe(function (x) {
-                    done.fail(&apos;should not be called&apos;);
+                    done(new Error(&apos;should not be called&apos;));
                 }, null, function () {
                     done();
                 });
-                source.connect();
+                chai_1.expect(function () { return source.connect(); }).to.throw(Rx.ObjectUnsubscribedError);
             });
             source.connect();
         });
@@ -510,11 +513,11 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
             Observable.of(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;)
                 .switchMap(function (letter) { return source.map(function (n) { return String(letter + n); }); })
                 .subscribe(function (x) {
-                expect(x).toBe(expected.shift());
+                chai_1.expect(x).to.equal(expected.shift());
             }, function (x) {
-                done.fail(&apos;should not be called&apos;);
+                done(new Error(&apos;should not be called&apos;));
             }, function () {
-                expect(expected.length).toBe(0);
+                chai_1.expect(expected.length).to.equal(0);
                 done();
             });
         });

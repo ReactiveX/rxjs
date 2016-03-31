@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/subjects/AsyncSubject-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var AsyncSubject = Rx.AsyncSubject;
 var TestObserver = (function () {
@@ -77,11 +80,11 @@ describe(&apos;AsyncSubject&apos;, function () {
         var observer = new TestObserver();
         subject.subscribe(observer);
         subject.next(1);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.next(2);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.complete();
-        expect(observer.results).toEqual([2, &apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([2, &apos;done&apos;]);
     });
     it(&apos;should emit the last value when subscribing after complete&apos;, function () {
         var subject = new AsyncSubject();
@@ -90,89 +93,89 @@ describe(&apos;AsyncSubject&apos;, function () {
         subject.next(2);
         subject.complete();
         subject.subscribe(observer);
-        expect(observer.results).toEqual([2, &apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([2, &apos;done&apos;]);
     });
     it(&apos;should keep emitting the last value to subsequent subscriptions&apos;, function () {
         var subject = new AsyncSubject();
         var observer = new TestObserver();
         var subscription = subject.subscribe(observer);
         subject.next(1);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.next(2);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.complete();
-        expect(observer.results).toEqual([2, &apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([2, &apos;done&apos;]);
         subscription.unsubscribe();
         observer.results = [];
         subject.subscribe(observer);
-        expect(observer.results).toEqual([2, &apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([2, &apos;done&apos;]);
     });
     it(&apos;should not emit values after complete&apos;, function () {
         var subject = new AsyncSubject();
         var observer = new TestObserver();
         subject.subscribe(observer);
         subject.next(1);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.next(2);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.complete();
-        expect(observer.results).toEqual([2, &apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([2, &apos;done&apos;]);
     });
     it(&apos;should not emit values if unsubscribed before complete&apos;, function () {
         var subject = new AsyncSubject();
         var observer = new TestObserver();
         var subscription = subject.subscribe(observer);
         subject.next(1);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.next(2);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subscription.unsubscribe();
         subject.next(3);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.complete();
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
     });
     it(&apos;should just complete if no value has been nexted into it&apos;, function () {
         var subject = new AsyncSubject();
         var observer = new TestObserver();
         subject.subscribe(observer);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.complete();
-        expect(observer.results).toEqual([&apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([&apos;done&apos;]);
     });
     it(&apos;should keep emitting complete to subsequent subscriptions&apos;, function () {
         var subject = new AsyncSubject();
         var observer = new TestObserver();
         var subscription = subject.subscribe(observer);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.complete();
-        expect(observer.results).toEqual([&apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([&apos;done&apos;]);
         subscription.unsubscribe();
         observer.results = [];
         subject.subscribe(observer);
-        expect(observer.results).toEqual([&apos;done&apos;]);
+        chai_1.expect(observer.results).to.deep.equal([&apos;done&apos;]);
     });
     it(&apos;should only error if an error is passed into it&apos;, function () {
         var subject = new AsyncSubject();
         var observer = new TestObserver();
         subject.subscribe(observer);
         subject.next(1);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.error(new Error(&apos;bad&apos;));
-        expect(observer.results).toEqual([new Error(&apos;bad&apos;)]);
+        chai_1.expect(observer.results).to.deep.equal([new Error(&apos;bad&apos;)]);
     });
     it(&apos;should keep emitting error to subsequent subscriptions&apos;, function () {
         var subject = new AsyncSubject();
         var observer = new TestObserver();
         subject.subscribe(observer);
         subject.next(1);
-        expect(observer.results).toEqual([]);
+        chai_1.expect(observer.results).to.deep.equal([]);
         subject.error(new Error(&apos;bad&apos;));
-        expect(observer.results).toEqual([new Error(&apos;bad&apos;)]);
+        chai_1.expect(observer.results).to.deep.equal([new Error(&apos;bad&apos;)]);
         subject.unsubscribe();
         observer.results = [];
         subject.subscribe(observer);
-        expect(observer.results).toEqual([new Error(&apos;bad&apos;)]);
+        chai_1.expect(observer.results).to.deep.equal([new Error(&apos;bad&apos;)]);
     });
 });
 //# sourceMappingURL=AsyncSubject-spec.js.map</code></pre>

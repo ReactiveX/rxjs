@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/subjects/ReplaySubject-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var ReplaySubject = Rx.ReplaySubject;
 var Observable = Rx.Observable;
@@ -60,7 +63,7 @@ var Observable = Rx.Observable;
 describe(&apos;ReplaySubject&apos;, function () {
     it(&apos;should extend Subject&apos;, function (done) {
         var subject = new ReplaySubject();
-        expect(subject instanceof Rx.Subject).toBe(true);
+        chai_1.expect(subject instanceof Rx.Subject).to.be.true;
         done();
     });
     it(&apos;should replay values upon subscription&apos;, function (done) {
@@ -71,12 +74,12 @@ describe(&apos;ReplaySubject&apos;, function () {
         subject.next(2);
         subject.next(3);
         subject.subscribe(function (x) {
-            expect(x).toBe(expects[i++]);
+            chai_1.expect(x).to.equal(expects[i++]);
             if (i === 3) {
                 subject.complete();
             }
         }, function (err) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -90,7 +93,7 @@ describe(&apos;ReplaySubject&apos;, function () {
         subject.next(3);
         subject.complete();
         subject.subscribe(function (x) {
-            expect(x).toBe(expects[i++]);
+            chai_1.expect(x).to.equal(expects[i++]);
         }, null, done);
     });
     it(&apos;should replay values and error&apos;, function (done) {
@@ -102,9 +105,9 @@ describe(&apos;ReplaySubject&apos;, function () {
         subject.next(3);
         subject.error(&apos;fooey&apos;);
         subject.subscribe(function (x) {
-            expect(x).toBe(expects[i++]);
+            chai_1.expect(x).to.equal(expects[i++]);
         }, function (err) {
-            expect(err).toBe(&apos;fooey&apos;);
+            chai_1.expect(err).to.equal(&apos;fooey&apos;);
             done();
         });
     });
@@ -116,12 +119,12 @@ describe(&apos;ReplaySubject&apos;, function () {
         subject.next(2);
         subject.next(3);
         subject.subscribe(function (x) {
-            expect(x).toBe(expects[i++]);
+            chai_1.expect(x).to.equal(expects[i++]);
             if (i === 2) {
                 subject.complete();
             }
         }, function (err) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -180,9 +183,9 @@ describe(&apos;ReplaySubject&apos;, function () {
             var subscription3 = subject.subscribe(function (x) { results3.push(x); }, function (err) { results3.push(&apos;E&apos;); }, function () { results3.push(&apos;C&apos;); });
             subject.next(11);
             subscription3.unsubscribe();
-            expect(results1).toEqual([3, 4, 5, 6, 7]);
-            expect(results2).toEqual([4, 5, 6, 7, 8]);
-            expect(results3).toEqual([9, 10, 11]);
+            chai_1.expect(results1).to.deep.equal([3, 4, 5, 6, 7]);
+            chai_1.expect(results2).to.deep.equal([4, 5, 6, 7, 8]);
+            chai_1.expect(results3).to.deep.equal([9, 10, 11]);
             subject.complete();
         });
     });
@@ -224,9 +227,9 @@ describe(&apos;ReplaySubject&apos;, function () {
         var expected = [3, 4, 5];
         source.subscribe(subject);
         subject.subscribe(function (x) {
-            expect(x).toBe(expected.shift());
+            chai_1.expect(x).to.equal(expected.shift());
         }, function () {
-            done.fail();
+            done(new Error());
         }, function () {
             done();
         });

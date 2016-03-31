@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -59,27 +61,48 @@
  * @hide true
  */
 export class RangeObservable extends Observable {
-    constructor(start, end, scheduler) {
+    constructor(start, count, scheduler) {
         super();
         this.start = start;
-        this.end = end;
+        this._count = count;
         this.scheduler = scheduler;
     }
     /**
-     * @param start
-     * @param end
-     * @param scheduler
-     * @return {RangeObservable}
+     * Creates an Observable that emits a sequence of numbers within a specified
+     * range.
+     *
+     * &lt;span class=&quot;informal&quot;&gt;Emits a sequence of numbers in a range.&lt;/span&gt;
+     *
+     * &lt;img src=&quot;./img/range.png&quot; width=&quot;100%&quot;&gt;
+     *
+     * `range` operator emits a range of sequential integers, in order, where you
+     * select the `start` of the range and its `length`. By default, uses no
+     * Scheduler and just delivers the notifications synchronously, but may use
+     * an optional Scheduler to regulate those deliveries.
+     *
+     * @example &lt;caption&gt;Emits the numbers 1 to 10&lt;/caption&gt;
+     * var numbers = Rx.Observable.range(1, 10);
+     * numbers.subscribe(x =&gt; console.log(x));
+     *
+     * @see {@link timer}
+     * @see {@link interval}
+     *
+     * @param {number} [start=0] The value of the first integer in the sequence.
+     * @param {number} [count=0] The number of sequential integers to generate.
+     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+     * the emissions of the notifications.
+     * @return {Observable} An Observable of numbers that emits a finite range of
+     * sequential integers.
      * @static true
      * @name range
      * @owner Observable
      */
-    static create(start = 0, end = 0, scheduler) {
-        return new RangeObservable(start, end, scheduler);
+    static create(start = 0, count = 0, scheduler) {
+        return new RangeObservable(start, count, scheduler);
     }
     static dispatch(state) {
-        const { start, index, end, subscriber } = state;
-        if (index &gt;= end) {
+        const { start, index, count, subscriber } = state;
+        if (index &gt;= count) {
             subscriber.complete();
             return;
         }
@@ -94,16 +117,16 @@ export class RangeObservable extends Observable {
     _subscribe(subscriber) {
         let index = 0;
         let start = this.start;
-        const end = this.end;
+        const count = this._count;
         const scheduler = this.scheduler;
         if (scheduler) {
             return scheduler.schedule(RangeObservable.dispatch, 0, {
-                index, end, start, subscriber
+                index, count, start, subscriber
             });
         }
         else {
             do {
-                if (index++ &gt;= end) {
+                if (index++ &gt;= count) {
                     subscriber.complete();
                     break;
                 }

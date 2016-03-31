@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,20 +55,20 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/schedulers/TestScheduler-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
-/* globals describe, it, expect, expectObservable, expectSubscriptions, rxTestScheduler, hot, cold */
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
 var Notification = Rx.Notification;
 var TestScheduler = Rx.TestScheduler;
 /** @test {TestScheduler} */
 describe(&apos;TestScheduler&apos;, function () {
     it(&apos;should exist&apos;, function () {
-        expect(TestScheduler).toBeDefined();
-        expect(typeof TestScheduler).toBe(&apos;function&apos;);
+        chai_1.expect(TestScheduler).exist;
+        chai_1.expect(TestScheduler).to.be.a(&apos;function&apos;);
     });
     describe(&apos;parseMarbles()&apos;, function () {
         it(&apos;should parse a marble string into a series of notifications and types&apos;, function () {
             var result = TestScheduler.parseMarbles(&apos;-------a---b---|&apos;, { a: &apos;A&apos;, b: &apos;B&apos; });
-            expect(result).toDeepEqual([
+            chai_1.expect(result).deep.equal([
                 { frame: 70, notification: Notification.createNext(&apos;A&apos;) },
                 { frame: 110, notification: Notification.createNext(&apos;B&apos;) },
                 { frame: 150, notification: Notification.createComplete() }
@@ -74,7 +76,7 @@ describe(&apos;TestScheduler&apos;, function () {
         });
         it(&apos;should parse a marble string, allowing spaces too&apos;, function () {
             var result = TestScheduler.parseMarbles(&apos;--a--b--|   &apos;, { a: &apos;A&apos;, b: &apos;B&apos; });
-            expect(result).toDeepEqual([
+            chai_1.expect(result).deep.equal([
                 { frame: 20, notification: Notification.createNext(&apos;A&apos;) },
                 { frame: 50, notification: Notification.createNext(&apos;B&apos;) },
                 { frame: 80, notification: Notification.createComplete() }
@@ -82,7 +84,7 @@ describe(&apos;TestScheduler&apos;, function () {
         });
         it(&apos;should parse a marble string with a subscription point&apos;, function () {
             var result = TestScheduler.parseMarbles(&apos;---^---a---b---|&apos;, { a: &apos;A&apos;, b: &apos;B&apos; });
-            expect(result).toDeepEqual([
+            chai_1.expect(result).deep.equal([
                 { frame: 40, notification: Notification.createNext(&apos;A&apos;) },
                 { frame: 80, notification: Notification.createNext(&apos;B&apos;) },
                 { frame: 120, notification: Notification.createComplete() }
@@ -90,7 +92,7 @@ describe(&apos;TestScheduler&apos;, function () {
         });
         it(&apos;should parse a marble string with an error&apos;, function () {
             var result = TestScheduler.parseMarbles(&apos;-------a---b---#&apos;, { a: &apos;A&apos;, b: &apos;B&apos; }, &apos;omg error!&apos;);
-            expect(result).toDeepEqual([
+            chai_1.expect(result).deep.equal([
                 { frame: 70, notification: Notification.createNext(&apos;A&apos;) },
                 { frame: 110, notification: Notification.createNext(&apos;B&apos;) },
                 { frame: 150, notification: Notification.createError(&apos;omg error!&apos;) }
@@ -98,7 +100,7 @@ describe(&apos;TestScheduler&apos;, function () {
         });
         it(&apos;should default in the letter for the value if no value hash was passed&apos;, function () {
             var result = TestScheduler.parseMarbles(&apos;--a--b--c--&apos;);
-            expect(result).toDeepEqual([
+            chai_1.expect(result).deep.equal([
                 { frame: 20, notification: Notification.createNext(&apos;a&apos;) },
                 { frame: 50, notification: Notification.createNext(&apos;b&apos;) },
                 { frame: 80, notification: Notification.createNext(&apos;c&apos;) },
@@ -106,7 +108,7 @@ describe(&apos;TestScheduler&apos;, function () {
         });
         it(&apos;should handle grouped values&apos;, function () {
             var result = TestScheduler.parseMarbles(&apos;---(abc)---&apos;);
-            expect(result).toDeepEqual([
+            chai_1.expect(result).deep.equal([
                 { frame: 30, notification: Notification.createNext(&apos;a&apos;) },
                 { frame: 30, notification: Notification.createNext(&apos;b&apos;) },
                 { frame: 30, notification: Notification.createNext(&apos;c&apos;) }
@@ -116,31 +118,31 @@ describe(&apos;TestScheduler&apos;, function () {
     describe(&apos;parseMarblesAsSubscriptions()&apos;, function () {
         it(&apos;should parse a subscription marble string into a subscriptionLog&apos;, function () {
             var result = TestScheduler.parseMarblesAsSubscriptions(&apos;---^---!-&apos;);
-            expect(result.subscribedFrame).toEqual(30);
-            expect(result.unsubscribedFrame).toEqual(70);
+            chai_1.expect(result.subscribedFrame).to.equal(30);
+            chai_1.expect(result.unsubscribedFrame).to.equal(70);
         });
         it(&apos;should parse a subscription marble string with an unsubscription&apos;, function () {
             var result = TestScheduler.parseMarblesAsSubscriptions(&apos;---^-&apos;);
-            expect(result.subscribedFrame).toEqual(30);
-            expect(result.unsubscribedFrame).toEqual(Number.POSITIVE_INFINITY);
+            chai_1.expect(result.subscribedFrame).to.equal(30);
+            chai_1.expect(result.unsubscribedFrame).to.equal(Number.POSITIVE_INFINITY);
         });
         it(&apos;should parse a subscription marble string with a synchronous unsubscription&apos;, function () {
             var result = TestScheduler.parseMarblesAsSubscriptions(&apos;---(^!)-&apos;);
-            expect(result.subscribedFrame).toEqual(30);
-            expect(result.unsubscribedFrame).toEqual(30);
+            chai_1.expect(result.subscribedFrame).to.equal(30);
+            chai_1.expect(result.unsubscribedFrame).to.equal(30);
         });
     });
     describe(&apos;createTime()&apos;, function () {
         it(&apos;should parse a simple time marble string to a number&apos;, function () {
             var scheduler = new TestScheduler(null);
             var time = scheduler.createTime(&apos;-----|&apos;);
-            expect(time).toBe(50);
+            chai_1.expect(time).to.equal(50);
         });
         it(&apos;should throw if not given good marble input&apos;, function () {
             var scheduler = new TestScheduler(null);
-            expect(function () {
+            chai_1.expect(function () {
                 scheduler.createTime(&apos;-a-b-#&apos;);
-            }).toThrow();
+            }).to.throw();
         });
     });
     describe(&apos;createColdObservable()&apos;, function () {
@@ -148,12 +150,12 @@ describe(&apos;TestScheduler&apos;, function () {
             var expected = [&apos;A&apos;, &apos;B&apos;];
             var scheduler = new TestScheduler(null);
             var source = scheduler.createColdObservable(&apos;--a---b--|&apos;, { a: &apos;A&apos;, b: &apos;B&apos; });
-            expect(source instanceof Rx.Observable).toBe(true);
+            chai_1.expect(source instanceof Rx.Observable).to.be.true;
             source.subscribe(function (x) {
-                expect(x).toBe(expected.shift());
+                chai_1.expect(x).to.equal(expected.shift());
             });
             scheduler.flush();
-            expect(expected.length).toBe(0);
+            chai_1.expect(expected.length).to.equal(0);
         });
     });
     describe(&apos;createHotObservable()&apos;, function () {
@@ -161,67 +163,67 @@ describe(&apos;TestScheduler&apos;, function () {
             var expected = [&apos;A&apos;, &apos;B&apos;];
             var scheduler = new TestScheduler(null);
             var source = scheduler.createHotObservable(&apos;--a---b--|&apos;, { a: &apos;A&apos;, b: &apos;B&apos; });
-            expect(source instanceof Rx.Subject).toBe(true);
+            chai_1.expect(source instanceof Rx.Subject).to.be.true;
             source.subscribe(function (x) {
-                expect(x).toBe(expected.shift());
+                chai_1.expect(x).to.equal(expected.shift());
             });
             scheduler.flush();
-            expect(expected.length).toBe(0);
+            chai_1.expect(expected.length).to.equal(0);
         });
     });
     describe(&apos;jasmine helpers&apos;, function () {
         describe(&apos;rxTestScheduler&apos;, function () {
             it(&apos;should exist&apos;, function () {
-                expect(rxTestScheduler instanceof TestScheduler).toBe(true);
+                chai_1.expect(rxTestScheduler instanceof TestScheduler).to.be.true;
             });
         });
         describe(&apos;cold()&apos;, function () {
             it(&apos;should exist&apos;, function () {
-                expect(cold).toBeDefined();
-                expect(typeof cold).toBe(&apos;function&apos;);
+                chai_1.expect(cold).to.exist;
+                chai_1.expect(cold).to.be.a(&apos;function&apos;);
             });
             it(&apos;should create a cold observable&apos;, function () {
                 var expected = [1, 2];
                 var source = cold(&apos;-a-b-|&apos;, { a: 1, b: 2 });
                 source.subscribe(function (x) {
-                    expect(x).toBe(expected.shift());
+                    chai_1.expect(x).to.equal(expected.shift());
                 }, null, function () {
-                    expect(expected.length).toBe(0);
+                    chai_1.expect(expected.length).to.equal(0);
                 });
                 expectObservable(source).toBe(&apos;-a-b-|&apos;, { a: 1, b: 2 });
             });
         });
         describe(&apos;hot()&apos;, function () {
             it(&apos;should exist&apos;, function () {
-                expect(hot).toBeDefined();
-                expect(typeof hot).toBe(&apos;function&apos;);
+                chai_1.expect(hot).to.exist;
+                chai_1.expect(hot).to.be.a(&apos;function&apos;);
             });
             it(&apos;should create a hot observable&apos;, function () {
                 var source = hot(&apos;---^-a-b-|&apos;, { a: 1, b: 2 });
-                expect(source instanceof Rx.Subject).toBe(true);
+                chai_1.expect(source instanceof Rx.Subject).to.be.true;
                 expectObservable(source).toBe(&apos;--a-b-|&apos;, { a: 1, b: 2 });
             });
         });
         describe(&apos;time()&apos;, function () {
             it(&apos;should exist&apos;, function () {
-                expect(time).toBeDefined();
-                expect(typeof time).toBe(&apos;function&apos;);
+                chai_1.expect(time).to.exist;
+                chai_1.expect(time).to.be.a(&apos;function&apos;);
             });
             it(&apos;should parse a simple time marble string to a number&apos;, function () {
-                expect(time(&apos;-----|&apos;)).toBe(50);
+                chai_1.expect(time(&apos;-----|&apos;)).to.equal(50);
             });
         });
         describe(&apos;expectObservable()&apos;, function () {
             it(&apos;should exist&apos;, function () {
-                expect(expectObservable).toBeDefined();
-                expect(typeof expectObservable).toBe(&apos;function&apos;);
+                chai_1.expect(expectObservable).to.exist;
+                chai_1.expect(expectObservable).to.be.a(&apos;function&apos;);
             });
             it(&apos;should return an object with a toBe function&apos;, function () {
-                expect(typeof (expectObservable(Rx.Observable.of(1)).toBe)).toBe(&apos;function&apos;);
+                chai_1.expect(expectObservable(Rx.Observable.of(1)).toBe).to.be.a(&apos;function&apos;);
             });
             it(&apos;should append to flushTests array&apos;, function () {
                 expectObservable(Rx.Observable.empty());
-                expect(rxTestScheduler.flushTests.length).toBe(1);
+                chai_1.expect(rxTestScheduler.flushTests.length).to.equal(1);
             });
             it(&apos;should handle empty&apos;, function () {
                 expectObservable(Rx.Observable.empty()).toBe(&apos;|&apos;, {});
@@ -239,15 +241,15 @@ describe(&apos;TestScheduler&apos;, function () {
         });
         describe(&apos;expectSubscriptions()&apos;, function () {
             it(&apos;should exist&apos;, function () {
-                expect(expectSubscriptions).toBeDefined();
-                expect(typeof expectSubscriptions).toBe(&apos;function&apos;);
+                chai_1.expect(expectSubscriptions).to.exist;
+                chai_1.expect(expectSubscriptions).to.be.a(&apos;function&apos;);
             });
             it(&apos;should return an object with a toBe function&apos;, function () {
-                expect(typeof (expectSubscriptions([]).toBe)).toBe(&apos;function&apos;);
+                chai_1.expect(expectSubscriptions([]).toBe).to.be.a(&apos;function&apos;);
             });
             it(&apos;should append to flushTests array&apos;, function () {
                 expectSubscriptions([]);
-                expect(rxTestScheduler.flushTests.length).toBe(1);
+                chai_1.expect(rxTestScheduler.flushTests.length).to.equal(1);
             });
             it(&apos;should assert subscriptions of a cold observable&apos;, function () {
                 var source = cold(&apos;---a---b-|&apos;);

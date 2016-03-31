@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/fromEvent-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var Observable = Rx.Observable;
 /** @test {fromEvent} */
@@ -77,10 +80,10 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             //noop
         });
         subscription.unsubscribe();
-        expect(onEventName).toBe(&apos;click&apos;);
-        expect(typeof onHandler).toBe(&apos;function&apos;);
-        expect(offEventName).toBe(onEventName);
-        expect(offHandler).toBe(onHandler);
+        chai_1.expect(onEventName).to.equal(&apos;click&apos;);
+        chai_1.expect(typeof onHandler).to.equal(&apos;function&apos;);
+        chai_1.expect(offEventName).to.equal(onEventName);
+        chai_1.expect(offHandler).to.equal(onHandler);
     });
     it(&apos;should setup an event observable on objects with &quot;addEventListener&quot; and &quot;removeEventListener&quot; &apos;, function () {
         var onEventName;
@@ -102,10 +105,10 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             //noop
         });
         subscription.unsubscribe();
-        expect(onEventName).toBe(&apos;click&apos;);
-        expect(typeof onHandler).toBe(&apos;function&apos;);
-        expect(offEventName).toBe(onEventName);
-        expect(offHandler).toBe(onHandler);
+        chai_1.expect(onEventName).to.equal(&apos;click&apos;);
+        chai_1.expect(typeof onHandler).to.equal(&apos;function&apos;);
+        chai_1.expect(offEventName).to.equal(onEventName);
+        chai_1.expect(offHandler).to.equal(onHandler);
     });
     it(&apos;should setup an event observable on objects with &quot;addListener&quot; and &quot;removeListener&quot; &apos;, function () {
         var onEventName;
@@ -127,10 +130,10 @@ describe(&apos;Observable.fromEvent&apos;, function () {
             //noop
         });
         subscription.unsubscribe();
-        expect(onEventName).toBe(&apos;click&apos;);
-        expect(typeof onHandler).toBe(&apos;function&apos;);
-        expect(offEventName).toBe(onEventName);
-        expect(offHandler).toBe(onHandler);
+        chai_1.expect(onEventName).to.equal(&apos;click&apos;);
+        chai_1.expect(typeof onHandler).to.equal(&apos;function&apos;);
+        chai_1.expect(offEventName).to.equal(onEventName);
+        chai_1.expect(offHandler).to.equal(onHandler);
     });
     it(&apos;should pass through events that occur&apos;, function (done) {
         var send;
@@ -144,9 +147,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
         };
         Observable.fromEvent(obj, &apos;click&apos;).take(1)
             .subscribe(function (e) {
-            expect(e).toBe(&apos;test&apos;);
+            chai_1.expect(e).to.equal(&apos;test&apos;);
         }, function (err) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -167,9 +170,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
         }
         Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
             .subscribe(function (e) {
-            expect(e).toBe(&apos;test!&apos;);
+            chai_1.expect(e).to.equal(&apos;test!&apos;);
         }, function (err) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -190,9 +193,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
         }
         Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
             .subscribe(function (e) {
-            expect(e).toBeUndefined();
+            chai_1.expect(e).not.exist;
         }, function (err) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -213,9 +216,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
         }
         Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
             .subscribe(function (e) {
-            expect(e).toBe(&apos;no arguments&apos;);
+            chai_1.expect(e).to.equal(&apos;no arguments&apos;);
         }, function (err) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });
@@ -236,9 +239,9 @@ describe(&apos;Observable.fromEvent&apos;, function () {
         }
         Observable.fromEvent(obj, &apos;click&apos;, selector).take(1)
             .subscribe(function (e) {
-            expect(e).toEqual([1, 2, 3]);
+            chai_1.expect(e).to.deep.equal([1, 2, 3]);
         }, function (err) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });

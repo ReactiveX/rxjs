@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container manual-root" data-ice="rootContainer">
@@ -60,6 +62,7 @@
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#what-are-operators-" data-ice="link">What are operators?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#instance-operators-versus-static-operators" data-ice="link">Instance operators versus static operators</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#marble-diagrams" data-ice="link">Marble diagrams</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#choose-an-operator" data-ice="link">Choose an operator</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#categories-of-operators" data-ice="link">Categories of operators</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#creation-operators" data-ice="link">Creation Operators</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#transformation-operators" data-ice="link">Transformation Operators</a></li>
@@ -81,6 +84,7 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#es6-via-npm" data-ice="link">ES6 via npm</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#commonjs-via-npm" data-ice="link">CommonJS via npm</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/installation.html#commonjs-with-typescript" data-ice="link">CommonJS with TypeScript</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#all-module-types-cjs-es6-amd-typescript-via-npm" data-ice="link">All Module Types (CJS/ES6/AMD/TypeScript) via npm</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#cdn" data-ice="link">CDN</a></li>
 </ul>
@@ -869,6 +873,10 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <p>Below you can see the anatomy of a marble diagram.</p>
 <p><img src="./manual/./asset/marble-diagram-anatomy.svg"></p>
 <p>Throughout this documentation site, we extensively use marble diagrams to explain how operators work. They may be really useful in other contexts too, like on a whiteboard or even in our unit tests (as ASCII diagrams).</p>
+<h2 id="choose-an-operator">Choose an operator</h2>
+<p><div class="decision-tree-widget"></div>
+
+</p>
 <h2 id="categories-of-operators">Categories of operators</h2>
 <p>There are operators for different purposes, and they may be categorized as: creation, transformation, filtering, combination, multicasting, error handling, utility, etc. In the following list you will find all the operators organized in categories.</p>
 <h3 id="creation-operators">Creation Operators</h3>

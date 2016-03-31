@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/switch-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var Observable = Rx.Observable;
 var queueScheduler = Rx.Scheduler.queue;
@@ -73,7 +76,7 @@ describe(&apos;Observable.prototype.switch&apos;, function () {
         Observable.of(a, b, queueScheduler)
             .switch()
             .subscribe(function (x) {
-            expect(x).toBe(r[i++]);
+            chai_1.expect(x).to.equal(r[i++]);
         }, null, done);
     });
     it(&apos;should unsub inner observables&apos;, function () {
@@ -88,7 +91,7 @@ describe(&apos;Observable.prototype.switch&apos;, function () {
         })
             .mergeAll()
             .subscribe();
-        expect(unsubbed).toEqual([&apos;a&apos;, &apos;b&apos;]);
+        chai_1.expect(unsubbed).to.deep.equal([&apos;a&apos;, &apos;b&apos;]);
     });
     it(&apos;should switch to each inner Observable&apos;, function (done) {
         var a = Observable.of(1, 2, 3);
@@ -96,7 +99,7 @@ describe(&apos;Observable.prototype.switch&apos;, function () {
         var r = [1, 2, 3, 4, 5, 6];
         var i = 0;
         Observable.of(a, b).switch().subscribe(function (x) {
-            expect(x).toBe(r[i++]);
+            chai_1.expect(x).to.equal(r[i++]);
         }, null, done);
     });
     it(&apos;should handle a hot observable of observables&apos;, function () {
@@ -211,9 +214,9 @@ describe(&apos;Observable.prototype.switch&apos;, function () {
         Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
             .switch()
             .subscribe(function (x) {
-            expect(x).toBe(expected.shift());
+            chai_1.expect(x).to.equal(expected.shift());
         }, null, function () {
-            expect(expected.length).toBe(0);
+            chai_1.expect(expected.length).to.equal(0);
             done();
         });
     });
@@ -221,12 +224,12 @@ describe(&apos;Observable.prototype.switch&apos;, function () {
         Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
             .switch()
             .subscribe(function () {
-            done.fail();
+            done(new Error(&apos;should not be called&apos;));
         }, function (err) {
-            expect(err).toBe(3);
+            chai_1.expect(err).to.equal(3);
             done();
         }, function () {
-            done.fail();
+            done(new Error(&apos;should not be called&apos;));
         });
     });
     it(&apos;should handle an observable with Arrays in it&apos;, function () {
@@ -235,12 +238,12 @@ describe(&apos;Observable.prototype.switch&apos;, function () {
         Observable.of(Observable.never(), Observable.never(), [1, 2, 3, 4])
             .switch()
             .subscribe(function (x) {
-            expect(x).toBe(expected.shift());
+            chai_1.expect(x).to.equal(expected.shift());
         }, null, function () {
             completed = true;
-            expect(expected.length).toBe(0);
+            chai_1.expect(expected.length).to.equal(0);
         });
-        expect(completed).toBe(true);
+        chai_1.expect(completed).to.be.true;
     });
 });
 //# sourceMappingURL=switch-spec.js.map</code></pre>

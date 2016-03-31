@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/dom/ajax-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../../dist/cjs/Rx.DOM&apos;);
 var root_1 = require(&apos;../../../dist/cjs/util/root&apos;);
 var ajax_helper_1 = require(&apos;../../helpers/ajax-helper&apos;);
@@ -83,8 +86,8 @@ describe(&apos;Observable.ajax&apos;, function () {
         };
         Rx.Observable.ajax(obj).subscribe();
         var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
-        expect(request.url).toBe(&apos;/talk-to-me-goose&apos;);
-        expect(request.requestHeaders).toEqual({
+        chai_1.expect(request.url).to.equal(&apos;/talk-to-me-goose&apos;);
+        chai_1.expect(request.requestHeaders).to.deep.equal({
             &apos;Content-Type&apos;: &apos;kenny/loggins&apos;,
             &apos;Fly-Into-The&apos;: &apos;Dangah Zone!&apos;,
             &apos;Take-A-Ride-Into-The&apos;: &apos;Danger ZoooOoone!&apos;,
@@ -106,14 +109,14 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, null, function () {
             complete = true;
         });
-        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 200,
             &apos;contentType&apos;: &apos;application/json&apos;,
             &apos;responseText&apos;: expected
         });
-        expect(result).toBe(expected);
-        expect(complete).toBe(true);
+        chai_1.expect(result).to.equal(expected);
+        chai_1.expect(complete).to.be.true;
     });
     it(&apos;should have error when resultSelector errors&apos;, function () {
         var expected = &apos;avast ye swabs!&apos;;
@@ -134,13 +137,13 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not complete&apos;;
         });
-        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 200,
             &apos;contentType&apos;: &apos;application/json&apos;,
             &apos;responseText&apos;: expected
         });
-        expect(error).toEqual(new Error(&apos;ha! ha! fooled you!&apos;));
+        chai_1.expect(error).to.be.an(&apos;error&apos;, &apos;ha! ha! fooled you!&apos;);
     });
     it(&apos;should error if createXHR throws&apos;, function () {
         var error;
@@ -159,7 +162,7 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not complete&apos;;
         });
-        expect(error).toEqual(new Error(&apos;wokka wokka&apos;));
+        chai_1.expect(error).to.be.an(&apos;error&apos;, &apos;wokka wokka&apos;);
     });
     it(&apos;should succeed on 200&apos;, function () {
         var expected = { foo: &apos;bar&apos; };
@@ -176,15 +179,15 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, null, function () {
             complete = true;
         });
-        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 200,
             &apos;contentType&apos;: &apos;application/json&apos;,
             &apos;responseText&apos;: JSON.stringify(expected)
         });
-        expect(result.xhr).toBeDefined();
-        expect(result.response).toBe(JSON.stringify({ foo: &apos;bar&apos; }));
-        expect(complete).toBe(true);
+        chai_1.expect(result.xhr).exist;
+        chai_1.expect(result.response).to.deep.equal(JSON.stringify({ foo: &apos;bar&apos; }));
+        chai_1.expect(complete).to.be.true;
     });
     it(&apos;should fail on 404&apos;, function () {
         var error;
@@ -204,15 +207,15 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not complete&apos;;
         });
-        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 404,
             &apos;contentType&apos;: &apos;text/plain&apos;,
             &apos;responseText&apos;: &apos;Wee! I am text!&apos;
         });
-        expect(error instanceof Rx.AjaxError).toBe(true);
-        expect(error.message).toBe(&apos;ajax error 404&apos;);
-        expect(error.status).toBe(404);
+        chai_1.expect(error instanceof Rx.AjaxError).to.be.true;
+        chai_1.expect(error.message).to.equal(&apos;ajax error 404&apos;);
+        chai_1.expect(error.status).to.equal(404);
     });
     it(&apos;should fail on 404&apos;, function () {
         var error;
@@ -231,27 +234,27 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not complete&apos;;
         });
-        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 300,
             &apos;contentType&apos;: &apos;text/plain&apos;,
             &apos;responseText&apos;: &apos;Wee! I am text!&apos;
         });
-        expect(error instanceof Rx.AjaxError).toBe(true);
-        expect(error.message).toBe(&apos;ajax error 300&apos;);
-        expect(error.status).toBe(300);
+        chai_1.expect(error instanceof Rx.AjaxError).to.be.true;
+        chai_1.expect(error.message).to.equal(&apos;ajax error 300&apos;);
+        chai_1.expect(error.status).to.equal(300);
     });
     it(&apos;should succeed no settings&apos;, function () {
         var expected = JSON.stringify({ foo: &apos;bar&apos; });
         Rx.Observable.ajax(&apos;/flibbertyJibbet&apos;)
             .subscribe(function (x) {
-            expect(x.status).toBe(200);
-            expect(x.xhr.method).toBe(&apos;GET&apos;);
-            expect(x.xhr.responseText).toBe(expected);
+            chai_1.expect(x.status).to.equal(200);
+            chai_1.expect(x.xhr.method).to.equal(&apos;GET&apos;);
+            chai_1.expect(x.xhr.responseText).to.equal(expected);
         }, function () {
             throw &apos;should not have been called&apos;;
         });
-        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 200,
             &apos;contentType&apos;: &apos;text/plain&apos;,
@@ -264,13 +267,13 @@ describe(&apos;Observable.ajax&apos;, function () {
             .subscribe(function () {
             throw &apos;should not have been called&apos;;
         }, function (x) {
-            expect(x.status).toBe(500);
-            expect(x.xhr.method).toBe(&apos;GET&apos;);
-            expect(x.xhr.responseText).toBe(expected);
+            chai_1.expect(x.status).to.equal(500);
+            chai_1.expect(x.xhr.method).to.equal(&apos;GET&apos;);
+            chai_1.expect(x.xhr.responseText).to.equal(expected);
         }, function () {
             throw &apos;should not have been called&apos;;
         });
-        expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 500,
             &apos;contentType&apos;: &apos;text/plain&apos;,
@@ -297,8 +300,8 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: &apos;foobar&apos;
             };
             Rx.Observable.ajax(obj).subscribe();
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(&apos;foobar&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.equal(&apos;foobar&apos;);
         });
         it(&apos;can take FormData body&apos;, function () {
             var body = new root_1.root.FormData();
@@ -308,8 +311,8 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: body
             };
             Rx.Observable.ajax(obj).subscribe();
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(body);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
         });
         it(&apos;should not fail when FormData is undefined&apos;, function () {
             root_1.root.FormData = void 0;
@@ -322,7 +325,7 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: { &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos; }
             };
             Rx.Observable.ajax(obj).subscribe();
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         });
         it(&apos;should send by form-urlencoded format&apos;, function () {
             var body = {
@@ -337,8 +340,8 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: body
             };
             Rx.Observable.ajax(obj).subscribe();
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(&apos;%F0%9F%8C%9F=%F0%9F%9A%80&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.equal(&apos;%F0%9F%8C%9F=%F0%9F%9A%80&apos;);
         });
         it(&apos;should send by JSON&apos;, function () {
             var body = {
@@ -353,8 +356,8 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: body
             };
             Rx.Observable.ajax(obj).subscribe();
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).toBe(&apos;{&quot;&#x1F31F;&quot;:&quot;&#x1F680;&quot;}&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.equal(&apos;{&quot;&#x1F31F;&quot;:&quot;&#x1F680;&quot;}&apos;);
         });
     });
     describe(&apos;ajax.get&apos;, function () {
@@ -370,14 +373,14 @@ describe(&apos;Observable.ajax&apos;, function () {
                 complete = true;
             });
             var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
-            expect(request.url).toBe(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
             request.respondWith({
                 &apos;status&apos;: 200,
                 &apos;contentType&apos;: &apos;application/json&apos;,
                 &apos;responseText&apos;: JSON.stringify(expected)
             });
-            expect(result).toEqual(expected);
-            expect(complete).toBe(true);
+            chai_1.expect(result).to.deep.equal(expected);
+            chai_1.expect(complete).to.be.true;
         });
         it(&apos;should succeed on 200 with a resultSelector&apos;, function () {
             var expected = { larf: &apos;hahahahaha&apos; };
@@ -394,16 +397,16 @@ describe(&apos;Observable.ajax&apos;, function () {
             }, null, function () {
                 complete = true;
             });
-            expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).toBe(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
             ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
                 &apos;status&apos;: 200,
                 &apos;contentType&apos;: &apos;application/json&apos;,
                 &apos;responseText&apos;: JSON.stringify(expected)
             });
-            expect(innerResult.xhr).toBeDefined();
-            expect(innerResult.response).toEqual({ larf: &apos;hahahahaha&apos; });
-            expect(result).toBe(&apos;HAHAHAHAHA&apos;);
-            expect(complete).toBe(true);
+            chai_1.expect(innerResult.xhr).exist;
+            chai_1.expect(innerResult.response).to.deep.equal({ larf: &apos;hahahahaha&apos; });
+            chai_1.expect(result).to.equal(&apos;HAHAHAHAHA&apos;);
+            chai_1.expect(complete).to.be.true;
         });
     });
     describe(&apos;ajax.post&apos;, function () {
@@ -419,9 +422,9 @@ describe(&apos;Observable.ajax&apos;, function () {
                 complete = true;
             });
             var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
-            expect(request.method).toBe(&apos;POST&apos;);
-            expect(request.url).toBe(&apos;/flibbertyJibbet&apos;);
-            expect(request.requestHeaders).toEqual({
+            chai_1.expect(request.method).to.equal(&apos;POST&apos;);
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(request.requestHeaders).to.deep.equal({
                 &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
                 &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;
             });
@@ -430,9 +433,9 @@ describe(&apos;Observable.ajax&apos;, function () {
                 &apos;contentType&apos;: &apos;application/json&apos;,
                 &apos;responseText&apos;: JSON.stringify(expected)
             });
-            expect(request.data).toEqual(&apos;foo=bar&amp;hi=there%20you&apos;);
-            expect(result.response).toEqual(expected);
-            expect(complete).toBe(true);
+            chai_1.expect(request.data).to.equal(&apos;foo=bar&amp;hi=there%20you&apos;);
+            chai_1.expect(result.response).to.deep.equal(expected);
+            chai_1.expect(complete).to.be.true;
         });
     });
 });

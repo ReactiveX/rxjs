@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/publishBehavior-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var Observable = Rx.Observable;
 /** @test {publishBehavior} */
@@ -68,7 +71,7 @@ describe(&apos;Observable.prototype.publishBehavior&apos;, function () {
     });
     it(&apos;should return a ConnectableObservable&apos;, function () {
         var source = Observable.of(1).publishBehavior(1);
-        expect(source instanceof Rx.ConnectableObservable).toBe(true);
+        chai_1.expect(source instanceof Rx.ConnectableObservable).to.be.true;
     });
     it(&apos;should only emit default value if connect is not called, despite subscriptions&apos;, function () {
         var source = cold(&apos;--1-2---3-4--5-|&apos;);
@@ -83,20 +86,20 @@ describe(&apos;Observable.prototype.publishBehavior&apos;, function () {
         var i = 0;
         var source = Observable.of(1, 2, 3, 4).publishBehavior(0);
         source.subscribe(function (x) {
-            expect(x).toBe(expected[i++]);
+            chai_1.expect(x).to.equal(expected[i++]);
         }, function (x) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             source.subscribe(function (x) {
-                done.fail(&apos;should not be called&apos;);
+                done(new Error(&apos;should not be called&apos;));
             }, function (x) {
-                done.fail(&apos;should not be called&apos;);
+                done(new Error(&apos;should not be called&apos;));
             }, function () {
                 done();
             });
             source.connect();
         });
-        expect(function () { return source.connect(); }).toThrow(new Rx.ObjectUnsubscribedError());
+        chai_1.expect(function () { return source.connect(); }).to.throw(Rx.ObjectUnsubscribedError);
     });
     it(&apos;should multicast the same values to multiple observers&apos;, function () {
         var source = cold(&apos;-1-2-3----4-|&apos;);
@@ -254,18 +257,18 @@ describe(&apos;Observable.prototype.publishBehavior&apos;, function () {
         connectable.subscribe(function (x) {
             results1.push(x);
         });
-        expect(results1).toEqual([0]);
-        expect(results2).toEqual([]);
+        chai_1.expect(results1).to.deep.equal([0]);
+        chai_1.expect(results2).to.deep.equal([]);
         connectable.connect();
-        expect(results1).toEqual([0, 1, 2, 3, 4]);
-        expect(results2).toEqual([]);
-        expect(subscriptions).toBe(1);
+        chai_1.expect(results1).to.deep.equal([0, 1, 2, 3, 4]);
+        chai_1.expect(results2).to.deep.equal([]);
+        chai_1.expect(subscriptions).to.equal(1);
         connectable.subscribe(function (x) {
             results2.push(x);
         }, function (x) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
-            expect(results2).toEqual([]);
+            chai_1.expect(results2).to.deep.equal([]);
             done();
         });
     });
@@ -311,15 +314,15 @@ describe(&apos;Observable.prototype.publishBehavior&apos;, function () {
         connectable.subscribe(function (x) {
             results1.push(x);
         });
-        expect(results1).toEqual([0]);
+        chai_1.expect(results1).to.deep.equal([0]);
         connectable.connect();
-        expect(results2).toEqual([]);
+        chai_1.expect(results2).to.deep.equal([]);
         connectable.subscribe(function (x) {
             results2.push(x);
         });
-        expect(results1).toEqual([0, 1, 2, 3, 4]);
-        expect(results2).toEqual([4]);
-        expect(subscriptions).toBe(1);
+        chai_1.expect(results1).to.deep.equal([0, 1, 2, 3, 4]);
+        chai_1.expect(results2).to.deep.equal([4]);
+        chai_1.expect(subscriptions).to.equal(1);
         done();
     });
     it(&apos;should follow the RxJS 4 behavior and emit nothing to observer after completed&apos;, function (done) {
@@ -336,7 +339,7 @@ describe(&apos;Observable.prototype.publishBehavior&apos;, function () {
         connectable.subscribe(function (x) {
             results.push(x);
         });
-        expect(results).toEqual([]);
+        chai_1.expect(results).to.deep.equal([]);
         done();
     });
 });

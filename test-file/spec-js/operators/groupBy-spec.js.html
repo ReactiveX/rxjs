@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -58,6 +60,7 @@ var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
 var groupBy_1 = require(&apos;../../dist/cjs/operator/groupBy&apos;);
 var Observable = Rx.Observable;
@@ -94,9 +97,9 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
             .groupBy(function (x) { return x % 2; })
             .subscribe(function (g) {
             var expectedGroup = expectedGroups.shift();
-            expect(g.key).toBe(expectedGroup.key);
+            chai_1.expect(g.key).to.equal(expectedGroup.key);
             g.subscribe(function (x) {
-                expect(x).toBe(expectedGroup.values.shift());
+                chai_1.expect(x).to.deep.equal(expectedGroup.values.shift());
             });
         }, null, done);
     });
@@ -109,9 +112,9 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
             .groupBy(function (x) { return x % 2; }, function (x) { return x + &apos;!&apos;; })
             .subscribe(function (g) {
             var expectedGroup = expectedGroups.shift();
-            expect(g.key).toBe(expectedGroup.key);
+            chai_1.expect(g.key).to.equal(expectedGroup.key);
             g.subscribe(function (x) {
-                expect(x).toBe(expectedGroup.values.shift());
+                chai_1.expect(x).to.deep.equal(expectedGroup.values.shift());
             });
         }, null, done);
     });
@@ -126,9 +129,9 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
             .groupBy(function (x) { return x % 2; }, function (x) { return x; }, function (g) { return g.skip(1); })
             .subscribe(function (g) {
             var expectedGroup = expectedGroups.shift();
-            expect(g.key).toBe(expectedGroup.key);
+            chai_1.expect(g.key).to.equal(expectedGroup.key);
             g.subscribe(function (x) {
-                expect(x).toBe(expectedGroup.values.shift());
+                chai_1.expect(x).to.deep.equal(expectedGroup.values.shift());
             });
         }, null, done);
     });
@@ -211,8 +214,8 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
         var source = e1
             .groupBy(function (val) { return val.toLowerCase().trim(); })
             .do(function (group) {
-            expect(group.key).toBe(&apos;foo&apos;);
-            expect(group instanceof groupBy_1.GroupedObservable).toBe(true);
+            chai_1.expect(group.key).to.equal(&apos;foo&apos;);
+            chai_1.expect(group instanceof groupBy_1.GroupedObservable).to.be.true;
         })
             .map(function (group) { return group.key; });
         expectObservable(source).toBe(expected, expectedValues);
@@ -1211,7 +1214,7 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
             observer.next(3);
             observer.complete();
         }).groupBy(function (x) { return x % 2; }, function (x) { return x + &apos;!&apos;; });
-        expect(result instanceof MyCustomObservable).toBe(true);
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
         var expectedGroups = [
             { key: 1, values: [&apos;1!&apos;, &apos;3!&apos;] },
             { key: 0, values: [&apos;2!&apos;] }
@@ -1219,12 +1222,12 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
         result
             .subscribe(function (g) {
             var expectedGroup = expectedGroups.shift();
-            expect(g.key).toBe(expectedGroup.key);
+            chai_1.expect(g.key).to.equal(expectedGroup.key);
             g.subscribe(function (x) {
-                expect(x).toBe(expectedGroup.values.shift());
+                chai_1.expect(x).to.deep.equal(expectedGroup.values.shift());
             });
         }, function (x) {
-            done.fail(&apos;should not be called&apos;);
+            done(new Error(&apos;should not be called&apos;));
         }, function () {
             done();
         });

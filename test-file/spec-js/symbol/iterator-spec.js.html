@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,6 +55,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/symbol/iterator-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var root_1 = require(&apos;../../dist/cjs/util/root&apos;);
 var iterator_1 = require(&apos;../../dist/cjs/symbol/iterator&apos;);
 describe(&apos;rxSubscriber symbol&apos;, function () {
@@ -60,11 +63,11 @@ describe(&apos;rxSubscriber symbol&apos;, function () {
         var Symbol = root_1.root.Symbol;
         if (typeof Symbol === &apos;function&apos;) {
             if (Symbol.iterator) {
-                expect(iterator_1.$$iterator).toBe(Symbol.iterator);
+                chai_1.expect(iterator_1.$$iterator).to.equal(Symbol.iterator);
             }
             else if (root_1.root.Set &amp;&amp; typeof (new root_1.root.Set()[&apos;@@iterator&apos;]) === &apos;function&apos;) {
                 // FF bug coverage
-                expect(iterator_1.$$iterator).toBe(&apos;@@iterator&apos;);
+                chai_1.expect(iterator_1.$$iterator).to.equal(&apos;@@iterator&apos;);
             }
             else if (root_1.root.Map) {
                 // es6-shim specific logic
@@ -72,17 +75,17 @@ describe(&apos;rxSubscriber symbol&apos;, function () {
                 for (var i = 0; i &lt; keys.length; ++i) {
                     var key = keys[i];
                     if (key !== &apos;entries&apos; &amp;&amp; key !== &apos;size&apos; &amp;&amp; root_1.root.Map.prototype[key] === root_1.root.Map.prototype[&apos;entries&apos;]) {
-                        expect(iterator_1.$$iterator).toBe(key);
+                        chai_1.expect(iterator_1.$$iterator).to.equal(key);
                         break;
                     }
                 }
             }
             else if (typeof Symbol.for === &apos;function&apos;) {
-                expect(iterator_1.$$iterator).toBe(Symbol.for(&apos;iterator&apos;));
+                chai_1.expect(iterator_1.$$iterator).to.equal(Symbol.for(&apos;iterator&apos;));
             }
         }
         else {
-            expect(iterator_1.$$iterator).toBe(&apos;@@iterator&apos;);
+            chai_1.expect(iterator_1.$$iterator).to.equal(&apos;@@iterator&apos;);
         }
     });
 });

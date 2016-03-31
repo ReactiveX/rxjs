@@ -10,9 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.min.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -36,15 +38,15 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">subject</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/subject/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 </ul>
@@ -53,11 +55,12 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/util/MapPolyfill-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var MapPolyfill_1 = require(&apos;../../dist/cjs/util/MapPolyfill&apos;);
 /** @test {MapPolyfill} */
 describe(&apos;MapPolyfill&apos;, function () {
     it(&apos;should exist&apos;, function () {
-        expect(typeof MapPolyfill_1.MapPolyfill).toBe(&apos;function&apos;);
+        chai_1.expect(MapPolyfill_1.MapPolyfill).to.be.a(&apos;function&apos;);
     });
     it(&apos;should act like a hashtable that accepts objects as keys&apos;, function () {
         var map = new MapPolyfill_1.MapPolyfill();
@@ -66,32 +69,32 @@ describe(&apos;MapPolyfill&apos;, function () {
         map.set(&apos;test&apos;, &apos;hi&apos;);
         map.set(key1, &apos;yo&apos;);
         map.set(key2, &apos;what up&apos;);
-        expect(map.get(&apos;test&apos;)).toBe(&apos;hi&apos;);
-        expect(map.get(key1)).toBe(&apos;yo&apos;);
-        expect(map.get(key2)).toBe(&apos;what up&apos;);
-        expect(map.size).toBe(3);
+        chai_1.expect(map.get(&apos;test&apos;)).to.equal(&apos;hi&apos;);
+        chai_1.expect(map.get(key1)).to.equal(&apos;yo&apos;);
+        chai_1.expect(map.get(key2)).to.equal(&apos;what up&apos;);
+        chai_1.expect(map.size).to.equal(3);
     });
     it(&apos;should allow setting keys twice&apos;, function () {
         var map = new MapPolyfill_1.MapPolyfill();
         var key1 = {};
         map.set(key1, &apos;sing&apos;);
         map.set(key1, &apos;yodel&apos;);
-        expect(map.get(key1)).toBe(&apos;yodel&apos;);
-        expect(map.size).toBe(1);
+        chai_1.expect(map.get(key1)).to.equal(&apos;yodel&apos;);
+        chai_1.expect(map.size).to.equal(1);
     });
     it(&apos;should have a delete method that removes keys&apos;, function () {
         var map = new MapPolyfill_1.MapPolyfill();
         var key1 = {};
         map.set(key1, &apos;sing&apos;);
-        expect(map.size).toBe(1);
+        chai_1.expect(map.size).to.equal(1);
         map.delete(key1);
-        expect(map.size).toBe(0);
-        expect(map.get(key1)).toBe(undefined);
+        chai_1.expect(map.size).to.equal(0);
+        chai_1.expect(map.get(key1)).to.be.a(&apos;undefined&apos;);
     });
     describe(&apos;prototype.forEach&apos;, function () {
         it(&apos;should exist&apos;, function () {
             var map = new MapPolyfill_1.MapPolyfill();
-            expect(typeof map.forEach).toBe(&apos;function&apos;);
+            chai_1.expect(map.forEach).to.be.a(&apos;function&apos;);
         });
         it(&apos;should iterate over keys and values&apos;, function () {
             var expectedKeys = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;];
@@ -105,12 +108,12 @@ describe(&apos;MapPolyfill&apos;, function () {
             };
             //intentionally not using lambda to avoid typescript&apos;s this context capture
             map.forEach(function (value, key) {
-                expect(this).toBe(thisArg);
-                expect(value).toBe(expectedValues.shift());
-                expect(key).toBe(expectedKeys.shift());
+                chai_1.expect(this).to.equal(thisArg);
+                chai_1.expect(value).to.equal(expectedValues.shift());
+                chai_1.expect(key).to.equal(expectedKeys.shift());
             }, thisArg);
-            expect(expectedValues.length).toBe(0);
-            expect(expectedKeys.length).toBe(0);
+            chai_1.expect(expectedValues.length).to.equal(0);
+            chai_1.expect(expectedKeys.length).to.equal(0);
         });
     });
 });
