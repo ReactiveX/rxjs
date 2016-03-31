@@ -75,7 +75,9 @@ var output = [];
 output.push(['name', 'old ops/sec', 'old error margin', 'new ops/sec', 'new error margin', 'factor', 'percent improved']);
 
 Observable.create(function (observer) {
-  ['perf/micro/immediate-scheduler/**/*.js', 'perf/micro/current-thread-scheduler/**/*.js']
+  ['perf/micro/immediate-scheduler/**/*.js',
+   'perf/micro/current-thread-scheduler/**/*.js',
+   'perf/micro/subscription/**/*.js']
   .forEach(function (pattern) {
     try {
       glob.sync(pattern).forEach(function (file) {
