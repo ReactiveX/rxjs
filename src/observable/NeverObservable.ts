@@ -9,7 +9,7 @@ import {noop} from '../util/noop';
  */
 export class NeverObservable<T> extends Observable<T> {
   /**
-   * Returns an Observable that emits no items to the Observer.
+   * Creates an Observable that emits no items to the Observer.
    *
    * <span class="informal">An Observable that never emits anything.</span>
    *
