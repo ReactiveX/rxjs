@@ -11,23 +11,46 @@ import {Subscriber} from '../Subscriber';
 export class RangeObservable extends Observable<number> {
 
   /**
-   * @param start
-   * @param end
-   * @param scheduler
-   * @return {RangeObservable}
+   * Creates an Observable that emits a sequence of numbers within a specified
+   * range.
+   *
+   * <span class="informal">Emits a sequence of numbers in a range.</span>
+   *
+   * <img src="./img/range.png" width="100%">
+   *
+   * `range` operator emits a range of sequential integers, in order, where you
+   * select the `start` of the range and its `length`. By default, uses no
+   * Scheduler and just delivers the notifications synchronously, but may use
+   * an optional Scheduler to regulate those deliveries.
+   *
+   * @example <caption>Emits the numbers 1 to 10</caption>
+   * var numbers = Rx.Observable.range(1, 10);
+   * numbers.subscribe(x => console.log(x));
+   *
+   * @see {@link timer}
+   * @see {@link interval}
+   *
+   * @param {number} [start=0] The value of the first integer in the sequence.
+   * @param {number} [count=0] The number of sequential integers to generate.
+   * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+   * the emissions of the notifications.
+   * @return {Observable} An Observable of numbers that emits a finite range of
+   * sequential integers.
    * @static true
    * @name range
    * @owner Observable
    */
-  static create(start: number = 0, end: number = 0, scheduler?: Scheduler): Observable<number> {
-    return new RangeObservable(start, end, scheduler);
+  static create(start: number = 0,
+                count: number = 0,
+                scheduler?: Scheduler): Observable<number> {
+    return new RangeObservable(start, count, scheduler);
   }
 
   static dispatch(state: any) {
 
-    const { start, index, end, subscriber } = state;
+    const { start, index, count, subscriber } = state;
 
-    if (index >= end) {
+    if (index >= count) {
       subscriber.complete();
       return;
     }
@@ -45,29 +68,31 @@ export class RangeObservable extends Observable<number> {
   }
 
   private start: number;
-  private end: number;
+  private _count: number;
   private scheduler: Scheduler;
 
-  constructor(start: number, end: number, scheduler?: Scheduler) {
+  constructor(start: number,
+              count: number,
+              scheduler?: Scheduler) {
     super();
     this.start = start;
-    this.end = end;
+    this._count = count;
     this.scheduler = scheduler;
   }
 
   protected _subscribe(subscriber: Subscriber<number>): TeardownLogic {
     let index = 0;
     let start = this.start;
-    const end = this.end;
+    const count = this._count;
     const scheduler = this.scheduler;
 
     if (scheduler) {
       return scheduler.schedule(RangeObservable.dispatch, 0, {
-        index, end, start, subscriber
+        index, count, start, subscriber
       });
     } else {
       do {
-        if (index++ >= end) {
+        if (index++ >= count) {
           subscriber.complete();
           break;
         }
