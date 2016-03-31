@@ -1,13 +1,35 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/cjs/Rx';
+import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {RangeObservable} from '../../dist/cjs/observable/RangeObservable';
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
+declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 const asap = Rx.Scheduler.asap;
 
 /** @test {range} */
 describe('Observable.range', () => {
+  asDiagram('range(1, 10)')('should create an observable with numbers 1 to 10', () => {
+    const e1 = Observable.range(1, 10)
+      // for the purpose of making a nice diagram, spread out the synchronous emissions
+      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+    const expected = 'a-b-c-d-e-f-g-h-i-(j|)';
+    const values = {
+      a: 1,
+      b: 2,
+      c: 3,
+      d: 4,
+      e: 5,
+      f: 6,
+      g: 7,
+      h: 8,
+      i: 9,
+      j: 10,
+    };
+    expectObservable(e1).toBe(expected, values);
+  });
+
   it('should synchronously create a range of values by default', () => {
     const results = [];
     Observable.range(12, 4).subscribe(function (x) {
@@ -52,7 +74,7 @@ describe('RangeObservable', () => {
   });
 
   describe('dispatch', () => {
-    it('should complete if index >= end', () => {
+    it('should complete if index >= count', () => {
       const o = new Rx.Subscriber();
       const obj: Rx.Subscriber<any> = <any>sinon.stub(o);
 
@@ -60,7 +82,7 @@ describe('RangeObservable', () => {
         subscriber: obj,
         index: 10,
         start: 0,
-        end: 9
+        count: 9
       };
 
       RangeObservable.dispatch(state);
@@ -77,7 +99,7 @@ describe('RangeObservable', () => {
         subscriber: obj,
         index: 1,
         start: 5,
-        end: 9
+        count: 9
       };
 
       const thisArg = {
