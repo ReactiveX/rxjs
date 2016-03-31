@@ -11,7 +11,7 @@ import {TeardownLogic} from '../Subscription';
 export class EmptyObservable<T> extends Observable<T> {
 
   /**
-   * Returns an Observable that emits no items to the Observer and immediately
+   * Creates an Observable that emits no items to the Observer and immediately
    * emits a complete notification.
    *
    * <span class="informal">Just emits 'complete', and nothing else.

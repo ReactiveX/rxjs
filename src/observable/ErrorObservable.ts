@@ -10,7 +10,7 @@ import {TeardownLogic} from '../Subscription';
 export class ErrorObservable extends Observable<any> {
 
   /**
-   * Returns an Observable that emits no items to the Observer and immediately
+   * Creates an Observable that emits no items to the Observer and immediately
    * emits an error notification.
    *
    * <span class="informal">Just emits 'error', and nothing else.
