@@ -68,11 +68,16 @@ global.asDiagram = function asDiagram(operatorLabel, glit) {
       glit(description, function () {
         var outputStreams = [];
         global.rxTestScheduler = new Rx.TestScheduler(function (actual) {
-          if (Array.isArray(actual) && typeof actual[0].frame === 'number') {
+          if (Array.isArray(actual) && actual.length > 0 && typeof actual[0].frame === 'number') {
             outputStreams.push({
               messages: actual.map(postProcessOutputMessage),
               subscription: {start: 0, end: '100%'}
             });
+          } else if (Array.isArray(actual) && actual.length === 0) { // is the never Observable
+            outputStreams.push({
+              messages: [],
+              subscription: {start: 0, end: '100%'}
+            })
           }
           return true;
         });
