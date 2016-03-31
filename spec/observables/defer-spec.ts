@@ -1,12 +1,19 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
 
 /** @test {defer} */
 describe('Observable.defer', () => {
-  it('should create an observable from the provided observbale factory', () => {
+  asDiagram('defer(() => Observable.of(a, b, c))')
+  ('should defer the creation of a simple Observable', () => {
+    const expected =    '-a--b--c--|';
+    const e1 = Observable.defer(() => cold('-a--b--c--|'));
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should create an observable from the provided observable factory', () => {
     const source = hot('--a--b--c--|');
     const sourceSubs = '^          !';
     const expected =   '--a--b--c--|';
