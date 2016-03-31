@@ -4,12 +4,20 @@ import {ArrayObservable} from '../../dist/cjs/observable/ArrayObservable';
 import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
 import {EmptyObservable} from '../../dist/cjs/observable/EmptyObservable';
 
-declare const expectObservable;
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {of} */
 describe('Observable.of', () => {
+  asDiagram('of(1, 2, 3)')('should create a cold observable that emits 1, 2, 3', () => {
+    const e1 = Observable.of(1, 2, 3)
+      // for the purpose of making a nice diagram, spread out the synchronous emissions
+      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+    const expected = 'x-y-(z|)';
+    expectObservable(e1).toBe(expected, {x: 1, y: 2, z: 3});
+  });
+
   it('should create an observable from the provided values', (done: MochaDone) => {
     const x = { foo: 'bar' };
     const expected = [1, 'a', x];
