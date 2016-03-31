@@ -9,6 +9,7 @@ var CANVAS_PADDING = 20;
 var OBSERVABLE_HEIGHT = 200;
 var OPERATOR_HEIGHT = 140;
 var ARROW_HEAD_SIZE = 18;
+var DEFAULT_MAX_FRAME = 10;
 var OBSERVABLE_END_PADDING = 5 * ARROW_HEAD_SIZE;
 var MARBLE_RADIUS = 32;
 var COMPLETE_HEIGHT = MARBLE_RADIUS;
@@ -387,7 +388,7 @@ function sanitizeHigherOrderInputStreams(inputStreams, outputStreams) {
 
 module.exports = function painter(inputStreams, operatorLabel, outputStreams, filename) {
   inputStreams = sanitizeHigherOrderInputStreams(inputStreams, outputStreams);
-  var maxFrame = getMaxFrame(inputStreams.concat(outputStreams));
+  var maxFrame = getMaxFrame(inputStreams.concat(outputStreams)) || DEFAULT_MAX_FRAME;
   var allStreamsHeight = inputStreams.concat(outputStreams)
     .map(measureStreamHeight(maxFrame))
     .reduce(function (x, y) { return x + y; }, 0);
@@ -403,7 +404,7 @@ module.exports = function painter(inputStreams, operatorLabel, outputStreams, fi
   out = drawOperator(out, operatorLabel, heightSoFar);
   heightSoFar += OPERATOR_HEIGHT;
   outputStreams.forEach(function (streamData) {
-    var isSpecial = areEqualStreamData(inputStreams[0], streamData);
+    var isSpecial = inputStreams.length > 0 && areEqualStreamData(inputStreams[0], streamData);
     out = drawObservable(out, maxFrame, heightSoFar, streamData, isSpecial);
     heightSoFar += measureStreamHeight(maxFrame)(streamData);
   });
