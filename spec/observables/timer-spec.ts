@@ -1,12 +1,26 @@
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 
-declare const {time, expectObservable};
+declare const {hot, asDiagram, time, expectObservable};
 declare const rxTestScheduler: Rx.TestScheduler;
 
 const Observable = Rx.Observable;
 
 /** @test {timer} */
 describe('Observable.timer', () => {
+  asDiagram('timer(3000, 1000)')('should create an observable emitting periodically', () => {
+    const e1 = Observable.timer(60, 20, rxTestScheduler)
+      .take(4) // make it actually finite, so it can be rendered
+      .concat(Observable.never()); // but pretend it's infinite by not completing
+    const expected = '------a-b-c-d-';
+    const values = {
+      a: 0,
+      b: 1,
+      c: 2,
+      d: 3,
+    };
+    expectObservable(e1).toBe(expected, values);
+  });
+
   it('should schedule a value of 0 then complete', () => {
     const dueTime = time('-----|');
     const expected =     '-----(x|)';
