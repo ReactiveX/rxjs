@@ -137,6 +137,7 @@ function measureStreamHeight(maxFrame) {
       .reduce(function (acc, curr) {
         return curr > acc ? curr : acc;
       }, 0);
+    maxMessageHeight = Math.max(maxMessageHeight, OBSERVABLE_HEIGHT * 0.5); // to avoid zero
     return OBSERVABLE_HEIGHT * 0.5 + maxMessageHeight;
   };
 }
@@ -413,6 +414,5 @@ module.exports = function painter(inputStreams, operatorLabel, outputStreams, fi
     if (err) {
       return console.error(arguments);
     }
-    return console.log(this.outname + ' created :: ' + arguments[3]);
   });
 };
