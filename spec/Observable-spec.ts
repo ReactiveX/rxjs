@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import * as Rx from '../dist/cjs/Rx';
 
+declare const {asDiagram, expectObservable};
 const Subscriber = Rx.Subscriber;
 const Observable = Rx.Observable;
 
@@ -488,6 +489,13 @@ describe('Observable', () => {
 
 /** @test {Observable} */
 describe('Observable.create', () => {
+  asDiagram('create(obs => { obs.next(1); })')
+  ('should create a cold observable that emits just 1', () => {
+    const e1 = Observable.create(obs => { obs.next(1); });
+    const expected = 'x';
+    expectObservable(e1).toBe(expected, {x: 1});
+  });
+
   it('should create an Observable', () => {
     const result = Observable.create(() => {
       //noop
