@@ -2,12 +2,28 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 
-declare const expectObservable;
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {interval} */
 describe('Observable.interval', () => {
+  asDiagram('interval(1000)')('should create an observable emitting periodically', () => {
+    const e1 = Observable.interval(20, rxTestScheduler)
+      .take(6) // make it actually finite, so it can be rendered
+      .concat(Observable.never()); // but pretend it's infinite by not completing
+    const expected = '--a-b-c-d-e-f-';
+    const values = {
+      a: 0,
+      b: 1,
+      c: 2,
+      d: 3,
+      e: 4,
+      f: 5,
+    };
+    expectObservable(e1).toBe(expected, values);
+  });
+
   it('should set up an interval', () => {
     const expected = '----------0---------1---------2---------3---------4---------5---------6-----';
     expectObservable(Observable.interval(100, rxTestScheduler)).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
