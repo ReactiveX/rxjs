@@ -343,6 +343,48 @@ describe('Observable.prototype.bufferToggle', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should accept openings resolved promise', (done: MochaDone) => {
+    const e1 = Observable.concat(
+      Observable.timer(10).mapTo(1),
+      Observable.timer(100).mapTo(2),
+      Observable.timer(150).mapTo(3),
+      Observable.timer(200).mapTo(4));
+
+    const expected = [[1]];
+
+    e1.bufferToggle(new Promise((resolve: any) => { resolve(42); }), () => {
+      return Observable.timer(50);
+    }).subscribe((x) => {
+      expect(x).to.deep.equal(expected.shift());
+    }, (x) => {
+      done(new Error('should not be called'));
+    }, () => {
+      expect(expected.length).to.be.equal(0);
+      done();
+    });
+  });
+
+  it('should accept openings rejected promise', (done: MochaDone) => {
+    const e1 = Observable.concat(Observable.of(1),
+      Observable.timer(10).mapTo(2),
+      Observable.timer(10).mapTo(3),
+      Observable.timer(100).mapTo(4)
+      );
+
+    const expected = 42;
+
+    e1.bufferToggle(new Promise((resolve: any, reject: any) => { reject(expected); }), () => {
+      return Observable.timer(50);
+    }).subscribe((x) => {
+      done(new Error('should not be called'));
+    }, (x) => {
+      expect(x).to.equal(expected);
+      done();
+    }, () => {
+      done(new Error('should not be called'));
+    });
+  });
+
   it('should accept closing selector that returns a resolved promise', (done: MochaDone) => {
     const e1 = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
@@ -357,8 +399,8 @@ describe('Observable.prototype.bufferToggle', () => {
       }, () => {
         done(new Error('should not be called'));
       }, () => {
-          expect(expected.length).to.be.equal(0);
-          done();
+        expect(expected.length).to.be.equal(0);
+        done();
       });
   });
 
