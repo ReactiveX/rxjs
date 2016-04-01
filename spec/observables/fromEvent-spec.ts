@@ -1,10 +1,30 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 
+declare const rxTestScheduler: Rx.TestScheduler;
+declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 const Observable = Rx.Observable;
 
 /** @test {fromEvent} */
 describe('Observable.fromEvent', () => {
+  asDiagram('fromEvent(element, \'click\')')
+  ('should create an observable of click on the element', () => {
+    const target = {
+      addEventListener: (eventType, listener) => {
+        Observable.timer(50, 20, rxTestScheduler)
+          .mapTo('ev')
+          .take(2)
+          .concat(Observable.never())
+          .subscribe(listener);
+      },
+      removeEventListener: () => void 0,
+      dispatchEvent: () => void 0,
+    };
+    const e1 = Observable.fromEvent(target, 'click');
+    const expected = '-----x-x---';
+    expectObservable(e1).toBe(expected, {x: 'ev'});
+  });
+
   it('should setup an event observable on objects with "on" and "off" ', () => {
     let onEventName;
     let onHandler;
