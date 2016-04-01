@@ -26,18 +26,64 @@ export class FromObservable<T> extends Observable<T> {
     super(null);
   }
 
+  static create<T>(ish: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
+  static create<T, R>(ish: ArrayLike<T>, mapFn: (x: any, y: number) => R, thisArg?: any, scheduler?: Scheduler): Observable<R>;
+
   /**
-   * @param ish
-   * @param mapFnOrScheduler
-   * @param thisArg
-   * @param lastScheduler
-   * @return {any}
+   * Creates an Observable from an Array, an array-like object, a Promise, an
+   * iterable object, or an Observable-like object.
+   *
+   * <span class="informal">Converts almost anything to an Observable.</span>
+   *
+   * <img src="./img/from.png" width="100%">
+   *
+   * Convert various other objects and data types into Observables. `from`
+   * converts a Promise or an array-like or an
+   * [iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+   * object into an Observable that emits the items in that promise or array or
+   * iterable. A String, in this context, is treated as an array of characters.
+   * Observable-like objects (contains a function named with the ES2015 Symbol
+   * for Observable) can also be converted through this operator.
+   *
+   * @example <caption>Converts an array to an Observable</caption>
+   * var array = [10, 20, 30];
+   * var result = Rx.Observable.from(array);
+   * result.subscribe(x => console.log(x));
+   *
+   * @example <caption>Convert an infinite iterable (from a generator) to an Observable</caption>
+   * function* generateDoubles(seed) {
+   *   var i = seed;
+   *   while (true) {
+   *     yield i;
+   *     i = 2 * i; // double it
+   *   }
+   * }
+   *  
+   * var iterator = generateDoubles(3);
+   * var result = Rx.Observable.from(iterator).take(10);
+   * result.subscribe(x => console.log(x));
+   *
+   * @see {@link create}
+   * @see {@link fromEvent}
+   * @see {@link fromEventPattern}
+   * @see {@link fromPromise}
+   *  
+   * @param {ObservableInput<T>} ish A subscribable object, a Promise, an
+   * Observable-like, an Array, an iterable or an array-like object to be
+   * converted.
+   * @param {function(x: any, i: number): T} [mapFn] A "map" function to call
+   * when converting array-like objects, where `x` is a value from the
+   * array-like and `i` is the index of that value in the sequence.
+   * @param {any} [thisArg] The context object to use when calling the `mapFn`,
+   * if provided.
+   * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+   * emissions of values.
+   * @return {Observable<T>} The Observable whose values are originally from the
+   * input object that was converted.
    * @static true
    * @name from
    * @owner Observable
    */
-  static create<T>(ish: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
-  static create<T, R>(ish: ArrayLike<T>, mapFn: (x: any, y: number) => R, thisArg?: any, scheduler?: Scheduler): Observable<R>;
   static create<T>(ish: ObservableInput<T>,
                    mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T),
                    thisArg?: any,

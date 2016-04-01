@@ -96,9 +96,9 @@ The `async` Scheduler is one of the built-in schedulers provided by RxJS. Each o
 
 You may have already used schedulers in your RxJS code without explicitly stating the type of schedulers to be used. This is because all Observable operators that deal with concurrency have optional schedulers. If you do not provide the scheduler, RxJS will pick a default scheduler by using the principle of least concurrency. This means that the scheduler which introduces the least amount of concurrency that satisfies the needs of the operator is chosen. For example, for operators returning an observable with a finite and small number of messages, RxJS uses no Scheduler, i.e. `null` or `undefined`.  For operators returning a potentially large or infinite number of messages, `queue` Scheduler is used. For operators which use timers, `async` is used.
 
-Because RxJS uses the least concurrency scheduler, you can pick a different scheduler if you want to introduce concurrency for performance purpose.  To specify a particular scheduler, you can use those operator methods that take a scheduler, e.g., `fromArray([10, 20, 30], Rx.Scheduler.async)`.
+Because RxJS uses the least concurrency scheduler, you can pick a different scheduler if you want to introduce concurrency for performance purpose.  To specify a particular scheduler, you can use those operator methods that take a scheduler, e.g., `from([10, 20, 30], Rx.Scheduler.async)`.
 
-**Static creation operators usually take a Scheduler as argument.** For instance, `fromArray(array, scheduler)` lets you specify the Scheduler to use when delivering each notification converted from the `array`. It is usually the last argument to the operator. The following static creation operators take a Scheduler argument:
+**Static creation operators usually take a Scheduler as argument.** For instance, `from(array, scheduler)` lets you specify the Scheduler to use when delivering each notification converted from the `array`. It is usually the last argument to the operator. The following static creation operators take a Scheduler argument:
 
 - `bindCallback`
 - `bindNodeCallback`
@@ -106,7 +106,6 @@ Because RxJS uses the least concurrency scheduler, you can pick a different sche
 - `concat`
 - `empty`
 - `from`
-- `fromArray`
 - `fromPromise`
 - `interval`
 - `merge`
