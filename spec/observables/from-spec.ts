@@ -2,12 +2,21 @@ import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
 
-declare const {expectObservable, Symbol, type};
+declare const {asDiagram, expectObservable, Symbol, type};
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {from} */
 describe('Observable.from', () => {
+  asDiagram('from([10, 20, 30])')
+  ('should create an observable from an array', () => {
+    const e1 = Observable.from([10, 20, 30])
+      // for the purpose of making a nice diagram, spread out the synchronous emissions
+      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+    const expected = 'x-y-(z|)';
+    expectObservable(e1).toBe(expected, {x: 10, y: 20, z: 30});
+  });
+
   it('should enumerate an Array', function (done: MochaDone) {
     this.timeout(300);
 
