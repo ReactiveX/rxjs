@@ -21,6 +21,11 @@ module.exports = {
   },
 
   globals: {
+    document: {
+      querySelector: function () {
+        return {addEventListener: function () {}}
+      }
+    },
     hot: marbleTesting.hot,
     cold: marbleTesting.cold,
     expectObservable: marbleTesting.expectObservable,
