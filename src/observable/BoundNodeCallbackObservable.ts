@@ -27,20 +27,49 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   /* tslint:enable:max-line-length */
 
   /**
-   * Converts a node callback to an Observable.
-   * @param callbackFunc
-   * @param selector
-   * @param scheduler
-   * @return {function(...params: *): Observable<T>}
+   * Converts a Node.js-style callback API to a function that returns an
+   * Observable.
+   *
+   * <span class="informal">It's just like {@link bindCallback}, but the
+   * callback is expected to be of type `callback(error, result)`.</span>
+   *
+   * `bindNodeCallback` is not an operator because its input and output are not
+   * Observables. The input is a function `func` with some parameters, but the
+   * last parameter must be a callback function that `func` calls when it is
+   * done. The callback function is expected to follow Node.js conventions,
+   * where the first argument to the callback is an error, while remaining
+   * arguments are the callback result. The output of `bindNodeCallback` is a
+   * function that takes the same parameters as `func`, except the last one (the
+   * callback). When the output function is called with arguments, it will
+   * return an Observable where the results will be delivered to.
+   *
+   * @example <caption>Read a file from the filesystem and get the data as an Observable</caption>
+   * import * as fs from 'fs';
+   * var readFileAsObservable = Rx.Observable.bindNodeCallback(fs.readFile);
+   * var result = readFileAsObservable('./roadNames.txt', 'utf8');
+   * result.subscribe(x => console.log(x), e => console.error(e));
+   *
+   * @see {@link bindCallback}
+   * @see {@link from}
+   * @see {@link fromPromise}
+   *
+   * @param {function} func Function with a callback as the last parameter.
+   * @param {function} selector A function which takes the arguments from the
+   * callback and maps those a value to emit on the output Observable.
+   * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+   * callbacks.
+   * @return {function(...params: *): Observable} A function which returns the
+   * Observable that delivers the same values the Node.js callback would
+   * deliver.
    * @static true
    * @name bindNodeCallback
    * @owner Observable
    */
-  static create<T>(callbackFunc: Function,
+  static create<T>(func: Function,
                    selector: Function | void = undefined,
-                   scheduler?: Scheduler): Function {
+                   scheduler?: Scheduler): (...args: any[]) => Observable<T> {
     return (...args: any[]): Observable<T> => {
-      return new BoundNodeCallbackObservable<T>(callbackFunc, <any>selector, args, scheduler);
+      return new BoundNodeCallbackObservable<T>(func, <any>selector, args, scheduler);
     };
   }
 
