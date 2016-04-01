@@ -35,9 +35,9 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * @see {@link bufferWhen}
  * @see {@link windowToggle}
  *
- * @param {Observable<O>} openings An observable of notifications to start new
+ * @param {SubscribableOrPromise<O>} openings A Subscribable or Promise of notifications to start new
  * buffers.
- * @param {function(value: O): Observable} closingSelector A function that takes
+ * @param {function(value: O): SubscribableOrPromise} closingSelector A function that takes
  * the value emitted by the `openings` observable and returns a Subscribable or Promise,
  * which, when it emits, signals that the associated buffer should be emitted
  * and cleared.
@@ -45,19 +45,19 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * @method bufferToggle
  * @owner Observable
  */
-export function bufferToggle<T, O>(openings: Observable<O>,
-                                   closingSelector: (value: O) => SubscribableOrPromise<any> | void): Observable<T[]> {
+export function bufferToggle<T, O>(openings: SubscribableOrPromise<O>,
+                                   closingSelector: (value: O) => SubscribableOrPromise<any>): Observable<T[]> {
   return this.lift(new BufferToggleOperator<T, O>(openings, closingSelector));
 }
 
 export interface BufferToggleSignature<T> {
-  <O>(openings: Observable<O>, closingSelector: (value: O) => SubscribableOrPromise<any> | void): Observable<T[]>;
+  <O>(openings: SubscribableOrPromise<O>, closingSelector: (value: O) => SubscribableOrPromise<any>): Observable<T[]>;
 }
 
 class BufferToggleOperator<T, O> implements Operator<T, T[]> {
 
-  constructor(private openings: Observable<O>,
-              private closingSelector: (value: O) => SubscribableOrPromise<any> | void) {
+  constructor(private openings: SubscribableOrPromise<O>,
+              private closingSelector: (value: O) => SubscribableOrPromise<any>) {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
@@ -79,10 +79,10 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
   private contexts: Array<BufferContext<T>> = [];
 
   constructor(destination: Subscriber<T[]>,
-              private openings: Observable<O>,
+              private openings: SubscribableOrPromise<O>,
               private closingSelector: (value: O) => SubscribableOrPromise<any> | void) {
     super(destination);
-    this.add(this.openings.subscribe(new BufferToggleOpeningsSubscriber(this)));
+    this.add(subscribeToResult(this, openings));
   }
 
   protected _next(value: T): void {
@@ -118,7 +118,17 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
     super._complete();
   }
 
-  openBuffer(value: O): void {
+  notifyNext(outerValue: any, innerValue: O,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, O>): void {
+    outerValue ? this.closeBuffer(outerValue) : this.openBuffer(innerValue);
+  }
+
+  notifyComplete(innerSub: InnerSubscriber<T, O>): void {
+    this.closeBuffer((<any> innerSub).context);
+  }
+
+  private openBuffer(value: O): void {
     try {
       const closingSelector = this.closingSelector;
       const closingNotifier = closingSelector.call(this, value);
@@ -128,16 +138,6 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
     } catch (err) {
       this._error(err);
     }
-  }
-
-  notifyNext(outerValue: any, innerValue: O,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, O>): void {
-    this.closeBuffer(outerValue);
-  }
-
-  notifyComplete(innerSub: InnerSubscriber<T, O>): void {
-    this.closeBuffer((<any> innerSub).context);
   }
 
   private closeBuffer(context: BufferContext<T>): void {
@@ -162,36 +162,13 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
 
     const innerSubscription = subscribeToResult(this, closingNotifier, <any>context);
 
-    if (!innerSubscription.isUnsubscribed) {
+    if (!innerSubscription || innerSubscription.isUnsubscribed) {
+      this.closeBuffer(context);
+    } else {
       (<any> innerSubscription).context = context;
 
       this.add(innerSubscription);
       subscription.add(innerSubscription);
-    } else {
-      this.closeBuffer(context);
     }
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferToggleOpeningsSubscriber<T, O> extends Subscriber<O> {
-  constructor(private parent: BufferToggleSubscriber<T, O>) {
-    super(null);
-  }
-
-  protected _next(value: O) {
-    this.parent.openBuffer(value);
-  }
-
-  protected _error(err: any) {
-    this.parent.error(err);
-  }
-
-  protected _complete() {
-    // noop
   }
 }
