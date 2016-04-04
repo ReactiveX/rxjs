@@ -123,7 +123,7 @@ describe('TestScheduler', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
       const source = scheduler.createHotObservable('--a---b--|', { a: 'A', b: 'B' });
-      expect(source instanceof Rx.Subject).to.be.true;
+      expect(source).to.be.an.instanceof(Rx.Subject);
       source.subscribe((x: string) => {
         expect(x).to.equal(expected.shift());
       });
@@ -135,7 +135,7 @@ describe('TestScheduler', () => {
   describe('jasmine helpers', () => {
     describe('rxTestScheduler', () => {
       it('should exist', () => {
-        expect(rxTestScheduler instanceof TestScheduler).to.be.true;
+        expect(rxTestScheduler).to.be.an.instanceof(TestScheduler);
       });
     });
 
