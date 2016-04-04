@@ -62,6 +62,7 @@
     "build_cover": "rm -rf ./dist/ && npm-run-all lint build_cjs build_spec cover",
     "build_docs": "npm-run-all build_es6_for_docs build_global build_spec tests2png decision_tree_widget && esdoc -c esdoc.json",
     "build_spec": "tsc --project ./spec --pretty",
+    "build_spec_browser": "webpack --config spec/support/webpack.mocha.config.js",
     "check_circular_dependencies": "madge ./dist/cjs --circular",
     "clean_spec": "rm -rf spec-js",
     "clean_dist_amd": "rm -rf ./dist/amd",
@@ -90,6 +91,7 @@
     "publish_docs": "./publish_docs.sh",
     "test_mocha": "mocha --opts spec/support/default.opts spec-js",
     "test_karma": "karma start karma.conf.js",
+    "test_browser": "npm-run-all build_spec_browser && start spec/support/mocha-browser-runner.html",
     "test": "npm-run-all clean_spec build_spec test_mocha clean_spec",
     "tests2png": "npm run build_spec && mkdirp tmp/docs/img && mkdirp spec-js/support && cp spec/support/*.opts spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",
     "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15"
@@ -180,7 +182,7 @@
     "protractor": "^3.1.1",
     "remap-istanbul": "0.5.1",
     "rx": "latest",
-    "sinon": "^1.17.3",
+    "sinon": "^2.0.0-pre",
     "sinon-chai": "^2.8.0",
     "source-map-support": "^0.4.0",
     "systemjs": "^0.19.24",
@@ -191,6 +193,7 @@
     "validate-commit-msg": "^2.3.1",
     "watch": "^0.17.1",
     "watchify": "3.7.0",
+    "webpack": "^1.12.14",
     "xmlhttprequest": "1.8.0"
   },
   "engines": {

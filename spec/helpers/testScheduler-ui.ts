@@ -2,9 +2,6 @@
 ///<reference path='ambient.d.ts'/>
 
 import * as _ from 'lodash';
-import * as mocha from 'mocha';
-import * as Suite from 'mocha/lib/suite';
-import * as Test from 'mocha/lib/test';
 import * as commonInterface from 'mocha/lib/interfaces/common';
 import * as escapeRe from 'escape-string-regexp';
 import * as chai from 'chai';
@@ -16,14 +13,13 @@ import * as marble from './marble-testing';
 //setup sinon-chai
 chai.use(sinonChai);
 
-declare const module: any;
-declare const global: any;
+declare const module, global, Suite, Test: any;
 
 const diagramFunction = global.asDiagram;
 
 //mocha creates own global context per each test suite, simple patching to global won't deliver its context into test cases.
 //this custom interface is just mimic of existing one amending test scheduler behavior previously test-helper does via global patching.
-module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
+module.exports = function(suite) {
   const suites = [suite];
 
   suite.on('pre-require', function(context, file, mocha) {
@@ -207,6 +203,13 @@ module.exports = (<any>mocha).interfaces['testscheduler-ui'] = function(suite) {
     };
   });
 };
+
+//register into global instnace if browser test page injects mocha globally
+if (global.Mocha) {
+  (<any>window).Mocha.interfaces['testschedulerui'] = module.exports;
+} else {
+  (<any>mocha).interfaces['testschedulerui'] = module.exports;
+}
 
 //overrides JSON.toStringfy to serialize error object
 Object.defineProperty(Error.prototype, 'toJSON', {
