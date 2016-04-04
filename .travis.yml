@@ -23,9 +23,10 @@ env:
   global:
   - CXX=g++-4.8
   - alias tsc=./node_modules/.bin/tsc
+  - alias grunt=./node_modules/grunt-cli/bin/grunt
 
 before_install:
-  - npm install -g npm@3
+  - npm install -g npm@3 && npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run
 install:
   - npm install && npm run lint
 
@@ -36,4 +37,4 @@ script:
 after_success:
   - npm run cover
   - cat ./coverage/coverage-remapped.lcov | ./node_modules/coveralls/bin/coveralls.js
-  #- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ -n "${SAUCE_ACCESS_KEY}" ] && npm run test_karma || false'
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ -n "${SAUCE_ACCESS_KEY}" ] && npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js || false'

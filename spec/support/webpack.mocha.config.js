@@ -3,13 +3,13 @@ var path = require('path');
 var glob = require('glob');
 var webpack = require('webpack');
 
-var files = _.map(glob.sync('spec-js/**/!(mochaSetup|painter|diagram-test-runner|testScheduler-ui|pack).js'), function (x) {
+var files = _.map(glob.sync('spec-js/**/!(mocha-setup-node|painter|diagram-test-runner|testScheduler-ui|pack).js'), function (x) {
   return path.resolve('./', x);
 });
 
 module.exports = {
   entry: {
-    'browser.testscheduler': './spec-js/helpers/testscheduler-ui.js',
+    'browser.testscheduler': './spec-js/helpers/testScheduler-ui.js',
     'browser.spec': files
   },
 
