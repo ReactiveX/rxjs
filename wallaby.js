@@ -33,6 +33,9 @@ module.exports = wallaby => ({
     }
 
     // Global test helpers
+    global.mocha = require('mocha');
+    global.Suite = global.mocha.Suite;
+    global.Test = global.mocha.Test;
     require('./spec/helpers/test-helper');
     require('./spec/helpers/ajax-helper');
 
