@@ -5818,10 +5818,10 @@
         },
         {
           "type": "Block",
-          "value": " tslint:disable:no-var-keyword ",
+          "value": "*\n * @typedef {Object} Rx.Scheduler\n * @property {Scheduler} queue Schedules on a queue in the current event frame\n * (trampoline scheduler). Use this for iteration operations.\n * @property {Scheduler} asap Schedules on the micro task queue, which uses the\n * fastest transport mechanism available, either Node.js' `process.nextTick()`\n * or Web Worker MessageChannel or setTimeout or others. Use this for\n * asynchronous conversions.\n * @property {Scheduler} async Schedules work with `setInterval`. Use this for\n * time-based operations.\n ",
           "range": [
             4927,
-            4962
+            5472
           ],
           "loc": {
             "start": {
@@ -5829,8 +5829,8 @@
               "column": 0
             },
             "end": {
-              "line": 131,
-              "column": 35
+              "line": 141,
+              "column": 3
             }
           }
         }
@@ -5845,16 +5845,16 @@
             "type": "Identifier",
             "name": "Scheduler",
             "range": [
-              4967,
-              4976
+              5477,
+              5486
             ],
             "loc": {
               "start": {
-                "line": 132,
+                "line": 142,
                 "column": 4
               },
               "end": {
-                "line": 132,
+                "line": 142,
                 "column": 13
               }
             }
@@ -5868,16 +5868,16 @@
                   "type": "Identifier",
                   "name": "asap",
                   "range": [
-                    4985,
-                    4989
+                    5495,
+                    5499
                   ],
                   "loc": {
                     "start": {
-                      "line": 133,
+                      "line": 143,
                       "column": 4
                     },
                     "end": {
-                      "line": 133,
+                      "line": 143,
                       "column": 8
                     }
                   }
@@ -5886,16 +5886,16 @@
                   "type": "Identifier",
                   "name": "asap",
                   "range": [
-                    4985,
-                    4989
+                    5495,
+                    5499
                   ],
                   "loc": {
                     "start": {
-                      "line": 133,
+                      "line": 143,
                       "column": 4
                     },
                     "end": {
-                      "line": 133,
+                      "line": 143,
                       "column": 8
                     }
                   }
@@ -5905,16 +5905,16 @@
                 "shorthand": true,
                 "computed": false,
                 "range": [
-                  4985,
-                  4989
+                  5495,
+                  5499
                 ],
                 "loc": {
                   "start": {
-                    "line": 133,
+                    "line": 143,
                     "column": 4
                   },
                   "end": {
-                    "line": 133,
+                    "line": 143,
                     "column": 8
                   }
                 }
@@ -5925,16 +5925,16 @@
                   "type": "Identifier",
                   "name": "async",
                   "range": [
-                    4995,
-                    5000
+                    5505,
+                    5510
                   ],
                   "loc": {
                     "start": {
-                      "line": 134,
+                      "line": 144,
                       "column": 4
                     },
                     "end": {
-                      "line": 134,
+                      "line": 144,
                       "column": 9
                     }
                   }
@@ -5943,16 +5943,16 @@
                   "type": "Identifier",
                   "name": "async",
                   "range": [
-                    4995,
-                    5000
+                    5505,
+                    5510
                   ],
                   "loc": {
                     "start": {
-                      "line": 134,
+                      "line": 144,
                       "column": 4
                     },
                     "end": {
-                      "line": 134,
+                      "line": 144,
                       "column": 9
                     }
                   }
@@ -5962,16 +5962,16 @@
                 "shorthand": true,
                 "computed": false,
                 "range": [
-                  4995,
-                  5000
+                  5505,
+                  5510
                 ],
                 "loc": {
                   "start": {
-                    "line": 134,
+                    "line": 144,
                     "column": 4
                   },
                   "end": {
-                    "line": 134,
+                    "line": 144,
                     "column": 9
                   }
                 }
@@ -5982,16 +5982,16 @@
                   "type": "Identifier",
                   "name": "queue",
                   "range": [
-                    5006,
-                    5011
+                    5516,
+                    5521
                   ],
                   "loc": {
                     "start": {
-                      "line": 135,
+                      "line": 145,
                       "column": 4
                     },
                     "end": {
-                      "line": 135,
+                      "line": 145,
                       "column": 9
                     }
                   }
@@ -6000,16 +6000,16 @@
                   "type": "Identifier",
                   "name": "queue",
                   "range": [
-                    5006,
-                    5011
+                    5516,
+                    5521
                   ],
                   "loc": {
                     "start": {
-                      "line": 135,
+                      "line": 145,
                       "column": 4
                     },
                     "end": {
-                      "line": 135,
+                      "line": 145,
                       "column": 9
                     }
                   }
@@ -6019,70 +6019,70 @@
                 "shorthand": true,
                 "computed": false,
                 "range": [
-                  5006,
-                  5011
+                  5516,
+                  5521
                 ],
                 "loc": {
                   "start": {
-                    "line": 135,
+                    "line": 145,
                     "column": 4
                   },
                   "end": {
-                    "line": 135,
+                    "line": 145,
                     "column": 9
                   }
                 }
               }
             ],
             "range": [
-              4979,
-              5013
+              5489,
+              5523
             ],
             "loc": {
               "start": {
-                "line": 132,
+                "line": 142,
                 "column": 16
               },
               "end": {
-                "line": 136,
+                "line": 146,
                 "column": 1
               }
             }
           },
           "range": [
-            4967,
-            5013
+            5477,
+            5523
           ],
           "loc": {
             "start": {
-              "line": 132,
+              "line": 142,
               "column": 4
             },
             "end": {
-              "line": 136,
+              "line": 146,
               "column": 1
             }
           }
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "range": [
-        4963,
-        5014
+        5473,
+        5524
       ],
       "loc": {
         "start": {
-          "line": 132,
+          "line": 142,
           "column": 0
         },
         "end": {
-          "line": 136,
+          "line": 146,
           "column": 2
         }
       },
       "leadingComments": [],
-      "name": "_",
-      "trailingComments": []
+      "trailingComments": [],
+      "name": "_"
     },
     {
       "type": "Identifier",
@@ -6093,16 +6093,16 @@
             "type": "Identifier",
             "name": "Symbol",
             "range": [
-              5019,
-              5025
+              6283,
+              6289
             ],
             "loc": {
               "start": {
-                "line": 137,
+                "line": 160,
                 "column": 4
               },
               "end": {
-                "line": 137,
+                "line": 160,
                 "column": 10
               }
             }
@@ -6116,16 +6116,16 @@
                   "type": "Identifier",
                   "name": "rxSubscriber",
                   "range": [
-                    5034,
-                    5046
+                    6298,
+                    6310
                   ],
                   "loc": {
                     "start": {
-                      "line": 138,
+                      "line": 161,
                       "column": 4
                     },
                     "end": {
-                      "line": 138,
+                      "line": 161,
                       "column": 16
                     }
                   }
@@ -6134,16 +6134,16 @@
                   "type": "Identifier",
                   "name": "rxSubscriber",
                   "range": [
-                    5034,
-                    5046
+                    6298,
+                    6310
                   ],
                   "loc": {
                     "start": {
-                      "line": 138,
+                      "line": 161,
                       "column": 4
                     },
                     "end": {
-                      "line": 138,
+                      "line": 161,
                       "column": 16
                     }
                   }
@@ -6153,16 +6153,16 @@
                 "shorthand": true,
                 "computed": false,
                 "range": [
-                  5034,
-                  5046
+                  6298,
+                  6310
                 ],
                 "loc": {
                   "start": {
-                    "line": 138,
+                    "line": 161,
                     "column": 4
                   },
                   "end": {
-                    "line": 138,
+                    "line": 161,
                     "column": 16
                   }
                 }
@@ -6173,16 +6173,16 @@
                   "type": "Identifier",
                   "name": "observable",
                   "range": [
-                    5052,
-                    5062
+                    6316,
+                    6326
                   ],
                   "loc": {
                     "start": {
-                      "line": 139,
+                      "line": 162,
                       "column": 4
                     },
                     "end": {
-                      "line": 139,
+                      "line": 162,
                       "column": 14
                     }
                   }
@@ -6191,16 +6191,16 @@
                   "type": "Identifier",
                   "name": "observable",
                   "range": [
-                    5052,
-                    5062
+                    6316,
+                    6326
                   ],
                   "loc": {
                     "start": {
-                      "line": 139,
+                      "line": 162,
                       "column": 4
                     },
                     "end": {
-                      "line": 139,
+                      "line": 162,
                       "column": 14
                     }
                   }
@@ -6210,16 +6210,16 @@
                 "shorthand": true,
                 "computed": false,
                 "range": [
-                  5052,
-                  5062
+                  6316,
+                  6326
                 ],
                 "loc": {
                   "start": {
-                    "line": 139,
+                    "line": 162,
                     "column": 4
                   },
                   "end": {
-                    "line": 139,
+                    "line": 162,
                     "column": 14
                   }
                 }
@@ -6230,16 +6230,16 @@
                   "type": "Identifier",
                   "name": "iterator",
                   "range": [
-                    5068,
-                    5076
+                    6332,
+                    6340
                   ],
                   "loc": {
                     "start": {
-                      "line": 140,
+                      "line": 163,
                       "column": 4
                     },
                     "end": {
-                      "line": 140,
+                      "line": 163,
                       "column": 12
                     }
                   }
@@ -6248,16 +6248,16 @@
                   "type": "Identifier",
                   "name": "iterator",
                   "range": [
-                    5068,
-                    5076
+                    6332,
+                    6340
                   ],
                   "loc": {
                     "start": {
-                      "line": 140,
+                      "line": 163,
                       "column": 4
                     },
                     "end": {
-                      "line": 140,
+                      "line": 163,
                       "column": 12
                     }
                   }
@@ -6267,70 +6267,70 @@
                 "shorthand": true,
                 "computed": false,
                 "range": [
-                  5068,
-                  5076
+                  6332,
+                  6340
                 ],
                 "loc": {
                   "start": {
-                    "line": 140,
+                    "line": 163,
                     "column": 4
                   },
                   "end": {
-                    "line": 140,
+                    "line": 163,
                     "column": 12
                   }
                 }
               }
             ],
             "range": [
-              5028,
-              5078
+              6292,
+              6342
             ],
             "loc": {
               "start": {
-                "line": 137,
+                "line": 160,
                 "column": 13
               },
               "end": {
-                "line": 141,
+                "line": 164,
                 "column": 1
               }
             }
           },
           "range": [
-            5019,
-            5078
+            6283,
+            6342
           ],
           "loc": {
             "start": {
-              "line": 137,
+              "line": 160,
               "column": 4
             },
             "end": {
-              "line": 141,
+              "line": 164,
               "column": 1
             }
           }
         }
       ],
-      "kind": "var",
+      "kind": "let",
       "range": [
-        5015,
-        5079
+        6279,
+        6343
       ],
       "loc": {
         "start": {
-          "line": 137,
+          "line": 160,
           "column": 0
         },
         "end": {
-          "line": 141,
+          "line": 164,
           "column": 2
         }
       },
-      "trailingComments": [],
+      "leadingComments": [],
       "name": "_",
-      "leadingComments": []
+      "trailingComments": []
     },
     {
       "type": "ExportNamedDeclaration",
@@ -6342,16 +6342,16 @@
             "type": "Identifier",
             "name": "Scheduler",
             "range": [
-              5124,
-              5133
+              6353,
+              6362
             ],
             "loc": {
               "start": {
-                "line": 143,
+                "line": 165,
                 "column": 9
               },
               "end": {
-                "line": 143,
+                "line": 165,
                 "column": 18
               }
             }
@@ -6360,31 +6360,31 @@
             "type": "Identifier",
             "name": "Scheduler",
             "range": [
-              5124,
-              5133
+              6353,
+              6362
             ],
             "loc": {
               "start": {
-                "line": 143,
+                "line": 165,
                 "column": 9
               },
               "end": {
-                "line": 143,
+                "line": 165,
                 "column": 18
               }
             }
           },
           "range": [
-            5124,
-            5133
+            6353,
+            6362
           ],
           "loc": {
             "start": {
-              "line": 143,
+              "line": 165,
               "column": 9
             },
             "end": {
-              "line": 143,
+              "line": 165,
               "column": 18
             }
           }
@@ -6395,16 +6395,16 @@
             "type": "Identifier",
             "name": "Symbol",
             "range": [
-              5135,
-              5141
+              6364,
+              6370
             ],
             "loc": {
               "start": {
-                "line": 143,
+                "line": 165,
                 "column": 20
               },
               "end": {
-                "line": 143,
+                "line": 165,
                 "column": 26
               }
             }
@@ -6413,31 +6413,31 @@
             "type": "Identifier",
             "name": "Symbol",
             "range": [
-              5135,
-              5141
+              6364,
+              6370
             ],
             "loc": {
               "start": {
-                "line": 143,
+                "line": 165,
                 "column": 20
               },
               "end": {
-                "line": 143,
+                "line": 165,
                 "column": 26
               }
             }
           },
           "range": [
-            5135,
-            5141
+            6364,
+            6370
           ],
           "loc": {
             "start": {
-              "line": 143,
+              "line": 165,
               "column": 20
             },
             "end": {
-              "line": 143,
+              "line": 165,
               "column": 26
             }
           }
@@ -6445,54 +6445,34 @@
       ],
       "source": null,
       "range": [
-        5115,
-        5144
+        6344,
+        6373
       ],
       "loc": {
         "start": {
-          "line": 143,
+          "line": 165,
           "column": 0
         },
         "end": {
-          "line": 143,
+          "line": 165,
           "column": 29
         }
       },
-      "leadingComments": [
-        {
-          "type": "Block",
-          "value": " tslint:enable:no-var-keyword ",
-          "range": [
-            5080,
-            5114
-          ],
-          "loc": {
-            "start": {
-              "line": 142,
-              "column": 0
-            },
-            "end": {
-              "line": 142,
-              "column": 34
-            }
-          }
-        }
-      ],
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=Rx.js.map",
           "range": [
-            5145,
-            5175
+            6374,
+            6404
           ],
           "loc": {
             "start": {
-              "line": 144,
+              "line": 166,
               "column": 0
             },
             "end": {
-              "line": 144,
+              "line": 166,
               "column": 30
             }
           }
@@ -6510,16 +6490,16 @@
               "type": "Identifier",
               "name": "Scheduler",
               "range": [
-                4967,
-                4976
+                5477,
+                5486
               ],
               "loc": {
                 "start": {
-                  "line": 132,
+                  "line": 142,
                   "column": 4
                 },
                 "end": {
-                  "line": 132,
+                  "line": 142,
                   "column": 13
                 }
               }
@@ -6533,16 +6513,16 @@
                     "type": "Identifier",
                     "name": "asap",
                     "range": [
-                      4985,
-                      4989
+                      5495,
+                      5499
                     ],
                     "loc": {
                       "start": {
-                        "line": 133,
+                        "line": 143,
                         "column": 4
                       },
                       "end": {
-                        "line": 133,
+                        "line": 143,
                         "column": 8
                       }
                     }
@@ -6551,16 +6531,16 @@
                     "type": "Identifier",
                     "name": "asap",
                     "range": [
-                      4985,
-                      4989
+                      5495,
+                      5499
                     ],
                     "loc": {
                       "start": {
-                        "line": 133,
+                        "line": 143,
                         "column": 4
                       },
                       "end": {
-                        "line": 133,
+                        "line": 143,
                         "column": 8
                       }
                     }
@@ -6570,16 +6550,16 @@
                   "shorthand": true,
                   "computed": false,
                   "range": [
-                    4985,
-                    4989
+                    5495,
+                    5499
                   ],
                   "loc": {
                     "start": {
-                      "line": 133,
+                      "line": 143,
                       "column": 4
                     },
                     "end": {
-                      "line": 133,
+                      "line": 143,
                       "column": 8
                     }
                   }
@@ -6590,16 +6570,16 @@
                     "type": "Identifier",
                     "name": "async",
                     "range": [
-                      4995,
-                      5000
+                      5505,
+                      5510
                     ],
                     "loc": {
                       "start": {
-                        "line": 134,
+                        "line": 144,
                         "column": 4
                       },
                       "end": {
-                        "line": 134,
+                        "line": 144,
                         "column": 9
                       }
                     }
@@ -6608,16 +6588,16 @@
                     "type": "Identifier",
                     "name": "async",
                     "range": [
-                      4995,
-                      5000
+                      5505,
+                      5510
                     ],
                     "loc": {
                       "start": {
-                        "line": 134,
+                        "line": 144,
                         "column": 4
                       },
                       "end": {
-                        "line": 134,
+                        "line": 144,
                         "column": 9
                       }
                     }
@@ -6627,16 +6607,16 @@
                   "shorthand": true,
                   "computed": false,
                   "range": [
-                    4995,
-                    5000
+                    5505,
+                    5510
                   ],
                   "loc": {
                     "start": {
-                      "line": 134,
+                      "line": 144,
                       "column": 4
                     },
                     "end": {
-                      "line": 134,
+                      "line": 144,
                       "column": 9
                     }
                   }
@@ -6647,16 +6627,16 @@
                     "type": "Identifier",
                     "name": "queue",
                     "range": [
-                      5006,
-                      5011
+                      5516,
+                      5521
                     ],
                     "loc": {
                       "start": {
-                        "line": 135,
+                        "line": 145,
                         "column": 4
                       },
                       "end": {
-                        "line": 135,
+                        "line": 145,
                         "column": 9
                       }
                     }
@@ -6665,16 +6645,16 @@
                     "type": "Identifier",
                     "name": "queue",
                     "range": [
-                      5006,
-                      5011
+                      5516,
+                      5521
                     ],
                     "loc": {
                       "start": {
-                        "line": 135,
+                        "line": 145,
                         "column": 4
                       },
                       "end": {
-                        "line": 135,
+                        "line": 145,
                         "column": 9
                       }
                     }
@@ -6684,64 +6664,64 @@
                   "shorthand": true,
                   "computed": false,
                   "range": [
-                    5006,
-                    5011
+                    5516,
+                    5521
                   ],
                   "loc": {
                     "start": {
-                      "line": 135,
+                      "line": 145,
                       "column": 4
                     },
                     "end": {
-                      "line": 135,
+                      "line": 145,
                       "column": 9
                     }
                   }
                 }
               ],
               "range": [
-                4979,
-                5013
+                5489,
+                5523
               ],
               "loc": {
                 "start": {
-                  "line": 132,
+                  "line": 142,
                   "column": 16
                 },
                 "end": {
-                  "line": 136,
+                  "line": 146,
                   "column": 1
                 }
               }
             },
             "range": [
-              4967,
-              5013
+              5477,
+              5523
             ],
             "loc": {
               "start": {
-                "line": 132,
+                "line": 142,
                 "column": 4
               },
               "end": {
-                "line": 136,
+                "line": 146,
                 "column": 1
               }
             }
           }
         ],
-        "kind": "var",
+        "kind": "let",
         "range": [
-          4963,
-          5014
+          5473,
+          5524
         ],
         "loc": {
           "start": {
-            "line": 132,
+            "line": 142,
             "column": 0
           },
           "end": {
-            "line": 136,
+            "line": 146,
             "column": 2
           }
         },
@@ -6766,10 +6746,10 @@
           },
           {
             "type": "Block",
-            "value": " tslint:disable:no-var-keyword ",
+            "value": "*\n * @typedef {Object} Rx.Scheduler\n * @property {Scheduler} queue Schedules on a queue in the current event frame\n * (trampoline scheduler). Use this for iteration operations.\n * @property {Scheduler} asap Schedules on the micro task queue, which uses the\n * fastest transport mechanism available, either Node.js' `process.nextTick()`\n * or Web Worker MessageChannel or setTimeout or others. Use this for\n * asynchronous conversions.\n * @property {Scheduler} async Schedules work with `setInterval`. Use this for\n * time-based operations.\n ",
             "range": [
               4927,
-              4962
+              5472
             ],
             "loc": {
               "start": {
@@ -6777,27 +6757,45 @@
                 "column": 0
               },
               "end": {
-                "line": 131,
-                "column": 35
+                "line": 141,
+                "column": 3
               }
             }
           }
         ],
         "trailingComments": [
           {
-            "type": "Line",
-            "value": "# sourceMappingURL=Rx.js.map",
+            "type": "Block",
+            "value": "*\n * @typedef {Object} Rx.Symbol\n * @property {Symbol|string} rxSubscriber A symbol to use as a property name to\n * retrieve an \"Rx safe\" Observer from an object. \"Rx safety\" can be defined as\n * an object that has all of the traits of an Rx Subscriber, including the\n * ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription,\n * etc).\n * @property {Symbol|string} observable A symbol to use as a property name to\n * retrieve an Observable as defined by the [ECMAScript \"Observable\" spec](https://github.com/zenparsing/es-observable).\n * @property {Symbol|string} iterator The ES6 symbol to use as a property name\n * to retrieve an iterator from an object.\n ",
             "range": [
-              5145,
-              5175
+              5525,
+              6278
             ],
             "loc": {
               "start": {
-                "line": 144,
+                "line": 147,
                 "column": 0
               },
               "end": {
-                "line": 144,
+                "line": 159,
+                "column": 3
+              }
+            }
+          },
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=Rx.js.map",
+            "range": [
+              6374,
+              6404
+            ],
+            "loc": {
+              "start": {
+                "line": 166,
+                "column": 0
+              },
+              "end": {
+                "line": 166,
                 "column": 30
               }
             }
@@ -6807,40 +6805,40 @@
       "specifiers": null,
       "source": null,
       "range": [
-        5115,
-        5144
+        6344,
+        6373
       ],
       "loc": {
         "start": {
-          "line": 143,
+          "line": 165,
           "column": 0
         },
         "end": {
-          "line": 143,
+          "line": 165,
           "column": 29
         }
       },
-      "leadingComments": null,
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=Rx.js.map",
           "range": [
-            5145,
-            5175
+            6374,
+            6404
           ],
           "loc": {
             "start": {
-              "line": 144,
+              "line": 166,
               "column": 0
             },
             "end": {
-              "line": 144,
+              "line": 166,
               "column": 30
             }
           }
         }
-      ]
+      ],
+      "leadingComments": null
     },
     {
       "type": "ExportNamedDeclaration",
@@ -6853,16 +6851,16 @@
               "type": "Identifier",
               "name": "Symbol",
               "range": [
-                5019,
-                5025
+                6283,
+                6289
               ],
               "loc": {
                 "start": {
-                  "line": 137,
+                  "line": 160,
                   "column": 4
                 },
                 "end": {
-                  "line": 137,
+                  "line": 160,
                   "column": 10
                 }
               }
@@ -6876,16 +6874,16 @@
                     "type": "Identifier",
                     "name": "rxSubscriber",
                     "range": [
-                      5034,
-                      5046
+                      6298,
+                      6310
                     ],
                     "loc": {
                       "start": {
-                        "line": 138,
+                        "line": 161,
                         "column": 4
                       },
                       "end": {
-                        "line": 138,
+                        "line": 161,
                         "column": 16
                       }
                     }
@@ -6894,16 +6892,16 @@
                     "type": "Identifier",
                     "name": "rxSubscriber",
                     "range": [
-                      5034,
-                      5046
+                      6298,
+                      6310
                     ],
                     "loc": {
                       "start": {
-                        "line": 138,
+                        "line": 161,
                         "column": 4
                       },
                       "end": {
-                        "line": 138,
+                        "line": 161,
                         "column": 16
                       }
                     }
@@ -6913,16 +6911,16 @@
                   "shorthand": true,
                   "computed": false,
                   "range": [
-                    5034,
-                    5046
+                    6298,
+                    6310
                   ],
                   "loc": {
                     "start": {
-                      "line": 138,
+                      "line": 161,
                       "column": 4
                     },
                     "end": {
-                      "line": 138,
+                      "line": 161,
                       "column": 16
                     }
                   }
@@ -6933,16 +6931,16 @@
                     "type": "Identifier",
                     "name": "observable",
                     "range": [
-                      5052,
-                      5062
+                      6316,
+                      6326
                     ],
                     "loc": {
                       "start": {
-                        "line": 139,
+                        "line": 162,
                         "column": 4
                       },
                       "end": {
-                        "line": 139,
+                        "line": 162,
                         "column": 14
                       }
                     }
@@ -6951,16 +6949,16 @@
                     "type": "Identifier",
                     "name": "observable",
                     "range": [
-                      5052,
-                      5062
+                      6316,
+                      6326
                     ],
                     "loc": {
                       "start": {
-                        "line": 139,
+                        "line": 162,
                         "column": 4
                       },
                       "end": {
-                        "line": 139,
+                        "line": 162,
                         "column": 14
                       }
                     }
@@ -6970,16 +6968,16 @@
                   "shorthand": true,
                   "computed": false,
                   "range": [
-                    5052,
-                    5062
+                    6316,
+                    6326
                   ],
                   "loc": {
                     "start": {
-                      "line": 139,
+                      "line": 162,
                       "column": 4
                     },
                     "end": {
-                      "line": 139,
+                      "line": 162,
                       "column": 14
                     }
                   }
@@ -6990,16 +6988,16 @@
                     "type": "Identifier",
                     "name": "iterator",
                     "range": [
-                      5068,
-                      5076
+                      6332,
+                      6340
                     ],
                     "loc": {
                       "start": {
-                        "line": 140,
+                        "line": 163,
                         "column": 4
                       },
                       "end": {
-                        "line": 140,
+                        "line": 163,
                         "column": 12
                       }
                     }
@@ -7008,16 +7006,16 @@
                     "type": "Identifier",
                     "name": "iterator",
                     "range": [
-                      5068,
-                      5076
+                      6332,
+                      6340
                     ],
                     "loc": {
                       "start": {
-                        "line": 140,
+                        "line": 163,
                         "column": 4
                       },
                       "end": {
-                        "line": 140,
+                        "line": 163,
                         "column": 12
                       }
                     }
@@ -7027,150 +7025,151 @@
                   "shorthand": true,
                   "computed": false,
                   "range": [
-                    5068,
-                    5076
+                    6332,
+                    6340
                   ],
                   "loc": {
                     "start": {
-                      "line": 140,
+                      "line": 163,
                       "column": 4
                     },
                     "end": {
-                      "line": 140,
+                      "line": 163,
                       "column": 12
                     }
                   }
                 }
               ],
               "range": [
-                5028,
-                5078
+                6292,
+                6342
               ],
               "loc": {
                 "start": {
-                  "line": 137,
+                  "line": 160,
                   "column": 13
                 },
                 "end": {
-                  "line": 141,
+                  "line": 164,
                   "column": 1
                 }
               }
             },
             "range": [
-              5019,
-              5078
+              6283,
+              6342
             ],
             "loc": {
               "start": {
-                "line": 137,
+                "line": 160,
                 "column": 4
               },
               "end": {
-                "line": 141,
+                "line": 164,
                 "column": 1
               }
             }
           }
         ],
-        "kind": "var",
+        "kind": "let",
         "range": [
-          5015,
-          5079
+          6279,
+          6343
         ],
         "loc": {
           "start": {
-            "line": 137,
+            "line": 160,
             "column": 0
           },
           "end": {
-            "line": 141,
+            "line": 164,
             "column": 2
           }
         },
-        "trailingComments": [
+        "leadingComments": [
           {
             "type": "Block",
-            "value": " tslint:enable:no-var-keyword ",
+            "value": "*\n * @typedef {Object} Rx.Symbol\n * @property {Symbol|string} rxSubscriber A symbol to use as a property name to\n * retrieve an \"Rx safe\" Observer from an object. \"Rx safety\" can be defined as\n * an object that has all of the traits of an Rx Subscriber, including the\n * ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription,\n * etc).\n * @property {Symbol|string} observable A symbol to use as a property name to\n * retrieve an Observable as defined by the [ECMAScript \"Observable\" spec](https://github.com/zenparsing/es-observable).\n * @property {Symbol|string} iterator The ES6 symbol to use as a property name\n * to retrieve an iterator from an object.\n ",
             "range": [
-              5080,
-              5114
+              5525,
+              6278
             ],
             "loc": {
               "start": {
-                "line": 142,
+                "line": 147,
                 "column": 0
               },
               "end": {
-                "line": 142,
-                "column": 34
+                "line": 159,
+                "column": 3
               }
             }
-          },
+          }
+        ],
+        "trailingComments": [
           {
             "type": "Line",
             "value": "# sourceMappingURL=Rx.js.map",
             "range": [
-              5145,
-              5175
+              6374,
+              6404
             ],
             "loc": {
               "start": {
-                "line": 144,
+                "line": 166,
                 "column": 0
               },
               "end": {
-                "line": 144,
+                "line": 166,
                 "column": 30
               }
             }
           }
-        ],
-        "leadingComments": []
+        ]
       },
       "specifiers": null,
       "source": null,
       "range": [
-        5115,
-        5144
+        6344,
+        6373
       ],
       "loc": {
         "start": {
-          "line": 143,
+          "line": 165,
           "column": 0
         },
         "end": {
-          "line": 143,
+          "line": 165,
           "column": 29
         }
       },
-      "leadingComments": null,
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=Rx.js.map",
           "range": [
-            5145,
-            5175
+            6374,
+            6404
           ],
           "loc": {
             "start": {
-              "line": 144,
+              "line": 166,
               "column": 0
             },
             "end": {
-              "line": 144,
+              "line": 166,
               "column": 30
             }
           }
         }
-      ]
+      ],
+      "leadingComments": null
     }
   ],
   "sourceType": "module",
   "range": [
     206,
-    5144
+    6373
   ],
   "loc": {
     "start": {
@@ -7178,7 +7177,7 @@
       "column": 0
     },
     "end": {
-      "line": 143,
+      "line": 165,
       "column": 29
     }
   },
@@ -7311,10 +7310,10 @@
     },
     {
       "type": "Block",
-      "value": " tslint:disable:no-var-keyword ",
+      "value": "*\n * @typedef {Object} Rx.Scheduler\n * @property {Scheduler} queue Schedules on a queue in the current event frame\n * (trampoline scheduler). Use this for iteration operations.\n * @property {Scheduler} asap Schedules on the micro task queue, which uses the\n * fastest transport mechanism available, either Node.js' `process.nextTick()`\n * or Web Worker MessageChannel or setTimeout or others. Use this for\n * asynchronous conversions.\n * @property {Scheduler} async Schedules work with `setInterval`. Use this for\n * time-based operations.\n ",
       "range": [
         4927,
-        4962
+        5472
       ],
       "loc": {
         "start": {
@@ -7322,26 +7321,26 @@
           "column": 0
         },
         "end": {
-          "line": 131,
-          "column": 35
+          "line": 141,
+          "column": 3
         }
       }
     },
     {
       "type": "Block",
-      "value": " tslint:enable:no-var-keyword ",
+      "value": "*\n * @typedef {Object} Rx.Symbol\n * @property {Symbol|string} rxSubscriber A symbol to use as a property name to\n * retrieve an \"Rx safe\" Observer from an object. \"Rx safety\" can be defined as\n * an object that has all of the traits of an Rx Subscriber, including the\n * ability to add and remove subscriptions to the subscription chain and\n * guarantees involving event triggering (can't \"next\" after unsubscription,\n * etc).\n * @property {Symbol|string} observable A symbol to use as a property name to\n * retrieve an Observable as defined by the [ECMAScript \"Observable\" spec](https://github.com/zenparsing/es-observable).\n * @property {Symbol|string} iterator The ES6 symbol to use as a property name\n * to retrieve an iterator from an object.\n ",
       "range": [
-        5080,
-        5114
+        5525,
+        6278
       ],
       "loc": {
         "start": {
-          "line": 142,
+          "line": 147,
           "column": 0
         },
         "end": {
-          "line": 142,
-          "column": 34
+          "line": 159,
+          "column": 3
         }
       }
     },
@@ -7349,16 +7348,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=Rx.js.map",
       "range": [
-        5145,
-        5175
+        6374,
+        6404
       ],
       "loc": {
         "start": {
-          "line": 144,
+          "line": 166,
           "column": 0
         },
         "end": {
-          "line": 144,
+          "line": 166,
           "column": 30
         }
       }

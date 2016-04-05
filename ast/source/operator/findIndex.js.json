@@ -94,10 +94,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+          "value": "*\n * Emits only the index of the first value emitted by the source Observable that\n * meets some condition.\n *\n * <span class=\"informal\">It's like {@link find}, but emits the index of the\n * found value, not the value itself.</span>\n *\n * <img src=\"./img/findIndex.png\" width=\"100%\">\n *\n * `findIndex` searches for the first item in the source Observable that matches\n * the specified condition embodied by the `predicate`, and returns the\n * (zero-based) index of the first occurrence in the source. Unlike\n * {@link first}, the `predicate` is required in `findIndex`, and does not emit\n * an error if a valid value is not found.\n *\n * @example <caption>Emit the index of first click that happens on a DIV element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.findIndex(ev => ev.target.tagName === 'DIV');\n * result.subscribe(x => console.log(x));\n *\n * @see {@link filter}\n * @see {@link find}\n * @see {@link first}\n * @see {@link take}\n *\n * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate\n * A function called with each item to test for condition matching.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {Observable} An Observable of the index of the first item that\n * matches the condition.\n * @method find\n * @owner Observable\n ",
           "range": [
             44,
-            461
+            1443
           ],
           "loc": {
             "start": {
@@ -105,7 +105,7 @@
               "column": 0
             },
             "end": {
-              "line": 9,
+              "line": 35,
               "column": 3
             }
           }
@@ -120,16 +120,16 @@
           "type": "Identifier",
           "name": "findIndex",
           "range": [
-            478,
-            487
+            1460,
+            1469
           ],
           "loc": {
             "start": {
-              "line": 10,
+              "line": 36,
               "column": 16
             },
             "end": {
-              "line": 10,
+              "line": 36,
               "column": 25
             }
           }
@@ -139,16 +139,16 @@
             "type": "Identifier",
             "name": "predicate",
             "range": [
-              488,
-              497
+              1470,
+              1479
             ],
             "loc": {
               "start": {
-                "line": 10,
+                "line": 36,
                 "column": 26
               },
               "end": {
-                "line": 10,
+                "line": 36,
                 "column": 35
               }
             }
@@ -157,16 +157,16 @@
             "type": "Identifier",
             "name": "thisArg",
             "range": [
-              499,
-              506
+              1481,
+              1488
             ],
             "loc": {
               "start": {
-                "line": 10,
+                "line": 36,
                 "column": 37
               },
               "end": {
-                "line": 10,
+                "line": 36,
                 "column": 44
               }
             }
@@ -185,16 +185,16 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      521,
-                      525
+                      1503,
+                      1507
                     ],
                     "loc": {
                       "start": {
-                        "line": 11,
+                        "line": 37,
                         "column": 11
                       },
                       "end": {
-                        "line": 11,
+                        "line": 37,
                         "column": 15
                       }
                     }
@@ -203,31 +203,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      526,
-                      530
+                      1508,
+                      1512
                     ],
                     "loc": {
                       "start": {
-                        "line": 11,
+                        "line": 37,
                         "column": 16
                       },
                       "end": {
-                        "line": 11,
+                        "line": 37,
                         "column": 20
                       }
                     }
                   },
                   "range": [
-                    521,
-                    530
+                    1503,
+                    1512
                   ],
                   "loc": {
                     "start": {
-                      "line": 11,
+                      "line": 37,
                       "column": 11
                     },
                     "end": {
-                      "line": 11,
+                      "line": 37,
                       "column": 20
                     }
                   }
@@ -239,16 +239,16 @@
                       "type": "Identifier",
                       "name": "FindValueOperator",
                       "range": [
-                        535,
-                        552
+                        1517,
+                        1534
                       ],
                       "loc": {
                         "start": {
-                          "line": 11,
+                          "line": 37,
                           "column": 25
                         },
                         "end": {
-                          "line": 11,
+                          "line": 37,
                           "column": 42
                         }
                       }
@@ -258,16 +258,16 @@
                         "type": "Identifier",
                         "name": "predicate",
                         "range": [
-                          553,
-                          562
+                          1535,
+                          1544
                         ],
                         "loc": {
                           "start": {
-                            "line": 11,
+                            "line": 37,
                             "column": 43
                           },
                           "end": {
-                            "line": 11,
+                            "line": 37,
                             "column": 52
                           }
                         }
@@ -275,16 +275,16 @@
                       {
                         "type": "ThisExpression",
                         "range": [
-                          564,
-                          568
+                          1546,
+                          1550
                         ],
                         "loc": {
                           "start": {
-                            "line": 11,
+                            "line": 37,
                             "column": 54
                           },
                           "end": {
-                            "line": 11,
+                            "line": 37,
                             "column": 58
                           }
                         }
@@ -294,16 +294,16 @@
                         "value": true,
                         "raw": "true",
                         "range": [
-                          570,
-                          574
+                          1552,
+                          1556
                         ],
                         "loc": {
                           "start": {
-                            "line": 11,
+                            "line": 37,
                             "column": 60
                           },
                           "end": {
-                            "line": 11,
+                            "line": 37,
                             "column": 64
                           }
                         }
@@ -312,79 +312,79 @@
                         "type": "Identifier",
                         "name": "thisArg",
                         "range": [
-                          576,
-                          583
+                          1558,
+                          1565
                         ],
                         "loc": {
                           "start": {
-                            "line": 11,
+                            "line": 37,
                             "column": 66
                           },
                           "end": {
-                            "line": 11,
+                            "line": 37,
                             "column": 73
                           }
                         }
                       }
                     ],
                     "range": [
-                      531,
-                      584
+                      1513,
+                      1566
                     ],
                     "loc": {
                       "start": {
-                        "line": 11,
+                        "line": 37,
                         "column": 21
                       },
                       "end": {
-                        "line": 11,
+                        "line": 37,
                         "column": 74
                       }
                     }
                   }
                 ],
                 "range": [
-                  521,
-                  585
+                  1503,
+                  1567
                 ],
                 "loc": {
                   "start": {
-                    "line": 11,
+                    "line": 37,
                     "column": 11
                   },
                   "end": {
-                    "line": 11,
+                    "line": 37,
                     "column": 75
                   }
                 }
               },
               "range": [
-                514,
-                586
+                1496,
+                1568
               ],
               "loc": {
                 "start": {
-                  "line": 11,
+                  "line": 37,
                   "column": 4
                 },
                 "end": {
-                  "line": 11,
+                  "line": 37,
                   "column": 76
                 }
               }
             }
           ],
           "range": [
-            508,
-            588
+            1490,
+            1570
           ],
           "loc": {
             "start": {
-              "line": 10,
+              "line": 36,
               "column": 46
             },
             "end": {
-              "line": 12,
+              "line": 38,
               "column": 1
             }
           }
@@ -392,26 +392,26 @@
         "generator": false,
         "expression": false,
         "range": [
-          469,
-          588
+          1451,
+          1570
         ],
         "loc": {
           "start": {
-            "line": 10,
+            "line": 36,
             "column": 7
           },
           "end": {
-            "line": 12,
+            "line": 38,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+            "value": "*\n * Emits only the index of the first value emitted by the source Observable that\n * meets some condition.\n *\n * <span class=\"informal\">It's like {@link find}, but emits the index of the\n * found value, not the value itself.</span>\n *\n * <img src=\"./img/findIndex.png\" width=\"100%\">\n *\n * `findIndex` searches for the first item in the source Observable that matches\n * the specified condition embodied by the `predicate`, and returns the\n * (zero-based) index of the first occurrence in the source. Unlike\n * {@link first}, the `predicate` is required in `findIndex`, and does not emit\n * an error if a valid value is not found.\n *\n * @example <caption>Emit the index of first click that happens on a DIV element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.findIndex(ev => ev.target.tagName === 'DIV');\n * result.subscribe(x => console.log(x));\n *\n * @see {@link filter}\n * @see {@link find}\n * @see {@link first}\n * @see {@link take}\n *\n * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate\n * A function called with each item to test for condition matching.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {Observable} An Observable of the index of the first item that\n * matches the condition.\n * @method find\n * @owner Observable\n ",
             "range": [
               44,
-              461
+              1443
             ],
             "loc": {
               "start": {
@@ -419,7 +419,7 @@
                 "column": 0
               },
               "end": {
-                "line": 9,
+                "line": 35,
                 "column": 3
               }
             }
@@ -430,16 +430,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=findIndex.js.map",
             "range": [
-              589,
-              626
+              1571,
+              1608
             ],
             "loc": {
               "start": {
-                "line": 13,
+                "line": 39,
                 "column": 0
               },
               "end": {
-                "line": 13,
+                "line": 39,
                 "column": 37
               }
             }
@@ -449,26 +449,26 @@
       "specifiers": [],
       "source": null,
       "range": [
-        462,
-        588
+        1444,
+        1570
       ],
       "loc": {
         "start": {
-          "line": 10,
+          "line": 36,
           "column": 0
         },
         "end": {
-          "line": 12,
+          "line": 38,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+          "value": "*\n * Emits only the index of the first value emitted by the source Observable that\n * meets some condition.\n *\n * <span class=\"informal\">It's like {@link find}, but emits the index of the\n * found value, not the value itself.</span>\n *\n * <img src=\"./img/findIndex.png\" width=\"100%\">\n *\n * `findIndex` searches for the first item in the source Observable that matches\n * the specified condition embodied by the `predicate`, and returns the\n * (zero-based) index of the first occurrence in the source. Unlike\n * {@link first}, the `predicate` is required in `findIndex`, and does not emit\n * an error if a valid value is not found.\n *\n * @example <caption>Emit the index of first click that happens on a DIV element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.findIndex(ev => ev.target.tagName === 'DIV');\n * result.subscribe(x => console.log(x));\n *\n * @see {@link filter}\n * @see {@link find}\n * @see {@link first}\n * @see {@link take}\n *\n * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate\n * A function called with each item to test for condition matching.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {Observable} An Observable of the index of the first item that\n * matches the condition.\n * @method find\n * @owner Observable\n ",
           "range": [
             44,
-            461
+            1443
           ],
           "loc": {
             "start": {
@@ -476,7 +476,7 @@
               "column": 0
             },
             "end": {
-              "line": 9,
+              "line": 35,
               "column": 3
             }
           }
@@ -487,16 +487,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=findIndex.js.map",
           "range": [
-            589,
-            626
+            1571,
+            1608
           ],
           "loc": {
             "start": {
-              "line": 13,
+              "line": 39,
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 39,
               "column": 37
             }
           }
@@ -507,7 +507,7 @@
   "sourceType": "module",
   "range": [
     0,
-    588
+    1570
   ],
   "loc": {
     "start": {
@@ -515,17 +515,17 @@
       "column": 0
     },
     "end": {
-      "line": 12,
+      "line": 38,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Returns an Observable that searches for the first item in the source Observable that\n * matches the specified condition, and returns the the index of the item in the source.\n * @param {function} predicate function called with each item to test for condition matching.\n * @return {Observable} an Observable of the index of the first item that matches the condition.\n * @method findIndex\n * @owner Observable\n ",
+      "value": "*\n * Emits only the index of the first value emitted by the source Observable that\n * meets some condition.\n *\n * <span class=\"informal\">It's like {@link find}, but emits the index of the\n * found value, not the value itself.</span>\n *\n * <img src=\"./img/findIndex.png\" width=\"100%\">\n *\n * `findIndex` searches for the first item in the source Observable that matches\n * the specified condition embodied by the `predicate`, and returns the\n * (zero-based) index of the first occurrence in the source. Unlike\n * {@link first}, the `predicate` is required in `findIndex`, and does not emit\n * an error if a valid value is not found.\n *\n * @example <caption>Emit the index of first click that happens on a DIV element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.findIndex(ev => ev.target.tagName === 'DIV');\n * result.subscribe(x => console.log(x));\n *\n * @see {@link filter}\n * @see {@link find}\n * @see {@link first}\n * @see {@link take}\n *\n * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate\n * A function called with each item to test for condition matching.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {Observable} An Observable of the index of the first item that\n * matches the condition.\n * @method find\n * @owner Observable\n ",
       "range": [
         44,
-        461
+        1443
       ],
       "loc": {
         "start": {
@@ -533,7 +533,7 @@
           "column": 0
         },
         "end": {
-          "line": 9,
+          "line": 35,
           "column": 3
         }
       }
@@ -542,16 +542,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=findIndex.js.map",
       "range": [
-        589,
-        626
+        1571,
+        1608
       ],
       "loc": {
         "start": {
-          "line": 13,
+          "line": 39,
           "column": 0
         },
         "end": {
-          "line": 13,
+          "line": 39,
           "column": 37
         }
       }
