@@ -1,3 +1,16 @@
+<a name="5.0.0-beta.5"></a>
+# [5.0.0-beta.5](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.4...v5.0.0-beta.5) (2016-04-05)
+
+
+### Bug Fixes
+
+* **take:** make 'take' unsubscribe when it reaches the total ([9858aa3](https://github.com/ReactiveX/RxJS/commit/9858aa3))
+
+### BREAKING CHANGES
+
+* Operator: `Operator.prototype.call` has been refactored to include both the destination Subscriber, and the source Observable
+  the Operator is now responsible for describing it's own subscription process. ([26423f4](https://github.com/ReactiveX/rxjs/pull/1570/commits/26423f4))
+
 <a name="5.0.0-beta.4"></a>
 # [5.0.0-beta.4](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.3...v5.0.0-beta.4) (2016-03-29)
 
