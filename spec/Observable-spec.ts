@@ -90,6 +90,7 @@ describe('Observable', () => {
     });
 
     it('should handle a synchronous throw from the next handler and tear down', (done: MochaDone) => {
+      const expected = new Error('I told, you Bobby Boucher, twos are the debil!');
       let unsubscribeCalled = false;
       const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
         observer.next(1);
@@ -105,7 +106,7 @@ describe('Observable', () => {
       syncObservable.forEach((x) => {
         results.push(x);
         if (x === 2) {
-          throw new Error('I told, you Bobby Boucher, twos are the debil!');
+          throw expected;
         }
       }).then(
         () => {
@@ -113,13 +114,14 @@ describe('Observable', () => {
         },
         (err) => {
           results.push(err);
-          expect(results).to.deep.equal([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
+          expect(results).to.deep.equal([1, 2, expected]);
           expect(unsubscribeCalled).to.be.true;
           done();
         });
     });
 
     it('should handle an asynchronous throw from the next handler and tear down', (done: MochaDone) => {
+      const expected = new Error('I told, you Bobby Boucher, twos are the debil!');
       let unsubscribeCalled = false;
       const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
         let i = 1;
@@ -135,7 +137,7 @@ describe('Observable', () => {
       syncObservable.forEach((x) => {
         results.push(x);
         if (x === 2) {
-          throw new Error('I told, you Bobby Boucher, twos are the debil!');
+          throw expected;
         }
       }).then(
         () => {
@@ -143,7 +145,7 @@ describe('Observable', () => {
         },
         (err) => {
           results.push(err);
-          expect(results).to.deep.equal([1, 2, new Error('I told, you Bobby Boucher, twos are the debil!')]);
+          expect(results).to.deep.equal([1, 2, expected]);
           expect(unsubscribeCalled).to.be.true;
           done();
         });

@@ -23,16 +23,16 @@ describe('Scheduler.queue', () => {
     let called = false;
     Scheduler.queue.schedule(() => {
       called = true;
-    }, 50);
+    }, 60);
 
     setTimeout(() => {
       expect(called).to.be.false;
-    }, 40);
+    }, 20);
 
     setTimeout(() => {
       expect(called).to.be.true;
       done();
-    }, 70);
+    }, 100);
   });
 
   it('should be reusable after an error is thrown during execution', (done: MochaDone) => {

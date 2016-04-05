@@ -68,19 +68,18 @@ describe('Observable.bindNodeCallback', () => {
       function callback(cb) {
         cb(null, 42);
       }
-      const boundCallback = Observable.bindNodeCallback(callback, (err: any) => { throw new Error('Yikes!'); });
-      const results = [];
+
+      const expected = new Error('Yikes!');
+      const boundCallback = Observable.bindNodeCallback(callback, (err: any) => { throw expected; });
 
       boundCallback()
         .subscribe(() => {
           throw 'should not next';
         }, (err: any) => {
-          results.push(err);
+          expect(err).to.equal(expected);
         }, () => {
           throw 'should not complete';
         });
-
-      expect(results).to.deep.equal([new Error('Yikes!')]);
     });
 
     it('should not emit, throw or complete if immediately unsubscribed', (done: MochaDone) => {
@@ -130,24 +129,22 @@ describe('Observable.bindNodeCallback', () => {
     });
 
     it('should error if callback throws', () => {
+      const expected = new Error('haha no callback for you');
       function callback(datum, cb) {
-        throw new Error('haha no callback for you');
+        throw expected;
       }
       const boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
-      const results = [];
 
       boundCallback(42)
         .subscribe((x: number) => {
           throw 'should not next';
         }, (err: any) => {
-          results.push(err);
+          expect(err).to.equal(expected);
         }, () => {
           throw 'should not complete';
         });
 
       rxTestScheduler.flush();
-
-      expect(results).to.deep.equal([new Error('haha no callback for you')]);
     });
 
     it('should raise error from callback', () => {
@@ -175,27 +172,25 @@ describe('Observable.bindNodeCallback', () => {
     });
 
     it('should error if selector throws', () => {
+      const expected = new Error('what? a selector? I don\'t think so');
       function callback(datum, cb) {
         cb(null, datum);
       }
       function selector() {
-        throw new Error('what? a selector? I don\'t think so');
+        throw expected;
       }
       const boundCallback = Observable.bindNodeCallback(callback, selector, rxTestScheduler);
-      const results = [];
 
       boundCallback(42)
         .subscribe((x: any) => {
           throw 'should not next';
         }, (err: any) => {
-          results.push(err);
+          expect(err).to.equal(expected);
         }, () => {
           throw 'should not complete';
         });
 
       rxTestScheduler.flush();
-
-      expect(results).to.deep.equal([new Error('what? a selector? I don\'t think so')]);
     });
 
     it('should use a selector', () => {

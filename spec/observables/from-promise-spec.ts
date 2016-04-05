@@ -160,7 +160,7 @@ describe('Observable.fromPromise', () => {
   } else if (typeof window === 'object' &&
     (Object.prototype.toString.call(window) === '[object global]' || Object.prototype.toString.call(window) === '[object Window]')) {
     it('should globally throw unhandled errors on window', (done: MochaDone) => {
-      const expected = ['Uncaught fail', 'fail', 'Script error.'];
+      const expected = ['Uncaught fail', 'fail', 'Script error.', 'uncaught exception: fail'];
       const current = window.onerror;
       window.onerror = null;
 
