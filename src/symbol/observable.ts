@@ -1,4 +1,3 @@
-/// <reference path="./symbol.d.ts" />
 import {root} from '../util/root';
 
 const Symbol = root.Symbol;

@@ -1,4 +1,3 @@
-/// <reference path="./symbol/symbol.d.ts" />
 import {PartialObserver, Observer} from './Observer';
 import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
@@ -14,13 +13,8 @@ export interface Subscribable<T> {
   subscribe(observer: Observer<T>): AnonymousSubscription;
 }
 
-export interface Observablesque<T> {
-  [Symbol.observable](): Subscribable<T>;
-}
-
-export type SubscribableOrPromise<T> = Observablesque<T> | Subscribable<T> | Promise<T>;
-export type ArrayOrIterable<T> = Iterable<T> | ArrayLike<T>;
-export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayOrIterable<T>;
+export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
+export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block

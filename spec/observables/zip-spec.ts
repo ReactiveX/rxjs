@@ -77,7 +77,7 @@ describe('Observable.zip', () => {
 
   describe('with iterables', () => {
     it('should zip them with values', () => {
-      const myIterator: Iterable<number> = <any>{
+      const myIterator = <any>{
         count: 0,
         next: function () {
           return { value: this.count++, done: false };
@@ -103,7 +103,7 @@ describe('Observable.zip', () => {
 
     it('should only call `next` as needed', () => {
       let nextCalled = 0;
-      const myIterator: Iterable<number> = <any>{
+      const myIterator = <any>{
         count: 0,
         next: () => {
           nextCalled++;
