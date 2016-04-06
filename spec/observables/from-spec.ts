@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
-import {Observablesque} from '../../dist/cjs/Observable';
 
 declare const {expectObservable, Symbol, type};
 declare const rxTestScheduler: Rx.TestScheduler;
@@ -117,7 +116,7 @@ describe('Observable.from', () => {
   });
 
   it('should handle an "observableque" object', (done: MochaDone) => {
-    const observablesque: Observablesque<any> = <any>{};
+    const observablesque = <any>{};
 
     observablesque[Symbol.observable] = () => {
       return {
@@ -138,7 +137,7 @@ describe('Observable.from', () => {
   });
 
   it('should accept scheduler for observableque object', () => {
-    const observablesque: Observablesque<any> = <any>{};
+    const observablesque = <any>{};
 
     observablesque[Symbol.observable] = () => {
       return {
@@ -167,7 +166,7 @@ describe('Observable.from', () => {
   });
 
   it('should handle any iterable thing', (done: MochaDone) => {
-    const iterable: Iterable<string> = <any>{};
+    const iterable = <any>{};
     const iteratorResults = [
       { value: 'one', done: false },
       { value: 'two', done: false },
@@ -218,9 +217,8 @@ describe('Observable.from', () => {
     type(() => {
       /* tslint:disable:no-unused-variable */
       let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
-      let o2: Rx.Observable<string> = Observable.from(<Iterable<string>>{});
-      let o3: Rx.Observable<{ a: string }> = Observable.from(Observable.empty<{ a: string }>());
-      let o4: Rx.Observable<{ b: number }> = Observable.from(new Promise<{b: number}>(resolve => resolve()));
+      let o2: Rx.Observable<{ a: string }> = Observable.from(Observable.empty<{ a: string }>());
+      let o3: Rx.Observable<{ b: number }> = Observable.from(new Promise<{b: number}>(resolve => resolve()));
       /* tslint:enable:no-unused-variable */
     });
   });
