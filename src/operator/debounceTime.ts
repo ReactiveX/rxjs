@@ -46,7 +46,7 @@ import {async} from '../scheduler/async';
  * managing the timers that handle the timeout for each value.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur
- * too frequent.
+ * too frequently.
  * @method debounceTime
  * @owner Observable
  */
