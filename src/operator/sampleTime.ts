@@ -28,6 +28,7 @@ import {async} from '../scheduler/async';
  * @see {@link auditTime}
  * @see {@link debounceTime}
  * @see {@link delay}
+ * @see {@link sample}
  * @see {@link throttleTime}
  *
  * @param {number} period The sampling period expressed in milliseconds or the
