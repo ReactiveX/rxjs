@@ -375,11 +375,13 @@ export class AjaxResponse {
 
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
-    this.responseType = xhr.responseType;
+    this.responseType = xhr.responseType || request.responseType;
+
     switch (this.responseType) {
       case 'json':
         if ('response' in xhr) {
-          this.response = xhr.response;
+          //IE does not support json as responseType, parse it internally
+          this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || '');
         } else {
           this.response = JSON.parse(xhr.responseText || '');
         }
