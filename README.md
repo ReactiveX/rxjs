@@ -184,6 +184,3 @@ For Windows and other Operating Systems, check the download instructions here:
 - http://imagemagick.org
 - http://www.graphicsmagick.org
 - http://www.ghostscript.com/
-
-
-I'm on the top of europe. Wee.
