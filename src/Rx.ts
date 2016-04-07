@@ -118,7 +118,7 @@ import './add/operator/zipAll';
 /* tslint:disable:no-unused-variable */
 export {Operator} from './Operator';
 export {Observer} from './Observer';
-export {Subscription, UnsubscriptionError} from './Subscription';
+export {Subscription} from './Subscription';
 export {Subscriber} from './Subscriber';
 export {AsyncSubject} from './AsyncSubject';
 export {ReplaySubject} from './ReplaySubject';
@@ -128,6 +128,7 @@ export {Notification} from './Notification';
 export {EmptyError} from './util/EmptyError';
 export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
+export {UnsubscriptionError} from './util/UnsubscriptionError';
 
 import {asap} from './scheduler/asap';
 import {async} from './scheduler/async';
