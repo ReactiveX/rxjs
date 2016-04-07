@@ -3,6 +3,7 @@ import {isObject} from './util/isObject';
 import {isFunction} from './util/isFunction';
 import {tryCatch} from './util/tryCatch';
 import {errorObject} from './util/errorObject';
+import {UnsubscriptionError} from './util/UnsubscriptionError';
 
 export interface AnonymousSubscription {
   unsubscribe(): void;
@@ -176,16 +177,5 @@ export class Subscription implements ISubscription {
         subscriptions.splice(subscriptionIndex, 1);
       }
     }
-  }
-}
-
-/**
- * An error thrown when one or more errors have occurred during the
- * `unsubscribe` of a {@link Subscription}.
- */
-export class UnsubscriptionError extends Error {
-  constructor(public errors: any[]) {
-    super('unsubscriptoin error(s)');
-    this.name = 'UnsubscriptionError';
   }
 }
