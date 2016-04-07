@@ -36,6 +36,7 @@ import {async} from '../scheduler/async';
  * @see {@link auditTime}
  * @see {@link debounce}
  * @see {@link delay}
+ * @see {@link sampleTime}
  * @see {@link throttleTime}
  *
  * @param {number} dueTime The timeout duration in milliseconds (or the time
