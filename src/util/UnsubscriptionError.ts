@@ -4,7 +4,9 @@
  */
 export class UnsubscriptionError extends Error {
   constructor(public errors: any[]) {
-    super('unsubscriptoin error(s)');
+    super();
     this.name = 'UnsubscriptionError';
+    this.message = errors ? `${errors.length} errors occurred during unsubscription:
+${errors.map((err, i) => `${i + 1}) ${err.toString()}`).join('\n')}` : '';
   }
 }
