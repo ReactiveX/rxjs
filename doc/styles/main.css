@@ -29,49 +29,84 @@ hr {
   border-bottom: 1px solid #ddd;
 }
 
+h1,h2,h3,h4 {
+  padding-top: 10px !important;
+}
+
 /* Top nav bar border bottom */
 .layout-container > header {
+  position: fixed;
   background-color: #333;
-  border-bottom: none;
+  box-sizing: border-box;
+  border-bottom: 0;
+}
+
+.layout-container > header:before {
+  content: 'RxJS';
+  background-image: url('/manual/asset/Rx_Logo_S.png');
+  width: 150px;
+  height: 40px;
+  color: #EC0C8E;
+  font-size: 20px;
+  background-size: auto 25px;
+  background-repeat: no-repeat;
+  padding-left: 30px;
+  padding-right: 5px;
 }
 
 .layout-container > header a {
   color: #777;
 }
 .layout-container > header a:hover, .layout-container > header a:active {
-  color: #fff;
+  color: #FFF;
 }
 
 .layout-container > header > a.repo-url-github {
-  -webkit-filter: brightness(20);
-  filter: brightness(20);
+  -webkit-filter: brightness(10);
+  filter: brightness(10);
+}
+
+.search-input {
+  color: #FFF;
+  font-size: 14px;
+  border-color: #EC0C8E;
+}
+
+.search-input-edge {
+  background-color: #EC0C8E;
+  display: none;
+}
+
+.search-result li.selected {
+  color: #FFF;
 }
 
 .search-box img {
   -webkit-filter: brightness(1.7);
   filter: brightness(1.7);
-}
-
-.search-input {
-  border-color: #EC0C8E;
-  color: #fff;
-}
-.search-input-edge {
-  background-color: #EC0C8E;
+  margin-right: 5px;
 }
 
 /* Navigation side menu */
 .navigation {
-  background-color: #333;
   box-shadow: none;
   border-right: none;
+  padding: 10px 0;
+  margin-top: 40px;
+  height: calc(100% - 40px);
+  background-color: #333;
 }
 
 .navigation a {
-  color: #bbb;
+  color: #BBB;
 }
+
 .navigation a:hover {
-  color: #fff;
+  color: #FFF;
+}
+
+.navigation .nav-dir-path {
+  color: #333;
 }
 
 .navigation .manual-toc-title {
@@ -127,6 +162,13 @@ a:hover {
   margin-right: 0.3em;
 }
 
+.content {
+  padding: 20px 60px 20px 30px;
+  overflow-y: scroll;
+  height: calc(100vh - 40px);
+  box-sizing: border-box;
+}
+
 .content .detail {
   font-size: 16px;
 }
@@ -142,6 +184,8 @@ a:hover {
 .github-markdown pre > code {
   line-height: 1.5em;
   margin: 22px 0;
+  padding: 10px;
+  border-radius: 3px;
 }
 
 .github-markdown ol {
@@ -267,4 +311,34 @@ table.params tbody tr:last-child td {
 
 .decision-tree-widget ul h4.decision {
   margin: 10px 0;
+}
+
+.footer {
+  position: fixed;
+  top: calc(100% - 28px);
+  margin: 0;
+  width: auto;
+  padding: 5px;
+  background: #FAFAFA;
+  border: 1px solid #EAEAEA;
+  right: 15px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+/* CODE */
+code .kwd {
+  color: #a71d5d;
+}
+
+code .str {
+  color: #df5000;
+}
+
+code .typ {
+  color: #795da3;
+}
+
+code .lit {
+  color: #0086b3;
 }
