@@ -135,11 +135,21 @@ function dispatch<T>(state: { source: BoundNodeCallbackObservable<T>, subscriber
   self.add(subject.subscribe(subscriber));
 }
 
-function dispatchNext({ value, subject }) {
+interface DispatchNextArg<T> {
+  subject: AsyncSubject<T>;
+  value: T;
+}
+function dispatchNext<T>(arg: DispatchNextArg<T>) {
+  const { value, subject } = arg;
   subject.next(value);
   subject.complete();
 }
 
-function dispatchError({ err, subject }) {
+interface DispatchErrorArg<T> {
+  subject: AsyncSubject<T>;
+  err: any;
+}
+function dispatchError<T>(arg: DispatchErrorArg<T>) {
+  const { err, subject } = arg;
   subject.error(err);
 }

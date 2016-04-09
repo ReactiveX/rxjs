@@ -37,7 +37,8 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
-  static dispatch({ notification, destination }) {
+  static dispatch(arg: ObserveOnMessage) {
+    const { notification, destination } = arg;
     notification.observe(destination);
   }
 
@@ -66,7 +67,7 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 }
 
-class ObserveOnMessage {
+export class ObserveOnMessage {
   constructor(public notification: Notification<any>,
               public destination: PartialObserver<any>) {
   }

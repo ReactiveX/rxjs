@@ -152,16 +152,22 @@ function dispatchBufferTimeSpanOnly(state: any) {
   }
 }
 
+interface DispatchArg<T> {
+  subscriber: BufferTimeSubscriber<T>;
+  buffer: Array<T>;
+}
+
 function dispatchBufferCreation<T>(state: CreationState<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const buffer = subscriber.openBuffer();
   const action = <Action<CreationState<T>>>this;
   if (!subscriber.isUnsubscribed) {
-    action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
+    action.add(scheduler.schedule<DispatchArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
     action.schedule(state, bufferCreationInterval);
   }
 }
 
-function dispatchBufferClose({ subscriber, buffer }) {
+function dispatchBufferClose<T>(arg: DispatchArg<T>) {
+  const { subscriber, buffer } = arg;
   subscriber.closeBuffer(buffer);
 }
