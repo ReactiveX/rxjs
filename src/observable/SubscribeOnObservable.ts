@@ -5,6 +5,11 @@ import {Observable} from '../Observable';
 import {asap} from '../scheduler/asap';
 import {isNumeric} from '../util/isNumeric';
 
+export interface DispatchArg<T> {
+  source: Observable<T>;
+  subscriber: Subscriber<T>;
+}
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -15,7 +20,8 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
-  static dispatch<T>({ source, subscriber }): Subscription {
+  static dispatch<T>(arg: DispatchArg<T>): Subscription {
+    const { source, subscriber } = arg;
     return source.subscribe(subscriber);
   }
 

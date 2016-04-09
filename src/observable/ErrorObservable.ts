@@ -2,6 +2,11 @@ import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
+export interface DispatchArg {
+  error: any;
+  subscriber: any;
+}
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -53,7 +58,8 @@ export class ErrorObservable extends Observable<any> {
     return new ErrorObservable(error, scheduler);
   }
 
-  static dispatch({ error, subscriber }) {
+  static dispatch(arg: DispatchArg) {
+    const { error, subscriber } = arg;
     subscriber.error(error);
   }
 

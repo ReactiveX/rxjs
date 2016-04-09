@@ -43,6 +43,13 @@ export class ExpandOperator<T, R> implements Operator<T, R> {
   }
 }
 
+interface DispatchArg<T, R> {
+  subscriber: ExpandSubscriber<T, R>;
+  result: Observable<R>;
+  value: any;
+  index: number;
+}
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -64,7 +71,8 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  private static dispatch({subscriber, result, value, index}): void {
+  private static dispatch<T, R>(arg: DispatchArg<T, R>): void {
+    const {subscriber, result, value, index} = arg;
     subscriber.subscribeToProjection(result, value, index);
   }
 
@@ -85,7 +93,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
       } else if (!this.scheduler) {
         this.subscribeToProjection(result, value, index);
       } else {
-        const state = { subscriber: this, result, value, index };
+        const state: DispatchArg<T, R> = { subscriber: this, result, value, index };
         this.add(this.scheduler.schedule(ExpandSubscriber.dispatch, 0, state));
       }
     } else {

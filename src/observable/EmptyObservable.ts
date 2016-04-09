@@ -3,6 +3,10 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
+export interface DispatchArg<T> {
+  subscriber: Subscriber<T>;
+}
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -51,7 +55,8 @@ export class EmptyObservable<T> extends Observable<T> {
     return new EmptyObservable<T>(scheduler);
   }
 
-  static dispatch({ subscriber }) {
+  static dispatch<T>(arg: DispatchArg<T>) {
+    const { subscriber } = arg;
     subscriber.complete();
   }
 

@@ -2,6 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subject} from '../Subject';
+import {Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
 import {async} from '../scheduler/async';
@@ -79,12 +80,12 @@ class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
   }
 }
 
-type CreationState<T> = {
+interface CreationState<T> {
   windowTimeSpan: number;
   windowCreationInterval: number;
   subscriber: WindowTimeSubscriber<T>;
   scheduler: Scheduler;
-};
+}
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -173,18 +174,30 @@ function dispatchWindowTimeSpanOnly<T>(state: TimeSpanOnlyState<T>) {
   (<any>this).schedule(state, windowTimeSpan);
 }
 
+interface Context<T> {
+  action: Action<CreationState<T>>;
+  subscription: Subscription;
+}
+
+interface DispatchArg<T> {
+  subscriber: WindowTimeSubscriber<T>;
+  window: Subject<T>;
+  context: Context<T>;
+}
+
 function dispatchWindowCreation<T>(state: CreationState<T>) {
   let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
   let window = subscriber.openWindow();
   let action = <Action<CreationState<T>>>this;
-  let context = { action, subscription: <any>null };
-  const timeSpanState = { subscriber, window, context };
+  let context: Context<T> = { action, subscription: <any>null };
+  const timeSpanState: DispatchArg<T> = { subscriber, window, context };
   context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);
   action.add(context.subscription);
   action.schedule(state, windowCreationInterval);
 }
 
-function dispatchWindowClose({ subscriber, window, context }) {
+function dispatchWindowClose<T>(arg: DispatchArg<T>) {
+  const { subscriber, window, context } = arg;
   if (context && context.action && context.subscription) {
     context.action.remove(context.subscription);
   }

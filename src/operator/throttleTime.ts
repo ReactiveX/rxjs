@@ -60,6 +60,11 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNext<T>({ subscriber }) {
+interface DispatchArg<T> {
+  subscriber: ThrottleTimeSubscriber<T>;
+}
+
+function dispatchNext<T>(arg: DispatchArg<T>) {
+  const { subscriber } = arg;
   subscriber.clearThrottle();
 }

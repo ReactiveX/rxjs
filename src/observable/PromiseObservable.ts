@@ -88,14 +88,24 @@ export class PromiseObservable<T> extends Observable<T> {
   }
 }
 
-function dispatchNext({ value, subscriber }) {
+interface DispatchNextArg<T> {
+  subscriber: Subscriber<T>;
+  value: T;
+}
+function dispatchNext<T>(arg: DispatchNextArg<T>) {
+  const { value, subscriber } = arg;
   if (!subscriber.isUnsubscribed) {
     subscriber.next(value);
     subscriber.complete();
   }
 }
 
-function dispatchError({ err, subscriber }) {
+interface DispatchErrorArg<T> {
+  subscriber: Subscriber<T>;
+  err: any;
+}
+function dispatchError<T>(arg: DispatchErrorArg<T>) {
+  const { err, subscriber } = arg;
   if (!subscriber.isUnsubscribed) {
     subscriber.error(err);
   }
