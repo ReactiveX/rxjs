@@ -8,7 +8,7 @@ Operators are **methods** on the Observable type, such as `.map(...)`, `.filter(
 
 <span class="informal">An Operator is a function take creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span>
 
-An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. A subscribe on the output Observable will causa also a subscribe on the input Observable. In the following example, we create a custom operator/function that simply multiplies by 10 each value delivered by the input Observable:
+An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. A subscribe on the output Observable will cause also a subscribe on the input Observable. In the following example, we create a custom operator/function that simply multiplies by 10 each value delivered by the input Observable:
 
 ```js
 function multiplyByTen(input) {
