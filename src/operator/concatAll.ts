@@ -1,3 +1,4 @@
+import {Subscribable} from '../Observable';
 import {MergeAllOperator} from './mergeAll';
 
 /**
@@ -48,4 +49,5 @@ export function concatAll<T>(): T {
 
 export interface ConcatAllSignature<T> {
   (): T;
+  <R>(): Subscribable<R>;
 }

@@ -1,4 +1,4 @@
-import {PartialObserver, Observer} from './Observer';
+import {PartialObserver} from './Observer';
 import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
 import {Subscription, AnonymousSubscription, TeardownLogic} from './Subscription';
@@ -10,7 +10,9 @@ import {IfObservable} from './observable/IfObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
 
 export interface Subscribable<T> {
-  subscribe(observer: Observer<T>): AnonymousSubscription;
+  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
+            error?: (error: any) => void,
+            complete?: () => void): AnonymousSubscription;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
