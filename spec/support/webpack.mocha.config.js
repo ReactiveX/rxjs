@@ -3,7 +3,7 @@ var path = require('path');
 var glob = require('glob');
 var webpack = require('webpack');
 
-var files = _.map(glob.sync('spec-js/**/!(mocha-setup-node|painter|diagram-test-runner|testScheduler-ui|pack).js'), function (x) {
+var files = _.map(glob.sync('spec-js/**/!(mocha-setup-node|mocha.sauce.gruntfile|mocha.sauce.runner|webpack.mocha.config|painter|diagram-test-runner|testScheduler-ui).js'), function (x) {
   return path.resolve('./', x);
 });
 
