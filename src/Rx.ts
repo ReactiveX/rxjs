@@ -133,9 +133,11 @@ export {UnsubscriptionError} from './util/UnsubscriptionError';
 import {asap} from './scheduler/asap';
 import {async} from './scheduler/async';
 import {queue} from './scheduler/queue';
+import {none} from './scheduler/none';
 import {AsapScheduler} from './scheduler/AsapScheduler';
 import {AsyncScheduler} from './scheduler/AsyncScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
+import {RecursiveScheduler} from './scheduler/RecursiveScheduler';
 import {$$rxSubscriber as rxSubscriber} from './symbol/rxSubscriber';
 import {$$observable as observable} from './symbol/observable';
 import {$$iterator as iterator} from './symbol/iterator';
@@ -151,11 +153,16 @@ import {$$iterator as iterator} from './symbol/iterator';
  * asynchronous conversions.
  * @property {Scheduler} async Schedules work with `setInterval`. Use this for
  * time-based operations.
+ * @property {Scheduler} none this is a recursive scheduler and will call items
+ * scheduled with a delay of 0 _immediately_. A reference check is done in most operations
+ * that accept a scheduler. If the provided scheduler matches this `none` reference,
+ * then no scheduler is used at all. This is done for performance reasons.
  */
 let Scheduler = {
   asap,
   async,
-  queue
+  queue,
+  none
 };
 
 /**
