@@ -1,5 +1,8 @@
 import {PartialObserver} from './Observer';
 import {Observable} from './Observable';
+import {ScalarObservable} from './observable/ScalarObservable';
+import {ErrorObservable} from './observable/ErrorObservable';
+import {EmptyObservable} from './observable/EmptyObservable';
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
@@ -84,11 +87,11 @@ export class Notification<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
-        return Observable.of(this.value);
+        return new ScalarObservable(this.value);
       case 'E':
-        return Observable.throw(this.exception);
+        return new ErrorObservable(this.exception);
       case 'C':
-        return Observable.empty<T>();
+        return new EmptyObservable<T>();
     }
   }
 
