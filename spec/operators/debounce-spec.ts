@@ -94,9 +94,9 @@ describe('Observable.prototype.debounce', () => {
     const unsub =    '       !       ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .debounce(getTimerSelector(20))
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -349,7 +349,7 @@ describe('Observable.prototype.debounce', () => {
   });
 
   it('should delay by promise resolves', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
+    const e1 = Observable.concat(Observable.of(1, Rx.Scheduler.none),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)
@@ -370,7 +370,7 @@ describe('Observable.prototype.debounce', () => {
   });
 
   it('should raises error when promise rejects', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
+    const e1 = Observable.concat(Observable.of(1, Rx.Scheduler.none),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)

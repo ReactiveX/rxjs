@@ -78,9 +78,9 @@ describe('Observable.prototype.throttle', () =>  {
     const unsub =    '              !               ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .throttle(() =>  e2)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -281,7 +281,7 @@ describe('Observable.prototype.throttle', () =>  {
   });
 
   it('should throttle by promise resolves', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
+    const e1 = Observable.concat(Observable.of(1, Rx.Scheduler.none),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(50).mapTo(4)
@@ -304,7 +304,7 @@ describe('Observable.prototype.throttle', () =>  {
   });
 
   it('should raise error when promise rejects', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
+    const e1 = Observable.concat(Observable.of(1, Rx.Scheduler.none),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(50).mapTo(4)

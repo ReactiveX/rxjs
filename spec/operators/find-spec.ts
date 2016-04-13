@@ -24,7 +24,7 @@ describe('Observable.prototype.find', () => {
 
   it('should throw if not provided a function', () => {
     expect(() => {
-      (<any>Observable.of('yut', 'yee', 'sam')).find('yee');
+      (<any>Observable.of('yut', 'yee', 'sam', Rx.Scheduler.none)).find('yee');
     }).to.throw(TypeError, 'predicate is not a function');
   });
 
@@ -122,9 +122,9 @@ describe('Observable.prototype.find', () => {
     const unsub =      '      !     ';
 
     const result = (<any>source)
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .find((value: string) => value === 'z')
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

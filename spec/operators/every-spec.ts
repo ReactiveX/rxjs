@@ -26,7 +26,7 @@ describe('Observable.prototype.every', () => {
   it('should accept thisArg with scalar observables', () => {
     const thisArg = {};
 
-    Observable.of(1).every(function (value: number, index: number) {
+    Observable.of(1, Rx.Scheduler.none).every(function (value: number, index: number) {
       expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
@@ -36,7 +36,7 @@ describe('Observable.prototype.every', () => {
   it('should accept thisArg with array observables', () => {
     const thisArg = {};
 
-    Observable.of(1, 2, 3, 4).every(function (value: number, index: number) {
+    Observable.of(1, 2, 3, 4, Rx.Scheduler.none).every(function (value: number, index: number) {
       expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
@@ -109,9 +109,9 @@ describe('Observable.prototype.every', () => {
     const unsub =      '       !          ';
 
     const result = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .every(predicate)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -144,21 +144,21 @@ describe('Observable.prototype.every', () => {
   });
 
   it('should emit true if Scalar source matches with predicate', () => {
-    const source = Observable.of(5);
+    const source = Observable.of(5, Rx.Scheduler.none);
     const expected = '(T|)';
 
     expectObservable(source.every(predicate)).toBe(expected, {T: true});
   });
 
   it('should emit false if Scalar source does not match with predicate', () => {
-    const source = Observable.of(3);
+    const source = Observable.of(3, Rx.Scheduler.none);
     const expected = '(F|)';
 
     expectObservable(source.every(predicate)).toBe(expected, {F: false});
   });
 
   it('should propagate error if predicate throws on Scalar source', () => {
-    const source = Observable.of(3);
+    const source = Observable.of(3, Rx.Scheduler.none);
     const expected = '#';
 
     function faultyPredicate(x) {
@@ -169,21 +169,21 @@ describe('Observable.prototype.every', () => {
   });
 
   it('should emit true if Array source matches with predicate', () => {
-    const source = Observable.of(5, 10, 15, 20);
+    const source = Observable.of(5, 10, 15, 20, Rx.Scheduler.none);
     const expected = '(T|)';
 
     expectObservable(source.every(predicate)).toBe(expected, {T: true});
   });
 
   it('should emit false if Array source does not match with predicate', () => {
-    const source = Observable.of(5, 9, 15, 20);
+    const source = Observable.of(5, 9, 15, 20, Rx.Scheduler.none);
     const expected = '(F|)';
 
     expectObservable(source.every(predicate)).toBe(expected, {F: false});
   });
 
   it('should propagate error if predicate eventually throws on Array source', () => {
-    const source = Observable.of(5, 10, 15, 20);
+    const source = Observable.of(5, 10, 15, 20, Rx.Scheduler.none);
     const expected = '#';
 
     function faultyPredicate(x) {

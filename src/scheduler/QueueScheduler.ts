@@ -2,7 +2,6 @@ import {Scheduler} from '../Scheduler';
 import {QueueAction} from './QueueAction';
 import {Subscription} from '../Subscription';
 import {FutureAction} from './FutureAction';
-import {Action} from './Action';
 
 export class QueueScheduler implements Scheduler {
   public active: boolean = false;
@@ -36,11 +35,11 @@ export class QueueScheduler implements Scheduler {
       this.scheduleLater(work, delay, state);
   }
 
-  scheduleNow<T>(work: (x?: T) => Subscription | void, state?: T): Action<T> {
+  scheduleNow<T>(work: (x?: T) => Subscription | void, state?: T): Subscription {
     return new QueueAction(this, work).schedule(state);
   }
 
-  scheduleLater<T>(work: (x?: T) => Subscription | void, delay: number, state?: T): Action<T> {
+  scheduleLater<T>(work: (x?: T) => Subscription | void, delay: number, state?: T): Subscription {
     return new FutureAction(this, work).schedule(state, delay);
   }
 }

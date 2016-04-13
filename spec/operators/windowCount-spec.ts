@@ -165,9 +165,9 @@ describe('Observable.prototype.windowCount', () => {
     const values = { w: w, x: x, y: y, z: z };
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .windowCount(2, 1)
-      .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
+      .mergeMap((x: Rx.Observable<string>) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);

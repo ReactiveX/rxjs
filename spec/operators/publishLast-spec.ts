@@ -19,7 +19,7 @@ describe('Observable.prototype.publishLast', () => {
   });
 
   it('should return a ConnectableObservable', () => {
-    const source = Observable.of(1).publishLast();
+    const source = Observable.of(1, Rx.Scheduler.none).publishLast();
 
     expect(source instanceof Rx.ConnectableObservable).to.be.true;
   });
@@ -103,7 +103,7 @@ describe('Observable.prototype.publishLast', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .publishLast();
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '----------   ';

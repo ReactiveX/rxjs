@@ -386,7 +386,7 @@ describe('Subject', () => {
 
   it('should have a static create function that works', () => {
     expect(Subject.create).to.be.a('function');
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = Observable.of(1, 2, 3, 4, 5, Rx.Scheduler.none);
     const nexts = [];
     const output = [];
 
@@ -432,7 +432,7 @@ describe('Subject', () => {
 
   it('should have a static create function that works also to raise errors', () => {
     expect(Subject.create).to.be.a('function');
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = Observable.of(1, 2, 3, 4, 5, Rx.Scheduler.none);
     const nexts = [];
     const output = [];
 
@@ -477,7 +477,7 @@ describe('Subject', () => {
   });
 
   it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = Observable.of(1, 2, 3, 4, 5, Rx.Scheduler.none);
     const subject = new Subject();
     const expected = [1, 2, 3, 4, 5];
 
@@ -494,7 +494,7 @@ describe('Subject', () => {
   });
 
   it('should be usable as an Observer of a finite delayed Observable', (done: MochaDone) => {
-    const source = Rx.Observable.of(1, 2, 3).delay(50);
+    const source = Rx.Observable.of(1, 2, 3, Rx.Scheduler.none).delay(50);
     const subject = new Rx.Subject();
 
     const expected = [1, 2, 3];
@@ -626,7 +626,7 @@ describe('Subject', () => {
 
       const subject = new Rx.Subject(null, new Rx.Observable((observer: Rx.Observer<any>) => {
         subscribed = true;
-        const subscription = Rx.Observable.of('x').subscribe(observer);
+        const subscription = Rx.Observable.of('x', Rx.Scheduler.none).subscribe(observer);
         return () => {
           subscription.unsubscribe();
         };

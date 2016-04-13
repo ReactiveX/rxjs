@@ -85,7 +85,7 @@ describe('Observable.prototype.pluck', () => {
 
   it('should throw an error if not property is passed', () => {
     expect(() => {
-      Observable.of({prop: 1}, {prop: 2}).pluck();
+      Observable.of({prop: 1}, {prop: 2}, Rx.Scheduler.none).pluck();
     }).to.throw(Error, 'List of properties cannot be empty.');
   });
 
@@ -160,9 +160,9 @@ describe('Observable.prototype.pluck', () => {
     const expected = '--1--2-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .pluck('prop')
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

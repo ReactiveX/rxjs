@@ -729,7 +729,7 @@ describe('Observable.prototype.mergeMap', () => {
   });
 
   it('should map and flatten', () => {
-    const source = Observable.of(1, 2, 3, 4).mergeMap((x: number) => Observable.of(x + '!'));
+    const source = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).mergeMap((x: number) => Observable.of(x + '!', Rx.Scheduler.none));
 
     const expected = ['1!', '2!', '3!', '4!'];
     let completed = false;
@@ -745,7 +745,7 @@ describe('Observable.prototype.mergeMap', () => {
   });
 
   it('should map and flatten an Array', () => {
-    const source = Observable.of(1, 2, 3, 4).mergeMap((x: number): any => [x + '!']);
+    const source = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).mergeMap((x: number): any => [x + '!']);
 
     const expected = ['1!', '2!', '3!', '4!'];
     let completed = false;

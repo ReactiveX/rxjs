@@ -70,9 +70,9 @@ describe('Observable.prototype.timeout', () => {
     const unsub =    '          !        ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .timeout(50, null, rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

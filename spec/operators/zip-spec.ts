@@ -111,7 +111,7 @@ describe('Observable.prototype.zip', () => {
       };
       myIterator[Symbol.iterator] = function () { return this; };
 
-      Observable.of(1, 2, 3).zip(myIterator)
+      Observable.of(1, 2, 3, Rx.Scheduler.none).zip(myIterator)
         .subscribe();
 
       // since zip will call `next()` in advance, total calls when
@@ -582,9 +582,9 @@ describe('Observable.prototype.zip', () => {
     const expected = '---x---y--';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .zip(b)
-      .mergeMap((x: Array<any>) => Observable.of(x));
+      .mergeMap((x: Array<any>) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(r, unsub).toBe(expected, { x: ['1', '4'], y: ['2', '5']});
     expectSubscriptions(a.subscriptions).toBe(asubs);

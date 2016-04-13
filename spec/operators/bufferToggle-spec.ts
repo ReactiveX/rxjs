@@ -163,9 +163,9 @@ describe('Observable.prototype.bufferToggle', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .bufferToggle(e2, () => closings[i++])
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -365,7 +365,7 @@ describe('Observable.prototype.bufferToggle', () => {
   });
 
   it('should accept openings rejected promise', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
+    const e1 = Observable.concat(Observable.of(1, Rx.Scheduler.none),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)
@@ -386,14 +386,14 @@ describe('Observable.prototype.bufferToggle', () => {
   });
 
   it('should accept closing selector that returns a resolved promise', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
+    const e1 = Observable.concat(Observable.of(1, Rx.Scheduler.none),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)
       );
     const expected = [[1]];
 
-    e1.bufferToggle(Observable.of(10), () => new Promise((resolve: any) => { resolve(42); }))
+    e1.bufferToggle(Observable.of(10, Rx.Scheduler.none), () => new Promise((resolve: any) => { resolve(42); }))
       .subscribe((x) => {
         expect(x).to.deep.equal(expected.shift());
       }, () => {
@@ -405,7 +405,7 @@ describe('Observable.prototype.bufferToggle', () => {
   });
 
   it('should accept closing selector that returns a rejected promise', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
+    const e1 = Observable.concat(Observable.of(1, Rx.Scheduler.none),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
       Observable.timer(100).mapTo(4)
@@ -413,7 +413,7 @@ describe('Observable.prototype.bufferToggle', () => {
 
     const expected = 42;
 
-    e1.bufferToggle(Observable.of(10), () => new Promise((resolve: any, reject: any) => { reject(expected); }))
+    e1.bufferToggle(Observable.of(10, Rx.Scheduler.none), () => new Promise((resolve: any, reject: any) => { reject(expected); }))
       .subscribe((x) => {
         done(new Error('should not be called'));
       }, (x) => {

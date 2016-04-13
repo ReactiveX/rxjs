@@ -83,9 +83,9 @@ describe('Observable.prototype.materialize', () => {
     };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .materialize()
-      .mergeMap((x: Rx.Notification<any>) => Observable.of(x));
+      .mergeMap((x: Rx.Notification<any>) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

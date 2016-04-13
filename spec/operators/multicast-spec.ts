@@ -22,7 +22,7 @@ describe('Observable.prototype.multicast', () => {
   it('should accept Subjects', (done: MochaDone) => {
     const expected = [1, 2, 3, 4];
 
-    const connectable = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
+    const connectable = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).multicast(new Subject<number>());
 
     connectable.subscribe((x: number) => { expect(x).to.equal(expected.shift()); },
         (x) => {
@@ -37,7 +37,7 @@ describe('Observable.prototype.multicast', () => {
   it('should accept Subject factory functions', (done: MochaDone) => {
     const expected = [1, 2, 3, 4];
 
-    const connectable = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
+    const connectable = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).multicast(() => new Subject<number>());
 
     connectable.subscribe((x: number) => { expect(x).to.equal(expected.shift()); },
         (x) => {
@@ -128,7 +128,7 @@ describe('Observable.prototype.multicast', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const multicasted = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .multicast(() => new Subject<string>());
     const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
     const expected1   =     '-1-2-3----   ';
@@ -490,7 +490,7 @@ describe('Observable.prototype.multicast', () => {
       const expected = [1, 2, 3, 4];
       let i = 0;
 
-      const source = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
+      const source = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).multicast(() => new Subject<number>());
 
       source.subscribe((x: number) => {
         expect(x).to.equal(expected[i++]);
@@ -510,13 +510,13 @@ describe('Observable.prototype.multicast', () => {
 
     it('should not throw ObjectUnsubscribedError when used in ' +
     'a switchMap', (done: MochaDone) => {
-      const source = Observable.of(1, 2, 3)
+      const source = Observable.of(1, 2, 3, Rx.Scheduler.none)
         .multicast(() => new Subject<number>())
         .refCount();
 
       const expected = ['a1', 'a2', 'a3', 'b1', 'b2', 'b3', 'c1', 'c2', 'c3'];
 
-      Observable.of('a', 'b', 'c')
+      Observable.of('a', 'b', 'c', Rx.Scheduler.none)
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).to.equal(expected.shift());
@@ -534,7 +534,7 @@ describe('Observable.prototype.multicast', () => {
       const expected = [1, 2, 3, 4];
       let i = 0;
 
-      const source = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
+      const source = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).multicast(new Subject<number>());
 
       source.subscribe((x: number) => {
         expect(x).to.equal(expected[i++]);
@@ -555,13 +555,13 @@ describe('Observable.prototype.multicast', () => {
 
     it('should not throw ObjectUnsubscribedError when used in ' +
     'a switchMap', (done: MochaDone) => {
-      const source = Observable.of(1, 2, 3)
+      const source = Observable.of(1, 2, 3, Rx.Scheduler.none)
         .multicast(new Subject<number>())
         .refCount();
 
       const expected = ['a1', 'a2', 'a3'];
 
-      Observable.of('a', 'b', 'c')
+      Observable.of('a', 'b', 'c', Rx.Scheduler.none)
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).to.equal(expected.shift());

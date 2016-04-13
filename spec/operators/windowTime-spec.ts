@@ -209,9 +209,9 @@ describe('Observable.prototype.windowTime', () => {
     const values = { x: x, y: y };
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .windowTime(timeSpan, interval, rxTestScheduler)
-      .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
+      .mergeMap((x: Rx.Observable<string>) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(sourcesubs);

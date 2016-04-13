@@ -466,9 +466,9 @@ describe('Observable.prototype.concatMap', () => {
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .concatMap((value: any) => observableLookup[value])
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

@@ -188,7 +188,7 @@ describe('TestScheduler', () => {
       });
 
       it('should return an object with a toBe function', () => {
-        expect(expectObservable(Rx.Observable.of(1)).toBe).to.be.a('function');
+        expect(expectObservable(Rx.Observable.of(1, Rx.Scheduler.none)).toBe).to.be.a('function');
       });
 
       it('should append to flushTests array', () => {

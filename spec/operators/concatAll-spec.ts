@@ -61,9 +61,9 @@ describe('Observable.prototype.concatAll', () => {
 
   it('should concat all observables in an observable', () => {
     const e1 = Rx.Observable.from([
-      Rx.Observable.of('a'),
-      Rx.Observable.of('b'),
-      Rx.Observable.of('c')
+      Rx.Observable.of('a', Rx.Scheduler.none),
+      Rx.Observable.of('b', Rx.Scheduler.none),
+      Rx.Observable.of('c', Rx.Scheduler.none)
     ]).take(10);
     const expected = '(abc|)';
 
@@ -72,9 +72,9 @@ describe('Observable.prototype.concatAll', () => {
 
   it('should throw if any child observable throws', () => {
     const e1 = Rx.Observable.from([
-      Rx.Observable.of('a'),
+      Rx.Observable.of('a', Rx.Scheduler.none),
       Rx.Observable.throw('error'),
-      Rx.Observable.of('c')
+      Rx.Observable.of('c', Rx.Scheduler.none)
     ]).take(10);
     const expected = '(a#)';
 
@@ -124,7 +124,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '  ^   !';
     const expected =  '------|';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -138,7 +138,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs = [];
     const expected =  '-';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -152,7 +152,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '  ^';
     const expected =  '---';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -166,7 +166,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs = [];
     const expected =  '-';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -180,7 +180,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '  ^   !';
     const expected =  '------#';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -194,7 +194,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs = [];
     const expected =  '---#';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -208,7 +208,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs = [];
     const expected =  '---#';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -222,7 +222,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '     ^       !';
     const expected =  '--a----------|';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -236,7 +236,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '  ^    !';
     const expected =  '----a--|';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -251,7 +251,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '     ^';
     const expected =  '--a---';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -265,7 +265,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs = [];
     const expected =  '-';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -279,7 +279,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '    ^       !';
     const expected =  '---a-----b--|';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -294,7 +294,7 @@ describe('Observable.prototype.concatAll', () => {
     const unsub =     '                 !    ';
     const expected =  '---a-a--a-----b-b     ';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -309,10 +309,10 @@ describe('Observable.prototype.concatAll', () => {
     const expected =  '---a-a--a-----b-b-    ';
     const unsub =     '                 !    ';
 
-    const result = Observable.of(e1, e2)
-      .mergeMap((x: any) => Observable.of(x))
+    const result = Observable.of(e1, e2, Rx.Scheduler.none)
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .concatAll()
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -326,7 +326,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs = [];
     const expected =  '--#';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -340,7 +340,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =    '     ^      !';
     const expected =  '--a---------#';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -355,7 +355,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =   '       ^      !';
     const expected = '--a--b--x--y--|';
 
-    const result = Observable.of(e1, e2).concatAll();
+    const result = Observable.of(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -370,7 +370,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =   '            ^      !';
     const expected = '--a--b--c----x-y-z-|';
 
-    const result = Observable.of<Rx.Observable<string>>(e1, e2).concatAll();
+    const result = Observable.of<Rx.Observable<string>>(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -384,7 +384,7 @@ describe('Observable.prototype.concatAll', () => {
     const e2subs =   '           ^     !';
     const expected = '--a--b--c--y--z--|';
 
-    const result = Observable.of<Rx.Observable<string>>(e1, e2).concatAll();
+    const result = Observable.of<Rx.Observable<string>>(e1, e2, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -413,7 +413,7 @@ describe('Observable.prototype.concatAll', () => {
     const e1subs =    '^    !';
     const expected =  '---a-|';
 
-    const result = Observable.of(e1).concatAll();
+    const result = Observable.of(e1, Rx.Scheduler.none).concatAll();
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

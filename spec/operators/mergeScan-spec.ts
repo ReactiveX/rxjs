@@ -20,7 +20,7 @@ describe('Observable.prototype.mergeScan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x)), []);
+    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x), Rx.Scheduler.none), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -37,7 +37,7 @@ describe('Observable.prototype.mergeScan', () => {
       w: ['b', 'c', 'd']
     };
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x)), []);
+    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x), Rx.Scheduler.none), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -58,7 +58,7 @@ describe('Observable.prototype.mergeScan', () => {
     };
 
     const source = (<any>e1).mergeScan((acc: any, x: string) =>
-      Observable.of(acc.concat(x)).delay(20, rxTestScheduler), []);
+      Observable.of(acc.concat(x), Rx.Scheduler.none).delay(20, rxTestScheduler), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -79,7 +79,7 @@ describe('Observable.prototype.mergeScan', () => {
     };
 
     const source = (<any>e1).mergeScan((acc: any, x: string) =>
-      Observable.of(acc.concat(x)).delay(50, rxTestScheduler), []);
+      Observable.of(acc.concat(x), Rx.Scheduler.none).delay(50, rxTestScheduler), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -100,7 +100,7 @@ describe('Observable.prototype.mergeScan', () => {
     };
 
     const source = (<any>e1).mergeScan((acc: any, x: string) =>
-      Observable.of(acc.concat(x)).delay(50, rxTestScheduler), []);
+      Observable.of(acc.concat(x), Rx.Scheduler.none).delay(50, rxTestScheduler), []);
 
     expectObservable(source, e1subs).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -122,10 +122,10 @@ describe('Observable.prototype.mergeScan', () => {
     };
 
     const source = (<any>e1)
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .mergeScan((acc: any, x: string) =>
-        Observable.of(acc.concat(x)).delay(50, rxTestScheduler), [])
-      .mergeMap(function (x) { return Observable.of(x); });
+        Observable.of(acc.concat(x), Rx.Scheduler.none).delay(50, rxTestScheduler), [])
+      .mergeMap(function (x) { return Observable.of(x, Rx.Scheduler.none); });
 
     expectObservable(source, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -145,7 +145,7 @@ describe('Observable.prototype.mergeScan', () => {
       if (x === 'd') {
         throw 'bad!';
       }
-      return Observable.of(acc.concat(x));
+      return Observable.of(acc.concat(x), Rx.Scheduler.none);
     }, []);
 
     expectObservable(source).toBe(expected, values, 'bad!');
@@ -198,7 +198,7 @@ describe('Observable.prototype.mergeScan', () => {
       u: []
     };
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x)), []);
+    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x), Rx.Scheduler.none), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -209,7 +209,7 @@ describe('Observable.prototype.mergeScan', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x)), []);
+    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x), Rx.Scheduler.none), []);
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -220,7 +220,7 @@ describe('Observable.prototype.mergeScan', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x)), []);
+    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x), Rx.Scheduler.none), []);
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -239,7 +239,7 @@ describe('Observable.prototype.mergeScan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x)), []);
+    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.of(acc.concat(x), Rx.Scheduler.none), []);
 
     expectObservable(source, sub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(sub);

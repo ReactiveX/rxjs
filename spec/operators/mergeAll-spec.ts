@@ -17,9 +17,9 @@ describe('Observable.prototype.mergeAll', () => {
 
   it('should merge all observables in an observable', () => {
     const e1 = Observable.from([
-      Observable.of('a'),
-      Observable.of('b'),
-      Observable.of('c')
+      Observable.of('a', Rx.Scheduler.none),
+      Observable.of('b', Rx.Scheduler.none),
+      Observable.of('c', Rx.Scheduler.none)
     ]);
     const expected = '(abc|)';
 
@@ -28,9 +28,9 @@ describe('Observable.prototype.mergeAll', () => {
 
   it('should throw if any child observable throws', () => {
     const e1 = Observable.from([
-      Observable.of('a'),
+      Observable.of('a', Rx.Scheduler.none),
       Observable.throw('error'),
-      Observable.of('c')
+      Observable.of('c', Rx.Scheduler.none)
     ]);
     const expected = '(a#)';
 
@@ -145,9 +145,9 @@ describe('Observable.prototype.mergeAll', () => {
     const unsub =     '            !     ';
 
     const result = (<any>e1)
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .mergeAll()
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);

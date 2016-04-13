@@ -57,7 +57,7 @@ describe('Observable.prototype.mapTo', () => {
 
   it('should propagate errors from subscribe', () => {
     const r = () => {
-      Observable.of(1)
+      Observable.of(1, Rx.Scheduler.none)
         .mapTo(-1)
         .subscribe(throwError);
     };
@@ -92,9 +92,9 @@ describe('Observable.prototype.mapTo', () => {
     const expected = '--x--x-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .mapTo('x')
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

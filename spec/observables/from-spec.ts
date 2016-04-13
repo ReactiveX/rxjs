@@ -12,7 +12,7 @@ describe('Observable.from', () => {
   ('should create an observable from an array', () => {
     const e1 = Observable.from([10, 20, 30])
       // for the purpose of making a nice diagram, spread out the synchronous emissions
-      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+      .concatMap((x, i) => Observable.of(x, Rx.Scheduler.none).delay(i === 0 ? 0 : 20, rxTestScheduler));
     const expected = 'x-y-(z|)';
     expectObservable(e1).toBe(expected, {x: 10, y: 20, z: 30});
   });
@@ -213,7 +213,7 @@ describe('Observable.from', () => {
   it('should handle object has observable symbol', (done: MochaDone) => {
     const value = 'x';
 
-    Observable.from(Observable.of(value)).subscribe((x: string) =>  {
+    Observable.from(Observable.of(value, Rx.Scheduler.none)).subscribe((x: string) =>  {
       expect(x).to.equal(value);
     }, (err: any) => {
       done(new Error('should not be called'));

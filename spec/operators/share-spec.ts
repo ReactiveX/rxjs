@@ -190,9 +190,9 @@ describe('Observable.prototype.share', () => {
     const source =     cold(   '-1-2-3----4-|');
     const sourceSubs =      '   ^        !   ';
     const shared = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .share()
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
     const subscriber1 = hot('   a|           ').mergeMapTo(shared);
     const unsub1 =          '          !     ';
     const expected1   =     '   -1-2-3--     ';

@@ -115,9 +115,9 @@ describe('Observable.prototype.findIndex', () => {
     const unsub =      '      !     ';
 
     const result = (<any>source)
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .findIndex((value: string) => value === 'z')
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

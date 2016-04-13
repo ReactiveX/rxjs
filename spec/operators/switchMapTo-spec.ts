@@ -21,9 +21,9 @@ describe('Observable.prototype.switchMapTo', () => {
   });
 
   it('should switch a synchronous many outer to a synchronous many inner', (done: MochaDone) => {
-    const a = Observable.of(1, 2, 3);
+    const a = Observable.of(1, 2, 3, Rx.Scheduler.none);
     const expected = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
-    a.switchMapTo(Observable.of('a', 'b', 'c')).subscribe((x: string) => {
+    a.switchMapTo(Observable.of('a', 'b', 'c', Rx.Scheduler.none)).subscribe((x: string) => {
       expect(x).to.equal(expected.shift());
     }, null, done);
   });
@@ -31,7 +31,7 @@ describe('Observable.prototype.switchMapTo', () => {
   it('should unsub inner observables', () => {
     let unsubbed = 0;
 
-    Observable.of('a', 'b').switchMapTo(
+    Observable.of('a', 'b', Rx.Scheduler.none).switchMapTo(
       Observable.create((subscriber: Rx.Subscriber<string>) => {
         subscriber.complete();
         return () => {
@@ -95,9 +95,9 @@ describe('Observable.prototype.switchMapTo', () => {
     const unsub =    '                      !       ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .switchMapTo(x)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -199,7 +199,7 @@ describe('Observable.prototype.switchMapTo', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    expectObservable(e1.switchMapTo(Observable.of('foo'))).toBe(expected);
+    expectObservable(e1.switchMapTo(Observable.of('foo', Rx.Scheduler.none))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -208,7 +208,7 @@ describe('Observable.prototype.switchMapTo', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.switchMapTo(Observable.of('foo'))).toBe(expected);
+    expectObservable(e1.switchMapTo(Observable.of('foo', Rx.Scheduler.none))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -217,7 +217,7 @@ describe('Observable.prototype.switchMapTo', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.switchMapTo(Observable.of('foo'))).toBe(expected);
+    expectObservable(e1.switchMapTo(Observable.of('foo', Rx.Scheduler.none))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

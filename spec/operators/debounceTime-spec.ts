@@ -86,9 +86,9 @@ describe('Observable.prototype.debounceTime', () => {
     const unsub =    '       !       ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .debounceTime(20, rxTestScheduler)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

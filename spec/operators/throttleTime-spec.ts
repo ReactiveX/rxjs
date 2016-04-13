@@ -19,7 +19,7 @@ describe('Observable.prototype.throttleTime', () => {
   });
 
   it('should throttle events by 50 time units', (done: MochaDone) => {
-    Observable.of(1, 2, 3).throttleTime(50)
+    Observable.of(1, 2, 3, Rx.Scheduler.none).throttleTime(50)
       .subscribe((x: number) => {
         expect(x).to.equal(1);
       }, null, done);
@@ -119,9 +119,9 @@ describe('Observable.prototype.throttleTime', () => {
     const unsub =    '                               !';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .throttleTime(50, rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);

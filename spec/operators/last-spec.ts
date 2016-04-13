@@ -70,9 +70,9 @@ describe('Observable.prototype.last', () => {
     const unsub =     '       !       ';
 
     const result = e1
-      .mergeMap((x: string) => Rx.Observable.of(x))
+      .mergeMap((x: string) => Rx.Observable.of(x, Rx.Scheduler.none))
       .last()
-      .mergeMap((x: string) => Rx.Observable.of(x));
+      .mergeMap((x: string) => Rx.Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

@@ -145,9 +145,9 @@ describe('Observable.prototype.buffer', () => {
     };
 
     const result = a
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .buffer(b)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(a.subscriptions).toBe(subs);

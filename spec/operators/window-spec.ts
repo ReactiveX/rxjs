@@ -192,9 +192,9 @@ describe('Observable.prototype.window', () => {
     const expectedValues = { a: a, b: b };
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .window(closings)
-      .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
+      .mergeMap((x: Rx.Observable<string>) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);

@@ -38,7 +38,7 @@ describe('Observable.prototype.retryWhen', () => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .map((n: number) => {
         if (n === 3) {
           throw 'bad';
@@ -64,7 +64,7 @@ describe('Observable.prototype.retryWhen', () => {
 
   it('should retry when notified and complete on returned completion', (done: MochaDone) => {
     const expected = [1, 2, 1, 2];
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .map((n: number) => {
         if (n === 3) {
           throw 'bad';
@@ -272,9 +272,9 @@ describe('Observable.prototype.retryWhen', () => {
     const unsub =        '                    !       ';
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .retryWhen((errors: any) => notifier)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -319,7 +319,7 @@ describe('Observable.prototype.retryWhen', () => {
             if (++invoked < 3) {
               return Observable.empty();
             } else {
-              return Observable.of('stop!');
+              return Observable.of('stop!', Rx.Scheduler.none);
             }
           })
       ));

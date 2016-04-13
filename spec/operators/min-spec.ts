@@ -184,9 +184,9 @@ describe('Observable.prototype.min', () => {
     };
 
     const result = (<any>e1)
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .min(predicate)
-      .mergeMap((x: number) => Observable.of(x));
+      .mergeMap((x: number) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, { w: 42 });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

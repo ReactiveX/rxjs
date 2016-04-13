@@ -5,6 +5,8 @@ import {EmptyObservable} from './EmptyObservable';
 import {Subscriber} from '../Subscriber';
 import {isScheduler} from '../util/isScheduler';
 import {TeardownLogic} from '../Subscription';
+import {asap} from '../scheduler/asap';
+import {isUnscheduled} from '../scheduler/none';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -65,6 +67,10 @@ export class ArrayObservable<T> extends Observable<T> {
     if (isScheduler(scheduler)) {
       array.pop();
     } else {
+      scheduler = asap;
+    }
+
+    if (isUnscheduled(scheduler)) {
       scheduler = null;
     }
 

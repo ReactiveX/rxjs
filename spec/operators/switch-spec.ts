@@ -31,7 +31,7 @@ describe('Observable.prototype.switch', () => {
   it('should unsub inner observables', () => {
     const unsubbed = [];
 
-    Observable.of('a', 'b').map((x: string) =>
+    Observable.of('a', 'b', Rx.Scheduler.none).map((x: string) =>
       Observable.create((subscriber: Rx.Subscriber<string>) => {
         subscriber.complete();
         return () => {
@@ -45,11 +45,11 @@ describe('Observable.prototype.switch', () => {
   });
 
   it('should switch to each inner Observable', (done: MochaDone) => {
-    const a = Observable.of(1, 2, 3);
-    const b = Observable.of(4, 5, 6);
+    const a = Observable.of(1, 2, 3, Rx.Scheduler.none);
+    const b = Observable.of(4, 5, 6, Rx.Scheduler.none);
     const r = [1, 2, 3, 4, 5, 6];
     let i = 0;
-    Observable.of(a, b).switch().subscribe((x: number) => {
+    Observable.of(a, b, Rx.Scheduler.none).switch().subscribe((x: number) => {
       expect(x).to.equal(r[i++]);
     }, null, done);
   });
@@ -89,9 +89,9 @@ describe('Observable.prototype.switch', () => {
     const unsub =    '                !            ';
 
     const result = (<any>e1)
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .switch()
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -179,7 +179,7 @@ describe('Observable.prototype.switch', () => {
   it('should handle an observable of promises', (done: MochaDone) => {
     const expected = [3];
 
-    (<any>Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)))
+    (<any>Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3), Rx.Scheduler.none))
       .switch()
       .subscribe((x: number) => {
         expect(x).to.equal(expected.shift());
@@ -190,7 +190,7 @@ describe('Observable.prototype.switch', () => {
   });
 
   it('should handle an observable of promises, where last rejects', (done: MochaDone) => {
-    Observable.of<any>(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
+    Observable.of<any>(Promise.resolve(1), Promise.resolve(2), Promise.reject(3), Rx.Scheduler.none)
       .switch()
       .subscribe(() => {
         done(new Error('should not be called'));
@@ -206,7 +206,7 @@ describe('Observable.prototype.switch', () => {
     const expected = [1, 2, 3, 4];
     let completed = false;
 
-    Observable.of<any>(Observable.never(), Observable.never(), [1, 2, 3, 4])
+    Observable.of<any>(Observable.never(), Observable.never(), [1, 2, 3, 4], Rx.Scheduler.none)
       .switch()
       .subscribe((x: number) => {
         expect(x).to.equal(expected.shift());

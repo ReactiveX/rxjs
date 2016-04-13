@@ -453,9 +453,9 @@ describe('Observable.prototype.combineLatest', () => {
     const values = { x: 'bf', y: 'cf', z: 'cg' };
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .combineLatest(e2, (x: any, y: any) => x + y)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

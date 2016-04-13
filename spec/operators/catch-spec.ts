@@ -30,7 +30,7 @@ describe('Observable.prototype.catch', () => {
         return n;
       })
       .catch((err: any) => {
-        return Observable.of('X', 'Y', 'Z');
+        return Observable.of('X', 'Y', 'Z', Rx.Scheduler.none);
       });
 
     expectObservable(result).toBe(expected);
@@ -58,7 +58,7 @@ describe('Observable.prototype.catch', () => {
     const unsub =    '       !         ';
 
     const result = e1.catch(() => {
-      return Observable.of('X', 'Y', 'Z');
+      return Observable.of('X', 'Y', 'Z', Rx.Scheduler.none);
     });
 
     expectObservable(result, unsub).toBe(expected);
@@ -74,9 +74,9 @@ describe('Observable.prototype.catch', () => {
     const result = e1
       .mergeMap((x: any) => Observable.of(x))
       .catch(() => {
-        return Observable.of('X', 'Y', 'Z');
+        return Observable.of('X', 'Y', 'Z', Rx.Scheduler.none);
       })
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -154,7 +154,7 @@ describe('Observable.prototype.catch', () => {
     const subs =     '(^!)';
     const expected = '(abc|)';
 
-    const result = e1.catch((err: any) => Observable.of('a', 'b', 'c'));
+    const result = e1.catch((err: any) => Observable.of('a', 'b', 'c', Rx.Scheduler.none));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -165,7 +165,7 @@ describe('Observable.prototype.catch', () => {
     const subs =     '^          !';
     const expected = '--a--b--c--|';
 
-    const result = e1.catch((err: any) => Observable.of('x', 'y', 'z'));
+    const result = e1.catch((err: any) => Observable.of('x', 'y', 'z', Rx.Scheduler.none));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);

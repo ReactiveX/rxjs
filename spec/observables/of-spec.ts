@@ -11,11 +11,25 @@ const Observable = Rx.Observable;
 /** @test {of} */
 describe('Observable.of', () => {
   asDiagram('of(1, 2, 3)')('should create a cold observable that emits 1, 2, 3', () => {
-    const e1 = Observable.of(1, 2, 3)
+    const e1 = Observable.of(1, 2, 3, Rx.Scheduler.none)
       // for the purpose of making a nice diagram, spread out the synchronous emissions
-      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+      .concatMap((x, i) => Observable.of(x, Rx.Scheduler.none).delay(i === 0 ? 0 : 20, rxTestScheduler));
     const expected = 'x-y-(z|)';
     expectObservable(e1).toBe(expected, {x: 1, y: 2, z: 3});
+  });
+
+  it('should schedule on the next micro task', (done: MochaDone) => {
+    const results = [];
+    results.push('start');
+    Observable.of(1, 2, 3)
+      .subscribe(
+        x => results.push(x),
+        err => done(new Error('should not be called')),
+        () => {
+          expect(results).to.deep.equal(['start', 'end', 1, 2, 3]);
+          done();
+        });
+    results.push('end');
   });
 
   it('should create an observable from the provided values', (done: MochaDone) => {
@@ -34,7 +48,7 @@ describe('Observable.of', () => {
   });
 
   it('should return a scalar observable if only passed one value', () => {
-    const obs = Observable.of('one');
+    const obs = Observable.of('one', Rx.Scheduler.none);
     expect(obs instanceof ScalarObservable).to.be.true;
   });
 
@@ -44,7 +58,7 @@ describe('Observable.of', () => {
   });
 
   it('should return an array observable if passed many values', () => {
-    const obs = Observable.of('one', 'two', 'three');
+    const obs = Observable.of('one', 'two', 'three', Rx.Scheduler.none);
     expect(obs instanceof ArrayObservable).to.be.true;
   });
 
@@ -61,7 +75,7 @@ describe('Observable.of', () => {
   it('should emit one value', (done: MochaDone) => {
     let calls = 0;
 
-    Observable.of(42).subscribe((x: number) => {
+    Observable.of(42, Rx.Scheduler.none).subscribe((x: number) => {
       expect(++calls).to.equal(1);
       expect(x).to.equal(42);
     }, (err: any) => {

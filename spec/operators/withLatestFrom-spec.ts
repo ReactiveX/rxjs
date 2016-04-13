@@ -104,9 +104,9 @@ describe('Observable.prototype.withLatestFrom', () => {
     const project = function (a, b, c) { return a + b + c; };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .withLatestFrom(e2, e3, project)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -241,21 +241,21 @@ describe('Observable.prototype.withLatestFrom', () => {
   });
 
   it('should handle promises', (done: MochaDone) => {
-    Observable.of(1).delay(1).withLatestFrom(Promise.resolve(2), Promise.resolve(3))
+    Observable.of(1, Rx.Scheduler.none).delay(1).withLatestFrom(Promise.resolve(2), Promise.resolve(3))
       .subscribe((x: any) => {
         expect(x).to.deep.equal([1, 2, 3]);
       }, null, done);
   });
 
   it('should handle arrays', () => {
-    Observable.of(1).delay(1).withLatestFrom([2, 3, 4], [4, 5, 6])
+    Observable.of(1, Rx.Scheduler.none).delay(1).withLatestFrom([2, 3, 4], [4, 5, 6])
       .subscribe((x: any) => {
         expect(x).to.deep.equal([1, 4, 6]);
       });
   });
 
   it('should handle lowercase-o observables', () => {
-    Observable.of(1).delay(1).withLatestFrom(lowerCaseO(2, 3, 4), lowerCaseO(4, 5, 6))
+    Observable.of(1, Rx.Scheduler.none).delay(1).withLatestFrom(lowerCaseO(2, 3, 4), lowerCaseO(4, 5, 6))
       .subscribe((x: any) => {
         expect(x).to.deep.equal([1, 4, 6]);
       });

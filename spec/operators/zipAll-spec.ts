@@ -27,7 +27,7 @@ describe('Observable.prototype.zipAll', () => {
     const expected = '---x---y---z';
     const values = { x: ['1', '4'], y: ['2', '5'], z: ['3', '6'] };
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected, values);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected, values);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -36,8 +36,8 @@ describe('Observable.prototype.zipAll', () => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
     Observable.of<any>(
-      Observable.of<any>('a', 'b', 'c'),
-      Observable.of<any>(1, 2, 3)
+      Observable.of<any>('a', 'b', 'c', Rx.Scheduler.none),
+      Observable.of<any>(1, 2, 3, Rx.Scheduler.none)
     )
     .zipAll((a: any, b: any) => a + b)
     .subscribe((x: any) => {
@@ -59,7 +59,7 @@ describe('Observable.prototype.zipAll', () => {
       z: ['c', 'f', 'j']
     };
 
-    expectObservable(Observable.of<any>(e1, e2, e3).zipAll()).toBe(expected, values);
+    expectObservable(Observable.of<any>(e1, e2, e3, Rx.Scheduler.none).zipAll()).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
     expectSubscriptions(e3.subscriptions).toBe(e3subs);
@@ -80,7 +80,7 @@ describe('Observable.prototype.zipAll', () => {
       z: ['c', 'f', 'j']
     };
 
-    expectObservable(Observable.of<any>(e1, e2, e3).zipAll()).toBe(expected, values);
+    expectObservable(Observable.of<any>(e1, e2, e3, Rx.Scheduler.none).zipAll()).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
     expectSubscriptions(e3.subscriptions).toBe(e3subs);
@@ -107,7 +107,7 @@ describe('Observable.prototype.zipAll', () => {
         z: ['d', 3]
       };
 
-      expectObservable(Observable.of<any>(e1, myIterator).zipAll()).toBe(expected, values);
+      expectObservable(Observable.of<any>(e1, myIterator, Rx.Scheduler.none).zipAll()).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
 
@@ -122,7 +122,7 @@ describe('Observable.prototype.zipAll', () => {
       };
       myIterator[Symbol.iterator] = function () { return this; };
 
-      Observable.of<any>(Observable.of<any>(1, 2, 3), myIterator).zipAll()
+      Observable.of<any>(Observable.of<any>(1, 2, 3, Rx.Scheduler.none), myIterator, Rx.Scheduler.none).zipAll()
         .subscribe();
 
       // since zip will call `next()` in advance, total calls when
@@ -136,7 +136,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [];
       const expected = '-';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -146,7 +146,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [];
       const expected = '|';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -156,7 +156,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [1];
       const expected = '|';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -166,7 +166,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [];
       const expected = '--------|';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -176,7 +176,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [1];
       const expected = '-';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -186,7 +186,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [2];
       const expected = '-----(x|)';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected, { x: ['1', 2] });
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected, { x: ['1', 2] });
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -196,7 +196,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [];
       const expected = '-----#';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -206,7 +206,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [1];
       const expected = '-----#';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -216,7 +216,7 @@ describe('Observable.prototype.zipAll', () => {
       const b = [4, 5, 6];
       const expected = '---x--y--(z|)';
 
-      expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected,
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected,
         { x: ['1', 4], y: ['2', 5], z: ['3', 6] });
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
@@ -233,7 +233,7 @@ describe('Observable.prototype.zipAll', () => {
         } else {
           return x + y;
         }};
-      expectObservable(Observable.of<any>(a, b).zipAll(selector)).toBe(expected,
+      expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll(selector)).toBe(expected,
         { x: '14' }, new Error('too bad'));
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
@@ -246,7 +246,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^';
     const expected = '---x---y---z';
 
-    expectObservable(Observable.of<any>(a, b).zipAll((e1: string, e2: string) => e1 + e2))
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll((e1: string, e2: string) => e1 + e2))
       .toBe(expected, { x: '14', y: '25', z: '36' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -260,7 +260,7 @@ describe('Observable.prototype.zipAll', () => {
     const c = hot('---1-^---3---6-|  ');
     const expected =   '----x---y-|  ';
 
-    expectObservable(Observable.of<any>(a, b, c).zipAll()).toBe(expected,
+    expectObservable(Observable.of<any>(a, b, c, Rx.Scheduler.none).zipAll()).toBe(expected,
       { x: ['1', '2', '3'], y: ['4', '5', '6'] });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -274,7 +274,7 @@ describe('Observable.prototype.zipAll', () => {
     const c = hot('---1-^---3---6-|  ');
     const expected =   '----x---y-|  ';
 
-    const observable = Observable.of<any>(a, b, c).zipAll((r0, r1, r2) => [r0, r1, r2]);
+    const observable = Observable.of<any>(a, b, c, Rx.Scheduler.none).zipAll((r0, r1, r2) => [r0, r1, r2]);
     expectObservable(observable).toBe(expected,
       { x: ['1', '2', '3'], y: ['4', '5', '6'] });
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -289,7 +289,7 @@ describe('Observable.prototype.zipAll', () => {
     const c = hot('---1-^---3---6-|  ');
     const expected =   '----x---y-|  ';
 
-    const observable = Observable.of<any>(a, b, c).zipAll((r0, r1, r2) => [r0, r1, r2]);
+    const observable = Observable.of<any>(a, b, c, Rx.Scheduler.none).zipAll((r0, r1, r2) => [r0, r1, r2]);
     expectObservable(observable).toBe(expected,
       { x: ['1', '2', '3'], y: ['4', '5', '6'] });
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -303,7 +303,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =      '^                 !    ';
     const expected =   '---a--b--c--d--e--|    ';
 
-    expectObservable(Observable.of<any>(a, b).zipAll((r1: string, r2: string) => r1 + r2))
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll((r1: string, r2: string) => r1 + r2))
       .toBe(expected, { a: '12', b: '34', c: '56', d: '78', e: '90' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -316,7 +316,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =      '^                 !    ';
     const expected =   '---a--b--c--d--e--|    ';
 
-    expectObservable(Observable.of<any>(a, b).zipAll((r1: string, r2: string) => r1 + r2))
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll((r1: string, r2: string) => r1 + r2))
       .toBe(expected, { a: '21', b: '43', c: '65', d: '87', e: '09' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -329,7 +329,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =      '^                ! ';
     const expected =   '---a--b--c--d--e-| ';
 
-    expectObservable(Observable.of<any>(a, b).zipAll((r1: string, r2: string) => r1 + r2))
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll((r1: string, r2: string) => r1 + r2))
       .toBe(expected, { a: '12', b: '34', c: '56', d: '78', e: '90' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -348,7 +348,7 @@ describe('Observable.prototype.zipAll', () => {
       } else {
         return x + y;
       }};
-    const observable = Observable.of<any>(a, b).zipAll(selector);
+    const observable = Observable.of<any>(a, b, Rx.Scheduler.none).zipAll(selector);
     expectObservable(observable).toBe(expected,
       { x: '23' }, new Error('too bad'));
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -371,8 +371,8 @@ describe('Observable.prototype.zipAll', () => {
     const expected = ['a1', 'b2'];
     let i = 0;
     Observable.of<any>(
-      Observable.of<any>('a', 'b', 'c'),
-      Observable.of<any>(1, 2)
+      Observable.of<any>('a', 'b', 'c', Rx.Scheduler.none),
+      Observable.of<any>(1, 2, Rx.Scheduler.none)
     )
     .zipAll((a: any, b: any) => a + b)
     .subscribe((x: any) => {
@@ -463,7 +463,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^';
     const expected = '-';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -475,7 +475,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '|';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -487,7 +487,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '|';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -499,7 +499,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '|';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -511,7 +511,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '|';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -523,7 +523,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '|';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -535,7 +535,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^     !';
     const expected = '-';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -547,7 +547,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^';
     const expected = '-';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -559,7 +559,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^';
     const expected = '---x---y---z';
 
-    expectObservable(Observable.of<any>(a, b).zipAll())
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll())
       .toBe(expected, { x: ['1', '4'], y: ['2', '5'], z: ['3', '6'] });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -572,7 +572,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '|';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -584,7 +584,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '|';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -596,7 +596,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^     !    ';
     const expected = '------#    ';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -608,7 +608,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^     !';
     const expected = '------#';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -620,7 +620,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^     !';
     const expected = '------#';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -632,7 +632,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^     !';
     const expected = '------#';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected, null, 'too bad');
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected, null, 'too bad');
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -644,7 +644,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^       !';
     const expected = '-----x--#';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected, { x: [1, 2] }, 'too bad');
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected, { x: [1, 2] }, 'too bad');
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -656,7 +656,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '^       !';
     const expected = '-----x--#';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected, { x: [2, 1] }, 'too bad');
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected, { x: [2, 1] }, 'too bad');
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -668,7 +668,7 @@ describe('Observable.prototype.zipAll', () => {
     const bsubs =    '(^!)';
     const expected = '#';
 
-    expectObservable(Observable.of<any>(a, b).zipAll()).toBe(expected);
+    expectObservable(Observable.of<any>(a, b, Rx.Scheduler.none).zipAll()).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -688,7 +688,7 @@ describe('Observable.prototype.zipAll', () => {
 
   it('should combine a source with an immediately-scheduled source', (done: MochaDone) => {
     const a = Observable.of<any>(1, 2, 3, queueScheduler);
-    const b = Observable.of<any>(4, 5, 6, 7, 8);
+    const b = Observable.of<any>(4, 5, 6, 7, 8, Rx.Scheduler.none);
     const r = [[1, 4], [2, 5], [3, 6]];
     let i = 0;
 
@@ -708,10 +708,10 @@ describe('Observable.prototype.zipAll', () => {
     const expected = '---x---y--';
     const values = { x: ['1', '4'], y: ['2', '5']};
 
-    const r = Observable.of<any>(a, b)
-      .mergeMap((x: string) => Observable.of(x))
+    const r = Observable.of<any>(a, b, Rx.Scheduler.none)
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .zipAll()
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(r, unsub).toBe(expected, values);
     expectSubscriptions(a.subscriptions).toBe(asubs);

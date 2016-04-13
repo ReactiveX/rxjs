@@ -114,7 +114,7 @@ describe('Observable.zip', () => {
         return this;
       };
 
-      Observable.zip(Observable.of(1, 2, 3), myIterator)
+      Observable.zip(Observable.of(1, 2, 3, Rx.Scheduler.none), myIterator)
         .subscribe();
 
       // since zip will call `next()` in advance, total calls when
