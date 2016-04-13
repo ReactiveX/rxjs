@@ -8,7 +8,7 @@ module.exports = function of(suite) {
   }
 
   var oldOfWithImmediateScheduler = RxOld.Observable.of.apply(null, args.concat(RxOld.Scheduler.immediate));
-  var newOfWithImmediateScheduler = RxNew.Observable.of.apply(null, args);
+  var newOfWithImmediateScheduler = RxNew.Observable.of.apply(null, args.concat(RxNew.Scheduler.none));
 
   function _next(x) { }
   function _error(e) { }
