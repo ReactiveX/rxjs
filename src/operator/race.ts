@@ -82,6 +82,7 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
   protected _complete() {
     const observables = this.observables;
     const len = observables.length;
+
     if (len === 0) {
       this.destination.complete();
     } else {
@@ -89,8 +90,10 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
         let observable = observables[i];
         let subscription = subscribeToResult(this, observable, observable, i);
 
-        this.subscriptions.push(subscription);
-        this.add(subscription);
+        if (this.subscriptions) {
+          this.subscriptions.push(subscription);
+          this.add(subscription);
+        }
       }
       this.observables = null;
     }
