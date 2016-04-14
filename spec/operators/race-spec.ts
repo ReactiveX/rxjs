@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
 
@@ -146,5 +147,14 @@ describe('Observable.prototype.race', () => {
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should allow observable emits immediately', (done: MochaDone) => {
+    const e1 = Observable.of(true);
+    const e2 = Observable.timer(200).map(_ => false);
+
+    Observable.race(e1, e2).subscribe(x => {
+      expect(x).to.be.true;
+    }, done, done);
   });
 });
