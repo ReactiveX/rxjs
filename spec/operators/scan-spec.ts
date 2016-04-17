@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
@@ -174,6 +175,30 @@ describe('Observable.prototype.scan', () => {
       .mergeMap((x: string) => Observable.of(x));
 
     expectObservable(source, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should pass current index to accumulator', () => {
+    const values = {
+      a: 1, b: 3, c: 5,
+      x: 1, y: 4, z: 9
+    };
+    let idx = [0, 1, 2];
+
+    const e1 =     hot('--a--b--c--|', values);
+    const e1subs =     '^          !';
+    const expected =   '--x--y--z--|';
+
+    const scanFunction = (o: number, value: number, index: number) => {
+      expect(index).to.equal(idx.shift());
+      return o + value;
+    };
+
+    const scan = e1.scan(scanFunction, 0).finally(() => {
+      expect(idx).to.be.empty;
+    });
+
+    expectObservable(scan).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
