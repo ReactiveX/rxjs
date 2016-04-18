@@ -10,11 +10,11 @@ describe('Observable.prototype.delayWhen', () => {
     const expected =      '-----a------c----(b|)';
     const subs =          '^                !';
     const selector = [cold(  '--x--|'),
-                    cold(      '----------x-|'),
-                    cold(          '-x--|')];
+                      cold(      '----------(x|)'),
+                      cold(          '-x--|')];
     const selectorSubs = ['   ^ !            ',
-                        '       ^         !',
-                        '           ^!     '];
+                          '       ^         !',
+                          '           ^!     '];
 
     let idx = 0;
     function durationSelector(x) {
