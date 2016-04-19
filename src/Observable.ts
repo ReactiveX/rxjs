@@ -3,11 +3,12 @@ import {Operator} from './Operator';
 import {Subscriber} from './Subscriber';
 import {Subscription, AnonymousSubscription, TeardownLogic} from './Subscription';
 import {root} from './util/root';
-import {$$observable} from './symbol/observable';
 import {toSubscriber} from './util/toSubscriber';
 
 import {IfObservable} from './observable/IfObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
+
+import * as $$observable from 'symbol-observable';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),

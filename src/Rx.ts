@@ -138,8 +138,9 @@ import {AsapScheduler} from './scheduler/AsapScheduler';
 import {AsyncScheduler} from './scheduler/AsyncScheduler';
 import {QueueScheduler} from './scheduler/QueueScheduler';
 import {$$rxSubscriber as rxSubscriber} from './symbol/rxSubscriber';
-import {$$observable as observable} from './symbol/observable';
 import {$$iterator as iterator} from './symbol/iterator';
+import * as observable from 'symbol-observable';
+
 /* tslint:enable:no-unused-variable */
 
 /**
