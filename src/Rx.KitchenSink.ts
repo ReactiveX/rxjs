@@ -15,6 +15,7 @@ import './add/operator/exhaustMap';
 import './add/operator/find';
 import './add/operator/findIndex';
 import './add/operator/isEmpty';
+import './add/operator/join';
 import './add/operator/max';
 import './add/operator/mergeScan';
 import './add/operator/min';
