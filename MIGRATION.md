@@ -220,6 +220,27 @@ To reduce polymorphism and get better performance out of operators, some operato
 </table>
 
 
+## Operator Interface Changes
+
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>RxJS 4</th>
+      <th>RxJS 5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>distinctUntilChanged</code></td>
+      <td><code>distinctUntilChanged(keySelector: function, comparer: function)</code></td>
+      <td><code>distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T></code></td>
+    </tr>
+  </tbody>
+</table>
+
+
 ## Schedulers Renamed
 
 The names of the Schedulers in RxJS 4 were based off of the Rx.NET implementation. Consequently, some of the names
