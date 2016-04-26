@@ -145,6 +145,7 @@ export {Subscriber} from './Subscriber';
 export {AsyncSubject} from './AsyncSubject';
 export {ReplaySubject} from './ReplaySubject';
 export {BehaviorSubject} from './BehaviorSubject';
+export {MulticastObservable} from './observable/MulticastObservable';
 export {ConnectableObservable} from './observable/ConnectableObservable';
 export {Notification} from './Notification';
 export {EmptyError} from './util/EmptyError';

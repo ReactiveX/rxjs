@@ -49,6 +49,24 @@ describe('Observable.prototype.multicast', () => {
     connectable.connect();
   });
 
+  it('should accept selectors to factory functions', () => {
+    const source =      hot('-1-2-3----4-|');
+    const sourceSubs =     ['^           !'];
+    const multicasted = source.multicast(() => new Subject(),
+      x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
+    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const expected1   =     '-2-4-6----8-|';
+    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const expected2   =     '    -6----8-|';
+    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const expected3   =     '        --8-|';
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
   it('should do nothing if connect is not called, despite subscriptions', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs = [];
