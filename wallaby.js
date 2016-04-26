@@ -1,6 +1,5 @@
 module.exports = wallaby => ({
   files: [
-    'index.js',
     'src/**/*.ts',
     {pattern: 'spec/helpers/*.ts', instrument: false}
   ],
