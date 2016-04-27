@@ -150,9 +150,9 @@ describe('Observable.prototype.exhaustMap', () => {
     const observableLookup = { x: x, y: y, z: z };
 
     const result = (<any>e1)
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .exhaustMap((value: any) => observableLookup[value])
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);

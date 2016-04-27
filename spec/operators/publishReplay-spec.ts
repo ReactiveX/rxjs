@@ -19,7 +19,7 @@ describe('Observable.prototype.publishReplay', () => {
   });
 
   it('should return a ConnectableObservable', () => {
-    const source = Observable.of(1).publishReplay();
+    const source = Observable.of(1, Rx.Scheduler.none).publishReplay();
     expect(source instanceof Rx.ConnectableObservable).to.be.true;
   });
 
@@ -121,7 +121,7 @@ describe('Observable.prototype.publishReplay', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .publishReplay(1);
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '-1-2-3----   ';
@@ -363,7 +363,7 @@ describe('Observable.prototype.publishReplay', () => {
     const expected = [1, 2, 3, 4];
     let i = 0;
 
-    const source = Observable.of(1, 2, 3, 4).publishReplay(1);
+    const source = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).publishReplay(1);
 
     const results = [];
 

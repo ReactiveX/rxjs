@@ -21,9 +21,9 @@ describe('Observable.prototype.switchMap', () => {
   });
 
   it('should switch with a selector function', (done: MochaDone) => {
-    const a = Observable.of(1, 2, 3);
+    const a = Observable.of(1, 2, 3, Rx.Scheduler.none);
     const expected = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2', 'a3', 'b3', 'c3'];
-    a.switchMap((x: number) => Observable.of('a' + x, 'b' + x, 'c' + x))
+    a.switchMap((x: number) => Observable.of('a' + x, 'b' + x, 'c' + x, Rx.Scheduler.none))
       .subscribe((x: string) => {
         expect(x).to.equal(expected.shift());
       }, null, done);
@@ -32,7 +32,7 @@ describe('Observable.prototype.switchMap', () => {
   it('should unsub inner observables', () => {
     const unsubbed = [];
 
-    Observable.of('a', 'b').switchMap((x: string) =>
+    Observable.of('a', 'b', Rx.Scheduler.none).switchMap((x: string) =>
       Observable.create((subscriber: Rx.Subscriber<string>) => {
         subscriber.complete();
         return () => {
@@ -125,9 +125,9 @@ describe('Observable.prototype.switchMap', () => {
     const observableLookup = { x: x, y: y };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .switchMap((value: string) => observableLookup[value])
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -311,7 +311,7 @@ describe('Observable.prototype.switchMap', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    const result = e1.switchMap((value: any) => Observable.of(value));
+    const result = e1.switchMap((value: any) => Observable.of(value, Rx.Scheduler.none));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -322,7 +322,7 @@ describe('Observable.prototype.switchMap', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const result = e1.switchMap((value: any) => Observable.of(value));
+    const result = e1.switchMap((value: any) => Observable.of(value, Rx.Scheduler.none));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -333,7 +333,7 @@ describe('Observable.prototype.switchMap', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const result = e1.switchMap((value: any) => Observable.of(value));
+    const result = e1.switchMap((value: any) => Observable.of(value, Rx.Scheduler.none));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

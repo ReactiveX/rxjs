@@ -187,9 +187,9 @@ describe('Observable.prototype.count', () => {
     const unsub =     '      !    ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .count((value: string) => parseInt(value) < 10)
-      .mergeMap((x: number) => Observable.of(x));
+      .mergeMap((x: number) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, { w: 3 });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

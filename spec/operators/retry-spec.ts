@@ -184,9 +184,9 @@ describe('Observable.prototype.retry', () => {
     const unsub =       '             !           ';
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .retry(100)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -195,7 +195,7 @@ describe('Observable.prototype.retry', () => {
   it('should retry a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
-    Observable.of(1, 2, 3).concat(Observable.throw('bad!'))
+    Observable.of(1, 2, 3, Rx.Scheduler.none).concat(Observable.throw('bad!'))
       .multicast(() => new Rx.Subject())
       .refCount()
       .retry(4)

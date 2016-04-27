@@ -69,7 +69,7 @@ describe('Observable.prototype.distinct', () => {
   });
 
   it('should emit if source is scalar', () => {
-    const e1 = Observable.of('a');
+    const e1 = Observable.of('a', Rx.Scheduler.none);
     const expected = '(a|)';
 
     expectObservable((<any>e1).distinct()).toBe(expected);
@@ -121,9 +121,9 @@ describe('Observable.prototype.distinct', () => {
     const unsub =    '          !          ';
 
     const result = (<any>e1
-      .mergeMap((x: any) => Observable.of(x)))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none)))
       .distinct()
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

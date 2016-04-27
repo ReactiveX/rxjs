@@ -40,7 +40,7 @@ describe('Observable.prototype.groupBy', () => {
       { key: 0, values: [2] }
     ];
 
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .groupBy((x: number) => x % 2)
       .subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift();
@@ -58,7 +58,7 @@ describe('Observable.prototype.groupBy', () => {
       { key: 0, values: ['2!'] }
     ];
 
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .groupBy((x: number) => x % 2, (x: number) => x + '!')
       .subscribe((g: any) => {
         const expectedGroup = expectedGroups.shift();
@@ -78,7 +78,7 @@ describe('Observable.prototype.groupBy', () => {
       { key: 0, values: [6] }
     ];
 
-    Observable.of(1, 2, 3, 4, 5, 6)
+    Observable.of(1, 2, 3, 4, 5, 6, Rx.Scheduler.none)
       .groupBy(
         (x: number) => x % 2,
         (x: number) => x,
@@ -335,9 +335,9 @@ describe('Observable.prototype.groupBy', () => {
     const expectedValues = { w: 'foo', x: 'bar', y: 'baz' };
 
     const source = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .groupBy((x: string) => x.toLowerCase().trim())
-      .mergeMap((group: any) => Observable.of(group.key));
+      .mergeMap((group: any) => Observable.of(group.key, Rx.Scheduler.none));
 
     expectObservable(source, unsub).toBe(expected, expectedValues);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

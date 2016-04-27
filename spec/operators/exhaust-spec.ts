@@ -23,7 +23,7 @@ describe('Observable.prototype.exhaust', () => {
     const e2subs = [];
     const expected = '(ab|)';
 
-    expectObservable((<any>Observable.of(e1, e2)).exhaust()).toBe(expected);
+    expectObservable((<any>Observable.of(e1, e2, Rx.Scheduler.none)).exhaust()).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -95,9 +95,9 @@ describe('Observable.prototype.exhaust', () => {
     const expected = '--------a---b----            ';
 
     const result = (<any>e1)
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .exhaust()
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -190,7 +190,7 @@ describe('Observable.prototype.exhaust', () => {
   it('should handle an observable of promises', (done: MochaDone) => {
     const expected = [1];
 
-    (<any>Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)))
+    (<any>Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3), Rx.Scheduler.none))
       .exhaust()
       .subscribe((x: number) => {
         expect(x).to.equal(expected.shift());

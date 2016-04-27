@@ -23,8 +23,8 @@ describe('Observable.prototype.merge', () => {
   });
 
   it('should merge a source with a second', (done: MochaDone) => {
-    const a = Observable.of(1, 2, 3);
-    const b = Observable.of(4, 5, 6, 7, 8);
+    const a = Observable.of(1, 2, 3, Rx.Scheduler.none);
+    const b = Observable.of(4, 5, 6, 7, 8, Rx.Scheduler.none);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
     a.merge(b).subscribe((val: number) => {
@@ -278,11 +278,11 @@ describe('Observable.prototype.merge', () => {
 
 describe('Observable.prototype.mergeAll', () => {
   it('should merge two observables', (done: MochaDone) => {
-    const a = Observable.of(1, 2, 3);
-    const b = Observable.of(4, 5, 6, 7, 8);
+    const a = Observable.of(1, 2, 3, Rx.Scheduler.none);
+    const b = Observable.of(4, 5, 6, 7, 8, Rx.Scheduler.none);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    Observable.of(a, b).mergeAll().subscribe((val: number) => {
+    Observable.of(a, b, Rx.Scheduler.none).mergeAll().subscribe((val: number) => {
       expect(val).to.equal(r.shift());
     }, null, done);
   });

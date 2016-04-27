@@ -211,10 +211,10 @@ describe('Observable.prototype.partition', () => {
     const unsub =     '       !          ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .partition((x: string) => x === 'a')
       .map((observable: Rx.Observable<string>) =>
-        observable.mergeMap((x: string) => Observable.of(x)));
+        observable.mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none)));
 
     expectObservable(result[0], unsub).toBe(expected[0]);
     expectObservable(result[1], unsub).toBe(expected[1]);

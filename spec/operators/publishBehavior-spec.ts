@@ -19,7 +19,7 @@ describe('Observable.prototype.publishBehavior', () => {
   });
 
   it('should return a ConnectableObservable', () => {
-    const source = Observable.of(1).publishBehavior(1);
+    const source = Observable.of(1, Rx.Scheduler.none).publishBehavior(1);
     expect(source instanceof Rx.ConnectableObservable).to.be.true;
   });
 
@@ -37,7 +37,7 @@ describe('Observable.prototype.publishBehavior', () => {
     const expected = [0, 1, 2, 3, 4];
     let i = 0;
 
-    const source = Observable.of(1, 2, 3, 4).publishBehavior(0);
+    const source = Observable.of(1, 2, 3, 4, Rx.Scheduler.none).publishBehavior(0);
 
     source.subscribe(
       (x: number) => {
@@ -129,7 +129,7 @@ describe('Observable.prototype.publishBehavior', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .publishBehavior('0');
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '01-2-3----   ';

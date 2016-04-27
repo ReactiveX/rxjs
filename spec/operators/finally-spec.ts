@@ -7,7 +7,7 @@ const Observable = Rx.Observable;
 describe('Observable.prototype.finally', () => {
   it('should call finally after complete', (done: MochaDone) => {
     let completed = false;
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .finally(() => {
         expect(completed).to.be.true;
         done();
@@ -19,7 +19,7 @@ describe('Observable.prototype.finally', () => {
 
   it('should call finally after error', (done: MochaDone) => {
     let thrown = false;
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .map(function (x) {
         if (x === 3) {
           throw x;
@@ -65,7 +65,7 @@ describe('Observable.prototype.finally', () => {
       }
     }
 
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .finally(checkFinally)
       .finally(checkFinally)
       .share()

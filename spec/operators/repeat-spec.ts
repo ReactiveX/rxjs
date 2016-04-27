@@ -86,9 +86,9 @@ describe('Observable.prototype.repeat', () => {
     const expected = '--a--b----a--b----a--b----a--b----a--b----a--';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .repeat()
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -278,7 +278,7 @@ describe('Observable.prototype.repeat', () => {
   it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .multicast(() => new Rx.Subject<number>())
       .refCount()
       .repeat(5)

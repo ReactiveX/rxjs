@@ -86,9 +86,9 @@ describe('Observable.prototype.max', () => {
     const unsub =      '      !     ';
 
     const result = (<any>source)
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .max()
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, { x: 42 });
     expectSubscriptions(source.subscriptions).toBe(subs);

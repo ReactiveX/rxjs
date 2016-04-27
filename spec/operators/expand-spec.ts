@@ -134,14 +134,14 @@ describe('Observable.prototype.expand', () => {
     const unsub =    '       !  ';
 
     const result = (<any>e1)
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .expand((x: number): Rx.Observable<any> => {
         if (x === 16) {
           return Observable.empty();
         }
         return cold(e2shape, { z: x + x });
       })
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -288,7 +288,7 @@ describe('Observable.prototype.expand', () => {
       if (x === 16) {
         return Observable.empty();
       }
-      return Observable.of(x + x); // scalar
+      return Observable.of(x + x, Rx.Scheduler.none); // scalar
     });
 
     expectObservable(result).toBe(expected, values);
@@ -297,7 +297,7 @@ describe('Observable.prototype.expand', () => {
 
   it('should recursively flatten promises', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
-    (<any>Observable.of(1))
+    (<any>Observable.of(1, Rx.Scheduler.none))
       .expand((x: number): any => {
         if (x === 16) {
           return Observable.empty();
@@ -314,7 +314,7 @@ describe('Observable.prototype.expand', () => {
 
   it('should recursively flatten Arrays', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
-    (<any>Observable).of(1)
+    (<any>Observable).of(1, Rx.Scheduler.none)
       .expand((x: number): any => {
         if (x === 16) {
           return Observable.empty();
@@ -349,7 +349,7 @@ describe('Observable.prototype.expand', () => {
       return ish;
     };
 
-    (<any>Observable.of(1))
+    (<any>Observable.of(1, Rx.Scheduler.none))
       .expand(project)
       .subscribe((x: number) => {
         expect(x).to.equal(expected.shift());

@@ -144,9 +144,9 @@ describe('Observable.prototype.windowWhen', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .windowWhen(() => closings[i++])
-      .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
+      .mergeMap((x: Rx.Observable<string>) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

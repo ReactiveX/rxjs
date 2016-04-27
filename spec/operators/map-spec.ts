@@ -35,7 +35,7 @@ describe('Observable.prototype.map', () => {
 
   it('should throw an error if not passed a function', () => {
     expect(() => {
-      Observable.of(1, 2, 3).map(<any>'potato');
+      Observable.of(1, 2, 3, Rx.Scheduler.none).map(<any>'potato');
     }).to.throw(TypeError, 'argument is not a function. Are you looking for `mapTo()`?');
   });
 
@@ -85,7 +85,7 @@ describe('Observable.prototype.map', () => {
 
   it('should propagate errors from subscribe', () => {
     const r = () => {
-      Observable.of(1)
+      Observable.of(1, Rx.Scheduler.none)
         .map(identity)
         .subscribe(throwError);
     };
@@ -247,9 +247,9 @@ describe('Observable.prototype.map', () => {
     const expected = '--x--y-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none))
       .map(addDrama)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});
     expectSubscriptions(a.subscriptions).toBe(asubs);

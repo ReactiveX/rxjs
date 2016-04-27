@@ -21,7 +21,7 @@ describe('Observable.prototype.do', () => {
 
   it('should next with a callback', () => {
     let value = null;
-    Observable.of(42).do(function (x) {
+    Observable.of(42, Rx.Scheduler.none).do(function (x) {
       value = x;
     })
     .subscribe();
@@ -45,7 +45,7 @@ describe('Observable.prototype.do', () => {
     const expected = [1, 2, 3];
     const results = [];
 
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .do(<Rx.Observer<number>>{
         next: (x: number) => {
           results.push(x);
@@ -78,7 +78,7 @@ describe('Observable.prototype.do', () => {
       }
     });
 
-    Observable.of(1, 2, 3)
+    Observable.of(1, 2, 3, Rx.Scheduler.none)
       .do(<Rx.Observer<number>>subject)
       .subscribe();
   });
@@ -124,7 +124,7 @@ describe('Observable.prototype.do', () => {
   it('should handle next with observer', () => {
     let value = null;
 
-    Observable.of('hi').do(<any>{
+    Observable.of('hi', Rx.Scheduler.none).do(<any>{
       next: (x: string) => {
         value = x;
       }
@@ -134,7 +134,7 @@ describe('Observable.prototype.do', () => {
   });
 
   it('should raise error if next handler raises error', () => {
-    Observable.of('hi').do(<any>{
+    Observable.of('hi', Rx.Scheduler.none).do(<any>{
       next: (x: string) => {
         throw new Error('bad');
       }
@@ -183,11 +183,11 @@ describe('Observable.prototype.do', () => {
     const unsub =    '       !    ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .do(() => {
         //noop
       })
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

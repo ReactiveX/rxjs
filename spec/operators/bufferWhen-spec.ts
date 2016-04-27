@@ -137,9 +137,9 @@ describe('Observable.prototype.bufferWhen', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .bufferWhen(() => closings[i++])
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -298,7 +298,7 @@ describe('Observable.prototype.bufferWhen', () => {
   // buffer in a synchronous infinite loop until the stack overflows. This also
   // happens with buffer in RxJS 4.
   it('should NOT handle hot inner empty', (done: MochaDone) => {
-    const source = Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    const source = Observable.of<number>(1, 2, 3, 4, 5, 6, 7, 8, 9, Rx.Scheduler.none);
     const closing = Observable.empty();
     const TOO_MANY_INVOCATIONS = 30;
 

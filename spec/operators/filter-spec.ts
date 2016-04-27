@@ -245,7 +245,7 @@ describe('Observable.prototype.filter', () => {
   });
 
   it('should send errors down the error path', (done: MochaDone) => {
-    Observable.of(42).filter(<any>((x: number, index: number) => {
+    Observable.of(42, Rx.Scheduler.none).filter(<any>((x: number, index: number) => {
       throw 'bad';
     }))
       .subscribe((x: number) => {
@@ -265,9 +265,9 @@ describe('Observable.prototype.filter', () => {
     const expected =          '--3---5----7-       ';
 
     const r = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none))
       .filter(isPrime)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => Observable.of(x, Rx.Scheduler.none));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

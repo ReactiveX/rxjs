@@ -7,7 +7,7 @@ const Observable = Rx.Observable;
 /** @test {toPromise} */
 describe('Observable.prototype.toPromise', () => {
   it('should convert an Observable to a promise of its last value', (done: MochaDone) => {
-    Observable.of(1, 2, 3).toPromise(Promise).then((x: number) => {
+    Observable.of(1, 2, 3, Rx.Scheduler.none).toPromise(Promise).then((x: number) => {
       expect(x).to.equal(3);
       done();
     });
@@ -31,7 +31,7 @@ describe('Observable.prototype.toPromise', () => {
       return new Promise(callback);
     };
 
-    Observable.of(42).toPromise().then((x: number) => {
+    Observable.of(42, Rx.Scheduler.none).toPromise().then((x: number) => {
       expect(wasCalled).to.be.true;
       expect(x).to.equal(42);
 

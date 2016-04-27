@@ -13,7 +13,7 @@ describe('Observable.range', () => {
   asDiagram('range(1, 10)')('should create an observable with numbers 1 to 10', () => {
     const e1 = Observable.range(1, 10)
       // for the purpose of making a nice diagram, spread out the synchronous emissions
-      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+      .concatMap((x, i) => Observable.of(x, Rx.Scheduler.none).delay(i === 0 ? 0 : 20, rxTestScheduler));
     const expected = 'a-b-c-d-e-f-g-h-i-(j|)';
     const values = {
       a: 1,

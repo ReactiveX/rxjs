@@ -169,7 +169,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = Observable.of(1, 2, 3, 4, 5, Rx.Scheduler.none);
     const subject = new BehaviorSubject(0);
     const expected = [0, 1, 2, 3, 4, 5];
 

@@ -22,7 +22,7 @@ describe('Observable.merge(...observables)', () => {
   });
 
   it('should return itself when try to merge single observable', () => {
-    const e1 = Observable.of('a');
+    const e1 = Observable.of('a', Rx.Scheduler.none);
     const result = Observable.merge(e1);
 
     expect(e1).to.equal(result);
@@ -217,8 +217,8 @@ describe('Observable.merge(...observables, Scheduler, number)', () => {
   });
 
   it('should handle scheduler', () => {
-    const e1 =  Observable.of('a');
-    const e2 =  Observable.of('b').delay(20, rxTestScheduler);
+    const e1 =  Observable.of('a', Rx.Scheduler.none);
+    const e2 =  Observable.of('b', Rx.Scheduler.none).delay(20, rxTestScheduler);
     const expected = 'a-(b|)';
 
     expectObservable(Observable.merge(e1, e2, rxTestScheduler)).toBe(expected);
