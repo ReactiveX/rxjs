@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -73,6 +73,12 @@ var iterator_1 = require(&apos;../../dist/cjs/symbol/iterator&apos;);
 var Observable = Rx.Observable;
 /** @test {from} */
 describe(&apos;Observable.from&apos;, function () {
+    asDiagram(&apos;from([10, 20, 30])&apos;)(&apos;should create an observable from an array&apos;, function () {
+        var e1 = Observable.from([10, 20, 30])
+            .concatMap(function (x, i) { return Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler); });
+        var expected = &apos;x-y-(z|)&apos;;
+        expectObservable(e1).toBe(expected, { x: 10, y: 20, z: 30 });
+    });
     it(&apos;should enumerate an Array&apos;, function (done) {
         this.timeout(300);
         var expected = [1, 2, 3];
@@ -253,9 +259,8 @@ describe(&apos;Observable.from&apos;, function () {
         type(function () {
             /* tslint:disable:no-unused-variable */
             var o1 = Observable.from([], Rx.Scheduler.asap);
-            var o2 = Observable.from({});
-            var o3 = Observable.from(Observable.empty());
-            var o4 = Observable.from(new Promise(function (resolve) { return resolve(); }));
+            var o2 = Observable.from(Observable.empty());
+            var o3 = Observable.from(new Promise(function (resolve) { return resolve(); }));
             /* tslint:enable:no-unused-variable */
         });
     });

@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -123,17 +123,16 @@ describe(&apos;Observable.bindNodeCallback&apos;, function () {
             function callback(cb) {
                 cb(null, 42);
             }
-            var boundCallback = Observable.bindNodeCallback(callback, function (err) { throw new Error(&apos;Yikes!&apos;); });
-            var results = [];
+            var expected = new Error(&apos;Yikes!&apos;);
+            var boundCallback = Observable.bindNodeCallback(callback, function (err) { throw expected; });
             boundCallback()
                 .subscribe(function () {
                 throw &apos;should not next&apos;;
             }, function (err) {
-                results.push(err);
+                chai_1.expect(err).to.equal(expected);
             }, function () {
                 throw &apos;should not complete&apos;;
             });
-            chai_1.expect(results).to.deep.equal([new Error(&apos;Yikes!&apos;)]);
         });
         it(&apos;should not emit, throw or complete if immediately unsubscribed&apos;, function (done) {
             var nextSpy = sinon.spy();
@@ -175,21 +174,20 @@ describe(&apos;Observable.bindNodeCallback&apos;, function () {
             chai_1.expect(results).to.deep.equal([42, &apos;done&apos;]);
         });
         it(&apos;should error if callback throws&apos;, function () {
+            var expected = new Error(&apos;haha no callback for you&apos;);
             function callback(datum, cb) {
-                throw new Error(&apos;haha no callback for you&apos;);
+                throw expected;
             }
             var boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
-            var results = [];
             boundCallback(42)
                 .subscribe(function (x) {
                 throw &apos;should not next&apos;;
             }, function (err) {
-                results.push(err);
+                chai_1.expect(err).to.equal(expected);
             }, function () {
                 throw &apos;should not complete&apos;;
             });
             rxTestScheduler.flush();
-            chai_1.expect(results).to.deep.equal([new Error(&apos;haha no callback for you&apos;)]);
         });
         it(&apos;should raise error from callback&apos;, function () {
             var error = new Error();
@@ -210,24 +208,23 @@ describe(&apos;Observable.bindNodeCallback&apos;, function () {
             chai_1.expect(results).to.deep.equal([error]);
         });
         it(&apos;should error if selector throws&apos;, function () {
+            var expected = new Error(&apos;what? a selector? I don\&apos;t think so&apos;);
             function callback(datum, cb) {
                 cb(null, datum);
             }
             function selector() {
-                throw new Error(&apos;what? a selector? I don\&apos;t think so&apos;);
+                throw expected;
             }
             var boundCallback = Observable.bindNodeCallback(callback, selector, rxTestScheduler);
-            var results = [];
             boundCallback(42)
                 .subscribe(function (x) {
                 throw &apos;should not next&apos;;
             }, function (err) {
-                results.push(err);
+                chai_1.expect(err).to.equal(expected);
             }, function () {
                 throw &apos;should not complete&apos;;
             });
             rxTestScheduler.flush();
-            chai_1.expect(results).to.deep.equal([new Error(&apos;what? a selector? I don\&apos;t think so&apos;)]);
         });
         it(&apos;should use a selector&apos;, function () {
             function callback(datum, cb) {

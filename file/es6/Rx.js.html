@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -84,6 +84,7 @@ import &apos;./add/observable/from&apos;;
 import &apos;./add/observable/fromEvent&apos;;
 import &apos;./add/observable/fromEventPattern&apos;;
 import &apos;./add/observable/fromPromise&apos;;
+import &apos;./add/observable/generate&apos;;
 import &apos;./add/observable/interval&apos;;
 import &apos;./add/observable/merge&apos;;
 import &apos;./add/observable/race&apos;;
@@ -179,7 +180,7 @@ import &apos;./add/operator/zip&apos;;
 import &apos;./add/operator/zipAll&apos;;
 /* tslint:disable:no-unused-variable */
 export { Operator } from &apos;./Operator&apos;;
-export { Subscription, UnsubscriptionError } from &apos;./Subscription&apos;;
+export { Subscription } from &apos;./Subscription&apos;;
 export { Subscriber } from &apos;./Subscriber&apos;;
 export { AsyncSubject } from &apos;./AsyncSubject&apos;;
 export { ReplaySubject } from &apos;./ReplaySubject&apos;;
@@ -189,12 +190,13 @@ export { Notification } from &apos;./Notification&apos;;
 export { EmptyError } from &apos;./util/EmptyError&apos;;
 export { ArgumentOutOfRangeError } from &apos;./util/ArgumentOutOfRangeError&apos;;
 export { ObjectUnsubscribedError } from &apos;./util/ObjectUnsubscribedError&apos;;
+export { UnsubscriptionError } from &apos;./util/UnsubscriptionError&apos;;
 import { asap } from &apos;./scheduler/asap&apos;;
 import { async } from &apos;./scheduler/async&apos;;
 import { queue } from &apos;./scheduler/queue&apos;;
 import { $$rxSubscriber as rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
-import { $$observable as observable } from &apos;./symbol/observable&apos;;
 import { $$iterator as iterator } from &apos;./symbol/iterator&apos;;
+import * as observable from &apos;symbol-observable&apos;;
 /* tslint:enable:no-unused-variable */
 /**
  * @typedef {Object} Rx.Scheduler

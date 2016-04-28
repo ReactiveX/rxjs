@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,15 +60,15 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/bufferToggle.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
-import { Subscription } from &apos;../Subscription&apos;;
-import { tryCatch } from &apos;../util/tryCatch&apos;;
-import { errorObject } from &apos;../util/errorObject&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscription } from &apos;../Subscription&apos;;
+import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
 /**
  * Buffers the source Observable values starting from an emission from
  * `openings` and ending when the output of `closingSelector` emits.
@@ -82,7 +81,7 @@ import { errorObject } from &apos;../util/errorObject&apos;;
  *
  * Buffers values from the source by opening the buffer via signals from an
  * Observable provided to `openings`, and closing and sending the buffers when
- * an Observable returned by the `closingSelector` function emits.
+ * a Subscribable or Promise returned by the `closingSelector` function emits.
  *
  * @example &lt;caption&gt;Every other second, emit the click events from the next 500ms&lt;/caption&gt;
  * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
@@ -98,10 +97,10 @@ import { errorObject } from &apos;../util/errorObject&apos;;
  * @see {@link bufferWhen}
  * @see {@link windowToggle}
  *
- * @param {Observable&lt;O&gt;} openings An observable of notifications to start new
+ * @param {SubscribableOrPromise&lt;O&gt;} openings A Subscribable or Promise of notifications to start new
  * buffers.
- * @param {function(value: O): Observable} closingSelector A function that takes
- * the value emitted by the `openings` observable and returns an Observable,
+ * @param {function(value: O): SubscribableOrPromise} closingSelector A function that takes
+ * the value emitted by the `openings` observable and returns a Subscribable or Promise,
  * which, when it emits, signals that the associated buffer should be emitted
  * and cleared.
  * @return {Observable&lt;T[]&gt;} An observable of arrays of buffered values.
@@ -125,13 +124,13 @@ class BufferToggleOperator {
  * @ignore
  * @extends {Ignored}
  */
-class BufferToggleSubscriber extends Subscriber {
+class BufferToggleSubscriber extends OuterSubscriber {
     constructor(destination, openings, closingSelector) {
         super(destination);
         this.openings = openings;
         this.closingSelector = closingSelector;
         this.contexts = [];
-        this.add(this.openings.subscribe(new BufferToggleOpeningsSubscriber(this)));
+        this.add(subscribeToResult(this, openings));
     }
     _next(value) {
         const contexts = this.contexts;
@@ -163,76 +162,49 @@ class BufferToggleSubscriber extends Subscriber {
         this.contexts = null;
         super._complete();
     }
+    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        outerValue ? this.closeBuffer(outerValue) : this.openBuffer(innerValue);
+    }
+    notifyComplete(innerSub) {
+        this.closeBuffer(innerSub.context);
+    }
     openBuffer(value) {
-        const closingSelector = this.closingSelector;
-        const contexts = this.contexts;
-        let closingNotifier = tryCatch(closingSelector)(value);
-        if (closingNotifier === errorObject) {
-            this._error(errorObject.e);
+        try {
+            const closingSelector = this.closingSelector;
+            const closingNotifier = closingSelector.call(this, value);
+            if (closingNotifier) {
+                this.trySubscribe(closingNotifier);
+            }
         }
-        else {
-            let context = {
-                buffer: [],
-                subscription: new Subscription()
-            };
-            contexts.push(context);
-            const subscriber = new BufferToggleClosingsSubscriber(this, context);
-            const subscription = closingNotifier.subscribe(subscriber);
-            context.subscription.add(subscription);
-            this.add(subscription);
+        catch (err) {
+            this._error(err);
         }
     }
     closeBuffer(context) {
         const contexts = this.contexts;
-        if (contexts === null) {
-            return;
+        if (contexts &amp;&amp; context) {
+            const { buffer, subscription } = context;
+            this.destination.next(buffer);
+            contexts.splice(contexts.indexOf(context), 1);
+            this.remove(subscription);
+            subscription.unsubscribe();
         }
-        const { buffer, subscription } = context;
-        this.destination.next(buffer);
-        contexts.splice(contexts.indexOf(context), 1);
-        this.remove(subscription);
-        subscription.unsubscribe();
     }
-}
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferToggleOpeningsSubscriber extends Subscriber {
-    constructor(parent) {
-        super(null);
-        this.parent = parent;
-    }
-    _next(value) {
-        this.parent.openBuffer(value);
-    }
-    _error(err) {
-        this.parent.error(err);
-    }
-    _complete() {
-        // noop
-    }
-}
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferToggleClosingsSubscriber extends Subscriber {
-    constructor(parent, context) {
-        super(null);
-        this.parent = parent;
-        this.context = context;
-    }
-    _next() {
-        this.parent.closeBuffer(this.context);
-    }
-    _error(err) {
-        this.parent.error(err);
-    }
-    _complete() {
-        this.parent.closeBuffer(this.context);
+    trySubscribe(closingNotifier) {
+        const contexts = this.contexts;
+        const buffer = [];
+        const subscription = new Subscription();
+        const context = { buffer, subscription };
+        contexts.push(context);
+        const innerSubscription = subscribeToResult(this, closingNotifier, context);
+        if (!innerSubscription || innerSubscription.isUnsubscribed) {
+            this.closeBuffer(context);
+        }
+        else {
+            innerSubscription.context = context;
+            this.add(innerSubscription);
+            subscription.add(innerSubscription);
+        }
     }
 }
 //# sourceMappingURL=bufferToggle.js.map</code></pre>

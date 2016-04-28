@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -126,6 +126,7 @@ describe(&apos;Observable&apos;, function () {
                 chai_1.expect(x).to.equal(42);
             }).then(function () {
                 chai_1.expect(wasCalled).to.be.true;
+                delete __root__.Rx;
                 done();
             });
         });
@@ -147,6 +148,7 @@ describe(&apos;Observable&apos;, function () {
             });
         });
         it(&apos;should handle a synchronous throw from the next handler and tear down&apos;, function (done) {
+            var expected = new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
             var unsubscribeCalled = false;
             var syncObservable = new Observable(function (observer) {
                 observer.next(1);
@@ -160,18 +162,19 @@ describe(&apos;Observable&apos;, function () {
             syncObservable.forEach(function (x) {
                 results.push(x);
                 if (x === 2) {
-                    throw new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
+                    throw expected;
                 }
             }).then(function () {
                 done(new Error(&apos;should not be called&apos;));
             }, function (err) {
                 results.push(err);
-                chai_1.expect(results).to.deep.equal([1, 2, new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;)]);
+                chai_1.expect(results).to.deep.equal([1, 2, expected]);
                 chai_1.expect(unsubscribeCalled).to.be.true;
                 done();
             });
         });
         it(&apos;should handle an asynchronous throw from the next handler and tear down&apos;, function (done) {
+            var expected = new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
             var unsubscribeCalled = false;
             var syncObservable = new Observable(function (observer) {
                 var i = 1;
@@ -185,13 +188,13 @@ describe(&apos;Observable&apos;, function () {
             syncObservable.forEach(function (x) {
                 results.push(x);
                 if (x === 2) {
-                    throw new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
+                    throw expected;
                 }
             }).then(function () {
                 done(new Error(&apos;should not be called&apos;));
             }, function (err) {
                 results.push(err);
-                chai_1.expect(results).to.deep.equal([1, 2, new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;)]);
+                chai_1.expect(results).to.deep.equal([1, 2, expected]);
                 chai_1.expect(unsubscribeCalled).to.be.true;
                 done();
             });

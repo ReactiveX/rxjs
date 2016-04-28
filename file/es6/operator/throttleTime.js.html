@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -69,22 +69,54 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
 import { async } from &apos;../scheduler/async&apos;;
 /**
- * @param delay
- * @param scheduler
- * @return {Observable&lt;R&gt;|WebSocketSubject&lt;T&gt;|Observable&lt;T&gt;}
+ * Emits a value from the source Observable, then ignores subsequent source
+ * values for `duration` milliseconds, then repeats this process.
+ *
+ * &lt;span class=&quot;informal&quot;&gt;Lets a value pass, then ignores source values for the
+ * next `duration` milliseconds.&lt;/span&gt;
+ *
+ * &lt;img src=&quot;./img/throttleTime.png&quot; width=&quot;100%&quot;&gt;
+ *
+ * `throttleTime` emits the source Observable values on the output Observable
+ * when its internal timer is disabled, and ignores source values when the timer
+ * is enabled. Initially, the timer is disabled. As soon as the first source
+ * value arrives, it is forwarded to the output Observable, and then the timer
+ * is enabled. After `duration` milliseconds (or the time unit determined
+ * internally by the optional `scheduler`) has passed, the timer is disabled,
+ * and this process repeats for the next source value. Optionally takes a
+ * {@link Scheduler} for managing timers.
+ *
+ * @example &lt;caption&gt;Emit clicks at a rate of at most one click per second&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
+ * var result = clicks.throttleTime(1000);
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link auditTime}
+ * @see {@link debounceTime}
+ * @see {@link delay}
+ * @see {@link sampleTime}
+ * @see {@link throttle}
+ *
+ * @param {number} duration Time to wait before emitting another value after
+ * emitting the last value, measured in milliseconds or the time unit determined
+ * internally by the optional `scheduler`.
+ * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * managing the timers that handle the sampling.
+ * @return {Observable&lt;T&gt;} An Observable that performs the throttle operation to
+ * limit the rate of emissions from the source.
  * @method throttleTime
  * @owner Observable
  */
-export function throttleTime(delay, scheduler = async) {
-    return this.lift(new ThrottleTimeOperator(delay, scheduler));
+export function throttleTime(duration, scheduler = async) {
+    return this.lift(new ThrottleTimeOperator(duration, scheduler));
 }
 class ThrottleTimeOperator {
-    constructor(delay, scheduler) {
-        this.delay = delay;
+    constructor(duration, scheduler) {
+        this.duration = duration;
         this.scheduler = scheduler;
     }
     call(subscriber, source) {
-        return source._subscribe(new ThrottleTimeSubscriber(subscriber, this.delay, this.scheduler));
+        return source._subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler));
     }
 }
 /**
@@ -93,14 +125,14 @@ class ThrottleTimeOperator {
  * @extends {Ignored}
  */
 class ThrottleTimeSubscriber extends Subscriber {
-    constructor(destination, delay, scheduler) {
+    constructor(destination, duration, scheduler) {
         super(destination);
-        this.delay = delay;
+        this.duration = duration;
         this.scheduler = scheduler;
     }
     _next(value) {
         if (!this.throttled) {
-            this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.delay, { subscriber: this }));
+            this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.duration, { subscriber: this }));
             this.destination.next(value);
         }
     }
@@ -113,7 +145,8 @@ class ThrottleTimeSubscriber extends Subscriber {
         }
     }
 }
-function dispatchNext({ subscriber }) {
+function dispatchNext(arg) {
+    const { subscriber } = arg;
     subscriber.clearThrottle();
 }
 //# sourceMappingURL=throttleTime.js.map</code></pre>

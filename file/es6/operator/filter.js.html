@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -68,26 +68,55 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/filter.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
 /**
- * Similar to the well-known `Array.prototype.filter` method, this operator filters values down to a set
- * allowed by a `select` function
+ * Filter items emitted by the source Observable by only emitting those that
+ * satisfy a specified predicate.
  *
- * @param {Function} select a function that is used to select the resulting values
- *  if it returns `true`, the value is emitted, if `false` the value is not passed to the resulting observable
- * @param {any} [thisArg] an optional argument to determine the value of `this` in the `select` function
- * @return {Observable} an observable of values allowed by the select function
+ * &lt;span class=&quot;informal&quot;&gt;Like
+ * [Array.prototype.filter()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter),
+ * it only emits a value from the source if it passes a criterion function.&lt;/span&gt;
+ *
+ * &lt;img src=&quot;./img/filter.png&quot; width=&quot;100%&quot;&gt;
+ *
+ * Similar to the well-known `Array.prototype.filter` method, this operator
+ * takes values from the source Observable, passes them through a `predicate`
+ * function and only emits those values that yielded `true`.
+ *
+ * @example &lt;caption&gt;Emit only click events whose target was a DIV element&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
+ * var clicksOnDivs = clicks.filter(ev =&gt; ev.target.tagName === &apos;DIV&apos;);
+ * clicksOnDivs.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link distinct}
+ * @see {@link distinctKey}
+ * @see {@link distinctUntilChanged}
+ * @see {@link distinctUntilKeyChanged}
+ * @see {@link ignoreElements}
+ * @see {@link partition}
+ * @see {@link skip}
+ *
+ * @param {function(value: T, index: number): boolean} predicate A function that
+ * evaluates each value emitted by the source Observable. If it returns `true`,
+ * the value is emitted, if `false` the value is not passed to the output
+ * Observable. The `index` parameter is the number `i` for the i-th source
+ * emission that has happened since the subscription, starting from the number
+ * `0`.
+ * @param {any} [thisArg] An optional argument to determine the value of `this`
+ * in the `predicate` function.
+ * @return {Observable} An Observable of values from the source that were
+ * allowed by the `predicate` function.
  * @method filter
  * @owner Observable
  */
-export function filter(select, thisArg) {
-    return this.lift(new FilterOperator(select, thisArg));
+export function filter(predicate, thisArg) {
+    return this.lift(new FilterOperator(predicate, thisArg));
 }
 class FilterOperator {
-    constructor(select, thisArg) {
-        this.select = select;
+    constructor(predicate, thisArg) {
+        this.predicate = predicate;
         this.thisArg = thisArg;
     }
     call(subscriber, source) {
-        return source._subscribe(new FilterSubscriber(subscriber, this.select, this.thisArg));
+        return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
     }
 }
 /**
@@ -96,19 +125,19 @@ class FilterOperator {
  * @extends {Ignored}
  */
 class FilterSubscriber extends Subscriber {
-    constructor(destination, select, thisArg) {
+    constructor(destination, predicate, thisArg) {
         super(destination);
-        this.select = select;
+        this.predicate = predicate;
         this.thisArg = thisArg;
         this.count = 0;
-        this.select = select;
+        this.predicate = predicate;
     }
     // the try catch block below is left specifically for
     // optimization and perf reasons. a tryCatcher is not necessary here.
     _next(value) {
         let result;
         try {
-            result = this.select.call(this.thisArg, value, this.count++);
+            result = this.predicate.call(this.thisArg, value, this.count++);
         }
         catch (err) {
             this.destination.error(err);

@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -74,10 +74,10 @@ import { PromiseObservable } from &apos;./PromiseObservable&apos;;
 import { IteratorObservable } from &apos;./IteratorObservable&apos;;
 import { ArrayObservable } from &apos;./ArrayObservable&apos;;
 import { ArrayLikeObservable } from &apos;./ArrayLikeObservable&apos;;
-import { $$observable } from &apos;../symbol/observable&apos;;
 import { $$iterator } from &apos;../symbol/iterator&apos;;
 import { Observable } from &apos;../Observable&apos;;
 import { ObserveOnSubscriber } from &apos;../operator/observeOn&apos;;
+import * as $$observable from &apos;symbol-observable&apos;;
 const isArrayLike = ((x) =&gt; x &amp;&amp; typeof x.length === &apos;number&apos;);
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -90,6 +90,61 @@ export class FromObservable extends Observable {
         this.ish = ish;
         this.scheduler = scheduler;
     }
+    /**
+     * Creates an Observable from an Array, an array-like object, a Promise, an
+     * iterable object, or an Observable-like object.
+     *
+     * &lt;span class=&quot;informal&quot;&gt;Converts almost anything to an Observable.&lt;/span&gt;
+     *
+     * &lt;img src=&quot;./img/from.png&quot; width=&quot;100%&quot;&gt;
+     *
+     * Convert various other objects and data types into Observables. `from`
+     * converts a Promise or an array-like or an
+     * [iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+     * object into an Observable that emits the items in that promise or array or
+     * iterable. A String, in this context, is treated as an array of characters.
+     * Observable-like objects (contains a function named with the ES2015 Symbol
+     * for Observable) can also be converted through this operator.
+     *
+     * @example &lt;caption&gt;Converts an array to an Observable&lt;/caption&gt;
+     * var array = [10, 20, 30];
+     * var result = Rx.Observable.from(array);
+     * result.subscribe(x =&gt; console.log(x));
+     *
+     * @example &lt;caption&gt;Convert an infinite iterable (from a generator) to an Observable&lt;/caption&gt;
+     * function* generateDoubles(seed) {
+     *   var i = seed;
+     *   while (true) {
+     *     yield i;
+     *     i = 2 * i; // double it
+     *   }
+     * }
+     *
+     * var iterator = generateDoubles(3);
+     * var result = Rx.Observable.from(iterator).take(10);
+     * result.subscribe(x =&gt; console.log(x));
+     *
+     * @see {@link create}
+     * @see {@link fromEvent}
+     * @see {@link fromEventPattern}
+     * @see {@link fromPromise}
+     *
+     * @param {ObservableInput&lt;T&gt;} ish A subscribable object, a Promise, an
+     * Observable-like, an Array, an iterable or an array-like object to be
+     * converted.
+     * @param {function(x: any, i: number): T} [mapFn] A &quot;map&quot; function to call
+     * when converting array-like objects, where `x` is a value from the
+     * array-like and `i` is the index of that value in the sequence.
+     * @param {any} [thisArg] The context object to use when calling the `mapFn`,
+     * if provided.
+     * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+     * emissions of values.
+     * @return {Observable&lt;T&gt;} The Observable whose values are originally from the
+     * input object that was converted.
+     * @static true
+     * @name from
+     * @owner Observable
+     */
     static create(ish, mapFnOrScheduler, thisArg, lastScheduler) {
         let scheduler = null;
         let mapFn = null;

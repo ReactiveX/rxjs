@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -68,15 +68,39 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/scan.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
 /**
- * Returns an Observable that applies a specified accumulator function to each item emitted by the source Observable.
- * If a seed value is specified, then that value will be used as the initial value for the accumulator.
- * If no seed value is specified, the first item of the source is used as the seed.
- * @param {function} accumulator The accumulator function called on each item.
+ * Applies an accumulation function over the source Observable, and returns each
+ * intermediate result, with an optional seed value.
+ *
+ * &lt;span class=&quot;informal&quot;&gt;It&apos;s like {@link reduce}, but emits the current
+ * accumulation whenever the source emits a value.&lt;/span&gt;
  *
  * &lt;img src=&quot;./img/scan.png&quot; width=&quot;100%&quot;&gt;
  *
- * @param {any} [seed] The initial accumulator value.
- * @return {Obervable} An observable of the accumulated values.
+ * Combines together all values emitted on the source, using an accumulator
+ * function that knows how to join a new source value into the accumulation from
+ * the past. Is similar to {@link reduce}, but emits the intermediate
+ * accumulations.
+ *
+ * Returns an Observable that applies a specified `accumulator` function to each
+ * item emitted by the source Observable. If a `seed` value is specified, then
+ * that value will be used as the initial value for the accumulator. If no seed
+ * value is specified, the first item of the source is used as the seed.
+ *
+ * @example &lt;caption&gt;Count the number of click events&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
+ * var ones = clicks.mapTo(1);
+ * var seed = 0;
+ * var count = ones.scan((acc, one) =&gt; acc + one, seed);
+ * count.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link expand}
+ * @see {@link mergeScan}
+ * @see {@link reduce}
+ *
+ * @param {function(acc: R, value: T, index: number): R} accumulator
+ * The accumulator function called on each source value.
+ * @param {T|R} [seed] The initial accumulation value.
+ * @return {Observable&lt;R&gt;} An observable of the accumulated values.
  * @method scan
  * @owner Observable
  */
@@ -101,9 +125,9 @@ class ScanSubscriber extends Subscriber {
     constructor(destination, accumulator, seed) {
         super(destination);
         this.accumulator = accumulator;
+        this.index = 0;
         this.accumulatorSet = false;
         this.seed = seed;
-        this.accumulator = accumulator;
         this.accumulatorSet = typeof seed !== &apos;undefined&apos;;
     }
     get seed() {
@@ -123,9 +147,10 @@ class ScanSubscriber extends Subscriber {
         }
     }
     _tryNext(value) {
+        const index = this.index++;
         let result;
         try {
-            result = this.accumulator(this.seed, value);
+            result = this.accumulator(this.seed, value, index);
         }
         catch (err) {
             this.destination.error(err);

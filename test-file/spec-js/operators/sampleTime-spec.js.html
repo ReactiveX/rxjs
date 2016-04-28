@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -71,12 +71,12 @@ var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
 var Observable = Rx.Observable;
 /** @test {sampleTime} */
 describe(&apos;Observable.prototype.sampleTime&apos;, function () {
-    asDiagram(&apos;sampleTime(110)&apos;)(&apos;should get samples on a delay&apos;, function () {
-        var e1 = hot(&apos;----a-^--b----c----d----e----f----|&apos;);
-        var e1subs = &apos;^                           !&apos;;
-        var expected = &apos;-----------c----------e-----|&apos;;
-        // timer              -----------!----------!---------
-        expectObservable(e1.sampleTime(110, rxTestScheduler)).toBe(expected);
+    asDiagram(&apos;sampleTime(70)&apos;)(&apos;should get samples on a delay&apos;, function () {
+        var e1 = hot(&apos;a---b-c---------d--e---f-g-h--|&apos;);
+        var e1subs = &apos;^                             !&apos;;
+        var expected = &apos;-------c-------------e------h-|&apos;;
+        // timer          -------!------!------!------!--
+        expectObservable(e1.sampleTime(70, rxTestScheduler)).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
     it(&apos;should sample nothing if new value has not arrived&apos;, function () {

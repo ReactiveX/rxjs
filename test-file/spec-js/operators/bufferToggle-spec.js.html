@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -356,6 +356,69 @@ describe(&apos;Observable.prototype.bufferToggle&apos;, function () {
         expectObservable(result).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
         expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should accept openings resolved promise&apos;, function (done) {
+        var e1 = Observable.concat(Observable.timer(10).mapTo(1), Observable.timer(100).mapTo(2), Observable.timer(150).mapTo(3), Observable.timer(200).mapTo(4));
+        var expected = [[1]];
+        e1.bufferToggle(new Promise(function (resolve) { resolve(42); }), function () {
+            return Observable.timer(50);
+        }).subscribe(function (x) {
+            chai_1.expect(x).to.deep.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            chai_1.expect(expected.length).to.be.equal(0);
+            done();
+        });
+    });
+    it(&apos;should accept openings rejected promise&apos;, function (done) {
+        var e1 = Observable.concat(Observable.of(1), Observable.timer(10).mapTo(2), Observable.timer(10).mapTo(3), Observable.timer(100).mapTo(4));
+        var expected = 42;
+        e1.bufferToggle(new Promise(function (resolve, reject) { reject(expected); }), function () {
+            return Observable.timer(50);
+        }).subscribe(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (x) {
+            chai_1.expect(x).to.equal(expected);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+    });
+    it(&apos;should accept closing selector that returns a resolved promise&apos;, function (done) {
+        var e1 = Observable.concat(Observable.of(1), Observable.timer(10).mapTo(2), Observable.timer(10).mapTo(3), Observable.timer(100).mapTo(4));
+        var expected = [[1]];
+        e1.bufferToggle(Observable.of(10), function () { return new Promise(function (resolve) { resolve(42); }); })
+            .subscribe(function (x) {
+            chai_1.expect(x).to.deep.equal(expected.shift());
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            chai_1.expect(expected.length).to.be.equal(0);
+            done();
+        });
+    });
+    it(&apos;should accept closing selector that returns a rejected promise&apos;, function (done) {
+        var e1 = Observable.concat(Observable.of(1), Observable.timer(10).mapTo(2), Observable.timer(10).mapTo(3), Observable.timer(100).mapTo(4));
+        var expected = 42;
+        e1.bufferToggle(Observable.of(10), function () { return new Promise(function (resolve, reject) { reject(expected); }); })
+            .subscribe(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (x) {
+            chai_1.expect(x).to.equal(expected);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+    });
+    it(&apos;should handle empty closing observable&apos;, function () {
+        var e1 = hot(&apos;--a--^---b---c---d---e---f---g---h------|&apos;);
+        var subs = &apos;^                                  !&apos;;
+        var e2 = cold(&apos;--x-----------y--------z---|        &apos;);
+        var expected = &apos;--l-----------m--------n-----------|&apos;;
+        var result = e1.bufferToggle(e2, function () { return Observable.empty(); });
+        expectObservable(result).toBe(expected, { l: [], m: [], n: [] });
+        expectSubscriptions(e1.subscriptions).toBe(subs);
     });
 });
 //# sourceMappingURL=bufferToggle-spec.js.map</code></pre>

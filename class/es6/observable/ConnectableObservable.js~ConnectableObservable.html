@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -151,13 +151,13 @@ url, headers, etc or a string for a URL.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-bindCallback">bindCallback</a></span></span><span data-ice="signature">(callbackFunc: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, selector: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...params: <span>*</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-bindCallback">bindCallback</a></span></span><span data-ice="signature">(func: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, selector: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...params: <span>*</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Converts a callback function to an observable sequence.</p>
+        <div data-ice="description"><p>Converts a callback API to a function that returns an Observable.</p>
 </div>
       </div>
     </td>
@@ -177,13 +177,14 @@ url, headers, etc or a string for a URL.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-bindNodeCallback">bindNodeCallback</a></span></span><span data-ice="signature">(callbackFunc: <span>*</span>, selector: <span>*</span>, scheduler: <span>*</span>): <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...params: <span>*</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-bindNodeCallback">bindNodeCallback</a></span></span><span data-ice="signature">(func: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, selector: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...params: <span>*</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Converts a node callback to an Observable.</p>
+        <div data-ice="description"><p>Converts a Node.js-style callback API to a function that returns an
+Observable.</p>
 </div>
       </div>
     </td>
@@ -203,13 +204,14 @@ url, headers, etc or a string for a URL.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-combineLatest">combineLatest</a></span></span><span data-ice="signature">(observables: ...<span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-combineLatest">combineLatest</a></span></span><span data-ice="signature">(observable1: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, observable2: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>, project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Combines the values from observables passed as arguments.</p>
+        <div data-ice="description"><p>Combines multiple Observables to create an Observable whose values are
+calculated from the latest values of each of its input Observables.</p>
 </div>
       </div>
     </td>
@@ -362,13 +364,15 @@ emits a complete notification.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEvent">fromEvent</a></span></span><span data-ice="signature">(sourceObj: <span>*</span>, eventName: <span>*</span>, selector: <span>*</span>): <span>FromEventObservable</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-from">from</a></span></span><span data-ice="signature">(ish: <span>ObservableInput</span>&lt;<span>T</span>&gt;, mapFn: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(x: <span>any</span>, i: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span>T</span></span>, thisArg: <span>any</span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Creates an Observable from an Array, an array-like object, a Promise, an
+iterable object, or an Observable-like object.</p>
+</div>
       </div>
     </td>
     <td>
@@ -387,13 +391,15 @@ emits a complete notification.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEventPattern">fromEventPattern</a></span></span><span data-ice="signature">(addHandler: <span>*</span>, removeHandler: <span>*</span>, selector: <span>*</span>): <span>FromEventPatternObservable</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEvent">fromEvent</a></span></span><span data-ice="signature">(target: <span>EventTargetLike</span>, eventName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Creates an Observable that emits events of a specific type coming from the
+given event target.</p>
+</div>
       </div>
     </td>
     <td>
@@ -412,13 +418,41 @@ emits a complete notification.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromPromise">fromPromise</a></span></span><span data-ice="signature">(promise: <span>*</span>, scheduler: <span>*</span>): <span>PromiseObservable</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEventPattern">fromEventPattern</a></span></span><span data-ice="signature">(addHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>any</span></span>, removeHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>void</span></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
+        <div data-ice="description"><p>Creates an Observable from an API based on addHandler/removeHandler
+functions.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromPromise">fromPromise</a></span></span><span data-ice="signature">(promise: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>T</span>&gt;, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+        </p>
+      </div>
+      <div>
         
+        
+        <div data-ice="description"><p>Converts a Promise to an Observable.</p>
+</div>
       </div>
     </td>
     <td>
@@ -701,13 +735,16 @@ emits ever increasing numbers after each <code>period</code> of time thereafter.
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-audit">audit</a></span></span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-audit">audit</a></span></span><span data-ice="signature">(durationSelector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Ignores source values for a duration determined by another Observable, then
+emits the most recent value from the source Observable, then repeats this
+process.</p>
+</div>
       </div>
     </td>
     <td>
@@ -726,13 +763,15 @@ emits ever increasing numbers after each <code>period</code> of time thereafter.
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-auditTime">auditTime</a></span></span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-auditTime">auditTime</a></span></span><span data-ice="signature">(duration: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Ignores source values for <code>duration</code> milliseconds, then emits the most recent
+value from the source Observable, then repeats this process.</p>
+</div>
       </div>
     </td>
     <td>
@@ -830,7 +869,7 @@ emits ever increasing numbers after each <code>period</code> of time thereafter.
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-bufferToggle">bufferToggle</a></span></span><span data-ice="signature">(openings: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>O</span>&gt;, closingSelector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>O</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-bufferToggle">bufferToggle</a></span></span><span data-ice="signature">(openings: <span>SubscribableOrPromise</span>&lt;<span>O</span>&gt;, closingSelector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>O</span>)</span>: <span>SubscribableOrPromise</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
         </p>
       </div>
       <div>
@@ -1099,15 +1138,14 @@ source completes.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-debounce">debounce</a></span></span><span data-ice="signature">(durationSelector: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-debounce">debounce</a></span></span><span data-ice="signature">(durationSelector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Returns the source Observable delayed by the computed debounce duration,
-with the duration lengthened if a new source item arrives before the delay
-duration ends.</p>
+        <div data-ice="description"><p>Emits a value from the source Observable only after a particular time span
+determined by another Observable has passed without another source emission.</p>
 </div>
       </div>
     </td>
@@ -1133,9 +1171,8 @@ duration ends.</p>
       <div>
         
         
-        <div data-ice="description"><p>Returns the source Observable delayed by the computed debounce duration,
-with the duration lengthened if a new source item arrives before the delay
-duration ends.</p>
+        <div data-ice="description"><p>Emits a value from the source Observable only after a particular time span
+has passed without another source emission.</p>
 </div>
       </div>
     </td>
@@ -1161,7 +1198,8 @@ duration ends.</p>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that emits the elements of the source or a specified default value if empty.</p>
+        <div data-ice="description"><p>Emits a given value if the source Observable completes without emitting any
+<code>next</code> value, otherwise mirrors the source Observable.</p>
 </div>
       </div>
     </td>
@@ -1208,14 +1246,14 @@ until a given Date.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-delayWhen">delayWhen</a></span></span><span data-ice="signature">(selector: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, sequence: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-delayWhen">delayWhen</a></span></span><span data-ice="signature">(delayDurationSelector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>, subscriptionDelay: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that delays the emission of items from the source Observable
-by a subscription delay and a delay selector function for each element.</p>
+        <div data-ice="description"><p>Delays the emission of items from the source Observable by a given time span
+determined by the emissions of another Observable.</p>
 </div>
       </div>
     </td>
@@ -1367,13 +1405,41 @@ using a property accessed by using the key provided to check if the two items ar
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-elementAt">elementAt</a></span></span><span data-ice="signature">(index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, defaultValue: <span>any</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-do">do</a></span></span><span data-ice="signature">(nextOrObserver: <span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, error: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, complete: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that emits the item at the specified index in the source Observable.</p>
+        <div data-ice="description"><p>Perform a side effect for every emission on the source Observable, but return
+an Observable that is identical to the source.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-elementAt">elementAt</a></span></span><span data-ice="signature">(index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, defaultValue: <span>T</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Emits the single value at the specified <code>index</code> in a sequence of emissions
+from the source Observable.</p>
 </div>
       </div>
     </td>
@@ -1500,14 +1566,14 @@ resulting in a new value to then be applied again with the function.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-filter">filter</a></span></span><span data-ice="signature">(select: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, thisArg: <span>any</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-filter">filter</a></span></span><span data-ice="signature">(predicate: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>, thisArg: <span>any</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Similar to the well-known <code>Array.prototype.filter</code> method, this operator filters values down to a set
-allowed by a <code>select</code> function</p>
+        <div data-ice="description"><p>Filter items emitted by the source Observable by only emitting those that
+satisfy a specified predicate.</p>
 </div>
       </div>
     </td>
@@ -1791,14 +1857,14 @@ operator defined as the new observable&apos;s operator.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-map">map</a></span></span><span data-ice="signature">(project: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, thisArg: <span>any</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-map">map</a></span></span><span data-ice="signature">(project: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span>R</span></span>, thisArg: <span>any</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Similar to the well known <code>Array.prototype.map</code> function, this operator
-applies a projection to each value and emits that projection in the returned observable</p>
+        <div data-ice="description"><p>Applies a given <code>project</code> function to each value emitted by the source
+Observable, and emits the resulting values as an Observable.</p>
 </div>
       </div>
     </td>
@@ -1824,7 +1890,8 @@ applies a projection to each value and emits that projection in the returned obs
       <div>
         
         
-        <div data-ice="description"><p>Maps every value to the same value every time.</p>
+        <div data-ice="description"><p>Emits the given constant value on the output Observable every time the source
+Observable emits a value.</p>
 </div>
       </div>
     </td>
@@ -2111,13 +2178,14 @@ emitted by a ConnectableObservable that shares a single subscription to the unde
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-pairwise">pairwise</a></span></span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-pairwise">pairwise</a></span></span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>[T</span>, <span>T]</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Returns a new observable that triggers on the second and following inputs.</p>
+        <div data-ice="description"><p>Groups pairs of consecutive emissions together and emits them as an array of
+two values.</p>
 </div>
       </div>
     </td>
@@ -2137,13 +2205,18 @@ emitted by a ConnectableObservable that shares a single subscription to the unde
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-partition">partition</a></span></span><span data-ice="signature">(predicate: <span>*</span>, thisArg: <span>*</span>): <span><span>Observable&lt;T&gt;</span><span>[]</span></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-partition">partition</a></span></span><span data-ice="signature">(predicate: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>, thisArg: <span>any</span>): <span>[Observable&lt;T&gt;, Observable&lt;T&gt;]</span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Splits the source Observable into two, one with values that satisfy a
+predicate, and another with values that don&apos;t satisfy the predicate.</p>
+<p><span class="informal">It&apos;s like <span><a href="class/es6/Observable.js~Observable.html#instance-method-filter">filter</a></span>, but returns two Observables:
+one like the output of <span><a href="class/es6/Observable.js~Observable.html#instance-method-filter">filter</a></span>, and the other with values that did not
+pass the condition.</span></p>
+</div>
       </div>
     </td>
     <td>
@@ -2162,14 +2235,13 @@ emitted by a ConnectableObservable that shares a single subscription to the unde
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-pluck">pluck</a></span></span><span data-ice="signature">(properties: ...<span>args</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-pluck">pluck</a></span></span><span data-ice="signature">(properties: ...<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Retrieves the value of a specified nested property from all elements in
-the Observable sequence.</p>
+        <div data-ice="description"><p>Maps each source value (an object) to its specified nested property.</p>
 </div>
       </div>
     </td>
@@ -2427,15 +2499,14 @@ predicate returns true for that specific exception and retry count.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-sample">sample</a></span></span><span data-ice="signature">(sampler: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-sample">sample</a></span></span><span data-ice="signature">(notifier: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>any</span>&gt;): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that, when the specified sampler Observable emits an item or completes, it then emits the most
-recently emitted item (if any) emitted by the source Observable since the previous emission from the sampler
-Observable.</p>
+        <div data-ice="description"><p>Emits the most recently emitted value from the source Observable whenever
+another Observable, the <code>notifier</code>, emits.</p>
 </div>
       </div>
     </td>
@@ -2455,13 +2526,15 @@ Observable.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-sampleTime">sampleTime</a></span></span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-sampleTime">sampleTime</a></span></span><span data-ice="signature">(period: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Emits the most recently emitted value from the source Observable within
+periodic time intervals.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2480,13 +2553,14 @@ Observable.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-scan">scan</a></span></span><span data-ice="signature">(accumulator: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>, seed: <span>any</span>): <span>Obervable</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-scan">scan</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span>R</span></span>, seed: <span>T</span> | <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that applies a specified accumulator function to each item emitted by the source Observable.</p>
+        <div data-ice="description"><p>Applies an accumulation function over the source Observable, and returns each
+intermediate result, with an optional seed value.</p>
 </div>
       </div>
     </td>
@@ -2799,13 +2873,14 @@ times with <span><a href="class/es6/Observable.js~Observable.html#instance-metho
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-take">take</a></span></span><span data-ice="signature">(total: <span>*</span>): <span>any</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-take">take</a></span></span><span data-ice="signature">(count: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Emits only the first <code>count</code> values emitted by the source Observable.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2824,13 +2899,14 @@ times with <span><a href="class/es6/Observable.js~Observable.html#instance-metho
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-takeLast">takeLast</a></span></span><span data-ice="signature">(total: <span>*</span>): <span>any</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-takeLast">takeLast</a></span></span><span data-ice="signature">(count: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Emits only the last <code>count</code> values emitted by the source Observable.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2849,13 +2925,15 @@ times with <span><a href="class/es6/Observable.js~Observable.html#instance-metho
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-takeUntil">takeUntil</a></span></span><span data-ice="signature">(notifier: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-takeUntil">takeUntil</a></span></span><span data-ice="signature">(notifier: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Emits the values emitted by the source Observable until a <code>notifier</code>
+Observable emits a value.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2874,13 +2952,16 @@ times with <span><a href="class/es6/Observable.js~Observable.html#instance-metho
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-takeWhile">takeWhile</a></span></span><span data-ice="signature">(predicate: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-takeWhile">takeWhile</a></span></span><span data-ice="signature">(predicate: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Emits values emitted by the source Observable so long as each value satisfies
+the given <code>predicate</code>, and then completes as soon as this <code>predicate</code> is not
+satisfied.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2899,13 +2980,16 @@ times with <span><a href="class/es6/Observable.js~Observable.html#instance-metho
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-throttle">throttle</a></span></span><span data-ice="signature">(durationSelector: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-throttle">throttle</a></span></span><span data-ice="signature">(durationSelector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Emits a value from the source Observable, then ignores subsequent source
+values for a duration determined by another Observable, then repeats this
+process.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2924,13 +3008,15 @@ times with <span><a href="class/es6/Observable.js~Observable.html#instance-metho
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-throttleTime">throttleTime</a></span></span><span data-ice="signature">(delay: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span>WebSocketSubject</span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-throttleTime">throttleTime</a></span></span><span data-ice="signature">(duration: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Emits a value from the source Observable, then ignores subsequent source
+values for <code>duration</code> milliseconds, then repeats this process.</p>
+</div>
       </div>
     </td>
     <td>

@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -85,18 +85,47 @@ export class BoundNodeCallbackObservable extends Observable {
     }
     /* tslint:enable:max-line-length */
     /**
-     * Converts a node callback to an Observable.
-     * @param callbackFunc
-     * @param selector
-     * @param scheduler
-     * @return {function(...params: *): Observable&lt;T&gt;}
+     * Converts a Node.js-style callback API to a function that returns an
+     * Observable.
+     *
+     * &lt;span class=&quot;informal&quot;&gt;It&apos;s just like {@link bindCallback}, but the
+     * callback is expected to be of type `callback(error, result)`.&lt;/span&gt;
+     *
+     * `bindNodeCallback` is not an operator because its input and output are not
+     * Observables. The input is a function `func` with some parameters, but the
+     * last parameter must be a callback function that `func` calls when it is
+     * done. The callback function is expected to follow Node.js conventions,
+     * where the first argument to the callback is an error, while remaining
+     * arguments are the callback result. The output of `bindNodeCallback` is a
+     * function that takes the same parameters as `func`, except the last one (the
+     * callback). When the output function is called with arguments, it will
+     * return an Observable where the results will be delivered to.
+     *
+     * @example &lt;caption&gt;Read a file from the filesystem and get the data as an Observable&lt;/caption&gt;
+     * import * as fs from &apos;fs&apos;;
+     * var readFileAsObservable = Rx.Observable.bindNodeCallback(fs.readFile);
+     * var result = readFileAsObservable(&apos;./roadNames.txt&apos;, &apos;utf8&apos;);
+     * result.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));
+     *
+     * @see {@link bindCallback}
+     * @see {@link from}
+     * @see {@link fromPromise}
+     *
+     * @param {function} func Function with a callback as the last parameter.
+     * @param {function} selector A function which takes the arguments from the
+     * callback and maps those a value to emit on the output Observable.
+     * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+     * callbacks.
+     * @return {function(...params: *): Observable} A function which returns the
+     * Observable that delivers the same values the Node.js callback would
+     * deliver.
      * @static true
      * @name bindNodeCallback
      * @owner Observable
      */
-    static create(callbackFunc, selector = undefined, scheduler) {
+    static create(func, selector = undefined, scheduler) {
         return (...args) =&gt; {
-            return new BoundNodeCallbackObservable(callbackFunc, selector, args, scheduler);
+            return new BoundNodeCallbackObservable(func, selector, args, scheduler);
         };
     }
     _subscribe(subscriber) {
@@ -180,11 +209,13 @@ function dispatch(state) {
     }
     self.add(subject.subscribe(subscriber));
 }
-function dispatchNext({ value, subject }) {
+function dispatchNext(arg) {
+    const { value, subject } = arg;
     subject.next(value);
     subject.complete();
 }
-function dispatchError({ err, subject }) {
+function dispatchError(arg) {
+    const { err, subject } = arg;
     subject.error(err);
 }
 //# sourceMappingURL=BoundNodeCallbackObservable.js.map</code></pre>

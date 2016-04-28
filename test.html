@@ -46,7 +46,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
@@ -61,6 +60,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -336,19 +336,19 @@
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber64"><p>should reject promise if nextHandler throws</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber65"><p>should reject promise if nextHandler throws</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber81"><p>should handle a synchronous throw from the next handler and tear down</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber82"><p>should handle a synchronous throw from the next handler and tear down</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber106"><p>should handle an asynchronous throw from the next handler and tear down</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber108"><p>should handle an asynchronous throw from the next handler and tear down</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -356,56 +356,56 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber132"><p>subscribe</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber135"><p>subscribe</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">16</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber133"><p>should be synchronous</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber136"><p>should be synchronous</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber157"><p>should work when subscribe is called with no arguments</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber160"><p>should work when subscribe is called with no arguments</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber164"><p>should return a Subscription that calls the unsubscribe function returned by the subscriber</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber167"><p>should return a Subscription that calls the unsubscribe function returned by the subscriber</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber180"><p>should run unsubscription logic when an error is thrown sending messages synchronously</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber183"><p>should run unsubscription logic when an error is thrown sending messages synchronously</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber203"><p>should dispose of the subscriber when an error is thrown sending messages synchronously</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber206"><p>should dispose of the subscriber when an error is thrown sending messages synchronously</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber228"><p>should ignore next messages after unsubscription</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber231"><p>should ignore next messages after unsubscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber244"><p>should ignore error messages after unsubscription</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber247"><p>should ignore error messages after unsubscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber262"><p>should ignore complete messages after unsubscription</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber265"><p>should ignore complete messages after unsubscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -413,52 +413,52 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber280"><p>when called with an anonymous observer</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber283"><p>when called with an anonymous observer</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">8</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber281">spec-js/Observable-spec.js</a></span></td>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber284">spec-js/Observable-spec.js</a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber293">spec-js/Observable-spec.js</a></span></td>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber296">spec-js/Observable-spec.js</a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber305">spec-js/Observable-spec.js</a></span></td>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber308">spec-js/Observable-spec.js</a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber316"><p>should accept an anonymous observer with no functions at all</p>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber319"><p>should accept an anonymous observer with no functions at all</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber321">spec-js/Observable-spec.js</a></span></td>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber324">spec-js/Observable-spec.js</a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber352"><p>should ignore next messages after unsubscription</p>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber355"><p>should ignore next messages after unsubscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber370"><p>should ignore error messages after unsubscription</p>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber373"><p>should ignore error messages after unsubscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="3">
-  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber391"><p>should ignore complete messages after unsubscription</p>
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber394"><p>should ignore complete messages after unsubscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -466,20 +466,20 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber416"><p>Observable.create</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber419"><p>Observable.create</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
   <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber422"><p>should create an Observable</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber425"><p>should create an Observable</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber428"><p>should provide an observer to the function</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber431"><p>should provide an observer to the function</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -487,20 +487,20 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber443"><p>Observable.lift</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber446"><p>Observable.lift</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
   <td data-ice="testCount">2</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber444"><p>should be overrideable in a custom Observable type that composes</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber447"><p>should be overrideable in a custom Observable type that composes</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber474">spec-js/Observable-spec.js</a></span></td>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber477">spec-js/Observable-spec.js</a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
@@ -938,25 +938,25 @@
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber148"><p>should pass multiple inner arguments as an array</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber145"><p>should pass multiple inner arguments as an array</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber163"><p>should pass multiple inner arguments to the selector if there is one</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber160"><p>should pass multiple inner arguments to the selector if there is one</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber182"><p>should cache value for next subscription and not call callbackFunc again</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber179"><p>should cache value for next subscription and not call callbackFunc again</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber207"><p>should not even call the callbackFn if immediately unsubscribed</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber204"><p>should not even call the callbackFn if immediately unsubscribed</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -989,7 +989,7 @@
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber53"><p>should not emit, throw or complete if immediately unsubscribed</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber52"><p>should not emit, throw or complete if immediately unsubscribed</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -997,32 +997,32 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber76"><p>when scheduled</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber75"><p>when scheduled</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">4</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber77"><p>should emit one value from a callback</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber76"><p>should emit one value from a callback</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber92"><p>should error if callback throws</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber91"><p>should error if callback throws</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber109"><p>should error if selector throws</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber107"><p>should error if selector throws</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber129"><p>should use a selector</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber126"><p>should use a selector</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -1037,19 +1037,19 @@
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber183"><p>should pass multiple inner arguments as an array</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber180"><p>should pass multiple inner arguments as an array</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber198"><p>should pass multiple inner arguments to the selector if there is one</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber195"><p>should pass multiple inner arguments to the selector if there is one</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber217"><p>should cache value for next subscription and not call callbackFunc again</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber214"><p>should cache value for next subscription and not call callbackFunc again</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -1088,7 +1088,7 @@
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber70"><p>should not emit, throw or complete if immediately unsubscribed</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber69"><p>should not emit, throw or complete if immediately unsubscribed</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -1096,38 +1096,38 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber93"><p>when scheduled</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber92"><p>when scheduled</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td data-ice="testCount">5</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber94"><p>should emit one value from a callback</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber93"><p>should emit one value from a callback</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber109"><p>should error if callback throws</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber108"><p>should error if callback throws</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber126"><p>should raise error from callback</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber124"><p>should raise error from callback</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber144"><p>should error if selector throws</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber142"><p>should error if selector throws</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
-  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber164"><p>should use a selector</p>
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber161"><p>should use a selector</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -2043,7 +2043,7 @@
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-promise-spec.js.html#lineNumber128"><p>should globally throw unhandled errors on window</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-promise-spec.js.html#lineNumber129"><p>should globally throw unhandled errors on window</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -2053,90 +2053,90 @@
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
   <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber7"><p>Observable.from</p>
 </a></span></td>
-  <td data-ice="testTarget" class="test-target"><span>from</span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/es6/Observable.js~Observable.html#static-method-from">from</a></span></td>
   <td data-ice="testCount">14</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber8"><p>should enumerate an Array</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber14"><p>should enumerate an Array</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber20"><p>should handle an ArrayLike</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber26"><p>should handle an ArrayLike</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber37"><p>should handle an ArrayLike from arguments</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber43"><p>should handle an ArrayLike from arguments</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber55"><p>should handle an ArrayLike with a mapFn</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber61"><p>should handle an ArrayLike with a mapFn</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber73"><p>should handle an ArrayLike with a thisArg</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber79"><p>should handle an ArrayLike with a thisArg</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber92"><p>should handle a promise</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber98"><p>should handle a promise</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber102"><p>should handle an &quot;observableque&quot; object</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber108"><p>should handle an &quot;observableque&quot; object</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber120"><p>should accept scheduler for observableque object</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber126"><p>should accept scheduler for observableque object</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber134"><p>should handle a string</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber140"><p>should handle a string</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber144"><p>should handle any iterable thing</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber150"><p>should handle any iterable thing</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber168"><p>should throw for non observable object</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber174"><p>should throw for non observable object</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber174"><p>should handle object has observable symbol</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber180"><p>should handle object has observable symbol</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber184"><p>should return T for ObservableLike objects</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber190"><p>should return T for ObservableLike objects</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber194"><p>should return T and map for arrays</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/from-spec.js.html#lineNumber199"><p>should return T and map for arrays</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -2151,49 +2151,49 @@
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber7"><p>should setup an event observable on objects with &quot;on&quot; and &quot;off&quot; </p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber23"><p>should setup an event observable on objects with &quot;on&quot; and &quot;off&quot; </p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber32"><p>should setup an event observable on objects with &quot;addEventListener&quot; and &quot;removeEventListener&quot; </p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber48"><p>should setup an event observable on objects with &quot;addEventListener&quot; and &quot;removeEventListener&quot; </p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber57"><p>should setup an event observable on objects with &quot;addListener&quot; and &quot;removeListener&quot; </p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber73"><p>should setup an event observable on objects with &quot;addListener&quot; and &quot;removeListener&quot; </p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber82"><p>should pass through events that occur</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber98"><p>should pass through events that occur</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber102"><p>should pass through events that occur and use the selector if provided</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber118"><p>should pass through events that occur and use the selector if provided</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber125"><p>should not fail if no event arguments are passed and the selector does not return</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber141"><p>should not fail if no event arguments are passed and the selector does not return</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber148"><p>should return a value from the selector if no event arguments are passed</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber164"><p>should return a value from the selector if no event arguments are passed</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber171"><p>should pass multiple arguments to selector from event emitter</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber187"><p>should pass multiple arguments to selector from event emitter</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -2208,31 +2208,106 @@
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber7"><p>should call addHandler on subscription</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber19"><p>should call addHandler on subscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber21"><p>should call removeHandler on unsubscription</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber33"><p>should call removeHandler on unsubscription</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber36"><p>should send errors in addHandler down the error path</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber48"><p>should send errors in addHandler down the error path</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber47"><p>should accept a selector that maps outgoing values</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber59"><p>should accept a selector that maps outgoing values</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber77"><p>should send errors in the selector down the error path</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber89"><p>should send errors in the selector down the error path</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber9"><p>Observable.generate</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">11</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber25"><p>should use result selector</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber30"><p>should allow omit condition</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber39"><p>should stop producing when unsubscribed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber51"><p>should accept a scheduler</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber67"><p>should allow minimal possible options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber75"><p>should emit error if result selector throws</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber84"><p>should emit error if result selector throws on scheduler</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber94"><p>should emit error after first value if iterate function throws</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber102"><p>should emit error after first value if iterate function throws on scheduler</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber111"><p>should emit error if condition function throws</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/observables/generate-spec.js.html#lineNumber120"><p>should emit error if condition function throws on scheduler</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -3558,7 +3633,7 @@
   <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/operators/bufferToggle-spec.js.html#lineNumber6"><p>Observable.prototype.bufferToggle</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target"><span><a href="class/es6/Observable.js~Observable.html#instance-method-bufferToggle">bufferToggle</a></span></td>
-  <td data-ice="testCount">16</td>
+  <td data-ice="testCount">21</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
@@ -3652,6 +3727,36 @@
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
   <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/bufferToggle-spec.js.html#lineNumber280"><p>should handle opening Observable that just throws</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/bufferToggle-spec.js.html#lineNumber292"><p>should accept openings resolved promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/bufferToggle-spec.js.html#lineNumber306"><p>should accept openings rejected promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/bufferToggle-spec.js.html#lineNumber320"><p>should accept closing selector that returns a resolved promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/bufferToggle-spec.js.html#lineNumber333"><p>should accept closing selector that returns a rejected promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/bufferToggle-spec.js.html#lineNumber346"><p>should handle empty closing observable</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -7794,19 +7899,19 @@
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/map-spec.js.html#lineNumber160"><p>should map twice</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/map-spec.js.html#lineNumber162"><p>should map twice</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/map-spec.js.html#lineNumber177"><p>should do multiple maps using a custom thisArg</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/map-spec.js.html#lineNumber179"><p>should do multiple maps using a custom thisArg</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/map-spec.js.html#lineNumber194"><p>should not break unsubscription chain when unsubscribed explicitly</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/map-spec.js.html#lineNumber196"><p>should not break unsubscription chain when unsubscribed explicitly</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -9309,37 +9414,37 @@
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber3"><p>should pairwise things</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber15"><p>should pairwise things</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber18"><p>should not emit on single-element streams</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber30"><p>should not emit on single-element streams</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber27"><p>should handle mid-stream throw</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber39"><p>should handle mid-stream throw</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber40"><p>should handle empty</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber52"><p>should handle empty</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber48"><p>should handle never</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber60"><p>should handle never</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber56"><p>should handle throw</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pairwise-spec.js.html#lineNumber68"><p>should handle throw</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -9447,67 +9552,67 @@
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber7"><p>should work for one object</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber18"><p>should work for one object</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber15"><p>should work for multiple objects</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber26"><p>should work for multiple objects</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber30"><p>should work with deep nested properties</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber41"><p>should work with deep nested properties</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber45"><p>should work with edge cases of deep nested properties</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber56"><p>should work with edge cases of deep nested properties</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber61"><p>should throw an error if not property is passed</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber72"><p>should throw an error if not property is passed</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber66"><p>should propagate errors from observable that emits only errors</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber77"><p>should propagate errors from observable that emits only errors</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber74"><p>should propagate errors from observable that emit values</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber85"><p>should propagate errors from observable that emit values</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber82"><p>should not pluck an empty observable</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber93"><p>should not pluck an empty observable</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber95"><p>should allow unsubscribing explicitly and early</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber106"><p>should allow unsubscribing explicitly and early</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber104"><p>should pluck twice</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber115"><p>should pluck twice</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber119"><p>should not break unsubscription chain when unsubscribed explicitly</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/pluck-spec.js.html#lineNumber130"><p>should not break unsubscription chain when unsubscribed explicitly</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -9967,68 +10072,74 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber5"><p>Observable.prototype.race</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber6"><p>Observable.prototype.race</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target"><span><a href="class/es6/Observable.js~Observable.html#instance-method-race">race</a></span></td>
-  <td data-ice="testCount">10</td>
+  <td data-ice="testCount">11</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber6"><p>should race cold and cold</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber7"><p>should race cold and cold</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber17"><p>should race hot and hot</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber18"><p>should race hot and hot</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber28"><p>should race hot and cold</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber29"><p>should race hot and cold</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber39"><p>should race 2nd and 1st</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber40"><p>should race 2nd and 1st</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber50"><p>should race emit and complete</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber51"><p>should race emit and complete</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber61"><p>should allow unsubscribing early and explicitly</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber62"><p>should allow unsubscribing early and explicitly</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber73"><p>should not break unsubscription chains when unsubscribed explicitly</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber74"><p>should not break unsubscription chains when unsubscribed explicitly</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber88"><p>should never emit when given non emitting sources</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber89"><p>should never emit when given non emitting sources</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber97"><p>should throw when error occurs mid stream</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber98"><p>should throw when error occurs mid stream</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber108"><p>should throw when error occurs before a winner is found</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber109"><p>should throw when error occurs before a winner is found</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber120"><p>should allow observable emits immediately</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -10677,62 +10788,68 @@
 
 
 <tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber5"><p>Observable.prototype.scan</p>
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber6"><p>Observable.prototype.scan</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target"><span><a href="class/es6/Observable.js~Observable.html#instance-method-scan">scan</a></span></td>
-  <td data-ice="testCount">9</td>
+  <td data-ice="testCount">10</td>
 </tr>
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber20"><p>should scan things</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber21"><p>should scan things</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber36"><p>should scan without seed</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber37"><p>should scan without seed</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber49"><p>should handle errors</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber50"><p>should handle errors</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber62"><p>should handle errors in the projection function</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber63"><p>should handle errors in the projection function</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber83"><p>handle empty</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber84"><p>handle empty</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber91"><p>handle never</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber92"><p>handle never</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber99"><p>handle throw</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber100"><p>handle throw</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber107"><p>should allow unsubscribing explicitly and early</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber108"><p>should allow unsubscribing explicitly and early</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber124"><p>should not break unsubscription chains when result is unsubscribed explicitly</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber125"><p>should not break unsubscription chains when result is unsubscribed explicitly</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/operators/scan-spec.js.html#lineNumber145"><p>should pass current index to accumulator</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -14313,7 +14430,7 @@
   <td></td>
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/subjects/AsyncSubject-spec.js.html#lineNumber111"><p>should keep emitting error to subsequent subscriptions</p>
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/subjects/AsyncSubject-spec.js.html#lineNumber112"><p>should keep emitting error to subsequent subscriptions</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -14507,21 +14624,6 @@
 
 <tr data-ice="testIt" style="display: none;" data-test-depth="1">
   <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/symbol/iterator-spec.js.html#lineNumber6"><p>should exist in the proper form</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td></td>
-</tr>
-
-
-<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
-  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/symbol/observable-spec.js.html#lineNumber5"><p>rxSubscriber symbol</p>
-</a></span></td>
-  <td data-ice="testTarget" class="test-target">-</td>
-  <td data-ice="testCount">1</td>
-</tr>
-
-<tr data-ice="testIt" style="display: none;" data-test-depth="1">
-  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/symbol/observable-spec.js.html#lineNumber6"><p>should exist in the proper form</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>
@@ -15164,6 +15266,21 @@
 </tr>
 <tr data-ice="testIt" style="display: none;" data-test-depth="2">
   <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/spec-js/util/MapPolyfill-spec.js.html#lineNumber43"><p>should iterate over keys and values</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/spec-js/util/UnsubscriptionError-spec.js.html#lineNumber6"><p>UnsubscriptionError</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/spec-js/util/UnsubscriptionError-spec.js.html#lineNumber7"><p>should create a message that is a clear indication of its internal errors</p>
 </a></span></td>
   <td data-ice="testTarget" class="test-target">-</td>
   <td></td>

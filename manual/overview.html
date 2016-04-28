@@ -109,7 +109,7 @@
   </div>
   <div data-ice="content"><h1 id="introduction">Introduction</h1>
 <p>RxJS is a library for composing asynchronous and event-based programs by using observable sequences. It provides one core type, the <a href="./manual/./overview.html#observable">Observable</a>, satellite types (Observer, Schedulers, Subjects) and operators inspired by <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/1.6">Array#extras</a> (map, filter, reduce, every, etc) to allow handling asynchronous events as collections.</p>
-<p><span class="informal">Think of RxJS as lodash for events.</span></p>
+<p><span class="informal">Think of RxJS as Lodash for events.</span></p>
 <p>ReactiveX combines the <a href="https://en.wikipedia.org/wiki/Observer_pattern">Observer pattern</a> with the <a href="https://en.wikipedia.org/wiki/Iterator_pattern">Iterator pattern</a> and <a href="http://martinfowler.com/articles/collection-pipeline/#NestedOperatorExpressions">functional programming with collections</a> to fill the need for an ideal way of managing sequences of events.</p>
 <p>The essential concepts in RxJS which solve async event management are:</p>
 <ul>
@@ -375,7 +375,7 @@ console.log(&apos;after&apos;);</code>
 <pre><code class="lang-js"><code class="source-code prettyprint">observable.subscribe(x =&gt; console.log(x));</code>
 </code></pre>
 <p>It is not a coincidence that <code>observable.subscribe</code> and <code>subscribe</code> in <code>Observable.create(function subscribe(observer) {...})</code> have the same name. In the library, they are different, but for practical purposes you can consider them conceptually equal.</p>
-<p>This shows how a <code>subscribe</code> calls are not at all shared among multiple Observers of the same Observable. When calling <code>observable.subscribe</code> with an Observer, the function <code>subscribe</code> in <code>Observable.create(function subscribe(observer) {...})</code> is run for that given Observer. Each call to <code>observable.subscribe</code> triggers its own independent for that given Observer.</p>
+<p>This shows how <code>subscribe</code> calls are not shared among multiple Observers of the same Observable. When calling <code>observable.subscribe</code> with an Observer, the function <code>subscribe</code> in <code>Observable.create(function subscribe(observer) {...})</code> is run for that given Observer. Each call to <code>observable.subscribe</code> triggers its own independent setup for that given Observer.</p>
 <p><span class="informal">Subscribing to an Observable is like calling a function, providing callbacks where the data will be delivered to.</span></p>
 <p>This is drastically different to event handler APIs like <code>addEventListener</code> / <code>removeEventListener</code>. With <code>observable.subscribe</code>, the given Observer is not registered as a listener in the Observable. The Observable does not even maintain a list of attached Observers.</p>
 <p>A <code>subscribe</code> call is simply a way to start an &quot;Observable execution&quot; and deliver values or events to an Observer of that execution.</p>
@@ -813,7 +813,7 @@ observerB: 5</code>
 <h2 id="what-are-operators-">What are operators?</h2>
 <p>Operators are <strong>methods</strong> on the Observable type, such as <code>.map(...)</code>, <code>.filter(...)</code>, <code>.merge(...)</code>, etc. When called, they do not <em>change</em> the existing Observable instance. Instead, they return a <em>new</em> Observable, whose subscription logic is based on the first Observable.</p>
 <p><span class="informal">An Operator is a function take creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span></p>
-<p>An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. A subscribe on the output Observable will causa also a subscribe on the input Observable. In the following example, we create a custom operator/function that simply multiplies by 10 each value delivered by the input Observable:</p>
+<p>An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. A subscribe on the output Observable will cause also a subscribe on the input Observable. In the following example, we create a custom operator/function that simply multiplies by 10 each value delivered by the input Observable:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">function multiplyByTen(input) {
   var output = Rx.Observable.create(function subscribe(observer) {
     input.subscribe({
@@ -892,6 +892,7 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromEvent"><code>fromEvent</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromEventPattern"><code>fromEventPattern</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-fromPromise"><code>fromPromise</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-generate"><code>generate</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-interval"><code>interval</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-never"><code>never</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-of"><code>of</code></a></li>
@@ -1120,8 +1121,8 @@ console.log(&apos;just after subscribe&apos;);</code>
 </table>
 <h2 id="using-schedulers">Using Schedulers</h2>
 <p>You may have already used schedulers in your RxJS code without explicitly stating the type of schedulers to be used. This is because all Observable operators that deal with concurrency have optional schedulers. If you do not provide the scheduler, RxJS will pick a default scheduler by using the principle of least concurrency. This means that the scheduler which introduces the least amount of concurrency that satisfies the needs of the operator is chosen. For example, for operators returning an observable with a finite and small number of messages, RxJS uses no Scheduler, i.e. <code>null</code> or <code>undefined</code>.  For operators returning a potentially large or infinite number of messages, <code>queue</code> Scheduler is used. For operators which use timers, <code>async</code> is used.</p>
-<p>Because RxJS uses the least concurrency scheduler, you can pick a different scheduler if you want to introduce concurrency for performance purpose.  To specify a particular scheduler, you can use those operator methods that take a scheduler, e.g., <code>fromArray([10, 20, 30], Rx.Scheduler.async)</code>.</p>
-<p><strong>Static creation operators usually take a Scheduler as argument.</strong> For instance, <code>fromArray(array, scheduler)</code> lets you specify the Scheduler to use when delivering each notification converted from the <code>array</code>. It is usually the last argument to the operator. The following static creation operators take a Scheduler argument:</p>
+<p>Because RxJS uses the least concurrency scheduler, you can pick a different scheduler if you want to introduce concurrency for performance purpose.  To specify a particular scheduler, you can use those operator methods that take a scheduler, e.g., <code>from([10, 20, 30], Rx.Scheduler.async)</code>.</p>
+<p><strong>Static creation operators usually take a Scheduler as argument.</strong> For instance, <code>from(array, scheduler)</code> lets you specify the Scheduler to use when delivering each notification converted from the <code>array</code>. It is usually the last argument to the operator. The following static creation operators take a Scheduler argument:</p>
 <ul>
 <li><code>bindCallback</code></li>
 <li><code>bindNodeCallback</code></li>
@@ -1129,7 +1130,6 @@ console.log(&apos;just after subscribe&apos;);</code>
 <li><code>concat</code></li>
 <li><code>empty</code></li>
 <li><code>from</code></li>
-<li><code>fromArray</code></li>
 <li><code>fromPromise</code></li>
 <li><code>interval</code></li>
 <li><code>merge</code></li>
