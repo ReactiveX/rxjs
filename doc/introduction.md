@@ -78,7 +78,7 @@ Rx.Observable.fromEvent(button, 'click')
   .subscribe(count => console.log('Clicked ${count} times'));
 ```
 
-Other flow control operators are [**filter**](/class/es6/Observable.js~Observable.html#instance-method-filter), [**delay**](/class/es6/Observable.js~Observable.html#instance-method-delay), [**debounceTime**](/class/es6/Observable.js~Observable.html#instance-method-debounceTime), [**take**](/class/es6/Observable.js~Observable.html#instance-method-take), [**takeUntil**](/class/es6/Observable.js~Observable.html#instance-method-takeUntil), [**distinct**](/class/es6/Observable.js~Observable.html#instance-method-distinct), [**distinctUntilChanged**](/class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged) etc.
+Other flow control operators are [**filter**](../class/es6/Observable.js~Observable.html#instance-method-filter), [**delay**](../class/es6/Observable.js~Observable.html#instance-method-delay), [**debounceTime**](../class/es6/Observable.js~Observable.html#instance-method-debounceTime), [**take**](../class/es6/Observable.js~Observable.html#instance-method-take), [**takeUntil**](../class/es6/Observable.js~Observable.html#instance-method-takeUntil), [**distinct**](../class/es6/Observable.js~Observable.html#instance-method-distinct), [**distinctUntilChanged**](../class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged) etc.
 
 ### Values
 You can transform the values passed through your observables.
@@ -107,5 +107,5 @@ Rx.Observable.fromEvent(button, 'click')
   .subscribe(count => console.log(count));
 ```
 
-Other value producing operators are [**pluck**](/class/es6/Observable.js~Observable.html#instance-method-pluck), [**pairwise**](/class/es6/Observable.js~Observable.html#instance-method-pairwise),
-[**sample**](/class/es6/Observable.js~Observable.html#instance-method-sample) etc.
+Other value producing operators are [**pluck**](../class/es6/Observable.js~Observable.html#instance-method-pluck), [**pairwise**](../class/es6/Observable.js~Observable.html#instance-method-pairwise),
+[**sample**](../class/es6/Observable.js~Observable.html#instance-method-sample) etc.
