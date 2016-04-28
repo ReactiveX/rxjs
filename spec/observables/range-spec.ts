@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import {RangeObservable} from '../../dist/cjs/observable/RangeObservable';
 declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 

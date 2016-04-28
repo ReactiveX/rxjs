@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../../dist/cjs/Rx.DOM';
+import * as Rx from '../../../dist/cjs/Rx';
 import {MockWebSocket} from '../../helpers/ajax-helper';
 
 declare const __root__: any;

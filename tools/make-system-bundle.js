@@ -12,7 +12,6 @@ var config = {
 };
 
 build('rxjs/Rx', '../dist/global/Rx.js', '../dist/global/Rx.min.js');
-build('rxjs/Rx.KitchenSink', '../dist/global/Rx.KitchenSink.js', '../dist/global/Rx.KitchenSink.min.js');
 
 function build(name, inputFile, outputFile) {
   var devBuilder = new Builder();

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import {GroupedObservable} from '../../dist/cjs/operator/groupBy';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 

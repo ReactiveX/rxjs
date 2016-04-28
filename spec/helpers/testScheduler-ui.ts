@@ -7,7 +7,7 @@ import * as escapeRe from 'escape-string-regexp';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
 
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import * as marble from './marble-testing';
 
 //setup sinon-chai

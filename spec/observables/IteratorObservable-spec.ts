@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import {IteratorObservable} from '../../dist/cjs/observable/IteratorObservable';
 
 declare const expectObservable;

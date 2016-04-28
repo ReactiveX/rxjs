@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
 
 declare const {asDiagram, expectObservable, Symbol, type};

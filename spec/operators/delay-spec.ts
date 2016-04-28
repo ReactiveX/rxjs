@@ -1,4 +1,4 @@
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, asDiagram, cold, time, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;

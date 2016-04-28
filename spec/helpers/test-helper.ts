@@ -2,7 +2,7 @@
 declare const global: any;
 declare const Symbol: any;
 
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import {root} from '../../dist/cjs/util/root';
 
 export function lowerCaseO<T>(...args): Rx.Observable<T> {

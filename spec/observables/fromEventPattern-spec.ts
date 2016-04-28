@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 declare const {hot, asDiagram, expectObservable, expectSubscriptions};

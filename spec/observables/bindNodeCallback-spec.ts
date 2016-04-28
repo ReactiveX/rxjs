@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;

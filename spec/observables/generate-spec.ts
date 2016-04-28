@@ -1,4 +1,4 @@
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import '../../dist/cjs/add/observable/generate';
 import {TestScheduler} from '../../dist/cjs/testing/TestScheduler';
 import {expect} from 'chai';

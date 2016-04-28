@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import * as Rx from '../../../dist/cjs/Rx.DOM';
+import * as Rx from '../../../dist/cjs/Rx';
 import {root} from '../../../dist/cjs/util/root';
 import {MockXMLHttpRequest} from '../../helpers/ajax-helper';
 

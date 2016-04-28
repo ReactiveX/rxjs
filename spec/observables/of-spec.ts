@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx.KitchenSink';
+import * as Rx from '../../dist/cjs/Rx';
 import {ArrayObservable} from '../../dist/cjs/observable/ArrayObservable';
 import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
 import {EmptyObservable} from '../../dist/cjs/observable/EmptyObservable';
