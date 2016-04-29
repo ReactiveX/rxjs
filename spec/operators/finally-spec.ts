@@ -83,7 +83,7 @@ describe('Observable.prototype.finally', () => {
     expectObservable(result).toBe(expected);
     // manually flush so `finally()` has chance to execute before the test is over.
     rxTestScheduler.flush();
-    expect(executed).to.equal(true);
+    expect(executed).to.be.true;
   });
 
   it('should handle never', () => {
@@ -94,7 +94,7 @@ describe('Observable.prototype.finally', () => {
     expectObservable(result).toBe(expected);
     // manually flush so `finally()` has chance to execute before the test is over.
     rxTestScheduler.flush();
-    expect(executed).to.equal(false);
+    expect(executed).to.be.false;
   });
 
   it('should handle throw', () => {
@@ -105,7 +105,7 @@ describe('Observable.prototype.finally', () => {
     expectObservable(result).toBe(expected);
     // manually flush so `finally()` has chance to execute before the test is over.
     rxTestScheduler.flush();
-    expect(executed).to.equal(true);
+    expect(executed).to.be.true;
   });
 
   it('should handle basic hot observable', () => {
@@ -118,7 +118,7 @@ describe('Observable.prototype.finally', () => {
     expectSubscriptions(s1.subscriptions).toBe(subs);
     // manually flush so `finally()` has chance to execute before the test is over.
     rxTestScheduler.flush();
-    expect(executed).to.equal(true);
+    expect(executed).to.be.true;
   });
 
   it('should handle basic cold observable', () => {
@@ -131,7 +131,7 @@ describe('Observable.prototype.finally', () => {
     expectSubscriptions(s1.subscriptions).toBe(subs);
     // manually flush so `finally()` has chance to execute before the test is over.
     rxTestScheduler.flush();
-    expect(executed).to.equal(true);
+    expect(executed).to.be.true;
   });
 
   it('should handle basic error', () => {
@@ -144,7 +144,7 @@ describe('Observable.prototype.finally', () => {
     expectSubscriptions(s1.subscriptions).toBe(subs);
     // manually flush so `finally()` has chance to execute before the test is over.
     rxTestScheduler.flush();
-    expect(executed).to.equal(true);
+    expect(executed).to.be.true;
   });
 
   it('should handle unsubscription', () => {
@@ -158,6 +158,6 @@ describe('Observable.prototype.finally', () => {
     expectSubscriptions(s1.subscriptions).toBe(subs);
     // manually flush so `finally()` has chance to execute before the test is over.
     rxTestScheduler.flush();
-    expect(executed).to.equal(true);
+    expect(executed).to.be.true;
   });
 });
