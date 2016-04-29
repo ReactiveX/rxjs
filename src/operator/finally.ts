@@ -16,7 +16,7 @@ export function _finally<T>(callback: () => void): Observable<T> {
 }
 
 export interface FinallySignature<T> {
-  <T>(callback: () => void): Observable<T>;
+  (callback: () => void): Observable<T>;
 }
 
 class FinallyOperator<T> implements Operator<T, T> {
