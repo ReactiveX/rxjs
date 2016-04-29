@@ -34,6 +34,9 @@ export class ScalarObservable<T> extends Observable<T> {
 
   constructor(public value: T, private scheduler?: Scheduler) {
     super();
+    if (scheduler) {
+      this._isScalar = false;
+    }
   }
 
   protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
