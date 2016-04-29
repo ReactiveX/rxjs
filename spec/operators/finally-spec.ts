@@ -1,7 +1,10 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import * as Rx from '../../dist/cjs/Rx.KitchenSink';
 
 const Observable = Rx.Observable;
+
+declare const {asDiagram, expectObservable, Symbol, type};
+declare const rxTestScheduler: Rx.TestScheduler;
 
 /** @test {finally} */
 describe('Observable.prototype.finally', () => {
@@ -70,5 +73,91 @@ describe('Observable.prototype.finally', () => {
       .finally(checkFinally)
       .share()
       .subscribe();
+  });
+
+  it('should handle empty', () => {
+    let executed = false;
+    let s1 = hot('|');
+    let result = s1.finally(() => executed = true);
+    let expected = '|';
+    expectObservable(result).toBe(expected);
+    // manually flush so `finally()` has chance to execute before the test is over.
+    rxTestScheduler.flush();
+    expect(executed).to.equal(true);
+  });
+
+  it('should handle never', () => {
+    let executed = false;
+    let s1 = hot('-');
+    let result = s1.finally(() => executed = true);
+    let expected = '-';
+    expectObservable(result).toBe(expected);
+    // manually flush so `finally()` has chance to execute before the test is over.
+    rxTestScheduler.flush();
+    expect(executed).to.equal(false);
+  });
+
+  it('should handle throw', () => {
+    let executed = false;
+    let s1 = hot('#');
+    let result = s1.finally(() => executed = true);
+    let expected = '#';
+    expectObservable(result).toBe(expected);
+    // manually flush so `finally()` has chance to execute before the test is over.
+    rxTestScheduler.flush();
+    expect(executed).to.equal(true);
+  });
+
+  it('should handle basic hot observable', () => {
+    let executed = false;
+    let s1 = hot(  '--a--b--c--|');
+    let subs =     '^          !';
+    let expected = '--a--b--c--|';
+    let result = s1.finally(() => executed = true);
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(s1.subscriptions).toBe(subs);
+    // manually flush so `finally()` has chance to execute before the test is over.
+    rxTestScheduler.flush();
+    expect(executed).to.equal(true);
+  });
+
+  it('should handle basic cold observable', () => {
+    let executed = false;
+    let s1 = cold(  '--a--b--c--|');
+    let subs =      '^          !';
+    let expected =  '--a--b--c--|';
+    let result = s1.finally(() => executed = true);
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(s1.subscriptions).toBe(subs);
+    // manually flush so `finally()` has chance to execute before the test is over.
+    rxTestScheduler.flush();
+    expect(executed).to.equal(true);
+  });
+
+  it('should handle basic error', () => {
+    let executed = false;
+    let s1 = hot(  '--a--b--c--#');
+    let subs =     '^          !';
+    let expected = '--a--b--c--#';
+    let result = s1.finally(() => executed = true);
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(s1.subscriptions).toBe(subs);
+    // manually flush so `finally()` has chance to execute before the test is over.
+    rxTestScheduler.flush();
+    expect(executed).to.equal(true);
+  });
+
+  it('should handle unsubscription', () => {
+    let executed = false;
+    let s1 = hot(  '--a--b--c--|');
+    let subs =     '^     !     ';
+    let expected = '--a--b-';
+    let unsub =    '      !';
+    let result = s1.finally(() => executed = true);
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(s1.subscriptions).toBe(subs);
+    // manually flush so `finally()` has chance to execute before the test is over.
+    rxTestScheduler.flush();
+    expect(executed).to.equal(true);
   });
 });
