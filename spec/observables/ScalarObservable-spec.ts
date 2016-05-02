@@ -24,4 +24,14 @@ describe('ScalarObservable', () => {
     subscriber.isUnsubscribed = true;
     rxTestScheduler.flush();
   });
+
+  it('should set `_isScalar` to true when NOT called with a Scheduler', () => {
+    const s = new ScalarObservable(1);
+    expect(s._isScalar).to.be.true;
+  });
+
+  it('should set `_isScalar` to false when called with a Scheduler', () => {
+    const s = new ScalarObservable(1, rxTestScheduler);
+    expect(s._isScalar).to.be.false;
+  });
 });
