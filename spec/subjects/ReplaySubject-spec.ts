@@ -222,21 +222,22 @@ describe('ReplaySubject', () => {
     });
   });
 
-  it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
+  it('should be an Observer which can be given to Observable.subscribe', () => {
     const source = Observable.of(1, 2, 3, 4, 5);
     const subject = new ReplaySubject(3);
     const expected = [3, 4, 5];
+    let results = [];
+
+    subject.subscribe(x => results.push(x), null, () => results.push('done'));
 
     source.subscribe(subject);
 
-    subject.subscribe(
-      (x: number) => {
-        expect(x).to.equal(expected.shift());
-      }, () => {
-        done(new Error());
-      }, () => {
-        done();
-      }
-    );
+    expect(results).to.deep.equal([1, 2, 3, 4, 5, 'done']);
+
+    results = [];
+
+    subject.subscribe(x => results.push(x), null, () => results.push('done'));
+
+    expect(results).to.deep.equal([3, 4, 5, 'done']);
   });
 });

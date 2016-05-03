@@ -1,7 +1,6 @@
 import {isFunction} from './util/isFunction';
 import {Observer, PartialObserver} from './Observer';
 import {Subscription} from './Subscription';
-import {$$rxSubscriber} from './symbol/rxSubscriber';
 import {empty as emptyObserver} from './Observer';
 
 /**
@@ -141,10 +140,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected _complete(): void {
     this.destination.complete();
     this.unsubscribe();
-  }
-
-  [$$rxSubscriber]() {
-    return this;
   }
 }
 

@@ -10,7 +10,7 @@ import {Subscription} from './Subscription';
 export class SubjectSubscription extends Subscription {
   isUnsubscribed: boolean = false;
 
-  constructor(public subject: Subject<any>, public observer: Observer<any>) {
+  constructor(public subject: Subject<any>, public subscriber: Observer<any>) {
     super();
   }
 
@@ -30,7 +30,7 @@ export class SubjectSubscription extends Subscription {
       return;
     }
 
-    const subscriberIndex = observers.indexOf(this.observer);
+    const subscriberIndex = observers.indexOf(this.subscriber);
 
     if (subscriberIndex !== -1) {
       observers.splice(subscriberIndex, 1);

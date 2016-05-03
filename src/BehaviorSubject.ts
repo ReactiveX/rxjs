@@ -1,6 +1,6 @@
 import {Subject} from './Subject';
 import {Subscriber} from './Subscriber';
-import {TeardownLogic, ISubscription} from './Subscription';
+import {Subscription, ISubscription} from './Subscription';
 import {throwError} from './util/throwError';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 
@@ -14,8 +14,8 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   getValue(): T {
-    if (this.hasErrored) {
-      throwError(this.errorValue);
+    if (this.hasError) {
+      throwError(this.thrownError);
     } else if (this.isUnsubscribed) {
       throwError(new ObjectUnsubscribedError());
     } else {
@@ -27,7 +27,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     return this.getValue();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
     if (subscription && !(<ISubscription> subscription).isUnsubscribed) {
       subscriber.next(this._value);
@@ -35,12 +35,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     return subscription;
   }
 
-  protected _next(value: T): void {
-    super._next(this._value = value);
-  }
-
-  protected _error(err: any): void {
-    this.hasErrored = true;
-    super._error(this.errorValue = err);
+  next(value: T): void {
+    super.next(this._value = value);
   }
 }

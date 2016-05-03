@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions, time, rxTestScheduler};
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
@@ -249,13 +249,13 @@ describe('Observable.prototype.multicast', () => {
       const subscribe2 =  ' s              ';
       const expected2 =   ' (123123123123#)';
       const sourceSubs = ['(^!)',
-                        '(^!)',
-                        '(^!)',
-                        '(^!)',
-                        ' (^!)',
-                        ' (^!)',
-                        ' (^!)',
-                        ' (^!)'];
+                          '(^!)',
+                          '(^!)',
+                          '(^!)',
+                          ' (^!)',
+                          ' (^!)',
+                          ' (^!)',
+                          ' (^!)'];
 
       expectObservable(hot(subscribe1).do(() => {
         expectObservable(multicasted.retry(3)).toBe(expected1);
@@ -277,13 +277,13 @@ describe('Observable.prototype.multicast', () => {
       const subscribe2 =  ' s              ';
       const expected2 =   ' (123123123123#)';
       const sourceSubs = ['(^!)',
-                        '(^!)',
-                        '(^!)',
-                        '(^!)',
-                        ' (^!)',
-                        ' (^!)',
-                        ' (^!)',
-                        ' (^!)'];
+                          '(^!)',
+                          '(^!)',
+                          '(^!)',
+                          ' (^!)',
+                          ' (^!)',
+                          ' (^!)',
+                          ' (^!)'];
 
       expectObservable(hot(subscribe1).do(() => {
         expectObservable(multicasted.retry(3)).toBe(expected1);
@@ -383,21 +383,17 @@ describe('Observable.prototype.multicast', () => {
       function subjectFactory() { return new Rx.ReplaySubject(1); }
       const source =     cold('-1-2-3----4-#                        ');
       const sourceSubs =     ['^           !                        ',
-                            '            ^           !            ',
-                            '                        ^           !'];
+                              '            ^           !            ',
+                              '                        ^           !'];
       const multicasted = source.multicast(subjectFactory).refCount();
-      const subscribe1 =      's                                    ';
       const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-#';
-      const subscribe2 =      '    s                                ';
+      const subscribe2 = time('----|                                ');
       const expected2 =       '    23----4--1-2-3----4--1-2-3----4-#';
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.retry(2)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(multicasted.retry(2)).toBe(expected1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.retry(2)).toBe(expected2);
-      })).toBe(subscribe2);
+      rxTestScheduler.schedule(() =>
+        expectObservable(multicasted.retry(2)).toBe(expected2), subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
@@ -406,8 +402,8 @@ describe('Observable.prototype.multicast', () => {
       function subjectFactory() { return new Subject(); }
       const source =     cold('-1-2-3----4-|                        ');
       const sourceSubs =     ['^           !                        ',
-                            '            ^           !            ',
-                            '                        ^           !'];
+                              '            ^           !            ',
+                              '                        ^           !'];
       const multicasted = source.multicast(subjectFactory).refCount();
       const subscribe1 =      's                                    ';
       const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
@@ -429,8 +425,8 @@ describe('Observable.prototype.multicast', () => {
       function subjectFactory() { return new Rx.ReplaySubject(1); }
       const source =     cold('-1-2-3----4-|                        ');
       const sourceSubs =     ['^           !                        ',
-                            '            ^           !            ',
-                            '                        ^           !'];
+                              '            ^           !            ',
+                              '                        ^           !'];
       const multicasted = source.multicast(subjectFactory).refCount();
       const subscribe1 =      's                                    ';
       const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
@@ -486,7 +482,7 @@ describe('Observable.prototype.multicast', () => {
     done();
   });
 
-  it('should remove all subscribers from the subject when disconnected', (done: MochaDone) => {
+  it('should remove all subscribers from the subject when disconnected', () => {
     const subject = new Subject<number>();
     const expected = [1, 2, 3, 4];
     let i = 0;
@@ -495,12 +491,10 @@ describe('Observable.prototype.multicast', () => {
 
     source.subscribe((x: number) => {
       expect(x).to.equal(expected[i++]);
-    }, null, () => {
-      expect(subject.isUnsubscribed).to.be.true;
-      done();
     });
 
     source.connect();
+    expect(subject.observers.length).to.equal(0);
   });
 
   describe('when given a subject factory', () => {
@@ -548,29 +542,6 @@ describe('Observable.prototype.multicast', () => {
   });
 
   describe('when given a subject', () => {
-    it('should NOT allow you to reconnect by subscribing again', (done: MochaDone) => {
-      const expected = [1, 2, 3, 4];
-      let i = 0;
-
-      const source = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
-
-      source.subscribe((x: number) => {
-        expect(x).to.equal(expected[i++]);
-      },
-        null,
-        () => {
-          source.subscribe((x: number) => {
-            done(new Error('should not be called'));
-          }, null, () => {
-            done();
-          });
-
-          expect(() => source.connect()).to.throw(Rx.ObjectUnsubscribedError);
-        });
-
-      source.connect();
-    });
-
     it('should not throw ObjectUnsubscribedError when used in ' +
     'a switchMap', (done: MochaDone) => {
       const source = Observable.of(1, 2, 3)

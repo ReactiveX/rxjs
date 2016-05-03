@@ -93,20 +93,23 @@ describe('BehaviorSubject', () => {
     subject.complete();
   });
 
-  it('should not allow values to be nexted after a return', (done: MochaDone) => {
+  it('should not pass values nexted after a complete', () => {
     const subject = new BehaviorSubject('init');
-    const expected = ['init', 'foo'];
+    const results = [];
 
     subject.subscribe((x: string) => {
-      expect(x).to.equal(expected.shift());
-    }, null, done);
+      results.push(x);
+    });
+    expect(results).to.deep.equal(['init']);
 
     subject.next('foo');
-    subject.complete();
+    expect(results).to.deep.equal(['init', 'foo']);
 
-    expect(() => {
-      subject.next('bar');
-    }).to.throw(Rx.ObjectUnsubscribedError);
+    subject.complete();
+    expect(results).to.deep.equal(['init', 'foo']);
+
+    subject.next('bar');
+    expect(results).to.deep.equal(['init', 'foo']);
   });
 
   it('should clean out unsubscribed subscribers', (done: MochaDone) => {
