@@ -8,6 +8,7 @@ import {Subscriber} from '../Subscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
+const none = {};
 
 /**
  * Combines multiple Observables to create an Observable whose values are
@@ -190,15 +191,14 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private values: any[] = [];
   private observables: any[] = [];
-  private toRespond: number[] = [];
+  private toRespond: number;
 
   constructor(destination: Subscriber<R>, private project?: (...values: Array<any>) => R) {
     super(destination);
   }
 
   protected _next(observable: any) {
-    const toRespond = this.toRespond;
-    toRespond.push(toRespond.length);
+    this.values.push(none);
     this.observables.push(observable);
   }
 
@@ -209,6 +209,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.destination.complete();
     } else {
       this.active = len;
+      this.toRespond = len;
       for (let i = 0; i < len; i++) {
         const observable = observables[i];
         this.add(subscribeToResult(this, observable, observable, i));
@@ -226,17 +227,13 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
     const values = this.values;
+    const oldVal = values[outerIndex];
+    const toRespond = !this.toRespond
+      ? 0
+      : oldVal === none ? --this.toRespond : this.toRespond;
     values[outerIndex] = innerValue;
-    const toRespond = this.toRespond;
 
-    if (toRespond.length > 0) {
-      const found = toRespond.indexOf(outerIndex);
-      if (found !== -1) {
-        toRespond.splice(found, 1);
-      }
-    }
-
-    if (toRespond.length === 0) {
+    if (toRespond === 0) {
       if (this.project) {
         this._tryProject(values);
       } else {
