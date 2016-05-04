@@ -46,6 +46,5 @@ export function combineAll<R>(project?: (...values: Array<any>) => R): Observabl
 }
 
 export interface CombineAllSignature<T> {
-  (): Observable<T[]>;
   <R>(project?: (...values: Array<T>) => R): Observable<R>;
 }
