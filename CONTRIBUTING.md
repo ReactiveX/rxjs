@@ -5,7 +5,7 @@ it still applies to you. Ignorance is not an exemption.
 
 Contents
 - [Pull Requests](#pull-requests)
-  - [Coding Style](#code)
+  - [Coding Style](#coding)
   - [Commit Messages](#commit)
 - [Creating Operators](doc/operator-creation.md)
 - [Unit Tests](#unit-tests)
