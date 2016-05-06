@@ -3,7 +3,7 @@ import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 /**
- * Applies an accumulation function over the source Observable, and returns each
+ * Applies an accumulator function over the source Observable, and returns each
  * intermediate result, with an optional seed value.
  *
  * <span class="informal">It's like {@link reduce}, but emits the current
