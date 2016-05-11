@@ -26,7 +26,7 @@ export class SubjectSubscription extends Subscription {
 
     this.subject = null;
 
-    if (!observers || observers.length === 0 || subject.isUnsubscribed) {
+    if (!observers || observers.length === 0 || subject.isStopped || subject.isUnsubscribed) {
       return;
     }
 
