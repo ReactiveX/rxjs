@@ -98,14 +98,17 @@ export class FromEventObservable<T, R> extends Observable<T> {
         FromEventObservable.setupSubscription(sourceObj[i], eventName, handler, subscriber);
       }
     } else if (isEventTarget(sourceObj)) {
+      const source = sourceObj;
       sourceObj.addEventListener(eventName, <EventListener>handler);
-      unsubscribe = () => sourceObj.removeEventListener(eventName, <EventListener>handler);
+      unsubscribe = () => source.removeEventListener(eventName, <EventListener>handler);
     } else if (isJQueryStyleEventEmitter(sourceObj)) {
+      const source = sourceObj;
       sourceObj.on(eventName, handler);
-      unsubscribe = () => sourceObj.off(eventName, handler);
+      unsubscribe = () => source.off(eventName, handler);
     } else if (isNodeStyleEventEmmitter(sourceObj)) {
+      const source = sourceObj;
       sourceObj.addListener(eventName, handler);
-      unsubscribe = () => sourceObj.removeListener(eventName, handler);
+      unsubscribe = () => source.removeListener(eventName, handler);
     }
 
     subscriber.add(new Subscription(unsubscribe));

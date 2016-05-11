@@ -80,7 +80,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   constructor(private callbackFunc: Function,
               private selector: Function,
               private args: any[],
-              public scheduler: Scheduler) {
+              private scheduler: Scheduler) {
     super();
   }
 
@@ -100,7 +100,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
             const result = tryCatch(selector).apply(this, innerArgs);
             if (result === errorObject) {
               subject.error(errorObject.e);
-            } else {
+          } else {
               subject.next(result);
               subject.complete();
             }
@@ -119,45 +119,45 @@ export class BoundCallbackObservable<T> extends Observable<T> {
       }
       return subject.subscribe(subscriber);
     } else {
-      return scheduler.schedule(dispatch, 0, { source: this, subscriber });
+      return scheduler.schedule(BoundCallbackObservable.dispatch, 0, { source: this, subscriber });
     }
   }
-}
 
-function dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Subscriber<T> }) {
-  const self = (<Subscription> this);
-  const { source, subscriber } = state;
-  const { callbackFunc, args, scheduler } = source;
-  let subject = source.subject;
+  static dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Subscriber<T> }) {
+    const self = (<Subscription><any>this);
+    const { source, subscriber } = state;
+    const { callbackFunc, args, scheduler } = source;
+    let subject = source.subject;
 
-  if (!subject) {
-    subject = source.subject = new AsyncSubject<T>();
+    if (!subject) {
+      subject = source.subject = new AsyncSubject<T>();
 
-    const handler = function handlerFn(...innerArgs: any[]) {
-      const source = (<any>handlerFn).source;
-      const { selector, subject } = source;
-      if (selector) {
-        const result = tryCatch(selector).apply(this, innerArgs);
-        if (result === errorObject) {
-          self.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
+      const handler = function handlerFn(...innerArgs: any[]) {
+        const source = (<any>handlerFn).source;
+        const { selector, subject } = source;
+        if (selector) {
+          const result = tryCatch(selector).apply(this, innerArgs);
+          if (result === errorObject) {
+            self.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
+          } else {
+            self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
+          }
         } else {
-          self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
+          const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+          self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
         }
-      } else {
-        const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
-        self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
+      };
+      // use named function to pass values in without closure
+      (<any>handler).source = source;
+
+      const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+      if (result === errorObject) {
+        subject.error(errorObject.e);
       }
-    };
-    // use named function to pass values in without closure
-    (<any>handler).source = source;
-
-    const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
-    if (result === errorObject) {
-      subject.error(errorObject.e);
     }
-  }
 
-  self.add(subject.subscribe(subscriber));
+    self.add(subject.subscribe(subscriber));
+  }
 }
 
 interface DispatchNextArg<T> {
