@@ -5,11 +5,26 @@ import {Subscriber} from './Subscriber';
 import {ISubscription, Subscription} from './Subscription';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {SubjectSubscription} from './SubjectSubscription';
+import {$$rxSubscriber} from './symbol/rxSubscriber';
+
+/**
+ * @class SubjectSubscriber<T>
+ */
+export class SubjectSubscriber<T> extends Subscriber<T> {
+  constructor(protected destination: Subject<T>) {
+    super(destination);
+  }
+}
 
 /**
  * @class Subject<T>
  */
 export class Subject<T> extends Observable<T> implements ISubscription {
+
+  [$$rxSubscriber]() {
+    return new SubjectSubscriber(this);
+  }
+
   observers: Observer<T>[] = [];
 
   isUnsubscribed = false;

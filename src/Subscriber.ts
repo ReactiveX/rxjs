@@ -2,6 +2,7 @@ import {isFunction} from './util/isFunction';
 import {Observer, PartialObserver} from './Observer';
 import {Subscription} from './Subscription';
 import {empty as emptyObserver} from './Observer';
+import {$$rxSubscriber} from './symbol/rxSubscriber';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -14,6 +15,8 @@ import {empty as emptyObserver} from './Observer';
  * @class Subscriber<T>
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
+
+  [$$rxSubscriber]() { return this; }
 
   /**
    * A static factory for a Subscriber, given a (potentially partial) definition
