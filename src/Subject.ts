@@ -115,15 +115,24 @@ export class AnonymousSubject<T> extends Subject<T> {
   }
 
   next(value: T) {
-    this.destination.next(value);
+    const { destination } = this;
+    if (destination && destination.next) {
+      destination.next(value);
+    }
   }
 
   error(err: any) {
-    this.destination.error(err);
+    const { destination } = this;
+    if (destination && destination.error) {
+      this.destination.error(err);
+    }
   }
 
   complete() {
-    this.destination.complete();
+    const { destination } = this;
+    if (destination && destination.complete) {
+      this.destination.complete();
+    }
   }
 
   _subscribe(subscriber: Subscriber<T>): Subscription {
