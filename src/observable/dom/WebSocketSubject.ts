@@ -96,7 +96,6 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         err => observer.error(err),
         () => observer.complete());
 
-
       return () => {
         const result = tryCatch(unsubMsg)();
         if (result === errorObject) {

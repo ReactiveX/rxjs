@@ -99,7 +99,6 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     }
 
     let group = groups.get(key);
-    let groupEmitted = false;
 
     let element: R;
     if (this.elementSelector) {

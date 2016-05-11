@@ -18,7 +18,6 @@ export function toSubscriber<T>(
   return new Subscriber(nextOrObserver, error, complete);
 }
 
-
 export class SubjectSubscriber<T> extends Subscriber<T> {
   constructor(protected destination: Subject<T>) {
     super(destination);

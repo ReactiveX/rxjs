@@ -52,34 +52,30 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     if (this.isUnsubscribed) {
       throw new ObjectUnsubscribedError();
     }
-    if (!this.isStopped) {
-      this.hasError = true;
-      this.thrownError = err;
-      this.isStopped = true;
-      const { observers } = this;
-      const len = observers.length;
-      const copy = observers.slice();
-      for (let i = 0; i < len; i++) {
-        copy[i].error(err);
-      }
-      this.observers.length = 0;
+    this.hasError = true;
+    this.thrownError = err;
+    this.isStopped = true;
+    const { observers } = this;
+    const len = observers.length;
+    const copy = observers.slice();
+    for (let i = 0; i < len; i++) {
+      copy[i].error(err);
     }
+    this.observers.length = 0;
   }
 
   complete() {
     if (this.isUnsubscribed) {
       throw new ObjectUnsubscribedError();
     }
-    if (!this.isStopped) {
-      this.isStopped = true;
-      const { observers } = this;
-      const len = observers.length;
-      const copy = observers.slice();
-      for (let i = 0; i < len; i++) {
-        copy[i].complete();
-      }
-      this.observers.length = 0;
+    this.isStopped = true;
+    const { observers } = this;
+    const len = observers.length;
+    const copy = observers.slice();
+    for (let i = 0; i < len; i++) {
+      copy[i].complete();
     }
+    this.observers.length = 0;
   }
 
   unsubscribe() {

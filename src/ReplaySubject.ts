@@ -4,7 +4,7 @@ import {queue} from './scheduler/queue';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 import {ObserveOnSubscriber} from './operator/observeOn';
-import {SubjectSubscription} from './SubjectSubscription';
+
 /**
  * @class ReplaySubject<T>
  */

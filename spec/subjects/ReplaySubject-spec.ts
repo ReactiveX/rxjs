@@ -225,7 +225,6 @@ describe('ReplaySubject', () => {
   it('should be an Observer which can be given to Observable.subscribe', () => {
     const source = Observable.of(1, 2, 3, 4, 5);
     const subject = new ReplaySubject(3);
-    const expected = [3, 4, 5];
     let results = [];
 
     subject.subscribe(x => results.push(x), null, () => results.push('done'));
