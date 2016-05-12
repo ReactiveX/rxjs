@@ -184,7 +184,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
     if (!this.socket) {
       this._connectSocket();
     }

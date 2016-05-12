@@ -99,7 +99,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     this.observers = null;
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
     if (this.isUnsubscribed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
@@ -116,7 +116,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   asObservable(): Observable<T> {
     const observable = new Observable<T>();
-    (<any>observable).source = this; //HACKITY HACK
+    (<any>observable).source = this;
     return observable;
   }
 }
@@ -150,7 +150,7 @@ export class AnonymousSubject<T> extends Subject<T> {
     }
   }
 
-  _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {
       return this.source.subscribe(subscriber);

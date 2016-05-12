@@ -12,7 +12,7 @@ export class AsyncSubject<T> extends Subject<T> {
 
   hasCompleted: boolean = false;
 
-  _subscribe(subscriber: Subscriber<any>): Subscription {
+  protected _subscribe(subscriber: Subscriber<any>): Subscription {
     if (this.hasCompleted && this.hasNext) {
       subscriber.next(this.value);
       subscriber.complete();
