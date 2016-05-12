@@ -9,36 +9,36 @@ import {ObserveOnSubscriber} from './operator/observeOn';
  * @class ReplaySubject<T>
  */
 export class ReplaySubject<T> extends Subject<T> {
-  private events: ReplayEvent<T>[] = [];
-  private bufferSize: number;
+  private _events: ReplayEvent<T>[] = [];
+  private _bufferSize: number;
   private _windowTime: number;
 
   constructor(bufferSize: number = Number.POSITIVE_INFINITY,
               windowTime: number = Number.POSITIVE_INFINITY,
               private scheduler: Scheduler = queue) {
     super();
-    this.bufferSize = bufferSize < 1 ? 1 : bufferSize;
+    this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
     this._windowTime = windowTime < 1 ? 1 : windowTime;
   }
 
   next(value: T): void {
     const now = this.scheduler.now();
-    this.events.push(new ReplayEvent(now, value));
+    this._events.push(new ReplayEvent(now, value));
     this._trimBufferThenGetEvents();
     super.next(value);
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    const events = this._trimBufferThenGetEvents();
+    const _events = this._trimBufferThenGetEvents();
     const scheduler = this.scheduler;
 
     if (scheduler) {
       subscriber.add(subscriber = new ObserveOnSubscriber<T>(subscriber, scheduler));
     }
 
-    const len = events.length;
+    const len = _events.length;
     for (let i = 0; i < len && !subscriber.isUnsubscribed; i++) {
-      subscriber.next(events[i].value);
+      subscriber.next(_events[i].value);
     }
 
     return super._subscribe(subscriber);
@@ -46,32 +46,32 @@ export class ReplaySubject<T> extends Subject<T> {
 
   private _trimBufferThenGetEvents(): ReplayEvent<T>[] {
     const now = this.scheduler.now();
-    const bufferSize = this.bufferSize;
+    const _bufferSize = this._bufferSize;
     const _windowTime = this._windowTime;
-    const events = this.events;
+    const _events = this._events;
 
-    let eventsCount = events.length;
+    let eventsCount = _events.length;
     let spliceCount = 0;
 
     // Trim events that fall out of the time window.
     // Start at the front of the list. Break early once
     // we encounter an event that falls within the window.
     while (spliceCount < eventsCount) {
-      if ((now - events[spliceCount].time) < _windowTime) {
+      if ((now - _events[spliceCount].time) < _windowTime) {
         break;
       }
       spliceCount++;
     }
 
-    if (eventsCount > bufferSize) {
-      spliceCount = Math.max(spliceCount, eventsCount - bufferSize);
+    if (eventsCount > _bufferSize) {
+      spliceCount = Math.max(spliceCount, eventsCount - _bufferSize);
     }
 
     if (spliceCount > 0) {
-      events.splice(0, spliceCount);
+      _events.splice(0, spliceCount);
     }
 
-    return events;
+    return _events;
   }
 }
 
