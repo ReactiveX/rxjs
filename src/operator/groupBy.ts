@@ -76,9 +76,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
               private keySelector: (value: T) => K,
               private elementSelector?: (value: T) => R,
               private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>) {
-    super();
-    this.destination = destination;
-    this.add(destination);
+    super(destination);
   }
 
   protected _next(value: T): void {
