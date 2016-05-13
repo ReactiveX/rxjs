@@ -89,7 +89,6 @@ enabling "composite" subscription behavior.
 |`manySelect`|`-`|
 |`maxBy`|`-`|
 |`minBy`|`-`|
-|`onErrorResumeNext`|`-`|
 |`ofObjectChanges`|`-`|
 |`pausable`|`-`|
 |`pausableBuffered`|`-`|
