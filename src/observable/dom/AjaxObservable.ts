@@ -84,7 +84,7 @@ export class AjaxObservable<T> extends Observable<T> {
    *
    * @example
    * source = Rx.Observable.ajax('/products');
-   * source = Rx.Observable.ajax( url: 'products', method: 'GET' });
+   * source = Rx.Observable.ajax({ url: 'products', method: 'GET' });
    *
    * @param {string|Object} request Can be one of the following:
    *   A string of the URL to make the Ajax call.
