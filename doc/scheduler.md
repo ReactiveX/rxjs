@@ -39,7 +39,7 @@ got value 3
 done
 ```
 
-Notice how the notifications `got value...` were delivered after `just before subscribe`, which is different to the default behavior we have seen so far. This is because `observeOn(Rx.Scheduler.async)` introduces a proxy Observer between `Observable.create` and the final Observer. Let's rename some identifiers to make that distinction obvious in the example code:
+Notice how the notifications `got value...` were delivered after `just after subscribe`, which is different to the default behavior we have seen so far. This is because `observeOn(Rx.Scheduler.async)` introduces a proxy Observer between `Observable.create` and the final Observer. Let's rename some identifiers to make that distinction obvious in the example code:
 
 ```js
 var observable = Rx.Observable.create(function (proxyObserver) {
