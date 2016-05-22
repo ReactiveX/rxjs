@@ -1,3 +1,40 @@
+<a name="5.0.0-beta.8"></a>
+# [5.0.0-beta.8](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.7...v5.0.0-beta.8) (2016-05-22)
+
+
+### Bug Fixes
+
+* **AnonymousSubject:** allow anonymous observers as destination ([0e2c28b](https://github.com/ReactiveX/RxJS/commit/0e2c28b))
+* **combineLatest:** rxjs/observable/combineLatest is now properly exported ([21fab73](https://github.com/ReactiveX/RxJS/commit/21fab73)), closes [#1722](https://github.com/ReactiveX/RxJS/issues/1722)
+* **ConnectableObservable:** fix race conditions in ConnectableObservable and refCount. ([d1412bc](https://github.com/ReactiveX/RxJS/commit/d1412bc))
+* **Rx:** remove kitchenSink and DOM, let Rx export all ([f5090b4](https://github.com/ReactiveX/RxJS/commit/f5090b4)), closes [#1650](https://github.com/ReactiveX/RxJS/issues/1650)
+* **ScalarObservable:** set _isScalar to false when initialized with a scheduler ([5037b3a](https://github.com/ReactiveX/RxJS/commit/5037b3a))
+* **Subject:** correct Subject behaviors to be more like Rx4 ([ba9ef2b](https://github.com/ReactiveX/RxJS/commit/ba9ef2b))
+* **subscriptions:** fixes bug that tracked subscriber subscriptions twice. ([29ff794](https://github.com/ReactiveX/RxJS/commit/29ff794))
+
+### Features
+
+* **bufferTime:** add `maxBufferSize` optional argument ([cf45540](https://github.com/ReactiveX/RxJS/commit/cf45540)), closes [#1295](https://github.com/ReactiveX/RxJS/issues/1295)
+* **multicast:** subjectfactory allows selectors ([32fa3a4](https://github.com/ReactiveX/RxJS/commit/32fa3a4))
+* **onErrorResumeNext:** add onErrorResumeNext operator ([51e022b](https://github.com/ReactiveX/RxJS/commit/51e022b)), closes [#1665](https://github.com/ReactiveX/RxJS/issues/1665)
+* **publish:** support optional selectors ([0e5991d](https://github.com/ReactiveX/RxJS/commit/0e5991d)), closes [#1629](https://github.com/ReactiveX/RxJS/issues/1629)
+
+### Performance Improvements
+
+* **combineLatest:** avoid splice and indexOf ([33599cd](https://github.com/ReactiveX/RxJS/commit/33599cd))
+
+
+### BREAKING CHANGES
+
+* Subject: Subjects no longer duck-type as Subscriptions
+* Subject: Subjects will no longer throw when re-subscribed to if they are not unsubscribed
+* Subject: Subjects no longer automatically unsubscribe when completed or errored
+BREAKING CAHNGE: Minor scheduling changes to groupBy to ensure proper emission ordering
+* Rx: `Rx.kitchenSink` and `Rx.DOM` are removed, `Rx`
+export everything.
+
+
+
 <a name="5.0.0-beta.7"></a>
 # [5.0.0-beta.7](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.6...v5.0.0-beta.7) (2016-04-27)
 
