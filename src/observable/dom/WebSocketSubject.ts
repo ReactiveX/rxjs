@@ -33,7 +33,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   closeObserver: NextObserver<CloseEvent>;
   closingObserver: NextObserver<void>;
   WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
-  _output: Subject<T> = new Subject<T>();
+  private _output: Subject<T> = new Subject<T>();
 
   resultSelector(e: MessageEvent) {
     return JSON.parse(e.data);
