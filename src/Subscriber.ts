@@ -1,8 +1,8 @@
 import {isFunction} from './util/isFunction';
 import {Observer, PartialObserver} from './Observer';
 import {Subscription} from './Subscription';
-import {$$rxSubscriber} from './symbol/rxSubscriber';
 import {empty as emptyObserver} from './Observer';
+import {$$rxSubscriber} from './symbol/rxSubscriber';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -15,6 +15,8 @@ import {empty as emptyObserver} from './Observer';
  * @class Subscriber<T>
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
+
+  [$$rxSubscriber]() { return this; }
 
   /**
    * A static factory for a Subscriber, given a (potentially partial) definition
@@ -141,10 +143,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected _complete(): void {
     this.destination.complete();
     this.unsubscribe();
-  }
-
-  [$$rxSubscriber]() {
-    return this;
   }
 }
 

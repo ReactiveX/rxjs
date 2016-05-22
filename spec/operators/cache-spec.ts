@@ -1,28 +1,45 @@
 import * as Rx from '../../dist/cjs/Rx';
+import {expect} from 'chai';
 declare const {hot, cold, time, expectObservable};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 
 /** @test {cache} */
 describe('Observable.prototype.cache', () => {
+  it('should just work™', () => {
+    let subs = 0;
+    const source = Rx.Observable.create(observer => {
+      subs++;
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    }).cache();
+    let results = [];
+    source.subscribe(x => results.push(x));
+    expect(results).to.deep.equal([1, 2, 3]);
+    expect(subs).to.equal(1);
+    results = [];
+    source.subscribe(x => results.push(x));
+    expect(results).to.deep.equal([1, 2, 3]);
+    expect(subs).to.equal(1);
+  });
+
   it('should replay values upon subscription', () => {
-    const s1 = hot('---^---a---b---c---|     ').cache();
-    const expected1 = '----a---b---c---|     ';
-    const expected2 = '                (abc|)';
-    const t = time(   '----------------|');
+    const s1 = hot(   '----a---b---c---|       ').cache(undefined, undefined, rxTestScheduler);
+    const expected1 = '----a---b---c---|       ';
+    const expected2 = '                  (abc|)';
+    const sub2 =      '------------------|     ';
 
     expectObservable(s1).toBe(expected1);
-
-    rxTestScheduler.schedule(() => {
-      expectObservable(s1).toBe(expected2);
-    }, t);
+    rxTestScheduler.schedule(() => expectObservable(s1).toBe(expected2), time(sub2));
   });
 
   it('should replay values and error', () => {
-    const s1 = hot('---^---a---b---c---#     ').cache();
+    const s1 = hot('---^---a---b---c---#     ').cache(undefined, undefined, rxTestScheduler);
     const expected1 = '----a---b---c---#     ';
-    const expected2 = '                (abc#)';
-    const t = time(   '----------------|');
+    const expected2 = '                  (abc#)';
+    const t = time(   '------------------|');
 
     expectObservable(s1).toBe(expected1);
 
@@ -32,7 +49,7 @@ describe('Observable.prototype.cache', () => {
   });
 
   it('should replay values and and share', () => {
-    const s1 = hot('---^---a---b---c------------d--e--f-|').cache();
+    const s1 = hot('---^---a---b---c------------d--e--f-|').cache(undefined, undefined, rxTestScheduler);
     const expected1 = '----a---b---c------------d--e--f-|';
     const expected2 = '                (abc)----d--e--f-|';
     const t = time(   '----------------|');
@@ -58,16 +75,13 @@ describe('Observable.prototype.cache', () => {
   });
 
   it('should have a bufferCount that limits the replay test 2', () => {
-    const s1 = hot('---^---a---b---c------------d--e--f-|').cache(2);
+    const s1 = hot(   '----a---b---c------------d--e--f-|').cache(2);
     const expected1 = '----a---b---c------------d--e--f-|';
     const expected2 = '                (bc)-----d--e--f-|';
     const t = time(   '----------------|');
 
     expectObservable(s1).toBe(expected1);
-
-    rxTestScheduler.schedule(() => {
-      expectObservable(s1).toBe(expected2);
-    }, t);
+    rxTestScheduler.schedule(() => expectObservable(s1).toBe(expected2), t);
   });
 
   it('should accept a windowTime that limits the replay', () => {
@@ -85,7 +99,7 @@ describe('Observable.prototype.cache', () => {
   });
 
   it('should handle empty', () => {
-    const s1 =   cold('|').cache();
+    const s1 =   cold('|').cache(undefined, undefined, rxTestScheduler);
     const expected1 = '|';
     const expected2 = '                |';
     const t = time(   '----------------|');
@@ -98,7 +112,7 @@ describe('Observable.prototype.cache', () => {
   });
 
   it('should handle throw', () => {
-    const s1 =   cold('#').cache();
+    const s1 =   cold('#').cache(undefined, undefined, rxTestScheduler);
     const expected1 = '#';
     const expected2 = '                #';
     const t = time(   '----------------|');
@@ -111,7 +125,7 @@ describe('Observable.prototype.cache', () => {
   });
 
   it('should handle never', () => {
-    const s1 =   cold('-').cache();
+    const s1 =   cold('-').cache(undefined, undefined, rxTestScheduler);
     const expected1 = '-';
     const expected2 = '                -';
     const t = time(   '----------------|');
@@ -124,7 +138,7 @@ describe('Observable.prototype.cache', () => {
   });
 
   it('should multicast a completion', () => {
-    const s1 = hot('--a--^--b------c-----d------e-|').cache();
+    const s1 = hot('--a--^--b------c-----d------e-|').cache(undefined, undefined, rxTestScheduler);
     const t1 = time(    '|                         ');
     const e1 =          '---b------c-----d------e-|';
     const t2 = time(    '----------|               ');
@@ -142,7 +156,7 @@ describe('Observable.prototype.cache', () => {
   });
 
   it('should multicast an error', () => {
-    const s1 = hot('--a--^--b------c-----d------e-#').cache();
+    const s1 = hot('--a--^--b------c-----d------e-#').cache(undefined, undefined, rxTestScheduler);
     const t1 = time(    '|                         ');
     const e1 =          '---b------c-----d------e-#';
     const t2 = time(    '----------|               ');

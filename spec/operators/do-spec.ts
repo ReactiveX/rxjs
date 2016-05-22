@@ -29,7 +29,7 @@ describe('Observable.prototype.do', () => {
     expect(value).to.equal(42);
   });
 
-  it('should complete with a callback', () => {
+  it('should error with a callback', () => {
     let err = null;
     Observable.throw('bad').do(null, function (x) {
       err = x;

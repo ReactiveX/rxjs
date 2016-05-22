@@ -7,12 +7,18 @@ export function toSubscriber<T>(
   error?: (error: any) => void,
   complete?: () => void): Subscriber<T> {
 
-  if (nextOrObserver && typeof nextOrObserver === 'object') {
+  if (nextOrObserver) {
     if (nextOrObserver instanceof Subscriber) {
       return (<Subscriber<T>> nextOrObserver);
-    } else if (typeof nextOrObserver[$$rxSubscriber] === 'function') {
+    }
+
+    if (nextOrObserver[$$rxSubscriber]) {
       return nextOrObserver[$$rxSubscriber]();
     }
+  }
+
+  if (!nextOrObserver && !error && !complete) {
+    return new Subscriber();
   }
 
   return new Subscriber(nextOrObserver, error, complete);

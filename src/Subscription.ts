@@ -14,8 +14,6 @@ export type TeardownLogic = AnonymousSubscription | Function | void;
 export interface ISubscription extends AnonymousSubscription {
   unsubscribe(): void;
   isUnsubscribed: boolean;
-  add(teardown: TeardownLogic): ISubscription;
-  remove(sub: ISubscription): void;
 }
 
 /**

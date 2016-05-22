@@ -18,31 +18,6 @@ describe('Observable.prototype.publish', () => {
     published.connect();
   });
 
-  it('To match RxJS 4 behavior, it should NOT allow you to reconnect by subscribing again', (done: MochaDone) => {
-    const expected = [1, 2, 3, 4];
-    let i = 0;
-
-    const source = Observable.of(1, 2, 3, 4).publish();
-
-    source.subscribe((x: number) => {
-      expect(x).to.equal(expected[i++]);
-    }, (x) => {
-      done(new Error('should not be called'));
-    }, () => {
-      source.subscribe((x: any) => {
-        done(new Error('should not be called'));
-      }, (x) => {
-        done(new Error('should not be called'));
-      }, () => {
-        done();
-      });
-
-      source.connect();
-    });
-
-    expect(() => source.connect()).to.throw(Rx.ObjectUnsubscribedError);
-  });
-
   it('should return a ConnectableObservable', () => {
     const source = Observable.of(1).publish();
     expect(source instanceof Rx.ConnectableObservable).to.be.true;

@@ -6,11 +6,6 @@ const Subscriber = Rx.Subscriber;
 
 /** @test {Subscriber} */
 describe('Subscriber', () => {
-  it('should have the rxSubscriber symbol', () => {
-    const sub = new Subscriber();
-    expect(sub[Rx.Symbol.rxSubscriber]()).to.equal(sub);
-  });
-
   describe('when created through create()', () => {
     it('should not call error() if next() handler throws an error', () => {
       const errorSpy = sinon.spy();

@@ -1,4 +1,4 @@
-import {Subject} from '../../Subject';
+import {Subject, AnonymousSubject} from '../../Subject';
 import {Subscriber} from '../../Subscriber';
 import {Observable} from '../../Observable';
 import {Operator} from '../../Operator';
@@ -25,7 +25,7 @@ export interface WebSocketSubjectConfig {
  * @extends {Ignored}
  * @hide true
  */
-export class WebSocketSubject<T> extends Subject<T> {
+export class WebSocketSubject<T> extends AnonymousSubject<T> {
   url: string;
   protocol: string|Array<string>;
   socket: WebSocket;
@@ -33,6 +33,7 @@ export class WebSocketSubject<T> extends Subject<T> {
   closeObserver: NextObserver<CloseEvent>;
   closingObserver: NextObserver<void>;
   WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
+  private _output: Subject<T> = new Subject<T>();
 
   resultSelector(e: MessageEvent) {
     return JSON.parse(e.data);
@@ -50,25 +51,21 @@ export class WebSocketSubject<T> extends Subject<T> {
   }
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable<T>, destination?: Observer<T>) {
-    if (urlConfigOrSource instanceof Observable) {
-      super(destination, urlConfigOrSource);
+    super();
+    this.WebSocketCtor = root.WebSocket;
+
+    if (typeof urlConfigOrSource === 'string') {
+      this.url = urlConfigOrSource;
     } else {
-      super();
-      this.WebSocketCtor = root.WebSocket;
-
-      if (typeof urlConfigOrSource === 'string') {
-        this.url = urlConfigOrSource;
-      } else {
-        // WARNING: config object could override important members here.
-        assign(this, urlConfigOrSource);
-      }
-
-      if (!this.WebSocketCtor) {
-        throw new Error('no WebSocket constructor can be found');
-      }
-
-      this.destination = new ReplaySubject();
+      // WARNING: config object could override important members here.
+      assign(this, urlConfigOrSource);
     }
+
+    if (!this.WebSocketCtor) {
+      throw new Error('no WebSocket constructor can be found');
+    }
+
+    this.destination = new ReplaySubject();
   }
 
   lift<R>(operator: Operator<T, R>) {
@@ -111,107 +108,105 @@ export class WebSocketSubject<T> extends Subject<T> {
     });
   }
 
-  protected _unsubscribe() {
-    this.socket = null;
-    this.source = null;
-    this.destination = new ReplaySubject();
-    this.isStopped = false;
-    this.hasErrored = false;
-    this.hasCompleted = false;
-    this.observers = null;
-    this.isUnsubscribed = false;
-  }
-
-  protected _subscribe(subscriber: Subscriber<T>) {
-    if (!this.observers) {
-      this.observers = [];
-    }
-
-    const subscription = <Subscription>super._subscribe(subscriber);
-    // HACK: For some reason transpilation wasn't honoring this in arrow functions below
-    // Doesn't seem right, need to reinvestigate.
-    const self = this;
-    const WebSocket = this.WebSocketCtor;
-
-    if (self.source || !subscription || (<Subscription>subscription).isUnsubscribed) {
-      return subscription;
-    }
-
-    if (self.url && !self.socket) {
-      const socket = self.protocol ? new WebSocket(self.url, self.protocol) : new WebSocket(self.url);
-      self.socket = socket;
-
-      socket.onopen = (e: Event) => {
-        const openObserver = self.openObserver;
-        if (openObserver) {
-          openObserver.next(e);
-        }
-
-        const queue = self.destination;
-
-        self.destination = Subscriber.create(
-          (x) => socket.readyState === 1 && socket.send(x),
-          (e) => {
-            const closingObserver = self.closingObserver;
-            if (closingObserver) {
-              closingObserver.next(undefined);
-            }
-            if (e && e.code) {
-              socket.close(e.code, e.reason);
-            } else {
-              self._finalError(new TypeError('WebSocketSubject.error must be called with an object with an error code, ' +
-                'and an optional reason: { code: number, reason: string }'));
-            }
-          },
-          ( ) => {
-            const closingObserver = self.closingObserver;
-            if (closingObserver) {
-              closingObserver.next(undefined);
-            }
-            socket.close();
-          }
-        );
-
-        if (queue && queue instanceof ReplaySubject) {
-          subscription.add((<ReplaySubject<T>>queue).subscribe(self.destination));
-        }
-      };
-
-      socket.onerror = (e: Event) => self.error(e);
-
-      socket.onclose = (e: CloseEvent) => {
-        const closeObserver = self.closeObserver;
-        if (closeObserver) {
-          closeObserver.next(e);
-        }
-        if (e.wasClean) {
-          self._finalComplete();
-        } else {
-          self._finalError(e);
-        }
-      };
-
-      socket.onmessage = (e: MessageEvent) => {
-        const result = tryCatch(self.resultSelector)(e);
-        if (result === errorObject) {
-          self._finalError(errorObject.e);
-        } else {
-          self._finalNext(result);
-        }
-      };
-    }
-
-    return new Subscription(() => {
-      subscription.unsubscribe();
-      if (!this.observers || this.observers.length === 0) {
-        const { socket } = this;
-        if (socket && socket.readyState < 2) {
-          socket.close();
-        }
-        this.socket = undefined;
-        this.source = undefined;
-        this.destination = new ReplaySubject();
+  private _connectSocket() {
+    const socket = this.protocol ? new WebSocket(this.url, this.protocol) : new WebSocket(this.url);
+    this.socket = socket;
+    const subscription = new Subscription(() => {
+      this.socket = null;
+      if (socket && socket.readyState === 1) {
+        socket.close();
       }
     });
+
+    const observer = this._output;
+
+    socket.onopen = (e: Event) => {
+      const openObserver = this.openObserver;
+      if (openObserver) {
+        openObserver.next(e);
+      }
+
+      const queue = this.destination;
+
+      this.destination = Subscriber.create(
+        (x) => socket.readyState === 1 && socket.send(x),
+        (e) => {
+          const closingObserver = this.closingObserver;
+          if (closingObserver) {
+            closingObserver.next(undefined);
+          }
+          if (e && e.code) {
+            socket.close(e.code, e.reason);
+          } else {
+            observer.error(new TypeError('WebSocketSubject.error must be called with an object with an error code, ' +
+              'and an optional reason: { code: number, reason: string }'));
+          }
+          this.destination = new ReplaySubject();
+          this.socket = null;
+        },
+        ( ) => {
+          const closingObserver = this.closingObserver;
+          if (closingObserver) {
+            closingObserver.next(undefined);
+          }
+          socket.close();
+          this.destination = new ReplaySubject();
+          this.socket = null;
+        }
+      );
+
+      if (queue && queue instanceof ReplaySubject) {
+        subscription.add((<ReplaySubject<T>>queue).subscribe(this.destination));
+      }
+    };
+
+    socket.onerror = (e: Event) => observer.error(e);
+
+    socket.onclose = (e: CloseEvent) => {
+      const closeObserver = this.closeObserver;
+      if (closeObserver) {
+        closeObserver.next(e);
+      }
+      if (e.wasClean) {
+        observer.complete();
+      } else {
+        observer.error(e);
+      }
+    };
+
+    socket.onmessage = (e: MessageEvent) => {
+      const result = tryCatch(this.resultSelector)(e);
+      if (result === errorObject) {
+        observer.error(errorObject.e);
+      } else {
+        observer.next(result);
+      }
+    };
+  }
+
+  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+    if (!this.socket) {
+      this._connectSocket();
+    }
+    let subscription = new Subscription();
+    subscription.add(this._output.subscribe(subscriber));
+    subscription.add(() => {
+      const { socket } = this;
+      if (socket && socket.readyState === 1) {
+        socket.close();
+        this.socket = null;
+      }
+    });
+    return subscription;
+  }
+
+  unsubscribe() {
+    const { socket } = this;
+    if (socket && socket.readyState === 1) {
+      socket.close();
+      this.socket = null;
+    }
+    super.unsubscribe();
+    this.destination = new ReplaySubject();
   }
 }

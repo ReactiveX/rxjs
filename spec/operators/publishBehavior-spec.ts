@@ -33,33 +33,6 @@ describe('Observable.prototype.publishBehavior', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again', (done: MochaDone) => {
-    const expected = [0, 1, 2, 3, 4];
-    let i = 0;
-
-    const source = Observable.of(1, 2, 3, 4).publishBehavior(0);
-
-    source.subscribe(
-      (x: number) => {
-        expect(x).to.equal(expected[i++]);
-      },
-      (x) => {
-        done(new Error('should not be called'));
-      }, () => {
-        source.subscribe((x: any) => {
-          done(new Error('should not be called'));
-        }, (x) => {
-          done(new Error('should not be called'));
-        }, () => {
-          done();
-        });
-
-        source.connect();
-      });
-
-    expect(() => source.connect()).to.throw(Rx.ObjectUnsubscribedError);
-  });
-
   it('should multicast the same values to multiple observers', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';

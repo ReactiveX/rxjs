@@ -1,6 +1,5 @@
-import {Subject} from '../Subject';
+import {Subject, SubjectSubscriber} from '../Subject';
 import {Operator} from '../Operator';
-import {Observer} from '../Observer';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
@@ -24,7 +23,11 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 
   protected getSubject(): Subject<T> {
-    return this._subject || (this._subject = this.subjectFactory());
+    const subject = this._subject;
+    if (!subject || subject.isStopped) {
+      this._subject = this.subjectFactory();
+    }
+    return this._subject;
   }
 
   connect(): Subscription {
@@ -46,8 +49,8 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
-class ConnectableSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Observer<T>,
+class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
+  constructor(destination: Subject<T>,
               private connectable: ConnectableObservable<T>) {
     super(destination);
   }
