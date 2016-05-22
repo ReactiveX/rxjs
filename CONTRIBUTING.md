@@ -4,6 +4,31 @@
 it still applies to you. Ignorance is not an exemption.
 
 Contents
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+  - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
+    - [After your pull request is merged](#after-your-pull-request-is-merged)
+  - [Coding Style Guidelines](#coding-style-guidelines)
+  - [Unit Tests](#unit-tests)
+    - [CI Tests](#ci-tests)
+  - [Performance Tests](#performance-tests)
+    - [Macro](#macro)
+    - [Micro](#micro)
+- [Commit Message Guidelines](#commit-message-guidelines)
+  - [Commit Message Format](#commit-message-format)
+  - [Revert](#revert)
+  - [Type](#type)
+  - [Scope](#scope)
+  - [Subject](#subject)
+  - [Body](#body)
+  - [Footer](#footer)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+---
 - [Pull Requests](#pull-requests)
   - [Coding Style](#coding)
   - [Commit Messages](#commit)
@@ -16,7 +41,7 @@ Contents
 
 (This document is a work and progress and is subject to change)
 
-### <a name="pull-requests"></a> Submitting a Pull Request (PR)
+### Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Search [GitHub](https://github.com/ReactiveX/RxJS/pulls) for an open or closed PR
@@ -90,7 +115,7 @@ from the main (upstream) repository:
     git pull --ff upstream master
     ```
 
-### <a id="coding"></a> Coding Style Guidelines
+### Coding Style Guidelines
 
 - Please use proper types and generics throughout your code.
 - 2 space indentation only
@@ -99,7 +124,7 @@ from the main (upstream) repository:
 (TBD): For now try to follow the style that exists elsewhere in the source, and use your best judgment.
 
 
-### <a id="unit-tests"></a>Unit Tests
+### Unit Tests
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
 can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any
@@ -121,14 +146,14 @@ then it must cover the following cases:
 - Success with the context, if any allowed in the operator signature
 - If an error is thrown
 
-#### <a id="unit-tests"></a>CI Tests
+#### CI Tests
 - Using [Travis](https://travis-ci.org/) on your forked version of RxJS will allow running CI tests on that fork before submitting a PR to master
  - Simply create a `Travis` account and add your fork as a new project
 - [Sauce Labs](https://saucelabs.com/) setup will allow performing automated browser tests on the fork. Since `saucelabs` doesn't perform browser tests on a PR, this will help verify test results before PR's are checked into master.
  - In your `Travis` repo configuration, set the environment variables SAUCE_USERNAME and SAUCE_ACCESS_KEY to your `saucelabs` account ([reference](https://cloud.githubusercontent.com/assets/1210596/12679038/b9ba4eb6-c656-11e5-8c9b-b063c9a3f9dc.png))
 - As master runs both of these tests per each check in, it'd be welcome to setup those test before creating your PR
 
-### <a id="performance-tests"></a>Performance Tests
+### Performance Tests
 
 One of the primary goals of this library is (and will continue to be) great performance. As such, we've employed a variety of performance
 testing techniques.
@@ -143,7 +168,7 @@ testing techniques.
     please add tests for those scenarios
 
 
-#### <a id="macro"></a>Macro
+#### Macro
 
 [Macro performance tests](perf/macro) are best written for scenarios where many object instance allocations (or deallocations) are occurring. Operators
 that create a lot of child subscriptions, or operators that emit new objects like Observables and Subjects are definitely worth creating
@@ -162,7 +187,7 @@ protractor protractor.conf.js
 ```
 
 
-#### <a id="micro"></a>Micro
+#### Micro
 
 [Micro performance tests](perf/micro) really only serve to test operations per second. They're quick and easy to develop, and provide a reasonable look into the
 relative performance of our operators versus prior versions. All operators should have corresponding micro performance tests.
@@ -180,7 +205,7 @@ If you wish to run a single micro performance test, you can do so by providing a
 node perf/micro zip
 ```
 
-## <a name="commit"></a> Commit Message Guidelines
+## Commit Message Guidelines
 
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more
 readable messages** that are easy to follow when looking through the **project history**. But also,
