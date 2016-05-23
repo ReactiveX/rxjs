@@ -69,9 +69,9 @@ ES2015 introduced [generator functions and iterators](https://developer.mozilla.
 | | Producer | Consumer |
 | --- | --- | --- |
 | **Pull** | **Passive:** produces data when requested. | **Active:** decides when data is requested. |
-| **Push** | **Active:** produces data at its own pace. | **Passive:** just reacts to data sent to it. |
+| **Push** | **Active:** produces data at its own pace. | **Passive:** reacts to received data. |
 
-**What is Push?** In Push systems, the Producer determines when to send data to the Consumer The Consumer itself is unaware of when the data will be received.
+**What is Push?** In Push systems, the Producer determines when to send data to the Consumer, who is unaware of when that data will be received.
 
 Promises are the most common type of Push system in JavaScript today. A Promise (the Producer) delivers a resolved value to registered callbacks (the Consumers), but unlike functions, it is the Promise which is in charge of determining precisely when that value is "pushed" to the callbacks.
 
@@ -149,7 +149,7 @@ console.log(foo.call());
 console.log('after');
 ```
 
-You will obviously see the output:
+You will see the output:
 
 ```none
 "before"
@@ -259,19 +259,19 @@ Conclusion:
 
 ## Anatomy of an Observable
 
-Observables are **created** using `Rx.Observable.create` or a creation operator, are **subscribed** to with an Observer, **execute** to deliver `next` / `error` / `complete` notifications to the Observer, and their execution may be **disposed**. These four aspects are all encoded in an Observable instance, but some of these aspects are related to other types, like Observer an Subscription.
+Observables are **created** using `Rx.Observable.create` or a creation operator, are **subscribed** to with an Observer, **execute** to deliver `next` / `error` / `complete` notifications to the Observer, and their execution may be **disposed**. These four aspects are all encoded in an Observable instance, but some of these aspects are related to other types, like Observer and Subscription.
 
 Four core Observable concerns:
-- **Creation**
+- **Create**
 - **Subscribe**
-- **Execution**
-- **Disposal**
+- **Execute**
+- **Dispose**
 
 ### Creating Observables
 
 `Rx.Observable.create` is an alias for the `Observable` constructor, and it takes one argument: the `subscribe` function.
 
-The following example creates an Observable to emit the string `'hi'` every one second to an Observer.
+The following example creates an Observable to emit the string `'hi'` every second to an Observer.
 
 ```js
 var observable = Rx.Observable.create(function subscribe(observer) {
@@ -308,11 +308,11 @@ A `subscribe` call is simply a way to start an "Observable execution" and delive
 
 The code inside `Observable.create(function subscribe(observer) {...})` represents an "Observable execution", a lazy computation that only happens for each Observer that subscribes. The execution produces multiple values over time, either synchronously or asynchronously.
 
-There are three types of values an Observable Execution can deliver:
+There are three types of events, or notifications, that an Observable can execute:
 
-- "Next" notification: an actual value such as a Number, a String, an Object, etc.
-- "Error" notification: a JavaScript Error or exception.
-- "Complete" notification: a valueless event.
+- "Next" notification: sends a value such as a Number, a String, an Object, etc.
+- "Error" notification: sends a JavaScript Error or exception.
+- "Complete" notification: does not send a value.
 
 Next notifications are the most important and most common type: they represent actual data being delivered to an Observer. Error and Complete notifications may happen only once during the Observable Execution, and there can only be either one of them.
 
@@ -373,7 +373,7 @@ When `observable.subscribe` is called, the Observer gets attached to the newly c
 var subscription = observable.subscribe(x => console.log(x));
 ```
 
-The Subscription represents the ongoing execution, and has a minimal API, which primarily simply allows you to cancel that execution. Read more about the [`Subscription` type here](./overview.html#subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
+The Subscription represents the ongoing execution, and has a minimal API which primarily allows you to cancel that execution. Read more about the [`Subscription` type here](./overview.html#subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
 
 ```js
 var observable = Rx.Observable.from([10, 20, 30]);
@@ -382,7 +382,7 @@ var subscription = observable.subscribe(x => console.log(x));
 subscription.unsubscribe();
 ```
 
-<span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Just call `unsubscribe()` to cancel the execution.</span>
+<span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Calling `unsubscribe()` will cancel the execution.</span>
 
 Each Observable must define how to dispose resources of that execution when we create the Observable using `create()`. You can do that by returning a custom `unsubscribe` function from within `function subscribe()`.
 
@@ -394,7 +394,7 @@ var observable = Rx.Observable.create(function subscribe(observer) {
   var intervalID = setInterval(() => {
     observer.next('hi');
   }, 1000);
-  
+
   // Provide a way of canceling and disposing the interval resource
   return function unsubscribe() {
     clearInterval(intervalID);
@@ -402,14 +402,14 @@ var observable = Rx.Observable.create(function subscribe(observer) {
 });
 ```
 
-Just like `observable.subscribe` resembles `Observable.create(function subscribe() {...})`, the `unsubscribe` we return from `subscribe` is conceptually equal to `subscription.unsubscribe`. In fact, if we remove the ReactiveX types surrounding these concepts, we get some JavaScript that is clearly simple:
+Just like `observable.subscribe` resembles `Observable.create(function subscribe() {...})`, the `unsubscribe` we return from `subscribe` is conceptually equal to `subscription.unsubscribe`. In fact, if we remove the ReactiveX types surrounding these concepts, we're left with rather straightforward JavaScript.
 
 ```js
 function subscribe(observer) {
   var intervalID = setInterval(() => {
     observer.next('hi');
   }, 1000);
-  
+
   return function unsubscribe() {
     clearInterval(intervalID);
   };
