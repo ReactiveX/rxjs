@@ -138,7 +138,6 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
       this.window.error(err);
     } else {
       this.add(this.closingNotification = subscribeToResult(this, closingNotifier));
-      this.add(window);
     }
   }
 }

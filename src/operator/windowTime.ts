@@ -147,7 +147,6 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     const window = new Subject<T>();
     this.windows.push(window);
     const destination = this.destination;
-    destination.add(window);
     destination.next(window);
     return window;
   }

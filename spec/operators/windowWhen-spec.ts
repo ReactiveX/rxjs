@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, time, expectObservable, expectSubscriptions};
 
@@ -152,29 +151,6 @@ describe('Observable.prototype.windowWhen', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(closings[0].subscriptions).toBe(closeSubs[0]);
     expectSubscriptions(closings[1].subscriptions).toBe(closeSubs[1]);
-  });
-
-  it('should dispose window Subjects if the outer is unsubscribed early', () => {
-    const source = hot('--a--b--c--d--e--f--g--h--|');
-    const sourceSubs = '^        !                 ';
-    const expected =   'x---------                 ';
-    const x = cold(    '--a--b--c-                 ');
-    const unsub =      '         !                 ';
-    const late =  time('---------------|           ');
-    const values = { x: x };
-
-    let window;
-    const result = source
-      .windowWhen(() => Observable.never())
-      .do((w: any) => { window = w; });
-
-    expectObservable(result, unsub).toBe(expected, values);
-    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-    rxTestScheduler.schedule(() => {
-      expect(() => {
-        window.subscribe();
-      }).to.throw(Rx.ObjectUnsubscribedError);
-    }, late);
   });
 
   it('should propagate error thrown from closingSelector', () => {
