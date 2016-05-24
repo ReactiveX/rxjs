@@ -1,7 +1,5 @@
 import {Observable} from '../Observable';
 import {Subscription} from '../Subscription';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
 import {Subscriber} from '../Subscriber';
 
 /**
@@ -71,26 +69,35 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
   }
 
   protected _subscribe(subscriber: Subscriber<T>) {
-    const addHandler = this.addHandler;
     const removeHandler = this.removeHandler;
-    const selector = this.selector;
 
-    const handler = selector ? function(e: any) {
-      let result = tryCatch(selector).apply(null, arguments);
-      if (result === errorObject) {
-        subscriber.error(result.e);
-      } else {
-        subscriber.next(result);
-      }
+    const handler = !!this.selector ? (...args: Array<any>) => {
+      this._callSelector(subscriber, args);
     } : function(e: any) { subscriber.next(e); };
 
-    let result = tryCatch(addHandler)(handler);
-    if (result === errorObject) {
-      subscriber.error(result.e);
-    }
+    this._callAddHandler(handler, subscriber);
     subscriber.add(new Subscription(() => {
       //TODO: determine whether or not to forward to error handler
       removeHandler(handler);
     }));
+  }
+
+  private _callSelector(subscriber: Subscriber<T>, args: Array<any>): void {
+    try {
+      const result: T = this.selector(...args);
+      subscriber.next(result);
+    }
+    catch (e) {
+      subscriber.error(e);
+    }
+  }
+
+  private _callAddHandler(handler: (e: any) => void, errorSubscriber: Subscriber<T>): void {
+    try {
+      this.addHandler(handler);
+    }
+    catch (e) {
+      errorSubscriber.error(e);
+    }
   }
 }
