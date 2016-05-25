@@ -33,7 +33,9 @@ export class ConnectableObservable<T> extends Observable<T> {
   connect(): Subscription {
     let connection = this._connection;
     if (!connection) {
-      connection = this.source.subscribe(new ConnectableSubscriber(this.getSubject(), this));
+      connection = this._connection = new Subscription();
+      connection.add(this.source
+        .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
       if (connection.isUnsubscribed) {
         this._connection = null;
         connection = Subscription.EMPTY;
@@ -66,9 +68,13 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
     const { connectable } = this;
     if (connectable) {
       this.connectable = null;
+      const connection = (<any> connectable)._connection;
       (<any> connectable)._refCount = 0;
       (<any> connectable)._subject = null;
       (<any> connectable)._connection = null;
+      if (connection) {
+        connection.unsubscribe();
+      }
     }
   }
 }
@@ -122,10 +128,35 @@ class RefCountSubscriber<T> extends Subscriber<T> {
       return;
     }
 
+    ///
+    // Compare the local RefCountSubscriber's connection Subscription to the
+    // connection Subscription on the shared ConnectableObservable. In cases
+    // where the ConnectableObservable source synchronously emits values, and
+    // the RefCountSubscriber's dowstream Observers synchronously unsubscribe,
+    // execution continues to here before the RefCountOperator has a chance to
+    // supply the RefCountSubscriber with the shared connection Subscription.
+    // For example:
+    // ```
+    // Observable.range(0, 10)
+    //   .publish()
+    //   .refCount()
+    //   .take(5)
+    //   .subscribe();
+    // ```
+    // In order to account for this case, RefCountSubscriber should only dispose
+    // the ConnectableObservable's shared connection Subscription if the
+    // connection Subscription exists, *and* either:
+    //   a. RefCountSubscriber doesn't have a reference to the shared connection
+    //      Subscription yet, or,
+    //   b. RefCountSubscriber's connection Subscription reference is identical
+    //      to the shared connection Subscription
+    ///
     const { connection } = this;
-    if (connection) {
-      this.connection = null;
-      connection.unsubscribe();
+    const sharedConnection = (<any> connectable)._connection;
+    this.connection = null;
+
+    if (sharedConnection && (!connection || sharedConnection === connection)) {
+      sharedConnection.unsubscribe();
     }
   }
 }
