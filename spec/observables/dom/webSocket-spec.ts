@@ -391,5 +391,38 @@ describe('Observable.webSocket', () => {
       expect(socket.close).have.been.called;
       (<any>socket.close).restore();
     });
+
+    it('should work in combination with retry (issue #1466)', () => {
+      const error = { wasClean: false};
+
+      var subCounter = 0;
+      var unsubCounter = 0;
+
+      const subject = Observable.webSocket(<any>{url: 'ws://mysocket'})
+      .multiplex(
+        () => subCounter++,
+        () => unsubCounter++,
+        () => true)
+      .retry(1);
+
+      var nextCalled = false;
+      var failed = null;
+      var completed = false;
+      subject.subscribe(
+        () => nextCalled = true,
+        (e) => failed = e,
+        () => completed = true);
+
+      let socket = MockWebSocket.lastSocket;
+
+      socket.triggerClose(error);
+
+      expect(subCounter).to.equal(2);
+      expect(unsubCounter).to.equal(2);
+
+      expect(nextCalled).to.be.false;
+      expect(failed).to.equal(error);
+      expect(completed).to.be.false;
+    });
   });
 });
