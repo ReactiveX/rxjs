@@ -391,5 +391,27 @@ describe('Observable.webSocket', () => {
       expect(socket.close).have.been.called;
       (<any>socket.close).restore();
     });
+
+    it('should work in combination with retry (issue #1466)', () => {
+      const error = { wasClean: false};
+      const results = [];
+
+      const subject = Observable.webSocket(<any>{url: 'ws://mysocket'})
+        .multiplex(
+          () => results.push('sub'),
+          () => results.push('unsub'),
+          () => true)
+        .retry(1);
+
+      subject.subscribe(
+        () => results.push('next'),
+        (e) => results.push(e));
+
+      let socket = MockWebSocket.lastSocket;
+
+      socket.triggerClose(error);
+
+      expect(results).to.deep.equal(['sub', 'unsub', 'sub', error, 'unsub']);
+    });
   });
 });
