@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Applies a given `project` function to each value emitted by the source
@@ -35,7 +35,7 @@ import {Observable} from '../Observable';
  * @method map
  * @owner Observable
  */
-export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): Observable<R> {
+export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): IObservable<R> {
   if (typeof project !== 'function') {
     throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
   }
@@ -43,7 +43,7 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
 }
 
 export interface MapSignature<T> {
-  <R>(project: (value: T, index: number) => R, thisArg?: any): Observable<R>;
+  <R>(project: (value: T, index: number) => R, thisArg?: any): IObservable<R>;
 }
 
 class MapOperator<T, R> implements Operator<T, R> {

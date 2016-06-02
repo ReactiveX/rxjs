@@ -17,13 +17,19 @@ export interface Subscribable<T> {
 export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
 
+export interface IObservable<T> extends Subscribable<T> {
+  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
+            error?: (error: any) => void,
+            complete?: () => void): Subscription;
+}
+
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
  *
  * @class Observable<T>
  */
-export class Observable<T> implements Subscribable<T> {
+export class Observable<T> implements IObservable<T> {
 
   public _isScalar: boolean = false;
 

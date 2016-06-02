@@ -140,6 +140,7 @@ import './add/operator/zip';
 import './add/operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
+export {IObservable} from './Observable';
 export {Operator} from './Operator';
 export {Observer} from './Observer';
 export {Subscription} from './Subscription';
