@@ -80,9 +80,9 @@ export interface CombineLatestSignature<T> {
   <T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
   <T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
 
-  <R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
-  <R>(array: ObservableInput<any>[]): Observable<R>;
-  <R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R): Observable<R>;
+  <R>(...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): Observable<R>;
+  <R>(array: ObservableInput<T>[]): Observable<Array<T>>;
+  <TOther, R>(array: ObservableInput<TOther>[], project: (v1: T, ...values: Array<TOther>) => R): Observable<R>;
 }
 /* tslint:enable:max-line-length */
 
