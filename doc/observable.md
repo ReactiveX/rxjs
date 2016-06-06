@@ -71,7 +71,7 @@ ES2015 introduced [generator functions and iterators](https://developer.mozilla.
 | **Pull** | **Passive:** produces data when requested. | **Active:** decides when data is requested. |
 | **Push** | **Active:** produces data at its own pace. | **Passive:** reacts to received data. |
 
-**What is Push?** In Push systems, the Producer determines when to send data to the Consumer, who is unaware of when that data will be received.
+**What is Push?** In Push systems, the Producer determines when to send data to the Consumer. The Consumer is unaware of when it will receive that data.
 
 Promises are the most common type of Push system in JavaScript today. A Promise (the Producer) delivers a resolved value to registered callbacks (the Consumers), but unlike functions, it is the Promise which is in charge of determining precisely when that value is "pushed" to the callbacks.
 
@@ -261,11 +261,11 @@ Conclusion:
 
 Observables are **created** using `Rx.Observable.create` or a creation operator, are **subscribed** to with an Observer, **execute** to deliver `next` / `error` / `complete` notifications to the Observer, and their execution may be **disposed**. These four aspects are all encoded in an Observable instance, but some of these aspects are related to other types, like Observer and Subscription.
 
-Four core Observable concerns:
-- **Create**
-- **Subscribe**
-- **Execute**
-- **Dispose**
+Core Observable concerns:
+- **Creating** Observables
+- **Subscribing** to Observables
+- **Executing** Notifications
+- **Disposing** Observables
 
 ### Creating Observables
 
@@ -373,7 +373,7 @@ When `observable.subscribe` is called, the Observer gets attached to the newly c
 var subscription = observable.subscribe(x => console.log(x));
 ```
 
-The Subscription represents the ongoing execution, and has a minimal API which primarily allows you to cancel that execution. Read more about the [`Subscription` type here](./overview.html#subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
+The Subscription represents the ongoing execution, and has a minimal API which allows you to cancel that execution. Read more about the [`Subscription` type here](./overview.html#subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
 
 ```js
 var observable = Rx.Observable.from([10, 20, 30]);
@@ -382,7 +382,7 @@ var subscription = observable.subscribe(x => console.log(x));
 subscription.unsubscribe();
 ```
 
-<span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Calling `unsubscribe()` will cancel the execution.</span>
+<span class="informal">When you subscribe, you get back a Subscription, which represents the ongoing execution. Just call `unsubscribe()` to cancel the execution.</span>
 
 Each Observable must define how to dispose resources of that execution when we create the Observable using `create()`. You can do that by returning a custom `unsubscribe` function from within `function subscribe()`.
 
