@@ -92,7 +92,7 @@ export class MergeMapOperator<T, I, R> implements Operator<T, I> {
  */
 export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private hasCompleted: boolean = false;
-  private buffer: Observable<any>[] = [];
+  private buffer: T[] = [];
   private active: number = 0;
   protected index: number = 0;
 
@@ -103,7 +103,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     super(destination);
   }
 
-  protected _next(value: any): void {
+  protected _next(value: T): void {
     if (this.active < this.concurrent) {
       this._tryNext(value);
     } else {
@@ -111,7 +111,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  protected _tryNext(value: any) {
+  protected _tryNext(value: T) {
     let result: any;
     const index = this.index++;
     try {
