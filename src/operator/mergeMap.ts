@@ -92,7 +92,7 @@ export class MergeMapOperator<T, I, R> implements Operator<T, I> {
  */
 export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private hasCompleted: boolean = false;
-  private buffer: Observable<any>[] = [];
+  private buffer: T[] = [];
   private active: number = 0;
   protected index: number = 0;
 
@@ -103,7 +103,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     super(destination);
   }
 
-  protected _next(value: any): void {
+  protected _next(value: T): void {
     if (this.active < this.concurrent) {
       this._tryNext(value);
     } else {
@@ -111,8 +111,8 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  protected _tryNext(value: any) {
-    let result: any;
+  protected _tryNext(value: T) {
+    let result: ObservableInput<I>;
     const index = this.index++;
     try {
       result = this.project(value, index);
@@ -124,7 +124,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this._innerSub(result, value, index);
   }
 
-  private _innerSub(ish: any, value: T, index: number): void {
+  private _innerSub(ish: ObservableInput<I>, value: T, index: number): void {
     this.add(subscribeToResult<T, I>(this, ish, value, index));
   }
 
@@ -145,7 +145,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  _notifyResultSelector(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) {
+  private _notifyResultSelector(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) {
     let result: R;
     try {
       result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
