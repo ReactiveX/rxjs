@@ -52,6 +52,29 @@ describe('Observable.webSocket', () => {
     subject.unsubscribe();
   });
 
+  it('should allow the user to chain operators', () => {
+    let messageReceived = false;
+    const subject = Observable.webSocket('ws://mysocket');
+
+    subject
+      .map(x => x + '?')
+      .map(x => x + '!')
+      .map(x => x + '!')
+      .subscribe((x: string) => {
+        expect(x).to.equal('pong?!!');
+        messageReceived = true;
+      });
+
+    const socket = MockWebSocket.lastSocket;
+
+    socket.open();
+
+    socket.triggerMessage(JSON.stringify('pong'));
+    expect(messageReceived).to.be.true;
+
+    subject.unsubscribe();
+  });
+
   it('receive multiple messages', () => {
     const expected = ['what', 'do', 'you', 'do', 'with', 'a', 'drunken', 'sailor?'];
     const results = [];

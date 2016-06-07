@@ -1,7 +1,6 @@
 import {Subject, AnonymousSubject} from '../../Subject';
 import {Subscriber} from '../../Subscriber';
 import {Observable} from '../../Observable';
-import {Operator} from '../../Operator';
 import {Subscription} from '../../Subscription';
 import {root} from '../../util/root';
 import {ReplaySubject} from '../../ReplaySubject';
@@ -66,12 +65,6 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     }
 
     this.destination = new ReplaySubject();
-  }
-
-  lift<R>(operator: Operator<T, R>) {
-    const sock: WebSocketSubject<T> = new WebSocketSubject(this, this.destination);
-    sock.operator = <any>operator;
-    return sock;
   }
 
   // TODO: factor this out to be a proper Operator/Subscriber implementation and eliminate closures
