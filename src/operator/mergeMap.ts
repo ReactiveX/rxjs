@@ -145,7 +145,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  _notifyResultSelector(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) {
+  private _notifyResultSelector(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) {
     let result: R;
     try {
       result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
