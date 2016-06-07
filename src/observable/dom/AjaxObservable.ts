@@ -174,7 +174,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     }
 
     // ensure content type is set
-    if (!('Content-Type' in headers)) {
+    if (!('Content-Type' in headers) && !(root.FormData && request.body instanceof root.FormData)) {
       headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
@@ -247,16 +247,18 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     }
   }
 
-  private serializeBody(body: any, contentType: string) {
+  private serializeBody(body: any, contentType?: string) {
     if (!body || typeof body === 'string') {
       return body;
     } else if (root.FormData && body instanceof root.FormData) {
       return body;
     }
 
-    const splitIndex = contentType.indexOf(';');
-    if (splitIndex !== -1) {
-      contentType = contentType.substring(0, splitIndex);
+    if (contentType) {
+      const splitIndex = contentType.indexOf(';');
+      if (splitIndex !== -1) {
+        contentType = contentType.substring(0, splitIndex);
+      }
     }
 
     switch (contentType) {
@@ -264,6 +266,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         return Object.keys(body).map(key => `${encodeURI(key)}=${encodeURI(body[key])}`).join('&');
       case 'application/json':
         return JSON.stringify(body);
+      default:
+        return body;
     }
   }
 
