@@ -112,7 +112,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   }
 
   protected _tryNext(value: T) {
-    let result: any;
+    let result: ObservableInput<I>;
     const index = this.index++;
     try {
       result = this.project(value, index);
@@ -124,7 +124,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this._innerSub(result, value, index);
   }
 
-  private _innerSub(ish: any, value: T, index: number): void {
+  private _innerSub(ish: ObservableInput<I>, value: T, index: number): void {
     this.add(subscribeToResult<T, I>(this, ish, value, index));
   }
 
