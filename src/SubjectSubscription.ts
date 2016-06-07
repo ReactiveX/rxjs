@@ -7,10 +7,10 @@ import {Subscription} from './Subscription';
  * @ignore
  * @extends {Ignored}
  */
-export class SubjectSubscription extends Subscription {
+export class SubjectSubscription<T> extends Subscription {
   isUnsubscribed: boolean = false;
 
-  constructor(public subject: Subject<any>, public subscriber: Observer<any>) {
+  constructor(public subject: Subject<T>, public subscriber: Observer<T>) {
     super();
   }
 
