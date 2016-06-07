@@ -87,7 +87,7 @@ export class MergeMapToOperator<T, I, R> implements Operator<Observable<T>, R> {
  */
 export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private hasCompleted: boolean = false;
-  private buffer: Observable<any>[] = [];
+  private buffer: T[] = [];
   private active: number = 0;
   protected index: number = 0;
 
@@ -98,7 +98,7 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     super(destination);
   }
 
-  protected _next(value: any): void {
+  protected _next(value: T): void {
     if (this.active < this.concurrent) {
       const resultSelector = this.resultSelector;
       const index = this.index++;
@@ -112,7 +112,7 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  private _innerSub(ish: any,
+  private _innerSub(ish: SubscribableOrPromise<I>,
                     destination: PartialObserver<I>,
                     resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
                     value: T,
