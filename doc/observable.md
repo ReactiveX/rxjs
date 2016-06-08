@@ -264,7 +264,7 @@ Observables are **created** using `Rx.Observable.create` or a creation operator,
 Core Observable concerns:
 - **Creating** Observables
 - **Subscribing** to Observables
-- **Executing** Notifications
+- **Executing** the Observable
 - **Disposing** Observables
 
 ### Creating Observables
@@ -308,7 +308,7 @@ A `subscribe` call is simply a way to start an "Observable execution" and delive
 
 The code inside `Observable.create(function subscribe(observer) {...})` represents an "Observable execution", a lazy computation that only happens for each Observer that subscribes. The execution produces multiple values over time, either synchronously or asynchronously.
 
-There are three types of events, or notifications, that an Observable can execute:
+There are three types of values an Observable Execution can deliver:
 
 - "Next" notification: sends a value such as a Number, a String, an Object, etc.
 - "Error" notification: sends a JavaScript Error or exception.
