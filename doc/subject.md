@@ -69,7 +69,7 @@ There are also a few specializations of the `Subject` type: `BehaviorSubject`, `
 
 ## Multicasted Observables
 
-Whenever we refer to "a multicasted Observable", that means an Observable execution that passes through a Subject. Otherwise, a "plain (unicast) Observable" behaves like an *invokable collection of future values*, with no sharing assumed.
+A "multicasted Observable" passes notifications through a Subject which may have many subscribers, whereas a plain "unicast Observable" only sends notifications to a single Observer.
 
 <span class="informal">A multicasted Observable uses a Subject under the hood to make multiple Observers see the same Observable execution.</span>
 
@@ -94,11 +94,11 @@ multicasted.connect();
 
 `multicast` returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. `multicast` returns a `ConnectableObservable`, which is simply an Observable with the `connect()` method.
 
-The `connect()` method is important to determine exactly when will the shared Observable execution start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe in order to cancel the shared Observable execution.
+The `connect()` method is important to determine exactly when the shared Observable execution  will start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe from in order to cancel the shared Observable execution.
 
 ### Reference counting
 
-Calling `connect()` manually and handling the Subscription is often cumbersome. Usually, we want to *automatically* connect when the first Observer arrives, and automatically cancel the shared execution when the last Observer unsubscribes. 
+Calling `connect()` manually and handling the Subscription is often cumbersome. Usually, we want to *automatically* connect when the first Observer arrives, and automatically cancel the shared execution when the last Observer unsubscribes.
 
 Consider the following example where subscriptions occur as outlined by this list:
 
@@ -124,7 +124,7 @@ var subscription1, subscription2, subscriptionConnect;
 subscription1 = multicasted.subscribe({
   next: (v) => console.log('observerA: ' + v)
 });
-// We should call `connect()` here, because the first 
+// We should call `connect()` here, because the first
 // subscriber to `multicasted` is interested in consuming values
 subscriptionConnect = multicasted.connect();
 
@@ -146,7 +146,7 @@ setTimeout(() => {
 }, 2000);
 ```
 
-If we wish to avoid explicit calls to `connect()`, we use the method `refCount()` on the ConnectableObservable. It does reference counting: keeps track of how many subscribers are registered on the ConnectableObservable. `refCount()` calls `connect()` when that number goes from `0` to `1`, and keeps the subscription for the shared execution. When the number of subscribers goes from `1` to `0`, it finally unsubscribes the subscription to the shared execution. 
+If we wish to avoid explicit calls to `connect()`, we can use ConnectableObservable's `refCount()` method (reference counting), which returns an Observable that keeps track of how many subscribers it has. When the number of subscribers increases from `0` to `1`, it will call `connect()` for us, which starts the shared execution. Only when the number of subscribers decreases from `1` to `0` will it be fully unsubscribed, stopping further execution.
 
 <span class="informal">`refCount` makes the multicasted Observable automatically start executing when the first subscriber arrives, and stop executing when the last subscriber leaves.</span>
 
@@ -187,7 +187,7 @@ setTimeout(() => {
 
 Which executes with the output:
 
-```none 
+```none
 observerA subscribed
 observerA: 0
 observerB subscribed
@@ -198,7 +198,7 @@ observerB: 2
 observerB unsubscribed
 ```
 
-The `refCount()` method only exists on ConnectableObservables, and it returns an `Observable`, not another ConnectableObservable.
+The `refCount()` method only exists on ConnectableObservable, and it returns an `Observable`, not another ConnectableObservable.
 
 ## BehaviorSubject
 
@@ -206,10 +206,10 @@ One of the variants of Subjects is the `BehaviorSubject`, which has a notion of 
 
 <span class="informal">BehaviorSubjects are useful for representing "values over time". For instance, an event stream of birthdays is a Subject, but the stream of a person's age would be a BehaviorSubject.</span>
 
-Notice in the following example how the BehaviorSubject is initialized with the value `0` which the first Observer receives when it subscribes. Also, the second Observer subscribes after the value `2` was sent, but will still receive that value:
+In the following example, the BehaviorSubject is initialized with the value `0` which the first Observer receives when it subscribes. The second Observer receives the value `2` even though it subscribed after the value `2` was sent.
 
 ```js
-var subject = new Rx.BehaviorSubject(0 /* the initial value */);
+var subject = new Rx.BehaviorSubject(0); // 0 is the initial value
 
 subject.subscribe({
   next: (v) => console.log('observerA: ' + v)
@@ -238,14 +238,14 @@ observerB: 3
 
 ## ReplaySubject
 
-The `ReplaySubject` subclass of `Subject` is like `BehaviorSubject` in that it can send old values to new incoming subscribers, but it in general is able to *record* a part of the Observable execution.
+A `ReplaySubject` is similar to a `BehaviorSubject` in that it can send old values to new subscribers, but it can also *record* a part of the Observable execution.
 
 <span class="informal">A `ReplaySubject` records multiple values from the Observable execution and replays them to new subscribers.</span>
 
-You may, for instance, specify how many values to replay, e.g.:
+When creating a `ReplaySubject`, you can specify how many values to replay:
 
 ```js
-var subject = new Rx.ReplaySubject(3 /* bufferSize */);
+var subject = new Rx.ReplaySubject(3); // buffer 3 values for new subscribers
 
 subject.subscribe({
   next: (v) => console.log('observerA: ' + v)
