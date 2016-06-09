@@ -133,6 +133,7 @@ export class MockXMLHttpRequest {
   method: any;
   data: any;
   requestHeaders: any = {};
+  withCredentials: boolean = false;
 
   constructor() {
     this.previousRequest = MockXMLHttpRequest.recentRequest;
