@@ -90,7 +90,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   }
 
   protected _next(value: T) {
-    let result: any;
+    let result: ObservableInput<I>;
     const index = this.index++;
     try {
       result = this.project(value, index);
@@ -101,7 +101,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this._innerSub(result, value, index);
   }
 
-  private _innerSub(result: any, value: T, index: number) {
+  private _innerSub(result: ObservableInput<I>, value: T, index: number) {
     const innerSubscription = this.innerSubscription;
     if (innerSubscription) {
       innerSubscription.unsubscribe();
@@ -138,8 +138,8 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  _tryNotifyNext(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): void {
-    let result: any;
+  private _tryNotifyNext(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): void {
+    let result: R;
     try {
       result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
     } catch (err) {
