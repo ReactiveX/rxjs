@@ -459,13 +459,14 @@ describe('Subject', () => {
   });
 
   it('should not next after error', () => {
+    const error = new Error('wut?');
     const subject = new Rx.Subject();
     const results = [];
     subject.subscribe(x => results.push(x), (err) => results.push(err));
     subject.next('a');
-    subject.error(new Error('wut?'));
+    subject.error(error);
     subject.next('b');
-    expect(results).to.deep.equal(['a', new Error('wut?')]);
+    expect(results).to.deep.equal(['a', error]);
   });
 
   describe('asObservable', () => {
