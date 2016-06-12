@@ -1,14 +1,15 @@
 {
   "name": "@reactivex/rxjs",
-  "dependencies": {},
   "devDependencies": {
-    "lodash": "github:typed-typings/npm-lodash#65781ee6b25562ee9b5913043a3ba249acfcee17",
-    "chai": "registry:npm/chai#3.4.0+20160308201903",
-    "sinon": "registry:npm/sinon#1.16.0+20160309002336",
+    "chai": "registry:npm/chai#3.5.0+20160415060238",
+    "lodash": "registry:npm/lodash#4.0.0+20160416211519",
+    "sinon": "registry:npm/sinon#1.16.0+20160427193336",
     "sinon-chai": "registry:npm/sinon-chai#2.8.0+20160310030142"
   },
-  "ambientDependencies": {
-    "es6-shim": "github:DefinitelyTyped/DefinitelyTyped/es6-shim/es6-shim.d.ts#6697d6f7dadbf5773cb40ecda35a76027e0783b2",
+  "globalDevDependencies": {
     "mocha": "registry:dt/mocha#2.2.5+20160317120654"
+  },
+  "globalDependencies": {
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504"
   }
 }
