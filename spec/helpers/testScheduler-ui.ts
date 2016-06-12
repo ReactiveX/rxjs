@@ -1,4 +1,4 @@
-///<reference path='../../typings/main.d.ts'/>
+///<reference path='../../typings/index.d.ts'/>
 ///<reference path='ambient.d.ts'/>
 
 import * as _ from 'lodash';
