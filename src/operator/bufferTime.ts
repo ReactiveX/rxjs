@@ -183,7 +183,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   }
 
   openContext(): Context<T> {
-    let context: Context<T> = new Context<T>();
+    const context: Context<T> = new Context<T>();
     this.contexts.push(context);
     return context;
   }
@@ -191,7 +191,11 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   closeContext(context: Context<T>) {
     this.destination.next(context.buffer);
     const contexts = this.contexts;
-    contexts.splice(contexts.indexOf(context), 1);
+
+    const spliceIndex = contexts ? contexts.indexOf(context) : -1;
+    if (spliceIndex >= 0) {
+      contexts.splice(contexts.indexOf(context), 1);
+    }
   }
 }
 
@@ -203,8 +207,8 @@ function dispatchBufferTimeSpanOnly(state: any) {
     subscriber.closeContext(prevContext);
   }
 
-  state.context = subscriber.openContext();
   if (!subscriber.isUnsubscribed) {
+    state.context = subscriber.openContext();
     state.context.closeAction = (<any>this).schedule(state, state.bufferTimeSpan);
   }
 }
