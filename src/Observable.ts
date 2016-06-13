@@ -6,7 +6,7 @@ import {root} from './util/root';
 import {toSubscriber} from './util/toSubscriber';
 import {IfObservable} from './observable/IfObservable';
 import {ErrorObservable} from './observable/ErrorObservable';
-import * as $$observable from 'symbol-observable';
+import $$observable from 'symbol-observable';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),

@@ -13,7 +13,7 @@ import {Observable, ObservableInput} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn';
 
-import * as $$observable from 'symbol-observable';
+import $$observable from 'symbol-observable';
 
 const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 'number');
 
