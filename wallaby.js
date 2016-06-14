@@ -13,7 +13,12 @@ module.exports = wallaby => ({
       preserveConstEnums: true,
     })
   },
-
+  
+  testFramework: {
+    type: 'mocha',
+    path: 'mocha'
+  },
+  
   env: {
     type: 'node'
   },
