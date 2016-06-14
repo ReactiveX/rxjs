@@ -35,11 +35,24 @@ describe('Observable.prototype.cache', () => {
     rxTestScheduler.schedule(() => expectObservable(s1).toBe(expected2), time(sub2));
   });
 
-  it('should replay values and error', () => {
-    const s1 = hot('---^---a---b---c---#     ').cache(undefined, undefined, rxTestScheduler);
-    const expected1 = '----a---b---c---#     ';
-    const expected2 = '                  (abc#)';
+  it('should not replay values after error with a hot observable', () => {
+    const s1 = hot('---^---a---b---c---#  ').cache(undefined, undefined, rxTestScheduler);
+    const expected1 = '----a---b---c---#  ';
+    const expected2 = '                  -';
     const t = time(   '------------------|');
+
+    expectObservable(s1).toBe(expected1);
+
+    rxTestScheduler.schedule(() => {
+      expectObservable(s1).toBe(expected2);
+    }, t);
+  });
+
+  it('should be resubscribable after error with a cold observable', () => {
+    const s1 = cold(  '----a---b---c---#                  ').cache(undefined, undefined, rxTestScheduler);
+    const expected1 = '----a---b---c---#                  ';
+    const expected2 = '                  ----a---b---c---#';
+    const t = time(   '------------------|                ');
 
     expectObservable(s1).toBe(expected1);
 
@@ -192,5 +205,18 @@ describe('Observable.prototype.cache', () => {
     rxTestScheduler.schedule(() => {
       expectObservable(s1).toBe(e3);
     }, t2);
+  });
+
+  it('should be retryable', () => {
+    const source = cold('--1-2-3-#');
+    const subs =       ['^       !                ',
+                        '        ^       !        ',
+                        '                ^       !'];
+    const expected =    '--1-2-3---1-2-3---1-2-3-#';
+
+    const result = source.cache(undefined, undefined, rxTestScheduler).retry(2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
