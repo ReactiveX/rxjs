@@ -170,7 +170,7 @@ import {QueueScheduler} from './scheduler/QueueScheduler';
 import {AnimationFrameScheduler} from './scheduler/AnimationFrameScheduler';
 import {$$rxSubscriber as rxSubscriber} from './symbol/rxSubscriber';
 import {$$iterator as iterator} from './symbol/iterator';
-import * as observable from 'symbol-observable';
+import observable from 'symbol-observable';
 
 /* tslint:enable:no-unused-variable */
 

@@ -8,7 +8,7 @@ import {Subscription} from '../Subscription';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
 
-import * as $$observable from 'symbol-observable';
+import $$observable from 'symbol-observable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
