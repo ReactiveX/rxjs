@@ -36,5 +36,5 @@ script:
 
 after_success:
   - npm run cover
-  - cat ./coverage/coverage-remapped.lcov | ./node_modules/coveralls/bin/coveralls.js
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ -n "${SAUCE_ACCESS_KEY}" ] && npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js || false'
