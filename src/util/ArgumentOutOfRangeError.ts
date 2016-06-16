@@ -10,7 +10,9 @@
  */
 export class ArgumentOutOfRangeError extends Error {
   constructor() {
-    super('argument out of range');
-    this.name = 'ArgumentOutOfRangeError';
+    const err: any = super('argument out of range');
+    (<any> this).name = err.name = 'ArgumentOutOfRangeError';
+    (<any> this).stack = err.stack;
+    (<any> this).message = err.message;
   }
 }
