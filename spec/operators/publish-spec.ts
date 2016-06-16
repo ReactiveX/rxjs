@@ -54,7 +54,9 @@ describe('Observable.prototype.publish', () => {
 
   it('should accept selectors', () => {
     const source =     hot('-1-2-3----4-|');
-    const sourceSubs =     ['^           !'];
+    const sourceSubs =     ['^           !',
+                            '    ^       !',
+                            '        ^   !'];
     const published = source.publish(x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '-2-4-6----8-|';

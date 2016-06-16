@@ -33,8 +33,9 @@ export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subjec
     };
   }
 
-  const connectable = new ConnectableObservable(this, subjectFactory);
-  return selector ? new MulticastObservable(this, connectable, selector) : connectable;
+  return !selector ?
+    new ConnectableObservable(this, subjectFactory) :
+    new MulticastObservable(this, subjectFactory, selector);
 }
 
 export type factoryOrValue<T> = T | (() => T);

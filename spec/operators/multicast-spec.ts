@@ -49,9 +49,11 @@ describe('Observable.prototype.multicast', () => {
     connectable.connect();
   });
 
-  it('should accept selectors to factory functions', () => {
+  it('should accept a multicast selector and connect to a hot source for each subscriber', () => {
     const source =      hot('-1-2-3----4-|');
-    const sourceSubs =     ['^           !'];
+    const sourceSubs =     ['^           !',
+                            '    ^       !',
+                            '        ^   !'];
     const multicasted = source.multicast(() => new Subject(),
       x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
     const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
@@ -60,6 +62,26 @@ describe('Observable.prototype.multicast', () => {
     const expected2   =     '    -6----8-|';
     const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
     const expected3   =     '        --8-|';
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should accept a multicast selector and connect to a cold source for each subscriber', () => {
+    const source =     cold('-1-2-3----4-|');
+    const sourceSubs =     ['^           !',
+                            '    ^           !',
+                            '        ^           !'];
+    const multicasted = source.multicast(() => new Subject(),
+      x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
+    const expected1   =     '-2-4-6----8-|';
+    const expected2   =     '    -2-4-6----8-|';
+    const expected3   =     '        -2-4-6----8-|';
+    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
 
     expectObservable(subscriber1).toBe(expected1);
     expectObservable(subscriber2).toBe(expected2);
