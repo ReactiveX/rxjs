@@ -9,7 +9,9 @@
  */
 export class ObjectUnsubscribedError extends Error {
   constructor() {
-    super('object unsubscribed');
-    this.name = 'ObjectUnsubscribedError';
+    const err: any = super('object unsubscribed');
+    (<any> this).name = err.name = 'ObjectUnsubscribedError';
+    (<any> this).stack = err.stack;
+    (<any> this).message = err.message;
   }
 }
