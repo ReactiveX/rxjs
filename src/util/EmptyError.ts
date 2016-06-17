@@ -10,7 +10,9 @@
  */
 export class EmptyError extends Error {
   constructor() {
-    super('no elements in sequence');
-    this.name = 'EmptyError';
+    const err: any = super('no elements in sequence');
+    (<any> this).name = err.name = 'EmptyError';
+    (<any> this).stack = err.stack;
+    (<any> this).message = err.message;
   }
 }

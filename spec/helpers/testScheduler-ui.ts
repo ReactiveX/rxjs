@@ -104,12 +104,25 @@ module.exports = function(suite) {
       .replace(/\\n/g, '\n');
     }
 
+    function deleteErrorNotificationStack(marble) {
+      const { notification } = marble;
+      if (notification) {
+        const { kind, exception } = notification;
+        if (kind === 'E' && exception instanceof Error) {
+          notification.exception = { name: exception.name, message: exception.message };
+        }
+      }
+      return marble;
+    }
+
     /**
      * custom assertion formatter for expectObservable test
      */
 
     function observableMatcher(actual, expected) {
       if (Array.isArray(actual) && Array.isArray(expected)) {
+        actual = actual.map(deleteErrorNotificationStack);
+        expected = expected.map(deleteErrorNotificationStack);
         const passed = _.isEqual(actual, expected);
         if (passed) {
           return;
