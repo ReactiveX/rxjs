@@ -109,7 +109,7 @@ module.exports = function(suite) {
       if (notification) {
         const { kind, exception } = notification;
         if (kind === 'E' && exception instanceof Error) {
-          exception.stack = null;
+          notification.exception = { name: exception.name, message: exception.message };
         }
       }
       return marble;
