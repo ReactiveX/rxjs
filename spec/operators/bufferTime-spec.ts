@@ -284,4 +284,20 @@ describe('Observable.prototype.bufferTime', () => {
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should not throw when subscription synchronously unsubscribed after emit', () => {
+    const e1 =   hot('---a---b---c---d---e---f---g-----|');
+    const subs =     '^                   !';
+    const t = time(  '----------|');
+    const expected = '----------w---------(x|)';
+    const values = {
+      w: ['a', 'b'],
+      x: ['c', 'd', 'e']
+    };
+
+    const result = e1.bufferTime(t, null, Number.POSITIVE_INFINITY, rxTestScheduler).take(2);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
 });
