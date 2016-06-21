@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../../dist/cjs/Rx';
 import {root} from '../../../dist/cjs/util/root';
 import {MockXMLHttpRequest} from '../../helpers/ajax-helper';
@@ -10,18 +11,110 @@ describe('Observable.ajax', () => {
   let gXHR: XMLHttpRequest;
   let rXHR: XMLHttpRequest;
 
+  let sandbox: sinon.SinonSandbox;
+
   beforeEach(() => {
+    sandbox = sinon.sandbox.create();
     gXHR = global.XMLHttpRequest;
     rXHR = root.XMLHttpRequest;
+
     global.XMLHttpRequest = MockXMLHttpRequest;
     root.XMLHttpRequest = MockXMLHttpRequest;
   });
 
   afterEach(() => {
+    sandbox.restore();
     MockXMLHttpRequest.clearRequest();
 
     global.XMLHttpRequest = gXHR;
     root.XMLHttpRequest = rXHR;
+
+    root.XDomainRequest = null;
+    root.ActiveXObject = null;
+  });
+
+  it('should create default XMLHttpRequest for non CORS', () => {
+    const obj: Rx.AjaxRequest = {
+      url: '/',
+      method: ''
+    };
+
+    Rx.Observable.ajax(obj).subscribe();
+    expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.false;
+  });
+
+  it('should try to create AXObject for XHR in old version of IE', () => {
+    const axObjectStub = sandbox.stub();
+    axObjectStub.returns(sinon.stub(new MockXMLHttpRequest()));
+    root.ActiveXObject = axObjectStub;
+    root.XMLHttpRequest = null;
+
+    const obj: Rx.AjaxRequest = {
+      url: '/',
+      method: ''
+    };
+
+    Rx.Observable.ajax(obj).subscribe();
+    expect(axObjectStub).to.have.been.called;
+  });
+
+  it('should throw if not able to create XMLHttpRequest', () => {
+    root.XMLHttpRequest = null;
+    root.ActiveXObject = null;
+
+    const obj: Rx.AjaxRequest = {
+      url: '/',
+      method: ''
+    };
+
+    expect(() => {
+      Rx.Observable.ajax(obj).subscribe();
+    }).to.throw();
+  });
+
+  it('should create XMLHttpRequest for CORS', () => {
+    const obj: Rx.AjaxRequest = {
+      url: '/',
+      method: '',
+      crossDomain: true,
+      withCredentials: true
+    };
+
+    Rx.Observable.ajax(obj).subscribe();
+    expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.true;
+  });
+
+  it('should try to create XDomainRequest for CORS if XMLHttpRequest is not available', () => {
+    const xDomainStub = sandbox.stub();
+    xDomainStub.returns(sinon.stub(new MockXMLHttpRequest()));
+    root.XDomainRequest = xDomainStub;
+    root.XMLHttpRequest = null;
+
+    const obj: Rx.AjaxRequest = {
+      url: '/',
+      method: '',
+      crossDomain: true,
+      withCredentials: true
+    };
+
+    Rx.Observable.ajax(obj).subscribe();
+    expect(xDomainStub).to.have.been.called;
+  });
+
+  it('should throw if not able to create CORS request', () => {
+    root.XMLHttpRequest = null;
+    root.XDomainRequest = null;
+
+    const obj: Rx.AjaxRequest = {
+      url: '/',
+      method: '',
+      crossDomain: true,
+      withCredentials: true
+    };
+
+    expect(() => {
+      Rx.Observable.ajax(obj).subscribe();
+    }).to.throw();
   });
 
   it('should set headers', () => {
