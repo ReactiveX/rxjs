@@ -94,7 +94,7 @@ export class FromObservable<T> extends Observable<T> {
     if (isFunction(mapFnOrScheduler)) {
       scheduler = lastScheduler || null;
       mapFn = <(x: any, i: number) => T> mapFnOrScheduler;
-    } else if (isScheduler(scheduler)) {
+    } else if (isScheduler(mapFnOrScheduler)) {
       scheduler = <Scheduler> mapFnOrScheduler;
     }
 
@@ -109,7 +109,7 @@ export class FromObservable<T> extends Observable<T> {
       } else if (isPromise(ish)) {
         return new PromiseObservable<T>(ish, scheduler);
       } else if (typeof ish[$$iterator] === 'function' || typeof ish === 'string') {
-        return new IteratorObservable<T>(<any>ish, null, null, scheduler);
+        return new IteratorObservable<T>(<any>ish, mapFn, thisArg, scheduler);
       } else if (isArrayLike(ish)) {
         return new ArrayLikeObservable(ish, mapFn, thisArg, scheduler);
       }
