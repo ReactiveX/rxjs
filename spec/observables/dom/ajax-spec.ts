@@ -399,6 +399,9 @@ describe('Observable.ajax', () => {
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
+      expect(MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
+        'X-Requested-With': 'XMLHttpRequest',
+      });
     });
 
     it('should not fail when FormData is undefined', () => {
@@ -552,4 +555,3 @@ describe('Observable.ajax', () => {
     });
   });
 });
-
