@@ -157,10 +157,18 @@ describe('Observable.from', () => {
       };
     };
 
-    const e1 = Observable.from(observablesque, rxTestScheduler);
+    const schedulesque = <any>{
+      scheduled: false,
+      schedule: function() {
+        this.scheduled = true;
+      }
+    };
+
+    const e1 = Observable.from(observablesque, schedulesque);
     const expected = '(x|)';
 
     expectObservable(e1).toBe(expected);
+    expect(schedulesque.scheduled).to.equal(true);
   });
 
   it('should handle a string', (done: MochaDone) => {
