@@ -2,6 +2,7 @@ import {Subject, AnonymousSubject} from '../../Subject';
 import {Subscriber} from '../../Subscriber';
 import {Observable} from '../../Observable';
 import {Subscription} from '../../Subscription';
+import {Operator} from '../../Operator';
 import {root} from '../../util/root';
 import {ReplaySubject} from '../../ReplaySubject';
 import {Observer, NextObserver} from '../../Observer';
@@ -25,6 +26,7 @@ export interface WebSocketSubjectConfig {
  * @hide true
  */
 export class WebSocketSubject<T> extends AnonymousSubject<T> {
+
   url: string;
   protocol: string|Array<string>;
   socket: WebSocket;
@@ -32,7 +34,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   closeObserver: NextObserver<CloseEvent>;
   closingObserver: NextObserver<void>;
   WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
-  private _output: Subject<T> = new Subject<T>();
+
+  private _output: Subject<T>;
 
   resultSelector(e: MessageEvent) {
     return JSON.parse(e.data);
@@ -50,21 +53,29 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable<T>, destination?: Observer<T>) {
-    super();
-    this.WebSocketCtor = root.WebSocket;
-
-    if (typeof urlConfigOrSource === 'string') {
-      this.url = urlConfigOrSource;
+    if (urlConfigOrSource instanceof Observable) {
+      super(destination, <Observable<T>> urlConfigOrSource);
     } else {
-      // WARNING: config object could override important members here.
-      assign(this, urlConfigOrSource);
+      super();
+      this.WebSocketCtor = root.WebSocket;
+      this._output = new Subject<T>();
+      if (typeof urlConfigOrSource === 'string') {
+        this.url = urlConfigOrSource;
+      } else {
+        // WARNING: config object could override important members here.
+        assign(this, urlConfigOrSource);
+      }
+      if (!this.WebSocketCtor) {
+        throw new Error('no WebSocket constructor can be found');
+      }
+      this.destination = new ReplaySubject();
     }
+  }
 
-    if (!this.WebSocketCtor) {
-      throw new Error('no WebSocket constructor can be found');
-    }
-
-    this.destination = new ReplaySubject();
+  lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
+    const sock = new WebSocketSubject<R>(this, <any> this.destination);
+    sock.operator = operator;
+    return sock;
   }
 
   // TODO: factor this out to be a proper Operator/Subscriber implementation and eliminate closures
@@ -102,7 +113,10 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   private _connectSocket() {
-    const socket = this.protocol ? new WebSocket(this.url, this.protocol) : new WebSocket(this.url);
+    const { WebSocketCtor } = this;
+    const socket = this.protocol ?
+      new WebSocketCtor(this.url, this.protocol) :
+      new WebSocketCtor(this.url);
     this.socket = socket;
     const subscription = new Subscription(() => {
       this.socket = null;
@@ -178,6 +192,10 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
+    const { source } = this;
+    if (source) {
+      return source.subscribe(subscriber);
+    }
     if (!this.socket) {
       this._connectSocket();
     }
@@ -194,12 +212,14 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   unsubscribe() {
-    const { socket } = this;
+    const { source, socket } = this;
     if (socket && socket.readyState === 1) {
       socket.close();
       this.socket = null;
     }
     super.unsubscribe();
-    this.destination = new ReplaySubject();
+    if (!source) {
+      this.destination = new ReplaySubject();
+    }
   }
 }
