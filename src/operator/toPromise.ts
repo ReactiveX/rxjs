@@ -21,7 +21,14 @@ export function toPromise<T>(PromiseCtor?: typeof Promise): Promise<T> {
 
   return new PromiseCtor((resolve, reject) => {
     let value: any;
-    this.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
+    let hasValue: boolean = false;
+
+    this.subscribe((x: T) => {
+      value = x;
+      hasValue = true;
+    },
+    (err: any) => reject(err),
+    () => hasValue ? resolve(value) : reject('no values emitted'));
   });
 }
 

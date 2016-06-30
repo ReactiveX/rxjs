@@ -22,6 +22,15 @@ describe('Observable.prototype.toPromise', () => {
     });
   });
 
+  it('should not resolve if does not emit any value', (done: MochaDone) => {
+    Observable.empty().toPromise(Promise).then(() => {
+      done(new Error('should not be called'));
+    }, (err: any) => {
+      expect(err).to.equal('no values emitted');
+      done();
+    });
+  });
+
   it('should allow for global config via Rx.config.Promise', (done: MochaDone) => {
     let wasCalled = false;
     __root__.Rx = {};
