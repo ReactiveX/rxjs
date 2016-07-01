@@ -42,7 +42,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   public syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
-  protected destination: PartialObserver<any>;
+  protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
    * @param {Observer|function(value: T): void} [destinationOrNext] A partially
