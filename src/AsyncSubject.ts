@@ -6,11 +6,9 @@ import {Subscription} from './Subscription';
  * @class AsyncSubject<T>
  */
 export class AsyncSubject<T> extends Subject<T> {
-  value: T = null;
-
-  hasNext: boolean = false;
-
-  hasCompleted: boolean = false;
+  private value: T = null;
+  private hasNext: boolean = false;
+  private hasCompleted: boolean = false;
 
   protected _subscribe(subscriber: Subscriber<any>): Subscription {
     if (this.hasCompleted && this.hasNext) {
@@ -26,8 +24,10 @@ export class AsyncSubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    this.value = value;
-    this.hasNext = true;
+    if (!this.hasCompleted) {
+      this.value = value;
+      this.hasNext = true;
+    }
   }
 
   complete(): void {

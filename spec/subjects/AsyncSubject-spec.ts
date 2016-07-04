@@ -79,6 +79,21 @@ describe('AsyncSubject', () => {
     expect(observer.results).to.deep.equal([2, 'done']);
   });
 
+  it('should not allow change value after complete', () => {
+    const subject = new AsyncSubject();
+    const observer = new TestObserver();
+    const otherObserver = new TestObserver();
+    subject.subscribe(observer);
+
+    subject.next(1);
+    expect(observer.results).to.deep.equal([]);
+    subject.complete();
+    expect(observer.results).to.deep.equal([1, 'done']);
+    subject.next(2);
+    subject.subscribe(otherObserver);
+    expect(otherObserver.results).to.deep.equal([1, 'done']);
+  });
+
   it('should not emit values if unsubscribed before complete', () => {
     const subject = new AsyncSubject();
     const observer = new TestObserver();
