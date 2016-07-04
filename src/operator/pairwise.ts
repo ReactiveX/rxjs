@@ -32,8 +32,8 @@ import {Subscriber} from '../Subscriber';
  * @see {@link buffer}
  * @see {@link bufferCount}
  *
- * @return {Observable<[T, T]>} An Observable of pairs of consecutive values
- * from the source Observable.
+ * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of
+ * consecutive values from the source Observable.
  * @method pairwise
  * @owner Observable
  */
