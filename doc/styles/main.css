@@ -56,7 +56,8 @@ body.light-theme.layout-container > header {
 
 .layout-container > header:before {
   content: 'RxJS';
-  background-image: url('/manual/asset/Rx_Logo_S.png');
+  font-family: 'Signika', 'Roboto', sans-serif;
+  background-image: url('../../manual/asset/Rx_Logo_S.png');
   width: 150px;
   height: 40px;
   color: #EC0C8E;
@@ -118,18 +119,18 @@ body.light-theme .search-result li.selected {
 }
 
 /* Navigation side menu */
-.navigation {
+body.light-theme .navigation, body.dark-theme .navigation {
   box-shadow: none;
   border-right: none;
   padding: 10px 0;
   margin-top: 40px;
   height: calc(100% - 40px);
   background-color: #333;
+  padding: 10px;
 }
 
 body.light-theme .navigation {
   background-color: transparent;
-    padding: 10px;
 }
 
 .navigation a {
@@ -144,10 +145,6 @@ body.light-theme .navigation a {
 }
 body.light-theme .navigation a:hover {
   color: #EC0C8E;
-}
-
-.navigation .nav-dir-path {
-  color: #333;
 }
 
 .navigation .manual-toc-title {
