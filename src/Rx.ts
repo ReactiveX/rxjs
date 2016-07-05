@@ -187,9 +187,9 @@ import observable from 'symbol-observable';
  */
 let Scheduler = {
   asap,
-  async,
   queue,
-  animationFrame
+  animationFrame,
+  async
 };
 
 /**
