@@ -27,6 +27,7 @@ import './add/observable/race';
 import './add/observable/never';
 import './add/observable/of';
 import './add/observable/onErrorResumeNext';
+import './add/observable/pairs';
 import './add/observable/range';
 import './add/observable/using';
 import './add/observable/throw';
