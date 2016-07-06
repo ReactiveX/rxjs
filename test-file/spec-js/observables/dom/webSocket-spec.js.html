@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -69,7 +71,7 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var chai_1 = require(&apos;chai&apos;);
 var sinon = require(&apos;sinon&apos;);
-var Rx = require(&apos;../../../dist/cjs/Rx.DOM&apos;);
+var Rx = require(&apos;../../../dist/cjs/Rx&apos;);
 var ajax_helper_1 = require(&apos;../../helpers/ajax-helper&apos;);
 var Observable = Rx.Observable;
 var __ws;
@@ -102,6 +104,23 @@ describe(&apos;Observable.webSocket&apos;, function () {
         chai_1.expect(socket.url).to.equal(&apos;ws://mysocket&apos;);
         socket.open();
         chai_1.expect(socket.lastMessageSent).to.equal(&apos;ping&apos;);
+        socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
+        chai_1.expect(messageReceived).to.be.true;
+        subject.unsubscribe();
+    });
+    it(&apos;should allow the user to chain operators&apos;, function () {
+        var messageReceived = false;
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject
+            .map(function (x) { return x + &apos;?&apos;; })
+            .map(function (x) { return x + &apos;!&apos;; })
+            .map(function (x) { return x + &apos;!&apos;; })
+            .subscribe(function (x) {
+            chai_1.expect(x).to.equal(&apos;pong?!!&apos;);
+            messageReceived = true;
+        });
+        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        socket.open();
         socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
         chai_1.expect(messageReceived).to.be.true;
         subject.unsubscribe();
@@ -362,6 +381,17 @@ describe(&apos;Observable.webSocket&apos;, function () {
             chai_1.expect(socket.close).have.been.called;
             socket.close.restore();
         });
+        it(&apos;should work in combination with retry (issue #1466)&apos;, function () {
+            var error = { wasClean: false };
+            var results = [];
+            var subject = Observable.webSocket({ url: &apos;ws://mysocket&apos; })
+                .multiplex(function () { return results.push(&apos;sub&apos;); }, function () { return results.push(&apos;unsub&apos;); }, function () { return true; })
+                .retry(1);
+            subject.subscribe(function () { return results.push(&apos;next&apos;); }, function (e) { return results.push(e); });
+            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket.triggerClose(error);
+            chai_1.expect(results).to.deep.equal([&apos;sub&apos;, &apos;unsub&apos;, &apos;sub&apos;, error, &apos;unsub&apos;]);
+        });
     });
 });
 //# sourceMappingURL=webSocket-spec.js.map</code></pre>
@@ -369,7 +399,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

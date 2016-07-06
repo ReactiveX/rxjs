@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Tutorial</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual" data-toc-name="overview">
+    <h1 class="manual-toc-title"><a href="manual/overview.html" data-ice="title">Overview</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#introduction" data-ice="link">Introduction</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#first-examples" data-ice="link">First examples</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#purity" data-ice="link">Purity</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#flow" data-ice="link">Flow</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#values" data-ice="link">Values</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#observable" data-ice="link">Observable</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#pull-versus-push" data-ice="link">Pull versus Push</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#observables-as-generalizations-of-functions" data-ice="link">Observables as generalizations of functions</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#anatomy-of-an-observable" data-ice="link">Anatomy of an Observable</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#creating-observables" data-ice="link">Creating Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#subscribing-to-observables" data-ice="link">Subscribing to Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#executing-observables" data-ice="link">Executing Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#disposing-observable-executions" data-ice="link">Disposing Observable Executions</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#observer" data-ice="link">Observer</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#subscription" data-ice="link">Subscription</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#subject" data-ice="link">Subject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#multicasted-observables" data-ice="link">Multicasted Observables</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#reference-counting" data-ice="link">Reference counting</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#behaviorsubject" data-ice="link">BehaviorSubject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#replaysubject" data-ice="link">ReplaySubject</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#asyncsubject" data-ice="link">AsyncSubject</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#operators" data-ice="link">Operators</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#what-are-operators-" data-ice="link">What are operators?</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#instance-operators-versus-static-operators" data-ice="link">Instance operators versus static operators</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#marble-diagrams" data-ice="link">Marble diagrams</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#choose-an-operator" data-ice="link">Choose an operator</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#categories-of-operators" data-ice="link">Categories of operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#creation-operators" data-ice="link">Creation Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#transformation-operators" data-ice="link">Transformation Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#filtering-operators" data-ice="link">Filtering Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#combination-operators" data-ice="link">Combination Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#multicasting-operators" data-ice="link">Multicasting Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#error-handling-operators" data-ice="link">Error Handling Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#utility-operators" data-ice="link">Utility Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#conditional-and-boolean-operators" data-ice="link">Conditional and Boolean Operators</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/overview.html#mathematical-and-aggregate-operators" data-ice="link">Mathematical and Aggregate Operators</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/overview.html#scheduler" data-ice="link">Scheduler</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#scheduler-types" data-ice="link">Scheduler Types</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/overview.html#using-schedulers" data-ice="link">Using Schedulers</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="installation">
+    <h1 class="manual-toc-title"><a href="manual/installation.html" data-ice="title">Installation</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#es6-via-npm" data-ice="link">ES6 via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#commonjs-via-npm" data-ice="link">CommonJS via npm</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/installation.html#commonjs-with-typescript" data-ice="link">CommonJS with TypeScript</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#all-module-types-cjs-es6-amd-typescript-via-npm" data-ice="link">All Module Types (CJS/ES6/AMD/TypeScript) via npm</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/installation.html#cdn" data-ice="link">CDN</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="tutorial">
+    <h1 class="manual-toc-title"><a href="manual/tutorial.html" data-ice="title">Tutorial</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#the-basics" data-ice="link">The basics</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#converting-to-observables" data-ice="link">Converting to observables</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#creating-observables" data-ice="link">Creating observables</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#controlling-the-flow" data-ice="link">Controlling the flow</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#producing-values" data-ice="link">Producing values</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#creating-applications" data-ice="link">Creating applications</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#state-stores" data-ice="link">State stores</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#immutable-js" data-ice="link">Immutable JS</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/tutorial.html#react" data-ice="link">React</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/tutorial.html#external-references" data-ice="link">External References</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#tutorials" data-ice="link">Tutorials</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#books" data-ice="link">Books</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#videos" data-ice="link">Videos</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/tutorial.html#presentations" data-ice="link">Presentations</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="reference">
+    <h1 class="manual-toc-title"><a href="identifiers.html" data-ice="title">Reference</a></h1>
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#class" data-ice="link">Class</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#interface" data-ice="link">Interface</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#typedef" data-ice="link">Typedef</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown">
+  <div class="manual-breadcrumb-list">
+    <a href="./manual/./index.html">Manual</a>
+    <span>&#xBB;</span>
+    <span data-ice="title">Tutorial</span>
+  </div>
+  <div data-ice="content"><h1 id="the-basics">The basics</h1>
+<h2 id="converting-to-observables">Converting to observables</h2>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// From one or multiple values
+Rx.Observable.of(&apos;foo&apos;, &apos;bar&apos;);
+
+// From array of values
+Rx.Observable.from([1,2,3]);
+
+// From an event
+Rx.Observable.fromEvent(document.querySelector(&apos;button&apos;), &apos;click&apos;);
+
+// From a Promise
+Rx.Observable.fromPromise(fetch(&apos;/users&apos;));
+
+// From a callback (last argument is a callback)
+// fs.exists = (path, cb(exists))
+var exists = Rx.Observable.bindCallback(fs.exists);
+exists(&apos;file.txt&apos;).subscribe(exists =&gt; console.log(&apos;Does file exist?&apos;, exists));
+
+// From a callback (last argument is a callback)
+// fs.exists = (pathA, pathB, cb(err, result))
+var rename = Rx.Observable.bindNodeCallback(fs.rename);
+rename(&apos;file.txt&apos;, &apos;else.txt&apos;).subscribe(() =&gt; console.log(&apos;Renamed!&apos;));</code>
+</code></pre>
+<h2 id="creating-observables">Creating observables</h2>
+<p>Externally produce new events.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var myObservable = Rx.Subject.create();
+myObservable.subscribe(value =&gt; console.log(value));
+myObservable.next(&apos;foo&apos;);</code>
+</code></pre>
+<p>Internally produce new events.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var myObservable = Rx.Observable.create(observer =&gt; {
+  observer.next(&apos;foo&apos;);
+  setTimeout(() =&gt; observer.next(&apos;bar&apos;), 1000);
+});
+myObservable.subscribe(value =&gt; console.log(value));</code>
+</code></pre>
+<p>Which one you choose depends on the scenario. The normal <strong>Observable</strong> is great when you want to wrap functionality that produces values over time. An example would be a websocket connection. With <strong>Subject</strong> you can trigger new events from anywhere really and you can connect existing observables to it.</p>
+<h2 id="controlling-the-flow">Controlling the flow</h2>
+<pre><code class="lang-js"><code class="source-code prettyprint">// typing &quot;hello world&quot;
+var input = Rx.Observable.fromEvent(document.querySelector(&apos;input&apos;), &apos;keypress&apos;);
+
+// Filter out target values less than 3 characters long
+input.filter(event =&gt; event.target.value.length &gt; 2)
+  .subscribe(value =&gt; console.log(value)); // &quot;hel&quot;
+
+// Delay the events
+input.delay(200)
+  .subscribe(value =&gt; console.log(value)); // &quot;h&quot; -200ms-&gt; &quot;e&quot; -200ms-&gt; &quot;l&quot; ...
+
+// Only let through an event every 200 ms
+input.throttleTime(200)
+  .subscribe(value =&gt; console.log(value)); // &quot;h&quot; -200ms-&gt; &quot;w&quot;
+
+// Let through latest event after 200 ms
+input.debounceTime(200)
+  .subscribe(value =&gt; console.log(value)); // &quot;o&quot; -200ms-&gt; &quot;d&quot;
+
+// Stop the stream of events after 3 events
+input.take(3)
+  .subscribe(value =&gt; console.log(value)); // &quot;hel&quot;
+
+// Passes through events until other observable triggers an event
+var stopStream = Rx.Observable.fromEvent(document.querySelector(&apos;button&apos;), &apos;click&apos;);
+input.takeUntil(stopStream)
+  .subscribe(value =&gt; console.log(value)); // &quot;hello&quot; (click)</code>
+</code></pre>
+<h2 id="producing-values">Producing values</h2>
+<pre><code class="lang-js"><code class="source-code prettyprint">// typing &quot;hello world&quot;
+var input = Rx.Observable.fromEvent(document.querySelector(&apos;input&apos;), &apos;keypress&apos;);
+
+// Pass on a new value
+input.map(event =&gt; event.target.value)
+  .subscribe(value =&gt; console.log(value)); // &quot;h&quot;
+
+// Pass on a new value by plucking it
+input.pluck(&apos;target&apos;, &apos;value&apos;)
+  .subscribe(value =&gt; console.log(value)); // &quot;h&quot;
+
+// Pass the two previous values
+input.pluck(&apos;target&apos;, &apos;value&apos;).pairwise()
+  .subscribe(value =&gt; console.log(value)); // [&quot;h&quot;, &quot;e&quot;]
+
+// Only pass unique values through
+input.pluck(&apos;target&apos;, &apos;value&apos;).distinct()
+  .subscribe(value =&gt; console.log(value)); // &quot;helo wrd&quot;
+
+// Do not pass repeating values through
+input.pluck(&apos;target&apos;, &apos;value&apos;).distinctUntilChanged()
+  .subscribe(value =&gt; console.log(value)); // &quot;helo world&quot;</code>
+</code></pre>
+<h1 id="creating-applications">Creating applications</h1>
+<p>RxJS is a great tool to keep your code less error prone. It does that by using pure and stateless functions. But applications are stateful, so how do we bridge the stateless world of RxJS with the stateful world of our applications?</p>
+<p>Let us create a simple state store of the value <code>0</code>. On each click we want to increase that count in our state store.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var button = document.querySelector(&apos;button&apos;);
+Rx.Observable.fromEvent(button, &apos;click&apos;)
+  // scan (reduce) to a stream of counts
+  .scan(count =&gt; count + 1, 0)
+  // Set the count on an element each time it changes
+  .subscribe(count =&gt; document.querySelector(&apos;#count&apos;).innerHTML = count);</code>
+</code></pre>
+<p>So producing state is within the world of RxJS, but changing the DOM is a side effect which happens at &quot;the end of the line&quot;.</p>
+<h2 id="state-stores">State stores</h2>
+<p>Applications use state stores to hold state. These are called different things in different frameworks, like store, reducer and model, but at the core they are all just a plain object. What we also need to handle is that multiple observables can update a single state store.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var increaseButton = document.querySelector(&apos;#increase&apos;);
+var increase = Rx.Observable.fromEvent(increaseButton, &apos;click&apos;)
+  // We map to a function that will change our state
+  .map(() =&gt; state =&gt; Object.assign({}, state, {count: state.count + 1}));</code>
+</code></pre>
+<p>What we do here is mapping a click event to a state changing function. So instead of mapping to a value, we map to a function. A function will change the state of our state store. So now let us see how we actually make the change.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var increaseButton = document.querySelector(&apos;#increase&apos;);
+var increase = Rx.Observable.fromEvent(increaseButton, &apos;click&apos;)
+  .map(() =&gt; state =&gt; Object.assign({}, state, {count: state.count + 1}));
+
+// We create an object with our initial state. Whenever a new state change function
+// is received we call it and pass the state. The new state is returned and
+// ready to be changed again on the next click
+var state = increase.scan((state, changeFn) =&gt; changeFn(state), {count: 0});</code>
+</code></pre>
+<p>We can now add a a couple of more observables which will also change the same state store.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var increaseButton = document.querySelector(&apos;#increase&apos;);
+var increase = Rx.Observable.fromEvent(increaseButton, &apos;click&apos;)
+  // Again we map to a function the will increase the count
+  .map(() =&gt; state =&gt; Object.assign({}, state, {count: state.count + 1}));
+
+var decreaseButton = document.querySelector(&apos;#decrease&apos;);
+var decrease = Rx.Observable.fromEvent(decreaseButton, &apos;click&apos;)
+  // We also map to a function that will decrease the count
+  .map(() =&gt; state =&gt; Object.assign({}, state, {count: state.count - 1}));
+
+var inputElement = document.querySelector(&apos;#input&apos;);
+var input = Rx.Observable.fromEvent(inputElement, &apos;keypress&apos;)
+  // Let us also map the keypress events to produce an inputValue state
+  .map(event =&gt; state =&gt; Object.assign({}, state, {inputValue: event.target.value}));
+
+// We merge the three state change producing observables
+var state = Rx.Observable.merge(
+  increase,
+  decrease,
+  input
+).scan((state, changeFn) =&gt; changeFn(state), {
+  count: 0,
+  inputValue: &apos;&apos;
+});
+
+// We subscribe to state changes and update the DOM
+state.subscribe((state) =&gt; {
+  document.querySelector(&apos;#count&apos;).innerHTML = state.count;
+  document.querySelector(&apos;#hello&apos;).innerHTML = &apos;Hello &apos; + state.inputValue;
+});
+
+// To optimize our rendering we can check what state
+// has actually changed
+var prevState = {};
+state.subscribe((state) =&gt; {
+  if (state.count !== prevState.count) {
+    document.querySelector(&apos;#count&apos;).innerHTML = state.count;  
+  }
+  if (state.inputValue !== prevState.inputValue) {
+    document.querySelector(&apos;#hello&apos;).innerHTML = &apos;Hello &apos; + state.inputValue;
+  }
+  prevState = state;
+});</code>
+</code></pre>
+<p>We can take the state store approach and use it with many different frameworks and libraries.</p>
+<h3 id="immutable-js">Immutable JS</h3>
+<p>You can also create a global state store for your application using <a href="https://facebook.github.io/immutable-js/">Immutable JS</a>. Immutable JS is a great way to create immutable state stores that allows you to optimize rendering by doing shallow checks on changed values.</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import Immutable from &apos;immutable&apos;;
+import someObservable from &apos;./someObservable&apos;;
+import someOtherObservable from &apos;./someOtherObservable&apos;;
+
+var initialState = {
+  foo: &apos;bar&apos;
+};
+
+var state = Observable.merge(
+  someObservable,
+  someOtherObservable
+).scan((state, changeFn) =&gt; changeFn(state), Immutable.fromJS(initialState));
+
+export default state;</code>
+</code></pre>
+<p>Now you can import your state in whatever UI layer you are using.</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import state from &apos;./state&apos;;
+
+state.subscribe(state =&gt; {
+  document.querySelector(&apos;#text&apos;).innerHTML = state.get(&apos;foo&apos;);
+});</code>
+</code></pre>
+<h3 id="react">React</h3>
+<p>Lets look at an example where we subscribe to an observable when the component mounts and unsubscribes when it unmounts.</p>
+<p><!-- skip-example -->
+</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import messages from &apos;./someObservable&apos;;
+
+class MyComponent extends ObservableComponent {
+  constructor(props) {
+    super(props);
+    this.state = {messages: []};
+  }
+  componentDidMount() {
+    this.messages = messages
+      // Let accumulate our messages in an array
+      .scan((messages, message) =&gt; [message].concat(messages), [])
+      // And render whenever we get a new message
+      .forEach(messages =&gt; this.setState({messages: messages}));
+  }
+  componentWillUnmount() {
+    this.messages.dispose();
+  }
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;ul&gt;
+          {this.state.messages.map(message =&gt; &lt;li&gt;{message.text}&gt;/li&gt;)}
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default MyComponent;</code>
+</code></pre>
+<p>There are many other ways to use observables with React as well. Take a look at these:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/rxjs-react-component">rxjs-react-component</a>. It will allow you to expose observables that maps to state changes. Also use observables for lifecycle hooks</li>
+</ul>
+<h1 id="external-references">External References</h1>
+<p>Can&apos;t get enough RxJS? Check out these other great resources!</p>
+<h2 id="tutorials">Tutorials</h2>
+<ul>
+<li><a href="https://egghead.io/technologies/rx">RxJS @ Egghead.io</a></li>
+<li><a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754">The introduction to Reactive Programming you&apos;ve been missing</a></li>
+<li><a href="https://medium.com/@andrestaltz/2-minute-introduction-to-rx-24c8ca793877">2 minute introduction to Rx</a></li>
+<li><a href="https://github.com/jhusain/learnrx">Learn RxJS - @jhusain</a></li>
+<li><a href="http://rxworkshop.codeplex.com/">Rx Workshop</a> </li>
+<li><a href="http://aaronstacy.com/writings/reactive-programming-and-mvc/">Reactive Programming and MVC</a></li>
+<li><a href="https://github.com/staltz/rxjs-training">RxJS Training - @andrestaltz</a></li>
+</ul>
+<h2 id="books">Books</h2>
+<ul>
+<li><a href="https://www.manning.com/books/rxjs-in-action">RxJS in Action</a> </li>
+<li><a href="http://xgrommx.github.io/rx-book/">RxJS</a></li>
+<li><a href="http://www.amazon.com/Introduction-to-Rx-ebook/dp/B008GM3YPM/">Intro to Rx</a></li>
+<li><a href="http://www.amazon.com/Programming-Reactive-Extensions-Jesse-Liberty/dp/1430237473/">Programming Reactive Extensions and LINQ</a></li>
+<li><a href="https://pragprog.com/book/smreactjs/reactive-programming-with-rxjs">Reactive Programming with RxJS</a></li>
+</ul>
+<h2 id="videos">Videos</h2>
+<ul>
+<li><a href="http://channel9.msdn.com/posts/Bart-De-Smet-Jafar-Hussain-Matthew-Podwysocki-Pragmatic-Rx">Practical Rx with Matthew Podwysocki, Bart de Smet and Jafar Husain</a></li>
+<li><a href="http://channel9.msdn.com/posts/Rx-and-Netflix">Netflix and RxJS</a></li>
+<li><a href="http://channel9.msdn.com/Blogs/Charles/Introducing-RxJS-Reactive-Extensions-for-JavaScript">Hello RxJS - Channel 9</a></li>
+<li><a href="http://channel9.msdn.com/events/MIX/MIX11/HTM07">MIX 2011</a></li>
+<li><a href="http://channel9.msdn.com/Blogs/Charles/Matthew-Podwysocki-and-Bart-J-F-De-Smet-RxJS-Today-and-Tomorrow">RxJS Today and Tomorrow - Channel 9</a></li>
+<li><a href="http://channel9.msdn.com/Tags/reactive+extensions">Reactive Extensions Videos on Channel 9</a></li>
+<li><a href="https://www.youtube.com/watch?v=XRYN2xt11Ek">Asynchronous JavaScript at Netflix - Netflix JavaScript Talks - Jafar Husain</a></li>
+<li><a href="https://www.youtube.com/watch?v=XE692Clb5LU">Asynchronous JavaScript at Netflix - MountainWest JavaScript 2014 - Jafar Husain</a></li>
+<li><a href="https://www.youtube.com/watch?v=5uxSu-F5Kj0">Asynchronous JavaScript at Netflix - HTML5DevConf - Jafar Husain</a></li>
+<li><a href="https://www.youtube.com/watch?v=8EExNfm0gt4">Adding Even More Fun to Functional Programming With RXJS - Ryan Anklam</a></li>
+<li><a href="http://parleys.com/play/53677646e4b0593229b85841/chapter0/about">Reactive Angular - Devoxx France 2014 - Martin Gontovnikas</a></li>
+<li><a href="https://www.youtube.com/watch?v=x8mmAu7ZR9Y">Reactive Game Programming for the Discerning Hipster - JSConf 2014 - Bodil Stokke</a></li>
+</ul>
+<h2 id="presentations">Presentations</h2>
+<ul>
+<li>Don&apos;t Cross the Streams - Cascadia.js 2012 <a href="http://www.slideshare.net/mattpodwysocki/cascadiajs-dont-cross-the-streams">slides/demos</a> | <a href="http://www.youtube.com/watch?v=FqBq4uoiG0M">video</a></li>
+<li>Curing Your Asynchronous Blues - Strange Loop 2013 <a href="https://github.com/Reactive-Extensions/StrangeLoop2013">slides/demos</a> | <a href="http://www.infoq.com/presentations/rx-event-processing">video</a></li>
+<li>Streaming and event-based programming using FRP and RxJS - FutureJS 2014 <a href="https://github.com/Reactive-Extensions/FutureJS">slides/demos</a> | <a href="https://www.youtube.com/watch?v=zlERo_JMGCw">video</a></li>
+<li><a href="http://yobriefca.se/presentations/tyrannosaurus-rx.pdf">Tyrannosaurus Rx</a> - <a href="http://twitter.com/kouphax">James Hughes</a></li>
+<li>Taming Asynchronous Workflows with Functional Reactive Programming - EuroClojure - <a href="https://twitter.com/leonardo_borges">Leonardo Borges</a> <a href="http://www.slideshare.net/borgesleonardo/functional-reactive-programming-compositional-event-systems">slides</a> | <a href="http://www.slideshare.net/borgesleonardo/functional-reactive-programming-compositional-event-systems">video</a></li>
+<li>Reactive All the Things - ng-conf 2015 - <a href="https://twitter.com/mgonto/">Martin Gontovnikas</a> &amp; <a href="https://twitter.com/BenLesh">Ben Lesh</a><ul>
+<li><a href="http://mgonto.github.io/reactive-all-the-things-talk/#1">Slides</a></li>
+<li><a href="https://www.youtube.com/watch?v=zbBVG8bOoXk&amp;feature=youtu.be&amp;app=desktop">Video</a></li>
+</ul>
+</li>
+<li>The Reactive Loop - Functional JS London 2015<ul>
+<li><a href="http://slides.com/theefer/reactive-loop-funjs#/">Slides</a></li>
+<li><a href="https://github.com/theefer/funjs-reactive-loop">Code</a></li>
+</ul>
+</li>
+<li>Reactive Functions with RxJS - Leeds JS 2015<ul>
+<li><a href="https://www.icloud.com/keynote/AwBWCAESEIf9pea2IykiVtOZFiXflDsaKj9lVsSLP_OtPU29v7fNpMs78DK7tvXz4bFBkb6BXFKjxqt4G5B_UlM6TwMCUCAQEEIGVYVFig5qOTdorTOd2ERMJDtn6dvDFY58zqBiVzZmtN#RxJS_talk">Slides</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

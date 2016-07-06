@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -67,8 +69,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/window-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
-var chai_1 = require(&apos;chai&apos;);
-var Rx = require(&apos;../../dist/cjs/Rx.KitchenSink&apos;);
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var Observable = Rx.Observable;
 /** @test {window} */
 describe(&apos;Observable.prototype.window&apos;, function () {
@@ -112,6 +113,17 @@ describe(&apos;Observable.prototype.window&apos;, function () {
         expectObservable(result).toBe(expected, expectedValues);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         expectSubscriptions(closings.subscriptions).toBe(closingSubs);
+    });
+    it(&apos;should return a single empty window if source is sync empty and closing is sync empty&apos;, function () {
+        var source = cold(&apos;(|)&apos;);
+        var sourceSubs = &apos;(^!)&apos;;
+        var expected = &apos;(w|)&apos;;
+        var w = cold(&apos;|&apos;);
+        var expectedValues = { w: w };
+        var result = source.window(Observable.empty());
+        expectObservable(result).toBe(expected, expectedValues);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+        // expectSubscriptions(closings.subscriptions).toBe(closingSubs);
     });
     it(&apos;should split a Just source into a single window identical to source, using a Never closing&apos;, function () {
         var source = cold(&apos;(a|)&apos;);
@@ -232,25 +244,6 @@ describe(&apos;Observable.prototype.window&apos;, function () {
         expectSubscriptions(source.subscriptions).toBe(subs);
         expectSubscriptions(closings.subscriptions).toBe(closingSubs);
     });
-    it(&apos;should dispose window Subjects if the outer is unsubscribed early&apos;, function () {
-        var source = hot(&apos;--a--b--c--d--e--f--g--h--|&apos;);
-        var sourceSubs = &apos;^        !                 &apos;;
-        var expected = &apos;x---------                 &apos;;
-        var x = cold(&apos;--a--b--c-                 &apos;);
-        var unsub = &apos;         !                 &apos;;
-        var late = time(&apos;---------------|           &apos;);
-        var values = { x: x };
-        var window;
-        var result = source.window(Observable.never())
-            .do(function (w) { window = w; });
-        expectObservable(result, unsub).toBe(expected, values);
-        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
-        rxTestScheduler.schedule(function () {
-            chai_1.expect(function () {
-                window.subscribe();
-            }).to.throw(Rx.ObjectUnsubscribedError);
-        }, late);
-    });
     it(&apos;should make outer emit error when closing throws&apos;, function () {
         var source = hot(&apos;-1-2-^3-4-5-6-7-8-9-#&apos;);
         var subs = &apos;^   !           &apos;;
@@ -285,7 +278,7 @@ describe(&apos;Observable.prototype.window&apos;, function () {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

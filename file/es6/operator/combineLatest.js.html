@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -68,9 +70,9 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/combineLatest.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { ArrayObservable } from &apos;../observable/ArrayObservable&apos;;
 import { isArray } from &apos;../util/isArray&apos;;
-import { isScheduler } from &apos;../util/isScheduler&apos;;
 import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
 import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+const none = {};
 /**
  * Combines multiple Observables to create an Observable whose values are
  * calculated from the latest values of each of its input Observables.
@@ -123,65 +125,6 @@ export function combineLatest(...observables) {
     return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }
 /* tslint:enable:max-line-length */
-/**
- * Combines multiple Observables to create an Observable whose values are
- * calculated from the latest values of each of its input Observables.
- *
- * &lt;span class=&quot;informal&quot;&gt;Whenever any input Observable emits a value, it
- * computes a formula using the latest values from all the inputs, then emits
- * the output of that formula.&lt;/span&gt;
- *
- * &lt;img src=&quot;./img/combineLatest.png&quot; width=&quot;100%&quot;&gt;
- *
- * `combineLatest` combines the values from all the Observables passed as
- * arguments. This is done by subscribing to each Observable, in order, and
- * collecting an array of each of the most recent values any time any of the
- * input Observables emits, then either taking that array and passing it as
- * arguments to an optional `project` function and emitting the return value of
- * that, or just emitting the array of recent values directly if there is no
- * `project` function.
- *
- * @example &lt;caption&gt;Dynamically calculate the Body-Mass Index from an Observable of weight and one for height&lt;/caption&gt;
- * var weight = Rx.Observable.of(70, 72, 76, 79, 75);
- * var height = Rx.Observable.of(1.76, 1.77, 1.78);
- * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) =&gt; w / (h * h));
- * bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));
- *
- * @see {@link combineAll}
- * @see {@link merge}
- * @see {@link withLatestFrom}
- *
- * @param {Observable} observable1 An input Observable to combine with the
- * source Observable.
- * @param {Observable} observable2 An input Observable to combine with the
- * source Observable. More than one input Observables may be given as argument.
- * @param {function} [project] An optional function to project the values from
- * the combined latest values into a new value on the output Observable.
- * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to
- * each input Observable.
- * @return {Observable} An Observable of projected values from the most recent
- * values from each input Observable, or an array of the most recent values from
- * each input Observable.
- * @static true
- * @name combineLatest
- * @owner Observable
- */
-export function combineLatestStatic(...observables) {
-    let project = null;
-    let scheduler = null;
-    if (isScheduler(observables[observables.length - 1])) {
-        scheduler = observables.pop();
-    }
-    if (typeof observables[observables.length - 1] === &apos;function&apos;) {
-        project = observables.pop();
-    }
-    // if the first and only other argument besides the resultSelector is an array
-    // assume it&apos;s been called with `combineLatest([obs1, obs2, obs3], project)`
-    if (observables.length === 1 &amp;&amp; isArray(observables[0])) {
-        observables = observables[0];
-    }
-    return new ArrayObservable(observables, scheduler).lift(new CombineLatestOperator(project));
-}
 export class CombineLatestOperator {
     constructor(project) {
         this.project = project;
@@ -202,11 +145,9 @@ export class CombineLatestSubscriber extends OuterSubscriber {
         this.active = 0;
         this.values = [];
         this.observables = [];
-        this.toRespond = [];
     }
     _next(observable) {
-        const toRespond = this.toRespond;
-        toRespond.push(toRespond.length);
+        this.values.push(none);
         this.observables.push(observable);
     }
     _complete() {
@@ -217,6 +158,7 @@ export class CombineLatestSubscriber extends OuterSubscriber {
         }
         else {
             this.active = len;
+            this.toRespond = len;
             for (let i = 0; i &lt; len; i++) {
                 const observable = observables[i];
                 this.add(subscribeToResult(this, observable, observable, i));
@@ -230,15 +172,12 @@ export class CombineLatestSubscriber extends OuterSubscriber {
     }
     notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
         const values = this.values;
+        const oldVal = values[outerIndex];
+        const toRespond = !this.toRespond
+            ? 0
+            : oldVal === none ? --this.toRespond : this.toRespond;
         values[outerIndex] = innerValue;
-        const toRespond = this.toRespond;
-        if (toRespond.length &gt; 0) {
-            const found = toRespond.indexOf(outerIndex);
-            if (found !== -1) {
-                toRespond.splice(found, 1);
-            }
-        }
-        if (toRespond.length === 0) {
+        if (toRespond === 0) {
             if (this.project) {
                 this._tryProject(values);
             }
@@ -264,7 +203,7 @@ export class CombineLatestSubscriber extends OuterSubscriber {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

@@ -94,10 +94,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<[T, T]>} An Observable of pairs of consecutive values\n * from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+          "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
           "range": [
             44,
-            1380
+            1394
           ],
           "loc": {
             "start": {
@@ -120,8 +120,8 @@
           "type": "Identifier",
           "name": "pairwise",
           "range": [
-            1397,
-            1405
+            1411,
+            1419
           ],
           "loc": {
             "start": {
@@ -148,8 +148,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      1421,
-                      1425
+                      1435,
+                      1439
                     ],
                     "loc": {
                       "start": {
@@ -166,8 +166,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      1426,
-                      1430
+                      1440,
+                      1444
                     ],
                     "loc": {
                       "start": {
@@ -181,8 +181,8 @@
                     }
                   },
                   "range": [
-                    1421,
-                    1430
+                    1435,
+                    1444
                   ],
                   "loc": {
                     "start": {
@@ -202,8 +202,8 @@
                       "type": "Identifier",
                       "name": "PairwiseOperator",
                       "range": [
-                        1435,
-                        1451
+                        1449,
+                        1465
                       ],
                       "loc": {
                         "start": {
@@ -218,8 +218,8 @@
                     },
                     "arguments": [],
                     "range": [
-                      1431,
-                      1453
+                      1445,
+                      1467
                     ],
                     "loc": {
                       "start": {
@@ -234,8 +234,8 @@
                   }
                 ],
                 "range": [
-                  1421,
-                  1454
+                  1435,
+                  1468
                 ],
                 "loc": {
                   "start": {
@@ -249,8 +249,8 @@
                 }
               },
               "range": [
-                1414,
-                1455
+                1428,
+                1469
               ],
               "loc": {
                 "start": {
@@ -265,8 +265,8 @@
             }
           ],
           "range": [
-            1408,
-            1457
+            1422,
+            1471
           ],
           "loc": {
             "start": {
@@ -282,8 +282,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1388,
-          1457
+          1402,
+          1471
         ],
         "loc": {
           "start": {
@@ -298,10 +298,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<[T, T]>} An Observable of pairs of consecutive values\n * from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+            "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
             "range": [
               44,
-              1380
+              1394
             ],
             "loc": {
               "start": {
@@ -320,8 +320,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1381,
-        1457
+        1395,
+        1471
       ],
       "loc": {
         "start": {
@@ -336,10 +336,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<[T, T]>} An Observable of pairs of consecutive values\n * from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+          "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
           "range": [
             44,
-            1380
+            1394
           ],
           "loc": {
             "start": {
@@ -360,8 +360,8 @@
         "type": "Identifier",
         "name": "PairwiseOperator",
         "range": [
-          1464,
-          1480
+          1478,
+          1494
         ],
         "loc": {
           "start": {
@@ -384,8 +384,8 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                1487,
-                1491
+                1501,
+                1505
               ],
               "loc": {
                 "start": {
@@ -406,8 +406,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    1492,
-                    1502
+                    1506,
+                    1516
                   ],
                   "loc": {
                     "start": {
@@ -424,8 +424,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    1504,
-                    1510
+                    1518,
+                    1524
                   ],
                   "loc": {
                     "start": {
@@ -453,8 +453,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            1529,
-                            1535
+                            1543,
+                            1549
                           ],
                           "loc": {
                             "start": {
@@ -471,8 +471,8 @@
                           "type": "Identifier",
                           "name": "_subscribe",
                           "range": [
-                            1536,
-                            1546
+                            1550,
+                            1560
                           ],
                           "loc": {
                             "start": {
@@ -486,8 +486,8 @@
                           }
                         },
                         "range": [
-                          1529,
-                          1546
+                          1543,
+                          1560
                         ],
                         "loc": {
                           "start": {
@@ -507,8 +507,8 @@
                             "type": "Identifier",
                             "name": "PairwiseSubscriber",
                             "range": [
-                              1551,
-                              1569
+                              1565,
+                              1583
                             ],
                             "loc": {
                               "start": {
@@ -526,8 +526,8 @@
                               "type": "Identifier",
                               "name": "subscriber",
                               "range": [
-                                1570,
-                                1580
+                                1584,
+                                1594
                               ],
                               "loc": {
                                 "start": {
@@ -542,8 +542,8 @@
                             }
                           ],
                           "range": [
-                            1547,
-                            1581
+                            1561,
+                            1595
                           ],
                           "loc": {
                             "start": {
@@ -558,8 +558,8 @@
                         }
                       ],
                       "range": [
-                        1529,
-                        1582
+                        1543,
+                        1596
                       ],
                       "loc": {
                         "start": {
@@ -573,8 +573,8 @@
                       }
                     },
                     "range": [
-                      1522,
-                      1583
+                      1536,
+                      1597
                     ],
                     "loc": {
                       "start": {
@@ -589,8 +589,8 @@
                   }
                 ],
                 "range": [
-                  1512,
-                  1589
+                  1526,
+                  1603
                 ],
                 "loc": {
                   "start": {
@@ -606,8 +606,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1491,
-                1589
+                1505,
+                1603
               ],
               "loc": {
                 "start": {
@@ -623,8 +623,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1487,
-              1589
+              1501,
+              1603
             ],
             "loc": {
               "start": {
@@ -640,8 +640,8 @@
           }
         ],
         "range": [
-          1481,
-          1591
+          1495,
+          1605
         ],
         "loc": {
           "start": {
@@ -655,8 +655,8 @@
         }
       },
       "range": [
-        1458,
-        1591
+        1472,
+        1605
       ],
       "loc": {
         "start": {
@@ -673,8 +673,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            1592,
-            1683
+            1606,
+            1697
           ],
           "loc": {
             "start": {
@@ -695,8 +695,8 @@
         "type": "Identifier",
         "name": "PairwiseSubscriber",
         "range": [
-          1690,
-          1708
+          1704,
+          1722
         ],
         "loc": {
           "start": {
@@ -713,8 +713,8 @@
         "type": "Identifier",
         "name": "Subscriber",
         "range": [
-          1717,
-          1727
+          1731,
+          1741
         ],
         "loc": {
           "start": {
@@ -736,8 +736,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                1734,
-                1745
+                1748,
+                1759
               ],
               "loc": {
                 "start": {
@@ -758,8 +758,8 @@
                   "type": "Identifier",
                   "name": "destination",
                   "range": [
-                    1746,
-                    1757
+                    1760,
+                    1771
                   ],
                   "loc": {
                     "start": {
@@ -783,8 +783,8 @@
                       "callee": {
                         "type": "Super",
                         "range": [
-                          1769,
-                          1774
+                          1783,
+                          1788
                         ],
                         "loc": {
                           "start": {
@@ -802,8 +802,8 @@
                           "type": "Identifier",
                           "name": "destination",
                           "range": [
-                            1775,
-                            1786
+                            1789,
+                            1800
                           ],
                           "loc": {
                             "start": {
@@ -818,8 +818,8 @@
                         }
                       ],
                       "range": [
-                        1769,
-                        1787
+                        1783,
+                        1801
                       ],
                       "loc": {
                         "start": {
@@ -833,8 +833,8 @@
                       }
                     },
                     "range": [
-                      1769,
-                      1788
+                      1783,
+                      1802
                     ],
                     "loc": {
                       "start": {
@@ -858,8 +858,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1797,
-                            1801
+                            1811,
+                            1815
                           ],
                           "loc": {
                             "start": {
@@ -876,8 +876,8 @@
                           "type": "Identifier",
                           "name": "hasPrev",
                           "range": [
-                            1802,
-                            1809
+                            1816,
+                            1823
                           ],
                           "loc": {
                             "start": {
@@ -891,8 +891,8 @@
                           }
                         },
                         "range": [
-                          1797,
-                          1809
+                          1811,
+                          1823
                         ],
                         "loc": {
                           "start": {
@@ -910,8 +910,8 @@
                         "value": false,
                         "raw": "false",
                         "range": [
-                          1812,
-                          1817
+                          1826,
+                          1831
                         ],
                         "loc": {
                           "start": {
@@ -925,8 +925,8 @@
                         }
                       },
                       "range": [
-                        1797,
-                        1817
+                        1811,
+                        1831
                       ],
                       "loc": {
                         "start": {
@@ -940,8 +940,8 @@
                       }
                     },
                     "range": [
-                      1797,
-                      1818
+                      1811,
+                      1832
                     ],
                     "loc": {
                       "start": {
@@ -956,8 +956,8 @@
                   }
                 ],
                 "range": [
-                  1759,
-                  1824
+                  1773,
+                  1838
                 ],
                 "loc": {
                   "start": {
@@ -973,8 +973,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1745,
-                1824
+                1759,
+                1838
               ],
               "loc": {
                 "start": {
@@ -990,8 +990,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              1734,
-              1824
+              1748,
+              1838
             ],
             "loc": {
               "start": {
@@ -1011,8 +1011,8 @@
               "type": "Identifier",
               "name": "_next",
               "range": [
-                1829,
-                1834
+                1843,
+                1848
               ],
               "loc": {
                 "start": {
@@ -1033,8 +1033,8 @@
                   "type": "Identifier",
                   "name": "value",
                   "range": [
-                    1835,
-                    1840
+                    1849,
+                    1854
                   ],
                   "loc": {
                     "start": {
@@ -1059,8 +1059,8 @@
                       "object": {
                         "type": "ThisExpression",
                         "range": [
-                          1856,
-                          1860
+                          1870,
+                          1874
                         ],
                         "loc": {
                           "start": {
@@ -1077,8 +1077,8 @@
                         "type": "Identifier",
                         "name": "hasPrev",
                         "range": [
-                          1861,
-                          1868
+                          1875,
+                          1882
                         ],
                         "loc": {
                           "start": {
@@ -1092,8 +1092,8 @@
                         }
                       },
                       "range": [
-                        1856,
-                        1868
+                        1870,
+                        1882
                       ],
                       "loc": {
                         "start": {
@@ -1122,8 +1122,8 @@
                                 "object": {
                                   "type": "ThisExpression",
                                   "range": [
-                                    1884,
-                                    1888
+                                    1898,
+                                    1902
                                   ],
                                   "loc": {
                                     "start": {
@@ -1140,8 +1140,8 @@
                                   "type": "Identifier",
                                   "name": "destination",
                                   "range": [
-                                    1889,
-                                    1900
+                                    1903,
+                                    1914
                                   ],
                                   "loc": {
                                     "start": {
@@ -1155,8 +1155,8 @@
                                   }
                                 },
                                 "range": [
-                                  1884,
-                                  1900
+                                  1898,
+                                  1914
                                 ],
                                 "loc": {
                                   "start": {
@@ -1173,8 +1173,8 @@
                                 "type": "Identifier",
                                 "name": "next",
                                 "range": [
-                                  1901,
-                                  1905
+                                  1915,
+                                  1919
                                 ],
                                 "loc": {
                                   "start": {
@@ -1188,8 +1188,8 @@
                                 }
                               },
                               "range": [
-                                1884,
-                                1905
+                                1898,
+                                1919
                               ],
                               "loc": {
                                 "start": {
@@ -1212,8 +1212,8 @@
                                     "object": {
                                       "type": "ThisExpression",
                                       "range": [
-                                        1907,
-                                        1911
+                                        1921,
+                                        1925
                                       ],
                                       "loc": {
                                         "start": {
@@ -1230,8 +1230,8 @@
                                       "type": "Identifier",
                                       "name": "prev",
                                       "range": [
-                                        1912,
-                                        1916
+                                        1926,
+                                        1930
                                       ],
                                       "loc": {
                                         "start": {
@@ -1245,8 +1245,8 @@
                                       }
                                     },
                                     "range": [
-                                      1907,
-                                      1916
+                                      1921,
+                                      1930
                                     ],
                                     "loc": {
                                       "start": {
@@ -1263,8 +1263,8 @@
                                     "type": "Identifier",
                                     "name": "value",
                                     "range": [
-                                      1918,
-                                      1923
+                                      1932,
+                                      1937
                                     ],
                                     "loc": {
                                       "start": {
@@ -1279,8 +1279,8 @@
                                   }
                                 ],
                                 "range": [
-                                  1906,
-                                  1924
+                                  1920,
+                                  1938
                                 ],
                                 "loc": {
                                   "start": {
@@ -1295,8 +1295,8 @@
                               }
                             ],
                             "range": [
-                              1884,
-                              1925
+                              1898,
+                              1939
                             ],
                             "loc": {
                               "start": {
@@ -1310,8 +1310,8 @@
                             }
                           },
                           "range": [
-                            1884,
-                            1926
+                            1898,
+                            1940
                           ],
                           "loc": {
                             "start": {
@@ -1326,8 +1326,8 @@
                         }
                       ],
                       "range": [
-                        1870,
-                        1936
+                        1884,
+                        1950
                       ],
                       "loc": {
                         "start": {
@@ -1354,8 +1354,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  1964,
-                                  1968
+                                  1978,
+                                  1982
                                 ],
                                 "loc": {
                                   "start": {
@@ -1372,8 +1372,8 @@
                                 "type": "Identifier",
                                 "name": "hasPrev",
                                 "range": [
-                                  1969,
-                                  1976
+                                  1983,
+                                  1990
                                 ],
                                 "loc": {
                                   "start": {
@@ -1387,8 +1387,8 @@
                                 }
                               },
                               "range": [
-                                1964,
-                                1976
+                                1978,
+                                1990
                               ],
                               "loc": {
                                 "start": {
@@ -1406,8 +1406,8 @@
                               "value": true,
                               "raw": "true",
                               "range": [
-                                1979,
-                                1983
+                                1993,
+                                1997
                               ],
                               "loc": {
                                 "start": {
@@ -1421,8 +1421,8 @@
                               }
                             },
                             "range": [
-                              1964,
-                              1983
+                              1978,
+                              1997
                             ],
                             "loc": {
                               "start": {
@@ -1436,8 +1436,8 @@
                             }
                           },
                           "range": [
-                            1964,
-                            1984
+                            1978,
+                            1998
                           ],
                           "loc": {
                             "start": {
@@ -1452,8 +1452,8 @@
                         }
                       ],
                       "range": [
-                        1950,
-                        1994
+                        1964,
+                        2008
                       ],
                       "loc": {
                         "start": {
@@ -1467,8 +1467,8 @@
                       }
                     },
                     "range": [
-                      1852,
-                      1994
+                      1866,
+                      2008
                     ],
                     "loc": {
                       "start": {
@@ -1492,8 +1492,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2003,
-                            2007
+                            2017,
+                            2021
                           ],
                           "loc": {
                             "start": {
@@ -1510,8 +1510,8 @@
                           "type": "Identifier",
                           "name": "prev",
                           "range": [
-                            2008,
-                            2012
+                            2022,
+                            2026
                           ],
                           "loc": {
                             "start": {
@@ -1525,8 +1525,8 @@
                           }
                         },
                         "range": [
-                          2003,
-                          2012
+                          2017,
+                          2026
                         ],
                         "loc": {
                           "start": {
@@ -1543,8 +1543,8 @@
                         "type": "Identifier",
                         "name": "value",
                         "range": [
-                          2015,
-                          2020
+                          2029,
+                          2034
                         ],
                         "loc": {
                           "start": {
@@ -1558,8 +1558,8 @@
                         }
                       },
                       "range": [
-                        2003,
-                        2020
+                        2017,
+                        2034
                       ],
                       "loc": {
                         "start": {
@@ -1573,8 +1573,8 @@
                       }
                     },
                     "range": [
-                      2003,
-                      2021
+                      2017,
+                      2035
                     ],
                     "loc": {
                       "start": {
@@ -1589,8 +1589,8 @@
                   }
                 ],
                 "range": [
-                  1842,
-                  2027
+                  1856,
+                  2041
                 ],
                 "loc": {
                   "start": {
@@ -1606,8 +1606,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1834,
-                2027
+                1848,
+                2041
               ],
               "loc": {
                 "start": {
@@ -1623,8 +1623,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1829,
-              2027
+              1843,
+              2041
             ],
             "loc": {
               "start": {
@@ -1640,8 +1640,8 @@
           }
         ],
         "range": [
-          1728,
-          2029
+          1742,
+          2043
         ],
         "loc": {
           "start": {
@@ -1655,8 +1655,8 @@
         }
       },
       "range": [
-        1684,
-        2029
+        1698,
+        2043
       ],
       "loc": {
         "start": {
@@ -1673,8 +1673,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            1592,
-            1683
+            1606,
+            1697
           ],
           "loc": {
             "start": {
@@ -1693,8 +1693,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=pairwise.js.map",
           "range": [
-            2030,
-            2066
+            2044,
+            2080
           ],
           "loc": {
             "start": {
@@ -1713,7 +1713,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2029
+    2043
   ],
   "loc": {
     "start": {
@@ -1728,10 +1728,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<[T, T]>} An Observable of pairs of consecutive values\n * from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+      "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
       "range": [
         44,
-        1380
+        1394
       ],
       "loc": {
         "start": {
@@ -1748,8 +1748,8 @@
       "type": "Block",
       "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
       "range": [
-        1592,
-        1683
+        1606,
+        1697
       ],
       "loc": {
         "start": {
@@ -1766,8 +1766,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=pairwise.js.map",
       "range": [
-        2030,
-        2066
+        2044,
+        2080
       ],
       "loc": {
         "start": {

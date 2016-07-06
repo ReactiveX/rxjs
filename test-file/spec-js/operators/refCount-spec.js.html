@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -82,41 +84,74 @@ describe(&apos;ConnectableObservable.prototype.refCount&apos;, function () {
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
     it(&apos;should count references&apos;, function () {
-        var source = Observable.never().publish().refCount();
-        var sub1 = source.subscribe({ next: function () {
+        var connectable = Observable.never().publish();
+        var refCounted = connectable.refCount();
+        var sub1 = refCounted.subscribe({ next: function () {
             } });
-        var sub2 = source.subscribe({ next: function () {
+        var sub2 = refCounted.subscribe({ next: function () {
             } });
-        var sub3 = source.subscribe({ next: function () {
+        var sub3 = refCounted.subscribe({ next: function () {
             } });
-        chai_1.expect(source.refCount).to.equal(3);
+        chai_1.expect(connectable._refCount).to.equal(3);
         sub1.unsubscribe();
         sub2.unsubscribe();
         sub3.unsubscribe();
     });
     it(&apos;should unsub from the source when all other subscriptions are unsubbed&apos;, function (done) {
         var unsubscribeCalled = false;
-        var source = new Observable(function (observer) {
+        var connectable = new Observable(function (observer) {
             observer.next(true);
             return function () {
                 unsubscribeCalled = true;
             };
-        }).publish().refCount();
-        var sub1 = source.subscribe(function () {
+        }).publish();
+        var refCounted = connectable.refCount();
+        var sub1 = refCounted.subscribe(function () {
             //noop
         });
-        var sub2 = source.subscribe(function () {
+        var sub2 = refCounted.subscribe(function () {
             //noop
         });
-        var sub3 = source.subscribe(function (x) {
-            chai_1.expect(source.refCount).to.equal(1);
+        var sub3 = refCounted.subscribe(function (x) {
+            chai_1.expect(connectable._refCount).to.equal(1);
         });
         sub1.unsubscribe();
         sub2.unsubscribe();
         sub3.unsubscribe();
-        chai_1.expect(source.refCount).to.equal(0);
+        chai_1.expect(connectable._refCount).to.equal(0);
         chai_1.expect(unsubscribeCalled).to.be.true;
         done();
+    });
+    it(&apos;should not unsubscribe when a subscriber synchronously unsubscribes if &apos; +
+        &apos;other subscribers are present&apos;, function () {
+        var unsubscribeCalled = false;
+        var connectable = new Observable(function (observer) {
+            observer.next(true);
+            return function () {
+                unsubscribeCalled = true;
+            };
+        }).publishReplay(1);
+        var refCounted = connectable.refCount();
+        refCounted.subscribe();
+        refCounted.subscribe().unsubscribe();
+        chai_1.expect(connectable._refCount).to.equal(1);
+        chai_1.expect(unsubscribeCalled).to.be.false;
+    });
+    it(&apos;should not unsubscribe when a subscriber synchronously unsubscribes if &apos; +
+        &apos;other subscribers are present and the source is a Subject&apos;, function () {
+        var arr = [];
+        var subject = new Rx.Subject();
+        var connectable = subject.publishReplay(1);
+        var refCounted = connectable.refCount();
+        refCounted.subscribe(function (val) {
+            arr.push(val);
+        });
+        subject.next(&apos;the number one&apos;);
+        refCounted.first().subscribe().unsubscribe();
+        subject.next(&apos;the number two&apos;);
+        chai_1.expect(connectable._refCount).to.equal(1);
+        chai_1.expect(arr[0]).to.equal(&apos;the number one&apos;);
+        chai_1.expect(arr[1]).to.equal(&apos;the number two&apos;);
     });
 });
 //# sourceMappingURL=refCount-spec.js.map</code></pre>
@@ -124,7 +159,7 @@ describe(&apos;ConnectableObservable.prototype.refCount&apos;, function () {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

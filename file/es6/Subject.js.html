@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -69,195 +71,145 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;./Observable&apos;;
 import { Subscriber } from &apos;./Subscriber&apos;;
 import { Subscription } from &apos;./Subscription&apos;;
+import { ObjectUnsubscribedError } from &apos;./util/ObjectUnsubscribedError&apos;;
 import { SubjectSubscription } from &apos;./SubjectSubscription&apos;;
 import { $$rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
-import { throwError } from &apos;./util/throwError&apos;;
-import { ObjectUnsubscribedError } from &apos;./util/ObjectUnsubscribedError&apos;;
+/**
+ * @class SubjectSubscriber&lt;T&gt;
+ */
+export class SubjectSubscriber extends Subscriber {
+    constructor(destination) {
+        super(destination);
+        this.destination = destination;
+    }
+}
 /**
  * @class Subject&lt;T&gt;
  */
 export class Subject extends Observable {
+    constructor() {
+        super();
+        this.observers = [];
+        this.isUnsubscribed = false;
+        this.isStopped = false;
+        this.hasError = false;
+        this.thrownError = null;
+    }
+    [$$rxSubscriber]() {
+        return new SubjectSubscriber(this);
+    }
+    lift(operator) {
+        const subject = new AnonymousSubject(this, this);
+        subject.operator = operator;
+        return subject;
+    }
+    next(value) {
+        if (this.isUnsubscribed) {
+            throw new ObjectUnsubscribedError();
+        }
+        if (!this.isStopped) {
+            const { observers } = this;
+            const len = observers.length;
+            const copy = observers.slice();
+            for (let i = 0; i &lt; len; i++) {
+                copy[i].next(value);
+            }
+        }
+    }
+    error(err) {
+        if (this.isUnsubscribed) {
+            throw new ObjectUnsubscribedError();
+        }
+        this.hasError = true;
+        this.thrownError = err;
+        this.isStopped = true;
+        const { observers } = this;
+        const len = observers.length;
+        const copy = observers.slice();
+        for (let i = 0; i &lt; len; i++) {
+            copy[i].error(err);
+        }
+        this.observers.length = 0;
+    }
+    complete() {
+        if (this.isUnsubscribed) {
+            throw new ObjectUnsubscribedError();
+        }
+        this.isStopped = true;
+        const { observers } = this;
+        const len = observers.length;
+        const copy = observers.slice();
+        for (let i = 0; i &lt; len; i++) {
+            copy[i].complete();
+        }
+        this.observers.length = 0;
+    }
+    unsubscribe() {
+        this.isStopped = true;
+        this.isUnsubscribed = true;
+        this.observers = null;
+    }
+    _subscribe(subscriber) {
+        if (this.isUnsubscribed) {
+            throw new ObjectUnsubscribedError();
+        }
+        else if (this.hasError) {
+            subscriber.error(this.thrownError);
+            return Subscription.EMPTY;
+        }
+        else if (this.isStopped) {
+            subscriber.complete();
+            return Subscription.EMPTY;
+        }
+        else {
+            this.observers.push(subscriber);
+            return new SubjectSubscription(this, subscriber);
+        }
+    }
+    asObservable() {
+        const observable = new Observable();
+        observable.source = this;
+        return observable;
+    }
+}
+Subject.create = (destination, source) =&gt; {
+    return new AnonymousSubject(destination, source);
+};
+/**
+ * @class AnonymousSubject&lt;T&gt;
+ */
+export class AnonymousSubject extends Subject {
     constructor(destination, source) {
         super();
         this.destination = destination;
         this.source = source;
-        this.observers = [];
-        this.isUnsubscribed = false;
-        this.isStopped = false;
-        this.hasErrored = false;
-        this.dispatching = false;
-        this.hasCompleted = false;
-        this.source = source;
-    }
-    lift(operator) {
-        const subject = new Subject(this.destination || this, this);
-        subject.operator = operator;
-        return subject;
-    }
-    add(subscription) {
-        return Subscription.prototype.add.call(this, subscription);
-    }
-    remove(subscription) {
-        Subscription.prototype.remove.call(this, subscription);
-    }
-    unsubscribe() {
-        Subscription.prototype.unsubscribe.call(this);
-    }
-    _subscribe(subscriber) {
-        if (this.source) {
-            return this.source.subscribe(subscriber);
-        }
-        else {
-            if (subscriber.isUnsubscribed) {
-                return;
-            }
-            else if (this.hasErrored) {
-                return subscriber.error(this.errorValue);
-            }
-            else if (this.hasCompleted) {
-                return subscriber.complete();
-            }
-            this.throwIfUnsubscribed();
-            const subscription = new SubjectSubscription(this, subscriber);
-            this.observers.push(subscriber);
-            return subscription;
-        }
-    }
-    _unsubscribe() {
-        this.source = null;
-        this.isStopped = true;
-        this.observers = null;
-        this.destination = null;
     }
     next(value) {
-        this.throwIfUnsubscribed();
-        if (this.isStopped) {
-            return;
-        }
-        this.dispatching = true;
-        this._next(value);
-        this.dispatching = false;
-        if (this.hasErrored) {
-            this._error(this.errorValue);
-        }
-        else if (this.hasCompleted) {
-            this._complete();
+        const { destination } = this;
+        if (destination &amp;&amp; destination.next) {
+            destination.next(value);
         }
     }
     error(err) {
-        this.throwIfUnsubscribed();
-        if (this.isStopped) {
-            return;
-        }
-        this.isStopped = true;
-        this.hasErrored = true;
-        this.errorValue = err;
-        if (this.dispatching) {
-            return;
-        }
-        this._error(err);
-    }
-    complete() {
-        this.throwIfUnsubscribed();
-        if (this.isStopped) {
-            return;
-        }
-        this.isStopped = true;
-        this.hasCompleted = true;
-        if (this.dispatching) {
-            return;
-        }
-        this._complete();
-    }
-    asObservable() {
-        const observable = new SubjectObservable(this);
-        return observable;
-    }
-    _next(value) {
-        if (this.destination) {
-            this.destination.next(value);
-        }
-        else {
-            this._finalNext(value);
-        }
-    }
-    _finalNext(value) {
-        let index = -1;
-        const observers = this.observers.slice(0);
-        const len = observers.length;
-        while (++index &lt; len) {
-            observers[index].next(value);
-        }
-    }
-    _error(err) {
-        if (this.destination) {
+        const { destination } = this;
+        if (destination &amp;&amp; destination.error) {
             this.destination.error(err);
         }
-        else {
-            this._finalError(err);
-        }
     }
-    _finalError(err) {
-        let index = -1;
-        const observers = this.observers;
-        // optimization to block our SubjectSubscriptions from
-        // splicing themselves out of the observers list one by one.
-        this.observers = null;
-        this.isUnsubscribed = true;
-        if (observers) {
-            const len = observers.length;
-            while (++index &lt; len) {
-                observers[index].error(err);
-            }
-        }
-        this.isUnsubscribed = false;
-        this.unsubscribe();
-    }
-    _complete() {
-        if (this.destination) {
+    complete() {
+        const { destination } = this;
+        if (destination &amp;&amp; destination.complete) {
             this.destination.complete();
         }
+    }
+    _subscribe(subscriber) {
+        const { source } = this;
+        if (source) {
+            return this.source.subscribe(subscriber);
+        }
         else {
-            this._finalComplete();
+            return Subscription.EMPTY;
         }
-    }
-    _finalComplete() {
-        let index = -1;
-        const observers = this.observers;
-        // optimization to block our SubjectSubscriptions from
-        // splicing themselves out of the observers list one by one.
-        this.observers = null;
-        this.isUnsubscribed = true;
-        if (observers) {
-            const len = observers.length;
-            while (++index &lt; len) {
-                observers[index].complete();
-            }
-        }
-        this.isUnsubscribed = false;
-        this.unsubscribe();
-    }
-    throwIfUnsubscribed() {
-        if (this.isUnsubscribed) {
-            throwError(new ObjectUnsubscribedError());
-        }
-    }
-    [$$rxSubscriber]() {
-        return new Subscriber(this);
-    }
-}
-Subject.create = (destination, source) =&gt; {
-    return new Subject(destination, source);
-};
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SubjectObservable extends Observable {
-    constructor(source) {
-        super();
-        this.source = source;
     }
 }
 //# sourceMappingURL=Subject.js.map</code></pre>
@@ -265,7 +217,7 @@ class SubjectObservable extends Observable {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

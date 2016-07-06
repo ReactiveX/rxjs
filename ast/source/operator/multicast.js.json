@@ -8,10 +8,10 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "ConnectableObservable",
+            "name": "MulticastObservable",
             "range": [
               9,
-              30
+              28
             ],
             "loc": {
               "start": {
@@ -20,16 +20,16 @@
               },
               "end": {
                 "line": 1,
-                "column": 30
+                "column": 28
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "ConnectableObservable",
+            "name": "MulticastObservable",
             "range": [
               9,
-              30
+              28
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 30
+                "column": 28
               }
             }
           },
           "range": [
             9,
-            30
+            28
           ],
           "loc": {
             "start": {
@@ -53,6 +53,97 @@
             },
             "end": {
               "line": 1,
+              "column": 28
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../observable/MulticastObservable",
+        "raw": "'../observable/MulticastObservable'",
+        "range": [
+          36,
+          71
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 36
+          },
+          "end": {
+            "line": 1,
+            "column": 71
+          }
+        }
+      },
+      "range": [
+        0,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 72
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "ConnectableObservable",
+            "range": [
+              82,
+              103
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 30
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "ConnectableObservable",
+            "range": [
+              82,
+              103
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 30
+              }
+            }
+          },
+          "range": [
+            82,
+            103
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
               "column": 30
             }
           }
@@ -63,49 +154,49 @@
         "value": "../observable/ConnectableObservable",
         "raw": "'../observable/ConnectableObservable'",
         "range": [
-          38,
-          75
+          111,
+          148
         ],
         "loc": {
           "start": {
-            "line": 1,
+            "line": 2,
             "column": 38
           },
           "end": {
-            "line": 1,
+            "line": 2,
             "column": 75
           }
         }
       },
       "range": [
-        0,
-        76
+        73,
+        149
       ],
       "loc": {
         "start": {
-          "line": 1,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 1,
+          "line": 2,
           "column": 76
         }
       },
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function} selector - a function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function|Subject} Factory function to create an intermediate subject through\n * which the source sequence's elements will be multicast to the selector function\n * or Subject to push source elements into.\n * @param {Function} Optional selector function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
           "range": [
-            77,
-            871
+            150,
+            1164
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 3,
               "column": 0
             },
             "end": {
-              "line": 17,
+              "line": 21,
               "column": 3
             }
           }
@@ -120,16 +211,16 @@
           "type": "Identifier",
           "name": "multicast",
           "range": [
-            888,
-            897
+            1181,
+            1190
           ],
           "loc": {
             "start": {
-              "line": 18,
+              "line": 22,
               "column": 16
             },
             "end": {
-              "line": 18,
+              "line": 22,
               "column": 25
             }
           }
@@ -139,17 +230,35 @@
             "type": "Identifier",
             "name": "subjectOrSubjectFactory",
             "range": [
-              898,
-              921
+              1191,
+              1214
             ],
             "loc": {
               "start": {
-                "line": 18,
+                "line": 22,
                 "column": 26
               },
               "end": {
-                "line": 18,
+                "line": 22,
                 "column": 49
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "selector",
+            "range": [
+              1216,
+              1224
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 51
+              },
+              "end": {
+                "line": 22,
+                "column": 59
               }
             }
           }
@@ -166,32 +275,32 @@
                     "type": "Identifier",
                     "name": "subjectFactory",
                     "range": [
-                      933,
-                      947
+                      1236,
+                      1250
                     ],
                     "loc": {
                       "start": {
-                        "line": 19,
+                        "line": 23,
                         "column": 8
                       },
                       "end": {
-                        "line": 19,
+                        "line": 23,
                         "column": 22
                       }
                     }
                   },
                   "init": null,
                   "range": [
-                    933,
-                    947
+                    1236,
+                    1250
                   ],
                   "loc": {
                     "start": {
-                      "line": 19,
+                      "line": 23,
                       "column": 8
                     },
                     "end": {
-                      "line": 19,
+                      "line": 23,
                       "column": 22
                     }
                   }
@@ -199,16 +308,16 @@
               ],
               "kind": "let",
               "range": [
-                929,
-                948
+                1232,
+                1251
               ],
               "loc": {
                 "start": {
-                  "line": 19,
+                  "line": 23,
                   "column": 4
                 },
                 "end": {
-                  "line": 19,
+                  "line": 23,
                   "column": 23
                 }
               }
@@ -225,32 +334,32 @@
                     "type": "Identifier",
                     "name": "subjectOrSubjectFactory",
                     "range": [
-                      964,
-                      987
+                      1267,
+                      1290
                     ],
                     "loc": {
                       "start": {
-                        "line": 20,
+                        "line": 24,
                         "column": 15
                       },
                       "end": {
-                        "line": 20,
+                        "line": 24,
                         "column": 38
                       }
                     }
                   },
                   "prefix": true,
                   "range": [
-                    957,
-                    987
+                    1260,
+                    1290
                   ],
                   "loc": {
                     "start": {
-                      "line": 20,
+                      "line": 24,
                       "column": 8
                     },
                     "end": {
-                      "line": 20,
+                      "line": 24,
                       "column": 38
                     }
                   }
@@ -260,31 +369,31 @@
                   "value": "function",
                   "raw": "'function'",
                   "range": [
-                    992,
-                    1002
+                    1295,
+                    1305
                   ],
                   "loc": {
                     "start": {
-                      "line": 20,
+                      "line": 24,
                       "column": 43
                     },
                     "end": {
-                      "line": 20,
+                      "line": 24,
                       "column": 53
                     }
                   }
                 },
                 "range": [
-                  957,
-                  1002
+                  1260,
+                  1305
                 ],
                 "loc": {
                   "start": {
-                    "line": 20,
+                    "line": 24,
                     "column": 8
                   },
                   "end": {
-                    "line": 20,
+                    "line": 24,
                     "column": 53
                   }
                 }
@@ -301,16 +410,16 @@
                         "type": "Identifier",
                         "name": "subjectFactory",
                         "range": [
-                          1014,
-                          1028
+                          1317,
+                          1331
                         ],
                         "loc": {
                           "start": {
-                            "line": 21,
+                            "line": 25,
                             "column": 8
                           },
                           "end": {
-                            "line": 21,
+                            "line": 25,
                             "column": 22
                           }
                         }
@@ -319,62 +428,62 @@
                         "type": "Identifier",
                         "name": "subjectOrSubjectFactory",
                         "range": [
-                          1031,
-                          1054
+                          1334,
+                          1357
                         ],
                         "loc": {
                           "start": {
-                            "line": 21,
+                            "line": 25,
                             "column": 25
                           },
                           "end": {
-                            "line": 21,
+                            "line": 25,
                             "column": 48
                           }
                         }
                       },
                       "range": [
-                        1014,
-                        1054
+                        1317,
+                        1357
                       ],
                       "loc": {
                         "start": {
-                          "line": 21,
+                          "line": 25,
                           "column": 8
                         },
                         "end": {
-                          "line": 21,
+                          "line": 25,
                           "column": 48
                         }
                       }
                     },
                     "range": [
-                      1014,
-                      1055
+                      1317,
+                      1358
                     ],
                     "loc": {
                       "start": {
-                        "line": 21,
+                        "line": 25,
                         "column": 8
                       },
                       "end": {
-                        "line": 21,
+                        "line": 25,
                         "column": 49
                       }
                     }
                   }
                 ],
                 "range": [
-                  1004,
-                  1061
+                  1307,
+                  1364
                 ],
                 "loc": {
                   "start": {
-                    "line": 20,
+                    "line": 24,
                     "column": 55
                   },
                   "end": {
-                    "line": 22,
+                    "line": 26,
                     "column": 5
                   }
                 }
@@ -391,16 +500,16 @@
                         "type": "Identifier",
                         "name": "subjectFactory",
                         "range": [
-                          1081,
-                          1095
+                          1384,
+                          1398
                         ],
                         "loc": {
                           "start": {
-                            "line": 24,
+                            "line": 28,
                             "column": 8
                           },
                           "end": {
-                            "line": 24,
+                            "line": 28,
                             "column": 22
                           }
                         }
@@ -411,16 +520,16 @@
                           "type": "Identifier",
                           "name": "subjectFactory",
                           "range": [
-                            1107,
-                            1121
+                            1410,
+                            1424
                           ],
                           "loc": {
                             "start": {
-                              "line": 24,
+                              "line": 28,
                               "column": 34
                             },
                             "end": {
-                              "line": 24,
+                              "line": 28,
                               "column": 48
                             }
                           }
@@ -435,47 +544,47 @@
                                 "type": "Identifier",
                                 "name": "subjectOrSubjectFactory",
                                 "range": [
-                                  1145,
-                                  1168
+                                  1448,
+                                  1471
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 25,
+                                    "line": 29,
                                     "column": 19
                                   },
                                   "end": {
-                                    "line": 25,
+                                    "line": 29,
                                     "column": 42
                                   }
                                 }
                               },
                               "range": [
-                                1138,
-                                1169
+                                1441,
+                                1472
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 25,
+                                  "line": 29,
                                   "column": 12
                                 },
                                 "end": {
-                                  "line": 25,
+                                  "line": 29,
                                   "column": 43
                                 }
                               }
                             }
                           ],
                           "range": [
-                            1124,
-                            1179
+                            1427,
+                            1482
                           ],
                           "loc": {
                             "start": {
-                              "line": 24,
+                              "line": 28,
                               "column": 51
                             },
                             "end": {
-                              "line": 26,
+                              "line": 30,
                               "column": 9
                             }
                           }
@@ -483,77 +592,77 @@
                         "generator": false,
                         "expression": false,
                         "range": [
-                          1098,
-                          1179
+                          1401,
+                          1482
                         ],
                         "loc": {
                           "start": {
-                            "line": 24,
+                            "line": 28,
                             "column": 25
                           },
                           "end": {
-                            "line": 26,
+                            "line": 30,
                             "column": 9
                           }
                         }
                       },
                       "range": [
-                        1081,
-                        1179
+                        1384,
+                        1482
                       ],
                       "loc": {
                         "start": {
-                          "line": 24,
+                          "line": 28,
                           "column": 8
                         },
                         "end": {
-                          "line": 26,
+                          "line": 30,
                           "column": 9
                         }
                       }
                     },
                     "range": [
-                      1081,
-                      1180
+                      1384,
+                      1483
                     ],
                     "loc": {
                       "start": {
-                        "line": 24,
+                        "line": 28,
                         "column": 8
                       },
                       "end": {
-                        "line": 26,
+                        "line": 30,
                         "column": 10
                       }
                     }
                   }
                 ],
                 "range": [
-                  1071,
-                  1186
+                  1374,
+                  1489
                 ],
                 "loc": {
                   "start": {
-                    "line": 23,
+                    "line": 27,
                     "column": 9
                   },
                   "end": {
-                    "line": 27,
+                    "line": 31,
                     "column": 5
                   }
                 }
               },
               "range": [
-                953,
-                1186
+                1256,
+                1489
               ],
               "loc": {
                 "start": {
-                  "line": 20,
+                  "line": 24,
                   "column": 4
                 },
                 "end": {
-                  "line": 27,
+                  "line": 31,
                   "column": 5
                 }
               }
@@ -561,104 +670,248 @@
             {
               "type": "ReturnStatement",
               "argument": {
-                "type": "NewExpression",
-                "callee": {
-                  "type": "Identifier",
-                  "name": "ConnectableObservable",
+                "type": "ConditionalExpression",
+                "test": {
+                  "type": "UnaryExpression",
+                  "operator": "!",
+                  "argument": {
+                    "type": "Identifier",
+                    "name": "selector",
+                    "range": [
+                      1502,
+                      1510
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 32,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 32,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "prefix": true,
                   "range": [
-                    1202,
-                    1223
+                    1501,
+                    1510
                   ],
                   "loc": {
                     "start": {
-                      "line": 28,
-                      "column": 15
+                      "line": 32,
+                      "column": 11
                     },
                     "end": {
-                      "line": 28,
-                      "column": 36
+                      "line": 32,
+                      "column": 20
                     }
                   }
                 },
-                "arguments": [
-                  {
-                    "type": "ThisExpression",
+                "consequent": {
+                  "type": "NewExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "ConnectableObservable",
                     "range": [
-                      1224,
-                      1228
+                      1525,
+                      1546
                     ],
                     "loc": {
                       "start": {
-                        "line": 28,
-                        "column": 37
+                        "line": 33,
+                        "column": 12
                       },
                       "end": {
-                        "line": 28,
-                        "column": 41
+                        "line": 33,
+                        "column": 33
                       }
                     }
                   },
-                  {
+                  "arguments": [
+                    {
+                      "type": "ThisExpression",
+                      "range": [
+                        1547,
+                        1551
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 33,
+                          "column": 34
+                        },
+                        "end": {
+                          "line": 33,
+                          "column": 38
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "subjectFactory",
+                      "range": [
+                        1553,
+                        1567
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 33,
+                          "column": 40
+                        },
+                        "end": {
+                          "line": 33,
+                          "column": 54
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1521,
+                    1568
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 33,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 33,
+                      "column": 55
+                    }
+                  }
+                },
+                "alternate": {
+                  "type": "NewExpression",
+                  "callee": {
                     "type": "Identifier",
-                    "name": "subjectFactory",
+                    "name": "MulticastObservable",
                     "range": [
-                      1230,
-                      1244
+                      1583,
+                      1602
                     ],
                     "loc": {
                       "start": {
-                        "line": 28,
-                        "column": 43
+                        "line": 34,
+                        "column": 12
                       },
                       "end": {
-                        "line": 28,
-                        "column": 57
+                        "line": 34,
+                        "column": 31
                       }
                     }
+                  },
+                  "arguments": [
+                    {
+                      "type": "ThisExpression",
+                      "range": [
+                        1603,
+                        1607
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 32
+                        },
+                        "end": {
+                          "line": 34,
+                          "column": 36
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "subjectFactory",
+                      "range": [
+                        1609,
+                        1623
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 38
+                        },
+                        "end": {
+                          "line": 34,
+                          "column": 52
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "selector",
+                      "range": [
+                        1625,
+                        1633
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 54
+                        },
+                        "end": {
+                          "line": 34,
+                          "column": 62
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1579,
+                    1634
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 34,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 34,
+                      "column": 63
+                    }
                   }
-                ],
+                },
                 "range": [
-                  1198,
-                  1245
+                  1501,
+                  1634
                 ],
                 "loc": {
                   "start": {
-                    "line": 28,
+                    "line": 32,
                     "column": 11
                   },
                   "end": {
-                    "line": 28,
-                    "column": 58
+                    "line": 34,
+                    "column": 63
                   }
                 }
               },
               "range": [
-                1191,
-                1246
+                1494,
+                1635
               ],
               "loc": {
                 "start": {
-                  "line": 28,
+                  "line": 32,
                   "column": 4
                 },
                 "end": {
-                  "line": 28,
-                  "column": 59
+                  "line": 34,
+                  "column": 64
                 }
               }
             }
           ],
           "range": [
-            923,
-            1248
+            1226,
+            1637
           ],
           "loc": {
             "start": {
-              "line": 18,
-              "column": 51
+              "line": 22,
+              "column": 61
             },
             "end": {
-              "line": 29,
+              "line": 35,
               "column": 1
             }
           }
@@ -666,34 +919,34 @@
         "generator": false,
         "expression": false,
         "range": [
-          879,
-          1248
+          1172,
+          1637
         ],
         "loc": {
           "start": {
-            "line": 18,
+            "line": 22,
             "column": 7
           },
           "end": {
-            "line": 29,
+            "line": 35,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function} selector - a function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
+            "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function|Subject} Factory function to create an intermediate subject through\n * which the source sequence's elements will be multicast to the selector function\n * or Subject to push source elements into.\n * @param {Function} Optional selector function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
             "range": [
-              77,
-              871
+              150,
+              1164
             ],
             "loc": {
               "start": {
-                "line": 2,
+                "line": 3,
                 "column": 0
               },
               "end": {
-                "line": 17,
+                "line": 21,
                 "column": 3
               }
             }
@@ -704,16 +957,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=multicast.js.map",
             "range": [
-              1249,
-              1286
+              1638,
+              1675
             ],
             "loc": {
               "start": {
-                "line": 30,
+                "line": 36,
                 "column": 0
               },
               "end": {
-                "line": 30,
+                "line": 36,
                 "column": 37
               }
             }
@@ -723,34 +976,34 @@
       "specifiers": [],
       "source": null,
       "range": [
-        872,
-        1248
+        1165,
+        1637
       ],
       "loc": {
         "start": {
-          "line": 18,
+          "line": 22,
           "column": 0
         },
         "end": {
-          "line": 29,
+          "line": 35,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function} selector - a function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function|Subject} Factory function to create an intermediate subject through\n * which the source sequence's elements will be multicast to the selector function\n * or Subject to push source elements into.\n * @param {Function} Optional selector function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
           "range": [
-            77,
-            871
+            150,
+            1164
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 3,
               "column": 0
             },
             "end": {
-              "line": 17,
+              "line": 21,
               "column": 3
             }
           }
@@ -761,16 +1014,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=multicast.js.map",
           "range": [
-            1249,
-            1286
+            1638,
+            1675
           ],
           "loc": {
             "start": {
-              "line": 30,
+              "line": 36,
               "column": 0
             },
             "end": {
-              "line": 30,
+              "line": 36,
               "column": 37
             }
           }
@@ -781,7 +1034,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1248
+    1637
   ],
   "loc": {
     "start": {
@@ -789,25 +1042,25 @@
       "column": 0
     },
     "end": {
-      "line": 29,
+      "line": 35,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function} selector - a function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
+      "value": "*\n * Returns an Observable that emits the results of invoking a specified selector on items\n * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * @param {Function|Subject} Factory function to create an intermediate subject through\n * which the source sequence's elements will be multicast to the selector function\n * or Subject to push source elements into.\n * @param {Function} Optional selector function that can use the multicasted source stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the given source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable} an Observable that emits the results of invoking the selector\n * on the items emitted by a `ConnectableObservable` that shares a single subscription to\n * the underlying stream.\n * @method multicast\n * @owner Observable\n ",
       "range": [
-        77,
-        871
+        150,
+        1164
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 17,
+          "line": 21,
           "column": 3
         }
       }
@@ -816,16 +1069,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=multicast.js.map",
       "range": [
-        1249,
-        1286
+        1638,
+        1675
       ],
       "loc": {
         "start": {
-          "line": 30,
+          "line": 36,
           "column": 0
         },
         "end": {
-          "line": 30,
+          "line": 36,
           "column": 37
         }
       }

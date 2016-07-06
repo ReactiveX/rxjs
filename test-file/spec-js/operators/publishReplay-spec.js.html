@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -220,7 +222,7 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
         });
         it(&apos;should NOT be retryable&apos;, function () {
             var source = cold(&apos;-1-2-3----4-#&apos;);
-            var sourceSubs = &apos;^           !&apos;;
+            // const sourceSubs =      &apos;^           !&apos;;
             var published = source.publishReplay(1).refCount().retry(3);
             var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(published);
             var expected1 = &apos;-1-2-3----4-(444#)&apos;;
@@ -231,11 +233,11 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
             expectObservable(subscriber1).toBe(expected1);
             expectObservable(subscriber2).toBe(expected2);
             expectObservable(subscriber3).toBe(expected3);
-            expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+            // expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         });
         it(&apos;should NOT be repeatable&apos;, function () {
             var source = cold(&apos;-1-2-3----4-|&apos;);
-            var sourceSubs = &apos;^           !&apos;;
+            // const sourceSubs =      &apos;^           !&apos;;
             var published = source.publishReplay(1).refCount().repeat(3);
             var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(published);
             var expected1 = &apos;-1-2-3----4-(44|)&apos;;
@@ -246,7 +248,7 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
             expectObservable(subscriber1).toBe(expected1);
             expectObservable(subscriber2).toBe(expected2);
             expectObservable(subscriber3).toBe(expected3);
-            expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+            // expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         });
     });
     it(&apos;should multicast one observable to multiple observers&apos;, function (done) {
@@ -302,6 +304,39 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
         chai_1.expect(results2).to.deep.equal([3, 4]);
         chai_1.expect(subscriptions).to.equal(1);
         done();
+    });
+    it(&apos;should emit replayed values and resubscribe to the source when &apos; +
+        &apos;reconnected without source completion&apos;, function () {
+        var results1 = [];
+        var results2 = [];
+        var subscriptions = 0;
+        var source = new Observable(function (observer) {
+            subscriptions++;
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.next(4);
+            // observer.complete();
+        });
+        var connectable = source.publishReplay(2);
+        var subscription1 = connectable.subscribe(function (x) {
+            results1.push(x);
+        });
+        chai_1.expect(results1).to.deep.equal([]);
+        chai_1.expect(results2).to.deep.equal([]);
+        connectable.connect().unsubscribe();
+        subscription1.unsubscribe();
+        chai_1.expect(results1).to.deep.equal([1, 2, 3, 4]);
+        chai_1.expect(results2).to.deep.equal([]);
+        chai_1.expect(subscriptions).to.equal(1);
+        var subscription2 = connectable.subscribe(function (x) {
+            results2.push(x);
+        });
+        connectable.connect().unsubscribe();
+        subscription2.unsubscribe();
+        chai_1.expect(results1).to.deep.equal([1, 2, 3, 4]);
+        chai_1.expect(results2).to.deep.equal([3, 4, 1, 2, 3, 4]);
+        chai_1.expect(subscriptions).to.equal(2);
     });
     it(&apos;should emit replayed values plus completed when subscribed after completed&apos;, function (done) {
         var results1 = [];
@@ -361,35 +396,13 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         published.connect();
     });
-    it(&apos;should follow the RxJS 4 behavior and NOT allow you to reconnect by subscribing again&apos;, function (done) {
-        var expected = [1, 2, 3, 4];
-        var i = 0;
-        var source = Observable.of(1, 2, 3, 4).publishReplay(1);
-        var results = [];
-        source.subscribe(function (x) {
-            chai_1.expect(x).to.equal(expected[i++]);
-        }, function (x) {
-            done(new Error(&apos;should not be called&apos;));
-        }, function () {
-            source.subscribe(function (x) {
-                results.push(x);
-            }, function (x) {
-                done(new Error(&apos;should not be called&apos;));
-            }, function () {
-                done();
-            });
-            chai_1.expect(function () { return source.connect(); }).to.throw(Rx.ObjectUnsubscribedError);
-        });
-        source.connect();
-        chai_1.expect(results).to.deep.equal([4]);
-    });
 });
 //# sourceMappingURL=publishReplay-spec.js.map</code></pre>
 
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

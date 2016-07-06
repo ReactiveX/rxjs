@@ -1,0 +1,14 @@
+--require source-map-support/register
+--require spec/support/mocha-setup-node.js
+--require spec-js/helpers/test-helper.js
+--require spec-js/helpers/ajax-helper.js
+--ui spec-js/helpers/testScheduler-ui.js
+
+--reporter dot
+--bail
+--full-trace
+--check-leaks
+--globals WebSocket,FormData
+
+--recursive
+--timeout 100000

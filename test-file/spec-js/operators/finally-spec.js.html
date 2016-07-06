@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -133,13 +135,92 @@ describe(&apos;Observable.prototype.finally&apos;, function () {
             .share()
             .subscribe();
     });
+    it(&apos;should handle empty&apos;, function () {
+        var executed = false;
+        var s1 = hot(&apos;|&apos;);
+        var result = s1.finally(function () { return executed = true; });
+        var expected = &apos;|&apos;;
+        expectObservable(result).toBe(expected);
+        // manually flush so `finally()` has chance to execute before the test is over.
+        rxTestScheduler.flush();
+        chai_1.expect(executed).to.be.true;
+    });
+    it(&apos;should handle never&apos;, function () {
+        var executed = false;
+        var s1 = hot(&apos;-&apos;);
+        var result = s1.finally(function () { return executed = true; });
+        var expected = &apos;-&apos;;
+        expectObservable(result).toBe(expected);
+        // manually flush so `finally()` has chance to execute before the test is over.
+        rxTestScheduler.flush();
+        chai_1.expect(executed).to.be.false;
+    });
+    it(&apos;should handle throw&apos;, function () {
+        var executed = false;
+        var s1 = hot(&apos;#&apos;);
+        var result = s1.finally(function () { return executed = true; });
+        var expected = &apos;#&apos;;
+        expectObservable(result).toBe(expected);
+        // manually flush so `finally()` has chance to execute before the test is over.
+        rxTestScheduler.flush();
+        chai_1.expect(executed).to.be.true;
+    });
+    it(&apos;should handle basic hot observable&apos;, function () {
+        var executed = false;
+        var s1 = hot(&apos;--a--b--c--|&apos;);
+        var subs = &apos;^          !&apos;;
+        var expected = &apos;--a--b--c--|&apos;;
+        var result = s1.finally(function () { return executed = true; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(s1.subscriptions).toBe(subs);
+        // manually flush so `finally()` has chance to execute before the test is over.
+        rxTestScheduler.flush();
+        chai_1.expect(executed).to.be.true;
+    });
+    it(&apos;should handle basic cold observable&apos;, function () {
+        var executed = false;
+        var s1 = cold(&apos;--a--b--c--|&apos;);
+        var subs = &apos;^          !&apos;;
+        var expected = &apos;--a--b--c--|&apos;;
+        var result = s1.finally(function () { return executed = true; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(s1.subscriptions).toBe(subs);
+        // manually flush so `finally()` has chance to execute before the test is over.
+        rxTestScheduler.flush();
+        chai_1.expect(executed).to.be.true;
+    });
+    it(&apos;should handle basic error&apos;, function () {
+        var executed = false;
+        var s1 = hot(&apos;--a--b--c--#&apos;);
+        var subs = &apos;^          !&apos;;
+        var expected = &apos;--a--b--c--#&apos;;
+        var result = s1.finally(function () { return executed = true; });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(s1.subscriptions).toBe(subs);
+        // manually flush so `finally()` has chance to execute before the test is over.
+        rxTestScheduler.flush();
+        chai_1.expect(executed).to.be.true;
+    });
+    it(&apos;should handle unsubscription&apos;, function () {
+        var executed = false;
+        var s1 = hot(&apos;--a--b--c--|&apos;);
+        var subs = &apos;^     !     &apos;;
+        var expected = &apos;--a--b-&apos;;
+        var unsub = &apos;      !&apos;;
+        var result = s1.finally(function () { return executed = true; });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(s1.subscriptions).toBe(subs);
+        // manually flush so `finally()` has chance to execute before the test is over.
+        rxTestScheduler.flush();
+        chai_1.expect(executed).to.be.true;
+    });
 });
 //# sourceMappingURL=finally-spec.js.map</code></pre>
 
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -66,13 +68,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GroupedObservable} from &apos;<span><a href="file/es6/operator/groupBy.js.html#lineNumber194">@reactivex/rxjs/es6/operator/groupBy.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GroupedObservable} from &apos;<span><a href="file/es6/operator/groupBy.js.html#lineNumber176">@reactivex/rxjs/es6/operator/groupBy.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/es6/operator/groupBy.js.html#lineNumber194">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/es6/operator/groupBy.js.html#lineNumber176">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -118,33 +120,6 @@ GroupedObservable instance.</p>
   <tbody>
   
   <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      <span data-ice="static">static</span>
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-ajax">ajax</a></span></span><span data-ice="signature">(request: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Creates an observable for an Ajax request with either a request object with
-url, headers, etc or a string for a URL.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
       <span data-ice="static">static</span>
@@ -847,7 +822,7 @@ value from the source Observable, then repeats this process.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-bufferTime">bufferTime</a></span></span><span data-ice="signature">(bufferTimeSpan: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, bufferCreationInterval: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-bufferTime">bufferTime</a></span></span><span data-ice="signature">(bufferTimeSpan: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, bufferCreationInterval: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, maxBufferSize: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/MiscJSDoc.js~SchedulerDoc.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><span>T</span><span>[]</span></span>&gt;</span>
         </p>
       </div>
       <div>
@@ -959,7 +934,7 @@ Observables to determine when to close, emit, and reset the buffer.</p>
         
         
         <div data-ice="description"><p>Converts a higher-order Observable into a first-order Observable by waiting
-for the outer Observable to complete, then applying <span><a href="class/es6/Observable.js~Observable.html#instance-method-combineLatest">combineLatest</a></span>.</p>
+for the outer Observable to complete, then applying <span><a href="class/es6/Observable.js~Observable.html#static-method-combineLatest">combineLatest</a></span>.</p>
 </div>
       </div>
     </td>
@@ -1283,7 +1258,8 @@ determined by the emissions of another Observable.</p>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that transforms Notification objects into the items or notifications they represent.</p>
+        <div data-ice="description"><p>Converts an Observable of <span><a href="class/es6/Notification.js~Notification.html">Notification</a></span> objects into the emissions
+that they represent.</p>
 </div>
       </div>
     </td>
@@ -1921,9 +1897,9 @@ Observable emits a value.</p>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that represents all of the emissions and notifications
-from the source Observable into emissions marked with their original types
-within a <code>Notification</code> objects.</p>
+        <div data-ice="description"><p>Represents all of the notifications from the source Observable as <code>next</code>
+emissions marked with their original types within <span><a href="class/es6/Notification.js~Notification.html">Notification</a></span>
+objects.</p>
 </div>
       </div>
     </td>
@@ -2130,7 +2106,7 @@ and when source Observable completes it emits a single item: the item with the s
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-multicast">multicast</a></span></span><span data-ice="signature">(selector: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-multicast">multicast</a></span></span><span data-ice="signature">(Factory: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span> | <span><a href="class/es6/Subject.js~Subject.html">Subject</a></span>, Optional: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
         </p>
       </div>
       <div>
@@ -2182,7 +2158,7 @@ emitted by a ConnectableObservable that shares a single subscription to the unde
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-pairwise">pairwise</a></span></span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>[T</span>, <span>T]</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-pairwise">pairwise</a></span></span><span data-ice="signature">(): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span>T</span>&gt;&gt;</span>
         </p>
       </div>
       <div>
@@ -2265,7 +2241,7 @@ pass the condition.</span></p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-publish">publish</a></span></span><span data-ice="signature">(): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-publish">publish</a></span></span><span data-ice="signature">(Optional: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>): <span>*</span></span>
         </p>
       </div>
       <div>
@@ -2394,16 +2370,14 @@ from the combination of this Observable and supplied Observables</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-reduce">reduce</a></span></span><span data-ice="signature">(the: <span>initialValue</span>, an: <span>accumulator</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-reduce">reduce</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span>R</span></span>, seed: <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Returns an Observable that applies a specified accumulator function to the first item emitted by a source Observable,
-then feeds the result of that function along with the second item emitted by the source Observable into the same
-function, and so on until all items have been emitted by the source Observable, and emits the final result from
-the final call to your function as its sole item.</p>
+        <div data-ice="description"><p>Applies an accumulator function over the source Observable, and returns the
+accumulated result when the source completes, given an optional seed value.</p>
 </div>
       </div>
     </td>
@@ -2563,7 +2537,7 @@ periodic time intervals.</p>
       <div>
         
         
-        <div data-ice="description"><p>Applies an accumulation function over the source Observable, and returns each
+        <div data-ice="description"><p>Applies an accumulator function over the source Observable, and returns each
 intermediate result, with an optional seed value.</p>
 </div>
       </div>
@@ -3405,7 +3379,7 @@ source emits.</p>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

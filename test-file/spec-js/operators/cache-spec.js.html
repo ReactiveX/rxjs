@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -67,30 +69,58 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/cache-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var chai_1 = require(&apos;chai&apos;);
 /** @test {cache} */
 describe(&apos;Observable.prototype.cache&apos;, function () {
+    it(&apos;should just work&#x2122;&apos;, function () {
+        var subs = 0;
+        var source = Rx.Observable.create(function (observer) {
+            subs++;
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        }).cache();
+        var results = [];
+        source.subscribe(function (x) { return results.push(x); });
+        chai_1.expect(results).to.deep.equal([1, 2, 3]);
+        chai_1.expect(subs).to.equal(1);
+        results = [];
+        source.subscribe(function (x) { return results.push(x); });
+        chai_1.expect(results).to.deep.equal([1, 2, 3]);
+        chai_1.expect(subs).to.equal(1);
+    });
     it(&apos;should replay values upon subscription&apos;, function () {
-        var s1 = hot(&apos;---^---a---b---c---|     &apos;).cache();
-        var expected1 = &apos;----a---b---c---|     &apos;;
-        var expected2 = &apos;                (abc|)&apos;;
-        var t = time(&apos;----------------|&apos;);
+        var s1 = hot(&apos;----a---b---c---|       &apos;).cache(undefined, undefined, rxTestScheduler);
+        var expected1 = &apos;----a---b---c---|       &apos;;
+        var expected2 = &apos;                  (abc|)&apos;;
+        var sub2 = &apos;------------------|     &apos;;
+        expectObservable(s1).toBe(expected1);
+        rxTestScheduler.schedule(function () { return expectObservable(s1).toBe(expected2); }, time(sub2));
+    });
+    it(&apos;should not replay values after error with a hot observable&apos;, function () {
+        var s1 = hot(&apos;---^---a---b---c---#  &apos;).cache(undefined, undefined, rxTestScheduler);
+        var expected1 = &apos;----a---b---c---#  &apos;;
+        var expected2 = &apos;                  -&apos;;
+        var t = time(&apos;------------------|&apos;);
         expectObservable(s1).toBe(expected1);
         rxTestScheduler.schedule(function () {
             expectObservable(s1).toBe(expected2);
         }, t);
     });
-    it(&apos;should replay values and error&apos;, function () {
-        var s1 = hot(&apos;---^---a---b---c---#     &apos;).cache();
-        var expected1 = &apos;----a---b---c---#     &apos;;
-        var expected2 = &apos;                (abc#)&apos;;
-        var t = time(&apos;----------------|&apos;);
+    it(&apos;should be resubscribable after error with a cold observable&apos;, function () {
+        var s1 = cold(&apos;----a---b---c---#                  &apos;).cache(undefined, undefined, rxTestScheduler);
+        var expected1 = &apos;----a---b---c---#                  &apos;;
+        var expected2 = &apos;                  ----a---b---c---#&apos;;
+        var t = time(&apos;------------------|                &apos;);
         expectObservable(s1).toBe(expected1);
         rxTestScheduler.schedule(function () {
             expectObservable(s1).toBe(expected2);
         }, t);
     });
     it(&apos;should replay values and and share&apos;, function () {
-        var s1 = hot(&apos;---^---a---b---c------------d--e--f-|&apos;).cache();
+        var s1 = hot(&apos;---^---a---b---c------------d--e--f-|&apos;).cache(undefined, undefined, rxTestScheduler);
         var expected1 = &apos;----a---b---c------------d--e--f-|&apos;;
         var expected2 = &apos;                (abc)----d--e--f-|&apos;;
         var t = time(&apos;----------------|&apos;);
@@ -110,14 +140,12 @@ describe(&apos;Observable.prototype.cache&apos;, function () {
         }, t);
     });
     it(&apos;should have a bufferCount that limits the replay test 2&apos;, function () {
-        var s1 = hot(&apos;---^---a---b---c------------d--e--f-|&apos;).cache(2);
+        var s1 = hot(&apos;----a---b---c------------d--e--f-|&apos;).cache(2);
         var expected1 = &apos;----a---b---c------------d--e--f-|&apos;;
         var expected2 = &apos;                (bc)-----d--e--f-|&apos;;
         var t = time(&apos;----------------|&apos;);
         expectObservable(s1).toBe(expected1);
-        rxTestScheduler.schedule(function () {
-            expectObservable(s1).toBe(expected2);
-        }, t);
+        rxTestScheduler.schedule(function () { return expectObservable(s1).toBe(expected2); }, t);
     });
     it(&apos;should accept a windowTime that limits the replay&apos;, function () {
         var w = time(&apos;----------|&apos;);
@@ -131,7 +159,7 @@ describe(&apos;Observable.prototype.cache&apos;, function () {
         }, t);
     });
     it(&apos;should handle empty&apos;, function () {
-        var s1 = cold(&apos;|&apos;).cache();
+        var s1 = cold(&apos;|&apos;).cache(undefined, undefined, rxTestScheduler);
         var expected1 = &apos;|&apos;;
         var expected2 = &apos;                |&apos;;
         var t = time(&apos;----------------|&apos;);
@@ -141,7 +169,7 @@ describe(&apos;Observable.prototype.cache&apos;, function () {
         }, t);
     });
     it(&apos;should handle throw&apos;, function () {
-        var s1 = cold(&apos;#&apos;).cache();
+        var s1 = cold(&apos;#&apos;).cache(undefined, undefined, rxTestScheduler);
         var expected1 = &apos;#&apos;;
         var expected2 = &apos;                #&apos;;
         var t = time(&apos;----------------|&apos;);
@@ -151,7 +179,7 @@ describe(&apos;Observable.prototype.cache&apos;, function () {
         }, t);
     });
     it(&apos;should handle never&apos;, function () {
-        var s1 = cold(&apos;-&apos;).cache();
+        var s1 = cold(&apos;-&apos;).cache(undefined, undefined, rxTestScheduler);
         var expected1 = &apos;-&apos;;
         var expected2 = &apos;                -&apos;;
         var t = time(&apos;----------------|&apos;);
@@ -161,7 +189,7 @@ describe(&apos;Observable.prototype.cache&apos;, function () {
         }, t);
     });
     it(&apos;should multicast a completion&apos;, function () {
-        var s1 = hot(&apos;--a--^--b------c-----d------e-|&apos;).cache();
+        var s1 = hot(&apos;--a--^--b------c-----d------e-|&apos;).cache(undefined, undefined, rxTestScheduler);
         var t1 = time(&apos;|                         &apos;);
         var e1 = &apos;---b------c-----d------e-|&apos;;
         var t2 = time(&apos;----------|               &apos;);
@@ -176,7 +204,7 @@ describe(&apos;Observable.prototype.cache&apos;, function () {
         });
     });
     it(&apos;should multicast an error&apos;, function () {
-        var s1 = hot(&apos;--a--^--b------c-----d------e-#&apos;).cache();
+        var s1 = hot(&apos;--a--^--b------c-----d------e-#&apos;).cache(undefined, undefined, rxTestScheduler);
         var t1 = time(&apos;|                         &apos;);
         var e1 = &apos;---b------c-----d------e-#&apos;;
         var t2 = time(&apos;----------|               &apos;);
@@ -208,13 +236,23 @@ describe(&apos;Observable.prototype.cache&apos;, function () {
             expectObservable(s1).toBe(e3);
         }, t2);
     });
+    it(&apos;should be retryable&apos;, function () {
+        var source = cold(&apos;--1-2-3-#&apos;);
+        var subs = [&apos;^       !                &apos;,
+            &apos;        ^       !        &apos;,
+            &apos;                ^       !&apos;];
+        var expected = &apos;--1-2-3---1-2-3---1-2-3-#&apos;;
+        var result = source.cache(undefined, undefined, rxTestScheduler).retry(2);
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
 });
 //# sourceMappingURL=cache-spec.js.map</code></pre>
 
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

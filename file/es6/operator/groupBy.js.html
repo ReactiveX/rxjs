@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -114,15 +116,13 @@ class GroupByOperator {
  */
 class GroupBySubscriber extends Subscriber {
     constructor(destination, keySelector, elementSelector, durationSelector) {
-        super();
+        super(destination);
         this.keySelector = keySelector;
         this.elementSelector = elementSelector;
         this.durationSelector = durationSelector;
         this.groups = null;
         this.attemptedToUnsubscribe = false;
         this.count = 0;
-        this.destination = destination;
-        this.add(destination);
     }
     _next(value) {
         let key;
@@ -141,46 +141,36 @@ class GroupBySubscriber extends Subscriber {
             groups = this.groups = typeof key === &apos;string&apos; ? new FastMap() : new Map();
         }
         let group = groups.get(key);
+        let element;
+        if (this.elementSelector) {
+            try {
+                element = this.elementSelector(value);
+            }
+            catch (err) {
+                this.error(err);
+            }
+        }
+        else {
+            element = value;
+        }
         if (!group) {
             groups.set(key, group = new Subject());
             const groupedObservable = new GroupedObservable(key, group, this);
-            if (this.durationSelector) {
-                this._selectDuration(key, group);
-            }
             this.destination.next(groupedObservable);
+            if (this.durationSelector) {
+                let duration;
+                try {
+                    duration = this.durationSelector(new GroupedObservable(key, group));
+                }
+                catch (err) {
+                    this.error(err);
+                    return;
+                }
+                this.add(duration.subscribe(new GroupDurationSubscriber(key, group, this)));
+            }
         }
-        if (this.elementSelector) {
-            this._selectElement(value, group);
-        }
-        else {
-            this.tryGroupNext(value, group);
-        }
-    }
-    _selectElement(value, group) {
-        let result;
-        try {
-            result = this.elementSelector(value);
-        }
-        catch (err) {
-            this.error(err);
-            return;
-        }
-        this.tryGroupNext(result, group);
-    }
-    _selectDuration(key, group) {
-        let duration;
-        try {
-            duration = this.durationSelector(new GroupedObservable(key, group));
-        }
-        catch (err) {
-            this.error(err);
-            return;
-        }
-        this.add(duration.subscribe(new GroupDurationSubscriber(key, group, this)));
-    }
-    tryGroupNext(value, group) {
         if (!group.isUnsubscribed) {
-            group.next(value);
+            group.next(element);
         }
     }
     _error(err) {
@@ -228,22 +218,16 @@ class GroupDurationSubscriber extends Subscriber {
         this.parent = parent;
     }
     _next(value) {
-        this.tryComplete();
+        this._complete();
     }
     _error(err) {
-        this.tryError(err);
-    }
-    _complete() {
-        this.tryComplete();
-    }
-    tryError(err) {
         const group = this.group;
         if (!group.isUnsubscribed) {
             group.error(err);
         }
         this.parent.removeGroup(this.key);
     }
-    tryComplete() {
+    _complete() {
         const group = this.group;
         if (!group.isUnsubscribed) {
             group.complete();
@@ -303,7 +287,7 @@ class InnerRefCountSubscription extends Subscription {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

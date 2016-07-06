@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -68,23 +70,97 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/dom/ajax-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var chai_1 = require(&apos;chai&apos;);
-var Rx = require(&apos;../../../dist/cjs/Rx.DOM&apos;);
+var sinon = require(&apos;sinon&apos;);
+var Rx = require(&apos;../../../dist/cjs/Rx&apos;);
 var root_1 = require(&apos;../../../dist/cjs/util/root&apos;);
 var ajax_helper_1 = require(&apos;../../helpers/ajax-helper&apos;);
 /** @test {ajax} */
 describe(&apos;Observable.ajax&apos;, function () {
     var gXHR;
     var rXHR;
+    var sandbox;
     beforeEach(function () {
+        sandbox = sinon.sandbox.create();
         gXHR = global.XMLHttpRequest;
         rXHR = root_1.root.XMLHttpRequest;
         global.XMLHttpRequest = ajax_helper_1.MockXMLHttpRequest;
         root_1.root.XMLHttpRequest = ajax_helper_1.MockXMLHttpRequest;
     });
     afterEach(function () {
+        sandbox.restore();
         ajax_helper_1.MockXMLHttpRequest.clearRequest();
         global.XMLHttpRequest = gXHR;
         root_1.root.XMLHttpRequest = rXHR;
+        root_1.root.XDomainRequest = null;
+        root_1.root.ActiveXObject = null;
+    });
+    it(&apos;should create default XMLHttpRequest for non CORS&apos;, function () {
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.withCredentials).to.be.false;
+    });
+    it(&apos;should try to create AXObject for XHR in old version of IE&apos;, function () {
+        var axObjectStub = sandbox.stub();
+        axObjectStub.returns(sinon.stub(new ajax_helper_1.MockXMLHttpRequest()));
+        root_1.root.ActiveXObject = axObjectStub;
+        root_1.root.XMLHttpRequest = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(axObjectStub).to.have.been.called;
+    });
+    it(&apos;should throw if not able to create XMLHttpRequest&apos;, function () {
+        root_1.root.XMLHttpRequest = null;
+        root_1.root.ActiveXObject = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;
+        };
+        chai_1.expect(function () {
+            Rx.Observable.ajax(obj).subscribe();
+        }).to.throw();
+    });
+    it(&apos;should create XMLHttpRequest for CORS&apos;, function () {
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;,
+            crossDomain: true,
+            withCredentials: true
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.withCredentials).to.be.true;
+    });
+    it(&apos;should try to create XDomainRequest for CORS if XMLHttpRequest is not available&apos;, function () {
+        var xDomainStub = sandbox.stub();
+        xDomainStub.returns(sinon.stub(new ajax_helper_1.MockXMLHttpRequest()));
+        root_1.root.XDomainRequest = xDomainStub;
+        root_1.root.XMLHttpRequest = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;,
+            crossDomain: true,
+            withCredentials: true
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(xDomainStub).to.have.been.called;
+    });
+    it(&apos;should throw if not able to create CORS request&apos;, function () {
+        root_1.root.XMLHttpRequest = null;
+        root_1.root.XDomainRequest = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;,
+            crossDomain: true,
+            withCredentials: true
+        };
+        chai_1.expect(function () {
+            Rx.Observable.ajax(obj).subscribe();
+        }).to.throw();
     });
     it(&apos;should set headers&apos;, function () {
         var obj = {
@@ -325,6 +401,9 @@ describe(&apos;Observable.ajax&apos;, function () {
             Rx.Observable.ajax(obj).subscribe();
             chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
             chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
+            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
+                &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
+            });
         });
         it(&apos;should not fail when FormData is undefined&apos;, function () {
             root_1.root.FormData = void 0;
@@ -456,7 +535,7 @@ describe(&apos;Observable.ajax&apos;, function () {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

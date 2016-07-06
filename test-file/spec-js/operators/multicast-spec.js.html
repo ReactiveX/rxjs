@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -101,6 +103,40 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
             done();
         });
         connectable.connect();
+    });
+    it(&apos;should accept a multicast selector and connect to a hot source for each subscriber&apos;, function () {
+        var source = hot(&apos;-1-2-3----4-|&apos;);
+        var sourceSubs = [&apos;^           !&apos;,
+            &apos;    ^       !&apos;,
+            &apos;        ^   !&apos;];
+        var multicasted = source.multicast(function () { return new Subject(); }, function (x) { return x.zip(x, function (a, b) { return (parseInt(a) + parseInt(b)).toString(); }); });
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(multicasted);
+        var expected1 = &apos;-2-4-6----8-|&apos;;
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(multicasted);
+        var expected2 = &apos;    -6----8-|&apos;;
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(multicasted);
+        var expected3 = &apos;        --8-|&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should accept a multicast selector and connect to a cold source for each subscriber&apos;, function () {
+        var source = cold(&apos;-1-2-3----4-|&apos;);
+        var sourceSubs = [&apos;^           !&apos;,
+            &apos;    ^           !&apos;,
+            &apos;        ^           !&apos;];
+        var multicasted = source.multicast(function () { return new Subject(); }, function (x) { return x.zip(x, function (a, b) { return (parseInt(a) + parseInt(b)).toString(); }); });
+        var expected1 = &apos;-2-4-6----8-|&apos;;
+        var expected2 = &apos;    -2-4-6----8-|&apos;;
+        var expected3 = &apos;        -2-4-6----8-|&apos;;
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(multicasted);
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(multicasted);
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(multicasted);
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
     it(&apos;should do nothing if connect is not called, despite subscriptions&apos;, function () {
         var source = cold(&apos;--1-2---3-4--5-|&apos;);
@@ -372,16 +408,13 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
                 &apos;            ^           !            &apos;,
                 &apos;                        ^           !&apos;];
             var multicasted = source.multicast(subjectFactory).refCount();
-            var subscribe1 = &apos;s                                    &apos;;
             var expected1 = &apos;-1-2-3----4--1-2-3----4--1-2-3----4-#&apos;;
-            var subscribe2 = &apos;    s                                &apos;;
+            var subscribe2 = time(&apos;----|                                &apos;);
             var expected2 = &apos;    23----4--1-2-3----4--1-2-3----4-#&apos;;
-            expectObservable(hot(subscribe1).do(function () {
-                expectObservable(multicasted.retry(2)).toBe(expected1);
-            })).toBe(subscribe1);
-            expectObservable(hot(subscribe2).do(function () {
-                expectObservable(multicasted.retry(2)).toBe(expected2);
-            })).toBe(subscribe2);
+            expectObservable(multicasted.retry(2)).toBe(expected1);
+            rxTestScheduler.schedule(function () {
+                return expectObservable(multicasted.retry(2)).toBe(expected2);
+            }, subscribe2);
             expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         });
         it(&apos;should be repeatable&apos;, function () {
@@ -452,18 +485,16 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
         chai_1.expect(subscriptions).to.equal(1);
         done();
     });
-    it(&apos;should remove all subscribers from the subject when disconnected&apos;, function (done) {
+    it(&apos;should remove all subscribers from the subject when disconnected&apos;, function () {
         var subject = new Subject();
         var expected = [1, 2, 3, 4];
         var i = 0;
         var source = Observable.from([1, 2, 3, 4]).multicast(subject);
         source.subscribe(function (x) {
             chai_1.expect(x).to.equal(expected[i++]);
-        }, null, function () {
-            chai_1.expect(subject.isUnsubscribed).to.be.true;
-            done();
         });
         source.connect();
+        chai_1.expect(subject.observers.length).to.equal(0);
     });
     describe(&apos;when given a subject factory&apos;, function () {
         it(&apos;should allow you to reconnect by subscribing again&apos;, function (done) {
@@ -500,22 +531,6 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
         });
     });
     describe(&apos;when given a subject&apos;, function () {
-        it(&apos;should NOT allow you to reconnect by subscribing again&apos;, function (done) {
-            var expected = [1, 2, 3, 4];
-            var i = 0;
-            var source = Observable.of(1, 2, 3, 4).multicast(new Subject());
-            source.subscribe(function (x) {
-                chai_1.expect(x).to.equal(expected[i++]);
-            }, null, function () {
-                source.subscribe(function (x) {
-                    done(new Error(&apos;should not be called&apos;));
-                }, null, function () {
-                    done();
-                });
-                chai_1.expect(function () { return source.connect(); }).to.throw(Rx.ObjectUnsubscribedError);
-            });
-            source.connect();
-        });
         it(&apos;should not throw ObjectUnsubscribedError when used in &apos; +
             &apos;a switchMap&apos;, function (done) {
             var source = Observable.of(1, 2, 3)
@@ -540,7 +555,7 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

@@ -185,10 +185,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
           "range": [
             79,
-            492
+            795
           ],
           "loc": {
             "start": {
@@ -196,7 +196,7 @@
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 15,
               "column": 3
             }
           }
@@ -211,179 +211,398 @@
           "type": "Identifier",
           "name": "publish",
           "range": [
-            509,
-            516
+            812,
+            819
           ],
           "loc": {
             "start": {
-              "line": 13,
+              "line": 16,
               "column": 16
             },
             "end": {
-              "line": 13,
+              "line": 16,
               "column": 23
             }
           }
         },
-        "params": [],
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "selector",
+            "range": [
+              820,
+              828
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 24
+              },
+              "end": {
+                "line": 16,
+                "column": 32
+              }
+            }
+          }
+        ],
         "body": {
           "type": "BlockStatement",
           "body": [
             {
               "type": "ReturnStatement",
               "argument": {
-                "type": "CallExpression",
-                "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "Identifier",
-                    "name": "multicast",
-                    "range": [
-                      532,
-                      541
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 14,
-                        "column": 11
-                      },
-                      "end": {
-                        "line": 14,
-                        "column": 20
-                      }
-                    }
-                  },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "call",
-                    "range": [
-                      542,
-                      546
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 14,
-                        "column": 21
-                      },
-                      "end": {
-                        "line": 14,
-                        "column": 25
-                      }
-                    }
-                  },
+                "type": "ConditionalExpression",
+                "test": {
+                  "type": "Identifier",
+                  "name": "selector",
                   "range": [
-                    532,
-                    546
+                    843,
+                    851
                   ],
                   "loc": {
                     "start": {
-                      "line": 14,
+                      "line": 17,
                       "column": 11
                     },
                     "end": {
-                      "line": 14,
-                      "column": 25
+                      "line": 17,
+                      "column": 19
                     }
                   }
                 },
-                "arguments": [
-                  {
-                    "type": "ThisExpression",
-                    "range": [
-                      547,
-                      551
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 14,
-                        "column": 26
-                      },
-                      "end": {
-                        "line": 14,
-                        "column": 30
-                      }
-                    }
-                  },
-                  {
-                    "type": "NewExpression",
-                    "callee": {
+                "consequent": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
                       "type": "Identifier",
-                      "name": "Subject",
+                      "name": "multicast",
                       "range": [
-                        557,
-                        564
+                        854,
+                        863
                       ],
                       "loc": {
                         "start": {
-                          "line": 14,
-                          "column": 36
+                          "line": 17,
+                          "column": 22
                         },
                         "end": {
-                          "line": 14,
-                          "column": 43
+                          "line": 17,
+                          "column": 31
                         }
                       }
                     },
-                    "arguments": [],
+                    "property": {
+                      "type": "Identifier",
+                      "name": "call",
+                      "range": [
+                        864,
+                        868
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 32
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 36
+                        }
+                      }
+                    },
                     "range": [
-                      553,
-                      566
+                      854,
+                      868
                     ],
                     "loc": {
                       "start": {
-                        "line": 14,
-                        "column": 32
+                        "line": 17,
+                        "column": 22
                       },
                       "end": {
-                        "line": 14,
-                        "column": 45
+                        "line": 17,
+                        "column": 36
                       }
                     }
+                  },
+                  "arguments": [
+                    {
+                      "type": "ThisExpression",
+                      "range": [
+                        869,
+                        873
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 37
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 41
+                        }
+                      }
+                    },
+                    {
+                      "type": "ArrowFunctionExpression",
+                      "id": null,
+                      "params": [],
+                      "body": {
+                        "type": "NewExpression",
+                        "callee": {
+                          "type": "Identifier",
+                          "name": "Subject",
+                          "range": [
+                            885,
+                            892
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 17,
+                              "column": 53
+                            },
+                            "end": {
+                              "line": 17,
+                              "column": 60
+                            }
+                          }
+                        },
+                        "arguments": [],
+                        "range": [
+                          881,
+                          894
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 17,
+                            "column": 49
+                          },
+                          "end": {
+                            "line": 17,
+                            "column": 62
+                          }
+                        }
+                      },
+                      "generator": false,
+                      "expression": true,
+                      "range": [
+                        875,
+                        894
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 43
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 62
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "selector",
+                      "range": [
+                        896,
+                        904
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 64
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 72
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    854,
+                    905
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 17,
+                      "column": 22
+                    },
+                    "end": {
+                      "line": 17,
+                      "column": 73
+                    }
                   }
-                ],
+                },
+                "alternate": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "multicast",
+                      "range": [
+                        916,
+                        925
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 18,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 18,
+                          "column": 17
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "call",
+                      "range": [
+                        926,
+                        930
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 18,
+                          "column": 18
+                        },
+                        "end": {
+                          "line": 18,
+                          "column": 22
+                        }
+                      }
+                    },
+                    "range": [
+                      916,
+                      930
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 18,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 18,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "ThisExpression",
+                      "range": [
+                        931,
+                        935
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 18,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 18,
+                          "column": 27
+                        }
+                      }
+                    },
+                    {
+                      "type": "NewExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "Subject",
+                        "range": [
+                          941,
+                          948
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 18,
+                            "column": 33
+                          },
+                          "end": {
+                            "line": 18,
+                            "column": 40
+                          }
+                        }
+                      },
+                      "arguments": [],
+                      "range": [
+                        937,
+                        950
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 18,
+                          "column": 29
+                        },
+                        "end": {
+                          "line": 18,
+                          "column": 42
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    916,
+                    951
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 18,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 18,
+                      "column": 43
+                    }
+                  }
+                },
                 "range": [
-                  532,
-                  567
+                  843,
+                  951
                 ],
                 "loc": {
                   "start": {
-                    "line": 14,
+                    "line": 17,
                     "column": 11
                   },
                   "end": {
-                    "line": 14,
-                    "column": 46
+                    "line": 18,
+                    "column": 43
                   }
                 }
               },
               "range": [
-                525,
-                568
+                836,
+                952
               ],
               "loc": {
                 "start": {
-                  "line": 14,
+                  "line": 17,
                   "column": 4
                 },
                 "end": {
-                  "line": 14,
-                  "column": 47
+                  "line": 18,
+                  "column": 44
                 }
               }
             }
           ],
           "range": [
-            519,
-            570
+            830,
+            954
           ],
           "loc": {
             "start": {
-              "line": 13,
-              "column": 26
+              "line": 16,
+              "column": 34
             },
             "end": {
-              "line": 15,
+              "line": 19,
               "column": 1
             }
           }
@@ -391,26 +610,26 @@
         "generator": false,
         "expression": false,
         "range": [
-          500,
-          570
+          803,
+          954
         ],
         "loc": {
           "start": {
-            "line": 13,
+            "line": 16,
             "column": 7
           },
           "end": {
-            "line": 15,
+            "line": 19,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+            "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
             "range": [
               79,
-              492
+              795
             ],
             "loc": {
               "start": {
@@ -418,7 +637,7 @@
                 "column": 0
               },
               "end": {
-                "line": 12,
+                "line": 15,
                 "column": 3
               }
             }
@@ -429,16 +648,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=publish.js.map",
             "range": [
-              571,
-              606
+              955,
+              990
             ],
             "loc": {
               "start": {
-                "line": 16,
+                "line": 20,
                 "column": 0
               },
               "end": {
-                "line": 16,
+                "line": 20,
                 "column": 35
               }
             }
@@ -448,26 +667,26 @@
       "specifiers": [],
       "source": null,
       "range": [
-        493,
-        570
+        796,
+        954
       ],
       "loc": {
         "start": {
-          "line": 13,
+          "line": 16,
           "column": 0
         },
         "end": {
-          "line": 15,
+          "line": 19,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
           "range": [
             79,
-            492
+            795
           ],
           "loc": {
             "start": {
@@ -475,7 +694,7 @@
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 15,
               "column": 3
             }
           }
@@ -486,16 +705,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=publish.js.map",
           "range": [
-            571,
-            606
+            955,
+            990
           ],
           "loc": {
             "start": {
-              "line": 16,
+              "line": 20,
               "column": 0
             },
             "end": {
-              "line": 16,
+              "line": 20,
               "column": 35
             }
           }
@@ -506,7 +725,7 @@
   "sourceType": "module",
   "range": [
     0,
-    570
+    954
   ],
   "loc": {
     "start": {
@@ -514,17 +733,17 @@
       "column": 0
     },
     "end": {
-      "line": 15,
+      "line": 19,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+      "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
       "range": [
         79,
-        492
+        795
       ],
       "loc": {
         "start": {
@@ -532,7 +751,7 @@
           "column": 0
         },
         "end": {
-          "line": 12,
+          "line": 15,
           "column": 3
         }
       }
@@ -541,16 +760,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=publish.js.map",
       "range": [
-        571,
-        606
+        955,
+        990
       ],
       "loc": {
         "start": {
-          "line": 16,
+          "line": 20,
           "column": 0
         },
         "end": {
-          "line": 16,
+          "line": 20,
           "column": 35
         }
       }

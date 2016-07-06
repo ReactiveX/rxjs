@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -66,7 +68,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/observable/dom/WebSocketSubject.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subject } from &apos;../../Subject&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subject, AnonymousSubject } from &apos;../../Subject&apos;;
 import { Subscriber } from &apos;../../Subscriber&apos;;
 import { Observable } from &apos;../../Observable&apos;;
 import { Subscription } from &apos;../../Subscription&apos;;
@@ -80,7 +82,7 @@ import { assign } from &apos;../../util/assign&apos;;
  * @extends {Ignored}
  * @hide true
  */
-export class WebSocketSubject extends Subject {
+export class WebSocketSubject extends AnonymousSubject {
     constructor(urlConfigOrSource, destination) {
         if (urlConfigOrSource instanceof Observable) {
             super(destination, urlConfigOrSource);
@@ -88,6 +90,7 @@ export class WebSocketSubject extends Subject {
         else {
             super();
             this.WebSocketCtor = root.WebSocket;
+            this._output = new Subject();
             if (typeof urlConfigOrSource === &apos;string&apos;) {
                 this.url = urlConfigOrSource;
             }
@@ -151,95 +154,104 @@ export class WebSocketSubject extends Subject {
             };
         });
     }
-    _unsubscribe() {
-        this.socket = null;
-        this.source = null;
-        this.destination = new ReplaySubject();
-        this.isStopped = false;
-        this.hasErrored = false;
-        this.hasCompleted = false;
-        this.observers = null;
-        this.isUnsubscribed = false;
-    }
-    _subscribe(subscriber) {
-        if (!this.observers) {
-            this.observers = [];
-        }
-        const subscription = super._subscribe(subscriber);
-        // HACK: For some reason transpilation wasn&apos;t honoring this in arrow functions below
-        // Doesn&apos;t seem right, need to reinvestigate.
-        const self = this;
-        const WebSocket = this.WebSocketCtor;
-        if (self.source || !subscription || subscription.isUnsubscribed) {
-            return subscription;
-        }
-        if (self.url &amp;&amp; !self.socket) {
-            const socket = self.protocol ? new WebSocket(self.url, self.protocol) : new WebSocket(self.url);
-            self.socket = socket;
-            socket.onopen = (e) =&gt; {
-                const openObserver = self.openObserver;
-                if (openObserver) {
-                    openObserver.next(e);
-                }
-                const queue = self.destination;
-                self.destination = Subscriber.create((x) =&gt; socket.readyState === 1 &amp;&amp; socket.send(x), (e) =&gt; {
-                    const closingObserver = self.closingObserver;
-                    if (closingObserver) {
-                        closingObserver.next(undefined);
-                    }
-                    if (e &amp;&amp; e.code) {
-                        socket.close(e.code, e.reason);
-                    }
-                    else {
-                        self._finalError(new TypeError(&apos;WebSocketSubject.error must be called with an object with an error code, &apos; +
-                            &apos;and an optional reason: { code: number, reason: string }&apos;));
-                    }
-                }, () =&gt; {
-                    const closingObserver = self.closingObserver;
-                    if (closingObserver) {
-                        closingObserver.next(undefined);
-                    }
-                    socket.close();
-                });
-                if (queue &amp;&amp; queue instanceof ReplaySubject) {
-                    subscription.add(queue.subscribe(self.destination));
-                }
-            };
-            socket.onerror = (e) =&gt; self.error(e);
-            socket.onclose = (e) =&gt; {
-                const closeObserver = self.closeObserver;
-                if (closeObserver) {
-                    closeObserver.next(e);
-                }
-                if (e.wasClean) {
-                    self._finalComplete();
-                }
-                else {
-                    self._finalError(e);
-                }
-            };
-            socket.onmessage = (e) =&gt; {
-                const result = tryCatch(self.resultSelector)(e);
-                if (result === errorObject) {
-                    self._finalError(errorObject.e);
-                }
-                else {
-                    self._finalNext(result);
-                }
-            };
-        }
-        return new Subscription(() =&gt; {
-            subscription.unsubscribe();
-            if (!this.observers || this.observers.length === 0) {
-                const { socket } = this;
-                if (socket &amp;&amp; socket.readyState &lt; 2) {
-                    socket.close();
-                }
-                this.socket = undefined;
-                this.source = undefined;
-                this.destination = new ReplaySubject();
+    _connectSocket() {
+        const { WebSocketCtor } = this;
+        const socket = this.protocol ?
+            new WebSocketCtor(this.url, this.protocol) :
+            new WebSocketCtor(this.url);
+        this.socket = socket;
+        const subscription = new Subscription(() =&gt; {
+            this.socket = null;
+            if (socket &amp;&amp; socket.readyState === 1) {
+                socket.close();
             }
         });
+        const observer = this._output;
+        socket.onopen = (e) =&gt; {
+            const openObserver = this.openObserver;
+            if (openObserver) {
+                openObserver.next(e);
+            }
+            const queue = this.destination;
+            this.destination = Subscriber.create((x) =&gt; socket.readyState === 1 &amp;&amp; socket.send(x), (e) =&gt; {
+                const closingObserver = this.closingObserver;
+                if (closingObserver) {
+                    closingObserver.next(undefined);
+                }
+                if (e &amp;&amp; e.code) {
+                    socket.close(e.code, e.reason);
+                }
+                else {
+                    observer.error(new TypeError(&apos;WebSocketSubject.error must be called with an object with an error code, &apos; +
+                        &apos;and an optional reason: { code: number, reason: string }&apos;));
+                }
+                this.destination = new ReplaySubject();
+                this.socket = null;
+            }, () =&gt; {
+                const closingObserver = this.closingObserver;
+                if (closingObserver) {
+                    closingObserver.next(undefined);
+                }
+                socket.close();
+                this.destination = new ReplaySubject();
+                this.socket = null;
+            });
+            if (queue &amp;&amp; queue instanceof ReplaySubject) {
+                subscription.add(queue.subscribe(this.destination));
+            }
+        };
+        socket.onerror = (e) =&gt; observer.error(e);
+        socket.onclose = (e) =&gt; {
+            const closeObserver = this.closeObserver;
+            if (closeObserver) {
+                closeObserver.next(e);
+            }
+            if (e.wasClean) {
+                observer.complete();
+            }
+            else {
+                observer.error(e);
+            }
+        };
+        socket.onmessage = (e) =&gt; {
+            const result = tryCatch(this.resultSelector)(e);
+            if (result === errorObject) {
+                observer.error(errorObject.e);
+            }
+            else {
+                observer.next(result);
+            }
+        };
+    }
+    _subscribe(subscriber) {
+        const { source } = this;
+        if (source) {
+            return source.subscribe(subscriber);
+        }
+        if (!this.socket) {
+            this._connectSocket();
+        }
+        let subscription = new Subscription();
+        subscription.add(this._output.subscribe(subscriber));
+        subscription.add(() =&gt; {
+            const { socket } = this;
+            if (socket &amp;&amp; socket.readyState === 1) {
+                socket.close();
+                this.socket = null;
+            }
+        });
+        return subscription;
+    }
+    unsubscribe() {
+        const { source, socket } = this;
+        if (socket &amp;&amp; socket.readyState === 1) {
+            socket.close();
+            this.socket = null;
+        }
+        super.unsubscribe();
+        if (!source) {
+            this.destination = new ReplaySubject();
+        }
     }
 }
 //# sourceMappingURL=WebSocketSubject.js.map</code></pre>
@@ -247,7 +259,7 @@ export class WebSocketSubject extends Subject {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

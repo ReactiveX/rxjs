@@ -33,6 +33,14 @@ h1,h2,h3,h4 {
   padding-top: 10px !important;
 }
 
+body {
+  display: none;
+}
+
+body.light-theme,
+body.dark-theme {
+  display: block;
+}
 /* Top nav bar border bottom */
 .layout-container > header {
   position: fixed;
@@ -41,9 +49,15 @@ h1,h2,h3,h4 {
   border-bottom: 0;
 }
 
+body.light-theme.layout-container > header {
+  border-bottom: 1px solid #EAEAEA;
+  background-color: #EFEFEF;
+}
+
 .layout-container > header:before {
   content: 'RxJS';
-  background-image: url('/manual/asset/Rx_Logo_S.png');
+  font-family: 'Signika', 'Roboto', sans-serif;
+  background-image: url('../../manual/asset/Rx_Logo_S.png');
   width: 150px;
   height: 40px;
   color: #EC0C8E;
@@ -60,16 +74,28 @@ h1,h2,h3,h4 {
 .layout-container > header a:hover, .layout-container > header a:active {
   color: #FFF;
 }
+body.light-theme .layout-container > header a:hover, .layout-container > header a:active {
+  color: #EC0C8E;
+}
 
 .layout-container > header > a.repo-url-github {
   -webkit-filter: brightness(20);
   filter: brightness(20);
 }
 
+body.light-theme.layout-container > header > a.repo-url-github {
+  -webkit-filter: brightness(5);
+  filter: brightness(5);
+}
+
 .search-input {
   color: #FFF;
   font-size: 14px;
   border-color: #EC0C8E;
+}
+
+body.light-theme .search-input {
+  color: #333;
 }
 
 .search-input-edge {
@@ -81,6 +107,11 @@ h1,h2,h3,h4 {
   color: #FFF;
 }
 
+body.light-theme .search-result li.selected {
+  background: transparent !important;
+  color: #EC0C8E;
+}
+
 .search-box img {
   -webkit-filter: brightness(1.7);
   filter: brightness(1.7);
@@ -88,29 +119,39 @@ h1,h2,h3,h4 {
 }
 
 /* Navigation side menu */
-.navigation {
+body.light-theme .navigation, body.dark-theme .navigation {
   box-shadow: none;
   border-right: none;
   padding: 10px 0;
   margin-top: 40px;
   height: calc(100% - 40px);
   background-color: #333;
+  padding: 10px;
+}
+
+body.light-theme .navigation {
+  background-color: transparent;
 }
 
 .navigation a {
   color: #BBB;
 }
+body.light-theme .navigation a {
+  color: #777;
+}
 
 .navigation a:hover {
   color: #FFF;
 }
-
-.navigation .nav-dir-path {
-  color: #333;
+body.light-theme .navigation a:hover {
+  color: #EC0C8E;
 }
 
 .navigation .manual-toc-title {
   padding: 0.5em;
+}
+body.light-theme .navigation .manual-toc-title {
+  border-radius: 3px;
 }
 
 .manual-dot {
@@ -341,4 +382,33 @@ code .typ {
 
 code .lit {
   color: #0086b3;
+}
+
+/* THEMES */
+.theme-toggler {
+  display: inline-block;
+  line-height: 30px;
+  margin: 5px;
+  color: #777;
+  border-left: 3px solid #444;
+}
+
+body.light-theme .theme-toggler {
+  border-left: 3px solid #CCC;
+}
+
+.theme-selector {
+  font-weight: normal;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.theme-selector:first-child {
+  margin: 0 10px;
+}
+
+body.dark-theme .theme-selector.dark,
+body.light-theme .theme-selector.light {
+  font-weight: bold;
+  border-bottom: 1px solid #B7178C;
 }

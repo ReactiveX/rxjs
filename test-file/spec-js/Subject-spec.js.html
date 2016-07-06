@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -83,10 +85,6 @@ describe(&apos;Subject&apos;, function () {
         subject.next(&apos;foo&apos;);
         subject.next(&apos;bar&apos;);
         subject.complete();
-    });
-    it(&apos;should have the rxSubscriber Symbol&apos;, function () {
-        var subject = new Subject();
-        chai_1.expect(subject[Rx.Symbol.rxSubscriber]).to.be.a(&apos;function&apos;);
     });
     it(&apos;should pump values to multiple subscribers&apos;, function (done) {
         var subject = new Subject();
@@ -218,57 +216,14 @@ describe(&apos;Subject&apos;, function () {
         chai_1.expect(results2).to.deep.equal([3, 4, 5]);
         chai_1.expect(results3).to.deep.equal([]);
     });
-    it(&apos;should allow ad-hoc subscription to be added to itself&apos;, function () {
-        var subject = new Subject();
-        var results1 = [];
-        var results2 = [];
-        var auxSubject = new Subject();
-        var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (e) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
-        var subscription2 = auxSubject.subscribe(function (x) { results2.push(x); }, function (e) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
-        subject.add(subscription2);
-        subject.next(1);
-        subject.next(2);
-        subject.next(3);
-        auxSubject.next(&apos;a&apos;);
-        auxSubject.next(&apos;b&apos;);
-        subscription1.unsubscribe();
-        subject.unsubscribe();
-        auxSubject.next(&apos;c&apos;);
-        auxSubject.next(&apos;d&apos;);
-        chai_1.expect(results1).to.deep.equal([1, 2, 3]);
-        chai_1.expect(subscription2.isUnsubscribed).to.be.true;
-        chai_1.expect(results2).to.deep.equal([&apos;a&apos;, &apos;b&apos;]);
-    });
-    it(&apos;should allow ad-hoc subscription to be removed from itself&apos;, function () {
-        var subject = new Subject();
-        var results1 = [];
-        var results2 = [];
-        var auxSubject = new Subject();
-        var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (e) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
-        var subscription2 = auxSubject.subscribe(function (x) { results2.push(x); }, function (e) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
-        subject.add(subscription2);
-        subject.next(1);
-        subject.next(2);
-        subject.next(3);
-        auxSubject.next(&apos;a&apos;);
-        auxSubject.next(&apos;b&apos;);
-        subject.remove(subscription2);
-        subscription1.unsubscribe();
-        subject.unsubscribe();
-        auxSubject.next(&apos;c&apos;);
-        auxSubject.next(&apos;d&apos;);
-        chai_1.expect(results1).to.deep.equal([1, 2, 3]);
-        chai_1.expect(subscription2.isUnsubscribed).to.be.false;
-        chai_1.expect(results2).to.deep.equal([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]);
-    });
-    it(&apos;should not allow values to be nexted after a return&apos;, function (done) {
+    it(&apos;should not allow values to be nexted after it is unsubscribed&apos;, function (done) {
         var subject = new Subject();
         var expected = [&apos;foo&apos;];
         subject.subscribe(function (x) {
             chai_1.expect(x).to.equal(expected.shift());
         });
         subject.next(&apos;foo&apos;);
-        subject.complete();
+        subject.unsubscribe();
         chai_1.expect(function () { return subject.next(&apos;bar&apos;); }).to.throw(Rx.ObjectUnsubscribedError);
         done();
     });
@@ -402,31 +357,24 @@ describe(&apos;Subject&apos;, function () {
             subject.complete();
         }).to.throw(Rx.ObjectUnsubscribedError);
     });
-    it(&apos;should throw ObjectUnsubscribedError when emit after completed&apos;, function () {
+    it(&apos;should not next after completed&apos;, function () {
         var subject = new Rx.Subject();
+        var results = [];
+        subject.subscribe(function (x) { return results.push(x); }, null, function () { return results.push(&apos;C&apos;); });
+        subject.next(&apos;a&apos;);
         subject.complete();
-        chai_1.expect(function () {
-            subject.next(&apos;a&apos;);
-        }).to.throw(Rx.ObjectUnsubscribedError);
-        chai_1.expect(function () {
-            subject.error(&apos;a&apos;);
-        }).to.throw(Rx.ObjectUnsubscribedError);
-        chai_1.expect(function () {
-            subject.complete();
-        }).to.throw(Rx.ObjectUnsubscribedError);
+        subject.next(&apos;b&apos;);
+        chai_1.expect(results).to.deep.equal([&apos;a&apos;, &apos;C&apos;]);
     });
-    it(&apos;should throw ObjectUnsubscribedError when emit after error&apos;, function () {
+    it(&apos;should not next after error&apos;, function () {
+        var error = new Error(&apos;wut?&apos;);
         var subject = new Rx.Subject();
-        subject.error(&apos;e&apos;);
-        chai_1.expect(function () {
-            subject.next(&apos;a&apos;);
-        }).to.throw(Rx.ObjectUnsubscribedError);
-        chai_1.expect(function () {
-            subject.error(&apos;a&apos;);
-        }).to.throw(Rx.ObjectUnsubscribedError);
-        chai_1.expect(function () {
-            subject.complete();
-        }).to.throw(Rx.ObjectUnsubscribedError);
+        var results = [];
+        subject.subscribe(function (x) { return results.push(x); }, function (err) { return results.push(err); });
+        subject.next(&apos;a&apos;);
+        subject.error(error);
+        subject.next(&apos;b&apos;);
+        chai_1.expect(results).to.deep.equal([&apos;a&apos;, error]);
     });
     describe(&apos;asObservable&apos;, function () {
         it(&apos;should hide subject&apos;, function () {
@@ -455,36 +403,31 @@ describe(&apos;Subject&apos;, function () {
             var expected = &apos;---x--|&apos;;
             expectObservable(observable).toBe(expected);
         });
-        it(&apos;should work with inherited subject&apos;, function (done) {
+        it(&apos;should work with inherited subject&apos;, function () {
+            var results = [];
             var subject = new Rx.AsyncSubject();
             subject.next(42);
             subject.complete();
             var observable = subject.asObservable();
-            var expected = [new Rx.Notification(&apos;N&apos;, 42),
-                new Rx.Notification(&apos;C&apos;)];
-            observable.materialize().subscribe(function (x) {
-                chai_1.expect(x).to.deep.equal(expected.shift());
-            }, function (err) {
-                done(err);
-            }, function () {
-                chai_1.expect(expected).to.deep.equal([]);
-                done();
-            });
+            observable.subscribe(function (x) { return results.push(x); }, null, function () { return results.push(&apos;done&apos;); });
+            chai_1.expect(results).to.deep.equal([42, &apos;done&apos;]);
         });
-        it(&apos;should not eager&apos;, function () {
-            var subscribed = false;
-            var subject = new Rx.Subject(null, new Rx.Observable(function (observer) {
-                subscribed = true;
-                var subscription = Rx.Observable.of(&apos;x&apos;).subscribe(observer);
-                return function () {
-                    subscription.unsubscribe();
-                };
-            }));
-            var observable = subject.asObservable();
-            chai_1.expect(subscribed).to.be.false;
-            observable.subscribe();
-            chai_1.expect(subscribed).to.be.true;
-        });
+    });
+});
+describe(&apos;AnonymousSubject&apos;, function () {
+    it(&apos;should not eager&apos;, function () {
+        var subscribed = false;
+        var subject = Rx.Subject.create(null, new Rx.Observable(function (observer) {
+            subscribed = true;
+            var subscription = Rx.Observable.of(&apos;x&apos;).subscribe(observer);
+            return function () {
+                subscription.unsubscribe();
+            };
+        }));
+        var observable = subject.asObservable();
+        chai_1.expect(subscribed).to.be.false;
+        observable.subscribe();
+        chai_1.expect(subscribed).to.be.true;
     });
 });
 //# sourceMappingURL=Subject-spec.js.map</code></pre>
@@ -492,7 +435,7 @@ describe(&apos;Subject&apos;, function () {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

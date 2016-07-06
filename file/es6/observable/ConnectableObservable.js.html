@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -66,7 +68,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/observable/ConnectableObservable.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;../Observable&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { SubjectSubscriber } from &apos;../Subject&apos;;
+import { Observable } from &apos;../Observable&apos;;
 import { Subscriber } from &apos;../Subscriber&apos;;
 import { Subscription } from &apos;../Subscription&apos;;
 /**
@@ -77,123 +80,130 @@ export class ConnectableObservable extends Observable {
         super();
         this.source = source;
         this.subjectFactory = subjectFactory;
+        this._refCount = 0;
     }
     _subscribe(subscriber) {
         return this.getSubject().subscribe(subscriber);
     }
     getSubject() {
-        const subject = this.subject;
-        if (subject &amp;&amp; !subject.isUnsubscribed) {
-            return subject;
+        const subject = this._subject;
+        if (!subject || subject.isStopped) {
+            this._subject = this.subjectFactory();
         }
-        return (this.subject = this.subjectFactory());
+        return this._subject;
     }
     connect() {
-        const source = this.source;
-        let subscription = this.subscription;
-        if (subscription &amp;&amp; !subscription.isUnsubscribed) {
-            return subscription;
+        let connection = this._connection;
+        if (!connection) {
+            connection = this._connection = new Subscription();
+            connection.add(this.source
+                .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
+            if (connection.isUnsubscribed) {
+                this._connection = null;
+                connection = Subscription.EMPTY;
+            }
+            else {
+                this._connection = connection;
+            }
         }
-        subscription = source.subscribe(this.getSubject());
-        subscription.add(new ConnectableSubscription(this));
-        return (this.subscription = subscription);
+        return connection;
     }
     refCount() {
-        return new RefCountObservable(this);
-    }
-    /**
-     * This method is opened for `ConnectableSubscription`.
-     * Not to call from others.
-     */
-    _closeSubscription() {
-        this.subject = null;
-        this.subscription = null;
+        return this.lift(new RefCountOperator(this));
     }
 }
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class ConnectableSubscription extends Subscription {
-    constructor(connectable) {
-        super();
+class ConnectableSubscriber extends SubjectSubscriber {
+    constructor(destination, connectable) {
+        super(destination);
         this.connectable = connectable;
+    }
+    _error(err) {
+        this._unsubscribe();
+        super._error(err);
+    }
+    _complete() {
+        this._unsubscribe();
+        super._complete();
     }
     _unsubscribe() {
-        const connectable = this.connectable;
-        connectable._closeSubscription();
-        this.connectable = null;
+        const { connectable } = this;
+        if (connectable) {
+            this.connectable = null;
+            const connection = connectable._connection;
+            connectable._refCount = 0;
+            connectable._subject = null;
+            connectable._connection = null;
+            if (connection) {
+                connection.unsubscribe();
+            }
+        }
     }
 }
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class RefCountObservable extends Observable {
-    constructor(connectable, refCount = 0) {
-        super();
+class RefCountOperator {
+    constructor(connectable) {
         this.connectable = connectable;
-        this.refCount = refCount;
     }
-    _subscribe(subscriber) {
-        const connectable = this.connectable;
-        const refCountSubscriber = new RefCountSubscriber(subscriber, this);
-        const subscription = connectable.subscribe(refCountSubscriber);
-        if (!subscription.isUnsubscribed &amp;&amp; ++this.refCount === 1) {
-            refCountSubscriber.connection = this.connection = connectable.connect();
+    call(subscriber, source) {
+        const { connectable } = this;
+        connectable._refCount++;
+        const refCounter = new RefCountSubscriber(subscriber, connectable);
+        const subscription = source._subscribe(refCounter);
+        if (!refCounter.isUnsubscribed) {
+            refCounter.connection = connectable.connect();
         }
         return subscription;
     }
 }
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
 class RefCountSubscriber extends Subscriber {
-    constructor(destination, refCountObservable) {
-        super(null);
-        this.destination = destination;
-        this.refCountObservable = refCountObservable;
-        this.connection = refCountObservable.connection;
-        destination.add(this);
-    }
-    _next(value) {
-        this.destination.next(value);
-    }
-    _error(err) {
-        this._resetConnectable();
-        this.destination.error(err);
-    }
-    _complete() {
-        this._resetConnectable();
-        this.destination.complete();
-    }
-    _resetConnectable() {
-        const observable = this.refCountObservable;
-        const obsConnection = observable.connection;
-        const subConnection = this.connection;
-        if (subConnection &amp;&amp; subConnection === obsConnection) {
-            observable.refCount = 0;
-            obsConnection.unsubscribe();
-            observable.connection = null;
-            this.unsubscribe();
-        }
+    constructor(destination, connectable) {
+        super(destination);
+        this.connectable = connectable;
     }
     _unsubscribe() {
-        const observable = this.refCountObservable;
-        if (observable.refCount === 0) {
+        const { connectable } = this;
+        if (!connectable) {
+            this.connection = null;
             return;
         }
-        if (--observable.refCount === 0) {
-            const obsConnection = observable.connection;
-            const subConnection = this.connection;
-            if (subConnection &amp;&amp; subConnection === obsConnection) {
-                obsConnection.unsubscribe();
-                observable.connection = null;
-            }
+        this.connectable = null;
+        const refCount = connectable._refCount;
+        if (refCount &lt;= 0) {
+            this.connection = null;
+            return;
+        }
+        connectable._refCount = refCount - 1;
+        if (refCount &gt; 1) {
+            this.connection = null;
+            return;
+        }
+        ///
+        // Compare the local RefCountSubscriber&apos;s connection Subscription to the
+        // connection Subscription on the shared ConnectableObservable. In cases
+        // where the ConnectableObservable source synchronously emits values, and
+        // the RefCountSubscriber&apos;s dowstream Observers synchronously unsubscribe,
+        // execution continues to here before the RefCountOperator has a chance to
+        // supply the RefCountSubscriber with the shared connection Subscription.
+        // For example:
+        // ```
+        // Observable.range(0, 10)
+        //   .publish()
+        //   .refCount()
+        //   .take(5)
+        //   .subscribe();
+        // ```
+        // In order to account for this case, RefCountSubscriber should only dispose
+        // the ConnectableObservable&apos;s shared connection Subscription if the
+        // connection Subscription exists, *and* either:
+        //   a. RefCountSubscriber doesn&apos;t have a reference to the shared connection
+        //      Subscription yet, or,
+        //   b. RefCountSubscriber&apos;s connection Subscription reference is identical
+        //      to the shared connection Subscription
+        ///
+        const { connection } = this;
+        const sharedConnection = connectable._connection;
+        this.connection = null;
+        if (sharedConnection &amp;&amp; (!connection || sharedConnection === connection)) {
+            sharedConnection.unsubscribe();
         }
     }
 }
@@ -202,7 +212,7 @@ class RefCountSubscriber extends Subscriber {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

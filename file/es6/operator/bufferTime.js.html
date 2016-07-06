@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -68,6 +70,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/bufferTime.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
 import { async } from &apos;../scheduler/async&apos;;
+import { isScheduler } from &apos;../util/isScheduler&apos;;
 /**
  * Buffers the source Observable values for a specific time period.
  *
@@ -81,7 +84,9 @@ import { async } from &apos;../scheduler/async&apos;;
  * resets the buffer every `bufferTimeSpan` milliseconds. If
  * `bufferCreationInterval` is given, this operator opens the buffer every
  * `bufferCreationInterval` milliseconds and closes (emits and resets) the
- * buffer every `bufferTimeSpan` milliseconds.
+ * buffer every `bufferTimeSpan` milliseconds. When the optional argument
+ * `maxBufferSize` is specified, the buffer will be closed either after
+ * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.
  *
  * @example &lt;caption&gt;Every second, emit an array of the recent click events&lt;/caption&gt;
  * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
@@ -102,23 +107,44 @@ import { async } from &apos;../scheduler/async&apos;;
  * @param {number} bufferTimeSpan The amount of time to fill each buffer array.
  * @param {number} [bufferCreationInterval] The interval at which to start new
  * buffers.
+ * @param {number} [maxBufferSize] The maximum buffer size.
  * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine buffer boundaries.
  * @return {Observable&lt;T[]&gt;} An observable of arrays of buffered values.
  * @method bufferTime
  * @owner Observable
  */
-export function bufferTime(bufferTimeSpan, bufferCreationInterval = null, scheduler = async) {
-    return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, scheduler));
+export function bufferTime(bufferTimeSpan) {
+    let length = arguments.length;
+    let scheduler = async;
+    if (isScheduler(arguments[arguments.length - 1])) {
+        scheduler = arguments[arguments.length - 1];
+        length--;
+    }
+    let bufferCreationInterval = null;
+    if (length &gt;= 2) {
+        bufferCreationInterval = arguments[1];
+    }
+    let maxBufferSize = Number.POSITIVE_INFINITY;
+    if (length &gt;= 3) {
+        maxBufferSize = arguments[2];
+    }
+    return this.lift(new BufferTimeOperator(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler));
 }
 class BufferTimeOperator {
-    constructor(bufferTimeSpan, bufferCreationInterval, scheduler) {
+    constructor(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler) {
         this.bufferTimeSpan = bufferTimeSpan;
         this.bufferCreationInterval = bufferCreationInterval;
+        this.maxBufferSize = maxBufferSize;
         this.scheduler = scheduler;
     }
     call(subscriber, source) {
-        return source._subscribe(new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.scheduler));
+        return source._subscribe(new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler));
+    }
+}
+class Context {
+    constructor() {
+        this.buffer = [];
     }
 }
 /**
@@ -127,86 +153,113 @@ class BufferTimeOperator {
  * @extends {Ignored}
  */
 class BufferTimeSubscriber extends Subscriber {
-    constructor(destination, bufferTimeSpan, bufferCreationInterval, scheduler) {
+    constructor(destination, bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler) {
         super(destination);
         this.bufferTimeSpan = bufferTimeSpan;
         this.bufferCreationInterval = bufferCreationInterval;
+        this.maxBufferSize = maxBufferSize;
         this.scheduler = scheduler;
-        this.buffers = [];
-        const buffer = this.openBuffer();
-        if (bufferCreationInterval !== null &amp;&amp; bufferCreationInterval &gt;= 0) {
-            const closeState = { subscriber: this, buffer };
-            const creationState = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
-            this.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
-            this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
+        this.contexts = [];
+        const context = this.openContext();
+        this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval &lt; 0;
+        if (this.timespanOnly) {
+            const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
+            this.add(context.closeAction = scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
         }
         else {
-            const timeSpanOnlyState = { subscriber: this, buffer, bufferTimeSpan };
-            this.add(scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+            const closeState = { subscriber: this, context };
+            const creationState = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+            this.add(context.closeAction = scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
+            this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
         }
     }
     _next(value) {
-        const buffers = this.buffers;
-        const len = buffers.length;
+        const contexts = this.contexts;
+        const len = contexts.length;
+        let filledBufferContext;
         for (let i = 0; i &lt; len; i++) {
-            buffers[i].push(value);
+            const context = contexts[i];
+            const buffer = context.buffer;
+            buffer.push(value);
+            if (buffer.length == this.maxBufferSize) {
+                filledBufferContext = context;
+            }
+        }
+        if (filledBufferContext) {
+            this.onBufferFull(filledBufferContext);
         }
     }
     _error(err) {
-        this.buffers.length = 0;
+        this.contexts.length = 0;
         super._error(err);
     }
     _complete() {
-        const { buffers, destination } = this;
-        while (buffers.length &gt; 0) {
-            destination.next(buffers.shift());
+        const { contexts, destination } = this;
+        while (contexts.length &gt; 0) {
+            const context = contexts.shift();
+            destination.next(context.buffer);
         }
         super._complete();
     }
     _unsubscribe() {
-        this.buffers = null;
+        this.contexts = null;
     }
-    openBuffer() {
-        let buffer = [];
-        this.buffers.push(buffer);
-        return buffer;
+    onBufferFull(context) {
+        this.closeContext(context);
+        const closeAction = context.closeAction;
+        closeAction.unsubscribe();
+        this.remove(closeAction);
+        if (this.timespanOnly) {
+            context = this.openContext();
+            const bufferTimeSpan = this.bufferTimeSpan;
+            const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
+            this.add(context.closeAction = this.scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+        }
     }
-    closeBuffer(buffer) {
-        this.destination.next(buffer);
-        const buffers = this.buffers;
-        buffers.splice(buffers.indexOf(buffer), 1);
+    openContext() {
+        const context = new Context();
+        this.contexts.push(context);
+        return context;
+    }
+    closeContext(context) {
+        this.destination.next(context.buffer);
+        const contexts = this.contexts;
+        const spliceIndex = contexts ? contexts.indexOf(context) : -1;
+        if (spliceIndex &gt;= 0) {
+            contexts.splice(contexts.indexOf(context), 1);
+        }
     }
 }
 function dispatchBufferTimeSpanOnly(state) {
     const subscriber = state.subscriber;
-    const prevBuffer = state.buffer;
-    if (prevBuffer) {
-        subscriber.closeBuffer(prevBuffer);
+    const prevContext = state.context;
+    if (prevContext) {
+        subscriber.closeContext(prevContext);
     }
-    state.buffer = subscriber.openBuffer();
     if (!subscriber.isUnsubscribed) {
-        this.schedule(state, state.bufferTimeSpan);
+        state.context = subscriber.openContext();
+        state.context.closeAction = this.schedule(state, state.bufferTimeSpan);
     }
 }
 function dispatchBufferCreation(state) {
     const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
-    const buffer = subscriber.openBuffer();
+    const context = subscriber.openContext();
     const action = this;
     if (!subscriber.isUnsubscribed) {
-        action.add(scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, buffer }));
+        subscriber.add(context.closeAction = scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
         action.schedule(state, bufferCreationInterval);
     }
 }
 function dispatchBufferClose(arg) {
-    const { subscriber, buffer } = arg;
-    subscriber.closeBuffer(buffer);
+    const { subscriber, context } = arg;
+    subscriber.closeContext(context);
 }
 //# sourceMappingURL=bufferTime.js.map</code></pre>
 
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

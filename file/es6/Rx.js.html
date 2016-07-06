@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -85,15 +87,20 @@ import &apos;./add/observable/fromEvent&apos;;
 import &apos;./add/observable/fromEventPattern&apos;;
 import &apos;./add/observable/fromPromise&apos;;
 import &apos;./add/observable/generate&apos;;
+import &apos;./add/observable/if&apos;;
 import &apos;./add/observable/interval&apos;;
 import &apos;./add/observable/merge&apos;;
 import &apos;./add/observable/race&apos;;
 import &apos;./add/observable/never&apos;;
 import &apos;./add/observable/of&apos;;
+import &apos;./add/observable/onErrorResumeNext&apos;;
 import &apos;./add/observable/range&apos;;
+import &apos;./add/observable/using&apos;;
 import &apos;./add/observable/throw&apos;;
 import &apos;./add/observable/timer&apos;;
 import &apos;./add/observable/zip&apos;;
+import &apos;./add/observable/dom/ajax&apos;;
+import &apos;./add/observable/dom/webSocket&apos;;
 import &apos;./add/operator/buffer&apos;;
 import &apos;./add/operator/bufferCount&apos;;
 import &apos;./add/operator/bufferTime&apos;;
@@ -114,14 +121,23 @@ import &apos;./add/operator/debounceTime&apos;;
 import &apos;./add/operator/defaultIfEmpty&apos;;
 import &apos;./add/operator/delay&apos;;
 import &apos;./add/operator/delayWhen&apos;;
+import &apos;./add/operator/distinct&apos;;
+import &apos;./add/operator/distinctKey&apos;;
 import &apos;./add/operator/distinctUntilChanged&apos;;
+import &apos;./add/operator/distinctUntilKeyChanged&apos;;
 import &apos;./add/operator/do&apos;;
+import &apos;./add/operator/exhaust&apos;;
+import &apos;./add/operator/exhaustMap&apos;;
 import &apos;./add/operator/expand&apos;;
+import &apos;./add/operator/elementAt&apos;;
 import &apos;./add/operator/filter&apos;;
 import &apos;./add/operator/finally&apos;;
+import &apos;./add/operator/find&apos;;
+import &apos;./add/operator/findIndex&apos;;
 import &apos;./add/operator/first&apos;;
 import &apos;./add/operator/groupBy&apos;;
 import &apos;./add/operator/ignoreElements&apos;;
+import &apos;./add/operator/isEmpty&apos;;
 import &apos;./add/operator/audit&apos;;
 import &apos;./add/operator/auditTime&apos;;
 import &apos;./add/operator/last&apos;;
@@ -130,12 +146,17 @@ import &apos;./add/operator/every&apos;;
 import &apos;./add/operator/map&apos;;
 import &apos;./add/operator/mapTo&apos;;
 import &apos;./add/operator/materialize&apos;;
+import &apos;./add/operator/max&apos;;
 import &apos;./add/operator/merge&apos;;
 import &apos;./add/operator/mergeAll&apos;;
 import &apos;./add/operator/mergeMap&apos;;
 import &apos;./add/operator/mergeMapTo&apos;;
+import &apos;./add/operator/mergeScan&apos;;
+import &apos;./add/operator/min&apos;;
 import &apos;./add/operator/multicast&apos;;
 import &apos;./add/operator/observeOn&apos;;
+import &apos;./add/operator/onErrorResumeNext&apos;;
+import &apos;./add/operator/pairwise&apos;;
 import &apos;./add/operator/partition&apos;;
 import &apos;./add/operator/pluck&apos;;
 import &apos;./add/operator/publish&apos;;
@@ -166,8 +187,10 @@ import &apos;./add/operator/takeUntil&apos;;
 import &apos;./add/operator/takeWhile&apos;;
 import &apos;./add/operator/throttle&apos;;
 import &apos;./add/operator/throttleTime&apos;;
+import &apos;./add/operator/timeInterval&apos;;
 import &apos;./add/operator/timeout&apos;;
 import &apos;./add/operator/timeoutWith&apos;;
+import &apos;./add/operator/timestamp&apos;;
 import &apos;./add/operator/toArray&apos;;
 import &apos;./add/operator/toPromise&apos;;
 import &apos;./add/operator/window&apos;;
@@ -185,18 +208,25 @@ export { Subscriber } from &apos;./Subscriber&apos;;
 export { AsyncSubject } from &apos;./AsyncSubject&apos;;
 export { ReplaySubject } from &apos;./ReplaySubject&apos;;
 export { BehaviorSubject } from &apos;./BehaviorSubject&apos;;
+export { MulticastObservable } from &apos;./observable/MulticastObservable&apos;;
 export { ConnectableObservable } from &apos;./observable/ConnectableObservable&apos;;
 export { Notification } from &apos;./Notification&apos;;
 export { EmptyError } from &apos;./util/EmptyError&apos;;
 export { ArgumentOutOfRangeError } from &apos;./util/ArgumentOutOfRangeError&apos;;
 export { ObjectUnsubscribedError } from &apos;./util/ObjectUnsubscribedError&apos;;
 export { UnsubscriptionError } from &apos;./util/UnsubscriptionError&apos;;
+export { TimeInterval } from &apos;./operator/timeInterval&apos;;
+export { Timestamp } from &apos;./operator/timestamp&apos;;
+export { TestScheduler } from &apos;./testing/TestScheduler&apos;;
+export { VirtualTimeScheduler } from &apos;./scheduler/VirtualTimeScheduler&apos;;
+export { AjaxResponse, AjaxError, AjaxTimeoutError } from &apos;./observable/dom/AjaxObservable&apos;;
 import { asap } from &apos;./scheduler/asap&apos;;
 import { async } from &apos;./scheduler/async&apos;;
 import { queue } from &apos;./scheduler/queue&apos;;
+import { animationFrame } from &apos;./scheduler/animationFrame&apos;;
 import { $$rxSubscriber as rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
 import { $$iterator as iterator } from &apos;./symbol/iterator&apos;;
-import * as observable from &apos;symbol-observable&apos;;
+import observable from &apos;symbol-observable&apos;;
 /* tslint:enable:no-unused-variable */
 /**
  * @typedef {Object} Rx.Scheduler
@@ -211,8 +241,9 @@ import * as observable from &apos;symbol-observable&apos;;
  */
 let Scheduler = {
     asap,
-    async,
-    queue
+    queue,
+    animationFrame,
+    async
 };
 /**
  * @typedef {Object} Rx.Symbol
@@ -238,7 +269,7 @@ export { Scheduler, Symbol };
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

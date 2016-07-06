@@ -185,10 +185,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} finallySelector function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} callback function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
           "range": [
             92,
-            486
+            479
           ],
           "loc": {
             "start": {
@@ -211,8 +211,8 @@
           "type": "Identifier",
           "name": "_finally",
           "range": [
-            503,
-            511
+            496,
+            504
           ],
           "loc": {
             "start": {
@@ -228,10 +228,10 @@
         "params": [
           {
             "type": "Identifier",
-            "name": "finallySelector",
+            "name": "callback",
             "range": [
-              512,
-              527
+              505,
+              513
             ],
             "loc": {
               "start": {
@@ -240,7 +240,7 @@
               },
               "end": {
                 "line": 11,
-                "column": 40
+                "column": 33
               }
             }
           }
@@ -258,8 +258,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      542,
-                      546
+                      528,
+                      532
                     ],
                     "loc": {
                       "start": {
@@ -276,8 +276,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      547,
-                      551
+                      533,
+                      537
                     ],
                     "loc": {
                       "start": {
@@ -291,8 +291,8 @@
                     }
                   },
                   "range": [
-                    542,
-                    551
+                    528,
+                    537
                   ],
                   "loc": {
                     "start": {
@@ -312,8 +312,8 @@
                       "type": "Identifier",
                       "name": "FinallyOperator",
                       "range": [
-                        556,
-                        571
+                        542,
+                        557
                       ],
                       "loc": {
                         "start": {
@@ -329,10 +329,10 @@
                     "arguments": [
                       {
                         "type": "Identifier",
-                        "name": "finallySelector",
+                        "name": "callback",
                         "range": [
-                          572,
-                          587
+                          558,
+                          566
                         ],
                         "loc": {
                           "start": {
@@ -341,14 +341,14 @@
                           },
                           "end": {
                             "line": 12,
-                            "column": 56
+                            "column": 49
                           }
                         }
                       }
                     ],
                     "range": [
-                      552,
-                      588
+                      538,
+                      567
                     ],
                     "loc": {
                       "start": {
@@ -357,14 +357,14 @@
                       },
                       "end": {
                         "line": 12,
-                        "column": 57
+                        "column": 50
                       }
                     }
                   }
                 ],
                 "range": [
-                  542,
-                  589
+                  528,
+                  568
                 ],
                 "loc": {
                   "start": {
@@ -373,13 +373,13 @@
                   },
                   "end": {
                     "line": 12,
-                    "column": 58
+                    "column": 51
                   }
                 }
               },
               "range": [
-                535,
-                590
+                521,
+                569
               ],
               "loc": {
                 "start": {
@@ -388,19 +388,19 @@
                 },
                 "end": {
                   "line": 12,
-                  "column": 59
+                  "column": 52
                 }
               }
             }
           ],
           "range": [
-            529,
-            592
+            515,
+            571
           ],
           "loc": {
             "start": {
               "line": 11,
-              "column": 42
+              "column": 35
             },
             "end": {
               "line": 13,
@@ -411,8 +411,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          494,
-          592
+          487,
+          571
         ],
         "loc": {
           "start": {
@@ -427,10 +427,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} finallySelector function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
+            "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} callback function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
             "range": [
               92,
-              486
+              479
             ],
             "loc": {
               "start": {
@@ -449,8 +449,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        487,
-        592
+        480,
+        571
       ],
       "loc": {
         "start": {
@@ -465,10 +465,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} finallySelector function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} callback function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
           "range": [
             92,
-            486
+            479
           ],
           "loc": {
             "start": {
@@ -489,8 +489,8 @@
         "type": "Identifier",
         "name": "FinallyOperator",
         "range": [
-          599,
-          614
+          578,
+          593
         ],
         "loc": {
           "start": {
@@ -513,8 +513,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                621,
-                632
+                600,
+                611
               ],
               "loc": {
                 "start": {
@@ -533,10 +533,10 @@
               "params": [
                 {
                   "type": "Identifier",
-                  "name": "finallySelector",
+                  "name": "callback",
                   "range": [
-                    633,
-                    648
+                    612,
+                    620
                   ],
                   "loc": {
                     "start": {
@@ -545,7 +545,7 @@
                     },
                     "end": {
                       "line": 15,
-                      "column": 31
+                      "column": 24
                     }
                   }
                 }
@@ -564,8 +564,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            660,
-                            664
+                            632,
+                            636
                           ],
                           "loc": {
                             "start": {
@@ -580,10 +580,10 @@
                         },
                         "property": {
                           "type": "Identifier",
-                          "name": "finallySelector",
+                          "name": "callback",
                           "range": [
-                            665,
-                            680
+                            637,
+                            645
                           ],
                           "loc": {
                             "start": {
@@ -592,13 +592,13 @@
                             },
                             "end": {
                               "line": 16,
-                              "column": 28
+                              "column": 21
                             }
                           }
                         },
                         "range": [
-                          660,
-                          680
+                          632,
+                          645
                         ],
                         "loc": {
                           "start": {
@@ -607,31 +607,31 @@
                           },
                           "end": {
                             "line": 16,
-                            "column": 28
+                            "column": 21
                           }
                         }
                       },
                       "right": {
                         "type": "Identifier",
-                        "name": "finallySelector",
+                        "name": "callback",
                         "range": [
-                          683,
-                          698
+                          648,
+                          656
                         ],
                         "loc": {
                           "start": {
                             "line": 16,
-                            "column": 31
+                            "column": 24
                           },
                           "end": {
                             "line": 16,
-                            "column": 46
+                            "column": 32
                           }
                         }
                       },
                       "range": [
-                        660,
-                        698
+                        632,
+                        656
                       ],
                       "loc": {
                         "start": {
@@ -640,13 +640,13 @@
                         },
                         "end": {
                           "line": 16,
-                          "column": 46
+                          "column": 32
                         }
                       }
                     },
                     "range": [
-                      660,
-                      699
+                      632,
+                      657
                     ],
                     "loc": {
                       "start": {
@@ -655,19 +655,19 @@
                       },
                       "end": {
                         "line": 16,
-                        "column": 47
+                        "column": 33
                       }
                     }
                   }
                 ],
                 "range": [
-                  650,
-                  705
+                  622,
+                  663
                 ],
                 "loc": {
                   "start": {
                     "line": 15,
-                    "column": 33
+                    "column": 26
                   },
                   "end": {
                     "line": 17,
@@ -678,8 +678,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                632,
-                705
+                611,
+                663
               ],
               "loc": {
                 "start": {
@@ -695,8 +695,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              621,
-              705
+              600,
+              663
             ],
             "loc": {
               "start": {
@@ -716,8 +716,8 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                710,
-                714
+                668,
+                672
               ],
               "loc": {
                 "start": {
@@ -738,8 +738,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    715,
-                    725
+                    673,
+                    683
                   ],
                   "loc": {
                     "start": {
@@ -756,8 +756,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    727,
-                    733
+                    685,
+                    691
                   ],
                   "loc": {
                     "start": {
@@ -785,8 +785,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            752,
-                            758
+                            710,
+                            716
                           ],
                           "loc": {
                             "start": {
@@ -803,8 +803,8 @@
                           "type": "Identifier",
                           "name": "_subscribe",
                           "range": [
-                            759,
-                            769
+                            717,
+                            727
                           ],
                           "loc": {
                             "start": {
@@ -818,8 +818,8 @@
                           }
                         },
                         "range": [
-                          752,
-                          769
+                          710,
+                          727
                         ],
                         "loc": {
                           "start": {
@@ -839,8 +839,8 @@
                             "type": "Identifier",
                             "name": "FinallySubscriber",
                             "range": [
-                              774,
-                              791
+                              732,
+                              749
                             ],
                             "loc": {
                               "start": {
@@ -858,8 +858,8 @@
                               "type": "Identifier",
                               "name": "subscriber",
                               "range": [
-                                792,
-                                802
+                                750,
+                                760
                               ],
                               "loc": {
                                 "start": {
@@ -878,8 +878,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  804,
-                                  808
+                                  762,
+                                  766
                                 ],
                                 "loc": {
                                   "start": {
@@ -894,10 +894,10 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "name": "finallySelector",
+                                "name": "callback",
                                 "range": [
-                                  809,
-                                  824
+                                  767,
+                                  775
                                 ],
                                 "loc": {
                                   "start": {
@@ -906,13 +906,13 @@
                                   },
                                   "end": {
                                     "line": 19,
-                                    "column": 87
+                                    "column": 80
                                   }
                                 }
                               },
                               "range": [
-                                804,
-                                824
+                                762,
+                                775
                               ],
                               "loc": {
                                 "start": {
@@ -921,14 +921,14 @@
                                 },
                                 "end": {
                                   "line": 19,
-                                  "column": 87
+                                  "column": 80
                                 }
                               }
                             }
                           ],
                           "range": [
-                            770,
-                            825
+                            728,
+                            776
                           ],
                           "loc": {
                             "start": {
@@ -937,14 +937,14 @@
                             },
                             "end": {
                               "line": 19,
-                              "column": 88
+                              "column": 81
                             }
                           }
                         }
                       ],
                       "range": [
-                        752,
-                        826
+                        710,
+                        777
                       ],
                       "loc": {
                         "start": {
@@ -953,13 +953,13 @@
                         },
                         "end": {
                           "line": 19,
-                          "column": 89
+                          "column": 82
                         }
                       }
                     },
                     "range": [
-                      745,
-                      827
+                      703,
+                      778
                     ],
                     "loc": {
                       "start": {
@@ -968,14 +968,14 @@
                       },
                       "end": {
                         "line": 19,
-                        "column": 90
+                        "column": 83
                       }
                     }
                   }
                 ],
                 "range": [
-                  735,
-                  833
+                  693,
+                  784
                 ],
                 "loc": {
                   "start": {
@@ -991,8 +991,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                714,
-                833
+                672,
+                784
               ],
               "loc": {
                 "start": {
@@ -1008,8 +1008,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              710,
-              833
+              668,
+              784
             ],
             "loc": {
               "start": {
@@ -1025,8 +1025,8 @@
           }
         ],
         "range": [
-          615,
-          835
+          594,
+          786
         ],
         "loc": {
           "start": {
@@ -1040,8 +1040,8 @@
         }
       },
       "range": [
-        593,
-        835
+        572,
+        786
       ],
       "loc": {
         "start": {
@@ -1058,8 +1058,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            836,
-            927
+            787,
+            878
           ],
           "loc": {
             "start": {
@@ -1080,8 +1080,8 @@
         "type": "Identifier",
         "name": "FinallySubscriber",
         "range": [
-          934,
-          951
+          885,
+          902
         ],
         "loc": {
           "start": {
@@ -1098,8 +1098,8 @@
         "type": "Identifier",
         "name": "Subscriber",
         "range": [
-          960,
-          970
+          911,
+          921
         ],
         "loc": {
           "start": {
@@ -1121,8 +1121,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                977,
-                988
+                928,
+                939
               ],
               "loc": {
                 "start": {
@@ -1143,8 +1143,8 @@
                   "type": "Identifier",
                   "name": "destination",
                   "range": [
-                    989,
-                    1000
+                    940,
+                    951
                   ],
                   "loc": {
                     "start": {
@@ -1159,10 +1159,10 @@
                 },
                 {
                   "type": "Identifier",
-                  "name": "finallySelector",
+                  "name": "callback",
                   "range": [
-                    1002,
-                    1017
+                    953,
+                    961
                   ],
                   "loc": {
                     "start": {
@@ -1171,7 +1171,7 @@
                     },
                     "end": {
                       "line": 28,
-                      "column": 44
+                      "column": 37
                     }
                   }
                 }
@@ -1186,8 +1186,8 @@
                       "callee": {
                         "type": "Super",
                         "range": [
-                          1029,
-                          1034
+                          973,
+                          978
                         ],
                         "loc": {
                           "start": {
@@ -1205,8 +1205,8 @@
                           "type": "Identifier",
                           "name": "destination",
                           "range": [
-                            1035,
-                            1046
+                            979,
+                            990
                           ],
                           "loc": {
                             "start": {
@@ -1221,8 +1221,8 @@
                         }
                       ],
                       "range": [
-                        1029,
-                        1047
+                        973,
+                        991
                       ],
                       "loc": {
                         "start": {
@@ -1236,8 +1236,8 @@
                       }
                     },
                     "range": [
-                      1029,
-                      1048
+                      973,
+                      992
                     ],
                     "loc": {
                       "start": {
@@ -1260,8 +1260,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1057,
-                            1061
+                            1001,
+                            1005
                           ],
                           "loc": {
                             "start": {
@@ -1278,8 +1278,8 @@
                           "type": "Identifier",
                           "name": "add",
                           "range": [
-                            1062,
-                            1065
+                            1006,
+                            1009
                           ],
                           "loc": {
                             "start": {
@@ -1293,8 +1293,8 @@
                           }
                         },
                         "range": [
-                          1057,
-                          1065
+                          1001,
+                          1009
                         ],
                         "loc": {
                           "start": {
@@ -1314,8 +1314,8 @@
                             "type": "Identifier",
                             "name": "Subscription",
                             "range": [
-                              1070,
-                              1082
+                              1014,
+                              1026
                             ],
                             "loc": {
                               "start": {
@@ -1331,10 +1331,10 @@
                           "arguments": [
                             {
                               "type": "Identifier",
-                              "name": "finallySelector",
+                              "name": "callback",
                               "range": [
-                                1083,
-                                1098
+                                1027,
+                                1035
                               ],
                               "loc": {
                                 "start": {
@@ -1343,14 +1343,14 @@
                                 },
                                 "end": {
                                   "line": 30,
-                                  "column": 49
+                                  "column": 42
                                 }
                               }
                             }
                           ],
                           "range": [
-                            1066,
-                            1099
+                            1010,
+                            1036
                           ],
                           "loc": {
                             "start": {
@@ -1359,14 +1359,14 @@
                             },
                             "end": {
                               "line": 30,
-                              "column": 50
+                              "column": 43
                             }
                           }
                         }
                       ],
                       "range": [
-                        1057,
-                        1100
+                        1001,
+                        1037
                       ],
                       "loc": {
                         "start": {
@@ -1375,13 +1375,13 @@
                         },
                         "end": {
                           "line": 30,
-                          "column": 51
+                          "column": 44
                         }
                       }
                     },
                     "range": [
-                      1057,
-                      1101
+                      1001,
+                      1038
                     ],
                     "loc": {
                       "start": {
@@ -1390,19 +1390,19 @@
                       },
                       "end": {
                         "line": 30,
-                        "column": 52
+                        "column": 45
                       }
                     }
                   }
                 ],
                 "range": [
-                  1019,
-                  1107
+                  963,
+                  1044
                 ],
                 "loc": {
                   "start": {
                     "line": 28,
-                    "column": 46
+                    "column": 39
                   },
                   "end": {
                     "line": 31,
@@ -1413,8 +1413,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                988,
-                1107
+                939,
+                1044
               ],
               "loc": {
                 "start": {
@@ -1430,8 +1430,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              977,
-              1107
+              928,
+              1044
             ],
             "loc": {
               "start": {
@@ -1447,8 +1447,8 @@
           }
         ],
         "range": [
-          971,
-          1109
+          922,
+          1046
         ],
         "loc": {
           "start": {
@@ -1462,8 +1462,8 @@
         }
       },
       "range": [
-        928,
-        1109
+        879,
+        1046
       ],
       "loc": {
         "start": {
@@ -1480,8 +1480,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            836,
-            927
+            787,
+            878
           ],
           "loc": {
             "start": {
@@ -1500,8 +1500,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=finally.js.map",
           "range": [
-            1110,
-            1145
+            1047,
+            1082
           ],
           "loc": {
             "start": {
@@ -1520,7 +1520,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1109
+    1046
   ],
   "loc": {
     "start": {
@@ -1535,10 +1535,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} finallySelector function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
+      "value": "*\n * Returns an Observable that mirrors the source Observable, but will call a specified function when\n * the source terminates on complete or error.\n * @param {function} callback function to be called when source terminates.\n * @return {Observable} an Observable that mirrors the source, but will call the specified function on termination.\n * @method finally\n * @owner Observable\n ",
       "range": [
         92,
-        486
+        479
       ],
       "loc": {
         "start": {
@@ -1555,8 +1555,8 @@
       "type": "Block",
       "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
       "range": [
-        836,
-        927
+        787,
+        878
       ],
       "loc": {
         "start": {
@@ -1573,8 +1573,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=finally.js.map",
       "range": [
-        1110,
-        1145
+        1047,
+        1082
       ],
       "loc": {
         "start": {

@@ -10,11 +10,11 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.KitchenSink.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
-<script data-ice="userScript" src="user/script/4-setup-rx-script.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
 </head>
 <body class="layout-container" data-ice="rootContainer">
@@ -43,7 +43,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
@@ -75,55 +77,55 @@ import { ObserveOnSubscriber } from &apos;./operator/observeOn&apos;;
 export class ReplaySubject extends Subject {
     constructor(bufferSize = Number.POSITIVE_INFINITY, windowTime = Number.POSITIVE_INFINITY, scheduler) {
         super();
-        this.events = [];
         this.scheduler = scheduler;
-        this.bufferSize = bufferSize &lt; 1 ? 1 : bufferSize;
+        this._events = [];
+        this._bufferSize = bufferSize &lt; 1 ? 1 : bufferSize;
         this._windowTime = windowTime &lt; 1 ? 1 : windowTime;
     }
-    _next(value) {
+    next(value) {
         const now = this._getNow();
-        this.events.push(new ReplayEvent(now, value));
-        this._trimBufferThenGetEvents(now);
-        super._next(value);
+        this._events.push(new ReplayEvent(now, value));
+        this._trimBufferThenGetEvents();
+        super.next(value);
     }
     _subscribe(subscriber) {
-        const events = this._trimBufferThenGetEvents(this._getNow());
+        const _events = this._trimBufferThenGetEvents();
         const scheduler = this.scheduler;
         if (scheduler) {
             subscriber.add(subscriber = new ObserveOnSubscriber(subscriber, scheduler));
         }
-        let index = -1;
-        const len = events.length;
-        while (++index &lt; len &amp;&amp; !subscriber.isUnsubscribed) {
-            subscriber.next(events[index].value);
+        const len = _events.length;
+        for (let i = 0; i &lt; len &amp;&amp; !subscriber.isUnsubscribed; i++) {
+            subscriber.next(_events[i].value);
         }
         return super._subscribe(subscriber);
     }
     _getNow() {
         return (this.scheduler || queue).now();
     }
-    _trimBufferThenGetEvents(now) {
-        const bufferSize = this.bufferSize;
+    _trimBufferThenGetEvents() {
+        const now = this._getNow();
+        const _bufferSize = this._bufferSize;
         const _windowTime = this._windowTime;
-        const events = this.events;
-        let eventsCount = events.length;
+        const _events = this._events;
+        let eventsCount = _events.length;
         let spliceCount = 0;
         // Trim events that fall out of the time window.
         // Start at the front of the list. Break early once
         // we encounter an event that falls within the window.
         while (spliceCount &lt; eventsCount) {
-            if ((now - events[spliceCount].time) &lt; _windowTime) {
+            if ((now - _events[spliceCount].time) &lt; _windowTime) {
                 break;
             }
-            spliceCount += 1;
+            spliceCount++;
         }
-        if (eventsCount &gt; bufferSize) {
-            spliceCount = Math.max(spliceCount, eventsCount - bufferSize);
+        if (eventsCount &gt; _bufferSize) {
+            spliceCount = Math.max(spliceCount, eventsCount - _bufferSize);
         }
         if (spliceCount &gt; 0) {
-            events.splice(0, spliceCount);
+            _events.splice(0, spliceCount);
         }
-        return events;
+        return _events;
     }
 }
 class ReplayEvent {
@@ -137,7 +139,7 @@ class ReplayEvent {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>
