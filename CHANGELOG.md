@@ -1,3 +1,19 @@
+<a name="5.0.0-beta.10"></a>
+# [5.0.0-beta.10](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.9...v5.0.0-beta.10) (2016-07-06)
+
+
+### Bug Fixes
+
+* **AjaxObservable:** ignore content-type for formdata (#1746) ([43d05e7](https://github.com/ReactiveX/RxJS/commit/43d05e7))
+* **AjaxObservable:** support withCredentials for CORS request ([8084572](https://github.com/ReactiveX/RxJS/commit/8084572)), closes [#1732](https://github.com/ReactiveX/RxJS/issues/1732) [#1711](https://github.com/ReactiveX/RxJS/issues/1711)
+* **babel:** fix an issue where babel could not compile `Scheduler.async` (#1807) ([12c5c74](https://github.com/ReactiveX/RxJS/commit/12c5c74)), closes [(#1807](https://github.com/(/issues/1807) [#1806](https://github.com/ReactiveX/RxJS/issues/1806)
+* **bufferTime:** handle closing context when synchronously unsubscribed ([4ce4433](https://github.com/ReactiveX/RxJS/commit/4ce4433)), closes [#1763](https://github.com/ReactiveX/RxJS/issues/1763)
+* **multicast:** Fixes multicast with selector to create a new source connection per subscriber.  ([c3ac852](https://github.com/ReactiveX/RxJS/commit/c3ac852)), closes [(#1774](https://github.com/(/issues/1774)
+* **Subject:** allow optional next value in type definition ([3e0c6d9](https://github.com/ReactiveX/RxJS/commit/3e0c6d9)), closes [#1728](https://github.com/ReactiveX/RxJS/issues/1728)
+* **WebSocketSubject:** respect WebSockeCtor, support source/destination arguments in constructor. (#179 ([cd8cdd0](https://github.com/ReactiveX/RxJS/commit/cd8cdd0)), closes [#1745](https://github.com/ReactiveX/RxJS/issues/1745) [#1784](https://github.com/ReactiveX/RxJS/issues/1784)
+
+
+
 <a name="5.0.0-beta.9"></a>
 # [5.0.0-beta.9](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.8...v5.0.0-beta.9) (2016-06-14)
 
