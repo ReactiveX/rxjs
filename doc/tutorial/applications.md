@@ -36,7 +36,7 @@ var increase = Rx.Observable.fromEvent(increaseButton, 'click')
 var state = increase.scan((state, changeFn) => changeFn(state), {count: 0});
 ```
 
-We can now add a a couple of more observables which will also change the same state store.
+We can now add a couple of more observables which will also change the same state store.
 
 ```js
 var increaseButton = document.querySelector('#increase');
