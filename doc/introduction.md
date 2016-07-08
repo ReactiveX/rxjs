@@ -47,7 +47,7 @@ Using RxJS you isolate the state.
 var button = document.querySelector('button');
 Rx.Observable.fromEvent(button, 'click')
   .scan(count => count + 1, 0)
-  .subscribe(count => console.log('Clicked ${count} times'));
+  .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
 The **scan** operator works just like **reduce** for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
@@ -75,7 +75,7 @@ var button = document.querySelector('button');
 Rx.Observable.fromEvent(button, 'click')
   .throttle(1000)
   .scan(count => count + 1, 0)
-  .subscribe(count => console.log('Clicked ${count} times'));
+  .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
 Other flow control operators are [**filter**](../class/es6/Observable.js~Observable.html#instance-method-filter), [**delay**](../class/es6/Observable.js~Observable.html#instance-method-delay), [**debounceTime**](../class/es6/Observable.js~Observable.html#instance-method-debounceTime), [**take**](../class/es6/Observable.js~Observable.html#instance-method-take), [**takeUntil**](../class/es6/Observable.js~Observable.html#instance-method-takeUntil), [**distinct**](../class/es6/Observable.js~Observable.html#instance-method-distinct), [**distinctUntilChanged**](../class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged) etc.
