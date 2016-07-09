@@ -38,7 +38,7 @@ describe('Observable.prototype.switch', () => {
           unsubbed.push(x);
         };
       }))
-    .mergeAll()
+    .switch()
     .subscribe();
 
     expect(unsubbed).to.deep.equal(['a', 'b']);
