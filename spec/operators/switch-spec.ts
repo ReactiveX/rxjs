@@ -217,4 +217,20 @@ describe('Observable.prototype.switch', () => {
 
     expect(completed).to.be.true;
   });
+
+  it('should complete early when inner observable completes', () => {
+    const unsubbed = [];
+
+    Observable.of('a', 'b').map((x: string) =>
+      Observable.create((subscriber: Rx.Subscriber<string>) => {
+        subscriber.complete();
+        return () => {
+          unsubbed.push(x);
+        };
+      }))
+      .switch(true)
+      .subscribe();
+
+    expect(unsubbed).to.deep.equal(['a']);
+  });
 });

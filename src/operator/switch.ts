@@ -41,23 +41,28 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link switchMapTo}
  * @see {@link zipAll}
  *
+ * @param {boolean} allowEarlyComplete A feature switch that when marked true
+ * allows complete events from the inner Observable to complete the outer
+ * Observable.
  * @return {Observable<T>} An Observable that emits the items emitted by the
  * Observable most recently emitted by the source Observable.
  * @method switch
  * @name switch
  * @owner Observable
  */
-export function _switch<T>(): T {
-  return this.lift(new SwitchOperator());
+export function _switch<T>(allowEarlyComplete?: boolean): T {
+  return this.lift(new SwitchOperator(allowEarlyComplete));
 }
 
 export interface SwitchSignature<T> {
-  (): T;
+  (allowEarlyComplete?: boolean): T;
 }
 
 class SwitchOperator<T, R> implements Operator<T, R> {
+  constructor(private allowEarlyComplete?: boolean) {}
+
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new SwitchSubscriber(subscriber));
+    return source._subscribe(new SwitchSubscriber(subscriber, this.allowEarlyComplete));
   }
 }
 
@@ -71,7 +76,7 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   innerSubscription: Subscription;
 
-  constructor(destination: Subscriber<R>) {
+  constructor(destination: Subscriber<R>, private allowEarlyComplete = false) {
     super(destination);
   }
 
@@ -109,7 +114,7 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   notifyComplete(): void {
     this.unsubscribeInner();
-    if (this.hasCompleted && this.active === 0) {
+    if ((this.hasCompleted && this.active === 0) || this.allowEarlyComplete) {
       this.destination.complete();
     }
   }

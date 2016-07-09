@@ -262,4 +262,20 @@ describe('Observable.prototype.switchMapTo', () => {
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should complete early when inner observable completes', () => {
+    let unsubbed = 0;
+
+    Observable.of('a', 'b').switchMapTo(
+      Observable.create((subscriber: Rx.Subscriber<string>) => {
+        subscriber.complete();
+        return () => {
+          unsubbed++;
+        };
+      }),
+      true
+    ).subscribe();
+
+    expect(unsubbed).to.equal(1);
+  });
 });
