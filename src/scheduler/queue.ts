@@ -1,3 +1,4 @@
+import {QueueAction} from './QueueAction';
 import {QueueScheduler} from './QueueScheduler';
 
-export const queue = new QueueScheduler();
+export const queue = new QueueScheduler(QueueAction);

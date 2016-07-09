@@ -1,10 +1,31 @@
-import {Action} from './Action';
-import {AsapAction} from './AsapAction';
-import {Subscription} from '../Subscription';
-import {QueueScheduler} from './QueueScheduler';
+import {AsyncAction} from './AsyncAction';
+import {AsyncScheduler} from './AsyncScheduler';
 
-export class AsapScheduler extends QueueScheduler {
-  scheduleNow<T>(work: (x?: T) => Subscription, state?: T): Action<T> {
-    return new AsapAction(this, work).schedule(state);
+export class AsapScheduler extends AsyncScheduler {
+  public flush(): void {
+
+    this.active = true;
+    this.scheduled = undefined;
+
+    const {actions} = this;
+    let error: any;
+    let index: number = -1;
+    let count: number = actions.length;
+    let action: AsyncAction<any> = actions.shift();
+
+    do {
+      if (error = action.execute(action.state, action.delay)) {
+        break;
+      }
+    } while (++index < count && (action = actions.shift()));
+
+    this.active = false;
+
+    if (error) {
+      while (++index < count && (action = actions.shift())) {
+        action.unsubscribe();
+      }
+      throw error;
+    }
   }
 }

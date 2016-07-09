@@ -1,68 +1,41 @@
-import {Scheduler} from '../Scheduler';
+import {AsyncAction} from './AsyncAction';
 import {Subscription} from '../Subscription';
-import {Action} from './Action';
+import {AsyncScheduler} from './AsyncScheduler';
 
-export class VirtualTimeScheduler implements Scheduler {
-  actions: Action<any>[] = []; // XXX: use `any` to remove type param `T` from `VirtualTimeScheduler`.
-  active: boolean = false;
-  scheduledId: number = null;
-  index: number = 0;
-  sorted: boolean = false;
-  frame: number = 0;
-  maxFrames: number = 750;
+export class VirtualTimeScheduler extends AsyncScheduler {
 
   protected static frameTimeFactor: number = 10;
 
-  now() {
-    return this.frame;
+  public frame: number = 0;
+  public index: number = -1;
+
+  constructor(SchedulerAction: typeof AsyncAction = VirtualAction,
+              public maxFrames: number = 750) {
+    super(SchedulerAction, () => this.frame);
   }
 
-  flush() {
-    const actions = this.actions;
-    const maxFrames = this.maxFrames;
-    while (actions.length > 0) {
-      let action = actions.shift();
-      this.frame = action.delay;
-      if (this.frame <= maxFrames) {
-        action.execute();
-        if (action.error) {
-          actions.length = 0;
-          this.frame = 0;
-          throw action.error;
-        }
-      } else {
+  /**
+   * Prompt the Scheduler to execute all of its queued actions, therefore
+   * clearing its queue.
+   * @return {void}
+   */
+  public flush(): void {
+
+    const {actions, maxFrames} = this;
+    let error: any, action: AsyncAction<any>;
+
+    while ((action = actions.shift()) && (this.frame = action.delay) <= maxFrames) {
+      if (error = action.execute(action.state, action.delay)) {
         break;
       }
     }
-    actions.length = 0;
-    this.frame = 0;
-  }
 
-  addAction<T>(action: Action<T>): void {
-    const actions: Action<T>[] = this.actions;
-
-    actions.push(action);
-
-    actions.sort((a: VirtualAction<T>, b: VirtualAction<T>) => {
-      if (a.delay === b.delay) {
-        if (a.index === b.index) {
-          return 0;
-        } else if (a.index > b.index) {
-          return 1;
-        } else {
-          return -1;
-        }
-      } else if (a.delay > b.delay) {
-        return 1;
-      } else {
-        return -1;
+    if (error) {
+      while (action = actions.shift()) {
+        action.unsubscribe();
       }
-    });
-  }
-
-  schedule<T>(work: (x?: T) => Subscription | void, delay: number = 0, state?: T): Subscription {
-    this.sorted = false;
-    return new VirtualAction(this, work, this.index++).schedule(state, delay);
+      throw error;
+    }
   }
 }
 
@@ -71,58 +44,52 @@ export class VirtualTimeScheduler implements Scheduler {
  * @ignore
  * @extends {Ignored}
  */
-class VirtualAction<T> extends Subscription implements Action<T> {
-  state: T;
-  delay: number;
-  calls = 0;
-  error: any;
+export class VirtualAction<T> extends AsyncAction<T> {
 
-  constructor(public scheduler: VirtualTimeScheduler,
-              public work: (x?: T) => Subscription | void,
-              public index: number) {
-    super();
+  constructor(protected scheduler: VirtualTimeScheduler,
+              protected work: (state?: T) => void,
+              protected index: number = scheduler.index += 1) {
+    super(scheduler, work);
+    this.index = scheduler.index = index;
   }
 
-  schedule(state?: T, delay: number = 0): VirtualAction<T> {
-    if (this.isUnsubscribed) {
-      return this;
-    }
-    const scheduler = this.scheduler;
-    let action: Action<T> = null;
-    if (this.calls++ === 0) {
-      // the action is not being rescheduled.
-      action = this;
+  public schedule(state?: T, delay: number = 0): Subscription {
+    return !this.id ?
+      super.schedule(state, delay) : (
+      // If an action is rescheduled, we save allocations by mutating its state,
+      // pushing it to the end of the scheduler queue, and recycling the action.
+      // But since the VirtualTimeScheduler is used for testing, VirtualActions
+      // must be immutable so they can be inspected later.
+      <VirtualAction<T>> this.add(
+        new VirtualAction<T>(this.scheduler, this.work))
+      ).schedule(state, delay);
+  }
+
+  protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
+    this.delay = scheduler.frame + delay;
+    const {actions} = scheduler;
+    actions.push(this);
+    actions.sort(VirtualAction.sortActions);
+    return true;
+  }
+
+  protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
+    return undefined;
+  }
+
+  public static sortActions<T>(a: VirtualAction<T>, b: VirtualAction<T>) {
+    if (a.delay === b.delay) {
+      if (a.index === b.index) {
+        return 0;
+      } else if (a.index > b.index) {
+        return 1;
+      } else {
+        return -1;
+      }
+    } else if (a.delay > b.delay) {
+      return 1;
     } else {
-      // the action is being rescheduled, and we can't mutate the one in the actions list
-      // in the scheduler, so we'll create a new one.
-      action = new VirtualAction(scheduler, this.work, scheduler.index += 1);
-      this.add(action);
+      return -1;
     }
-    action.state = state;
-    action.delay = scheduler.frame + delay;
-    scheduler.addAction(action);
-    return this;
-  }
-
-  execute() {
-    if (this.isUnsubscribed) {
-      throw new Error('How did did we execute a canceled Action?');
-    }
-    this.work(this.state);
-  }
-
-  unsubscribe() {
-    const actions = this.scheduler.actions;
-    const index = actions.indexOf(this);
-
-    this.work = void 0;
-    this.state = void 0;
-    this.scheduler = void 0;
-
-    if (index !== -1) {
-      actions.splice(index, 1);
-    }
-
-    super.unsubscribe();
   }
 }
