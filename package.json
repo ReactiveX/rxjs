@@ -8,8 +8,13 @@
       "path": "cz-conventional-changelog"
     },
     "ghooks": {
-      "commit-msg": "node ./node_modules/validate-commit-msg/index.js"
+      "commit-msg": "node ./node_modules/validate-commit-msg/index.js",
+      "pre-commit": "npm run lint_staged"
     }
+  },
+  "lint-staged": {
+    "eslint": "*.@(js)",
+    "tslint" : "*.@(ts)"
   },
   "scripts-info": {
     "info": "List available script",
@@ -37,6 +42,7 @@
     "lint_perf": "Run lint against performance test suite",
     "lint_spec": "Run lint against test spec",
     "lint_src": "Run lint against source",
+    "lint_staged" : "Run lint against staged files",
     "lint": "Run lint against everything",
     "perf": "Run macro performance benchmark",
     "perf_micro": "Run micro performance benchmark",
@@ -56,8 +62,8 @@
     "build_closure_core": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js ./dist/global/Rx.umd.js --language_in ECMASCRIPT5 --create_source_map ./dist/global/Rx.umd.min.js.map --js_output_file ./dist/global/Rx.umd.min.js",
     "build_global": "shx rm -rf ./dist/global && mkdirp ./dist/global && node tools/make-umd-bundle.js && node tools/make-system-bundle.js && npm-run-all build_closure_core",
     "build_perf": "webdriver-manager update && npm-run-all build_cjs build_global perf",
-    "build_test": "shx rm -rf ./dist/ && npm-run-all lint build_cjs clean_spec build_spec test_mocha",
-    "build_cover": "shx rm -rf ./dist/ && npm-run-all lint build_cjs build_spec cover",
+    "build_test": "shx rm -rf ./dist/ && npm-run-all build_cjs clean_spec build_spec test_mocha",
+    "build_cover": "shx rm -rf ./dist/ && npm-run-all build_cjs build_spec cover",
     "build_docs": "npm-run-all build_es6_for_docs build_global build_spec tests2png decision_tree_widget && esdoc -c esdoc.json",
     "build_spec": "tsc --project ./spec --pretty",
     "build_spec_browser": "webpack --config spec/support/webpack.mocha.config.js",
@@ -81,6 +87,7 @@
     "lint_perf": "eslint perf/",
     "lint_spec": "tslint -c tslint.json spec/*.ts spec/**/*.ts spec/**/**/*.ts",
     "lint_src": "tslint -c tslint.json src/*.ts src/**/*.ts src/**/**/*.ts",
+    "lint_staged": "lint-staged",
     "lint": "npm-run-all lint_src lint_spec lint_perf",
     "perf": "protractor protractor.conf.js",
     "perf_micro": "node ./perf/micro/index.js",
@@ -161,6 +168,7 @@
     "google-closure-compiler": "20160517.1.0",
     "gzip-size": "^3.0.0",
     "http-server": "^0.9.0",
+    "lint-staged": "^1.0.2",
     "lodash": "4.13.1",
     "madge": "^0.5.4",
     "markdown-doctest": "^0.7.0",
