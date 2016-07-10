@@ -7,6 +7,20 @@ const Observable = Rx.Observable;
 
 /** @test {expand} */
 describe('Observable.prototype.expand', () => {
+  asDiagram('expand(x => x === 8 ? empty : \u2014\u20142*x\u2014| )')
+  ('should recursively map-and-flatten each item to an Observable', () => {
+    const e1 =    hot('--x----|  ', {x: 1});
+    const e1subs =    '^        !';
+    const e2 =   cold('--c|      ', {c: 2});
+    const expected =  '--a-b-c-d|';
+    const values = {a: 1, b: 2, c: 4, d: 8};
+
+    const result = e1.expand(x => x === 8 ? Observable.empty() : e2.mapTo(2 * x));
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should map and recursively flatten', () => {
     const values = {
       a: 1,
