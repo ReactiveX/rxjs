@@ -90,6 +90,7 @@ export class Notification<T> {
       case 'C':
         return Observable.empty<T>();
     }
+    throw new Error('Unexpected notification kind value');
   }
 
   private static completeNotification: Notification<any> = new Notification('C');

@@ -21,14 +21,14 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   let destination: Subscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
   if (destination.isUnsubscribed) {
-    return;
+    return null;
   }
 
   if (result instanceof Observable) {
     if (result._isScalar) {
       destination.next((<any>result).value);
       destination.complete();
-      return;
+      return null;
     } else {
       return result.subscribe(destination);
     }
@@ -76,4 +76,5 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   } else {
     destination.error(new TypeError('unknown type returned'));
   }
+  return null;
 }
