@@ -249,7 +249,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
       if (result === errorObject) {
         this.error(errorObject.e);
-        return;
+        return null;
       }
 
       // timeout and responseType can be set once the XHR is open
@@ -269,6 +269,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         xhr.send();
       }
     }
+
+    return xhr;
   }
 
   private serializeBody(body: any, contentType?: string) {
