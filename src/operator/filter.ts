@@ -1,6 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * Filter items emitted by the source Observable by only emitting those that
@@ -56,7 +57,7 @@ class FilterOperator<T> implements Operator<T, T> {
               private thisArg?: any) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
   }
 }

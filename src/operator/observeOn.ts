@@ -4,6 +4,7 @@ import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * @see {@link Notification}
@@ -26,7 +27,7 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
   constructor(private scheduler: Scheduler, private delay: number = 0) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
   }
 }

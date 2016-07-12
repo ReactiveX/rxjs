@@ -1,6 +1,7 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
+import {TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -51,7 +52,7 @@ class TakeUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
   }
 }

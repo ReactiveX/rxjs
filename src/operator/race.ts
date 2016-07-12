@@ -3,7 +3,7 @@ import {isArray} from '../util/isArray';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -56,7 +56,7 @@ export function raceStatic<T>(...observables: Array<Observable<any> | Array<Obse
 }
 
 export class RaceOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RaceSubscriber(subscriber));
   }
 }

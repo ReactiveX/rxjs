@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../dist/cjs/Rx';
+import {TeardownLogic} from '../dist/cjs/Subscription';
 
 declare const {asDiagram, expectObservable};
 const Subscriber = Rx.Subscriber;
@@ -575,7 +576,7 @@ describe('Observable.lift', () => {
         super();
       }
 
-      call(subscriber: Rx.Subscriber<R>, source: any): Rx.Subscription | Function | void {
+      call(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
         return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
       }
     }

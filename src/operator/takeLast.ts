@@ -3,6 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observable/EmptyObservable';
 import {Observable} from '../Observable';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * Emits only the last `count` values emitted by the source Observable.
@@ -59,7 +60,7 @@ class TakeLastOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeLastSubscriber(subscriber, this.total));
   }
 }

@@ -3,6 +3,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * Emits the most recently emitted value from the source Observable within
@@ -53,7 +54,7 @@ class SampleTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
   }
 }

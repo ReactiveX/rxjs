@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 import {async} from '../scheduler/async';
 
 /**
@@ -63,7 +63,7 @@ class DebounceTimeOperator<T> implements Operator<T, T> {
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
   }
 }
