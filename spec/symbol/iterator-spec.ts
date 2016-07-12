@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {root} from '../../dist/cjs/util/root';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
 
-describe('rxSubscriber symbol', () => {
+describe('iterator symbol', () => {
   it('should exist in the proper form', () => {
     const Symbol = root.Symbol;
     if (typeof Symbol === 'function') {
