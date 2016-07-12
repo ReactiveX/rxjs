@@ -2,7 +2,7 @@ import {Subject, SubjectSubscriber} from '../Subject';
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 
 /**
  * @class ConnectableObservable<T>
@@ -82,7 +82,7 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
 class RefCountOperator<T> implements Operator<T, T> {
   constructor(private connectable: ConnectableObservable<T>) {
   }
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
 
     const { connectable } = this;
     (<any> connectable)._refCount++;

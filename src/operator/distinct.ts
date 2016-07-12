@@ -1,7 +1,7 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-
+import {TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -30,7 +30,7 @@ class DistinctOperator<T> implements Operator<T, T> {
   constructor(private compare: (x: T, y: T) => boolean, private flushes: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DistinctSubscriber(subscriber, this.compare, this.flushes));
   }
 }

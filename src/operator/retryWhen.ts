@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {Subject} from '../Subject';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -39,7 +39,7 @@ class RetryWhenOperator<T> implements Operator<T, T> {
               protected source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
   }
 }

@@ -4,6 +4,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Observable} from '../Observable';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * @param due
@@ -32,7 +33,7 @@ class TimeoutOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TimeoutSubscriber<T>(
       subscriber, this.absoluteTimeout, this.waitFor, this.errorToSend, this.scheduler
     ));

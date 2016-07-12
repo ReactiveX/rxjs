@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 import {Observable} from '../Observable';
 import {isDate} from '../util/isDate';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -36,7 +36,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TimeoutWithSubscriber(
       subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler
     ));
