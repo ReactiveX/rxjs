@@ -571,9 +571,8 @@ describe('Observable.lift', () => {
     }
 
     // The custom Operator
-    class LogOperator<T, R> extends Rx.Operator<T, R> {
+    class LogOperator<T, R> implements Rx.Operator<T, R> {
       constructor(private childOperator: Rx.Operator<T, R>) {
-        super();
       }
 
       call(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
