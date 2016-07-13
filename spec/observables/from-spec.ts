@@ -34,10 +34,10 @@ describe('Observable.from', () => {
     });
   });
 
-  it('should return T and map for arrays', () => {
+  it('should return T for arrays', () => {
     type(() => {
       /* tslint:disable:no-unused-variable */
-      let o1: Rx.Observable<number> = Observable.from(<number[]>[], x => x.toString(), null, Rx.Scheduler.asap);
+      let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
       /* tslint:enable:no-unused-variable */
     });
   });
@@ -89,84 +89,6 @@ describe('Observable.from', () => {
           (x: string) => {
             nextInvoked = true;
             expect(x).to.equal('x');
-          },
-          (x) => {
-            done(new Error('should not be called'));
-          },
-          () => {
-            expect(nextInvoked).to.equal(true);
-            done();
-          }
-        );
-      expect(nextInvoked).to.equal(false);
-    });
-    it(`should accept ${source.name} and projection`, (done: MochaDone) => {
-      let nextInvoked = false;
-      Observable.from(source.value, x => x + 'x')
-        .subscribe(
-          (x: string) => {
-            nextInvoked = true;
-            expect(x).to.equal('xx');
-          },
-          (x) => {
-            done(new Error('should not be called'));
-          },
-          () => {
-            expect(nextInvoked).to.equal(true);
-            done();
-          }
-        );
-    });
-    it(`should accept ${source.name}, projection and scheduler`, (done: MochaDone) => {
-      let nextInvoked = false;
-      Observable.from(source.value, x => x + 'x', Rx.Scheduler.async)
-        .subscribe(
-          (x: string) => {
-            nextInvoked = true;
-            expect(x).to.equal('xx');
-          },
-          (x) => {
-            done(new Error('should not be called'));
-          },
-          () => {
-            expect(nextInvoked).to.equal(true);
-            done();
-          }
-        );
-      expect(nextInvoked).to.equal(false);
-    });
-    it(`should accept ${source.name}, projection and context`, (done: MochaDone) => {
-      const projection = function(x) {
-        expect(this.foo).to.equal('bar');
-        return x + 'x';
-      };
-      let nextInvoked = false;
-      Observable.from(source.value, projection, { foo: 'bar' })
-        .subscribe(
-          (x: string) => {
-            nextInvoked = true;
-            expect(x).to.equal('xx');
-          },
-          (x) => {
-            done(new Error('should not be called'));
-          },
-          () => {
-            expect(nextInvoked).to.equal(true);
-            done();
-          }
-        );
-    });
-    it(`should accept ${source.name}, projection, context and scheduler`, (done: MochaDone) => {
-      const projection = function(x) {
-        expect(this.foo).to.equal('bar');
-        return x + 'x';
-      };
-      let nextInvoked = false;
-      Observable.from(source.value, projection, { foo: 'bar' }, Rx.Scheduler.async)
-        .subscribe(
-          (x: string) => {
-            nextInvoked = true;
-            expect(x).to.equal('xx');
           },
           (x) => {
             done(new Error('should not be called'));

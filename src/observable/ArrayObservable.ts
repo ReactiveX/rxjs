@@ -101,7 +101,7 @@ export class ArrayObservable<T> extends Observable<T> {
   // value used if Array has one value and _isScalar
   value: any;
 
-  constructor(public array: T[], public scheduler?: Scheduler) {
+  constructor(private array: T[], private scheduler?: Scheduler) {
     super();
     if (!scheduler && array.length === 1) {
       this._isScalar = true;
