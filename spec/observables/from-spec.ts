@@ -42,6 +42,17 @@ describe('Observable.from', () => {
     });
   });
 
+  const fakervable = (...values) => ({
+    [<symbol>Symbol.observable]: () => ({
+      subscribe: (observer: Rx.Observer<string>) => {
+        for (const value of values) {
+          observer.next(value);
+        }
+        observer.complete();
+      }
+    })
+  });
+
   const fakerator = (...values) => ({
     [<symbol>Symbol.iterator]: () => {
       const clone = [...values];
@@ -56,6 +67,7 @@ describe('Observable.from', () => {
 
   const sources: { name: string, value: any }[] = [
     { name: 'observable', value: Observable.of('x') },
+    { name: 'observable-like', value: fakervable('x') },
     { name: 'array', value: ['x'] },
     { name: 'promise', value: Promise.resolve('x') },
     { name: 'iterator', value: fakerator('x') },
