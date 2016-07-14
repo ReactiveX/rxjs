@@ -141,6 +141,84 @@ describe('Observable.ajax', () => {
     });
   });
 
+  it('should not set default Content-Type header on GET', () => {
+    const obj: Rx.AjaxRequest = {
+      url: 'talk-to-me-goose',
+      method: 'GET'
+    };
+
+    Rx.Observable.ajax(obj).subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.url).to.equal('/talk-to-me-goose');
+    expect(request.requestHeaders).to.deep.equal({
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+  });
+
+  it('should have an optional resultSelector', () => {
+    const expected = 'avast ye swabs!';
+    let result;
+    let complete = false;
+
+    const obj = {
+      url: '/flibbertyJibbet',
+      responseType: 'text',
+      resultSelector: (res: any) => res.response
+    };
+
+    (<any>Rx.Observable.ajax)(obj)
+      .subscribe((x: any) => {
+        result = x;
+      }, null, () => {
+        complete = true;
+      });
+
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+
+    MockXMLHttpRequest.mostRecent.respondWith({
+      'status': 200,
+      'contentType': 'application/json',
+      'responseText': expected
+    });
+
+    expect(result).to.equal(expected);
+    expect(complete).to.be.true;
+  });
+
+  it('should have error when resultSelector errors', () => {
+    const expected = 'avast ye swabs!';
+    let error;
+    const obj = {
+      url: '/flibbertyJibbet',
+      responseType: 'text',
+      resultSelector: (res: any) => {
+        throw new Error('ha! ha! fooled you!');
+      },
+      method: ''
+    };
+
+    Rx.Observable.ajax(obj)
+      .subscribe((x: any) => {
+        throw 'should not next';
+      }, (err: any) => {
+        error = err;
+      }, () => {
+        throw 'should not complete';
+      });
+
+    expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+
+    MockXMLHttpRequest.mostRecent.respondWith({
+      'status': 200,
+      'contentType': 'application/json',
+      'responseText': expected
+    });
+
+    expect(error).to.be.an('error', 'ha! ha! fooled you!');
+  });
+
   it('should error if createXHR throws', () => {
     let error;
     const obj = {
