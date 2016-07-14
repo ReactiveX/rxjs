@@ -191,7 +191,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     }
 
     // ensure content type is set
-    if (!('Content-Type' in headers) && !(root.FormData && request.body instanceof root.FormData)) {
+    if (!('Content-Type' in headers) && !(root.FormData && request.body instanceof root.FormData) && request.method !== 'GET') {
       headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
