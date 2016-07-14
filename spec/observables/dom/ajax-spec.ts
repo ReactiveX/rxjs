@@ -152,9 +152,7 @@ describe('Observable.ajax', () => {
     const request = MockXMLHttpRequest.mostRecent;
 
     expect(request.url).to.equal('/talk-to-me-goose');
-    expect(request.requestHeaders).to.deep.equal({
-      'X-Requested-With': 'XMLHttpRequest'
-    });
+    expect(request.requestHeaders).to.not.have.keys('Content-Type');
   });
 
   it('should have an optional resultSelector', () => {
