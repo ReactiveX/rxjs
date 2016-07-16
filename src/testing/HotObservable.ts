@@ -50,4 +50,3 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
   }
 }
 applyMixins(HotObservable, [SubscriptionLoggable]);
-

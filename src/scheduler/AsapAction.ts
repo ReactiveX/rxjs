@@ -1,44 +1,46 @@
-import {Action} from './Action';
 import {Immediate} from '../util/Immediate';
-import {FutureAction} from './FutureAction';
+import {AsyncAction} from './AsyncAction';
+import {AsapScheduler} from './AsapScheduler';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-export class AsapAction<T> extends FutureAction<T> {
+export class AsapAction<T> extends AsyncAction<T> {
 
-  protected _schedule(state?: T, delay: number = 0): Action<T> {
-    if (delay > 0) {
-      return super._schedule(state, delay);
-    }
-    this.delay = delay;
-    this.state = state;
-    const {scheduler} = this;
-    scheduler.actions.push(this);
-    if (!scheduler.scheduledId) {
-      scheduler.scheduledId = Immediate.setImmediate(() => {
-        scheduler.scheduledId = null;
-        scheduler.flush();
-      });
-    }
-    return this;
+  constructor(protected scheduler: AsapScheduler,
+              protected work: (state?: T) => void) {
+    super(scheduler, work);
   }
 
-  protected _unsubscribe(): void {
-
-    const {scheduler} = this;
-    const {scheduledId, actions} = scheduler;
-
-    super._unsubscribe();
-
-    if (actions.length === 0) {
-      scheduler.active = false;
-      if (scheduledId != null) {
-        scheduler.scheduledId = null;
-        Immediate.clearImmediate(scheduledId);
-      }
+  protected requestAsyncId(scheduler: AsapScheduler, id?: any, delay: number = 0): any {
+    // If delay is greater than 0, request as an async action.
+    if (delay !== null && delay > 0) {
+      return super.requestAsyncId(scheduler, id, delay);
     }
+    // Push the action to the end of the scheduler queue.
+    scheduler.actions.push(this);
+    // If a microtask has already been scheduled, don't schedule another
+    // one. If a microtask hasn't been scheduled yet, schedule one now. Return
+    // the current scheduled microtask id.
+    return scheduler.scheduled || (scheduler.scheduled = Immediate.setImmediate(
+      scheduler.flush.bind(scheduler, null)
+    ));
+  }
+  protected recycleAsyncId(scheduler: AsapScheduler, id?: any, delay: number = 0): any {
+    // If delay exists and is greater than 0, recycle as an async action.
+    if (delay !== null && delay > 0) {
+      return super.recycleAsyncId(scheduler, id, delay);
+    }
+    // If the scheduler queue is empty, cancel the requested microtask and
+    // set the scheduled flag to undefined so the next AsapAction will schedule
+    // its own.
+    if (scheduler.actions.length === 0) {
+      Immediate.clearImmediate(id);
+      scheduler.scheduled = undefined;
+    }
+    // Return undefined so the action knows to request a new async id if it's rescheduled.
+    return undefined;
   }
 }
