@@ -2,6 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {Observable} from '../Observable';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
@@ -56,7 +57,7 @@ class ElementAtOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
   }
 }

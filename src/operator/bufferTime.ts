@@ -1,10 +1,10 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
+import {Operator} from '../Operator';
 import {async} from '../scheduler/async';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 import {isScheduler} from '../util/isScheduler';
 
 /**

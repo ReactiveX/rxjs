@@ -1,5 +1,4 @@
 import {Observable} from '../Observable';
-import {VirtualTimeScheduler} from '../scheduler/VirtualTimeScheduler';
 import {Notification} from '../Notification';
 import {Subject} from '../Subject';
 import {ColdObservable} from './ColdObservable';
@@ -7,6 +6,7 @@ import {HotObservable} from './HotObservable';
 import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
 import {Subscription} from '../Subscription';
+import {VirtualTimeScheduler} from '../scheduler/VirtualTimeScheduler';
 
 interface FlushableTest {
   ready: boolean;

@@ -3,7 +3,7 @@ import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -60,7 +60,7 @@ class AuditTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
   }
 }

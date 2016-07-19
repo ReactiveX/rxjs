@@ -11,6 +11,11 @@ describe('Notification', () => {
     expect(Notification).to.be.a('function');
   });
 
+  it('should not allow convert to observable if given kind is unknown', () => {
+    const n = new Notification('x');
+    expect(() => n.toObservable()).to.throw();
+  });
+
   describe('createNext', () => {
     it('should return a Notification', () => {
       const n = Notification.createNext('test');

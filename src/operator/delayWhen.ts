@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -69,7 +69,7 @@ class DelayWhenOperator<T> implements Operator<T, T> {
   constructor(private delayDurationSelector: (value: T) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
   }
 }

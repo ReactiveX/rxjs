@@ -5,6 +5,7 @@ import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 import {Observable} from '../Observable';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or
@@ -61,7 +62,7 @@ class DelayOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
   }
 }

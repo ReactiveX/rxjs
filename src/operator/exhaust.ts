@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {Subscription, TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
@@ -50,7 +50,7 @@ export interface SwitchFirstSignature<T> {
 }
 
 class SwitchFirstOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SwitchFirstSubscriber(subscriber));
   }
 }

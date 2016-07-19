@@ -1,6 +1,7 @@
 import {Operator} from '../Operator';
 import {Observable} from '../Observable';
 import {Subscriber} from '../Subscriber';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * Emits values emitted by the source Observable so long as each value satisfies
@@ -50,7 +51,7 @@ class TakeWhileOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
   }
 }

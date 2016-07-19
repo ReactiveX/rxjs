@@ -2,6 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 import {PartialObserver} from '../Observer';
+import {TeardownLogic} from '../Subscription';
 
 /**
  * Perform a side effect for every emission on the source Observable, but return
@@ -62,7 +63,7 @@ class DoOperator<T> implements Operator<T, T> {
               private error?: (e: any) => void,
               private complete?: () => void) {
   }
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
   }
 }
@@ -118,4 +119,3 @@ class DoSubscriber<T> extends Subscriber<T> {
     }
   }
 }
-

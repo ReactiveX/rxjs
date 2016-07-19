@@ -184,6 +184,8 @@ import observable from 'symbol-observable';
  * asynchronous conversions.
  * @property {Scheduler} async Schedules work with `setInterval`. Use this for
  * time-based operations.
+ * @property {Scheduler} animationFrame Schedules work with `requestAnimationFrame`.
+ * Use this for synchronizing with the platform's painting
  */
 let Scheduler = {
   asap,

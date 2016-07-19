@@ -1,17 +1,17 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 
-const asap = Rx.Scheduler.asap;
+const animationFrame = Rx.Scheduler.animationFrame;
 
 /** @test {Scheduler} */
-describe('Scheduler.asap', () => {
+describe('Scheduler.animationFrame', () => {
   it('should exist', () => {
-    expect(asap).exist;
+    expect(animationFrame).exist;
   });
 
   it('should schedule an action to happen later', (done: MochaDone) => {
     let actionHappened = false;
-    asap.schedule(() => {
+    animationFrame.schedule(() => {
       actionHappened = true;
       done();
     });
@@ -23,13 +23,13 @@ describe('Scheduler.asap', () => {
   it('should execute recursively scheduled actions in separate asynchronous contexts', (done: MochaDone) => {
     let syncExec1 = true;
     let syncExec2 = true;
-    asap.schedule(function (index) {
+    animationFrame.schedule(function (index) {
       if (index === 0) {
         this.schedule(1);
-        asap.schedule(() => { syncExec1 = false; });
+        animationFrame.schedule(() => { syncExec1 = false; });
       } else if (index === 1) {
         this.schedule(2);
-        asap.schedule(() => { syncExec2 = false; });
+        animationFrame.schedule(() => { syncExec2 = false; });
       } else if (index === 2) {
         this.schedule(3);
       } else if (index === 3) {
@@ -42,20 +42,20 @@ describe('Scheduler.asap', () => {
     }, 0, 0);
   });
 
-  it('should cancel the setImmediate if all scheduled actions unsubscribe before it executes', (done: MochaDone) => {
-    let asapExec1 = false;
-    let asapExec2 = false;
-    const action1 = asap.schedule(() => { asapExec1 = true; });
-    const action2 = asap.schedule(() => { asapExec2 = true; });
-    expect(asap.scheduled).to.exist;
-    expect(asap.actions.length).to.equal(2);
+  it('should cancel the animation frame if all scheduled actions unsubscribe before it executes', (done: MochaDone) => {
+    let animationFrameExec1 = false;
+    let animationFrameExec2 = false;
+    const action1 = animationFrame.schedule(() => { animationFrameExec1 = true; });
+    const action2 = animationFrame.schedule(() => { animationFrameExec2 = true; });
+    expect(animationFrame.scheduled).to.exist;
+    expect(animationFrame.actions.length).to.equal(2);
     action1.unsubscribe();
     action2.unsubscribe();
-    expect(asap.actions.length).to.equal(0);
-    expect(asap.scheduled).to.equal(undefined);
-    asap.schedule(() => {
-      expect(asapExec1).to.equal(false);
-      expect(asapExec2).to.equal(false);
+    expect(animationFrame.actions.length).to.equal(0);
+    expect(animationFrame.scheduled).to.equal(undefined);
+    animationFrame.schedule(() => {
+      expect(animationFrameExec1).to.equal(false);
+      expect(animationFrameExec2).to.equal(false);
       done();
     });
   });
@@ -65,7 +65,7 @@ describe('Scheduler.asap', () => {
     let firstSubscription = null;
     let secondSubscription = null;
 
-    firstSubscription = asap.schedule(() => {
+    firstSubscription = animationFrame.schedule(() => {
       actionHappened = true;
       if (secondSubscription) {
         secondSubscription.unsubscribe();
@@ -73,7 +73,7 @@ describe('Scheduler.asap', () => {
       done(new Error('The first action should not have executed.'));
     });
 
-    secondSubscription = asap.schedule(() => {
+    secondSubscription = animationFrame.schedule(() => {
       if (!actionHappened) {
         done();
       }
