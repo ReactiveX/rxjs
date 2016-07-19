@@ -125,10 +125,12 @@ export class Subscription implements ISubscription {
    * list.
    */
   add(teardown: TeardownLogic): Subscription {
-    if (!teardown || (
-        teardown === this) || (
-        teardown === Subscription.EMPTY)) {
-      return;
+    if (!teardown || (teardown === Subscription.EMPTY)) {
+      return Subscription.EMPTY;
+    }
+
+    if (teardown === this) {
+      return this;
     }
 
     let sub = (<Subscription> teardown);
