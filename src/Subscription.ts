@@ -124,7 +124,7 @@ export class Subscription implements ISubscription {
    * `remove()` to remove the passed teardown logic from the inner subscriptions
    * list.
    */
-  add(teardown: TeardownLogic): Subscription {
+  add(teardown: TeardownLogic): Subscription | void {
     if (!teardown || (
         teardown === this) || (
         teardown === Subscription.EMPTY)) {
