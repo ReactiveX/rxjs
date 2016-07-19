@@ -5,6 +5,7 @@ import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
+import {isFunction} from '../util/isFunction';
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -46,6 +47,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
+ * @param {boolean} allowEarlyComplete A feature switch that when marked true
+ * allows complete events from the inner Observable to complete the outer
+ * Observable.
  * @return {Observable} An Observable that emits the result of applying the
  * projection function (and the optional `resultSelector`) to each item emitted
  * by the source Observable and taking only the values from the most recently
@@ -54,23 +58,26 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @owner Observable
  */
 export function switchMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>,
-                                   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {
-  return this.lift(new SwitchMapOperator(project, resultSelector));
+                                   resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | boolean,
+                                   allowEarlyComplete?: boolean): Observable<R> {
+  return this.lift(new SwitchMapOperator(project, resultSelector, allowEarlyComplete));
 }
 
 export interface SwitchMapSignature<T> {
   <R>(project: (value: T, index: number) => ObservableInput<R>): Observable<R>;
   <I, R>(project: (value: T, index: number) => ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+         resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | boolean,
+         allowEarlyComplete?: boolean): Observable<R>;
 }
 
 class SwitchMapOperator<T, I, R> implements Operator<T, I> {
   constructor(private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
+              private resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | boolean,
+              private allowEarlyComplete?: boolean) {
   }
 
   call(subscriber: Subscriber<I>, source: any): any {
-    return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
+    return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector, this.allowEarlyComplete));
   }
 }
 
@@ -82,11 +89,23 @@ class SwitchMapOperator<T, I, R> implements Operator<T, I> {
 class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private index: number = 0;
   private innerSubscription: Subscription;
+  private resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R;
+  private allowEarlyComplete = false;
 
   constructor(destination: Subscriber<I>,
               private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
+              resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | boolean,
+              allowEarlyComplete?: boolean) {
     super(destination);
+
+    if (isFunction(resultSelector)) {
+      this.resultSelector = resultSelector;
+    } else if (typeof resultSelector === 'boolean') {
+      allowEarlyComplete = Boolean(resultSelector);
+    }
+    if (typeof allowEarlyComplete === 'boolean') {
+      this.allowEarlyComplete = allowEarlyComplete;
+    }
   }
 
   protected _next(value: T) {
@@ -123,7 +142,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   notifyComplete(innerSub: Subscription): void {
     this.remove(innerSub);
     this.innerSubscription = null;
-    if (this.isStopped) {
+    if (this.isStopped || this.allowEarlyComplete) {
       super._complete();
     }
   }

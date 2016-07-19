@@ -384,4 +384,18 @@ describe('Observable.prototype.switchMap', () => {
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should complete early when inner observable completes', () => {
+    const unsubbed = [];
+
+    Observable.of('a', 'b').switchMap((x: string) =>
+      Observable.create((subscriber: Rx.Subscriber<string>) => {
+        subscriber.complete();
+        return () => {
+          unsubbed.push(x);
+        };
+      }), true).subscribe();
+
+    expect(unsubbed).to.deep.equal(['a']);
+  });
 });
