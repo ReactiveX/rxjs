@@ -245,7 +245,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
     } while (true);
   }
 
-  private static dispatch<T, S>(state: SchedulerState<T, S>) {
+  private static dispatch<T, S>(state: SchedulerState<T, S>): Subscription | void {
     const { subscriber, condition } = state;
     if (subscriber.isUnsubscribed) {
       return;
