@@ -125,8 +125,9 @@ export class Subject<T> extends Observable<T> implements ISubscription {
  * @class AnonymousSubject<T>
  */
 export class AnonymousSubject<T> extends Subject<T> {
-  constructor(protected destination?: Observer<T>, protected source?: Observable<T>) {
+  constructor(protected destination?: Observer<T>, source?: Observable<T>) {
     super();
+    this.source = source;
   }
 
   next(value: T) {
