@@ -141,7 +141,7 @@ export class Observable<T> implements Subscribable<T> {
         } else {
           // if there is NO subscription, then we're getting a nexted
           // value synchronously during subscription. We can just call it.
-          // If it errors, Observable's `subscribe` imple will ensure the
+          // If it errors, Observable's `subscribe` will ensure the
           // unsubscription logic is called, then synchronously rethrow the error.
           // After that, Promise will trap the error and send it
           // down the rejection path.
