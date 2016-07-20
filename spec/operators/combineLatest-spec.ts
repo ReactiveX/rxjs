@@ -461,4 +461,14 @@ describe('Observable.prototype.combineLatest', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
+
+  it('should emit unique array instances with the default projection', () => {
+    const e1 =   hot('-a--b--|');
+    const e2 =   hot('--1--2-|');
+    const expected = '-------(c|)';
+
+    const result = e1.combineLatest(e2).distinct().count();
+
+    expectObservable(result).toBe(expected, { c: 3 });
+  });
 });
