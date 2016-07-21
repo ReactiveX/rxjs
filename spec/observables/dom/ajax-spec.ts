@@ -141,6 +141,20 @@ describe('Observable.ajax', () => {
     });
   });
 
+  it('should not set default Content-Type header when no body is sent', () => {
+    const obj: Rx.AjaxRequest = {
+      url: '/talk-to-me-goose',
+      method: 'GET'
+    };
+
+    Rx.Observable.ajax(obj).subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.url).to.equal('/talk-to-me-goose');
+    expect(request.requestHeaders).to.not.have.keys('Content-Type');
+  });
+
   it('should error if createXHR throws', () => {
     let error;
     const obj = {
