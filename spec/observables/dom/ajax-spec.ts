@@ -141,7 +141,7 @@ describe('Observable.ajax', () => {
     });
   });
 
-  it('should not set default Content-Type header on GET', () => {
+  it('should not set default Content-Type header when no body is sent', () => {
     const obj: Rx.AjaxRequest = {
       url: '/talk-to-me-goose',
       method: 'GET'
