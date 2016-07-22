@@ -8,25 +8,25 @@ import {Subscription} from './Subscription';
  * @extends {Ignored}
  */
 export class SubjectSubscription<T> extends Subscription {
-  isUnsubscribed: boolean = false;
+  closed: boolean = false;
 
   constructor(public subject: Subject<T>, public subscriber: Observer<T>) {
     super();
   }
 
   unsubscribe() {
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       return;
     }
 
-    this.isUnsubscribed = true;
+    this.closed = true;
 
     const subject = this.subject;
     const observers = subject.observers;
 
     this.subject = null;
 
-    if (!observers || observers.length === 0 || subject.isStopped || subject.isUnsubscribed) {
+    if (!observers || observers.length === 0 || subject.isStopped || subject.closed) {
       return;
     }
 

@@ -22,7 +22,7 @@ export class AsyncAction<T> extends Action<T> {
 
   public schedule(state?: T, delay: number = 0): Subscription {
 
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       return this;
      }
 
@@ -88,7 +88,7 @@ export class AsyncAction<T> extends Action<T> {
    */
   public execute(state: T, delay: number): any {
 
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       return new Error('executing a cancelled action');
     }
 

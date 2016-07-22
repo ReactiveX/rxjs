@@ -36,7 +36,7 @@ export class ConnectableObservable<T> extends Observable<T> {
       connection = this._connection = new Subscription();
       connection.add(this.source
         .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
-      if (connection.isUnsubscribed) {
+      if (connection.closed) {
         this._connection = null;
         connection = Subscription.EMPTY;
       } else {
@@ -90,7 +90,7 @@ class RefCountOperator<T> implements Operator<T, T> {
     const refCounter = new RefCountSubscriber(subscriber, connectable);
     const subscription = source._subscribe(refCounter);
 
-    if (!refCounter.isUnsubscribed) {
+    if (!refCounter.closed) {
       (<any> refCounter).connection = connectable.connect();
     }
 

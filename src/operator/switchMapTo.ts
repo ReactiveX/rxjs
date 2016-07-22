@@ -99,7 +99,7 @@ class SwitchMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
 
   protected _complete() {
     const {innerSubscription} = this;
-    if (!innerSubscription || innerSubscription.isUnsubscribed) {
+    if (!innerSubscription || innerSubscription.closed) {
       super._complete();
     }
   }

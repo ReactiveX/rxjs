@@ -21,7 +21,7 @@ describe('ScalarObservable', () => {
     const s = new ScalarObservable(1, rxTestScheduler);
     const subscriber = new Rx.Subscriber();
     s.subscribe(subscriber);
-    subscriber.isUnsubscribed = true;
+    subscriber.closed = true;
     rxTestScheduler.flush();
   });
 

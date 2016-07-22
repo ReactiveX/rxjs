@@ -13,7 +13,7 @@ export type TeardownLogic = AnonymousSubscription | Function | void;
 
 export interface ISubscription extends AnonymousSubscription {
   unsubscribe(): void;
-  isUnsubscribed: boolean;
+  closed: boolean;
 }
 
 /**
@@ -30,7 +30,7 @@ export interface ISubscription extends AnonymousSubscription {
  */
 export class Subscription implements ISubscription {
   public static EMPTY: Subscription = (function(empty: any){
-    empty.isUnsubscribed = true;
+    empty.closed = true;
     return empty;
   }(new Subscription()));
 
@@ -38,7 +38,7 @@ export class Subscription implements ISubscription {
    * A flag to indicate whether this Subscription has already been unsubscribed.
    * @type {boolean}
    */
-  public isUnsubscribed: boolean = false;
+  public closed: boolean = false;
 
   /**
    * @param {function(): void} [unsubscribe] A function describing how to
@@ -60,11 +60,11 @@ export class Subscription implements ISubscription {
     let hasErrors = false;
     let errors: any[];
 
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       return;
     }
 
-    this.isUnsubscribed = true;
+    this.closed = true;
 
     const { _unsubscribe, _subscriptions } = (<any> this);
 
@@ -114,7 +114,7 @@ export class Subscription implements ISubscription {
    * unsubscribed, is the same reference `add` is being called on, or is
    * `Subscription.EMPTY`, it will not be added.
    *
-   * If this subscription is already in an `isUnsubscribed` state, the passed
+   * If this subscription is already in an `closed` state, the passed
    * tear down logic will be executed immediately.
    *
    * @param {TeardownLogic} teardown The additional logic to execute on
@@ -137,9 +137,9 @@ export class Subscription implements ISubscription {
       case 'function':
         sub = new Subscription(<(() => void) > teardown);
       case 'object':
-        if (sub.isUnsubscribed || typeof sub.unsubscribe !== 'function') {
+        if (sub.closed || typeof sub.unsubscribe !== 'function') {
           break;
-        } else if (this.isUnsubscribed) {
+        } else if (this.closed) {
           sub.unsubscribe();
         } else {
           ((<any> this)._subscriptions || ((<any> this)._subscriptions = [])).push(sub);

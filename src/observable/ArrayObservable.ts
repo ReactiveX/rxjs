@@ -89,7 +89,7 @@ export class ArrayObservable<T> extends Observable<T> {
 
     subscriber.next(array[index]);
 
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
 
@@ -120,7 +120,7 @@ export class ArrayObservable<T> extends Observable<T> {
         array, index, count, subscriber
       });
     } else {
-      for (let i = 0; i < count && !subscriber.isUnsubscribed; i++) {
+      for (let i = 0; i < count && !subscriber.closed; i++) {
         subscriber.next(array[i]);
       }
       subscriber.complete();

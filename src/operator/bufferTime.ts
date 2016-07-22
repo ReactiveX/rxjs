@@ -207,7 +207,7 @@ function dispatchBufferTimeSpanOnly(state: any) {
     subscriber.closeContext(prevContext);
   }
 
-  if (!subscriber.isUnsubscribed) {
+  if (!subscriber.closed) {
     state.context = subscriber.openContext();
     state.context.closeAction = (<any>this).schedule(state, state.bufferTimeSpan);
   }
@@ -222,7 +222,7 @@ function dispatchBufferCreation<T>(state: CreationState<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const context = subscriber.openContext();
   const action = <Action<CreationState<T>>>this;
-  if (!subscriber.isUnsubscribed) {
+  if (!subscriber.closed) {
     subscriber.add(context.closeAction = scheduler.schedule<DispatchArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
     action.schedule(state, bufferCreationInterval);
   }

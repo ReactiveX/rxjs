@@ -28,7 +28,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
   static dispatch(state: any) {
     const { arrayLike, index, length, mapFn, subscriber } = state;
 
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
 
@@ -69,7 +69,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
         arrayLike, index, length, mapFn, subscriber
       });
     } else {
-      for (let i = 0; i < length && !subscriber.isUnsubscribed; i++) {
+      for (let i = 0; i < length && !subscriber.closed; i++) {
         const result = mapFn ? mapFn(arrayLike[i], i) : arrayLike[i];
         subscriber.next(result);
       }

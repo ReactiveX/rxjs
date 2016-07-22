@@ -54,7 +54,7 @@ export class IteratorObservable<T> extends Observable<T> {
       state.index = index + 1;
     }
 
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
 
@@ -114,7 +114,7 @@ export class IteratorObservable<T> extends Observable<T> {
         } else {
           subscriber.next(result.value);
         }
-        if (subscriber.isUnsubscribed) {
+        if (subscriber.closed) {
           break;
         }
       } while (true);

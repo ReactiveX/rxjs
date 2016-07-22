@@ -233,7 +233,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
         return;
       }
       subscriber.next(value);
-      if (subscriber.isUnsubscribed) {
+      if (subscriber.closed) {
         break;
       }
       try {
@@ -247,7 +247,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
 
   private static dispatch<T, S>(state: SchedulerState<T, S>): Subscription | void {
     const { subscriber, condition } = state;
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
     if (state.needIterate) {
@@ -272,7 +272,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
         subscriber.complete();
         return;
       }
-      if (subscriber.isUnsubscribed) {
+      if (subscriber.closed) {
         return;
       }
     }
@@ -283,11 +283,11 @@ export class GenerateObservable<T, S> extends Observable<T> {
       subscriber.error(err);
       return;
     }
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
     subscriber.next(value);
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
     return (<Action<SchedulerState<T, S>>><any>this).schedule(state);

@@ -114,7 +114,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   protected _next(value: any): void {
     const destination = this.destination;
 
-    if (destination.isUnsubscribed) {
+    if (destination.closed) {
       this._complete();
       return;
     }
