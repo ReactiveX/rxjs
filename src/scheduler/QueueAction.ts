@@ -25,7 +25,7 @@ export class QueueAction<T> extends AsyncAction<T> {
   }
 
   public execute(state: T, delay: number): any {
-    return (delay > 0 || this.isUnsubscribed) ?
+    return (delay > 0 || this.closed) ?
       super.execute(state, delay) :
       this._execute(state, delay) ;
   }

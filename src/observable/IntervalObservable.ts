@@ -53,7 +53,7 @@ export class IntervalObservable extends Observable<number> {
 
     subscriber.next(index);
 
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
 

@@ -22,7 +22,7 @@ export class ScalarObservable<T> extends Observable<T> {
     }
 
     subscriber.next(value);
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
 
@@ -49,7 +49,7 @@ export class ScalarObservable<T> extends Observable<T> {
       });
     } else {
       subscriber.next(value);
-      if (!subscriber.isUnsubscribed) {
+      if (!subscriber.closed) {
         subscriber.complete();
       }
     }

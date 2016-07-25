@@ -224,7 +224,7 @@ describe('Observable.prototype.skipUntil', () => {
     const expected =  '-';
 
     e1.subscribe((x: string) => {
-      if (x === 'd' && !skip.isUnsubscribed) {
+      if (x === 'd' && !skip.closed) {
         skip.next('x');
       }
 

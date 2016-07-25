@@ -69,7 +69,7 @@ export class TimerObservable extends Observable<number> {
 
     subscriber.next(index);
 
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     } else if (period === -1) {
       return subscriber.complete();

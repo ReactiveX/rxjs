@@ -315,17 +315,17 @@ describe('Subject', () => {
     let outputComplete = false;
 
     const destination = {
-      isUnsubscribed: false,
+      closed: false,
       next: function (x) {
         nexts.push(x);
       },
       error: function (err) {
         error = err;
-        this.isUnsubscribed = true;
+        this.closed = true;
       },
       complete: () => {
         complete = true;
-        this.isUnsubscribed = true;
+        this.closed = true;
       }
     };
 
@@ -361,17 +361,17 @@ describe('Subject', () => {
     let outputComplete = false;
 
     const destination = {
-      isUnsubscribed: false,
+      closed: false,
       next: function (x) {
         nexts.push(x);
       },
       error: function (err) {
         error = err;
-        this.isUnsubscribed = true;
+        this.closed = true;
       },
       complete: () => {
         complete = true;
-        this.isUnsubscribed = true;
+        this.closed = true;
       }
     };
 

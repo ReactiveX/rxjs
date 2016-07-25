@@ -128,9 +128,9 @@ describe('Observable.prototype.take', () => {
 
   it('should unsubscribe from the source when it reaches the limit', () => {
     const source = Observable.create(observer => {
-      expect(observer.isUnsubscribed).to.be.false;
+      expect(observer.closed).to.be.false;
       observer.next(42);
-      expect(observer.isUnsubscribed).to.be.true;
+      expect(observer.closed).to.be.true;
     }).take(1);
 
     source.subscribe();

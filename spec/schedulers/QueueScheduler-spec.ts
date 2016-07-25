@@ -47,7 +47,7 @@ describe('Scheduler.queue', () => {
     } catch (e) {
       errorValue = e;
     }
-    expect(actions.every((action) => action.isUnsubscribed)).to.be.true;
+    expect(actions.every((action) => action.closed)).to.be.true;
     expect(action2Exec).to.be.false;
     expect(action3Exec).to.be.false;
     expect(errorValue).exist;

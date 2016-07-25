@@ -171,7 +171,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
         this.contexts.push(context);
         const innerSubscription = subscribeToResult(this, closingNotifier, context);
 
-        if (innerSubscription.isUnsubscribed) {
+        if (innerSubscription.closed) {
           this.closeWindow(this.contexts.length - 1);
         } else {
           (<any> innerSubscription).context = context;

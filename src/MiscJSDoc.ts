@@ -74,7 +74,7 @@ export class ObservableDoc {
  *
  * ```ts
  * interface Observer<T> {
- *   isUnsubscribed?: boolean;
+ *   closed?: boolean;
  *   next: (value: T) => void;
  *   error: (err: any) => void;
  *   complete: () => void;
@@ -98,7 +98,7 @@ export class ObserverDoc<T> {
    * subscriber, has already been unsubscribed from its Observable.
    * @type {boolean}
    */
-  isUnsubscribed: boolean = false;
+  closed: boolean = false;
   /**
    * The callback to receive notifications of type `next` from the Observable,
    * with a value. The Observable may call this method 0 or more times.

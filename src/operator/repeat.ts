@@ -62,7 +62,7 @@ class RepeatSubscriber<T> extends Subscriber<T> {
       }
       this.unsubscribe();
       this.isStopped = false;
-      this.isUnsubscribed = false;
+      this.closed = false;
       source.subscribe(this);
     }
   }

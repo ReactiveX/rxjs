@@ -18,7 +18,7 @@ export class BehaviorSubject<T> extends Subject<T> {
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
-    if (subscription && !(<ISubscription>subscription).isUnsubscribed) {
+    if (subscription && !(<ISubscription>subscription).closed) {
       subscriber.next(this._value);
     }
     return subscription;
@@ -27,7 +27,7 @@ export class BehaviorSubject<T> extends Subject<T> {
   getValue(): T {
     if (this.hasError) {
       throw this.thrownError;
-    } else if (this.isUnsubscribed) {
+    } else if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else {
       return this._value;

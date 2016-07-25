@@ -55,7 +55,7 @@ describe('Subscription', () => {
         tearDowns.push(2);
         sub.add(<any>({
           unsubscribe: () => {
-            expect(sub.isUnsubscribed).to.be.true;
+            expect(sub.closed).to.be.true;
             throw new Error('Who is your daddy, and what does he do?');
           }
         }));
