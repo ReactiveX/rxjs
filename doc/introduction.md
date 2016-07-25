@@ -58,12 +58,12 @@ RxJS has a whole range of operators that helps you control how the events flow t
 This is how you would allow at most one click per second, with plain JavaScript:
 ```js
 var count = 0;
-var lastClick = null;
+var rate = 1000;
+var lastClick = Date.now() - rate;
 var button = document.querySelector('button');
 button.addEventListener('click', () => {
-  if (lastClick && Date.now() - lastClick >= 1000) {
-    console.log(`Clicked ${++count} times`);  
-  } else {
+  if (Date.now() - lastClick >= rate) {
+    console.log(`Clicked ${++count} times`);
     lastClick = Date.now();
   }
 });
