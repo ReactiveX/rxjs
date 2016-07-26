@@ -13,7 +13,7 @@ function expectFullObserver(val) {
   expect(val.next).to.be.a('function');
   expect(val.error).to.be.a('function');
   expect(val.complete).to.be.a('function');
-  expect(val.isUnsubscribed).to.be.a('boolean');
+  expect(val.closed).to.be.a('boolean');
 }
 
 /** @test {Observable} */
@@ -260,7 +260,7 @@ describe('Observable', () => {
       }
 
       expect(sub).to.be.a('undefined');
-      expect(subscriber.isUnsubscribed).to.be.true;
+      expect(subscriber.closed).to.be.true;
       expect(unsubscribeCalled).to.be.true;
       expect(messageError).to.be.true;
       expect(messageErrorValue).to.equal('boo!');

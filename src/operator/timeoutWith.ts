@@ -104,7 +104,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   handleTimeout(): void {
-    if (!this.isUnsubscribed) {
+    if (!this.closed) {
       const withObservable = this.withObservable;
       this.unsubscribe();
       this.destination.add(this.timeoutSubscription = subscribeToResult(this, withObservable));

@@ -53,7 +53,7 @@ export class PromiseObservable<T> extends Observable<T> {
 
     if (scheduler == null) {
       if (this._isScalar) {
-        if (!subscriber.isUnsubscribed) {
+        if (!subscriber.closed) {
           subscriber.next(this.value);
           subscriber.complete();
         }
@@ -62,13 +62,13 @@ export class PromiseObservable<T> extends Observable<T> {
           (value) => {
             this.value = value;
             this._isScalar = true;
-            if (!subscriber.isUnsubscribed) {
+            if (!subscriber.closed) {
               subscriber.next(value);
               subscriber.complete();
             }
           },
           (err) => {
-            if (!subscriber.isUnsubscribed) {
+            if (!subscriber.closed) {
               subscriber.error(err);
             }
           }
@@ -80,7 +80,7 @@ export class PromiseObservable<T> extends Observable<T> {
       }
     } else {
       if (this._isScalar) {
-        if (!subscriber.isUnsubscribed) {
+        if (!subscriber.closed) {
           return scheduler.schedule(dispatchNext, 0, { value: this.value, subscriber });
         }
       } else {
@@ -88,12 +88,12 @@ export class PromiseObservable<T> extends Observable<T> {
           (value) => {
             this.value = value;
             this._isScalar = true;
-            if (!subscriber.isUnsubscribed) {
+            if (!subscriber.closed) {
               subscriber.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
             }
           },
           (err) => {
-            if (!subscriber.isUnsubscribed) {
+            if (!subscriber.closed) {
               subscriber.add(scheduler.schedule(dispatchError, 0, { err, subscriber }));
             }
           })
@@ -112,7 +112,7 @@ interface DispatchNextArg<T> {
 }
 function dispatchNext<T>(arg: DispatchNextArg<T>) {
   const { value, subscriber } = arg;
-  if (!subscriber.isUnsubscribed) {
+  if (!subscriber.closed) {
     subscriber.next(value);
     subscriber.complete();
   }
@@ -124,7 +124,7 @@ interface DispatchErrorArg<T> {
 }
 function dispatchError<T>(arg: DispatchErrorArg<T>) {
   const { err, subscriber } = arg;
-  if (!subscriber.isUnsubscribed) {
+  if (!subscriber.closed) {
     subscriber.error(err);
   }
 }

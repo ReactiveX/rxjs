@@ -94,6 +94,7 @@
     "prepublish": "shx rm -rf ./typings && typings install && npm run build_all",
     "publish_docs": "./publish_docs.sh",
     "test_mocha": "mocha --opts spec/support/default.opts spec-js",
+    "debug_mocha": "node-debug _mocha --opts spec/support/debug.opts spec-js",
     "test_browser": "npm-run-all build_spec_browser && opn spec/support/mocha-browser-runner.html",
     "test": "npm-run-all clean_spec build_spec test_mocha clean_spec",
     "tests2png": "npm run build_spec && mkdirp tmp/docs/img && mkdirp spec-js/support && shx cp spec/support/*.opts spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",

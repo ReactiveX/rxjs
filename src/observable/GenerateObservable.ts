@@ -1,9 +1,8 @@
-import {Observable} from '../Observable' ;
 import {Scheduler} from '../Scheduler';
+import {Action} from '../scheduler/Action';
+import {Observable} from '../Observable' ;
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {Action} from '../scheduler/Action';
-
 import {isScheduler} from '../util/isScheduler';
 
 const selfSelector = <T>(value: T) => value;
@@ -70,16 +69,16 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * to send out observer messages.
    *
    * <img src="./img/generate.png" width="100%">
-   * 
+   *
    * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
    * var res = Rx.Observable.generate(0, x => x < 10, x => x + 1, x => x);
-   * 
+   *
    * @example <caption>Using asap scheduler, produces sequence of 2, 3, 5, then completes.</caption>
    * var res = Rx.Observable.generate(1, x => x < 5, x => x * 2, x => x + 1, Rx.Scheduler.asap);
    *
    * @see {@link from}
    * @see {@link create}
-   * 
+   *
    * @param {S} initialState Initial state.
    * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
    * @param {function (state: S): S} iterate Iteration step function.
@@ -98,12 +97,12 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * producing the sequence's elements, using the specified scheduler
    * to send out observer messages.
    * The overload uses state as an emitted value.
-   * 
+   *
    * <img src="./img/generate.png" width="100%">
    *
    * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
    * var res = Rx.Observable.generate(0, x => x < 10, x => x + 1);
-   * 
+   *
    * @example <caption>Using asap scheduler, produces sequence of 1, 2, 4, then completes.</caption>
    * var res = Rx.Observable.generate(1, x => x < 5, x => x * 2, Rx.Scheduler.asap);
    *
@@ -127,7 +126,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * to send out observer messages.
    * The overload accepts options object that might contain inital state, iterate,
    * condition and scheduler.
-   * 
+   *
    * <img src="./img/generate.png" width="100%">
    *
    * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
@@ -151,7 +150,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * to send out observer messages.
    * The overload accepts options object that might contain inital state, iterate,
    * condition, result selector and scheduler.
-   * 
+   *
    * <img src="./img/generate.png" width="100%">
    *
    * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
@@ -234,7 +233,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
         return;
       }
       subscriber.next(value);
-      if (subscriber.isUnsubscribed) {
+      if (subscriber.closed) {
         break;
       }
       try {
@@ -246,9 +245,9 @@ export class GenerateObservable<T, S> extends Observable<T> {
     } while (true);
   }
 
-  private static dispatch<T, S>(state: SchedulerState<T, S>) {
+  private static dispatch<T, S>(state: SchedulerState<T, S>): Subscription | void {
     const { subscriber, condition } = state;
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
     if (state.needIterate) {
@@ -273,7 +272,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
         subscriber.complete();
         return;
       }
-      if (subscriber.isUnsubscribed) {
+      if (subscriber.closed) {
         return;
       }
     }
@@ -284,11 +283,11 @@ export class GenerateObservable<T, S> extends Observable<T> {
       subscriber.error(err);
       return;
     }
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
     subscriber.next(value);
-    if (subscriber.isUnsubscribed) {
+    if (subscriber.closed) {
       return;
     }
     return (<Action<SchedulerState<T, S>>><any>this).schedule(state);

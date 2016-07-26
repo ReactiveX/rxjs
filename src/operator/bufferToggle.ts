@@ -162,7 +162,7 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
 
     const innerSubscription = subscribeToResult(this, closingNotifier, <any>context);
 
-    if (!innerSubscription || innerSubscription.isUnsubscribed) {
+    if (!innerSubscription || innerSubscription.closed) {
       this.closeBuffer(context);
     } else {
       (<any> innerSubscription).context = context;

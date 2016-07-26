@@ -1,11 +1,11 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subject} from '../Subject';
-import {Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
+import {Subject} from '../Subject';
+import {Operator} from '../Operator';
 import {async} from '../scheduler/async';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
+import {Subscription} from '../Subscription';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically
@@ -118,7 +118,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     const len = windows.length;
     for (let i = 0; i < len; i++) {
       const window = windows[i];
-      if (!window.isUnsubscribed) {
+      if (!window.closed) {
         window.next(value);
       }
     }
@@ -136,7 +136,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     const windows = this.windows;
     while (windows.length > 0) {
       const window = windows.shift();
-      if (!window.isUnsubscribed) {
+      if (!window.closed) {
         window.complete();
       }
     }

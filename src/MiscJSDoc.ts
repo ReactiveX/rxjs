@@ -8,8 +8,6 @@
 import {Subscriber} from './Subscriber';
 import {TeardownLogic} from './Subscription';
 import {Observable} from './Observable';
-import {Subscription} from './Subscription';
-import {Action} from './scheduler/Action';
 import './scheduler/MiscJSDoc';
 import './observable/dom/MiscJSDoc';
 
@@ -76,7 +74,7 @@ export class ObservableDoc {
  *
  * ```ts
  * interface Observer<T> {
- *   isUnsubscribed?: boolean;
+ *   closed?: boolean;
  *   next: (value: T) => void;
  *   error: (err: any) => void;
  *   complete: () => void;
@@ -100,7 +98,7 @@ export class ObserverDoc<T> {
    * subscriber, has already been unsubscribed from its Observable.
    * @type {boolean}
    */
-  isUnsubscribed: boolean = false;
+  closed: boolean = false;
   /**
    * The callback to receive notifications of type `next` from the Observable,
    * with a value. The Observable may call this method 0 or more times.
@@ -129,91 +127,4 @@ export class ObserverDoc<T> {
   complete(): void {
     return void 0;
   }
-}
-
-/**
- * An execution context and a data structure to order tasks and schedule their
- * execution. Provides a notion of (potentially virtual) time, through the
- * `now()` getter method.
- *
- * Each unit of work in a Scheduler is called an {@link Action}.
- *
- * ```ts
- * interface Scheduler {
- *   now(): number;
- *   schedule(work, delay?, state?): Subscription;
- *   flush(): void;
- *   active: boolean;
- *   actions: Action[];
- *   scheduledId: number;
- * }
- * ```
- *
- * @interface
- * @name Scheduler
- * @noimport true
- */
-export class SchedulerDoc {
-  /**
-   * A getter method that returns a number representing the current time
-   * (at the time this function was called) according to the scheduler's own
-   * internal clock.
-   * @return {number} A number that represents the current time. May or may not
-   * have a relation to wall-clock time. May or may not refer to a time unit
-   * (e.g. milliseconds).
-   */
-  now(): number {
-    return 0;
-  }
-
-  /**
-   * Schedules a function, `work`, for execution. May happen at some point in
-   * the future, according to the `delay` parameter, if specified. May be passed
-   * some context object, `state`, which will be passed to the `work` function.
-   *
-   * The given arguments will be processed an stored as an Action object in a
-   * queue of actions.
-   *
-   * @param {function(state: ?T): ?Subscription} work A function representing a
-   * task, or some unit of work to be executed by the Scheduler.
-   * @param {number} [delay] Time to wait before executing the work, where the
-   * time unit is implicit and defined by the Scheduler itself.
-   * @param {T} [state] Some contextual data that the `work` function uses when
-   * called by the Scheduler.
-   * @return {Subscription} A subscription in order to be able to unsubscribe
-   * the scheduled work.
-   */
-  schedule<T>(work: (state?: T) => Subscription | void, delay?: number, state?: T): Subscription {
-    return void 0;
-  }
-
-  /**
-   * Prompt the Scheduler to execute all of its queued actions, therefore
-   * clearing its queue.
-   * @return {void}
-   */
-  flush(): void {
-    return void 0;
-  }
-
-  /**
-   * A flag to indicate whether the Scheduler is currently executing a batch of
-   * queued actions.
-   * @type {boolean}
-   */
-  active: boolean = false;
-
-  /**
-   * The queue of scheduled actions as an array.
-   * @type {Action[]}
-   */
-  actions: Action<any>[] = [];
-
-  /**
-   * An internal ID used to track the latest asynchronous task such as those
-   * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and
-   * others.
-   * @type {number}
-   */
-  scheduledId: number = 0;
 }

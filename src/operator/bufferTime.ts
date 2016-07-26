@@ -1,10 +1,10 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-import {Observable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
+import {Operator} from '../Operator';
 import {async} from '../scheduler/async';
+import {Observable} from '../Observable';
+import {Subscriber} from '../Subscriber';
+import {Subscription} from '../Subscription';
 import {isScheduler} from '../util/isScheduler';
 
 /**
@@ -207,7 +207,7 @@ function dispatchBufferTimeSpanOnly(state: any) {
     subscriber.closeContext(prevContext);
   }
 
-  if (!subscriber.isUnsubscribed) {
+  if (!subscriber.closed) {
     state.context = subscriber.openContext();
     state.context.closeAction = (<any>this).schedule(state, state.bufferTimeSpan);
   }
@@ -222,7 +222,7 @@ function dispatchBufferCreation<T>(state: CreationState<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const context = subscriber.openContext();
   const action = <Action<CreationState<T>>>this;
-  if (!subscriber.isUnsubscribed) {
+  if (!subscriber.closed) {
     subscriber.add(context.closeAction = scheduler.schedule<DispatchArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
     action.schedule(state, bufferCreationInterval);
   }

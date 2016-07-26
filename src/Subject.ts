@@ -27,7 +27,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   observers: Observer<T>[] = [];
 
-  isUnsubscribed = false;
+  closed = false;
 
   isStopped = false;
 
@@ -50,7 +50,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
   }
 
   next(value?: T) {
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
     if (!this.isStopped) {
@@ -64,7 +64,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
   }
 
   error(err: any) {
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
     this.hasError = true;
@@ -80,7 +80,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
   }
 
   complete() {
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
     this.isStopped = true;
@@ -95,12 +95,12 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   unsubscribe() {
     this.isStopped = true;
-    this.isUnsubscribed = true;
+    this.closed = true;
     this.observers = null;
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
-    if (this.isUnsubscribed) {
+    if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
       subscriber.error(this.thrownError);
@@ -125,8 +125,9 @@ export class Subject<T> extends Observable<T> implements ISubscription {
  * @class AnonymousSubject<T>
  */
 export class AnonymousSubject<T> extends Subject<T> {
-  constructor(protected destination?: Observer<T>, protected source?: Observable<T>) {
+  constructor(protected destination?: Observer<T>, source?: Observable<T>) {
     super();
+    this.source = source;
   }
 
   next(value: T) {

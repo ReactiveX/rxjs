@@ -7,8 +7,7 @@ import {$$iterator} from '../symbol/iterator';
 import {Subscription} from '../Subscription';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
-
-import $$observable from 'symbol-observable';
+import {$$observable} from '../symbol/observable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -20,7 +19,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
                                      outerIndex?: number): Subscription {
   let destination: Subscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
-  if (destination.isUnsubscribed) {
+  if (destination.closed) {
     return null;
   }
 
@@ -35,16 +34,16 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   }
 
   if (isArray(result)) {
-    for (let i = 0, len = result.length; i < len && !destination.isUnsubscribed; i++) {
+    for (let i = 0, len = result.length; i < len && !destination.closed; i++) {
       destination.next(result[i]);
     }
-    if (!destination.isUnsubscribed) {
+    if (!destination.closed) {
       destination.complete();
     }
   } else if (isPromise(result)) {
     result.then(
       (value) => {
-        if (!destination.isUnsubscribed) {
+        if (!destination.closed) {
           destination.next(<any>value);
           destination.complete();
         }
@@ -59,11 +58,11 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   } else if (typeof result[$$iterator] === 'function') {
     for (let item of <any>result) {
       destination.next(<any>item);
-      if (destination.isUnsubscribed) {
+      if (destination.closed) {
         break;
       }
     }
-    if (!destination.isUnsubscribed) {
+    if (!destination.closed) {
       destination.complete();
     }
   } else if (typeof result[$$observable] === 'function') {

@@ -115,6 +115,29 @@ describe('Observable.fromEvent', () => {
     expect(offHandler).to.equal(onHandler);
   });
 
+  it('should pass through options to addEventListener', () => {
+    let actualOptions;
+    const expectedOptions = { capture: true, passive: true };
+
+    const obj = {
+      addEventListener: (a: string, b: EventListenerOrEventListenerObject, c?: any) => {
+        actualOptions = c;
+      },
+      removeEventListener: (a: string, b: EventListenerOrEventListenerObject, c?: any) => {
+        //noop
+      }
+    };
+
+    const subscription = Observable.fromEvent(<any>obj, 'click', expectedOptions)
+      .subscribe(() => {
+        //noop
+       });
+
+    subscription.unsubscribe();
+
+    expect(actualOptions).to.equal(expectedOptions);
+  });
+
   it('should pass through events that occur', (done: MochaDone) => {
     let send;
     const obj = {

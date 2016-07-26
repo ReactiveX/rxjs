@@ -1,44 +1,46 @@
-import {Action} from './Action';
-import {FutureAction} from './FutureAction';
+import {AsyncAction} from './AsyncAction';
 import {AnimationFrame} from '../util/AnimationFrame';
+import {AnimationFrameScheduler} from './AnimationFrameScheduler';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
-export class AnimationFrameAction<T> extends FutureAction<T> {
+export class AnimationFrameAction<T> extends AsyncAction<T> {
 
-  protected _schedule(state?: T, delay: number = 0): Action<T> {
-    if (delay > 0) {
-      return super._schedule(state, delay);
-    }
-    this.delay = delay;
-    this.state = state;
-    const {scheduler} = this;
-    scheduler.actions.push(this);
-    if (!scheduler.scheduledId) {
-      scheduler.scheduledId = AnimationFrame.requestAnimationFrame(() => {
-        scheduler.scheduledId = null;
-        scheduler.flush();
-      });
-    }
-    return this;
+  constructor(protected scheduler: AnimationFrameScheduler,
+              protected work: (state?: T) => void) {
+    super(scheduler, work);
   }
 
-  protected _unsubscribe(): void {
-
-    const {scheduler} = this;
-    const {scheduledId, actions} = scheduler;
-
-    super._unsubscribe();
-
-    if (actions.length === 0) {
-      scheduler.active = false;
-      if (scheduledId != null) {
-        scheduler.scheduledId = null;
-        AnimationFrame.cancelAnimationFrame(scheduledId);
-      }
+  protected requestAsyncId(scheduler: AnimationFrameScheduler, id?: any, delay: number = 0): any {
+    // If delay is greater than 0, request as an async action.
+    if (delay !== null && delay > 0) {
+      return super.requestAsyncId(scheduler, id, delay);
     }
+    // Push the action to the end of the scheduler queue.
+    scheduler.actions.push(this);
+    // If an animation frame has already been requested, don't request another
+    // one. If an animation frame hasn't been requested yet, request one. Return
+    // the current animation frame request id.
+    return scheduler.scheduled || (scheduler.scheduled = AnimationFrame.requestAnimationFrame(
+      scheduler.flush.bind(scheduler, null)
+    ));
+  }
+  protected recycleAsyncId(scheduler: AnimationFrameScheduler, id?: any, delay: number = 0): any {
+    // If delay exists and is greater than 0, recycle as an async action.
+    if (delay !== null && delay > 0) {
+      return super.recycleAsyncId(scheduler, id, delay);
+    }
+    // If the scheduler queue is empty, cancel the requested animation frame and
+    // set the scheduled flag to undefined so the next AnimationFrameAction will
+    // request its own.
+    if (scheduler.actions.length === 0) {
+      AnimationFrame.cancelAnimationFrame(id);
+      scheduler.scheduled = undefined;
+    }
+    // Return undefined so the action knows to request a new async id if it's rescheduled.
+    return undefined;
   }
 }

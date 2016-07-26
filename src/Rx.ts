@@ -170,7 +170,7 @@ import {QueueScheduler} from './scheduler/QueueScheduler';
 import {AnimationFrameScheduler} from './scheduler/AnimationFrameScheduler';
 import {$$rxSubscriber as rxSubscriber} from './symbol/rxSubscriber';
 import {$$iterator as iterator} from './symbol/iterator';
-import observable from 'symbol-observable';
+import {$$observable as observable} from './symbol/observable';
 
 /* tslint:enable:no-unused-variable */
 
@@ -184,6 +184,8 @@ import observable from 'symbol-observable';
  * asynchronous conversions.
  * @property {Scheduler} async Schedules work with `setInterval`. Use this for
  * time-based operations.
+ * @property {Scheduler} animationFrame Schedules work with `requestAnimationFrame`.
+ * Use this for synchronizing with the platform's painting
  */
 let Scheduler = {
   asap,
