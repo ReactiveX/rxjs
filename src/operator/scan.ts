@@ -43,10 +43,6 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
   return this.lift(new ScanOperator(accumulator, seed));
 }
 
-export interface ScanSignature<T> {
-  <R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): Observable<R>;
-}
-
 class ScanOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, value: T, index: number) => R, private seed?: T | R) {
   }
@@ -75,7 +71,7 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
     this._seed = value;
   }
 
-  constructor(destination: Subscriber<R>, private accumulator: (acc: R, value: T, index: number) => R, seed?: T|R) {
+  constructor(destination: Subscriber<R>, private accumulator: (acc: R, value: T, index: number) => R, seed?: T | R) {
     super(destination);
     this.seed = seed;
     this.accumulatorSet = typeof seed !== 'undefined';
