@@ -2,7 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
 import {Operator} from '../Operator';
 import {async} from '../scheduler/async';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {isScheduler} from '../util/isScheduler';
@@ -50,7 +50,7 @@ import {isScheduler} from '../util/isScheduler';
  * @method bufferTime
  * @owner Observable
  */
-export function bufferTime<T>(bufferTimeSpan: number): Observable<T[]> {
+export function bufferTime<T>(bufferTimeSpan: number): IObservable<T[]> {
   let length: number = arguments.length;
 
   let scheduler: Scheduler = async;
@@ -73,9 +73,9 @@ export function bufferTime<T>(bufferTimeSpan: number): Observable<T[]> {
 }
 
 export interface BufferTimeSignature<T> {
-  (bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
-  (bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
-  (bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
+  (bufferTimeSpan: number, scheduler?: Scheduler): IObservable<T[]>;
+  (bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): IObservable<T[]>;
+  (bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): IObservable<T[]>;
 }
 
 class BufferTimeOperator<T> implements Operator<T, T[]> {

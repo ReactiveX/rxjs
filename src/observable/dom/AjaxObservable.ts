@@ -1,7 +1,7 @@
 import {root} from '../../util/root';
 import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
 import {TeardownLogic} from '../../Subscription';
 
@@ -61,33 +61,36 @@ function getXMLHttpRequest(): XMLHttpRequest {
 }
 
 export interface AjaxCreationMethod {
-  (urlOrRequest: string | AjaxRequest): Observable<AjaxResponse>;
-  get(url: string, headers?: Object): Observable<AjaxResponse>;
-  post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
-  put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
-  delete(url: string, headers?: Object): Observable<AjaxResponse>;
-  getJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R>;
+  (urlOrRequest: string | AjaxRequest): IObservable<AjaxResponse>;
+  get(url: string, headers?: Object): IObservable<AjaxResponse>;
+  post(url: string, body?: any, headers?: Object): IObservable<AjaxResponse>;
+  put(url: string, body?: any, headers?: Object): IObservable<AjaxResponse>;
+  delete(url: string, headers?: Object): IObservable<AjaxResponse>;
+  getJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): IObservable<R>;
 }
 
 export function ajaxGet(url: string, headers: Object = null) {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, headers });
 };
 
-export function ajaxPost(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+export function ajaxPost(url: string, body?: any, headers?: Object): IObservable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'POST', url, body, headers });
 };
 
-export function ajaxDelete(url: string, headers?: Object): Observable<AjaxResponse> {
+export function ajaxDelete(url: string, headers?: Object): IObservable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'DELETE', url, headers });
 };
 
-export function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+export function ajaxPut(url: string, body?: any, headers?: Object): IObservable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'PUT', url, body, headers });
 };
 
-export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
+export function ajaxGetJSON<T>(url: string, headers?: Object): IObservable<T> {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, responseType: 'json', headers }).map(x => x.response);
 };
+
+export interface IAjaxObservable<T> extends IObservable<T> { }
+export interface AjaxObservable<T> extends IAjaxObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

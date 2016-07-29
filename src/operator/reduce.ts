@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 
@@ -47,14 +47,14 @@ import {Subscriber} from '../Subscriber';
  * @method reduce
  * @owner Observable
  */
-export function reduce<T, R>(accumulator: (acc: R, value: T) => R, seed?: R): Observable<R> {
+export function reduce<T, R>(accumulator: (acc: R, value: T) => R, seed?: R): IObservable<R> {
   return this.lift(new ReduceOperator(accumulator, seed));
 }
 
 export interface ReduceSignature<T> {
-  (accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
-  (accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
-  <R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
+  (accumulator: (acc: T, value: T, index: number) => T, seed?: T): IObservable<T>;
+  (accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): IObservable<T[]>;
+  <R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): IObservable<R>;
 }
 
 export class ReduceOperator<T, R> implements Operator<T, R> {

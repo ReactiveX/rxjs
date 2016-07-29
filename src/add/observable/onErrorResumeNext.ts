@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {onErrorResumeNextStatic} from '../../operator/onErrorResumeNext';
 
 Observable.onErrorResumeNext = onErrorResumeNextStatic;

@@ -1,4 +1,4 @@
-import {Subject} from './Subject';
+import {Subject, ISubject} from './Subject';
 import {Scheduler} from './Scheduler';
 import {queue} from './scheduler/queue';
 import {Subscriber} from './Subscriber';

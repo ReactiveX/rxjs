@@ -1,4 +1,4 @@
-import {Subject} from './Subject';
+import {Subject, ISubject} from './Subject';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 

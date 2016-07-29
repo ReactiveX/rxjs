@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {distinctUntilKeyChanged, DistinctUntilKeyChangedSignature} from '../../operator/distinctUntilKeyChanged';
 
 Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     distinctUntilKeyChanged: DistinctUntilKeyChangedSignature<T>;
   }
 }

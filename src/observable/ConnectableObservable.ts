@@ -1,8 +1,11 @@
 import {Subject, SubjectSubscriber} from '../Subject';
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription, TeardownLogic} from '../Subscription';
+
+export interface IConnectableObservable<T> extends IObservable<T> { }
+export interface ConnectableObservable<T> extends IConnectableObservable<T> { }
 
 /**
  * @class ConnectableObservable<T>
@@ -13,7 +16,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   protected _refCount: number = 0;
   protected _connection: Subscription;
 
-  constructor(protected source: Observable<T>,
+  constructor(protected source: IObservable<T>,
               protected subjectFactory: () => Subject<T>) {
     super();
   }
@@ -46,7 +49,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     return connection;
   }
 
-  refCount(): Observable<T> {
+  refCount(): IObservable<T> {
     return this.lift(new RefCountOperator<T>(this));
   }
 }

@@ -3,7 +3,7 @@ import {isDate} from '../util/isDate';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -16,14 +16,14 @@ import {TeardownLogic} from '../Subscription';
  */
 export function timeout<T>(due: number | Date,
                            errorToSend: any = null,
-                           scheduler: Scheduler = async): Observable<T> {
+                           scheduler: Scheduler = async): IObservable<T> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
 }
 
 export interface TimeoutSignature<T> {
-  (due: number | Date, errorToSend?: any, scheduler?: Scheduler): Observable<T>;
+  (due: number | Date, errorToSend?: any, scheduler?: Scheduler): IObservable<T>;
 }
 
 class TimeoutOperator<T> implements Operator<T, T> {

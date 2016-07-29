@@ -1,18 +1,18 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 
 /**
  * @return {Observable<any[]>|WebSocketSubject<T>|Observable<T>}
  * @method toArray
  * @owner Observable
  */
-export function toArray<T>(): Observable<T[]> {
+export function toArray<T>(): IObservable<T[]> {
   return this.lift(new ToArrayOperator());
 }
 
 export interface ToArraySignature<T> {
-  (): Observable<T[]>;
+  (): IObservable<T[]>;
 }
 
 class ToArrayOperator<T> implements Operator<T, T[]> {

@@ -1,9 +1,12 @@
-import {Observable, SubscribableOrPromise} from '../Observable';
+import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
-
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
+
+export interface IIfObservable<T> extends IObservable<T> { }
+export interface IfObservable<T> extends IIfObservable<T> { }
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -13,7 +16,7 @@ export class IfObservable<T, R> extends Observable<T> {
 
   static create<T, R>(condition: () => boolean | void,
                       thenSource?: SubscribableOrPromise<T> | void,
-                      elseSource?: SubscribableOrPromise<R> | void): Observable<T|R> {
+                      elseSource?: SubscribableOrPromise<R> | void): IObservable<T|R> {
     return new IfObservable(condition, thenSource, elseSource);
   }
 

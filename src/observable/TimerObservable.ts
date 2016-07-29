@@ -1,11 +1,14 @@
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {async} from '../scheduler/async';
 import {isScheduler} from '../util/isScheduler';
 import {isDate} from '../util/isDate';
 import {TeardownLogic} from '../Subscription';
 import {Subscriber} from '../Subscriber';
+
+export interface ITimerObservable extends IObservable<number> { }
+export interface TimerObservable extends ITimerObservable { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -58,7 +61,7 @@ export class TimerObservable extends Observable<number> {
    */
   static create(initialDelay: number | Date = 0,
                 period?: number | Scheduler,
-                scheduler?: Scheduler): Observable<number> {
+                scheduler?: Scheduler): IObservable<number> {
     return new TimerObservable(initialDelay, period, scheduler);
   }
 

@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
@@ -15,12 +15,12 @@ import {TeardownLogic} from '../Subscription';
  * @method skipWhile
  * @owner Observable
  */
-export function skipWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
+export function skipWhile<T>(predicate: (value: T, index: number) => boolean): IObservable<T> {
   return this.lift(new SkipWhileOperator(predicate));
 }
 
 export interface SkipWhileSignature<T> {
-  (predicate: (value: T, index: number) => boolean): Observable<T>;
+  (predicate: (value: T, index: number) => boolean): IObservable<T>;
 }
 
 class SkipWhileOperator<T> implements Operator<T, T> {

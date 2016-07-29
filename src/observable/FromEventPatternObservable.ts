@@ -1,6 +1,9 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscription} from '../Subscription';
 import {Subscriber} from '../Subscriber';
+
+export interface IFromEventPatternObservable<T> extends IObservable<T> { }
+export interface FromEventPatternObservable<T> extends IFromEventPatternObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

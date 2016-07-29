@@ -1,4 +1,4 @@
-import {Observable, ObservableInput} from '../Observable';
+import {Observable, ObservableInput, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
 import {Subscriber} from '../Subscriber';
@@ -50,9 +50,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method mergeMapTo
  * @owner Observable
  */
-export function mergeMapTo<T, I, R>(innerObservable: Observable<I>,
+export function mergeMapTo<T, I, R>(innerObservable: IObservable<I>,
                                     resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
-                                    concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+                                    concurrent: number = Number.POSITIVE_INFINITY): IObservable<R> {
   if (typeof resultSelector === 'number') {
     concurrent = <number>resultSelector;
     resultSelector = null;
@@ -61,10 +61,10 @@ export function mergeMapTo<T, I, R>(innerObservable: Observable<I>,
 }
 
 export interface MergeMapToSignature<T> {
-  <R>(observable: ObservableInput<R>, concurrent?: number): Observable<R>;
+  <R>(observable: ObservableInput<R>, concurrent?: number): IObservable<R>;
   <I, R>(observable: ObservableInput<I>,
          resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
-         concurrent?: number): Observable<R>;
+         concurrent?: number): IObservable<R>;
 }
 
 // TODO: Figure out correct signature here: an Operator<Observable<T>, R>

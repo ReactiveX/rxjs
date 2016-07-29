@@ -1,4 +1,4 @@
-import {Observable} from '../../../Observable';
+import {Observable, IObservable} from '../../../Observable';
 import {ajax as staticAjax} from '../../../observable/dom/ajax';
 import {AjaxCreationMethod} from '../../../observable/dom/AjaxObservable';
 

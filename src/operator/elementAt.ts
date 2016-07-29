@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -41,12 +41,12 @@ import {TeardownLogic} from '../Subscription';
  * @method elementAt
  * @owner Observable
  */
-export function elementAt<T>(index: number, defaultValue?: T): Observable<T> {
+export function elementAt<T>(index: number, defaultValue?: T): IObservable<T> {
   return this.lift(new ElementAtOperator(index, defaultValue));
 }
 
 export interface ElementAtSignature<T> {
-  (index: number, defaultValue?: T): Observable<T>;
+  (index: number, defaultValue?: T): IObservable<T>;
 }
 
 class ElementAtOperator<T> implements Operator<T, T> {

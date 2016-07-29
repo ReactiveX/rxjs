@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {publishReplay, PublishReplaySignature} from '../../operator/publishReplay';
 
 Observable.prototype.publishReplay = publishReplay;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     publishReplay: PublishReplaySignature<T>;
   }
 }

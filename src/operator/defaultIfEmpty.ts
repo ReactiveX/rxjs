@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 /**
@@ -32,13 +32,13 @@ import {Subscriber} from '../Subscriber';
  * @method defaultIfEmpty
  * @owner Observable
  */
-export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T | R> {
+export function defaultIfEmpty<T, R>(defaultValue: R = null): IObservable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
 export interface DefaultIfEmptySignature<T> {
-  (defaultValue?: T): Observable<T>;
-  <R>(defaultValue?: R): Observable<T | R>;
+  (defaultValue?: T): IObservable<T>;
+  <R>(defaultValue?: R): IObservable<T | R>;
 }
 
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {

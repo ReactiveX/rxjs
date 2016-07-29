@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {isArray} from '../util/isArray';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {Operator} from '../Operator';
@@ -16,7 +16,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method race
  * @owner Observable
  */
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T> {
+export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): IObservable<T> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1 && isArray(observables[0])) {
@@ -28,8 +28,8 @@ export function race<T>(...observables: Array<Observable<T> | Array<Observable<T
 }
 
 export interface RaceSignature<T> {
-  (...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
-  <R>(...observables: Array<Observable<any> | Array<Observable<T>>>): Observable<R>;
+  (...observables: Array<Observable<T> | Array<Observable<T>>>): IObservable<T>;
+  <R>(...observables: Array<Observable<any> | Array<Observable<T>>>): IObservable<R>;
 }
 
 /**
@@ -40,8 +40,8 @@ export interface RaceSignature<T> {
  * @name race
  * @owner Observable
  */
-export function raceStatic<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
-export function raceStatic<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {
+export function raceStatic<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): IObservable<T>;
+export function raceStatic<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): IObservable<T> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1) {
@@ -68,7 +68,7 @@ export class RaceOperator<T> implements Operator<T, T> {
  */
 export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
   private hasFirst: boolean = false;
-  private observables: Observable<any>[] = [];
+  private observables: IObservable<any>[] = [];
   private subscriptions: Subscription[] = [];
 
   constructor(destination: Subscriber<T>) {

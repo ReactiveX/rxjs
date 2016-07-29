@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable, ObservableInput} from '../Observable';
+import {Observable, ObservableInput, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -34,7 +34,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link mergeMap}
  * @see {@link switchMap}
  *
- * @param {function(value: T, ?index: number): Observable} project A function
+ * @param {function(value: T, ?index: number): IObservable} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
@@ -52,14 +52,14 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @owner Observable
  */
 export function exhaustMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>,
-                                    resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {
+                                    resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): IObservable<R> {
   return this.lift(new SwitchFirstMapOperator(project, resultSelector));
 }
 
 export interface SwitchFirstMapSignature<T> {
-  <R>(project: (value: T, index: number) => ObservableInput<R>): Observable<R>;
+  <R>(project: (value: T, index: number) => ObservableInput<R>): IObservable<R>;
   <I, R>(project: (value: T, index: number) => ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): IObservable<R>;
 }
 
 class SwitchFirstMapOperator<T, I, R> implements Operator<T, R> {

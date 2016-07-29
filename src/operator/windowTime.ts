@@ -1,10 +1,10 @@
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
-import {Subject} from '../Subject';
+import {Subject, ISubject} from '../Subject';
 import {Operator} from '../Operator';
 import {async} from '../scheduler/async';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscription} from '../Subscription';
 
 /**
@@ -58,12 +58,12 @@ import {Subscription} from '../Subscription';
  */
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,
-                              scheduler: Scheduler = async): Observable<Observable<T>> {
+                              scheduler: Scheduler = async): IObservable<Observable<T>> {
   return this.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, scheduler));
 }
 
 export interface WindowTimeSignature<T> {
-  (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler): Observable<Observable<T>>;
+  (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler): IObservable<Observable<T>>;
 }
 
 class WindowTimeOperator<T> implements Operator<T, Observable<T>> {

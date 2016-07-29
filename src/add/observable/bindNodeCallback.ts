@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {bindNodeCallback as staticBindNodeCallback} from '../../observable/bindNodeCallback';
 
 Observable.bindNodeCallback = staticBindNodeCallback;

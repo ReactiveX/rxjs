@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -14,12 +14,12 @@ import {TeardownLogic} from '../Subscription';
  * @method skip
  * @owner Observable
  */
-export function skip<T>(total: number): Observable<T> {
+export function skip<T>(total: number): IObservable<T> {
   return this.lift(new SkipOperator(total));
 }
 
 export interface SkipSignature<T> {
-  (total: number): Observable<T>;
+  (total: number): IObservable<T>;
 }
 
 class SkipOperator<T> implements Operator<T, T> {

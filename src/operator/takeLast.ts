@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observable/EmptyObservable';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -41,7 +41,7 @@ import {TeardownLogic} from '../Subscription';
  * @method takeLast
  * @owner Observable
  */
-export function takeLast<T>(count: number): Observable<T> {
+export function takeLast<T>(count: number): IObservable<T> {
   if (count === 0) {
     return new EmptyObservable<T>();
   } else {
@@ -50,7 +50,7 @@ export function takeLast<T>(count: number): Observable<T> {
 }
 
 export interface TakeLastSignature<T> {
-  (count: number): Observable<T>;
+  (count: number): IObservable<T>;
 }
 
 class TakeLastOperator<T> implements Operator<T, T> {

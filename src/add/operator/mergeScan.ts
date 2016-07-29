@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {mergeScan, MergeScanSignature} from '../../operator/mergeScan';
 
 Observable.prototype.mergeScan = mergeScan;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     mergeScan: MergeScanSignature<T>;
   }
 }

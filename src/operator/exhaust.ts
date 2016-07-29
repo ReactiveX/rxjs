@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription, TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -41,7 +41,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method exhaust
  * @owner Observable
  */
-export function exhaust<T>(): Observable<T> {
+export function exhaust<T>(): IObservable<T> {
   return this.lift(new SwitchFirstOperator<T>());
 }
 

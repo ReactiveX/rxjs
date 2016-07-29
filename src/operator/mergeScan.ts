@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
@@ -18,12 +18,12 @@ import {InnerSubscriber} from '../InnerSubscriber';
  */
 export function mergeScan<T, R>(project: (acc: R, value: T) => Observable<R>,
                                 seed: R,
-                                concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+                                concurrent: number = Number.POSITIVE_INFINITY): IObservable<R> {
   return this.lift(new MergeScanOperator(project, seed, concurrent));
 }
 
 export interface MergeScanSignature<T> {
-  <R>(project: (acc: R, value: T) => Observable<R>, seed: R, concurrent?: number): Observable<R>;
+  <R>(project: (acc: R, value: T) => Observable<R>, seed: R, concurrent?: number): IObservable<R>;
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
@@ -47,7 +47,7 @@ export class MergeScanOperator<T, R> implements Operator<T, R> {
 export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasValue: boolean = false;
   private hasCompleted: boolean = false;
-  private buffer: Observable<any>[] = [];
+  private buffer: IObservable<any>[] = [];
   private active: number = 0;
   protected index: number = 0;
 

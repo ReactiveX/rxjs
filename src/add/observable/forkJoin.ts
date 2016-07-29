@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {forkJoin as staticForkJoin} from '../../observable/forkJoin';
 
 Observable.forkJoin = staticForkJoin;

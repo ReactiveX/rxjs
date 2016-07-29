@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {debounceTime, DebounceTimeSignature} from '../../operator/debounceTime';
 
 Observable.prototype.debounceTime = debounceTime;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     debounceTime: DebounceTimeSignature<T>;
   }
 }

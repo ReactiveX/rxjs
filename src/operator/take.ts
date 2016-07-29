@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observable/EmptyObservable';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -38,7 +38,7 @@ import {TeardownLogic} from '../Subscription';
  * @method take
  * @owner Observable
  */
-export function take<T>(count: number): Observable<T> {
+export function take<T>(count: number): IObservable<T> {
   if (count === 0) {
     return new EmptyObservable<T>();
   } else {
@@ -47,7 +47,7 @@ export function take<T>(count: number): Observable<T> {
 }
 
 export interface TakeSignature<T> {
-  (count: number): Observable<T>;
+  (count: number): IObservable<T>;
 }
 
 class TakeOperator<T> implements Operator<T, T> {

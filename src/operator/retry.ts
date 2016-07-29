@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -20,17 +20,17 @@ import {TeardownLogic} from '../Subscription';
  * @method retry
  * @owner Observable
  */
-export function retry<T>(count: number = -1): Observable<T> {
+export function retry<T>(count: number = -1): IObservable<T> {
   return this.lift(new RetryOperator(count, this));
 }
 
 export interface RetrySignature<T> {
-  (count?: number): Observable<T>;
+  (count?: number): IObservable<T>;
 }
 
 class RetryOperator<T> implements Operator<T, T> {
   constructor(private count: number,
-              private source: Observable<T>) {
+              private source: IObservable<T>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -46,7 +46,7 @@ class RetryOperator<T> implements Operator<T, T> {
 class RetrySubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<any>,
               private count: number,
-              private source: Observable<T>) {
+              private source: IObservable<T>) {
     super(destination);
   }
   error(err: any) {

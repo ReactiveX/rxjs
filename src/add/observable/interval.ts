@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {interval as staticInterval} from '../../observable/interval';
 
 Observable.interval = staticInterval;

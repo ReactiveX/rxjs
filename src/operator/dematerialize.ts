@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 
@@ -38,12 +38,12 @@ import {Notification} from '../Notification';
  * @method dematerialize
  * @owner Observable
  */
-export function dematerialize<T>(): Observable<any> {
+export function dematerialize<T>(): IObservable<any> {
   return this.lift(new DeMaterializeOperator());
 }
 
 export interface DematerializeSignature<T> {
-  <R>(): Observable<R>;
+  <R>(): IObservable<R>;
 }
 
 class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {

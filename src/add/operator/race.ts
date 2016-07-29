@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {race, RaceSignature} from '../../operator/race';
 
 Observable.prototype.race = race;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     race: RaceSignature<T>;
   }
 }

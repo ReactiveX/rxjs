@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
@@ -56,15 +56,15 @@ import {subscribeToResult} from '../util/subscribeToResult';
  */
 export function expand<T, R>(project: (value: T, index: number) => Observable<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
-                             scheduler: Scheduler = undefined): Observable<R> {
+                             scheduler: Scheduler = undefined): IObservable<R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
 
   return this.lift(new ExpandOperator(project, concurrent, scheduler));
 }
 
 export interface ExpandSignature<T> {
-  (project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): Observable<T>;
-  <R>(project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): Observable<R>;
+  (project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): IObservable<T>;
+  <R>(project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): IObservable<R>;
 }
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
@@ -80,7 +80,7 @@ export class ExpandOperator<T, R> implements Operator<T, R> {
 
 interface DispatchArg<T, R> {
   subscriber: ExpandSubscriber<T, R>;
-  result: Observable<R>;
+  result: IObservable<R>;
   value: any;
   index: number;
 }

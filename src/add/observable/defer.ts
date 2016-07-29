@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {defer as staticDefer} from '../../observable/defer';
 
 Observable.defer = staticDefer;

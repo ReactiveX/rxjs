@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Subscription, TeardownLogic} from '../Subscription';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when
@@ -11,12 +11,12 @@ import {Observable} from '../Observable';
  * @method finally
  * @owner Observable
  */
-export function _finally<T>(callback: () => void): Observable<T> {
+export function _finally<T>(callback: () => void): IObservable<T> {
   return this.lift(new FinallyOperator(callback));
 }
 
 export interface FinallySignature<T> {
-  (callback: () => void): Observable<T>;
+  (callback: () => void): IObservable<T>;
 }
 
 class FinallyOperator<T> implements Operator<T, T> {

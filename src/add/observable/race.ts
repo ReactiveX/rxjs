@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {raceStatic} from '../../operator/race';
 
 Observable.race = raceStatic;

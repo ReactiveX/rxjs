@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscription, TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -40,7 +40,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link debounce}
  * @see {@link delay}
  *
- * @param {function(value: T): Observable} delayDurationSelector A function that
+ * @param {function(value: T): IObservable} delayDurationSelector A function that
  * returns an Observable for each value emitted by the source Observable, which
  * is then used to delay the emission of that item on the output Observable
  * until the Observable returned from this function emits a value.
@@ -53,7 +53,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @owner Observable
  */
 export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>,
-                             subscriptionDelay?: Observable<any>): Observable<T> {
+                             subscriptionDelay?: IObservable<any>): IObservable<T> {
   if (subscriptionDelay) {
     return new SubscriptionDelayObservable(this, subscriptionDelay)
             .lift(new DelayWhenOperator(delayDurationSelector));
@@ -62,7 +62,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any
 }
 
 export interface DelayWhenSignature<T> {
-  (delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: Observable<any>): Observable<T>;
+  (delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: IObservable<any>): IObservable<T>;
 }
 
 class DelayWhenOperator<T> implements Operator<T, T> {
@@ -140,7 +140,7 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     return value;
   }
 
-  private tryDelay(delayNotifier: Observable<any>, value: T): void {
+  private tryDelay(delayNotifier: IObservable<any>, value: T): void {
     const notifierSubscription = subscribeToResult(this, delayNotifier, value);
     this.add(notifierSubscription);
 
@@ -161,7 +161,7 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
  * @extends {Ignored}
  */
 class SubscriptionDelayObservable<T> extends Observable<T> {
-  constructor(protected source: Observable<T>, private subscriptionDelay: Observable<any>) {
+  constructor(protected source: IObservable<T>, private subscriptionDelay: IObservable<any>) {
     super();
   }
 
@@ -178,7 +178,7 @@ class SubscriptionDelayObservable<T> extends Observable<T> {
 class SubscriptionDelaySubscriber<T> extends Subscriber<T> {
   private sourceSubscribed: boolean = false;
 
-  constructor(private parent: Subscriber<T>, private source: Observable<T>) {
+  constructor(private parent: Subscriber<T>, private source: IObservable<T>) {
     super();
   }
 

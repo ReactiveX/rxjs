@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {publishBehavior, PublishBehaviorSignature} from '../../operator/publishBehavior';
 
 Observable.prototype.publishBehavior = publishBehavior;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     publishBehavior: PublishBehaviorSignature<T>;
   }
 }

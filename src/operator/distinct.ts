@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
@@ -18,16 +18,16 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method distinct
  * @owner Observable
  */
-export function distinct<T>(compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
+export function distinct<T>(compare?: (x: T, y: T) => boolean, flushes?: IObservable<any>): IObservable<T> {
   return this.lift(new DistinctOperator(compare, flushes));
 }
 
 export interface DistinctSignature<T> {
-  (compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T>;
+  (compare?: (x: T, y: T) => boolean, flushes?: IObservable<any>): IObservable<T>;
 }
 
 class DistinctOperator<T> implements Operator<T, T> {
-  constructor(private compare: (x: T, y: T) => boolean, private flushes: Observable<any>) {
+  constructor(private compare: (x: T, y: T) => boolean, private flushes: IObservable<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -43,7 +43,7 @@ class DistinctOperator<T> implements Operator<T, T> {
 export class DistinctSubscriber<T> extends OuterSubscriber<T, T> {
   private values: Array<T> = [];
 
-  constructor(destination: Subscriber<T>, compare: (x: T, y: T) => boolean, flushes: Observable<any>) {
+  constructor(destination: Subscriber<T>, compare: (x: T, y: T) => boolean, flushes: IObservable<any>) {
     super(destination);
     if (typeof compare === 'function') {
       this.compare = compare;

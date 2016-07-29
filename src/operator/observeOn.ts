@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
@@ -15,12 +15,12 @@ import {TeardownLogic} from '../Subscription';
  * @method observeOn
  * @owner Observable
  */
-export function observeOn<T>(scheduler: Scheduler, delay: number = 0): Observable<T> {
+export function observeOn<T>(scheduler: Scheduler, delay: number = 0): IObservable<T> {
   return this.lift(new ObserveOnOperator(scheduler, delay));
 }
 
 export interface ObserveOnSignature<T> {
-  (scheduler: Scheduler, delay?: number): Observable<T>;
+  (scheduler: Scheduler, delay?: number): IObservable<T>;
 }
 
 export class ObserveOnOperator<T> implements Operator<T, T> {

@@ -1,5 +1,5 @@
 import {PartialObserver} from './Observer';
-import {Observable} from './Observable';
+import {Observable, IObservable} from './Observable';
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
@@ -80,7 +80,7 @@ export class Notification<T> {
    * by this Notification instance.
    * @return {any}
    */
-  toObservable(): Observable<T> {
+  toObservable(): IObservable<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':

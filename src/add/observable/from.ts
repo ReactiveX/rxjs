@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {from as staticFrom} from '../../observable/from';
 
 Observable.from = staticFrom;

@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
@@ -6,6 +6,8 @@ import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {AsyncSubject} from '../AsyncSubject';
 
+export interface IBoundCallbackObservable<T> extends IObservable<T> { }
+export interface BoundCallbackObservable<T> extends IBoundCallbackObservable<T> { }
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -63,7 +65,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * callback and maps those a value to emit on the output Observable.
    * @param {Scheduler} [scheduler] The scheduler on which to schedule the
    * callbacks.
-   * @return {function(...params: *): Observable} A function which returns the
+   * @return {function(...params: *): IObservable} A function which returns the
    * Observable that delivers the same values the callback would deliver.
    * @static true
    * @name bindCallback
@@ -71,8 +73,8 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    */
   static create<T>(func: Function,
                    selector: Function | void = undefined,
-                   scheduler?: Scheduler): (...args: any[]) => Observable<T> {
-    return (...args: any[]): Observable<T> => {
+                   scheduler?: Scheduler): (...args: any[]) => IObservable<T> {
+    return (...args: any[]): IObservable<T> => {
       return new BoundCallbackObservable<T>(func, <any>selector, args, scheduler);
     };
   }

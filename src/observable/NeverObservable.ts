@@ -1,6 +1,9 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
+
+export interface INeverObservable<T> extends IObservable<T> { }
+export interface NeverObservable<T> extends INeverObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

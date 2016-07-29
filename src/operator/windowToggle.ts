@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subject} from '../Subject';
+import {Observable, IObservable} from '../Observable';
+import {Subject, ISubject} from '../Subject';
 import {Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
@@ -43,7 +43,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *
  * @param {Observable<O>} openings An observable of notifications to start new
  * windows.
- * @param {function(value: O): Observable} closingSelector A function that takes
+ * @param {function(value: O): IObservable} closingSelector A function that takes
  * the value emitted by the `openings` observable and returns an Observable,
  * which, when it emits (either `next` or `complete`), signals that the
  * associated window should complete.
@@ -52,18 +52,18 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method windowToggle
  * @owner Observable
  */
-export function windowToggle<T, O>(openings: Observable<O>,
-                                   closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
+export function windowToggle<T, O>(openings: IObservable<O>,
+                                   closingSelector: (openValue: O) => Observable<any>): IObservable<Observable<T>> {
   return this.lift(new WindowToggleOperator<T, O>(openings, closingSelector));
 }
 
 export interface WindowToggleSignature<T> {
-  <O>(openings: Observable<O>, closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>>;
+  <O>(openings: IObservable<O>, closingSelector: (openValue: O) => Observable<any>): IObservable<Observable<T>>;
 }
 
 class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
 
-  constructor(private openings: Observable<O>,
+  constructor(private openings: IObservable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
   }
 
@@ -89,7 +89,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   private openSubscription: Subscription;
 
   constructor(destination: Subscriber<Observable<T>>,
-              private openings: Observable<O>,
+              private openings: IObservable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
     this.add(this.openSubscription = subscribeToResult(this, openings, openings));

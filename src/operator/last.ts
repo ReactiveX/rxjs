@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {EmptyError} from '../util/EmptyError';
@@ -20,24 +20,24 @@ import {EmptyError} from '../util/EmptyError';
  * @method last
  * @owner Observable
  */
-export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+export function last<T, R>(predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
                            resultSelector?: (value: T, index: number) => R | void,
-                           defaultValue?: R): Observable<T | R> {
+                           defaultValue?: R): IObservable<T | R> {
   return this.lift(new LastOperator(predicate, resultSelector, defaultValue, this));
 }
 
 export interface LastSignature<T> {
-  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
-  (predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
-  <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
-      defaultValue?: R): Observable<R>;
+  (predicate?: (value: T, index: number, source: IObservable<T>) => boolean): IObservable<T>;
+  (predicate: (value: T, index: number, source: IObservable<T>) => boolean, resultSelector: void, defaultValue?: T): IObservable<T>;
+  <R>(predicate?: (value: T, index: number, source: IObservable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
+      defaultValue?: R): IObservable<R>;
 }
 
 class LastOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  constructor(private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
-              private source?: Observable<T>) {
+              private source?: IObservable<T>) {
   }
 
   call(observer: Subscriber<R>, source: any): any {
@@ -56,10 +56,10 @@ class LastSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
-              private source?: Observable<T>) {
+              private source?: IObservable<T>) {
     super(destination);
     if (typeof defaultValue !== 'undefined') {
       this.lastValue = defaultValue;

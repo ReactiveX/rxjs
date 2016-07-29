@@ -1,14 +1,17 @@
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {asap} from '../scheduler/asap';
 import {isNumeric} from '../util/isNumeric';
 
 export interface DispatchArg<T> {
-  source: Observable<T>;
+  source: IObservable<T>;
   subscriber: Subscriber<T>;
 }
+
+export interface ISubscribeOnObservable<T> extends IObservable<T> { }
+export interface SubscribeOnObservable<T> extends ISubscribeOnObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -16,7 +19,7 @@ export interface DispatchArg<T> {
  * @hide true
  */
 export class SubscribeOnObservable<T> extends Observable<T> {
-  static create<T>(source: Observable<T>, delay: number = 0, scheduler: Scheduler = asap): Observable<T> {
+  static create<T>(source: IObservable<T>, delay: number = 0, scheduler: Scheduler = asap): IObservable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
@@ -25,7 +28,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     return source.subscribe(subscriber);
   }
 
-  constructor(public source: Observable<T>,
+  constructor(public source: IObservable<T>,
               private delayTime: number = 0,
               private scheduler: Scheduler = asap) {
     super();

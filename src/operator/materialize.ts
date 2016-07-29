@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 
@@ -40,12 +40,12 @@ import {Notification} from '../Notification';
  * @method materialize
  * @owner Observable
  */
-export function materialize<T>(): Observable<Notification<T>> {
+export function materialize<T>(): IObservable<Notification<T>> {
   return this.lift(new MaterializeOperator());
 }
 
 export interface MaterializeSignature<T> {
-  (): Observable<Notification<T>>;
+  (): IObservable<Notification<T>>;
 }
 
 class MaterializeOperator<T> implements Operator<T, Notification<T>> {

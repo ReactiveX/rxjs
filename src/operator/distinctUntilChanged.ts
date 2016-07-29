@@ -2,7 +2,7 @@ import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -14,13 +14,13 @@ import {TeardownLogic} from '../Subscription';
  * @method distinctUntilChanged
  * @owner Observable
  */
-export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
+export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): IObservable<T> {
   return this.lift(new DistinctUntilChangedOperator<T, K>(compare, keySelector));
 }
 
 export interface DistinctUntilChangedSignature<T> {
- (compare?: (x: T, y: T) => boolean): Observable<T>;
- <K>(compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
+ (compare?: (x: T, y: T) => boolean): IObservable<T>;
+ <K>(compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): IObservable<T>;
 }
 
 class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {

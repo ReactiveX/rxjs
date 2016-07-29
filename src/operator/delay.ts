@@ -4,7 +4,7 @@ import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -47,14 +47,14 @@ import {TeardownLogic} from '../Subscription';
  * @owner Observable
  */
 export function delay<T>(delay: number|Date,
-                         scheduler: Scheduler = async): Observable<T> {
+                         scheduler: Scheduler = async): IObservable<T> {
   const absoluteDelay = isDate(delay);
   const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(<number>delay);
   return this.lift(new DelayOperator(delayFor, scheduler));
 }
 
 export interface DelaySignature<T> {
-  (delay: number | Date, scheduler?: Scheduler): Observable<T>;
+  (delay: number | Date, scheduler?: Scheduler): IObservable<T>;
 }
 
 class DelayOperator<T> implements Operator<T, T> {

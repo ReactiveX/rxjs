@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {pairwise, PairwiseSignature} from '../../operator/pairwise';
 
 Observable.prototype.pairwise = pairwise;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     pairwise: PairwiseSignature<T>;
   }
 }

@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable, SubscribableOrPromise} from '../Observable';
+import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
 import {Subscription} from '../Subscription';
 
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -46,12 +46,12 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * @owner Observable
  */
 export function bufferToggle<T, O>(openings: SubscribableOrPromise<O>,
-                                   closingSelector: (value: O) => SubscribableOrPromise<any>): Observable<T[]> {
+                                   closingSelector: (value: O) => SubscribableOrPromise<any>): IObservable<T[]> {
   return this.lift(new BufferToggleOperator<T, O>(openings, closingSelector));
 }
 
 export interface BufferToggleSignature<T> {
-  <O>(openings: SubscribableOrPromise<O>, closingSelector: (value: O) => SubscribableOrPromise<any>): Observable<T[]>;
+  <O>(openings: SubscribableOrPromise<O>, closingSelector: (value: O) => SubscribableOrPromise<any>): IObservable<T[]>;
 }
 
 class BufferToggleOperator<T, O> implements Operator<T, T[]> {

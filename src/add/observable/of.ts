@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {of as staticOf} from '../../observable/of';
 
 Observable.of = staticOf;

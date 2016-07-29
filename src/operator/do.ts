@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {PartialObserver} from '../Observer';
 import {TeardownLogic} from '../Subscription';
 
@@ -49,13 +49,13 @@ import {TeardownLogic} from '../Subscription';
  */
 export function _do<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void),
                        error?: (e: any) => void,
-                       complete?: () => void): Observable<T> {
+                       complete?: () => void): IObservable<T> {
   return this.lift(new DoOperator(nextOrObserver, error, complete));
 }
 
 export interface DoSignature<T> {
-  (next: (x: T) => void, error?: (e: any) => void, complete?: () => void): Observable<T>;
-  (observer: PartialObserver<T>): Observable<T>;
+  (next: (x: T) => void, error?: (e: any) => void, complete?: () => void): IObservable<T>;
+  (observer: PartialObserver<T>): IObservable<T>;
 }
 
 class DoOperator<T> implements Operator<T, T> {

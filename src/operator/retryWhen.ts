@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subject} from '../Subject';
+import {Observable, IObservable} from '../Observable';
+import {Subject, ISubject} from '../Subject';
 import {Subscription, TeardownLogic} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -26,17 +26,17 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method retryWhen
  * @owner Observable
  */
-export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<any>): Observable<T> {
+export function retryWhen<T>(notifier: (errors: IObservable<any>) => Observable<any>): IObservable<T> {
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
 export interface RetryWhenSignature<T> {
-  (notifier: (errors: Observable<any>) => Observable<any>): Observable<T>;
+  (notifier: (errors: IObservable<any>) => Observable<any>): IObservable<T>;
 }
 
 class RetryWhenOperator<T> implements Operator<T, T> {
-  constructor(protected notifier: (errors: Observable<any>) => Observable<any>,
-              protected source: Observable<T>) {
+  constructor(protected notifier: (errors: IObservable<any>) => Observable<any>,
+              protected source: IObservable<T>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -52,12 +52,12 @@ class RetryWhenOperator<T> implements Operator<T, T> {
 class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private errors: Subject<any>;
-  private retries: Observable<any>;
+  private retries: IObservable<any>;
   private retriesSubscription: Subscription;
 
   constructor(destination: Subscriber<R>,
-              private notifier: (errors: Observable<any>) => Observable<any>,
-              private source: Observable<T>) {
+              private notifier: (errors: IObservable<any>) => Observable<any>,
+              private source: IObservable<T>) {
     super(destination);
   }
 

@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable, SubscribableOrPromise} from '../Observable';
+import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription, TeardownLogic} from '../Subscription';
 
@@ -40,7 +40,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link delayWhen}
  * @see {@link throttle}
  *
- * @param {function(value: T): Observable|Promise} durationSelector A function
+ * @param {function(value: T): IObservable|Promise} durationSelector A function
  * that receives a value from the source Observable, for computing the timeout
  * duration for each source value, returned as an Observable or a Promise.
  * @return {Observable} An Observable that delays the emissions of the source
@@ -49,12 +49,12 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method debounce
  * @owner Observable
  */
-export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
+export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): IObservable<T> {
   return this.lift(new DebounceOperator(durationSelector));
 }
 
 export interface DebounceSignature<T> {
-  (durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T>;
+  (durationSelector: (value: T) => SubscribableOrPromise<number>): IObservable<T>;
 }
 
 class DebounceOperator<T> implements Operator<T, T> {

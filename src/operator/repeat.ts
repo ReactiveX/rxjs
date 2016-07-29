@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {EmptyObservable} from '../observable/EmptyObservable';
 import {TeardownLogic} from '../Subscription';
 
@@ -18,7 +18,7 @@ import {TeardownLogic} from '../Subscription';
  * @method repeat
  * @owner Observable
  */
-export function repeat<T>(count: number = -1): Observable<T> {
+export function repeat<T>(count: number = -1): IObservable<T> {
   if (count === 0) {
     return new EmptyObservable<T>();
   } else if (count < 0) {
@@ -29,12 +29,12 @@ export function repeat<T>(count: number = -1): Observable<T> {
 }
 
 export interface RepeatSignature<T> {
-  (count?: number): Observable<T>;
+  (count?: number): IObservable<T>;
 }
 
 class RepeatOperator<T> implements Operator<T, T> {
   constructor(private count: number,
-              private source: Observable<T>) {
+              private source: IObservable<T>) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
@@ -49,7 +49,7 @@ class RepeatOperator<T> implements Operator<T, T> {
 class RepeatSubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<any>,
               private count: number,
-              private source: Observable<T>) {
+              private source: IObservable<T>) {
     super(destination);
   }
   complete() {

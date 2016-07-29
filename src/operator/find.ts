@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 
@@ -26,7 +26,7 @@ import {Subscriber} from '../Subscriber';
  * @see {@link findIndex}
  * @see {@link take}
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate
+ * @param {function(value: T, index: number, source: IObservable<T>): boolean} predicate
  * A function called with each item to test for condition matching.
  * @param {any} [thisArg] An optional argument to determine the value of `this`
  * in the `predicate` function.
@@ -35,8 +35,8 @@ import {Subscriber} from '../Subscriber';
  * @method find
  * @owner Observable
  */
-export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): Observable<T> {
+export function find<T>(predicate: (value: T, index: number, source: IObservable<T>) => boolean,
+                        thisArg?: any): IObservable<T> {
   if (typeof predicate !== 'function') {
     throw new TypeError('predicate is not a function');
   }
@@ -44,12 +44,12 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
 }
 
 export interface FindSignature<T> {
-  (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<T>;
+  (predicate: (value: T, index: number, source: IObservable<T>) => boolean, thisArg?: any): IObservable<T>;
 }
 
 export class FindValueOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private source: Observable<T>,
+  constructor(private predicate: (value: T, index: number, source: IObservable<T>) => boolean,
+              private source: IObservable<T>,
               private yieldIndex: boolean,
               private thisArg?: any) {
   }
@@ -68,8 +68,8 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private source: Observable<T>,
+              private predicate: (value: T, index: number, source: IObservable<T>) => boolean,
+              private source: IObservable<T>,
               private yieldIndex: boolean,
               private thisArg?: any) {
     super(destination);

@@ -1,6 +1,6 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Notification} from '../Notification';
-import {Subject} from '../Subject';
+import {Subject, ISubject} from '../Subject';
 import {ColdObservable} from './ColdObservable';
 import {HotObservable} from './HotObservable';
 import {TestMessage} from './TestMessage';
@@ -34,7 +34,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return indexOf * TestScheduler.frameTimeFactor;
   }
 
-  createColdObservable<T>(marbles: string, values?: any, error?: any): Observable<T> {
+  createColdObservable<T>(marbles: string, values?: any, error?: any): IObservable<T> {
     if (marbles.indexOf('^') !== -1) {
       throw new Error('Cold observable cannot have subscription offset "^"');
     }
@@ -57,7 +57,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return subject;
   }
 
-  private materializeInnerObservable(observable: Observable<any>,
+  private materializeInnerObservable(observable: IObservable<any>,
                                      outerFrame: number): TestMessage[] {
     const messages: TestMessage[] = [];
     observable.subscribe((value) => {
@@ -70,7 +70,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return messages;
   }
 
-  expectObservable(observable: Observable<any>,
+  expectObservable(observable: IObservable<any>,
                    unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };

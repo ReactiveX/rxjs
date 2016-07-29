@@ -1,5 +1,5 @@
 import {MergeMapOperator} from './mergeMap';
-import {Observable, ObservableInput} from '../Observable';
+import {Observable, ObservableInput, IObservable} from '../Observable';
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -36,7 +36,7 @@ import {Observable, ObservableInput} from '../Observable';
  * @see {@link mergeMap}
  * @see {@link switchMap}
  *
- * @param {function(value: T, ?index: number): Observable} project A function
+ * @param {function(value: T, ?index: number): IObservable} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
@@ -63,7 +63,7 @@ export function concatMap<T, I, R>(project: (value: T, index: number) =>  Observ
 }
 
 export interface ConcatMapSignature<T> {
-  <R>(project: (value: T, index: number) =>  ObservableInput<R>): Observable<R>;
+  <R>(project: (value: T, index: number) =>  ObservableInput<R>): IObservable<R>;
   <I, R>(project: (value: T, index: number) =>  ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): IObservable<R>;
 }

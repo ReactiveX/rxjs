@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {timeInterval, TimeIntervalSignature} from '../../operator/timeInterval';
 
 Observable.prototype.timeInterval = timeInterval;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     timeInterval: TimeIntervalSignature<T>;
   }
 }

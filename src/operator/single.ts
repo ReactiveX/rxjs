@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Observer} from '../Observer';
@@ -21,17 +21,17 @@ import {TeardownLogic} from '../Subscription';
  * @method single
  * @owner Observable
  */
-export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T> {
+export function single<T>(predicate?: (value: T, index: number, source: IObservable<T>) => boolean): IObservable<T> {
   return this.lift(new SingleOperator(predicate, this));
 }
 
 export interface SingleSignature<T> {
-  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+  (predicate?: (value: T, index: number, source: IObservable<T>) => boolean): IObservable<T>;
 }
 
 class SingleOperator<T> implements Operator<T, T> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
+  constructor(private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
+              private source?: IObservable<T>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -50,8 +50,8 @@ class SingleSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<T>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
+              private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
+              private source?: IObservable<T>) {
     super(destination);
   }
 

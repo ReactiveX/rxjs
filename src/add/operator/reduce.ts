@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {reduce, ReduceSignature} from '../../operator/reduce';
 
 Observable.prototype.reduce = reduce;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     reduce: ReduceSignature<T>;
   }
 }

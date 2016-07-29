@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subject} from '../Subject';
+import {Observable, IObservable} from '../Observable';
+import {Subject, ISubject} from '../Subject';
 import {Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
@@ -41,7 +41,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link windowToggle}
  * @see {@link bufferWhen}
  *
- * @param {function(): Observable} closingSelector A function that takes no
+ * @param {function(): IObservable} closingSelector A function that takes no
  * arguments and returns an Observable that signals (on either `next` or
  * `complete`) when to close the previous window and start a new one.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
@@ -49,12 +49,12 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method windowWhen
  * @owner Observable
  */
-export function windowWhen<T>(closingSelector: () => Observable<any>): Observable<Observable<T>> {
+export function windowWhen<T>(closingSelector: () => Observable<any>): IObservable<Observable<T>> {
   return this.lift(new WindowOperator<T>(closingSelector));
 }
 
 export interface WindowWhenSignature<T> {
-  (closingSelector: () => Observable<any>): Observable<Observable<T>>;
+  (closingSelector: () => Observable<any>): IObservable<Observable<T>>;
 }
 
 class WindowOperator<T> implements Operator<T, Observable<T>> {

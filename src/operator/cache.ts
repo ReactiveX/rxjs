@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {ReplaySubject} from '../ReplaySubject';
 import {Observer} from '../Observer';
@@ -14,7 +14,7 @@ import {Subscription} from '../Subscription';
  */
 export function cache<T>(bufferSize: number = Number.POSITIVE_INFINITY,
                          windowTime: number = Number.POSITIVE_INFINITY,
-                         scheduler?: Scheduler): Observable<T> {
+                         scheduler?: Scheduler): IObservable<T> {
   let subject: ReplaySubject<T>;
   let source = this;
   let refs = 0;
@@ -59,5 +59,5 @@ export function cache<T>(bufferSize: number = Number.POSITIVE_INFINITY,
 }
 
 export interface CacheSignature<T> {
-  (bufferSize?: number, windowTime?: number, scheduler?: Scheduler): Observable<T>;
+  (bufferSize?: number, windowTime?: number, scheduler?: Scheduler): IObservable<T>;
 }

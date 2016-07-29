@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {throttle, ThrottleSignature} from '../../operator/throttle';
 
 Observable.prototype.throttle = throttle;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     throttle: ThrottleSignature<T>;
   }
 }

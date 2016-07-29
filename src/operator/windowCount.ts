@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subject} from '../Subject';
+import {Observable, IObservable} from '../Observable';
+import {Subject, ISubject} from '../Subject';
 
 /**
  * Branch out the source Observable values as a nested Observable with each
@@ -52,12 +52,12 @@ import {Subject} from '../Subject';
  * @owner Observable
  */
 export function windowCount<T>(windowSize: number,
-                               startWindowEvery: number = 0): Observable<Observable<T>> {
+                               startWindowEvery: number = 0): IObservable<Observable<T>> {
   return this.lift(new WindowCountOperator<T>(windowSize, startWindowEvery));
 }
 
 export interface WindowCountSignature<T> {
-  (windowSize: number, startWindowEvery?: number): Observable<Observable<T>>;
+  (windowSize: number, startWindowEvery?: number): IObservable<Observable<T>>;
 }
 
 class WindowCountOperator<T> implements Operator<T, Observable<T>> {

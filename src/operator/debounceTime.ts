@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription, TeardownLogic} from '../Subscription';
@@ -51,12 +51,12 @@ import {async} from '../scheduler/async';
  * @method debounceTime
  * @owner Observable
  */
-export function debounceTime<T>(dueTime: number, scheduler: Scheduler = async): Observable<T> {
+export function debounceTime<T>(dueTime: number, scheduler: Scheduler = async): IObservable<T> {
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 
 export interface DebounceTimeSignature<T> {
-  (dueTime: number, scheduler?: Scheduler): Observable<T>;
+  (dueTime: number, scheduler?: Scheduler): IObservable<T>;
 }
 
 class DebounceTimeOperator<T> implements Operator<T, T> {

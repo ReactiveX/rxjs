@@ -1,10 +1,10 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {onErrorResumeNext, OnErrorResumeNextSignature} from '../../operator/onErrorResumeNext';
 
 Observable.prototype.onErrorResumeNext = onErrorResumeNext;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     onErrorResumeNext: OnErrorResumeNextSignature<T>;
   }
 }

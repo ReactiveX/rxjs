@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {EmptyError} from '../util/EmptyError';
@@ -37,7 +37,7 @@ import {EmptyError} from '../util/EmptyError';
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
+ * @param {function(value: T, index: number, source: IObservable<T>): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
  * @param {function(value: T, index: number): R} [resultSelector] A function to
  * produce the value on the output Observable based on the values
@@ -52,24 +52,24 @@ import {EmptyError} from '../util/EmptyError';
  * @method first
  * @owner Observable
  */
-export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+export function first<T, R>(predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
                             resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: R): Observable<T | R> {
+                            defaultValue?: R): IObservable<T | R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
 export interface FirstSignature<T> {
-  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
-  (predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
-  <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
-      defaultValue?: R): Observable<R>;
+  (predicate?: (value: T, index: number, source: IObservable<T>) => boolean): IObservable<T>;
+  (predicate: (value: T, index: number, source: IObservable<T>) => boolean, resultSelector: void, defaultValue?: T): IObservable<T>;
+  <R>(predicate?: (value: T, index: number, source: IObservable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
+      defaultValue?: R): IObservable<R>;
 }
 
 class FirstOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  constructor(private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
-              private source?: Observable<T>) {
+              private source?: IObservable<T>) {
   }
 
   call(observer: Subscriber<R>, source: any): any {
@@ -87,10 +87,10 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   private hasCompleted: boolean = false;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,
-              private source?: Observable<T>) {
+              private source?: IObservable<T>) {
     super(destination);
   }
 

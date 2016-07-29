@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {bufferWhen, BufferWhenSignature} from '../../operator/bufferWhen';
 
 Observable.prototype.bufferWhen = bufferWhen;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     bufferWhen: BufferWhenSignature<T>;
   }
 }

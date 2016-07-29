@@ -1,4 +1,4 @@
-import {Observable} from '../../../Observable';
+import {Observable, IObservable} from '../../../Observable';
 import {webSocket as staticWebSocket} from '../../../observable/dom/webSocket';
 
 Observable.webSocket = staticWebSocket;

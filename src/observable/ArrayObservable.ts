@@ -1,11 +1,13 @@
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './EmptyObservable';
 import {Subscriber} from '../Subscriber';
 import {isScheduler} from '../util/isScheduler';
 import {TeardownLogic} from '../Subscription';
 
+export interface IArrayObservable<T> extends IObservable<T> { }
+export interface ArrayObservable<T> extends IArrayObservable<T> { }
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -13,17 +15,17 @@ import {TeardownLogic} from '../Subscription';
  */
 export class ArrayObservable<T> extends Observable<T> {
 
-  static create<T>(array: T[], scheduler?: Scheduler): Observable<T> {
+  static create<T>(array: T[], scheduler?: Scheduler): IObservable<T> {
     return new ArrayObservable(array, scheduler);
   }
 
-  static of<T>(item1: T, scheduler?: Scheduler): Observable<T>;
-  static of<T>(item1: T, item2: T, scheduler?: Scheduler): Observable<T>;
-  static of<T>(item1: T, item2: T, item3: T, scheduler?: Scheduler): Observable<T>;
-  static of<T>(item1: T, item2: T, item3: T, item4: T, scheduler?: Scheduler): Observable<T>;
-  static of<T>(item1: T, item2: T, item3: T, item4: T, item5: T, scheduler?: Scheduler): Observable<T>;
-  static of<T>(item1: T, item2: T, item3: T, item4: T, item5: T, item6: T, scheduler?: Scheduler): Observable<T>;
-  static of<T>(...array: Array<T | Scheduler>): Observable<T>;
+  static of<T>(item1: T, scheduler?: Scheduler): IObservable<T>;
+  static of<T>(item1: T, item2: T, scheduler?: Scheduler): IObservable<T>;
+  static of<T>(item1: T, item2: T, item3: T, scheduler?: Scheduler): IObservable<T>;
+  static of<T>(item1: T, item2: T, item3: T, item4: T, scheduler?: Scheduler): IObservable<T>;
+  static of<T>(item1: T, item2: T, item3: T, item4: T, item5: T, scheduler?: Scheduler): IObservable<T>;
+  static of<T>(item1: T, item2: T, item3: T, item4: T, item5: T, item6: T, scheduler?: Scheduler): IObservable<T>;
+  static of<T>(...array: Array<T | Scheduler>): IObservable<T>;
   /**
    * Creates an Observable that emits some values you specify as arguments,
    * immediately one after the other, and then emits a complete notification.
@@ -60,7 +62,7 @@ export class ArrayObservable<T> extends Observable<T> {
    * @name of
    * @owner Observable
    */
-  static of<T>(...array: Array<T | Scheduler>): Observable<T> {
+  static of<T>(...array: Array<T | Scheduler>): IObservable<T> {
     let scheduler = <Scheduler>array[array.length - 1];
     if (isScheduler(scheduler)) {
       array.pop();

@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {dematerialize, DematerializeSignature} from '../../operator/dematerialize';
 
 Observable.prototype.dematerialize = dematerialize;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     dematerialize: DematerializeSignature<T>;
   }
 }

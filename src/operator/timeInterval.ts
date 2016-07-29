@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
@@ -10,12 +10,12 @@ import {async} from '../scheduler/async';
  * @method timeInterval
  * @owner Observable
  */
-export function timeInterval<T>(scheduler: Scheduler = async): Observable<TimeInterval<T>> {
+export function timeInterval<T>(scheduler: Scheduler = async): IObservable<TimeInterval<T>> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }
 
 export interface TimeIntervalSignature<T> {
-  (scheduler?: Scheduler): Observable<TimeInterval<T>>;
+  (scheduler?: Scheduler): IObservable<TimeInterval<T>>;
 }
 
 export class TimeInterval<T> {

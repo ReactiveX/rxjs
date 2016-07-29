@@ -1,7 +1,10 @@
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
+
+export interface IScalarObservable<T> extends IObservable<T> { }
+export interface ScalarObservable<T> extends IScalarObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

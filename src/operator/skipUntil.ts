@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -18,16 +18,16 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method skipUntil
  * @owner Observable
  */
-export function skipUntil<T>(notifier: Observable<any>): Observable<T> {
+export function skipUntil<T>(notifier: IObservable<any>): IObservable<T> {
   return this.lift(new SkipUntilOperator(notifier));
 }
 
 export interface SkipUntilSignature<T> {
-  (notifier: Observable<any>): Observable<T>;
+  (notifier: IObservable<any>): IObservable<T>;
 }
 
 class SkipUntilOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
+  constructor(private notifier: IObservable<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -46,7 +46,7 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
   private isInnerStopped: boolean = false;
 
   constructor(destination: Subscriber<any>,
-              notifier: Observable<any>) {
+              notifier: IObservable<any>) {
     super(destination);
     this.add(subscribeToResult(this, notifier));
   }

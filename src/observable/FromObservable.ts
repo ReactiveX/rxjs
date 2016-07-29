@@ -9,12 +9,15 @@ import {ArrayLikeObservable} from './ArrayLikeObservable';
 
 import {Scheduler} from '../Scheduler';
 import {$$iterator} from '../symbol/iterator';
-import {Observable, ObservableInput} from '../Observable';
+import {Observable, ObservableInput, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn';
 import {$$observable} from '../symbol/observable';
 
 const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 'number');
+
+export interface IFromObservable<T> extends IObservable<T> { }
+export interface FromObservable<T> extends IFromObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -26,8 +29,8 @@ export class FromObservable<T> extends Observable<T> {
     super(null);
   }
 
-  static create<T>(ish: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
-  static create<T, R>(ish: ArrayLike<T>, mapFn: (x: any, y: number) => R, thisArg?: any, scheduler?: Scheduler): Observable<R>;
+  static create<T>(ish: ObservableInput<T>, scheduler?: Scheduler): IObservable<T>;
+  static create<T, R>(ish: ArrayLike<T>, mapFn: (x: any, y: number) => R, thisArg?: any, scheduler?: Scheduler): IObservable<R>;
 
   /**
    * Creates an Observable from an Array, an array-like object, a Promise, an
@@ -87,7 +90,7 @@ export class FromObservable<T> extends Observable<T> {
   static create<T>(ish: ObservableInput<T>,
                    mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T),
                    thisArg?: any,
-                   lastScheduler?: Scheduler): Observable<T> {
+                   lastScheduler?: Scheduler): IObservable<T> {
     let scheduler: Scheduler = null;
     let mapFn: (x: any, i: number) => T = null;
     if (isFunction(mapFnOrScheduler)) {

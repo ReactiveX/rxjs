@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
@@ -41,12 +41,12 @@ import {TeardownLogic} from '../Subscription';
  * @method sampleTime
  * @owner Observable
  */
-export function sampleTime<T>(period: number, scheduler: Scheduler = async): Observable<T> {
+export function sampleTime<T>(period: number, scheduler: Scheduler = async): IObservable<T> {
   return this.lift(new SampleTimeOperator(period, scheduler));
 }
 
 export interface SampleTimeSignature<T> {
-  (period: number, scheduler?: Scheduler): Observable<T>;
+  (period: number, scheduler?: Scheduler): IObservable<T>;
 }
 
 class SampleTimeOperator<T> implements Operator<T, T> {

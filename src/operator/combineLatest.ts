@@ -1,4 +1,4 @@
-import {Observable, ObservableInput} from '../Observable';
+import {Observable, ObservableInput, IObservable} from '../Observable';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {isArray} from '../util/isArray';
 import {Operator} from '../Operator';
@@ -48,7 +48,7 @@ const none = {};
  */
 export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |
-                                                       ((...values: Array<any>) => R)>): Observable<R> {
+                                                       ((...values: Array<any>) => R)>): IObservable<R> {
   let project: (...values: Array<any>) => R = null;
   if (typeof observables[observables.length - 1] === 'function') {
     project = <(...values: Array<any>) => R>observables.pop();
@@ -67,22 +67,22 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
 
 /* tslint:disable:max-line-length */
 export interface CombineLatestSignature<T> {
-  <R>(project: (v1: T) => R): Observable<R>;
-  <T2, R>(v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): Observable<R>;
-  <T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): Observable<R>;
-  <T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): Observable<R>;
-  <T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): Observable<R>;
-  <T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): Observable<R>;
+  <R>(project: (v1: T) => R): IObservable<R>;
+  <T2, R>(v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): IObservable<R>;
+  <T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): IObservable<R>;
+  <T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): IObservable<R>;
+  <T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): IObservable<R>;
+  <T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): IObservable<R>;
 
-  <T2>(v2: ObservableInput<T2>): Observable<[T, T2]>;
-  <T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
-  <T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
-  <T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
-  <T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+  <T2>(v2: ObservableInput<T2>): IObservable<[T, T2]>;
+  <T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): IObservable<[T, T2, T3]>;
+  <T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): IObservable<[T, T2, T3, T4]>;
+  <T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): IObservable<[T, T2, T3, T4, T5]>;
+  <T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): IObservable<[T, T2, T3, T4, T5, T6]>;
 
-  <R>(...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): Observable<R>;
-  <R>(array: ObservableInput<T>[]): Observable<Array<T>>;
-  <TOther, R>(array: ObservableInput<TOther>[], project: (v1: T, ...values: Array<TOther>) => R): Observable<R>;
+  <R>(...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): IObservable<R>;
+  <R>(array: ObservableInput<T>[]): IObservable<Array<T>>;
+  <TOther, R>(array: ObservableInput<TOther>[], project: (v1: T, ...values: Array<TOther>) => R): IObservable<R>;
 }
 /* tslint:enable:max-line-length */
 

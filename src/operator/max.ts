@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {ReduceOperator} from './reduce';
 
 /**
@@ -13,7 +13,7 @@ import {ReduceOperator} from './reduce';
  * @method max
  * @owner Observable
  */
-export function max<T>(comparer?: (x: T, y: T) => T): Observable<T> {
+export function max<T>(comparer?: (x: T, y: T) => T): IObservable<T> {
   const max: typeof comparer = (typeof comparer === 'function')
     ? comparer
     : (x, y) => x > y ? x : y;
@@ -21,5 +21,5 @@ export function max<T>(comparer?: (x: T, y: T) => T): Observable<T> {
 }
 
 export interface MaxSignature<T> {
-  (comparer?: (x: T, y: T) => T): Observable<T>;
+  (comparer?: (x: T, y: T) => T): IObservable<T>;
 }

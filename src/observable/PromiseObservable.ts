@@ -1,8 +1,11 @@
 import {root} from '../util/root';
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
+
+export interface IPromiseObservable<T> extends IObservable<T> { }
+export interface PromiseObservable<T> extends IPromiseObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -39,7 +42,7 @@ export class PromiseObservable<T> extends Observable<T> {
    * @name fromPromise
    * @owner Observable
    */
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = null): Observable<T> {
+  static create<T>(promise: Promise<T>, scheduler: Scheduler = null): IObservable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 

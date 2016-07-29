@@ -2,7 +2,7 @@ import {async} from '../scheduler/async';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscription, TeardownLogic} from '../Subscription';
 
 /**
@@ -47,12 +47,12 @@ import {Subscription, TeardownLogic} from '../Subscription';
  * @method auditTime
  * @owner Observable
  */
-export function auditTime<T>(duration: number, scheduler: Scheduler = async): Observable<T> {
+export function auditTime<T>(duration: number, scheduler: Scheduler = async): IObservable<T> {
   return this.lift(new AuditTimeOperator(duration, scheduler));
 }
 
 export interface AuditTimeSignature<T> {
-  (duration: number, scheduler?: Scheduler): Observable<T>;
+  (duration: number, scheduler?: Scheduler): IObservable<T>;
 }
 
 class AuditTimeOperator<T> implements Operator<T, T> {

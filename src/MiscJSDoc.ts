@@ -7,7 +7,7 @@
  */
 import {Subscriber} from './Subscriber';
 import {TeardownLogic} from './Subscription';
-import {Observable} from './Observable';
+import {Observable, IObservable} from './Observable';
 import './scheduler/MiscJSDoc';
 import './observable/dom/MiscJSDoc';
 
@@ -63,7 +63,7 @@ export class ObservableDoc {
    * @name create
    * @owner Observable
    */
-  static create<T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic): Observable<T> {
+  static create<T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic): IObservable<T> {
     return new Observable<T>(subscribe);
   };
 }

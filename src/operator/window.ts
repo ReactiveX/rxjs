@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subject} from '../Subject';
+import {Observable, IObservable} from '../Observable';
+import {Subject, ISubject} from '../Subject';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -43,17 +43,17 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method window
  * @owner Observable
  */
-export function window<T>(windowBoundaries: Observable<any>): Observable<Observable<T>> {
+export function window<T>(windowBoundaries: IObservable<any>): IObservable<Observable<T>> {
   return this.lift(new WindowOperator<T>(windowBoundaries));
 }
 
 export interface WindowSignature<T> {
-  (windowBoundaries: Observable<any>): Observable<Observable<T>>;
+  (windowBoundaries: IObservable<any>): IObservable<Observable<T>>;
 }
 
 class WindowOperator<T> implements Operator<T, Observable<T>> {
 
-  constructor(private windowBoundaries: Observable<any>) {
+  constructor(private windowBoundaries: IObservable<any>) {
   }
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {

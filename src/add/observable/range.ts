@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {range as staticRange} from '../../observable/range';
 
 Observable.range = staticRange;

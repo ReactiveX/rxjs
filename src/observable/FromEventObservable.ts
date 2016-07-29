@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {tryCatch} from '../util/tryCatch';
 import {isFunction} from '../util/isFunction';
 import {errorObject} from '../util/errorObject';
@@ -43,6 +43,9 @@ export type EventListenerOptions = {
 
 export type SelectorMethodSignature<T> = (...args: Array<any>) => T;
 
+export interface IFromEventObservable<T> extends IObservable<T> { }
+export interface FromEventObservable<T> extends IFromEventObservable<T> { }
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -51,10 +54,10 @@ export type SelectorMethodSignature<T> = (...args: Array<any>) => T;
 export class FromEventObservable<T, R> extends Observable<T> {
 
   /* tslint:disable:max-line-length */
-  static create<T>(target: EventTargetLike, eventName: string): Observable<T>;
-  static create<T>(target: EventTargetLike, eventName: string, selector: SelectorMethodSignature<T>): Observable<T>;
-  static create<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions): Observable<T>;
-  static create<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions, selector: SelectorMethodSignature<T>): Observable<T>;
+  static create<T>(target: EventTargetLike, eventName: string): IObservable<T>;
+  static create<T>(target: EventTargetLike, eventName: string, selector: SelectorMethodSignature<T>): IObservable<T>;
+  static create<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions): IObservable<T>;
+  static create<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions, selector: SelectorMethodSignature<T>): IObservable<T>;
   /* tslint:enable:max-line-length */
 
   /**
@@ -96,7 +99,7 @@ export class FromEventObservable<T, R> extends Observable<T> {
   static create<T>(target: EventTargetLike,
                    eventName: string,
                    options?: EventListenerOptions,
-                   selector?: SelectorMethodSignature<T>): Observable<T> {
+                   selector?: SelectorMethodSignature<T>): IObservable<T> {
     if (isFunction(options)) {
       selector = <any>options;
       options = undefined;

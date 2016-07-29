@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {filter, FilterSignature} from '../../operator/filter';
 
 Observable.prototype.filter = filter;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     filter: FilterSignature<T>;
   }
 }

@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {exhaustMap, SwitchFirstMapSignature} from '../../operator/exhaustMap';
 
 Observable.prototype.exhaustMap = exhaustMap;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     exhaustMap: SwitchFirstMapSignature<T>;
   }
 }

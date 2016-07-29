@@ -1,11 +1,11 @@
 
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {toArray, ToArraySignature} from '../../operator/toArray';
 
 Observable.prototype.toArray = toArray;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     toArray: ToArraySignature<T>;
   }
 }

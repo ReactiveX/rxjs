@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -36,18 +36,18 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link bufferToggle}
  * @see {@link windowWhen}
  *
- * @param {function(): Observable} closingSelector A function that takes no
+ * @param {function(): IObservable} closingSelector A function that takes no
  * arguments and returns an Observable that signals buffer closure.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @method bufferWhen
  * @owner Observable
  */
-export function bufferWhen<T>(closingSelector: () => Observable<any>): Observable<T[]> {
+export function bufferWhen<T>(closingSelector: () => Observable<any>): IObservable<T[]> {
   return this.lift(new BufferWhenOperator<T>(closingSelector));
 }
 
 export interface BufferWhenSignature<T> {
-  (closingSelector: () => Observable<any>): Observable<T[]>;
+  (closingSelector: () => Observable<any>): IObservable<T[]>;
 }
 
 class BufferWhenOperator<T> implements Operator<T, T[]> {

@@ -1,7 +1,10 @@
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 import {Subscriber} from '../Subscriber';
+
+export interface IRangeObservable extends IObservable<number> { }
+export interface RangeObservable extends IRangeObservable { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -42,7 +45,7 @@ export class RangeObservable extends Observable<number> {
    */
   static create(start: number = 0,
                 count: number = 0,
-                scheduler?: Scheduler): Observable<number> {
+                scheduler?: Scheduler): IObservable<number> {
     return new RangeObservable(start, count, scheduler);
   }
 

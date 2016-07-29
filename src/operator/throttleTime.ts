@@ -3,7 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription, TeardownLogic} from '../Subscription';
 import {async} from '../scheduler/async';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -44,12 +44,12 @@ import {Observable} from '../Observable';
  * @method throttleTime
  * @owner Observable
  */
-export function throttleTime<T>(duration: number, scheduler: Scheduler = async): Observable<T> {
+export function throttleTime<T>(duration: number, scheduler: Scheduler = async): IObservable<T> {
   return this.lift(new ThrottleTimeOperator(duration, scheduler));
 }
 
 export interface ThrottleTimeSignature<T> {
-  (duration: number, scheduler?: Scheduler): Observable<T>;
+  (duration: number, scheduler?: Scheduler): IObservable<T>;
 }
 
 class ThrottleTimeOperator<T> implements Operator<T, T> {

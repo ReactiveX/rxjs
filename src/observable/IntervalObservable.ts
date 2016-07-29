@@ -1,8 +1,11 @@
 import {Subscriber} from '../Subscriber';
 import {isNumeric} from '../util/isNumeric';
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {async} from '../scheduler/async';
+
+export interface IIntervalObservable extends IObservable<number> { }
+export interface IntervalObservable extends IIntervalObservable { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -44,7 +47,7 @@ export class IntervalObservable extends Observable<number> {
    * @owner Observable
    */
   static create(period: number = 0,
-                scheduler: Scheduler = async): Observable<number> {
+                scheduler: Scheduler = async): IObservable<number> {
     return new IntervalObservable(period, scheduler);
   }
 

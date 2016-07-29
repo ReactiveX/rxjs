@@ -2,7 +2,7 @@ import {root} from './root';
 import {isArray} from './isArray';
 import {isPromise} from './isPromise';
 import {Subscriber} from '../Subscriber';
-import {Observable, ObservableInput} from '../Observable';
+import {Observable, ObservableInput, IObservable} from '../Observable';
 import {$$iterator} from '../symbol/iterator';
 import {Subscription} from '../Subscription';
 import {InnerSubscriber} from '../InnerSubscriber';

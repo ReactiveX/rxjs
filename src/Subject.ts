@@ -1,6 +1,6 @@
 import {Operator} from './Operator';
 import {Observer} from './Observer';
-import {Observable} from './Observable';
+import {Observable, IObservable} from './Observable';
 import {Subscriber} from './Subscriber';
 import {ISubscription, Subscription} from './Subscription';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
@@ -15,6 +15,9 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 }
+
+export interface ISubject<T> extends IObservable<T> { }
+export interface Subject<T> extends ISubject<T> { }
 
 /**
  * @class Subject<T>
@@ -39,11 +42,11 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     super();
   }
 
-  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
+  static create: Function = <T>(destination: Observer<T>, source: IObservable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   };
 
-  lift<T, R>(operator: Operator<T, R>): Observable<T> {
+  lift<T, R>(operator: Operator<T, R>): IObservable<T> {
     const subject = new AnonymousSubject(this, this);
     subject.operator = operator;
     return <any>subject;
@@ -114,7 +117,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     }
   }
 
-  asObservable(): Observable<T> {
+  asObservable(): IObservable<T> {
     const observable = new Observable<T>();
     (<any>observable).source = this;
     return observable;
@@ -125,7 +128,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
  * @class AnonymousSubject<T>
  */
 export class AnonymousSubject<T> extends Subject<T> {
-  constructor(protected destination?: Observer<T>, source?: Observable<T>) {
+  constructor(protected destination?: Observer<T>, source?: IObservable<T>) {
     super();
     this.source = source;
   }

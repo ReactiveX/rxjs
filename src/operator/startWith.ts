@@ -1,5 +1,5 @@
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {ScalarObservable} from '../observable/ScalarObservable';
 import {EmptyObservable} from '../observable/EmptyObservable';
@@ -18,7 +18,7 @@ import {isScheduler} from '../util/isScheduler';
  * @method startWith
  * @owner Observable
  */
-export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
+export function startWith<T>(...array: Array<T | Scheduler>): IObservable<T> {
   let scheduler = <Scheduler>array[array.length - 1];
   if (isScheduler(scheduler)) {
     array.pop();
@@ -37,11 +37,11 @@ export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
 }
 
 export interface StartWithSignature<T> {
-  (v1: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, v4: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: Scheduler): Observable<T>;
-  (...array: Array<T | Scheduler>): Observable<T>;
+  (v1: T, scheduler?: Scheduler): IObservable<T>;
+  (v1: T, v2: T, scheduler?: Scheduler): IObservable<T>;
+  (v1: T, v2: T, v3: T, scheduler?: Scheduler): IObservable<T>;
+  (v1: T, v2: T, v3: T, v4: T, scheduler?: Scheduler): IObservable<T>;
+  (v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: Scheduler): IObservable<T>;
+  (v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: Scheduler): IObservable<T>;
+  (...array: Array<T | Scheduler>): IObservable<T>;
 }

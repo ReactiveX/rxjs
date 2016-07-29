@@ -9,14 +9,72 @@ import {ErrorObservable} from './observable/ErrorObservable';
 import {$$observable} from './symbol/observable';
 
 export interface Subscribable<T> {
+  /**
+   * Registers handlers for handling emitted values, error and completions from the observable, and
+   *  executes the observable's subscriber function, which will take action to set up the underlying data stream
+   * @method subscribe
+   * @param {PartialObserver|Function} observerOrNext (optional) either an observer defining all functions to be called,
+   *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
+   * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
+   *  the error will be thrown as unhandled
+   * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
+   * @return {ISubscription} a subscription reference to the registered handlers
+   */
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): AnonymousSubscription;
+    error?: (error: any) => void,
+    complete?: () => void): AnonymousSubscription;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
 
+/**
+ * A representation of any set of values over any amount of time. This the most basic building block
+ * of RxJS.
+ *
+ * @class IObservable<T>
+ */
+export interface IObservable<T> extends Subscribable<T> {
+  /**
+   * Creates a new Observable, with this Observable as the source, and the passed
+   * operator defined as the new observable's operator.
+   * @method lift
+   * @param {Operator} operator the operator defining the operation to take on the observable
+   * @return {Observable} a new observable with the Operator applied
+   */
+  lift<R>(operator: Operator<T, R>): IObservable<R>;
+
+  /**
+   * Registers handlers for handling emitted values, error and completions from the observable, and
+   *  executes the observable's subscriber function, which will take action to set up the underlying data stream
+   * @method subscribe
+   * @param {PartialObserver|Function} observerOrNext (optional) either an observer defining all functions to be called,
+   *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
+   * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
+   *  the error will be thrown as unhandled
+   * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
+   * @return {ISubscription} a subscription reference to the registered handlers
+   */
+  subscribe(
+    observerOrNext?: PartialObserver<T> | ((value: T) => void),
+    error?: (error: any) => void,
+    complete?: () => void): Subscription;
+
+  /**
+   * Registers handlers for handling emitted values, error and completions from the observable, and
+   *  executes the observable's subscriber function, which will take action to set up the underlying data stream
+   * @method subscribe
+   * @param {PartialObserver|Function} observerOrNext (optional) either an observer defining all functions to be called,
+   *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
+   * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
+   *  the error will be thrown as unhandled
+   * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
+   * @return {ISubscription} a subscription reference to the registered handlers
+   */
+  forEach(next: (value: T) => void, PromiseCtor?: typeof Promise): Promise<void>;
+}
+
+export interface Observable<T> extends IObservable<T> { }
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
@@ -27,7 +85,7 @@ export class Observable<T> implements Subscribable<T> {
 
   public _isScalar: boolean = false;
 
-  protected source: Observable<any>;
+  protected source: IObservable<any>;
   protected operator: Operator<any, T>;
 
   /**
@@ -64,7 +122,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Operator} operator the operator defining the operation to take on the observable
    * @return {Observable} a new observable with the Operator applied
    */
-  lift<R>(operator: Operator<T, R>): Observable<R> {
+  lift<R>(operator: Operator<T, R>): IObservable<R> {
     const observable = new Observable<R>();
     observable.source = this;
     observable.operator = operator;
@@ -82,9 +140,10 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
    * @return {ISubscription} a subscription reference to the registered handlers
    */
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Subscription {
+  subscribe(
+    observerOrNext?: PartialObserver<T> | ((value: T) => void),
+    error?: (error: any) => void,
+    complete?: () => void): Subscription {
 
     const { operator } = this;
     const sink = toSubscriber(observerOrNext, error, complete);

@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 /**
@@ -39,7 +39,7 @@ import {Subscriber} from '../Subscriber';
  * @method scan
  * @owner Observable
  */
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): Observable<R> {
+export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): IObservable<R> {
   return this.lift(new ScanOperator(accumulator, seed));
 }
 

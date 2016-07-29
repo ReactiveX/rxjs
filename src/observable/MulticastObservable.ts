@@ -1,13 +1,16 @@
-import {Subject} from '../Subject';
-import {Observable} from '../Observable';
+import {Subject, ISubject} from '../Subject';
+import {Observable, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
 import {ConnectableObservable} from '../observable/ConnectableObservable';
 
+export interface IMulticastObservable<T> extends IObservable<T> { }
+export interface MulticastObservable<T> extends IMulticastObservable<T> { }
+
 export class MulticastObservable<T> extends Observable<T> {
-  constructor(protected source: Observable<T>,
+  constructor(protected source: IObservable<T>,
               private subjectFactory: () => Subject<T>,
-              private selector: (source: Observable<T>) => Observable<T>) {
+              private selector: (source: IObservable<T>) => IObservable<T>) {
     super();
   }
 

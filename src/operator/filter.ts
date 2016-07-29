@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -44,12 +44,12 @@ import {TeardownLogic} from '../Subscription';
  * @owner Observable
  */
 export function filter<T>(predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): Observable<T> {
+                          thisArg?: any): IObservable<T> {
   return this.lift(new FilterOperator(predicate, thisArg));
 }
 
 export interface FilterSignature<T> {
-  (predicate: (value: T, index: number) => boolean, thisArg?: any): Observable<T>;
+  (predicate: (value: T, index: number) => boolean, thisArg?: any): IObservable<T>;
 }
 
 class FilterOperator<T> implements Operator<T, T> {

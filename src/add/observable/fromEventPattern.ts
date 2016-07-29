@@ -1,4 +1,4 @@
-import {Observable} from '../../Observable';
+import {Observable, IObservable} from '../../Observable';
 import {fromEventPattern as staticFromEventPattern} from '../../observable/fromEventPattern';
 
 Observable.fromEventPattern = staticFromEventPattern;
