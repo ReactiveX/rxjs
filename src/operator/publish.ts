@@ -16,12 +16,12 @@ import {ConnectableObservable} from '../observable/ConnectableObservable';
  * @method publish
  * @owner Observable
  */
-export function publish<T>(selector?: (source: IObservable<T>) => Observable<T>): IObservable<T> | ConnectableObservable<T> {
+export function publish<T>(selector?: (source: IObservable<T>) => IObservable<T>): IObservable<T> | ConnectableObservable<T> {
   return selector ? multicast.call(this, () => new Subject<T>(), selector) :
                     multicast.call(this, new Subject<T>());
 }
 
-export type selector<T> = (source: IObservable<T>) => Observable<T>;
+export type selector<T> = (source: IObservable<T>) => IObservable<T>;
 
 export interface PublishSignature<T> {
   (): ConnectableObservable<T>;

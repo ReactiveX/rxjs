@@ -2,7 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Observable, IObservable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './EmptyObservable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 
 export interface IArrayLikeObservable<T> extends IObservable<T> { }
@@ -61,7 +61,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     let index = 0;
     const { arrayLike, mapFn, scheduler } = this;
     const length = arrayLike.length;

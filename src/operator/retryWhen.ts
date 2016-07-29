@@ -1,8 +1,8 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {Subject} from '../Subject';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -26,20 +26,20 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method retryWhen
  * @owner Observable
  */
-export function retryWhen<T>(notifier: (errors: IObservable<any>) => Observable<any>): IObservable<T> {
+export function retryWhen<T>(notifier: (errors: IObservable<any>) => IObservable<any>): IObservable<T> {
   return this.lift(new RetryWhenOperator(notifier, this));
 }
 
 export interface RetryWhenSignature<T> {
-  (notifier: (errors: IObservable<any>) => Observable<any>): IObservable<T>;
+  (notifier: (errors: IObservable<any>) => IObservable<any>): IObservable<T>;
 }
 
 class RetryWhenOperator<T> implements Operator<T, T> {
-  constructor(protected notifier: (errors: IObservable<any>) => Observable<any>,
+  constructor(protected notifier: (errors: IObservable<any>) => IObservable<any>,
               protected source: IObservable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
   }
 }
@@ -53,10 +53,10 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private errors: Subject<any>;
   private retries: IObservable<any>;
-  private retriesSubscription: Subscription;
+  private retriesSubscription: ISubscription;
 
-  constructor(destination: Subscriber<R>,
-              private notifier: (errors: IObservable<any>) => Observable<any>,
+  constructor(destination: ISubscriber<R>,
+              private notifier: (errors: IObservable<any>) => IObservable<any>,
               private source: IObservable<T>) {
     super(destination);
   }

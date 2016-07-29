@@ -1,13 +1,13 @@
 import {Scheduler} from '../Scheduler';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {Observable, IObservable} from '../Observable';
 import {asap} from '../scheduler/asap';
 import {isNumeric} from '../util/isNumeric';
 
 export interface DispatchArg<T> {
   source: IObservable<T>;
-  subscriber: Subscriber<T>;
+  subscriber: ISubscriber<T>;
 }
 
 export interface ISubscribeOnObservable<T> extends IObservable<T> { }
@@ -23,7 +23,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
-  static dispatch<T>(arg: DispatchArg<T>): Subscription {
+  static dispatch<T>(arg: DispatchArg<T>): ISubscription {
     const { source, subscriber } = arg;
     return source.subscribe(subscriber);
   }
@@ -40,7 +40,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: ISubscriber<T>) {
     const delay = this.delayTime;
     const source = this.source;
     const scheduler = this.scheduler;

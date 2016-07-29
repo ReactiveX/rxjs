@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 
 /**
@@ -44,7 +44,7 @@ class MapToOperator<T, R> implements Operator<T, R> {
     this.value = value;
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new MapToSubscriber(subscriber, this.value));
   }
 }
@@ -58,7 +58,7 @@ class MapToSubscriber<T, R> extends Subscriber<T> {
 
   value: R;
 
-  constructor(destination: Subscriber<R>, value: R) {
+  constructor(destination: ISubscriber<R>, value: R) {
     super(destination);
     this.value = value;
   }

@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -52,7 +52,7 @@ class SampleOperator<T> implements Operator<T, T> {
   constructor(private notifier: IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SampleSubscriber(subscriber, this.notifier));
   }
 }
@@ -66,7 +66,7 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private value: T;
   private hasValue: boolean = false;
 
-  constructor(destination: Subscriber<any>, notifier: IObservable<any>) {
+  constructor(destination: ISubscriber<any>, notifier: IObservable<any>) {
     super(destination);
     this.add(subscribeToResult(this, notifier));
   }

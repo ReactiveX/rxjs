@@ -1,6 +1,6 @@
 import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
 
@@ -62,13 +62,13 @@ export class DeferObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     return new DeferSubscriber(subscriber, this.observableFactory);
   }
 }
 
 class DeferSubscriber<T> extends OuterSubscriber<T, T> {
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private factory: () => SubscribableOrPromise<T> | void) {
     super(destination);
     this.tryDefer();

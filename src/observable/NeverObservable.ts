@@ -1,5 +1,5 @@
 import {Observable, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
 
 export interface INeverObservable<T> extends IObservable<T> { }
@@ -50,7 +50,7 @@ export class NeverObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): void {
+  protected _subscribe(subscriber: ISubscriber<T>): void {
     noop();
   }
 }

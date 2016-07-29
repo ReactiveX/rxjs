@@ -6,10 +6,10 @@ import {IObservable} from '../Observable';
  * @method let
  * @owner Observable
  */
-export function letProto<T, R>(func: (selector: IObservable<T>) => Observable<R>): IObservable<R> {
+export function letProto<T, R>(func: (selector: IObservable<T>) => IObservable<R>): IObservable<R> {
   return func(this);
 }
 
 export interface LetSignature<T> {
-  <R>(func: (selector: IObservable<T>) => Observable<R>): IObservable<R>;
+  <R>(func: (selector: IObservable<T>) => IObservable<R>): IObservable<R>;
 }

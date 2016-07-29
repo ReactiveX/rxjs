@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 
 /**
@@ -16,7 +16,7 @@ export interface ToArraySignature<T> {
 }
 
 class ToArrayOperator<T> implements Operator<T, T[]> {
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new ToArraySubscriber(subscriber));
   }
 }
@@ -30,7 +30,7 @@ class ToArraySubscriber<T> extends Subscriber<T> {
 
   private array: T[] = [];
 
-  constructor(destination: Subscriber<T[]>) {
+  constructor(destination: ISubscriber<T[]>) {
     super(destination);
   }
 

@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
@@ -33,7 +33,7 @@ class RetryOperator<T> implements Operator<T, T> {
               private source: IObservable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RetrySubscriber(subscriber, this.count, this.source));
   }
 }
@@ -44,7 +44,7 @@ class RetryOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class RetrySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>,
+  constructor(destination: ISubscriber<any>,
               private count: number,
               private source: IObservable<T>) {
     super(destination);

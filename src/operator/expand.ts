@@ -1,10 +1,10 @@
 import {IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -40,7 +40,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link mergeMap}
  * @see {@link mergeScan}
  *
- * @param {function(value: T, index: number) => Observable} project A function
+ * @param {function(value: T, index: number) => IObservable} project A function
  * that, when applied to an item emitted by the source or the output Observable,
  * returns an Observable.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
@@ -54,7 +54,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method expand
  * @owner Observable
  */
-export function expand<T, R>(project: (value: T, index: number) => Observable<R>,
+export function expand<T, R>(project: (value: T, index: number) => IObservable<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
                              scheduler: Scheduler = undefined): IObservable<R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
@@ -63,17 +63,17 @@ export function expand<T, R>(project: (value: T, index: number) => Observable<R>
 }
 
 export interface ExpandSignature<T> {
-  (project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): IObservable<T>;
-  <R>(project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): IObservable<R>;
+  (project: (value: T, index: number) => IObservable<T>, concurrent?: number, scheduler?: Scheduler): IObservable<T>;
+  <R>(project: (value: T, index: number) => IObservable<R>, concurrent?: number, scheduler?: Scheduler): IObservable<R>;
 }
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => Observable<R>,
+  constructor(private project: (value: T, index: number) => IObservable<R>,
               private concurrent: number,
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
   }
 }
@@ -96,8 +96,8 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: any[];
 
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => Observable<R>,
+  constructor(destination: ISubscriber<R>,
+              private project: (value: T, index: number) => IObservable<R>,
               private concurrent: number,
               private scheduler: Scheduler) {
     super(destination);
@@ -154,7 +154,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     this._next(innerValue);
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(innerSub: ISubscription): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

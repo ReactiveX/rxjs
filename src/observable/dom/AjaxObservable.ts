@@ -2,7 +2,7 @@ import {root} from '../../util/root';
 import {tryCatch} from '../../util/tryCatch';
 import {errorObject} from '../../util/errorObject';
 import {Observable, IObservable} from '../../Observable';
-import {Subscriber} from '../../Subscriber';
+import {ISubscriber, Subscriber} from '../../Subscriber';
 import {TeardownLogic} from '../../Subscription';
 
 export interface AjaxRequest {
@@ -18,7 +18,7 @@ export interface AjaxRequest {
   crossDomain?: boolean;
   withCredentials?: boolean;
   createXHR?: () => XMLHttpRequest;
-  progressSubscriber?: Subscriber<any>;
+  progressSubscriber?: ISubscriber<any>;
   responseType?: string;
 }
 
@@ -169,7 +169,7 @@ export class AjaxObservable<T> extends Observable<T> {
     this.request = request;
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     return new AjaxSubscriber(subscriber, this.request);
   }
 }
@@ -183,7 +183,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private xhr: XMLHttpRequest;
   private done: boolean = false;
 
-  constructor(destination: Subscriber<T>, public request: AjaxRequest) {
+  constructor(destination: ISubscriber<T>, public request: AjaxRequest) {
     super(destination);
 
     const headers = request.headers = request.headers || {};

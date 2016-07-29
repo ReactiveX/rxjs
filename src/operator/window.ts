@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {Subject} from '../Subject';
 
@@ -38,25 +38,25 @@ import {subscribeToResult} from '../util/subscribeToResult';
  *
  * @param {Observable<any>} windowBoundaries An Observable that completes the
  * previous window and starts a new window.
- * @return {Observable<Observable<T>>} An Observable of windows, which are
+ * @return {Observable<IObservable<T>>} An Observable of windows, which are
  * Observables emitting values of the source Observable.
  * @method window
  * @owner Observable
  */
-export function window<T>(windowBoundaries: IObservable<any>): IObservable<Observable<T>> {
+export function window<T>(windowBoundaries: IObservable<any>): IObservable<IObservable<T>> {
   return this.lift(new WindowOperator<T>(windowBoundaries));
 }
 
 export interface WindowSignature<T> {
-  (windowBoundaries: IObservable<any>): IObservable<Observable<T>>;
+  (windowBoundaries: IObservable<any>): IObservable<IObservable<T>>;
 }
 
-class WindowOperator<T> implements Operator<T, Observable<T>> {
+class WindowOperator<T> implements Operator<T, IObservable<T>> {
 
   constructor(private windowBoundaries: IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  call(subscriber: ISubscriber<IObservable<T>>, source: any): any {
     const windowSubscriber = new WindowSubscriber(subscriber);
     const sourceSubscription = source._subscribe(windowSubscriber);
     if (!sourceSubscription.closed) {
@@ -75,7 +75,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
 
   private window: Subject<T> = new Subject<T>();
 
-  constructor(destination: Subscriber<Observable<T>>) {
+  constructor(destination: ISubscriber<IObservable<T>>) {
     super(destination);
     destination.next(this.window);
   }

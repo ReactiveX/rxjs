@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {SubscribableOrPromise, IObservable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -60,14 +60,14 @@ class BufferToggleOperator<T, O> implements Operator<T, T[]> {
               private closingSelector: (value: O) => SubscribableOrPromise<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
   }
 }
 
 interface BufferContext<T> {
   buffer: T[];
-  subscription: Subscription;
+  subscription: ISubscription;
 }
 
 /**
@@ -78,7 +78,7 @@ interface BufferContext<T> {
 class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
   private contexts: Array<BufferContext<T>> = [];
 
-  constructor(destination: Subscriber<T[]>,
+  constructor(destination: ISubscriber<T[]>,
               private openings: SubscribableOrPromise<O>,
               private closingSelector: (value: O) => SubscribableOrPromise<any> | void) {
     super(destination);

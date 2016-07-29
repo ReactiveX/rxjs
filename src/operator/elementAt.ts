@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
@@ -57,7 +57,7 @@ class ElementAtOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
   }
 }
@@ -69,7 +69,7 @@ class ElementAtOperator<T> implements Operator<T, T> {
  */
 class ElementAtSubscriber<T> extends Subscriber<T> {
 
-  constructor(destination: Subscriber<T>, private index: number, private defaultValue?: T) {
+  constructor(destination: ISubscriber<T>, private index: number, private defaultValue?: T) {
     super(destination);
   }
 

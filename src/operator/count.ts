@@ -1,7 +1,7 @@
 import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Counts the number of emissions on the source and emits that number when the
@@ -61,7 +61,7 @@ class CountOperator<T> implements Operator<T, number> {
               private source?: IObservable<T>) {
   }
 
-  call(subscriber: Subscriber<number>, source: any): any {
+  call(subscriber: ISubscriber<number>, source: any): any {
     return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
   }
 }

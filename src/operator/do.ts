@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {PartialObserver} from '../Observer';
 import {TeardownLogic} from '../Subscription';
@@ -63,7 +63,7 @@ class DoOperator<T> implements Operator<T, T> {
               private error?: (e: any) => void,
               private complete?: () => void) {
   }
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
   }
 }
@@ -75,9 +75,9 @@ class DoOperator<T> implements Operator<T, T> {
  */
 class DoSubscriber<T> extends Subscriber<T> {
 
-  private safeSubscriber: Subscriber<T>;
+  private safeSubscriber: ISubscriber<T>;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               nextOrObserver?: PartialObserver<T> | ((x: T) => void),
               error?: (e: any) => void,
               complete?: () => void) {

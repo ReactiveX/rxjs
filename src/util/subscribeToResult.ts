@@ -1,10 +1,10 @@
 import {root} from './root';
 import {isArray} from './isArray';
 import {isPromise} from './isPromise';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Observable, ObservableInput} from '../Observable';
 import {$$iterator} from '../symbol/iterator';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {$$observable} from '../symbol/observable';
@@ -12,12 +12,12 @@ import {$$observable} from '../symbol/observable';
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
                                         outerValue?: T,
-                                        outerIndex?: number): Subscription;
+                                        outerIndex?: number): ISubscription;
 export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
                                      result: ObservableInput<T>,
                                      outerValue?: T,
-                                     outerIndex?: number): Subscription {
-  let destination: Subscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+                                     outerIndex?: number): ISubscription {
+  let destination: ISubscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
   if (destination.closed) {
     return null;

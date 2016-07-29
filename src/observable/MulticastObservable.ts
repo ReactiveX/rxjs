@@ -1,7 +1,7 @@
 import {Subject} from '../Subject';
 import {Observable, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {ConnectableObservable} from '../observable/ConnectableObservable';
 
 export interface IMulticastObservable<T> extends IObservable<T> { }
@@ -14,7 +14,7 @@ export class MulticastObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     const { selector, source } = this;
     const connectable = new ConnectableObservable(source, this.subjectFactory);
     const subscription = selector(connectable).subscribe(subscriber);

@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Notification} from '../Notification';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {INotification, Notification} from '../Notification';
 
 /**
  * Converts an Observable of {@link Notification} objects into the emissions
@@ -47,7 +47,7 @@ export interface DematerializeSignature<T> {
 }
 
 class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<any>, source: any): any {
+  call(subscriber: ISubscriber<any>, source: any): any {
     return source._subscribe(new DeMaterializeSubscriber(subscriber));
   }
 }
@@ -58,7 +58,7 @@ class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<
  * @extends {Ignored}
  */
 class DeMaterializeSubscriber<T extends Notification<any>> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>) {
+  constructor(destination: ISubscriber<any>) {
     super(destination);
   }
 

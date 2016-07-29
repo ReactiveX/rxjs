@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
@@ -26,7 +26,7 @@ class SkipOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SkipSubscriber(subscriber, this.total));
   }
 }
@@ -39,7 +39,7 @@ class SkipOperator<T> implements Operator<T, T> {
 class SkipSubscriber<T> extends Subscriber<T> {
   count: number = 0;
 
-  constructor(destination: Subscriber<T>, private total: number) {
+  constructor(destination: ISubscriber<T>, private total: number) {
     super(destination);
   }
 

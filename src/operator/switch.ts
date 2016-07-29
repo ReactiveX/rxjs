@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -56,7 +56,7 @@ export interface SwitchSignature<T> {
 }
 
 class SwitchOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new SwitchSubscriber(subscriber));
   }
 }
@@ -69,9 +69,9 @@ class SwitchOperator<T, R> implements Operator<T, R> {
 class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private hasCompleted: boolean = false;
-  innerSubscription: Subscription;
+  innerSubscription: ISubscription;
 
-  constructor(destination: Subscriber<R>) {
+  constructor(destination: ISubscriber<R>) {
     super(destination);
   }
 

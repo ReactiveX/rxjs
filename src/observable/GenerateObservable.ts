@@ -1,8 +1,8 @@
 import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
 import {Observable, IObservable} from '../Observable' ;
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {isScheduler} from '../util/isScheduler';
 
 const selfSelector = <T>(value: T) => value;
@@ -14,7 +14,7 @@ export type ResultFunc<S, T> = (state: S) => T;
 interface SchedulerState<T, S> {
   needIterate?: boolean;
   state: S;
-  subscriber: Subscriber<T>;
+  subscriber: ISubscriber<T>;
   condition?: ConditionFunc<S>;
   iterate: IterateFunc<S>;
   resultSelector: ResultFunc<S, T>;
@@ -203,7 +203,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
       <Scheduler>scheduler);
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
+  protected _subscribe(subscriber: ISubscriber<any>): ISubscription | Function | void {
     let state = this.initialState;
     if (this.scheduler) {
       return this.scheduler.schedule<SchedulerState<T, S>>(GenerateObservable.dispatch, 0, {
@@ -248,7 +248,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
     } while (true);
   }
 
-  private static dispatch<T, S>(state: SchedulerState<T, S>): Subscription | void {
+  private static dispatch<T, S>(state: SchedulerState<T, S>): ISubscription | void {
     const { subscriber, condition } = state;
     if (subscriber.closed) {
       return;

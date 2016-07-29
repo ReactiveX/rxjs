@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {SubscribableOrPromise, IObservable} from '../Observable';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -60,7 +60,7 @@ class AuditOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new AuditSubscriber<T, T>(subscriber, this.durationSelector));
   }
 }
@@ -74,9 +74,9 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private value: T;
   private hasValue: boolean = false;
-  private throttled: Subscription;
+  private throttled: ISubscription;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<any>) {
     super(destination);
   }

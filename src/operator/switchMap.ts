@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {ObservableInput, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -69,7 +69,7 @@ class SwitchMapOperator<T, I, R> implements Operator<T, I> {
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
   }
 
-  call(subscriber: Subscriber<I>, source: any): any {
+  call(subscriber: ISubscriber<I>, source: any): any {
     return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
   }
 }
@@ -81,9 +81,9 @@ class SwitchMapOperator<T, I, R> implements Operator<T, I> {
  */
 class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private index: number = 0;
-  private innerSubscription: Subscription;
+  private innerSubscription: ISubscription;
 
-  constructor(destination: Subscriber<I>,
+  constructor(destination: ISubscriber<I>,
               private project: (value: T, index: number) => ObservableInput<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
     super(destination);
@@ -120,7 +120,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this.innerSubscription = null;
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(innerSub: ISubscription): void {
     this.remove(innerSub);
     this.innerSubscription = null;
     if (this.isStopped) {

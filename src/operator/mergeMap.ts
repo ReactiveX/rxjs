@@ -1,7 +1,7 @@
 import {ObservableInput, IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -78,7 +78,7 @@ export class MergeMapOperator<T, I, R> implements Operator<T, I> {
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
-  call(observer: Subscriber<I>, source: any): any {
+  call(observer: ISubscriber<I>, source: any): any {
     return source._subscribe(new MergeMapSubscriber(
       observer, this.project, this.resultSelector, this.concurrent
     ));
@@ -96,7 +96,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Subscriber<I>,
+  constructor(destination: ISubscriber<I>,
               private project: (value: T, index: number) => ObservableInput<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
               private concurrent: number = Number.POSITIVE_INFINITY) {
@@ -156,7 +156,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this.destination.next(result);
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(innerSub: ISubscription): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

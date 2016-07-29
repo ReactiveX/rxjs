@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 
 /**
@@ -29,7 +29,7 @@ class CatchOperator<T, R> implements Operator<T, R> {
   constructor(private selector: (err: any, caught: IObservable<any>) => IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
   }
 }
@@ -41,7 +41,7 @@ class CatchOperator<T, R> implements Operator<T, R> {
  */
 class CatchSubscriber<T> extends Subscriber<T> {
 
-  constructor(destination: Subscriber<any>,
+  constructor(destination: ISubscriber<any>,
               private selector: (err: any, caught: IObservable<any>) => IObservable<any>,
               private caught: IObservable<any>) {
     super(destination);

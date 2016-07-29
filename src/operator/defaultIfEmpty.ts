@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Emits a given value if the source Observable completes without emitting any
@@ -46,7 +46,7 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
   constructor(private defaultValue: R) {
   }
 
-  call(subscriber: Subscriber<T | R>, source: any): any {
+  call(subscriber: ISubscriber<T | R>, source: any): any {
     return source._subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
   }
 }
@@ -59,7 +59,7 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
 class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
   private isEmpty: boolean = true;
 
-  constructor(destination: Subscriber<T | R>, private defaultValue: R) {
+  constructor(destination: ISubscriber<T | R>, private defaultValue: R) {
     super(destination);
   }
 

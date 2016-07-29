@@ -1,10 +1,10 @@
 import {Scheduler} from '../Scheduler';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 export interface DispatchArg<T> {
-  subscriber: Subscriber<T>;
+  subscriber: ISubscriber<T>;
 }
 
 export interface IEmptyObservable<T> extends IObservable<T> { }
@@ -67,7 +67,7 @@ export class EmptyObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
 
     const scheduler = this.scheduler;
 

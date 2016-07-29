@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
 
@@ -27,13 +27,13 @@ class TimestampOperator<T> implements Operator<T, Timestamp<T>> {
   constructor(private scheduler: Scheduler) {
   }
 
-  call(observer: Subscriber<Timestamp<T>>, source: any): any {
+  call(observer: ISubscriber<Timestamp<T>>, source: any): any {
     return source._subscribe(new TimestampSubscriber(observer, this.scheduler));
   }
 }
 
 class TimestampSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<Timestamp<T>>, private scheduler: Scheduler) {
+  constructor(destination: ISubscriber<Timestamp<T>>, private scheduler: Scheduler) {
     super(destination);
   }
 

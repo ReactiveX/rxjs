@@ -1,6 +1,6 @@
 import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Emits only the first value emitted by the source Observable that meets some
@@ -54,7 +54,7 @@ export class FindValueOperator<T> implements Operator<T, T> {
               private thisArg?: any) {
   }
 
-  call(observer: Subscriber<T>, source: any): any {
+  call(observer: ISubscriber<T>, source: any): any {
     return source._subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
   }
 }
@@ -67,7 +67,7 @@ export class FindValueOperator<T> implements Operator<T, T> {
 export class FindValueSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private predicate: (value: T, index: number, source: IObservable<T>) => boolean,
               private source: IObservable<T>,
               private yieldIndex: boolean,

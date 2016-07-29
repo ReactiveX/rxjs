@@ -1,4 +1,4 @@
-import {Subscriber} from '../../Subscriber';
+import {ISubscriber, Subscriber} from '../../Subscriber';
 import {AjaxResponse} from './AjaxObservable';
 
 /**
@@ -58,7 +58,7 @@ export class AjaxRequestDoc {
   /**
    * @type {Subscriber}
    */
-  progressSubscriber: Subscriber<any> = null;
+  progressSubscriber: ISubscriber<any> = null;
   /**
    * @param {AjaxResponse} response
    * @return {T}

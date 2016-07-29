@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -51,7 +51,7 @@ class BufferOperator<T> implements Operator<T, T[]> {
   constructor(private closingNotifier: IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
   }
 }
@@ -64,7 +64,7 @@ class BufferOperator<T> implements Operator<T, T[]> {
 class BufferSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[] = [];
 
-  constructor(destination: Subscriber<T[]>, closingNotifier: IObservable<any>) {
+  constructor(destination: ISubscriber<T[]>, closingNotifier: IObservable<any>) {
     super(destination);
     this.add(subscribeToResult(this, closingNotifier));
   }

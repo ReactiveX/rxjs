@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {ObservableInput, IObservable} from '../Observable';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -48,7 +48,7 @@ export function withLatestFrom<T, R>(...args: Array<ObservableInput<any> | ((...
   if (typeof args[args.length - 1] === 'function') {
     project = args.pop();
   }
-  const observables = <Observable<any>[]>args;
+  const observables = <IObservable<any>[]>args;
   return this.lift(new WithLatestFromOperator(observables, project));
 }
 
@@ -75,10 +75,10 @@ export interface WithLatestFromSignature<T> {
 
 class WithLatestFromOperator<T, R> implements Operator<T, R> {
   constructor(private observables: IObservable<any>[],
-              private project?: (...values: any[]) => Observable<R>) {
+              private project?: (...values: any[]) => IObservable<R>) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
   }
 }
@@ -92,9 +92,9 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
   private values: any[];
   private toRespond: number[] = [];
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: ISubscriber<R>,
               private observables: IObservable<any>[],
-              private project?: (...values: any[]) => Observable<R>) {
+              private project?: (...values: any[]) => IObservable<R>) {
     super(destination);
     const len = observables.length;
     this.values = new Array(len);

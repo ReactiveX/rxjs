@@ -1,4 +1,4 @@
-import { Observable, ObservableInput, IObservable } from '../Observable';
+import { ObservableInput, IObservable } from '../Observable';
 import { Scheduler } from '../Scheduler';
 import { isScheduler } from '../util/isScheduler';
 import { isArray } from '../util/isArray';
@@ -89,7 +89,7 @@ export function combineLatest<T, R>(...observables: Array<any | ObservableInput<
   // if the first and only other argument besides the resultSelector is an array
   // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
   if (observables.length === 1 && isArray(observables[0])) {
-    observables = <Array<Observable<any>>>observables[0];
+    observables = <Array<IObservable<any>>>observables[0];
   }
 
   return new ArrayObservable(observables, scheduler).lift(new CombineLatestOperator<T, R>(project));

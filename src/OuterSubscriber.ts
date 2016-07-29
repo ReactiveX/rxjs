@@ -1,4 +1,4 @@
-import {Subscriber} from './Subscriber';
+import {ISubscriber, Subscriber} from './Subscriber';
 import {InnerSubscriber} from './InnerSubscriber';
 
 /**

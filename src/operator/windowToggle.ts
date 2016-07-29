@@ -1,8 +1,8 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {Subject} from '../Subject';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -47,27 +47,27 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * the value emitted by the `openings` observable and returns an Observable,
  * which, when it emits (either `next` or `complete`), signals that the
  * associated window should complete.
- * @return {Observable<Observable<T>>} An observable of windows, which in turn
+ * @return {Observable<IObservable<T>>} An observable of windows, which in turn
  * are Observables.
  * @method windowToggle
  * @owner Observable
  */
 export function windowToggle<T, O>(openings: IObservable<O>,
-                                   closingSelector: (openValue: O) => Observable<any>): IObservable<Observable<T>> {
+                                   closingSelector: (openValue: O) => IObservable<any>): IObservable<IObservable<T>> {
   return this.lift(new WindowToggleOperator<T, O>(openings, closingSelector));
 }
 
 export interface WindowToggleSignature<T> {
-  <O>(openings: IObservable<O>, closingSelector: (openValue: O) => Observable<any>): IObservable<Observable<T>>;
+  <O>(openings: IObservable<O>, closingSelector: (openValue: O) => IObservable<any>): IObservable<IObservable<T>>;
 }
 
-class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
+class WindowToggleOperator<T, O> implements Operator<T, IObservable<T>> {
 
   constructor(private openings: IObservable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
+              private closingSelector: (openValue: O) => IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  call(subscriber: ISubscriber<IObservable<T>>, source: any): any {
     return source._subscribe(new WindowToggleSubscriber(
       subscriber, this.openings, this.closingSelector
     ));
@@ -76,7 +76,7 @@ class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
 
 interface WindowContext<T> {
   window: Subject<T>;
-  subscription: Subscription;
+  subscription: ISubscription;
 }
 
 /**
@@ -86,11 +86,11 @@ interface WindowContext<T> {
  */
 class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   private contexts: WindowContext<T>[] = [];
-  private openSubscription: Subscription;
+  private openSubscription: ISubscription;
 
-  constructor(destination: Subscriber<Observable<T>>,
+  constructor(destination: ISubscriber<IObservable<T>>,
               private openings: IObservable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
+              private closingSelector: (openValue: O) => IObservable<any>) {
     super(destination);
     this.add(this.openSubscription = subscribeToResult(this, openings, openings));
   }
@@ -190,7 +190,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
     this.error(err);
   }
 
-  notifyComplete(inner: Subscription): void {
+  notifyComplete(inner: ISubscription): void {
     if (inner !== this.openSubscription) {
       this.closeWindow(this.contexts.indexOf((<any> inner).context));
     }

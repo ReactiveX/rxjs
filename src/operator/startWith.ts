@@ -28,11 +28,11 @@ export function startWith<T>(...array: Array<T | Scheduler>): IObservable<T> {
 
   const len = array.length;
   if (len === 1) {
-    return concatStatic(new ScalarObservable<T>(<T>array[0], scheduler), <Observable<T>>this);
+    return concatStatic(new ScalarObservable<T>(<T>array[0], scheduler), <IObservable<T>>this);
   } else if (len > 1) {
-    return concatStatic(new ArrayObservable<T>(<T[]>array, scheduler), <Observable<T>>this);
+    return concatStatic(new ArrayObservable<T>(<T[]>array, scheduler), <IObservable<T>>this);
   } else {
-    return concatStatic(new EmptyObservable<T>(scheduler), <Observable<T>>this);
+    return concatStatic(new EmptyObservable<T>(scheduler), <IObservable<T>>this);
   }
 }
 

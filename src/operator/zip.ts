@@ -3,7 +3,7 @@ import {ArrayObservable} from '../observable/ArrayObservable';
 import {isArray} from '../util/isArray';
 import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -88,7 +88,7 @@ export class ZipOperator<T, R> implements Operator<T, R> {
     this.project = project;
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new ZipSubscriber(subscriber, this.project));
   }
 }
@@ -105,7 +105,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   private iterators: LookAheadIterator<any>[] = [];
   private active = 0;
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: ISubscriber<R>,
               project?: (...values: Array<any>) => R,
               values: any = Object.create(null)) {
     super(destination);

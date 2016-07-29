@@ -1,8 +1,8 @@
 import {Subject} from './Subject';
 import {Scheduler} from './Scheduler';
 import {queue} from './scheduler/queue';
-import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
+import {ISubscriber, Subscriber} from './Subscriber';
+import {ISubscription, Subscription} from './Subscription';
 import {ObserveOnSubscriber} from './operator/observeOn';
 
 /**
@@ -28,7 +28,7 @@ export class ReplaySubject<T> extends Subject<T> {
     super.next(value);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     const _events = this._trimBufferThenGetEvents();
     const scheduler = this.scheduler;
 

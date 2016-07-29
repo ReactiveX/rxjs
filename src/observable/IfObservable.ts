@@ -1,5 +1,5 @@
 import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -26,7 +26,7 @@ export class IfObservable<T, R> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T|R>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T|R>): TeardownLogic {
     const { condition, thenSource, elseSource } = this;
 
     return new IfSubscriber(subscriber, condition, thenSource, elseSource);
@@ -34,7 +34,7 @@ export class IfObservable<T, R> extends Observable<T> {
 }
 
 class IfSubscriber<T, R> extends OuterSubscriber<T, T> {
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private condition: () => boolean | void,
               private thenSource?: SubscribableOrPromise<T> | void,
               private elseSource?: SubscribableOrPromise<R> | void) {

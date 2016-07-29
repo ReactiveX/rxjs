@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -42,20 +42,20 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method bufferWhen
  * @owner Observable
  */
-export function bufferWhen<T>(closingSelector: () => Observable<any>): IObservable<T[]> {
+export function bufferWhen<T>(closingSelector: () => IObservable<any>): IObservable<T[]> {
   return this.lift(new BufferWhenOperator<T>(closingSelector));
 }
 
 export interface BufferWhenSignature<T> {
-  (closingSelector: () => Observable<any>): IObservable<T[]>;
+  (closingSelector: () => IObservable<any>): IObservable<T[]>;
 }
 
 class BufferWhenOperator<T> implements Operator<T, T[]> {
 
-  constructor(private closingSelector: () => Observable<any>) {
+  constructor(private closingSelector: () => IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
   }
 }
@@ -68,9 +68,9 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
 class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[];
   private subscribing: boolean = false;
-  private closingSubscription: Subscription;
+  private closingSubscription: ISubscription;
 
-  constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
+  constructor(destination: ISubscriber<T[]>, private closingSelector: () => IObservable<any>) {
     super(destination);
     this.openBuffer();
   }

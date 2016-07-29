@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 
 /**
@@ -50,7 +50,7 @@ class MapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => R, private thisArg: any) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
   }
 }
@@ -64,7 +64,7 @@ class MapSubscriber<T, R> extends Subscriber<T> {
   count: number = 0;
   private thisArg: any;
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: ISubscriber<R>,
               private project: (value: T, index: number) => R,
               thisArg: any) {
     super(destination);

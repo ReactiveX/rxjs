@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscription, TeardownLogic} from '../Subscription';
 import {async} from '../scheduler/async';
 import {IObservable} from '../Observable';
 
@@ -57,7 +57,7 @@ class ThrottleTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler));
   }
 }
@@ -68,9 +68,9 @@ class ThrottleTimeOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ThrottleTimeSubscriber<T> extends Subscriber<T> {
-  private throttled: Subscription;
+  private throttled: ISubscription;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private duration: number,
               private scheduler: Scheduler) {
     super(destination);

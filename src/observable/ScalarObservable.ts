@@ -1,6 +1,6 @@
 import {Scheduler} from '../Scheduler';
 import {Observable, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 
 export interface IScalarObservable<T> extends IObservable<T> { }
@@ -42,7 +42,7 @@ export class ScalarObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     const value = this.value;
     const scheduler = this.scheduler;
 

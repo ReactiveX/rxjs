@@ -150,7 +150,7 @@ export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | S
   }
 
   if (observables.length === 1) {
-    return <Observable<R>>observables[0];
+    return <IObservable<R>>observables[0];
   }
 
   return new ArrayObservable(<any>observables, scheduler).lift(new MergeAllOperator<R>(concurrent));

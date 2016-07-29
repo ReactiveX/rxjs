@@ -23,7 +23,7 @@ import {ConnectableObservable} from '../observable/ConnectableObservable';
  * @owner Observable
  */
 export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
-                             selector?: (source: IObservable<T>) => Observable<T>): IObservable<T> | ConnectableObservable<T> {
+                             selector?: (source: IObservable<T>) => IObservable<T>): IObservable<T> | ConnectableObservable<T> {
   let subjectFactory: () => Subject<T>;
   if (typeof subjectOrSubjectFactory === 'function') {
     subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;
@@ -39,7 +39,7 @@ export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subjec
 }
 
 export type factoryOrValue<T> = T | (() => T);
-export type selector<T> = (source: IObservable<T>) => Observable<T>;
+export type selector<T> = (source: IObservable<T>) => IObservable<T>;
 
 export interface MulticastSignature<T> {
   (subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;

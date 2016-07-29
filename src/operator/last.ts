@@ -1,6 +1,6 @@
 import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {EmptyError} from '../util/EmptyError';
 
 /**
@@ -40,7 +40,7 @@ class LastOperator<T, R> implements Operator<T, R> {
               private source?: IObservable<T>) {
   }
 
-  call(observer: Subscriber<R>, source: any): any {
+  call(observer: ISubscriber<R>, source: any): any {
     return source._subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
   }
 }
@@ -55,7 +55,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
   private hasValue: boolean = false;
   private index: number = 0;
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: ISubscriber<R>,
               private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
               private resultSelector?: (value: T, index: number) => R,
               private defaultValue?: any,

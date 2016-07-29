@@ -1,7 +1,7 @@
 import {PartialObserver} from './Observer';
 import {Operator} from './Operator';
-import {Subscriber} from './Subscriber';
-import {Subscription, AnonymousSubscription, TeardownLogic} from './Subscription';
+import {ISubscriber} from './Subscriber';
+import {ISubscription, AnonymousSubscription, TeardownLogic} from './Subscription';
 import {root} from './util/root';
 import {toSubscriber} from './util/toSubscriber';
 import {IfObservable} from './observable/IfObservable';
@@ -58,7 +58,7 @@ export interface IObservable<T> extends Subscribable<T> {
   subscribe(
     observerOrNext?: PartialObserver<T> | ((value: T) => void),
     error?: (error: any) => void,
-    complete?: () => void): Subscription;
+    complete?: () => void): ISubscription;
 
   /**
    * Registers handlers for handling emitted values, error and completions from the observable, and
@@ -95,7 +95,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic) {
+  constructor(subscribe?: <R>(subscriber: ISubscriber<R>) => TeardownLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -111,7 +111,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
    * @return {Observable} a new cold observable
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic) => {
+  static create: Function = <T>(subscribe?: <R>(subscriber: ISubscriber<R>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
   };
 
@@ -143,7 +143,7 @@ export class Observable<T> implements Subscribable<T> {
   subscribe(
     observerOrNext?: PartialObserver<T> | ((value: T) => void),
     error?: (error: any) => void,
-    complete?: () => void): Subscription {
+    complete?: () => void): ISubscription {
 
     const { operator } = this;
     const sink = toSubscriber(observerOrNext, error, complete);
@@ -210,7 +210,7 @@ export class Observable<T> implements Subscribable<T> {
     });
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<any>): TeardownLogic {
     return this.source.subscribe(subscriber);
   }
 

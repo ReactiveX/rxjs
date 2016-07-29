@@ -1,6 +1,6 @@
 import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Observer} from '../Observer';
 import {EmptyError} from '../util/EmptyError';
 import {TeardownLogic} from '../Subscription';
@@ -34,7 +34,7 @@ class SingleOperator<T> implements Operator<T, T> {
               private source?: IObservable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
   }
 }

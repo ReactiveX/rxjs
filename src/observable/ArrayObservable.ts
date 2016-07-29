@@ -2,7 +2,7 @@ import {Scheduler} from '../Scheduler';
 import {Observable, IObservable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './EmptyObservable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {isScheduler} from '../util/isScheduler';
 import {TeardownLogic} from '../Subscription';
 
@@ -111,7 +111,7 @@ export class ArrayObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     let index = 0;
     const array = this.array;
     const count = array.length;

@@ -1,6 +1,6 @@
 import {Observable, IObservable} from '../Observable';
-import {Subscription} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 export interface IFromEventPatternObservable<T> extends IObservable<T> { }
 export interface FromEventPatternObservable<T> extends IFromEventPatternObservable<T> { }
@@ -71,7 +71,7 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: ISubscriber<T>) {
     const removeHandler = this.removeHandler;
 
     const handler = !!this.selector ? (...args: Array<any>) => {
@@ -85,7 +85,7 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
     }));
   }
 
-  private _callSelector(subscriber: Subscriber<T>, args: Array<any>): void {
+  private _callSelector(subscriber: ISubscriber<T>, args: Array<any>): void {
     try {
       const result: T = this.selector(...args);
       subscriber.next(result);
@@ -95,7 +95,7 @@ export class FromEventPatternObservable<T, R> extends Observable<T> {
     }
   }
 
-  private _callAddHandler(handler: (e: any) => void, errorSubscriber: Subscriber<T>): void {
+  private _callAddHandler(handler: (e: any) => void, errorSubscriber: ISubscriber<T>): void {
     try {
       this.addHandler(handler);
     }

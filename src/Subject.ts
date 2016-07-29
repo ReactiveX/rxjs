@@ -1,8 +1,8 @@
 import {Operator} from './Operator';
 import {Observer} from './Observer';
 import {Observable, IObservable} from './Observable';
-import {Subscriber} from './Subscriber';
-import {ISubscription, Subscription} from './Subscription';
+import {ISubscriber, Subscriber} from './Subscriber';
+import {ISimpleSubscription, ISubscription, Subscription} from './Subscription';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 import {SubjectSubscription} from './SubjectSubscription';
 import {$$rxSubscriber} from './symbol/rxSubscriber';
@@ -22,7 +22,7 @@ export interface Subject<T> extends ISubject<T> { }
 /**
  * @class Subject<T>
  */
-export class Subject<T> extends Observable<T> implements ISubscription {
+export class Subject<T> extends Observable<T> implements ISimpleSubscription {
 
   [$$rxSubscriber]() {
     return new SubjectSubscriber(this);
@@ -102,7 +102,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     this.observers = null;
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
@@ -154,7 +154,7 @@ export class AnonymousSubject<T> extends Subject<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     const { source } = this;
     if (source) {
       return this.source.subscribe(subscriber);

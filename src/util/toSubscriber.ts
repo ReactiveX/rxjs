@@ -1,11 +1,11 @@
 import {PartialObserver} from '../Observer';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {$$rxSubscriber} from '../symbol/rxSubscriber';
 
 export function toSubscriber<T>(
   nextOrObserver?: PartialObserver<T> | ((value: T) => void),
   error?: (error: any) => void,
-  complete?: () => void): Subscriber<T> {
+  complete?: () => void): ISubscriber<T> {
 
   if (nextOrObserver) {
     if (nextOrObserver instanceof Subscriber) {

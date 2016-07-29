@@ -1,5 +1,5 @@
 import {Action} from './scheduler/Action';
-import {Subscription} from './Subscription';
+import {ISubscription, Subscription} from './Subscription';
 
 /**
  * An execution context and a data structure to order tasks and schedule their
@@ -11,7 +11,7 @@ import {Subscription} from './Subscription';
  * ```ts
  * class Scheduler {
  *   now(): number;
- *   schedule(work, delay?, state?): Subscription;
+ *   schedule(work, delay?, state?): ISubscription;
  * }
  * ```
  *
@@ -53,7 +53,7 @@ export class Scheduler {
    * @return {Subscription} A subscription in order to be able to unsubscribe
    * the scheduled work.
    */
-  public schedule<T>(work: (state?: T) => void, delay: number = 0, state?: T): Subscription {
+  public schedule<T>(work: (state?: T) => void, delay: number = 0, state?: T): ISubscription {
     return new this.SchedulerAction<T>(this, work).schedule(state, delay);
   }
 }

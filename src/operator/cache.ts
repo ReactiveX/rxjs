@@ -1,8 +1,8 @@
-import {IObservable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {ReplaySubject} from '../ReplaySubject';
 import {Observer} from '../Observer';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 
 /**
  * @param bufferSize
@@ -18,7 +18,7 @@ export function cache<T>(bufferSize: number = Number.POSITIVE_INFINITY,
   let subject: ReplaySubject<T>;
   let source = this;
   let refs = 0;
-  let outerSub: Subscription;
+  let outerSub: ISubscription;
 
   const getSubject = () => {
     subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);

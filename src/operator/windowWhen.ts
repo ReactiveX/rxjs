@@ -1,8 +1,8 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {Subject} from '../Subject';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -44,24 +44,24 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @param {function(): IObservable} closingSelector A function that takes no
  * arguments and returns an Observable that signals (on either `next` or
  * `complete`) when to close the previous window and start a new one.
- * @return {Observable<Observable<T>>} An observable of windows, which in turn
+ * @return {Observable<IObservable<T>>} An observable of windows, which in turn
  * are Observables.
  * @method windowWhen
  * @owner Observable
  */
-export function windowWhen<T>(closingSelector: () => Observable<any>): IObservable<Observable<T>> {
+export function windowWhen<T>(closingSelector: () => IObservable<any>): IObservable<IObservable<T>> {
   return this.lift(new WindowOperator<T>(closingSelector));
 }
 
 export interface WindowWhenSignature<T> {
-  (closingSelector: () => Observable<any>): IObservable<Observable<T>>;
+  (closingSelector: () => IObservable<any>): IObservable<IObservable<T>>;
 }
 
-class WindowOperator<T> implements Operator<T, Observable<T>> {
-  constructor(private closingSelector: () => Observable<any>) {
+class WindowOperator<T> implements Operator<T, IObservable<T>> {
+  constructor(private closingSelector: () => IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  call(subscriber: ISubscriber<IObservable<T>>, source: any): any {
     return source._subscribe(new WindowSubscriber(subscriber, this.closingSelector));
   }
 }
@@ -73,10 +73,10 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
  */
 class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   private window: Subject<T>;
-  private closingNotification: Subscription;
+  private closingNotification: ISubscription;
 
-  constructor(protected destination: Subscriber<Observable<T>>,
-              private closingSelector: () => Observable<any>) {
+  constructor(protected destination: ISubscriber<IObservable<T>>,
+              private closingSelector: () => IObservable<any>) {
     super(destination);
     this.openWindow();
   }

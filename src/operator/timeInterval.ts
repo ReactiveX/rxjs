@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
 
@@ -29,7 +29,7 @@ class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
 
   }
 
-  call(observer: Subscriber<TimeInterval<T>>, source: any): any {
+  call(observer: ISubscriber<TimeInterval<T>>, source: any): any {
     return source._subscribe(new TimeIntervalSubscriber(observer, this.scheduler));
   }
 }
@@ -42,7 +42,7 @@ class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
 class TimeIntervalSubscriber<T> extends Subscriber<T> {
   private lastTime: number = 0;
 
-  constructor(destination: Subscriber<TimeInterval<T>>, private scheduler: Scheduler) {
+  constructor(destination: ISubscriber<TimeInterval<T>>, private scheduler: Scheduler) {
     super(destination);
 
     this.lastTime = scheduler.now();

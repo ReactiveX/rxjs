@@ -1,7 +1,7 @@
 import {Scheduler} from '../Scheduler';
 import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 export interface IRangeObservable extends IObservable<number> { }
 export interface RangeObservable extends IRangeObservable { }
@@ -83,7 +83,7 @@ export class RangeObservable extends Observable<number> {
     this.scheduler = scheduler;
   }
 
-  protected _subscribe(subscriber: Subscriber<number>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<number>): TeardownLogic {
     let index = 0;
     let start = this.start;
     const count = this._count;

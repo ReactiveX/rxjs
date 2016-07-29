@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
@@ -57,7 +57,7 @@ class FilterOperator<T> implements Operator<T, T> {
               private thisArg?: any) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
   }
 }
@@ -71,7 +71,7 @@ class FilterSubscriber<T> extends Subscriber<T> {
 
   count: number = 0;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private predicate: (value: T, index: number) => boolean,
               private thisArg: any) {
     super(destination);

@@ -1,6 +1,6 @@
 import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {EmptyObservable} from './EmptyObservable';
 import {isArray} from '../util/isArray';
 
@@ -72,7 +72,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
     return new ForkJoinObservable(<Array<SubscribableOrPromise<any>>>sources, resultSelector);
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<any>): ISubscription {
     return new ForkJoinSubscriber(subscriber, this.sources, this.resultSelector);
   }
 }
@@ -88,7 +88,7 @@ class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
   private values: any[];
   private haveValues = 0;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private sources: Array<SubscribableOrPromise<any>>,
               private resultSelector?: (...values: Array<any>) => T) {
     super(destination);

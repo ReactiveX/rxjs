@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 
 /**
@@ -55,7 +55,7 @@ class BufferCountOperator<T> implements Operator<T, T[]> {
   constructor(private bufferSize: number, private startBufferEvery: number) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
   }
 }
@@ -69,7 +69,7 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [[]];
   private count: number = 0;
 
-  constructor(destination: Subscriber<T[]>, private bufferSize: number, private startBufferEvery: number) {
+  constructor(destination: ISubscriber<T[]>, private bufferSize: number, private startBufferEvery: number) {
     super(destination);
   }
 

@@ -5,7 +5,7 @@ import {async} from '../scheduler/async';
 import {isScheduler} from '../util/isScheduler';
 import {isDate} from '../util/isDate';
 import {TeardownLogic} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 export interface ITimerObservable extends IObservable<number> { }
 export interface TimerObservable extends ITimerObservable { }
@@ -107,7 +107,7 @@ export class TimerObservable extends Observable<number> {
       (<number> dueTime);
   }
 
-  protected _subscribe(subscriber: Subscriber<number>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<number>): TeardownLogic {
     const index = 0;
     const { period, dueTime, scheduler } = this;
 

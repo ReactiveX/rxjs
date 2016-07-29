@@ -2,8 +2,8 @@ import {async} from '../scheduler/async';
 import {isDate} from '../util/isDate';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
-import {Subscriber} from '../Subscriber';
-import {Notification} from '../Notification';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {INotification, Notification} from '../Notification';
 import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
@@ -62,7 +62,7 @@ class DelayOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
   }
 }
@@ -95,7 +95,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }
   }
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private delay: number,
               private scheduler: Scheduler) {
     super(destination);
@@ -108,7 +108,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }));
   }
 
-  private scheduleNotification(notification: Notification<any>): void {
+  private scheduleNotification(notification: INotification<any>): void {
     if (this.errored === true) {
       return;
     }

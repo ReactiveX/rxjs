@@ -1,8 +1,8 @@
 import {Operator} from '../Operator';
 import {IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 import {async} from '../scheduler/async';
 
 /**
@@ -63,7 +63,7 @@ class DebounceTimeOperator<T> implements Operator<T, T> {
   constructor(private dueTime: number, private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
   }
 }
@@ -74,11 +74,11 @@ class DebounceTimeOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class DebounceTimeSubscriber<T> extends Subscriber<T> {
-  private debouncedSubscription: Subscription = null;
+  private debouncedSubscription: ISubscription = null;
   private lastValue: T = null;
   private hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private dueTime: number,
               private scheduler: Scheduler) {
     super(destination);

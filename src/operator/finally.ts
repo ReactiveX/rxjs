@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 import {IObservable} from '../Observable';
 
 /**
@@ -23,7 +23,7 @@ class FinallyOperator<T> implements Operator<T, T> {
   constructor(private callback: () => void) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new FinallySubscriber(subscriber, this.callback));
   }
 }
@@ -34,7 +34,7 @@ class FinallyOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class FinallySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>, callback: () => void) {
+  constructor(destination: ISubscriber<T>, callback: () => void) {
     super(destination);
     this.add(new Subscription(callback));
   }

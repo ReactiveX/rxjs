@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {IObservable} from '../Observable';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {Observable, IObservable} from '../Observable';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -52,24 +52,24 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method delayWhen
  * @owner Observable
  */
-export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>,
+export function delayWhen<T>(delayDurationSelector: (value: T) => IObservable<any>,
                              subscriptionDelay?: IObservable<any>): IObservable<T> {
   if (subscriptionDelay) {
     return new SubscriptionDelayObservable(this, subscriptionDelay)
-            .lift(new DelayWhenOperator(delayDurationSelector));
+            .lift<T>(new DelayWhenOperator(delayDurationSelector));
   }
   return this.lift(new DelayWhenOperator(delayDurationSelector));
 }
 
 export interface DelayWhenSignature<T> {
-  (delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: IObservable<any>): IObservable<T>;
+  (delayDurationSelector: (value: T) => IObservable<any>, subscriptionDelay?: IObservable<any>): IObservable<T>;
 }
 
 class DelayWhenOperator<T> implements Operator<T, T> {
-  constructor(private delayDurationSelector: (value: T) => Observable<any>) {
+  constructor(private delayDurationSelector: (value: T) => IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
   }
 }
@@ -84,8 +84,8 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private delayNotifierSubscriptions: Array<Subscription> = [];
   private values: Array<T> = [];
 
-  constructor(destination: Subscriber<T>,
-              private delayDurationSelector: (value: T) => Observable<any>) {
+  constructor(destination: ISubscriber<T>,
+              private delayDurationSelector: (value: T) => IObservable<any>) {
     super(destination);
   }
 
@@ -165,7 +165,7 @@ class SubscriptionDelayObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: ISubscriber<T>) {
     this.subscriptionDelay.subscribe(new SubscriptionDelaySubscriber(subscriber, this.source));
   }
 }
@@ -178,7 +178,7 @@ class SubscriptionDelayObservable<T> extends Observable<T> {
 class SubscriptionDelaySubscriber<T> extends Subscriber<T> {
   private sourceSubscribed: boolean = false;
 
-  constructor(private parent: Subscriber<T>, private source: IObservable<T>) {
+  constructor(private parent: ISubscriber<T>, private source: IObservable<T>) {
     super();
   }
 

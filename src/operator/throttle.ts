@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {SubscribableOrPromise, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -57,7 +57,7 @@ class ThrottleOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
   }
 }
@@ -68,9 +68,9 @@ class ThrottleOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private throttled: Subscription;
+  private throttled: ISubscription;
 
-  constructor(protected destination: Subscriber<T>,
+  constructor(protected destination: ISubscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>) {
     super(destination);
   }

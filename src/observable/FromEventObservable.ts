@@ -2,8 +2,8 @@ import {Observable, IObservable} from '../Observable';
 import {tryCatch} from '../util/tryCatch';
 import {isFunction} from '../util/isFunction';
 import {errorObject} from '../util/errorObject';
-import {Subscription} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 export type NodeStyleEventEmmitter = {
   addListener: (eventName: string, handler: Function) => void;
@@ -117,7 +117,7 @@ export class FromEventObservable<T, R> extends Observable<T> {
   private static setupSubscription<T>(sourceObj: EventTargetLike,
                                       eventName: string,
                                       handler: Function,
-                                      subscriber: Subscriber<T>,
+                                      subscriber: ISubscriber<T>,
                                       options?: EventListenerOptions) {
     let unsubscribe: () => void;
     if (isNodeList(sourceObj) || isHTMLCollection(sourceObj)) {
@@ -141,7 +141,7 @@ export class FromEventObservable<T, R> extends Observable<T> {
     subscriber.add(new Subscription(unsubscribe));
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: ISubscriber<T>) {
     const sourceObj = this.sourceObj;
     const eventName = this.eventName;
     const options = this.options;

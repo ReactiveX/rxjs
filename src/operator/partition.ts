@@ -51,5 +51,5 @@ export function partition<T>(predicate: (value: T) => boolean, thisArg?: any): [
 }
 
 export interface PartitionSignature<T> {
-  (predicate: (value: T) => boolean, thisArg?: any): [Observable<T>, Observable<T>];
+  (predicate: (value: T) => boolean, thisArg?: any): [IObservable<T>, IObservable<T>];
 }

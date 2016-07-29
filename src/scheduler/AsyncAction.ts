@@ -1,6 +1,6 @@
 import {root} from '../util/root';
 import {Action} from './Action';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 import {AsyncScheduler} from './AsyncScheduler';
 
 /**
@@ -20,7 +20,7 @@ export class AsyncAction<T> extends Action<T> {
     super(scheduler, work);
   }
 
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public schedule(state?: T, delay: number = 0): ISubscription {
 
     if (this.closed) {
       return this;

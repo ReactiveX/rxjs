@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {IObservable} from '../Observable';
 
 /**
@@ -20,7 +20,7 @@ export interface IsEmptySignature<T> {
 }
 
 class IsEmptyOperator implements Operator<any, boolean> {
-  call (observer: Subscriber<boolean>, source: any): any {
+  call (observer: ISubscriber<boolean>, source: any): any {
     return source._subscribe(new IsEmptySubscriber(observer));
   }
 }
@@ -31,7 +31,7 @@ class IsEmptyOperator implements Operator<any, boolean> {
  * @extends {Ignored}
  */
 class IsEmptySubscriber extends Subscriber<any> {
-  constructor(destination: Subscriber<boolean>) {
+  constructor(destination: ISubscriber<boolean>) {
     super(destination);
   }
 

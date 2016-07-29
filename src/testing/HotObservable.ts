@@ -1,6 +1,6 @@
 import {Subject} from '../Subject';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
@@ -24,7 +24,7 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
     this.scheduler = scheduler;
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<any>): ISubscription {
     const subject: HotObservable<T> = this;
     const index = subject.logSubscribedFrame();
     subscriber.add(new Subscription(() => {

@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {SubscribableOrPromise, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -61,7 +61,7 @@ class DebounceOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
   }
 }
@@ -74,9 +74,9 @@ class DebounceOperator<T> implements Operator<T, T> {
 class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private value: T;
   private hasValue: boolean = false;
-  private durationSubscription: Subscription = null;
+  private durationSubscription: ISubscription = null;
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: ISubscriber<R>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>) {
     super(destination);
   }

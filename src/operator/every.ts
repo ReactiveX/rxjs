@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
 import {IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -26,7 +26,7 @@ class EveryOperator<T> implements Operator<T, boolean> {
               private source?: IObservable<T>) {
   }
 
-  call(observer: Subscriber<boolean>, source: any): any {
+  call(observer: ISubscriber<boolean>, source: any): any {
     return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
   }
 }

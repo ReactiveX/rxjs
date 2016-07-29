@@ -1,8 +1,8 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 import {IObservable} from '../Observable';
 import {isDate} from '../util/isDate';
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -36,7 +36,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TimeoutWithSubscriber(
       subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler
     ));
@@ -49,7 +49,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private timeoutSubscription: Subscription = undefined;
+  private timeoutSubscription: ISubscription = undefined;
   private index: number = 0;
   private _previousIndex: number = 0;
   get previousIndex(): number {
@@ -60,7 +60,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
     return this._hasCompleted;
   }
 
-  constructor(public destination: Subscriber<T>,
+  constructor(public destination: ISubscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
               private withObservable: IObservable<any>,

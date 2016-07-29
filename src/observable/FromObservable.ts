@@ -10,7 +10,7 @@ import {ArrayLikeObservable} from './ArrayLikeObservable';
 import {Scheduler} from '../Scheduler';
 import {$$iterator} from '../symbol/iterator';
 import {Observable, ObservableInput, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {ObserveOnSubscriber} from '../operator/observeOn';
 import {$$observable} from '../symbol/observable';
 
@@ -120,7 +120,7 @@ export class FromObservable<T> extends Observable<T> {
     throw new TypeError((ish !== null && typeof ish || ish) + ' is not observable');
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: ISubscriber<T>) {
     const ish = this.ish;
     const scheduler = this.scheduler;
     if (scheduler == null) {

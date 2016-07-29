@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observable/EmptyObservable';
 import {IObservable} from '../Observable';
@@ -60,7 +60,7 @@ class TakeLastOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeLastSubscriber(subscriber, this.total));
   }
 }
@@ -74,7 +74,7 @@ class TakeLastSubscriber<T> extends Subscriber<T> {
   private ring: Array<T> = new Array();
   private count: number = 0;
 
-  constructor(destination: Subscriber<T>, private total: number) {
+  constructor(destination: ISubscriber<T>, private total: number) {
     super(destination);
   }
 

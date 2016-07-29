@@ -1,6 +1,6 @@
 import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
 import {TeardownLogic} from '../Subscription';
@@ -54,7 +54,7 @@ class SampleTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
   }
 }
@@ -68,7 +68,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   lastValue: T;
   hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private period: number,
               private scheduler: Scheduler) {
     super(destination);

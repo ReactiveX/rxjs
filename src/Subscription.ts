@@ -11,9 +11,16 @@ export interface AnonymousSubscription {
 
 export type TeardownLogic = AnonymousSubscription | Function | void;
 
-export interface ISubscription extends AnonymousSubscription {
+export interface ISimpleSubscription extends AnonymousSubscription {
   unsubscribe(): void;
   closed: boolean;
+}
+
+export interface ISubscription extends ISimpleSubscription {
+  unsubscribe(): void;
+  closed: boolean;
+  add(teardown: TeardownLogic): ISubscription;
+  remove(subscription: ISubscription): void;
 }
 
 /**
@@ -29,7 +36,7 @@ export interface ISubscription extends AnonymousSubscription {
  * @class Subscription
  */
 export class Subscription implements ISubscription {
-  public static EMPTY: Subscription = (function(empty: any){
+  public static EMPTY: ISubscription = (function(empty: any){
     empty.closed = true;
     return empty;
   }(new Subscription()));
@@ -124,7 +131,7 @@ export class Subscription implements ISubscription {
    * `remove()` to remove the passed teardown logic from the inner subscriptions
    * list.
    */
-  add(teardown: TeardownLogic): Subscription {
+  add(teardown: TeardownLogic): ISubscription {
     if (!teardown || (
         teardown === this) || (
         teardown === Subscription.EMPTY)) {
@@ -158,7 +165,7 @@ export class Subscription implements ISubscription {
    * @param {Subscription} subscription The subscription to remove.
    * @return {void}
    */
-  remove(subscription: Subscription): void {
+  remove(subscription: ISubscription): void {
 
     // HACK: This might be redundant because of the logic in `add()`
     if (subscription == null   || (

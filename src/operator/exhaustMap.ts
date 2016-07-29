@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {ObservableInput, IObservable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -67,7 +67,7 @@ class SwitchFirstMapOperator<T, I, R> implements Operator<T, R> {
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
   }
 }
@@ -82,7 +82,7 @@ class SwitchFirstMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private hasCompleted: boolean = false;
   private index: number = 0;
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: ISubscriber<R>,
               private project: (value: T, index: number) => ObservableInput<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
     super(destination);
@@ -139,7 +139,7 @@ class SwitchFirstMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this.destination.error(err);
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(innerSub: ISubscription): void {
     this.remove(innerSub);
 
     this.hasSubscription = false;

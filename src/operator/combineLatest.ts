@@ -2,7 +2,7 @@ import {ObservableInput, IObservable} from '../Observable';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {isArray} from '../util/isArray';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -90,7 +90,7 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
   constructor(private project?: (...values: Array<any>) => R) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
   }
 }
@@ -106,7 +106,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private observables: any[] = [];
   private toRespond: number;
 
-  constructor(destination: Subscriber<R>, private project?: (...values: Array<any>) => R) {
+  constructor(destination: ISubscriber<R>, private project?: (...values: Array<any>) => R) {
     super(destination);
   }
 
@@ -130,7 +130,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(unused: Subscriber<R>): void {
+  notifyComplete(unused: ISubscriber<R>): void {
     if ((this.active -= 1) === 0) {
       this.destination.complete();
     }

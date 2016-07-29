@@ -1,6 +1,6 @@
 import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -27,7 +27,7 @@ class SkipWhileOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
   }
 }
@@ -41,7 +41,7 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
   private skipping: boolean = true;
   private index: number = 0;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private predicate: (value: T, index: number) => boolean) {
     super(destination);
   }
