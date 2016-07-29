@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions, type};
 
 const Observable = Rx.Observable;
 
@@ -200,5 +200,34 @@ describe('Observable.prototype.scan', () => {
 
     expectObservable(scan).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should accept array typed reducers', () => {
+    type(() => {
+      let a: Rx.Observable<{ a: number; b: string }>;
+      a.reduce((acc, value) => acc.concat(value), []);
+    });
+  });
+
+  it('should accept T typed reducers', () => {
+    type(() => {
+      let a: Rx.Observable<{ a?: number; b?: string }>;
+      a.reduce((acc, value) => {
+        value.a = acc.a;
+        value.b = acc.b;
+        return acc;
+      }, {});
+    });
+  });
+
+  it('should accept R typed reducers', () => {
+    type(() => {
+      let a: Rx.Observable<{ a: number; b: string }>;
+      a.reduce<{ a?: number; b?: string }>((acc, value) => {
+        value.a = acc.a;
+        value.b = acc.b;
+        return acc;
+      }, {});
+    });
   });
 });

@@ -1,11 +1,12 @@
 
 import {Observable} from '../../Observable';
-import {scan, ScanSignature} from '../../operator/scan';
+import {ReduceSignature} from '../../operator/reduce';
+import {scan} from '../../operator/scan';
 
 Observable.prototype.scan = scan;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    scan: ScanSignature<T>;
+    scan: ReduceSignature<T>;
   }
 }

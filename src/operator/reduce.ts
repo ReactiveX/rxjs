@@ -52,7 +52,9 @@ export function reduce<T, R>(accumulator: (acc: R, value: T) => R, seed?: R): Ob
 }
 
 export interface ReduceSignature<T> {
-  <R>(accumulator: (acc: R, value: T) => R, seed?: R): Observable<R>;
+  (accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
+  (accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
+  <R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
 }
 
 export class ReduceOperator<T, R> implements Operator<T, R> {
