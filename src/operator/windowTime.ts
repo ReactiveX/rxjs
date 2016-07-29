@@ -3,9 +3,9 @@ import {Action} from '../scheduler/Action';
 import {Subject} from '../Subject';
 import {Operator} from '../Operator';
 import {async} from '../scheduler/async';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscription, Subscription} from '../Subscription';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically
@@ -51,29 +51,29 @@ import {Subscription} from '../Subscription';
  * windows.
  * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine window boundaries.
- * @return {Observable<Observable<T>>} An observable of windows, which in turn
+ * @return {Observable<IObservable<T>>} An observable of windows, which in turn
  * are Observables.
  * @method windowTime
  * @owner Observable
  */
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number = null,
-                              scheduler: Scheduler = async): Observable<Observable<T>> {
+                              scheduler: Scheduler = async): IObservable<IObservable<T>> {
   return this.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, scheduler));
 }
 
 export interface WindowTimeSignature<T> {
-  (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler): Observable<Observable<T>>;
+  (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler): IObservable<IObservable<T>>;
 }
 
-class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
+class WindowTimeOperator<T> implements Operator<T, IObservable<T>> {
 
   constructor(private windowTimeSpan: number,
               private windowCreationInterval: number,
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  call(subscriber: ISubscriber<IObservable<T>>, source: any): any {
     return source._subscribe(new WindowTimeSubscriber(
       subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler
     ));
@@ -95,7 +95,7 @@ interface CreationState<T> {
 class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
 
-  constructor(protected destination: Subscriber<Observable<T>>,
+  constructor(protected destination: ISubscriber<IObservable<T>>,
               private windowTimeSpan: number,
               private windowCreationInterval: number,
               private scheduler: Scheduler) {
@@ -175,7 +175,7 @@ function dispatchWindowTimeSpanOnly<T>(state: TimeSpanOnlyState<T>) {
 
 interface Context<T> {
   action: Action<CreationState<T>>;
-  subscription: Subscription;
+  subscription: ISubscription;
 }
 
 interface DispatchArg<T> {

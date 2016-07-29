@@ -1,7 +1,7 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
@@ -57,7 +57,7 @@ export interface MergeAllSignature<T> {
   (concurrent?: number): T;
 }
 
-export class MergeAllOperator<T> implements Operator<Observable<T>, T> {
+export class MergeAllOperator<T> implements Operator<IObservable<T>, T> {
   constructor(private concurrent: number) {
   }
 
@@ -71,19 +71,19 @@ export class MergeAllOperator<T> implements Operator<Observable<T>, T> {
  * @ignore
  * @extends {Ignored}
  */
-export class MergeAllSubscriber<T> extends OuterSubscriber<Observable<T>, T> {
+export class MergeAllSubscriber<T> extends OuterSubscriber<IObservable<T>, T> {
   private hasCompleted: boolean = false;
-  private buffer: Observable<T>[] = [];
+  private buffer: IObservable<T>[] = [];
   private active: number = 0;
 
   constructor(destination: Observer<T>, private concurrent: number) {
     super(destination);
   }
 
-  protected _next(observable: Observable<T>) {
+  protected _next(observable: IObservable<T>) {
     if (this.active < this.concurrent) {
       this.active++;
-      this.add(subscribeToResult<Observable<T>, T>(this, observable));
+      this.add(subscribeToResult<IObservable<T>, T>(this, observable));
     } else {
       this.buffer.push(observable);
     }
@@ -96,7 +96,7 @@ export class MergeAllSubscriber<T> extends OuterSubscriber<Observable<T>, T> {
     }
   }
 
-  notifyComplete(innerSub: Subscription) {
+  notifyComplete(innerSub: ISubscription) {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

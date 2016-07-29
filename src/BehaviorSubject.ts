@@ -1,5 +1,5 @@
 import {Subject} from './Subject';
-import {Subscriber} from './Subscriber';
+import {ISubscriber, Subscriber} from './Subscriber';
 import {Subscription, ISubscription} from './Subscription';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 
@@ -16,7 +16,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     return this.getValue();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     const subscription = super._subscribe(subscriber);
     if (subscription && !(<ISubscription>subscription).closed) {
       subscriber.next(this._value);

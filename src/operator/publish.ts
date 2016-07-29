@@ -1,5 +1,5 @@
 import {Subject} from '../Subject';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {multicast} from './multicast';
 import {ConnectableObservable} from '../observable/ConnectableObservable';
 
@@ -16,14 +16,14 @@ import {ConnectableObservable} from '../observable/ConnectableObservable';
  * @method publish
  * @owner Observable
  */
-export function publish<T>(selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
+export function publish<T>(selector?: (source: IObservable<T>) => IObservable<T>): IObservable<T> | ConnectableObservable<T> {
   return selector ? multicast.call(this, () => new Subject<T>(), selector) :
                     multicast.call(this, new Subject<T>());
 }
 
-export type selector<T> = (source: Observable<T>) => Observable<T>;
+export type selector<T> = (source: IObservable<T>) => IObservable<T>;
 
 export interface PublishSignature<T> {
   (): ConnectableObservable<T>;
-  (selector: selector<T>): Observable<T>;
+  (selector: selector<T>): IObservable<T>;
 }

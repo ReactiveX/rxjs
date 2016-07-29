@@ -1,5 +1,5 @@
 import {ZipOperator} from './zip';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * @param project
@@ -7,10 +7,10 @@ import {Observable} from '../Observable';
  * @method zipAll
  * @owner Observable
  */
-export function zipAll<T, R>(project?: (...values: Array<any>) => R): Observable<R> {
+export function zipAll<T, R>(project?: (...values: Array<any>) => R): IObservable<R> {
   return this.lift(new ZipOperator(project));
 }
 
 export interface ZipAllSignature<T> {
-  <R>(project?: (...values: Array<T>) => R): Observable<R>;
+  <R>(project?: (...values: Array<T>) => R): IObservable<R>;
 }

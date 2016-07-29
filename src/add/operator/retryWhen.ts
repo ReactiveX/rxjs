@@ -5,7 +5,7 @@ import {retryWhen, RetryWhenSignature} from '../../operator/retryWhen';
 Observable.prototype.retryWhen = retryWhen;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     retryWhen: RetryWhenSignature<T>;
   }
 }

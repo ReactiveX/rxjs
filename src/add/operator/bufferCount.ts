@@ -5,7 +5,7 @@ import {bufferCount, BufferCountSignature} from '../../operator/bufferCount';
 Observable.prototype.bufferCount = bufferCount;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     bufferCount: BufferCountSignature<T>;
   }
 }

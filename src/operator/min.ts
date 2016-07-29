@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {ReduceOperator} from './reduce';
 
 /**
@@ -12,7 +12,7 @@ import {ReduceOperator} from './reduce';
  * @method min
  * @owner Observable
  */
-export function min<T>(comparer?: (x: T, y: T) => T): Observable<T> {
+export function min<T>(comparer?: (x: T, y: T) => T): IObservable<T> {
   const min: typeof comparer = (typeof comparer === 'function')
     ? comparer
     : (x, y) => x < y ? x : y;
@@ -20,5 +20,5 @@ export function min<T>(comparer?: (x: T, y: T) => T): Observable<T> {
 }
 
 export interface MinSignature<T> {
-  (comparer?: (x: T, y: T) => T): Observable<T>;
+  (comparer?: (x: T, y: T) => T): IObservable<T>;
 }

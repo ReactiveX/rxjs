@@ -1,10 +1,12 @@
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {ScalarObservable} from './ScalarObservable';
 import {EmptyObservable} from './EmptyObservable';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 
+export interface IArrayLikeObservable<T> extends IObservable<T> { }
+export interface ArrayLikeObservable<T> extends IArrayLikeObservable<T> { }
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -14,7 +16,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
 
   private mapFn: (x: T, y: number) => T;
 
-  static create<T>(arrayLike: ArrayLike<T>, mapFn: (x: T, y: number) => T, thisArg: any, scheduler?: Scheduler): Observable<T> {
+  static create<T>(arrayLike: ArrayLike<T>, mapFn: (x: T, y: number) => T, thisArg: any, scheduler?: Scheduler): IObservable<T> {
     const length = arrayLike.length;
     if (length === 0) {
       return new EmptyObservable<T>();
@@ -59,7 +61,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     let index = 0;
     const { arrayLike, mapFn, scheduler } = this;
     const length = arrayLike.length;

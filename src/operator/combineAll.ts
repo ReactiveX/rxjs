@@ -1,5 +1,5 @@
 import {CombineLatestOperator} from './combineLatest';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by waiting
@@ -41,10 +41,10 @@ import {Observable} from '../Observable';
  * @method combineAll
  * @owner Observable
  */
-export function combineAll<R>(project?: (...values: Array<any>) => R): Observable<R> {
+export function combineAll<R>(project?: (...values: Array<any>) => R): IObservable<R> {
   return this.lift(new CombineLatestOperator(project));
 }
 
 export interface CombineAllSignature<T> {
-  <R>(project?: (...values: Array<T>) => R): Observable<R>;
+  <R>(project?: (...values: Array<T>) => R): IObservable<R>;
 }

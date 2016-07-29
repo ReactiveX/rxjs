@@ -5,7 +5,7 @@ import {first, FirstSignature} from '../../operator/first';
 Observable.prototype.first = <any>first;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     first: FirstSignature<T>;
   }
 }

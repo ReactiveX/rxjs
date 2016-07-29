@@ -1,8 +1,17 @@
 import {isFunction} from './util/isFunction';
 import {Observer, PartialObserver} from './Observer';
-import {Subscription} from './Subscription';
+import {ISubscription, Subscription} from './Subscription';
 import {empty as emptyObserver} from './Observer';
 import {$$rxSubscriber} from './symbol/rxSubscriber';
+
+export interface ISubscriber<T> extends ISubscription {
+  syncErrorValue: any;
+  syncErrorThrown: boolean;
+  syncErrorThrowable: boolean;
+  next(value?: T): void;
+  error(err?: any): void;
+  complete(): void;
+}
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -14,7 +23,7 @@ import {$$rxSubscriber} from './symbol/rxSubscriber';
  *
  * @class Subscriber<T>
  */
-export class Subscriber<T> extends Subscription implements Observer<T> {
+export class Subscriber<T> extends Subscription implements Observer<T>, ISubscriber<T> {
 
   [$$rxSubscriber]() { return this; }
 
@@ -30,8 +39,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * Observer represented by the given arguments.
    */
   static create<T>(next?: (x?: T) => void,
-                   error?: (e?: any) => void,
-                   complete?: () => void): Subscriber<T> {
+    error?: (e?: any) => void,
+    complete?: () => void): ISubscriber<T> {
     const subscriber = new Subscriber(next, error, complete);
     subscriber.syncErrorThrowable = false;
     return subscriber;
@@ -53,8 +62,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * Observer.
    */
   constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void),
-              error?: (e?: any) => void,
-              complete?: () => void) {
+    error?: (e?: any) => void,
+    complete?: () => void) {
     super();
 
     switch (arguments.length) {
@@ -68,17 +77,17 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
         }
         if (typeof destinationOrNext === 'object') {
           if (destinationOrNext instanceof Subscriber) {
-            this.destination = (<Subscriber<any>> destinationOrNext);
-            (<any> this.destination).add(this);
+            this.destination = (<Subscriber<any>>destinationOrNext);
+            (<any>this.destination).add(this);
           } else {
             this.syncErrorThrowable = true;
-            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
+            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>>destinationOrNext);
           }
           break;
         }
       default:
         this.syncErrorThrowable = true;
-        this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
+        this.destination = new SafeSubscriber<T>(this, <((value: T) => void)>destinationOrNext, error, complete);
         break;
     }
   }
@@ -155,24 +164,24 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   private _context: any;
 
-  constructor(private _parent: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void),
-              error?: (e?: any) => void,
-              complete?: () => void) {
+  constructor(private _parent: ISubscriber<T>,
+    observerOrNext?: PartialObserver<T> | ((value: T) => void),
+    error?: (e?: any) => void,
+    complete?: () => void) {
     super();
 
     let next: ((value: T) => void);
     let context: any = this;
 
     if (isFunction(observerOrNext)) {
-      next = (<((value: T) => void)> observerOrNext);
+      next = (<((value: T) => void)>observerOrNext);
     } else if (observerOrNext) {
       context = observerOrNext;
-      next = (<PartialObserver<T>> observerOrNext).next;
-      error = (<PartialObserver<T>> observerOrNext).error;
-      complete = (<PartialObserver<T>> observerOrNext).complete;
+      next = (<PartialObserver<T>>observerOrNext).next;
+      error = (<PartialObserver<T>>observerOrNext).error;
+      complete = (<PartialObserver<T>>observerOrNext).complete;
       if (isFunction(context.unsubscribe)) {
-        this.add(<() => void> context.unsubscribe.bind(context));
+        this.add(<() => void>context.unsubscribe.bind(context));
       }
       context.unsubscribe = this.unsubscribe.bind(this);
     }
@@ -242,7 +251,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  private __tryOrSetError(parent: Subscriber<T>, fn: Function, value?: any): boolean {
+  private __tryOrSetError(parent: ISubscriber<T>, fn: Function, value?: any): boolean {
     try {
       fn.call(this._context, value);
     } catch (err) {

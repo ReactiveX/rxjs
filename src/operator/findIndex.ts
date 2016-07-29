@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {FindValueOperator} from './find';
 
 /**
@@ -26,7 +26,7 @@ import {FindValueOperator} from './find';
  * @see {@link first}
  * @see {@link take}
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} predicate
+ * @param {function(value: T, index: number, source: IObservable<T>): boolean} predicate
  * A function called with each item to test for condition matching.
  * @param {any} [thisArg] An optional argument to determine the value of `this`
  * in the `predicate` function.
@@ -35,11 +35,11 @@ import {FindValueOperator} from './find';
  * @method find
  * @owner Observable
  */
-export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                             thisArg?: any): Observable<number> {
+export function findIndex<T>(predicate: (value: T, index: number, source: IObservable<T>) => boolean,
+                             thisArg?: any): IObservable<number> {
   return this.lift(new FindValueOperator(predicate, this, true, thisArg));
 }
 
 export interface FindIndexSignature<T> {
-  (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<number>;
+  (predicate: (value: T, index: number, source: IObservable<T>) => boolean, thisArg?: any): IObservable<number>;
 }

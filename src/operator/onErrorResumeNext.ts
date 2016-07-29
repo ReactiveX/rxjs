@@ -1,7 +1,7 @@
-import {Observable, ObservableInput} from '../Observable';
+import {ObservableInput, IObservable} from '../Observable';
 import {FromObservable} from '../observable/FromObservable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {isArray} from '../util/isArray';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -9,9 +9,9 @@ import {subscribeToResult} from '../util/subscribeToResult';
 
 export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |
-                                                       ((...values: Array<any>) => R)>): Observable<R> {
+                                                       ((...values: Array<any>) => R)>): IObservable<R> {
   if (nextSources.length === 1 && isArray(nextSources[0])) {
-    nextSources = <Array<Observable<any>>>nextSources[0];
+    nextSources = <Array<IObservable<any>>>nextSources[0];
   }
 
   return this.lift(new OnErrorResumeNextOperator<T, R>(nextSources));
@@ -19,31 +19,31 @@ export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<an
 
 /* tslint:disable:max-line-length */
 export interface OnErrorResumeNextSignature<T> {
-  <R>(v: ObservableInput<R>): Observable<R>;
-  <T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<R>;
-  <T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<R>;
-  <T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<R>;
-  <T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<R>;
+  <R>(v: ObservableInput<R>): IObservable<R>;
+  <T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): IObservable<R>;
+  <T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): IObservable<R>;
+  <T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): IObservable<R>;
+  <T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): IObservable<R>;
 
-  <R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
-  <R>(array: ObservableInput<any>[]): Observable<R>;
+  <R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): IObservable<R>;
+  <R>(array: ObservableInput<any>[]): IObservable<R>;
 }
 /* tslint:enable:max-line-length */
 
 /* tslint:disable:max-line-length */
-export function onErrorResumeNextStatic<R>(v: ObservableInput<R>): Observable<R>;
-export function onErrorResumeNextStatic<T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<R>;
-export function onErrorResumeNextStatic<T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<R>;
-export function onErrorResumeNextStatic<T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<R>;
-export function onErrorResumeNextStatic<T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<R>;
+export function onErrorResumeNextStatic<R>(v: ObservableInput<R>): IObservable<R>;
+export function onErrorResumeNextStatic<T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): IObservable<R>;
+export function onErrorResumeNextStatic<T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): IObservable<R>;
+export function onErrorResumeNextStatic<T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): IObservable<R>;
+export function onErrorResumeNextStatic<T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): IObservable<R>;
 
-export function onErrorResumeNextStatic<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
-export function onErrorResumeNextStatic<R>(array: ObservableInput<any>[]): Observable<R>;
+export function onErrorResumeNextStatic<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): IObservable<R>;
+export function onErrorResumeNextStatic<R>(array: ObservableInput<any>[]): IObservable<R>;
 /* tslint:enable:max-line-length */
 
 export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableInput<any> |
                                                               Array<ObservableInput<any>> |
-                                                              ((...values: Array<any>) => R)>): Observable<R> {
+                                                              ((...values: Array<any>) => R)>): IObservable<R> {
   let source: ObservableInput<any> = null;
 
   if (nextSources.length === 1 && isArray(nextSources[0])) {
@@ -58,13 +58,13 @@ class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
   constructor(private nextSources: Array<ObservableInput<any>>) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
   }
 }
 
 class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
-  constructor(protected destination: Subscriber<T>,
+  constructor(protected destination: ISubscriber<T>,
               private nextSources: Array<ObservableInput<any>>) {
     super(destination);
   }

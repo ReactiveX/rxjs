@@ -4,7 +4,7 @@ import {audit, AuditSignature} from '../../operator/audit';
 Observable.prototype.audit = audit;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     audit: AuditSignature<T>;
   }
 }

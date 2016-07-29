@@ -5,7 +5,7 @@ import {_do, DoSignature} from '../../operator/do';
 Observable.prototype.do = _do;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     do: DoSignature<T>;
   }
 }

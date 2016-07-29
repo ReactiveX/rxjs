@@ -5,7 +5,7 @@ import {groupBy, GroupBySignature} from '../../operator/groupBy';
 Observable.prototype.groupBy = <any>groupBy;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     groupBy: GroupBySignature<T>;
   }
 }

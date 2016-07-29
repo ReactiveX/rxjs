@@ -5,7 +5,7 @@ import {distinctUntilKeyChanged, DistinctUntilKeyChangedSignature} from '../../o
 Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     distinctUntilKeyChanged: DistinctUntilKeyChangedSignature<T>;
   }
 }

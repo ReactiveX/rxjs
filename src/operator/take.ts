@@ -1,8 +1,8 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
 import {EmptyObservable} from '../observable/EmptyObservable';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -38,7 +38,7 @@ import {TeardownLogic} from '../Subscription';
  * @method take
  * @owner Observable
  */
-export function take<T>(count: number): Observable<T> {
+export function take<T>(count: number): IObservable<T> {
   if (count === 0) {
     return new EmptyObservable<T>();
   } else {
@@ -47,7 +47,7 @@ export function take<T>(count: number): Observable<T> {
 }
 
 export interface TakeSignature<T> {
-  (count: number): Observable<T>;
+  (count: number): IObservable<T>;
 }
 
 class TakeOperator<T> implements Operator<T, T> {
@@ -57,7 +57,7 @@ class TakeOperator<T> implements Operator<T, T> {
     }
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeSubscriber(subscriber, this.total));
   }
 }
@@ -70,7 +70,7 @@ class TakeOperator<T> implements Operator<T, T> {
 class TakeSubscriber<T> extends Subscriber<T> {
   private count: number = 0;
 
-  constructor(destination: Subscriber<T>, private total: number) {
+  constructor(destination: ISubscriber<T>, private total: number) {
     super(destination);
   }
 

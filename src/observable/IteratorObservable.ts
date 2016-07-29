@@ -2,12 +2,15 @@ import {root} from '../util/root';
 import {isObject} from '../util/isObject';
 import {tryCatch} from '../util/tryCatch';
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {Observable, IObservable} from '../Observable';
 import {isFunction} from '../util/isFunction';
 import {$$iterator} from '../symbol/iterator';
 import {errorObject} from '../util/errorObject';
 import {TeardownLogic} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
+
+export interface IIteratorObservable<T> extends IObservable<T> { }
+export interface IteratorObservable<T> extends IIteratorObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -89,7 +92,7 @@ export class IteratorObservable<T> extends Observable<T> {
     this.iterator = getIterator(iterator);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
 
     let index = 0;
     const { iterator, project, thisArg, scheduler } = this;

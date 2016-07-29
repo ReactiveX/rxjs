@@ -5,7 +5,7 @@ import {skipUntil, SkipUntilSignature} from '../../operator/skipUntil';
 Observable.prototype.skipUntil = skipUntil;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     skipUntil: SkipUntilSignature<T>;
   }
 }

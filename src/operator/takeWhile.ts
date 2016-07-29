@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -39,19 +39,19 @@ import {TeardownLogic} from '../Subscription';
  * @method takeWhile
  * @owner Observable
  */
-export function takeWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
+export function takeWhile<T>(predicate: (value: T, index: number) => boolean): IObservable<T> {
   return this.lift(new TakeWhileOperator(predicate));
 }
 
 export interface TakeWhileSignature<T> {
-  (predicate: (value: T, index: number) => boolean): Observable<T>;
+  (predicate: (value: T, index: number) => boolean): IObservable<T>;
 }
 
 class TakeWhileOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
   }
 }
@@ -64,7 +64,7 @@ class TakeWhileOperator<T> implements Operator<T, T> {
 class TakeWhileSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private predicate: (value: T, index: number) => boolean) {
     super(destination);
   }

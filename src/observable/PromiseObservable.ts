@@ -1,8 +1,11 @@
 import {root} from '../util/root';
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {Observable, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
+
+export interface IPromiseObservable<T> extends IObservable<T> { }
+export interface PromiseObservable<T> extends IPromiseObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -39,7 +42,7 @@ export class PromiseObservable<T> extends Observable<T> {
    * @name fromPromise
    * @owner Observable
    */
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = null): Observable<T> {
+  static create<T>(promise: Promise<T>, scheduler: Scheduler = null): IObservable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
@@ -47,7 +50,7 @@ export class PromiseObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     const promise = this.promise;
     const scheduler = this.scheduler;
 
@@ -107,7 +110,7 @@ export class PromiseObservable<T> extends Observable<T> {
 }
 
 interface DispatchNextArg<T> {
-  subscriber: Subscriber<T>;
+  subscriber: ISubscriber<T>;
   value: T;
 }
 function dispatchNext<T>(arg: DispatchNextArg<T>) {
@@ -119,7 +122,7 @@ function dispatchNext<T>(arg: DispatchNextArg<T>) {
 }
 
 interface DispatchErrorArg<T> {
-  subscriber: Subscriber<T>;
+  subscriber: ISubscriber<T>;
   err: any;
 }
 function dispatchError<T>(arg: DispatchErrorArg<T>) {

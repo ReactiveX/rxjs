@@ -6,7 +6,7 @@ Observable.prototype.mergeMap = <any>mergeMap;
 Observable.prototype.flatMap = <any>mergeMap;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     flatMap: MergeMapSignature<T>;
     mergeMap: MergeMapSignature<T>;
   }

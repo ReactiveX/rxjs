@@ -5,7 +5,7 @@ import {zipAll, ZipAllSignature} from '../../operator/zipAll';
 Observable.prototype.zipAll = zipAll;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     zipAll: ZipAllSignature<T>;
   }
 }

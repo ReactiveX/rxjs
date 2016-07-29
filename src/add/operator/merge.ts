@@ -5,7 +5,7 @@ import {merge, MergeSignature} from '../../operator/merge';
 Observable.prototype.merge = merge;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     merge: MergeSignature<T>;
   }
 }

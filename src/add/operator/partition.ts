@@ -5,7 +5,7 @@ import {partition, PartitionSignature} from '../../operator/partition';
 Observable.prototype.partition = partition;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     partition: PartitionSignature<T>;
   }
 }

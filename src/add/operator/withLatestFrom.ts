@@ -5,7 +5,7 @@ import {withLatestFrom, WithLatestFromSignature} from '../../operator/withLatest
 Observable.prototype.withLatestFrom = withLatestFrom;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     withLatestFrom: WithLatestFromSignature<T>;
   }
 }

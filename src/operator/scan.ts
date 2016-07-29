@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Applies an accumulator function over the source Observable, and returns each
@@ -39,7 +39,7 @@ import {Subscriber} from '../Subscriber';
  * @method scan
  * @owner Observable
  */
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): Observable<R> {
+export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): IObservable<R> {
   return this.lift(new ScanOperator(accumulator, seed));
 }
 
@@ -47,7 +47,7 @@ class ScanOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, value: T, index: number) => R, private seed?: T | R) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed));
   }
 }
@@ -71,7 +71,7 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
     this._seed = value;
   }
 
-  constructor(destination: Subscriber<R>, private accumulator: (acc: R, value: T, index: number) => R, seed?: T | R) {
+  constructor(destination: ISubscriber<R>, private accumulator: (acc: R, value: T, index: number) => R, seed?: T | R) {
     super(destination);
     this.seed = seed;
     this.accumulatorSet = typeof seed !== 'undefined';

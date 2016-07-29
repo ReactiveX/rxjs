@@ -1,7 +1,7 @@
 import {Subject, AnonymousSubject} from '../../Subject';
-import {Subscriber} from '../../Subscriber';
+import {ISubscriber, Subscriber} from '../../Subscriber';
 import {Observable} from '../../Observable';
-import {Subscription} from '../../Subscription';
+import {ISubscription, Subscription} from '../../Subscription';
 import {Operator} from '../../Operator';
 import {root} from '../../util/root';
 import {ReplaySubject} from '../../ReplaySubject';
@@ -191,7 +191,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     const { source } = this;
     if (source) {
       return source.subscribe(subscriber);

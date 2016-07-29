@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Emits a given value if the source Observable completes without emitting any
@@ -32,13 +32,13 @@ import {Subscriber} from '../Subscriber';
  * @method defaultIfEmpty
  * @owner Observable
  */
-export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T | R> {
+export function defaultIfEmpty<T, R>(defaultValue: R = null): IObservable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
 export interface DefaultIfEmptySignature<T> {
-  (defaultValue?: T): Observable<T>;
-  <R>(defaultValue?: R): Observable<T | R>;
+  (defaultValue?: T): IObservable<T>;
+  <R>(defaultValue?: R): IObservable<T | R>;
 }
 
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
@@ -46,7 +46,7 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
   constructor(private defaultValue: R) {
   }
 
-  call(subscriber: Subscriber<T | R>, source: any): any {
+  call(subscriber: ISubscriber<T | R>, source: any): any {
     return source._subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
   }
 }
@@ -59,7 +59,7 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
 class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
   private isEmpty: boolean = true;
 
-  constructor(destination: Subscriber<T | R>, private defaultValue: R) {
+  constructor(destination: ISubscriber<T | R>, private defaultValue: R) {
     super(destination);
   }
 

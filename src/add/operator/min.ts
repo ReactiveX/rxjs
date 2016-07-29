@@ -5,7 +5,7 @@ import {min, MinSignature} from '../../operator/min';
 Observable.prototype.min = min;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     min: MinSignature<T>;
   }
 }

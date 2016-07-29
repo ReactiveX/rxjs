@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -38,20 +38,20 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method buffer
  * @owner Observable
  */
-export function buffer<T>(closingNotifier: Observable<any>): Observable<T[]> {
+export function buffer<T>(closingNotifier: IObservable<any>): IObservable<T[]> {
   return this.lift(new BufferOperator<T>(closingNotifier));
 }
 
 export interface BufferSignature<T> {
-  (closingNotifier: Observable<any>): Observable<T[]>;
+  (closingNotifier: IObservable<any>): IObservable<T[]>;
 }
 
 class BufferOperator<T> implements Operator<T, T[]> {
 
-  constructor(private closingNotifier: Observable<any>) {
+  constructor(private closingNotifier: IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
   }
 }
@@ -64,7 +64,7 @@ class BufferOperator<T> implements Operator<T, T[]> {
 class BufferSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[] = [];
 
-  constructor(destination: Subscriber<T[]>, closingNotifier: Observable<any>) {
+  constructor(destination: ISubscriber<T[]>, closingNotifier: IObservable<any>) {
     super(destination);
     this.add(subscribeToResult(this, closingNotifier));
   }

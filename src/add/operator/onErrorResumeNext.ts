@@ -4,7 +4,7 @@ import {onErrorResumeNext, OnErrorResumeNextSignature} from '../../operator/onEr
 Observable.prototype.onErrorResumeNext = onErrorResumeNext;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     onErrorResumeNext: OnErrorResumeNextSignature<T>;
   }
 }

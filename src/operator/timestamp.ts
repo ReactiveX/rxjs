@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {async} from '../scheduler/async';
 
@@ -10,12 +10,12 @@ import {async} from '../scheduler/async';
  * @method timestamp
  * @owner Observable
  */
-export function timestamp<T>(scheduler: Scheduler = async): Observable<Timestamp<T>> {
+export function timestamp<T>(scheduler: Scheduler = async): IObservable<Timestamp<T>> {
   return this.lift(new TimestampOperator(scheduler));
 }
 
 export interface TimestampSignature<T> {
-  (scheduler?: Scheduler): Observable<Timestamp<T>>;
+  (scheduler?: Scheduler): IObservable<Timestamp<T>>;
 }
 
 export class Timestamp<T> {
@@ -27,13 +27,13 @@ class TimestampOperator<T> implements Operator<T, Timestamp<T>> {
   constructor(private scheduler: Scheduler) {
   }
 
-  call(observer: Subscriber<Timestamp<T>>, source: any): any {
+  call(observer: ISubscriber<Timestamp<T>>, source: any): any {
     return source._subscribe(new TimestampSubscriber(observer, this.scheduler));
   }
 }
 
 class TimestampSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<Timestamp<T>>, private scheduler: Scheduler) {
+  constructor(destination: ISubscriber<Timestamp<T>>, private scheduler: Scheduler) {
     super(destination);
   }
 

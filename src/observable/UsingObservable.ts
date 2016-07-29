@@ -1,9 +1,12 @@
-import {Observable, SubscribableOrPromise} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {AnonymousSubscription, TeardownLogic} from '../Subscription';
-
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
+
+export interface IUsingObservable<T> extends IObservable<T> { }
+export interface UsingObservable<T> extends IUsingObservable<T> { }
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -12,7 +15,7 @@ import {OuterSubscriber} from '../OuterSubscriber';
 export class UsingObservable<T> extends Observable<T> {
 
   static create<T>(resourceFactory: () => AnonymousSubscription | void,
-                   observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void): Observable<T> {
+                   observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void): IObservable<T> {
     return new UsingObservable<T>(resourceFactory, observableFactory);
   }
 
@@ -21,7 +24,7 @@ export class UsingObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     const { resourceFactory, observableFactory } = this;
 
     let resource: AnonymousSubscription;
@@ -36,7 +39,7 @@ export class UsingObservable<T> extends Observable<T> {
 }
 
 class UsingSubscriber<T> extends OuterSubscriber<T, T> {
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private resource: AnonymousSubscription,
               private observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void) {
     super(destination);

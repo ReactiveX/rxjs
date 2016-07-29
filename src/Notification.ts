@@ -1,5 +1,13 @@
 import {PartialObserver} from './Observer';
-import {Observable} from './Observable';
+import {Observable, IObservable} from './Observable';
+
+export interface INotification<T> {
+  hasValue: boolean;
+  observe(observer: PartialObserver<T>): any;
+  do(next: (value: T) => void, error?: (err: any) => void, complete?: () => void): any;
+  accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void): any;
+  toObservable(): IObservable<T>;
+}
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
@@ -15,7 +23,7 @@ import {Observable} from './Observable';
  *
  * @class Notification<T>
  */
-export class Notification<T> {
+export class Notification<T> implements INotification<T> {
   hasValue: boolean;
 
   constructor(public kind: string, public value?: T, public exception?: any) {
@@ -80,7 +88,7 @@ export class Notification<T> {
    * by this Notification instance.
    * @return {any}
    */
-  toObservable(): Observable<T> {
+  toObservable(): IObservable<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
@@ -93,8 +101,8 @@ export class Notification<T> {
     throw new Error('Unexpected notification kind value');
   }
 
-  private static completeNotification: Notification<any> = new Notification('C');
-  private static undefinedValueNotification: Notification<any> = new Notification('N', undefined);
+  private static completeNotification: INotification<any> = new Notification('C');
+  private static undefinedValueNotification: INotification<any> = new Notification('N', undefined);
 
   /**
    * A shortcut to create a Notification instance of the type `next` from a
@@ -103,7 +111,7 @@ export class Notification<T> {
    * @return {Notification<T>} The "next" Notification representing the
    * argument.
    */
-  static createNext<T>(value: T): Notification<T> {
+  static createNext<T>(value: T): INotification<T> {
     if (typeof value !== 'undefined') {
       return new Notification('N', value);
     }
@@ -117,7 +125,7 @@ export class Notification<T> {
    * @return {Notification<T>} The "error" Notification representing the
    * argument.
    */
-  static createError<T>(err?: any): Notification<T> {
+  static createError<T>(err?: any): INotification<T> {
     return new Notification('E', undefined, err);
   }
 
@@ -125,7 +133,7 @@ export class Notification<T> {
    * A shortcut to create a Notification instance of the type `complete`.
    * @return {Notification<any>} The valueless "complete" Notification.
    */
-  static createComplete(): Notification<any> {
+  static createComplete(): INotification<any> {
     return this.completeNotification;
   }
 }

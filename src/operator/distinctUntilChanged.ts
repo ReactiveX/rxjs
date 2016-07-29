@@ -1,8 +1,8 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -14,13 +14,13 @@ import {TeardownLogic} from '../Subscription';
  * @method distinctUntilChanged
  * @owner Observable
  */
-export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
+export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): IObservable<T> {
   return this.lift(new DistinctUntilChangedOperator<T, K>(compare, keySelector));
 }
 
 export interface DistinctUntilChangedSignature<T> {
- (compare?: (x: T, y: T) => boolean): Observable<T>;
- <K>(compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
+ (compare?: (x: T, y: T) => boolean): IObservable<T>;
+ <K>(compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): IObservable<T>;
 }
 
 class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
@@ -28,7 +28,7 @@ class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
               private keySelector: (x: T) => K) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
   }
 }
@@ -42,7 +42,7 @@ class DistinctUntilChangedSubscriber<T, K> extends Subscriber<T> {
   private key: K;
   private hasKey: boolean = false;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               compare: (x: K, y: K) => boolean,
               private keySelector: (x: T) => K) {
     super(destination);

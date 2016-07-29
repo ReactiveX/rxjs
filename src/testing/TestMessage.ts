@@ -1,6 +1,6 @@
-import {Notification} from '../Notification';
+import {INotification} from '../Notification';
 
 export interface TestMessage {
   frame: number;
-  notification: Notification<any>;
+  notification: INotification<any>;
 }

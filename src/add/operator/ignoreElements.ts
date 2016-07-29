@@ -5,7 +5,7 @@ import {ignoreElements, IgnoreElementsSignature} from '../../operator/ignoreElem
 Observable.prototype.ignoreElements = ignoreElements;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     ignoreElements: IgnoreElementsSignature<T>;
   }
 }

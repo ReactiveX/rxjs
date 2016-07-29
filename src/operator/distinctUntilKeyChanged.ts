@@ -1,5 +1,5 @@
 import {distinctUntilChanged} from './distinctUntilChanged';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
@@ -12,7 +12,7 @@ import {Observable} from '../Observable';
  * @method distinctUntilKeyChanged
  * @owner Observable
  */
-export function distinctUntilKeyChanged<T>(key: string, compare?: (x: T, y: T) => boolean): Observable<T> {
+export function distinctUntilKeyChanged<T>(key: string, compare?: (x: T, y: T) => boolean): IObservable<T> {
   return distinctUntilChanged.call(this, function(x: T, y: T) {
     if (compare) {
       return compare(x[key], y[key]);
@@ -22,6 +22,6 @@ export function distinctUntilKeyChanged<T>(key: string, compare?: (x: T, y: T) =
 }
 
 export interface DistinctUntilKeyChangedSignature<T> {
-  (key: string): Observable<T>;
-  <K>(key: string, compare: (x: K, y: K) => boolean): Observable<T>;
+  (key: string): IObservable<T>;
+  <K>(key: string, compare: (x: K, y: K) => boolean): IObservable<T>;
 }

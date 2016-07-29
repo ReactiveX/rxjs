@@ -1,5 +1,5 @@
 import {Scheduler} from '../Scheduler';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 
 /**
  * A unit of work to be executed in a {@link Scheduler}. An action is typically
@@ -9,7 +9,7 @@ import {Subscription} from '../Subscription';
  * ```ts
  * class Action<T> extends Subscription {
  *   new (scheduler: Scheduler, work: (state?: T) => void);
- *   schedule(state?: T, delay: number = 0): Subscription;
+ *   schedule(state?: T, delay: number = 0): ISubscription;
  * }
  * ```
  *
@@ -29,7 +29,7 @@ export class Action<T> extends Subscription {
    * time unit is implicit and defined by the Scheduler.
    * @return {void}
    */
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public schedule(state?: T, delay: number = 0): ISubscription {
     return this;
   }
 }

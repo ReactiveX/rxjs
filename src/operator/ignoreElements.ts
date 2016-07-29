@@ -1,6 +1,6 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
 
 /**
@@ -13,16 +13,16 @@ import {noop} from '../util/noop';
  * @method ignoreElements
  * @owner Observable
  */
-export function ignoreElements<T>(): Observable<T> {
+export function ignoreElements<T>(): IObservable<T> {
   return this.lift(new IgnoreElementsOperator());
 };
 
 export interface IgnoreElementsSignature<T> {
-  (): Observable<T>;
+  (): IObservable<T>;
 }
 
 class IgnoreElementsOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new IgnoreElementsSubscriber(subscriber));
   }
 }

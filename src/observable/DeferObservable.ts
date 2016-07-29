@@ -1,9 +1,12 @@
-import {Observable, SubscribableOrPromise} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-
+import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
+
+export interface IDeferObservable<T> extends IObservable<T> { }
+export interface DeferObservable<T> extends IDeferObservable<T> { }
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -41,7 +44,7 @@ export class DeferObservable<T> extends Observable<T> {
    *
    * @see {@link create}
    *
-   * @param {function(): Observable|Promise} observableFactory The Observable
+   * @param {function(): IObservable|Promise} observableFactory The Observable
    * factory function to invoke for each Observer that subscribes to the output
    * Observable. May also return a Promise, which will be converted on the fly
    * to an Observable.
@@ -51,7 +54,7 @@ export class DeferObservable<T> extends Observable<T> {
    * @name defer
    * @owner Observable
    */
-  static create<T>(observableFactory: () => SubscribableOrPromise<T> | void): Observable<T> {
+  static create<T>(observableFactory: () => SubscribableOrPromise<T> | void): IObservable<T> {
     return new DeferObservable(observableFactory);
   }
 
@@ -59,13 +62,13 @@ export class DeferObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T>): ISubscription {
     return new DeferSubscriber(subscriber, this.observableFactory);
   }
 }
 
 class DeferSubscriber<T> extends OuterSubscriber<T, T> {
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private factory: () => SubscribableOrPromise<T> | void) {
     super(destination);
     this.tryDefer();

@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -11,22 +11,22 @@ import {Subscriber} from '../Subscriber';
  * @method every
  * @owner Observable
  */
-export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                         thisArg?: any): Observable<boolean> {
+export function every<T>(predicate: (value: T, index: number, source: IObservable<T>) => boolean,
+                         thisArg?: any): IObservable<boolean> {
   return this.lift(new EveryOperator(predicate, thisArg, this));
 }
 
 export interface EverySignature<T> {
-  (predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<boolean>;
+  (predicate: (value: T, index: number, source: IObservable<T>) => boolean, thisArg?: any): IObservable<boolean>;
 }
 
 class EveryOperator<T> implements Operator<T, boolean> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  constructor(private predicate: (value: T, index: number, source: IObservable<T>) => boolean,
               private thisArg?: any,
-              private source?: Observable<T>) {
+              private source?: IObservable<T>) {
   }
 
-  call(observer: Subscriber<boolean>, source: any): any {
+  call(observer: ISubscriber<boolean>, source: any): any {
     return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
   }
 }
@@ -40,9 +40,9 @@ class EverySubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<boolean>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private predicate: (value: T, index: number, source: IObservable<T>) => boolean,
               private thisArg: any,
-              private source?: Observable<T>) {
+              private source?: IObservable<T>) {
     super(destination);
     this.thisArg = thisArg || this;
   }

@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {map} from './map';
 
 /**
@@ -28,7 +28,7 @@ import {map} from './map';
  * @method pluck
  * @owner Observable
  */
-export function pluck<R>(...properties: string[]): Observable<R> {
+export function pluck<R>(...properties: string[]): IObservable<R> {
   const length = properties.length;
   if (length === 0) {
     throw new Error('List of properties cannot be empty.');
@@ -37,7 +37,7 @@ export function pluck<R>(...properties: string[]): Observable<R> {
 }
 
 export interface PluckSignature<T> {
-  <R>(...properties: string[]): Observable<R>;
+  <R>(...properties: string[]): IObservable<R>;
 }
 
 function plucker(props: string[], length: number): (x: string) => any {

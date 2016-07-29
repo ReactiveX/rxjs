@@ -5,7 +5,7 @@ import {zipProto, ZipSignature} from '../../operator/zip';
 Observable.prototype.zip = zipProto;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     zip: ZipSignature<T>;
   }
 }

@@ -1,6 +1,9 @@
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {Observable, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {noop} from '../util/noop';
+
+export interface INeverObservable<T> extends IObservable<T> { }
+export interface NeverObservable<T> extends INeverObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -47,7 +50,7 @@ export class NeverObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): void {
+  protected _subscribe(subscriber: ISubscriber<T>): void {
     noop();
   }
 }

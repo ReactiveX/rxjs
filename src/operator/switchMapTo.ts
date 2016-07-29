@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Observable, ObservableInput} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {ObservableInput, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -50,26 +50,26 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method switchMapTo
  * @owner Observable
  */
-export function switchMapTo<T, I, R>(innerObservable: Observable<I>,
+export function switchMapTo<T, I, R>(innerObservable: IObservable<I>,
                                      resultSelector?: (outerValue: T,
                                                        innerValue: I,
                                                        outerIndex: number,
-                                                       innerIndex: number) => R): Observable<R> {
+                                                       innerIndex: number) => R): IObservable<R> {
   return this.lift(new SwitchMapToOperator(innerObservable, resultSelector));
 }
 
 export interface SwitchMapToSignature<T> {
-  <R>(observable: ObservableInput<R>): Observable<R>;
+  <R>(observable: ObservableInput<R>): IObservable<R>;
   <I, R>(observable: ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): IObservable<R>;
 }
 
 class SwitchMapToOperator<T, I, R> implements Operator<T, I> {
-  constructor(private observable: Observable<I>,
+  constructor(private observable: IObservable<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
   }
 
-  call(subscriber: Subscriber<I>, source: any): any {
+  call(subscriber: ISubscriber<I>, source: any): any {
     return source._subscribe(new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector));
   }
 }
@@ -81,10 +81,10 @@ class SwitchMapToOperator<T, I, R> implements Operator<T, I> {
  */
 class SwitchMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private index: number = 0;
-  private innerSubscription: Subscription;
+  private innerSubscription: ISubscription;
 
-  constructor(destination: Subscriber<I>,
-              private inner: Observable<I>,
+  constructor(destination: ISubscriber<I>,
+              private inner: IObservable<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
     super(destination);
   }
@@ -108,7 +108,7 @@ class SwitchMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this.innerSubscription = null;
   }
 
-  notifyComplete(innerSub: Subscription) {
+  notifyComplete(innerSub: ISubscription) {
     this.remove(innerSub);
     this.innerSubscription = null;
     if (this.isStopped) {

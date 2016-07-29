@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
-import {Observable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
+import {IObservable} from '../Observable';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when
@@ -11,19 +11,19 @@ import {Observable} from '../Observable';
  * @method finally
  * @owner Observable
  */
-export function _finally<T>(callback: () => void): Observable<T> {
+export function _finally<T>(callback: () => void): IObservable<T> {
   return this.lift(new FinallyOperator(callback));
 }
 
 export interface FinallySignature<T> {
-  (callback: () => void): Observable<T>;
+  (callback: () => void): IObservable<T>;
 }
 
 class FinallyOperator<T> implements Operator<T, T> {
   constructor(private callback: () => void) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new FinallySubscriber(subscriber, this.callback));
   }
 }
@@ -34,7 +34,7 @@ class FinallyOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class FinallySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>, callback: () => void) {
+  constructor(destination: ISubscriber<T>, callback: () => void) {
     super(destination);
     this.add(new Subscription(callback));
   }

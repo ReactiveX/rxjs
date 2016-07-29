@@ -1,9 +1,9 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {Operator} from '../Operator';
 import {PartialObserver} from '../Observer';
-import {Subscriber} from '../Subscriber';
-import {Notification} from '../Notification';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {INotification, Notification} from '../Notification';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -15,19 +15,19 @@ import {TeardownLogic} from '../Subscription';
  * @method observeOn
  * @owner Observable
  */
-export function observeOn<T>(scheduler: Scheduler, delay: number = 0): Observable<T> {
+export function observeOn<T>(scheduler: Scheduler, delay: number = 0): IObservable<T> {
   return this.lift(new ObserveOnOperator(scheduler, delay));
 }
 
 export interface ObserveOnSignature<T> {
-  (scheduler: Scheduler, delay?: number): Observable<T>;
+  (scheduler: Scheduler, delay?: number): IObservable<T>;
 }
 
 export class ObserveOnOperator<T> implements Operator<T, T> {
   constructor(private scheduler: Scheduler, private delay: number = 0) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
   }
 }
@@ -43,13 +43,13 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
     notification.observe(destination);
   }
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private scheduler: Scheduler,
               private delay: number = 0) {
     super(destination);
   }
 
-  private scheduleMessage(notification: Notification<any>): void {
+  private scheduleMessage(notification: INotification<any>): void {
      this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch,
                                       this.delay,
                                       new ObserveOnMessage(notification, this.destination)));
@@ -69,7 +69,7 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 }
 
 export class ObserveOnMessage {
-  constructor(public notification: Notification<any>,
+  constructor(public notification: INotification<any>,
               public destination: PartialObserver<any>) {
   }
 }

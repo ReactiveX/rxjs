@@ -2,9 +2,9 @@ import {Scheduler} from '../Scheduler';
 import {Action} from '../scheduler/Action';
 import {Operator} from '../Operator';
 import {async} from '../scheduler/async';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {isScheduler} from '../util/isScheduler';
 
 /**
@@ -50,7 +50,7 @@ import {isScheduler} from '../util/isScheduler';
  * @method bufferTime
  * @owner Observable
  */
-export function bufferTime<T>(bufferTimeSpan: number): Observable<T[]> {
+export function bufferTime<T>(bufferTimeSpan: number): IObservable<T[]> {
   let length: number = arguments.length;
 
   let scheduler: Scheduler = async;
@@ -73,9 +73,9 @@ export function bufferTime<T>(bufferTimeSpan: number): Observable<T[]> {
 }
 
 export interface BufferTimeSignature<T> {
-  (bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
-  (bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
-  (bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
+  (bufferTimeSpan: number, scheduler?: Scheduler): IObservable<T[]>;
+  (bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): IObservable<T[]>;
+  (bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): IObservable<T[]>;
 }
 
 class BufferTimeOperator<T> implements Operator<T, T[]> {
@@ -85,7 +85,7 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new BufferTimeSubscriber(
       subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler
     ));
@@ -94,7 +94,7 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
 
 class Context<T> {
   buffer: T[] = [];
-  closeAction: Subscription;
+  closeAction: ISubscription;
 }
 
 type CreationState<T> = {
@@ -113,7 +113,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   private contexts: Array<Context<T>> = [];
   private timespanOnly: boolean;
 
-  constructor(destination: Subscriber<T[]>,
+  constructor(destination: ISubscriber<T[]>,
               private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private maxBufferSize: number,

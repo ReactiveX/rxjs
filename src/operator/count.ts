@@ -1,7 +1,7 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Counts the number of emissions on the source and emits that number when the
@@ -37,7 +37,7 @@ import {Subscriber} from '../Subscriber';
  * @see {@link min}
  * @see {@link reduce}
  *
- * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A
+ * @param {function(value: T, i: number, source: IObservable<T>): boolean} [predicate] A
  * boolean function to select what values are to be counted. It is provided with
  * arguments of:
  * - `value`: the value from the source Observable.
@@ -48,20 +48,20 @@ import {Subscriber} from '../Subscriber';
  * @method count
  * @owner Observable
  */
-export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<number> {
+export function count<T>(predicate?: (value: T, index: number, source: IObservable<T>) => boolean): IObservable<number> {
   return this.lift(new CountOperator(predicate, this));
 }
 
 export interface CountSignature<T> {
-  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<number>;
+  (predicate?: (value: T, index: number, source: IObservable<T>) => boolean): IObservable<number>;
 }
 
 class CountOperator<T> implements Operator<T, number> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
+  constructor(private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
+              private source?: IObservable<T>) {
   }
 
-  call(subscriber: Subscriber<number>, source: any): any {
+  call(subscriber: ISubscriber<number>, source: any): any {
     return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
   }
 }
@@ -76,8 +76,8 @@ class CountSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Observer<number>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
+              private predicate?: (value: T, index: number, source: IObservable<T>) => boolean,
+              private source?: IObservable<T>) {
     super(destination);
   }
 

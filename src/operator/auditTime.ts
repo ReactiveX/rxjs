@@ -1,9 +1,9 @@
 import {async} from '../scheduler/async';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -47,12 +47,12 @@ import {Subscription, TeardownLogic} from '../Subscription';
  * @method auditTime
  * @owner Observable
  */
-export function auditTime<T>(duration: number, scheduler: Scheduler = async): Observable<T> {
+export function auditTime<T>(duration: number, scheduler: Scheduler = async): IObservable<T> {
   return this.lift(new AuditTimeOperator(duration, scheduler));
 }
 
 export interface AuditTimeSignature<T> {
-  (duration: number, scheduler?: Scheduler): Observable<T>;
+  (duration: number, scheduler?: Scheduler): IObservable<T>;
 }
 
 class AuditTimeOperator<T> implements Operator<T, T> {
@@ -60,7 +60,7 @@ class AuditTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
   }
 }
@@ -74,9 +74,9 @@ class AuditTimeSubscriber<T> extends Subscriber<T> {
 
   private value: T;
   private hasValue: boolean = false;
-  private throttled: Subscription;
+  private throttled: ISubscription;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private duration: number,
               private scheduler: Scheduler) {
     super(destination);

@@ -5,7 +5,7 @@ import {exhaust, SwitchFirstSignature} from '../../operator/exhaust';
 Observable.prototype.exhaust = exhaust;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     exhaust: SwitchFirstSignature<T>;
   }
 }

@@ -1,5 +1,5 @@
 import {AsyncAction} from './AsyncAction';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 import {AsyncScheduler} from './AsyncScheduler';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
@@ -53,7 +53,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
     this.index = scheduler.index = index;
   }
 
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public schedule(state?: T, delay: number = 0): ISubscription {
     return !this.id ?
       super.schedule(state, delay) : (
       // If an action is rescheduled, we save allocations by mutating its state,

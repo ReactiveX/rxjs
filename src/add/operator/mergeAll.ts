@@ -5,7 +5,7 @@ import {mergeAll, MergeAllSignature} from '../../operator/mergeAll';
 Observable.prototype.mergeAll = mergeAll;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     mergeAll: MergeAllSignature<T>;
   }
 }

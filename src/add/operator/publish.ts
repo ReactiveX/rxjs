@@ -5,7 +5,7 @@ import {publish, PublishSignature} from '../../operator/publish';
 Observable.prototype.publish = <any>publish;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     publish: PublishSignature<T>;
   }
 }

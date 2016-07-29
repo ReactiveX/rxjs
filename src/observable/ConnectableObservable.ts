@@ -1,8 +1,11 @@
 import {Subject, SubjectSubscriber} from '../Subject';
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {Observable, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
+
+export interface IConnectableObservable<T> extends IObservable<T> { }
+export interface ConnectableObservable<T> extends IConnectableObservable<T> { }
 
 /**
  * @class ConnectableObservable<T>
@@ -11,14 +14,14 @@ export class ConnectableObservable<T> extends Observable<T> {
 
   protected _subject: Subject<T>;
   protected _refCount: number = 0;
-  protected _connection: Subscription;
+  protected _connection: ISubscription;
 
-  constructor(protected source: Observable<T>,
+  constructor(protected source: IObservable<T>,
               protected subjectFactory: () => Subject<T>) {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  protected _subscribe(subscriber: ISubscriber<T>) {
     return this.getSubject().subscribe(subscriber);
   }
 
@@ -30,7 +33,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     return this._subject;
   }
 
-  connect(): Subscription {
+  connect(): ISubscription {
     let connection = this._connection;
     if (!connection) {
       connection = this._connection = new Subscription();
@@ -46,7 +49,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     return connection;
   }
 
-  refCount(): Observable<T> {
+  refCount(): IObservable<T> {
     return this.lift(new RefCountOperator<T>(this));
   }
 }
@@ -82,7 +85,7 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
 class RefCountOperator<T> implements Operator<T, T> {
   constructor(private connectable: ConnectableObservable<T>) {
   }
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
 
     const { connectable } = this;
     (<any> connectable)._refCount++;
@@ -100,9 +103,9 @@ class RefCountOperator<T> implements Operator<T, T> {
 
 class RefCountSubscriber<T> extends Subscriber<T> {
 
-  private connection: Subscription;
+  private connection: ISubscription;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private connectable: ConnectableObservable<T>) {
     super(destination);
   }

@@ -5,7 +5,7 @@ import {distinctUntilChanged, DistinctUntilChangedSignature} from '../../operato
 Observable.prototype.distinctUntilChanged = distinctUntilChanged;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     distinctUntilChanged: DistinctUntilChangedSignature<T>;
   }
 }

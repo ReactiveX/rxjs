@@ -5,7 +5,7 @@ import {retry, RetrySignature} from '../../operator/retry';
 Observable.prototype.retry = retry;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     retry: RetrySignature<T>;
   }
 }

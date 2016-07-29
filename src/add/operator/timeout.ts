@@ -5,7 +5,7 @@ import {timeout, TimeoutSignature} from '../../operator/timeout';
 Observable.prototype.timeout = timeout;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     timeout: TimeoutSignature<T>;
   }
 }

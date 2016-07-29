@@ -5,7 +5,7 @@ import {subscribeOn, SubscribeOnSignature} from '../../operator/subscribeOn';
 Observable.prototype.subscribeOn = subscribeOn;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     subscribeOn: SubscribeOnSignature<T>;
   }
 }

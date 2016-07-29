@@ -5,7 +5,7 @@ import {takeUntil, TakeUntilSignature} from '../../operator/takeUntil';
 Observable.prototype.takeUntil = takeUntil;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     takeUntil: TakeUntilSignature<T>;
   }
 }

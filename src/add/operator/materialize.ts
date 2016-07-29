@@ -5,7 +5,7 @@ import {materialize, MaterializeSignature} from '../../operator/materialize';
 Observable.prototype.materialize = materialize;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     materialize: MaterializeSignature<T>;
   }
 }

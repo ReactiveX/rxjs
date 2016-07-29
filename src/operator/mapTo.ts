@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
 
 /**
  * Emits the given constant value on the output Observable every time the source
@@ -28,12 +28,12 @@ import {Observable} from '../Observable';
  * @method mapTo
  * @owner Observable
  */
-export function mapTo<T, R>(value: R): Observable<R> {
+export function mapTo<T, R>(value: R): IObservable<R> {
   return this.lift(new MapToOperator(value));
 }
 
 export interface MapToSignature<T> {
-  <R>(value: R): Observable<R>;
+  <R>(value: R): IObservable<R>;
 }
 
 class MapToOperator<T, R> implements Operator<T, R> {
@@ -44,7 +44,7 @@ class MapToOperator<T, R> implements Operator<T, R> {
     this.value = value;
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new MapToSubscriber(subscriber, this.value));
   }
 }
@@ -58,7 +58,7 @@ class MapToSubscriber<T, R> extends Subscriber<T> {
 
   value: R;
 
-  constructor(destination: Subscriber<R>, value: R) {
+  constructor(destination: ISubscriber<R>, value: R) {
     super(destination);
     this.value = value;
   }

@@ -5,7 +5,7 @@ import {publishBehavior, PublishBehaviorSignature} from '../../operator/publishB
 Observable.prototype.publishBehavior = publishBehavior;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     publishBehavior: PublishBehaviorSignature<T>;
   }
 }

@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
@@ -40,19 +40,19 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method takeUntil
  * @owner Observable
  */
-export function takeUntil<T>(notifier: Observable<any>): Observable<T> {
+export function takeUntil<T>(notifier: IObservable<any>): IObservable<T> {
   return this.lift(new TakeUntilOperator(notifier));
 }
 
 export interface TakeUntilSignature<T> {
-  (notifier: Observable<any>): Observable<T>;
+  (notifier: IObservable<any>): IObservable<T>;
 }
 
 class TakeUntilOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
+  constructor(private notifier: IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
   }
 }
@@ -64,8 +64,8 @@ class TakeUntilOperator<T> implements Operator<T, T> {
  */
 class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  constructor(destination: Subscriber<any>,
-              private notifier: Observable<any>) {
+  constructor(destination: ISubscriber<any>,
+              private notifier: IObservable<any>) {
     super(destination);
     this.add(subscribeToResult(this, notifier));
   }

@@ -1,9 +1,9 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscription, TeardownLogic} from '../Subscription';
 import {async} from '../scheduler/async';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -44,12 +44,12 @@ import {Observable} from '../Observable';
  * @method throttleTime
  * @owner Observable
  */
-export function throttleTime<T>(duration: number, scheduler: Scheduler = async): Observable<T> {
+export function throttleTime<T>(duration: number, scheduler: Scheduler = async): IObservable<T> {
   return this.lift(new ThrottleTimeOperator(duration, scheduler));
 }
 
 export interface ThrottleTimeSignature<T> {
-  (duration: number, scheduler?: Scheduler): Observable<T>;
+  (duration: number, scheduler?: Scheduler): IObservable<T>;
 }
 
 class ThrottleTimeOperator<T> implements Operator<T, T> {
@@ -57,7 +57,7 @@ class ThrottleTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler));
   }
 }
@@ -68,9 +68,9 @@ class ThrottleTimeOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ThrottleTimeSubscriber<T> extends Subscriber<T> {
-  private throttled: Subscription;
+  private throttled: ISubscription;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private duration: number,
               private scheduler: Scheduler) {
     super(destination);

@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable, SubscribableOrPromise} from '../Observable';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {SubscribableOrPromise, IObservable} from '../Observable';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
@@ -40,7 +40,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link sample}
  * @see {@link throttle}
  *
- * @param {function(value: T): Observable|Promise} durationSelector A function
+ * @param {function(value: T): IObservable|Promise} durationSelector A function
  * that receives a value from the source Observable, for computing the silencing
  * duration, returned as an Observable or a Promise.
  * @return {Observable<T>} An Observable that performs rate-limiting of
@@ -48,19 +48,19 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method audit
  * @owner Observable
  */
-export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T> {
+export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): IObservable<T> {
   return this.lift(new AuditOperator(durationSelector));
 }
 
 export interface AuditSignature<T> {
-  (durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T>;
+  (durationSelector: (value: T) => SubscribableOrPromise<any>): IObservable<T>;
 }
 
 class AuditOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new AuditSubscriber<T, T>(subscriber, this.durationSelector));
   }
 }
@@ -74,9 +74,9 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private value: T;
   private hasValue: boolean = false;
-  private throttled: Subscription;
+  private throttled: ISubscription;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<any>) {
     super(destination);
   }

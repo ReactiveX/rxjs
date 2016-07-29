@@ -1,4 +1,4 @@
-import {Observable, ObservableInput} from '../Observable';
+import {ObservableInput, IObservable} from '../Observable';
 import {MergeMapToOperator} from './mergeMapTo';
 
 /**
@@ -51,13 +51,13 @@ import {MergeMapToOperator} from './mergeMapTo';
  * @method concatMapTo
  * @owner Observable
  */
-export function concatMapTo<T, I, R>(innerObservable: Observable<I>,
-                                     resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {
+export function concatMapTo<T, I, R>(innerObservable: IObservable<I>,
+                                     resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): IObservable<R> {
   return this.lift(new MergeMapToOperator(innerObservable, resultSelector, 1));
 }
 
 export interface ConcatMapToSignature<T> {
-  <R>(observable: ObservableInput<R>): Observable<R>;
+  <R>(observable: ObservableInput<R>): IObservable<R>;
   <I, R>(observable: ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): IObservable<R>;
 }

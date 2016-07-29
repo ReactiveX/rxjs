@@ -1,9 +1,12 @@
-import {Observable, SubscribableOrPromise} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
-
 import {subscribeToResult} from '../util/subscribeToResult';
 import {OuterSubscriber} from '../OuterSubscriber';
+
+export interface IIfObservable<T> extends IObservable<T> { }
+export interface IfObservable<T> extends IIfObservable<T> { }
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -13,7 +16,7 @@ export class IfObservable<T, R> extends Observable<T> {
 
   static create<T, R>(condition: () => boolean | void,
                       thenSource?: SubscribableOrPromise<T> | void,
-                      elseSource?: SubscribableOrPromise<R> | void): Observable<T|R> {
+                      elseSource?: SubscribableOrPromise<R> | void): IObservable<T|R> {
     return new IfObservable(condition, thenSource, elseSource);
   }
 
@@ -23,7 +26,7 @@ export class IfObservable<T, R> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T|R>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T|R>): TeardownLogic {
     const { condition, thenSource, elseSource } = this;
 
     return new IfSubscriber(subscriber, condition, thenSource, elseSource);
@@ -31,7 +34,7 @@ export class IfObservable<T, R> extends Observable<T> {
 }
 
 class IfSubscriber<T, R> extends OuterSubscriber<T, T> {
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private condition: () => boolean | void,
               private thenSource?: SubscribableOrPromise<T> | void,
               private elseSource?: SubscribableOrPromise<R> | void) {

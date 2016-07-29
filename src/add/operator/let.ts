@@ -6,7 +6,7 @@ Observable.prototype.let = letProto;
 Observable.prototype.letBind = letProto;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     let: LetSignature<T>;
     letBind: LetSignature<T>;
   }

@@ -1,5 +1,5 @@
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {SubscribeOnObservable} from '../observable/SubscribeOnObservable';
 
 /**
@@ -13,10 +13,10 @@ import {SubscribeOnObservable} from '../observable/SubscribeOnObservable';
  * @method subscribeOn
  * @owner Observable
  */
-export function subscribeOn<T>(scheduler: Scheduler, delay: number = 0): Observable<T> {
+export function subscribeOn<T>(scheduler: Scheduler, delay: number = 0): IObservable<T> {
   return new SubscribeOnObservable<T>(this, delay, scheduler);
 }
 
 export interface SubscribeOnSignature<T> {
-  (scheduler: Scheduler, delay?: number): Observable<T>;
+  (scheduler: Scheduler, delay?: number): IObservable<T>;
 }

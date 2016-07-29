@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 
@@ -41,7 +41,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method exhaust
  * @owner Observable
  */
-export function exhaust<T>(): Observable<T> {
+export function exhaust<T>(): IObservable<T> {
   return this.lift(new SwitchFirstOperator<T>());
 }
 
@@ -50,7 +50,7 @@ export interface SwitchFirstSignature<T> {
 }
 
 class SwitchFirstOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SwitchFirstSubscriber(subscriber));
   }
 }
@@ -64,7 +64,7 @@ class SwitchFirstSubscriber<T> extends OuterSubscriber<T, T> {
   private hasCompleted: boolean = false;
   private hasSubscription: boolean = false;
 
-  constructor(destination: Subscriber<T>) {
+  constructor(destination: ISubscriber<T>) {
     super(destination);
   }
 
@@ -82,7 +82,7 @@ class SwitchFirstSubscriber<T> extends OuterSubscriber<T, T> {
     }
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(innerSub: ISubscription): void {
     this.remove(innerSub);
     this.hasSubscription = false;
     if (this.hasCompleted) {

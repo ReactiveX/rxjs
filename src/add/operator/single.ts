@@ -5,7 +5,7 @@ import {single, SingleSignature} from '../../operator/single';
 Observable.prototype.single = single;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     single: SingleSignature<T>;
   }
 }

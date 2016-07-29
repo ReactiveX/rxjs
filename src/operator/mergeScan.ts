@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -16,23 +16,23 @@ import {InnerSubscriber} from '../InnerSubscriber';
  * @method mergeScan
  * @owner Observable
  */
-export function mergeScan<T, R>(project: (acc: R, value: T) => Observable<R>,
+export function mergeScan<T, R>(project: (acc: R, value: T) => IObservable<R>,
                                 seed: R,
-                                concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+                                concurrent: number = Number.POSITIVE_INFINITY): IObservable<R> {
   return this.lift(new MergeScanOperator(project, seed, concurrent));
 }
 
 export interface MergeScanSignature<T> {
-  <R>(project: (acc: R, value: T) => Observable<R>, seed: R, concurrent?: number): Observable<R>;
+  <R>(project: (acc: R, value: T) => IObservable<R>, seed: R, concurrent?: number): IObservable<R>;
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (acc: R, value: T) => Observable<R>,
+  constructor(private project: (acc: R, value: T) => IObservable<R>,
               private seed: R,
               private concurrent: number) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: ISubscriber<R>, source: any): any {
     return source._subscribe(new MergeScanSubscriber(
       subscriber, this.project, this.seed, this.concurrent
     ));
@@ -47,12 +47,12 @@ export class MergeScanOperator<T, R> implements Operator<T, R> {
 export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasValue: boolean = false;
   private hasCompleted: boolean = false;
-  private buffer: Observable<any>[] = [];
+  private buffer: IObservable<any>[] = [];
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Subscriber<R>,
-              private project: (acc: R, value: T) => Observable<R>,
+  constructor(destination: ISubscriber<R>,
+              private project: (acc: R, value: T) => IObservable<R>,
               private acc: R,
               private concurrent: number) {
     super(destination);
@@ -97,7 +97,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
     destination.next(innerValue);
   }
 
-  notifyComplete(innerSub: Subscription): void {
+  notifyComplete(innerSub: ISubscription): void {
     const buffer = this.buffer;
     this.remove(innerSub);
     this.active--;

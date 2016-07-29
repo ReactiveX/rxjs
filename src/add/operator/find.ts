@@ -5,7 +5,7 @@ import {find, FindSignature} from '../../operator/find';
 Observable.prototype.find = find;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     find: FindSignature<T>;
   }
 }

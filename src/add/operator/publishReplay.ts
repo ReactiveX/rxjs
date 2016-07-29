@@ -5,7 +5,7 @@ import {publishReplay, PublishReplaySignature} from '../../operator/publishRepla
 Observable.prototype.publishReplay = publishReplay;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     publishReplay: PublishReplaySignature<T>;
   }
 }

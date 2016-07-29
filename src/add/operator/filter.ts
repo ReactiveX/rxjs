@@ -5,7 +5,7 @@ import {filter, FilterSignature} from '../../operator/filter';
 Observable.prototype.filter = filter;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     filter: FilterSignature<T>;
   }
 }

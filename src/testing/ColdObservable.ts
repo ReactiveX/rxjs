@@ -5,7 +5,7 @@ import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
 import {SubscriptionLoggable} from './SubscriptionLoggable';
 import {applyMixins} from '../util/applyMixins';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber} from '../Subscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -20,7 +20,7 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
 
   constructor(public messages: TestMessage[],
               scheduler: Scheduler) {
-    super(function (subscriber: Subscriber<any>) {
+    super(function (subscriber: ISubscriber<any>) {
       const observable: ColdObservable<T> = this;
       const index = observable.logSubscribedFrame();
       subscriber.add(new Subscription(() => {
@@ -32,7 +32,7 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
     this.scheduler = scheduler;
   }
 
-  scheduleMessages(subscriber: Subscriber<any>) {
+  scheduleMessages(subscriber: ISubscriber<any>) {
     const messagesLength = this.messages.length;
     for (let i = 0; i < messagesLength; i++) {
       const message = this.messages[i];

@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
 import {Subject} from '../Subject';
 
 /**
@@ -46,27 +46,27 @@ import {Subject} from '../Subject';
  * For example if `startWindowEvery` is `2`, then a new window will be started
  * on every other value from the source. A new window is started at the
  * beginning of the source by default.
- * @return {Observable<Observable<T>>} An Observable of windows, which in turn
+ * @return {Observable<IObservable<T>>} An Observable of windows, which in turn
  * are Observable of values.
  * @method windowCount
  * @owner Observable
  */
 export function windowCount<T>(windowSize: number,
-                               startWindowEvery: number = 0): Observable<Observable<T>> {
+                               startWindowEvery: number = 0): IObservable<IObservable<T>> {
   return this.lift(new WindowCountOperator<T>(windowSize, startWindowEvery));
 }
 
 export interface WindowCountSignature<T> {
-  (windowSize: number, startWindowEvery?: number): Observable<Observable<T>>;
+  (windowSize: number, startWindowEvery?: number): IObservable<IObservable<T>>;
 }
 
-class WindowCountOperator<T> implements Operator<T, Observable<T>> {
+class WindowCountOperator<T> implements Operator<T, IObservable<T>> {
 
   constructor(private windowSize: number,
               private startWindowEvery: number) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  call(subscriber: ISubscriber<IObservable<T>>, source: any): any {
     return source._subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
   }
 }
@@ -80,7 +80,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [ new Subject<T>() ];
   private count: number = 0;
 
-  constructor(protected destination: Subscriber<Observable<T>>,
+  constructor(protected destination: ISubscriber<IObservable<T>>,
               private windowSize: number,
               private startWindowEvery: number) {
     super(destination);

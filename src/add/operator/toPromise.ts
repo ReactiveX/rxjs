@@ -5,7 +5,7 @@ import {toPromise, ToPromiseSignature} from '../../operator/toPromise';
 Observable.prototype.toPromise = toPromise;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     toPromise: ToPromiseSignature<T>;
   }
 }

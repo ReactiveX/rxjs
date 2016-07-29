@@ -5,7 +5,7 @@ import {windowToggle, WindowToggleSignature} from '../../operator/windowToggle';
 Observable.prototype.windowToggle = windowToggle;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     windowToggle: WindowToggleSignature<T>;
   }
 }

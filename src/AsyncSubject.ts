@@ -1,6 +1,6 @@
 import {Subject} from './Subject';
-import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
+import {ISubscriber, Subscriber} from './Subscriber';
+import {ISubscription, Subscription} from './Subscription';
 
 /**
  * @class AsyncSubject<T>
@@ -10,7 +10,7 @@ export class AsyncSubject<T> extends Subject<T> {
   private hasNext: boolean = false;
   private hasCompleted: boolean = false;
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<any>): ISubscription {
     if (this.hasCompleted && this.hasNext) {
       subscriber.next(this.value);
       subscriber.complete();

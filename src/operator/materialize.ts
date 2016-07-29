@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Notification} from '../Notification';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {INotification, Notification} from '../Notification';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
@@ -40,16 +40,16 @@ import {Notification} from '../Notification';
  * @method materialize
  * @owner Observable
  */
-export function materialize<T>(): Observable<Notification<T>> {
+export function materialize<T>(): IObservable<Notification<T>> {
   return this.lift(new MaterializeOperator());
 }
 
 export interface MaterializeSignature<T> {
-  (): Observable<Notification<T>>;
+  (): IObservable<Notification<T>>;
 }
 
 class MaterializeOperator<T> implements Operator<T, Notification<T>> {
-  call(subscriber: Subscriber<Notification<T>>, source: any): any {
+  call(subscriber: ISubscriber<Notification<T>>, source: any): any {
     return source._subscribe(new MaterializeSubscriber(subscriber));
   }
 }
@@ -60,7 +60,7 @@ class MaterializeOperator<T> implements Operator<T, Notification<T>> {
  * @extends {Ignored}
  */
 class MaterializeSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<Notification<T>>) {
+  constructor(destination: ISubscriber<Notification<T>>) {
     super(destination);
   }
 

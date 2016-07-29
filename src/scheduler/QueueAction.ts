@@ -1,5 +1,5 @@
 import {AsyncAction} from './AsyncAction';
-import {Subscription} from '../Subscription';
+import {ISubscription, Subscription} from '../Subscription';
 import {QueueScheduler} from './QueueScheduler';
 
 /**
@@ -14,7 +14,7 @@ export class QueueAction<T> extends AsyncAction<T> {
     super(scheduler, work);
   }
 
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public schedule(state?: T, delay: number = 0): ISubscription {
     if (delay > 0) {
       return super.schedule(state, delay);
     }

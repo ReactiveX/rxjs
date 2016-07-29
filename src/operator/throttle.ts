@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Observable, SubscribableOrPromise} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {SubscribableOrPromise, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -37,7 +37,7 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link sample}
  * @see {@link throttleTime}
  *
- * @param {function(value: T): Observable|Promise} durationSelector A function
+ * @param {function(value: T): IObservable|Promise} durationSelector A function
  * that receives a value from the source Observable, for computing the silencing
  * duration for each source value, returned as an Observable or a Promise.
  * @return {Observable<T>} An Observable that performs the throttle operation to
@@ -45,19 +45,19 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method throttle
  * @owner Observable
  */
-export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
+export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): IObservable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
 }
 
 export interface ThrottleSignature<T> {
-  (durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T>;
+  (durationSelector: (value: T) => SubscribableOrPromise<number>): IObservable<T>;
 }
 
 class ThrottleOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
   }
 }
@@ -68,9 +68,9 @@ class ThrottleOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private throttled: Subscription;
+  private throttled: ISubscription;
 
-  constructor(protected destination: Subscriber<T>,
+  constructor(protected destination: ISubscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>) {
     super(destination);
   }

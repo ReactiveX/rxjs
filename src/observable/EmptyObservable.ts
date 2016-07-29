@@ -1,11 +1,14 @@
 import {Scheduler} from '../Scheduler';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {Observable, IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 export interface DispatchArg<T> {
-  subscriber: Subscriber<T>;
+  subscriber: ISubscriber<T>;
 }
+
+export interface IEmptyObservable<T> extends IObservable<T> { }
+export interface EmptyObservable<T> extends IEmptyObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -51,7 +54,7 @@ export class EmptyObservable<T> extends Observable<T> {
    * @name empty
    * @owner Observable
    */
-  static create<T>(scheduler?: Scheduler): Observable<T> {
+  static create<T>(scheduler?: Scheduler): IObservable<T> {
     return new EmptyObservable<T>(scheduler);
   }
 
@@ -64,7 +67,7 @@ export class EmptyObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
 
     const scheduler = this.scheduler;
 

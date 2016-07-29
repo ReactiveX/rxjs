@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {multicast} from './multicast';
 import {Subject} from '../Subject';
 
@@ -18,10 +18,10 @@ function shareSubjectFactory() {
  * @method share
  * @owner Observable
  */
-export function share<T>(): Observable<T> {
+export function share<T>(): IObservable<T> {
   return multicast.call(this, shareSubjectFactory).refCount();
 };
 
 export interface ShareSignature<T> {
-  (): Observable<T>;
+  (): IObservable<T>;
 }

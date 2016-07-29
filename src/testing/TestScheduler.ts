@@ -1,11 +1,11 @@
-import {Observable} from '../Observable';
-import {Notification} from '../Notification';
+import {Observable, IObservable} from '../Observable';
+import {INotification, Notification} from '../Notification';
 import {Subject} from '../Subject';
 import {ColdObservable} from './ColdObservable';
 import {HotObservable} from './HotObservable';
 import {TestMessage} from './TestMessage';
 import {SubscriptionLog} from './SubscriptionLog';
-import {Subscription} from '../Subscription';
+import {ISubscription} from '../Subscription';
 import {VirtualTimeScheduler} from '../scheduler/VirtualTimeScheduler';
 
 interface FlushableTest {
@@ -34,7 +34,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return indexOf * TestScheduler.frameTimeFactor;
   }
 
-  createColdObservable<T>(marbles: string, values?: any, error?: any): Observable<T> {
+  createColdObservable<T>(marbles: string, values?: any, error?: any): IObservable<T> {
     if (marbles.indexOf('^') !== -1) {
       throw new Error('Cold observable cannot have subscription offset "^"');
     }
@@ -57,7 +57,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return subject;
   }
 
-  private materializeInnerObservable(observable: Observable<any>,
+  private materializeInnerObservable(observable: IObservable<any>,
                                      outerFrame: number): TestMessage[] {
     const messages: TestMessage[] = [];
     observable.subscribe((value) => {
@@ -70,13 +70,13 @@ export class TestScheduler extends VirtualTimeScheduler {
     return messages;
   }
 
-  expectObservable(observable: Observable<any>,
+  expectObservable(observable: IObservable<any>,
                    unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };
     const unsubscriptionFrame = TestScheduler
       .parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
-    let subscription: Subscription;
+    let subscription: ISubscription;
 
     this.schedule(() => {
       subscription = observable.subscribe(x => {
@@ -209,7 +209,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
     for (let i = 0; i < len; i++) {
       const frame = i * this.frameTimeFactor + frameOffset;
-      let notification: Notification<any>;
+      let notification: INotification<any>;
       const c = marbles[i];
       switch (c) {
         case '-':

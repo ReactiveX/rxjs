@@ -5,7 +5,7 @@ import {exhaustMap, SwitchFirstMapSignature} from '../../operator/exhaustMap';
 Observable.prototype.exhaustMap = exhaustMap;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     exhaustMap: SwitchFirstMapSignature<T>;
   }
 }

@@ -1,7 +1,10 @@
 import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {Observable, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
+
+export interface IScalarObservable<T> extends IObservable<T> { }
+export interface ScalarObservable<T> extends IScalarObservable<T> { }
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -39,7 +42,7 @@ export class ScalarObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: ISubscriber<T>): TeardownLogic {
     const value = this.value;
     const scheduler = this.scheduler;
 

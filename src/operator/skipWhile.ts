@@ -1,6 +1,6 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 
 /**
@@ -15,19 +15,19 @@ import {TeardownLogic} from '../Subscription';
  * @method skipWhile
  * @owner Observable
  */
-export function skipWhile<T>(predicate: (value: T, index: number) => boolean): Observable<T> {
+export function skipWhile<T>(predicate: (value: T, index: number) => boolean): IObservable<T> {
   return this.lift(new SkipWhileOperator(predicate));
 }
 
 export interface SkipWhileSignature<T> {
-  (predicate: (value: T, index: number) => boolean): Observable<T>;
+  (predicate: (value: T, index: number) => boolean): IObservable<T>;
 }
 
 class SkipWhileOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
   }
 }
@@ -41,7 +41,7 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
   private skipping: boolean = true;
   private index: number = 0;
 
-  constructor(destination: Subscriber<T>,
+  constructor(destination: ISubscriber<T>,
               private predicate: (value: T, index: number) => boolean) {
     super(destination);
   }

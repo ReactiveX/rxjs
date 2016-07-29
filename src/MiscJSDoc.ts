@@ -5,9 +5,9 @@
  * we need these bogus classes, which are not stripped away. This file on the
  * other hand, is not included in the release bundle.
  */
-import {Subscriber} from './Subscriber';
+import {ISubscriber, Subscriber} from './Subscriber';
 import {TeardownLogic} from './Subscription';
-import {Observable} from './Observable';
+import {Observable, IObservable} from './Observable';
 import './scheduler/MiscJSDoc';
 import './observable/dom/MiscJSDoc';
 
@@ -53,7 +53,7 @@ export class ObservableDoc {
    * @see {@link of}
    * @see {@link throw}
    *
-   * @param {function(subscriber: Subscriber): TeardownLogic} [subscribe] A
+   * @param {function(subscriber: ISubscriber): TeardownLogic} [subscribe] A
    * function that accepts a {@link Subscriber}, and invokes its `next`,
    * `error`, and `complete` methods as appropriate, and should return some
    * logic for tear down, either as a {@link Subscription} or as a function.
@@ -63,7 +63,7 @@ export class ObservableDoc {
    * @name create
    * @owner Observable
    */
-  static create<T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic): Observable<T> {
+  static create<T>(subscribe?: <R>(subscriber: ISubscriber<R>) => TeardownLogic): IObservable<T> {
     return new Observable<T>(subscribe);
   };
 }

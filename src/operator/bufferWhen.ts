@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscription, Subscription} from '../Subscription';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
@@ -36,26 +36,26 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @see {@link bufferToggle}
  * @see {@link windowWhen}
  *
- * @param {function(): Observable} closingSelector A function that takes no
+ * @param {function(): IObservable} closingSelector A function that takes no
  * arguments and returns an Observable that signals buffer closure.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @method bufferWhen
  * @owner Observable
  */
-export function bufferWhen<T>(closingSelector: () => Observable<any>): Observable<T[]> {
+export function bufferWhen<T>(closingSelector: () => IObservable<any>): IObservable<T[]> {
   return this.lift(new BufferWhenOperator<T>(closingSelector));
 }
 
 export interface BufferWhenSignature<T> {
-  (closingSelector: () => Observable<any>): Observable<T[]>;
+  (closingSelector: () => IObservable<any>): IObservable<T[]>;
 }
 
 class BufferWhenOperator<T> implements Operator<T, T[]> {
 
-  constructor(private closingSelector: () => Observable<any>) {
+  constructor(private closingSelector: () => IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: ISubscriber<T[]>, source: any): any {
     return source._subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
   }
 }
@@ -68,9 +68,9 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
 class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[];
   private subscribing: boolean = false;
-  private closingSubscription: Subscription;
+  private closingSubscription: ISubscription;
 
-  constructor(destination: Subscriber<T[]>, private closingSelector: () => Observable<any>) {
+  constructor(destination: ISubscriber<T[]>, private closingSelector: () => IObservable<any>) {
     super(destination);
     this.openBuffer();
   }

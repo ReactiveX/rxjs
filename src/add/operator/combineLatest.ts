@@ -5,7 +5,7 @@ import {combineLatest, CombineLatestSignature} from '../../operator/combineLates
 Observable.prototype.combineLatest = combineLatest;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     combineLatest: CombineLatestSignature<T>;
   }
 }

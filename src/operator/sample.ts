@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
@@ -40,19 +40,19 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method sample
  * @owner Observable
  */
-export function sample<T>(notifier: Observable<any>): Observable<T> {
+export function sample<T>(notifier: IObservable<any>): IObservable<T> {
   return this.lift(new SampleOperator(notifier));
 }
 
 export interface SampleSignature<T> {
-  (notifier: Observable<any>): Observable<T>;
+  (notifier: IObservable<any>): IObservable<T>;
 }
 
 class SampleOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
+  constructor(private notifier: IObservable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SampleSubscriber(subscriber, this.notifier));
   }
 }
@@ -66,7 +66,7 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private value: T;
   private hasValue: boolean = false;
 
-  constructor(destination: Subscriber<any>, notifier: Observable<any>) {
+  constructor(destination: ISubscriber<any>, notifier: IObservable<any>) {
     super(destination);
     this.add(subscribeToResult(this, notifier));
   }

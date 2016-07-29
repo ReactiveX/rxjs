@@ -5,7 +5,7 @@ import {debounce, DebounceSignature} from '../../operator/debounce';
 Observable.prototype.debounce = debounce;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     debounce: DebounceSignature<T>;
   }
 }

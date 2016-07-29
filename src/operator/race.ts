@@ -1,9 +1,9 @@
-import {Observable} from '../Observable';
+import {IObservable} from '../Observable';
 import {isArray} from '../util/isArray';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription, TeardownLogic} from '../Subscription';
 import {OuterSubscriber} from '../OuterSubscriber';
 import {InnerSubscriber} from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
@@ -16,11 +16,11 @@ import {subscribeToResult} from '../util/subscribeToResult';
  * @method race
  * @owner Observable
  */
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T> {
+export function race<T>(...observables: Array<IObservable<T> | Array<IObservable<T>>>): IObservable<T> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1 && isArray(observables[0])) {
-    observables = <Array<Observable<T>>>observables[0];
+    observables = <Array<IObservable<T>>>observables[0];
   }
 
   observables.unshift(this);
@@ -28,8 +28,8 @@ export function race<T>(...observables: Array<Observable<T> | Array<Observable<T
 }
 
 export interface RaceSignature<T> {
-  (...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
-  <R>(...observables: Array<Observable<any> | Array<Observable<T>>>): Observable<R>;
+  (...observables: Array<IObservable<T> | Array<IObservable<T>>>): IObservable<T>;
+  <R>(...observables: Array<IObservable<any> | Array<IObservable<T>>>): IObservable<R>;
 }
 
 /**
@@ -40,15 +40,15 @@ export interface RaceSignature<T> {
  * @name race
  * @owner Observable
  */
-export function raceStatic<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
-export function raceStatic<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {
+export function raceStatic<T>(...observables: Array<IObservable<T> | Array<IObservable<T>>>): IObservable<T>;
+export function raceStatic<T>(...observables: Array<IObservable<any> | Array<IObservable<any>>>): IObservable<T> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1) {
     if (isArray(observables[0])) {
-      observables = <Array<Observable<any>>>observables[0];
+      observables = <Array<IObservable<any>>>observables[0];
     } else {
-      return <Observable<any>>observables[0];
+      return <IObservable<any>>observables[0];
     }
   }
 
@@ -56,7 +56,7 @@ export function raceStatic<T>(...observables: Array<Observable<any> | Array<Obse
 }
 
 export class RaceOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: ISubscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RaceSubscriber(subscriber));
   }
 }
@@ -68,10 +68,10 @@ export class RaceOperator<T> implements Operator<T, T> {
  */
 export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
   private hasFirst: boolean = false;
-  private observables: Observable<any>[] = [];
-  private subscriptions: Subscription[] = [];
+  private observables: IObservable<any>[] = [];
+  private subscriptions: ISubscription[] = [];
 
-  constructor(destination: Subscriber<T>) {
+  constructor(destination: ISubscriber<T>) {
     super(destination);
   }
 

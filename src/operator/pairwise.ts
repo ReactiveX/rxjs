@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import {IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of
@@ -37,16 +37,16 @@ import {Subscriber} from '../Subscriber';
  * @method pairwise
  * @owner Observable
  */
-export function pairwise<T>(): Observable<[T, T]> {
+export function pairwise<T>(): IObservable<[T, T]> {
   return this.lift(new PairwiseOperator());
 }
 
 export interface PairwiseSignature<T> {
-  (): Observable<[T, T]>;
+  (): IObservable<[T, T]>;
 }
 
 class PairwiseOperator<T> implements Operator<T, [T, T]> {
-  call(subscriber: Subscriber<[T, T]>, source: any): any {
+  call(subscriber: ISubscriber<[T, T]>, source: any): any {
     return source._subscribe(new PairwiseSubscriber(subscriber));
   }
 }
@@ -60,7 +60,7 @@ class PairwiseSubscriber<T> extends Subscriber<T> {
   private prev: T;
   private hasPrev: boolean = false;
 
-  constructor(destination: Subscriber<[T, T]>) {
+  constructor(destination: ISubscriber<[T, T]>) {
     super(destination);
   }
 

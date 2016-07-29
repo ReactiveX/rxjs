@@ -5,7 +5,7 @@ import {concatAll, ConcatAllSignature} from '../../operator/concatAll';
 Observable.prototype.concatAll = concatAll;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     concatAll: ConcatAllSignature<T>;
   }
 }

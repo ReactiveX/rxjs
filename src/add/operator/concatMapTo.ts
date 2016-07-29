@@ -5,7 +5,7 @@ import {concatMapTo, ConcatMapToSignature} from '../../operator/concatMapTo';
 Observable.prototype.concatMapTo = concatMapTo;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     concatMapTo: ConcatMapToSignature<T>;
   }
 }

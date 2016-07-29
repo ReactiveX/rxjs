@@ -1,11 +1,13 @@
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
+import {Observable, IObservable} from '../Observable';
+import {ISubscriber, Subscriber} from '../Subscriber';
+import {ISubscription, Subscription} from '../Subscription';
 import {Scheduler} from '../Scheduler';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 import {AsyncSubject} from '../AsyncSubject';
 
+export interface IBoundNodeCallbackObservable<T> extends IObservable<T> { }
+export interface BoundNodeCallbackObservable<T> extends IBoundNodeCallbackObservable<T> { }
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -15,15 +17,15 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
   /* tslint:disable:max-line-length */
-  static create<R>(callbackFunc: (callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): () => Observable<R>;
-  static create<T, R>(callbackFunc: (v1: T, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T) => Observable<R>;
-  static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2) => Observable<R>;
-  static create<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-  static create<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-  static create<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-  static create<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
-  static create<T>(callbackFunc: Function, selector?: void, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
-  static create<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
+  static create<R>(callbackFunc: (callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): () => IObservable<R>;
+  static create<T, R>(callbackFunc: (v1: T, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T) => IObservable<R>;
+  static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2) => IObservable<R>;
+  static create<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3) => IObservable<R>;
+  static create<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4) => IObservable<R>;
+  static create<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => IObservable<R>;
+  static create<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => IObservable<R>;
+  static create<T>(callbackFunc: Function, selector?: void, scheduler?: Scheduler): (...args: any[]) => IObservable<T>;
+  static create<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: Scheduler): (...args: any[]) => IObservable<T>;
   /* tslint:enable:max-line-length */
 
   /**
@@ -58,7 +60,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
    * callback and maps those a value to emit on the output Observable.
    * @param {Scheduler} [scheduler] The scheduler on which to schedule the
    * callbacks.
-   * @return {function(...params: *): Observable} A function which returns the
+   * @return {function(...params: *): IObservable} A function which returns the
    * Observable that delivers the same values the Node.js callback would
    * deliver.
    * @static true
@@ -67,8 +69,8 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
    */
   static create<T>(func: Function,
                    selector: Function | void = undefined,
-                   scheduler?: Scheduler): (...args: any[]) => Observable<T> {
-    return (...args: any[]): Observable<T> => {
+                   scheduler?: Scheduler): (...args: any[]) => IObservable<T> {
+    return (...args: any[]): IObservable<T> => {
       return new BoundNodeCallbackObservable<T>(func, <any>selector, args, scheduler);
     };
   }
@@ -80,7 +82,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T | T[]>): Subscription {
+  protected _subscribe(subscriber: ISubscriber<T | T[]>): ISubscription {
     const callbackFunc = this.callbackFunc;
     const args = this.args;
     const scheduler = this.scheduler;
@@ -124,7 +126,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   }
 }
 
-function dispatch<T>(state: { source: BoundNodeCallbackObservable<T>, subscriber: Subscriber<T> }) {
+function dispatch<T>(state: { source: BoundNodeCallbackObservable<T>, subscriber: ISubscriber<T> }) {
   const self = (<Subscription> this);
   const { source, subscriber } = state;
   // XXX: cast to `any` to access to the private field in `source`.

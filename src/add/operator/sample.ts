@@ -5,7 +5,7 @@ import {sample, SampleSignature} from '../../operator/sample';
 Observable.prototype.sample = sample;
 
 declare module '../../Observable' {
-  interface Observable<T> {
+  interface IObservable<T> {
     sample: SampleSignature<T>;
   }
 }
