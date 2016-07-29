@@ -1,4 +1,4 @@
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {distinct, DistinctSignature} from '../../operator/distinct';
 
 Observable.prototype.distinct = distinct;

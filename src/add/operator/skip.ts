@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {skip, SkipSignature} from '../../operator/skip';
 
 Observable.prototype.skip = skip;

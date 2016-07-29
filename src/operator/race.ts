@@ -1,4 +1,4 @@
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {isArray} from '../util/isArray';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {Operator} from '../Operator';

@@ -1,5 +1,5 @@
 import {Scheduler} from '../Scheduler';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {ScalarObservable} from '../observable/ScalarObservable';
 import {EmptyObservable} from '../observable/EmptyObservable';

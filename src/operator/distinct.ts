@@ -1,4 +1,4 @@
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {TeardownLogic} from '../Subscription';

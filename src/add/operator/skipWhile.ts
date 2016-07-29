@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {skipWhile, SkipWhileSignature} from '../../operator/skipWhile';
 
 Observable.prototype.skipWhile = skipWhile;

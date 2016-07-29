@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
 

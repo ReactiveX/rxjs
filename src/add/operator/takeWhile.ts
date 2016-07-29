@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {takeWhile, TakeWhileSignature} from '../../operator/takeWhile';
 
 Observable.prototype.takeWhile = takeWhile;

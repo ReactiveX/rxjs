@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {takeUntil, TakeUntilSignature} from '../../operator/takeUntil';
 
 Observable.prototype.takeUntil = takeUntil;

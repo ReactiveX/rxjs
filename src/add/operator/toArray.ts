@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {toArray, ToArraySignature} from '../../operator/toArray';
 
 Observable.prototype.toArray = toArray;

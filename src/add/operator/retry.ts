@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {retry, RetrySignature} from '../../operator/retry';
 
 Observable.prototype.retry = retry;

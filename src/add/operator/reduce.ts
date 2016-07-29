@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {reduce, ReduceSignature} from '../../operator/reduce';
 
 Observable.prototype.reduce = reduce;

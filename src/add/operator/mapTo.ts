@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {mapTo, MapToSignature} from '../../operator/mapTo';
 
 Observable.prototype.mapTo = mapTo;

@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {timeout, TimeoutSignature} from '../../operator/timeout';
 
 Observable.prototype.timeout = timeout;

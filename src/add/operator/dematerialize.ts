@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {dematerialize, DematerializeSignature} from '../../operator/dematerialize';
 
 Observable.prototype.dematerialize = dematerialize;

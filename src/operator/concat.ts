@@ -1,4 +1,4 @@
-import {Observable, ObservableInput, IObservable} from '../Observable';
+import {ObservableInput, IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {isScheduler} from '../util/isScheduler';
 import {ArrayObservable} from '../observable/ArrayObservable';

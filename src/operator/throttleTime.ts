@@ -3,7 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
 import {Subscription, TeardownLogic} from '../Subscription';
 import {async} from '../scheduler/async';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source

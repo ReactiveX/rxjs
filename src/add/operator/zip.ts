@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {zipProto, ZipSignature} from '../../operator/zip';
 
 Observable.prototype.zip = zipProto;

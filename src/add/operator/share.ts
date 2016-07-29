@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {share, ShareSignature} from '../../operator/share';
 
 Observable.prototype.share = share;

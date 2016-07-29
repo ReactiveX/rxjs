@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.

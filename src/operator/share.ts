@@ -1,6 +1,6 @@
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {multicast} from './multicast';
-import {Subject, ISubject} from '../Subject';
+import {Subject} from '../Subject';
 
 function shareSubjectFactory() {
   return new Subject();

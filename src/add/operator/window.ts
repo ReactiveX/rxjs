@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {window, WindowSignature} from '../../operator/window';
 
 Observable.prototype.window = window;

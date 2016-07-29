@@ -1,6 +1,6 @@
 import {Subject, AnonymousSubject} from '../../Subject';
 import {Subscriber} from '../../Subscriber';
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {Subscription} from '../../Subscription';
 import {Operator} from '../../Operator';
 import {root} from '../../util/root';

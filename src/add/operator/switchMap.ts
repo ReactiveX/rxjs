@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {switchMap, SwitchMapSignature} from '../../operator/switchMap';
 
 Observable.prototype.switchMap = switchMap;

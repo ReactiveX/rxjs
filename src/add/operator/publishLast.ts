@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {publishLast, PublishLastSignature} from '../../operator/publishLast';
 
 Observable.prototype.publishLast = publishLast;

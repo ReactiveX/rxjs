@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {toPromise, ToPromiseSignature} from '../../operator/toPromise';
 
 Observable.prototype.toPromise = toPromise;

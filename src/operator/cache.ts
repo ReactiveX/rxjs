@@ -1,4 +1,4 @@
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {ReplaySubject} from '../ReplaySubject';
 import {Observer} from '../Observer';

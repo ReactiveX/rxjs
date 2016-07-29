@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {mergeScan, MergeScanSignature} from '../../operator/mergeScan';
 
 Observable.prototype.mergeScan = mergeScan;

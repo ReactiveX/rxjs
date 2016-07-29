@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Observer} from '../Observer';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 
 /**

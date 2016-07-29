@@ -1,7 +1,7 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable, IObservable} from '../Observable';
-import {Subject, ISubject} from '../Subject';
+import {IObservable} from '../Observable';
+import {Subject} from '../Subject';
 
 /**
  * Branch out the source Observable values as a nested Observable with each

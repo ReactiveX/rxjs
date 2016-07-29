@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {pairwise, PairwiseSignature} from '../../operator/pairwise';
 
 Observable.prototype.pairwise = pairwise;

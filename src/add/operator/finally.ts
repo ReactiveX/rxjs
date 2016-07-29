@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {_finally, FinallySignature} from '../../operator/finally';
 
 Observable.prototype.finally = _finally;

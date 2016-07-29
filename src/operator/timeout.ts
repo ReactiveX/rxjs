@@ -3,7 +3,7 @@ import {isDate} from '../util/isDate';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
 import {Scheduler} from '../Scheduler';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**

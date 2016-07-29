@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {bufferToggle, BufferToggleSignature} from '../../operator/bufferToggle';
 
 Observable.prototype.bufferToggle = bufferToggle;

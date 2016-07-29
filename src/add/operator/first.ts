@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {first, FirstSignature} from '../../operator/first';
 
 Observable.prototype.first = <any>first;

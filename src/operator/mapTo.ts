@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Emits the given constant value on the output Observable every time the source

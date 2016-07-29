@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {publishReplay, PublishReplaySignature} from '../../operator/publishReplay';
 
 Observable.prototype.publishReplay = publishReplay;

@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {switchMapTo, SwitchMapToSignature} from '../../operator/switchMapTo';
 
 Observable.prototype.switchMapTo = switchMapTo;

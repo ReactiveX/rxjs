@@ -2,7 +2,7 @@ import {async} from '../scheduler/async';
 import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Subscription, TeardownLogic} from '../Subscription';
 
 /**

@@ -1,4 +1,4 @@
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {ReduceOperator} from './reduce';
 
 /**

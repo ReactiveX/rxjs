@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {throttle, ThrottleSignature} from '../../operator/throttle';
 
 Observable.prototype.throttle = throttle;

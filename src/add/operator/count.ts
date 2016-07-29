@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {count, CountSignature} from '../../operator/count';
 
 Observable.prototype.count = count;

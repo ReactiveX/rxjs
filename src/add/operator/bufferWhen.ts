@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {bufferWhen, BufferWhenSignature} from '../../operator/bufferWhen';
 
 Observable.prototype.bufferWhen = bufferWhen;

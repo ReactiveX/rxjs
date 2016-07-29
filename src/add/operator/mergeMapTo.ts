@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {mergeMapTo, MergeMapToSignature} from '../../operator/mergeMapTo';
 
 Observable.prototype.flatMapTo = <any>mergeMapTo;

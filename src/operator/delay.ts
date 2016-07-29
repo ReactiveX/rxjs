@@ -4,7 +4,7 @@ import {Operator} from '../Operator';
 import {Scheduler} from '../Scheduler';
 import {Subscriber} from '../Subscriber';
 import {Notification} from '../Notification';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {TeardownLogic} from '../Subscription';
 
 /**

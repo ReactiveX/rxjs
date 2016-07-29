@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {_switch, SwitchSignature} from '../../operator/switch';
 
 Observable.prototype.switch = _switch;

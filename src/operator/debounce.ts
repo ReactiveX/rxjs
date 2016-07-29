@@ -1,5 +1,5 @@
 import {Operator} from '../Operator';
-import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
+import {SubscribableOrPromise, IObservable} from '../Observable';
 import {Subscriber} from '../Subscriber';
 import {Subscription, TeardownLogic} from '../Subscription';
 

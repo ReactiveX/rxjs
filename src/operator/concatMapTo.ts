@@ -1,4 +1,4 @@
-import {Observable, ObservableInput, IObservable} from '../Observable';
+import {ObservableInput, IObservable} from '../Observable';
 import {MergeMapToOperator} from './mergeMapTo';
 
 /**

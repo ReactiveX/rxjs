@@ -1,4 +1,4 @@
-import {Observable, ObservableInput, IObservable} from '../Observable';
+import {ObservableInput, IObservable} from '../Observable';
 import {Scheduler} from '../Scheduler';
 import {ArrayObservable} from '../observable/ArrayObservable';
 import {MergeAllOperator} from './mergeAll';

@@ -1,6 +1,6 @@
 import {Observable, IObservable} from '../Observable';
 import {Notification} from '../Notification';
-import {Subject, ISubject} from '../Subject';
+import {Subject} from '../Subject';
 import {ColdObservable} from './ColdObservable';
 import {HotObservable} from './HotObservable';
 import {TestMessage} from './TestMessage';

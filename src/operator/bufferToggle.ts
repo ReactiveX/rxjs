@@ -1,6 +1,6 @@
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {Observable, SubscribableOrPromise, IObservable} from '../Observable';
+import {SubscribableOrPromise, IObservable} from '../Observable';
 import {Subscription} from '../Subscription';
 
 import {subscribeToResult} from '../util/subscribeToResult';

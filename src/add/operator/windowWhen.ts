@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {windowWhen, WindowWhenSignature} from '../../operator/windowWhen';
 
 Observable.prototype.windowWhen = windowWhen;

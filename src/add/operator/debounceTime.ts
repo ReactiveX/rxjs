@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {debounceTime, DebounceTimeSignature} from '../../operator/debounceTime';
 
 Observable.prototype.debounceTime = debounceTime;

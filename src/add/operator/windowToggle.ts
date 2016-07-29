@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {windowToggle, WindowToggleSignature} from '../../operator/windowToggle';
 
 Observable.prototype.windowToggle = windowToggle;

@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {distinctUntilKeyChanged, DistinctUntilKeyChangedSignature} from '../../operator/distinctUntilKeyChanged';
 
 Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;

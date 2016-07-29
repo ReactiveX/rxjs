@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {_catch, CatchSignature} from '../../operator/catch';
 
 Observable.prototype.catch = _catch;

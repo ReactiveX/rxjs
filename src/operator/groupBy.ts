@@ -1,8 +1,8 @@
 import {Subscriber} from '../Subscriber';
 import {Subscription} from '../Subscription';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 import {Operator} from '../Operator';
-import {Subject, ISubject} from '../Subject';
+import {Subject} from '../Subject';
 import {Map} from '../util/Map';
 import {FastMap} from '../util/FastMap';
 

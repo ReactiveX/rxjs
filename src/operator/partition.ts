@@ -1,6 +1,6 @@
 import {not} from '../util/not';
 import {filter} from './filter';
-import {Observable, IObservable} from '../Observable';
+import {IObservable} from '../Observable';
 
 /**
  * Splits the source Observable into two, one with values that satisfy a
@@ -43,7 +43,7 @@ import {Observable, IObservable} from '../Observable';
  * @method partition
  * @owner Observable
  */
-export function partition<T>(predicate: (value: T) => boolean, thisArg?: any): [Observable<T>, Observable<T>] {
+export function partition<T>(predicate: (value: T) => boolean, thisArg?: any): [IObservable<T>, IObservable<T>] {
   return [
     filter.call(this, predicate),
     filter.call(this, not(predicate, thisArg))

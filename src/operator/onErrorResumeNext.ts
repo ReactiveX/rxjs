@@ -1,4 +1,4 @@
-import {Observable, ObservableInput, IObservable} from '../Observable';
+import {ObservableInput, IObservable} from '../Observable';
 import {FromObservable} from '../observable/FromObservable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';

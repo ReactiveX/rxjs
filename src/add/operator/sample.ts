@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {sample, SampleSignature} from '../../operator/sample';
 
 Observable.prototype.sample = sample;

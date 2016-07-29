@@ -1,5 +1,5 @@
-import {Subject, ISubject} from '../Subject';
-import {Observable, IObservable} from '../Observable';
+import {Subject} from '../Subject';
+import {IObservable} from '../Observable';
 import {MulticastObservable} from '../observable/MulticastObservable';
 import {ConnectableObservable} from '../observable/ConnectableObservable';
 

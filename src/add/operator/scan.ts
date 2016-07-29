@@ -1,5 +1,4 @@
-
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {ReduceSignature} from '../../operator/reduce';
 import {scan} from '../../operator/scan';
 

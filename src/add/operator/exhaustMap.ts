@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {exhaustMap, SwitchFirstMapSignature} from '../../operator/exhaustMap';
 
 Observable.prototype.exhaustMap = exhaustMap;

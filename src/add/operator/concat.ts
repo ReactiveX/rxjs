@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {concat, ConcatSignature} from '../../operator/concat';
 
 Observable.prototype.concat = concat;

@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {withLatestFrom, WithLatestFromSignature} from '../../operator/withLatestFrom';
 
 Observable.prototype.withLatestFrom = withLatestFrom;

@@ -1,5 +1,5 @@
 
-import {Observable, IObservable} from '../../Observable';
+import {Observable} from '../../Observable';
 import {cache, CacheSignature} from '../../operator/cache';
 
 Observable.prototype.cache = cache;
