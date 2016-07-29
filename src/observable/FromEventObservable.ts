@@ -133,6 +133,8 @@ export class FromEventObservable<T, R> extends Observable<T> {
       const source = sourceObj;
       sourceObj.addListener(eventName, handler);
       unsubscribe = () => source.removeListener(eventName, handler);
+    } else {
+      throw new TypeError('Invalid event target');
     }
 
     subscriber.add(new Subscription(unsubscribe));

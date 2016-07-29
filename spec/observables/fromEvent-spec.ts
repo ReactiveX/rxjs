@@ -115,6 +115,17 @@ describe('Observable.fromEvent', () => {
     expect(offHandler).to.equal(onHandler);
   });
 
+  it('should error on invalid event targets', () => {
+    const obj = {
+      addListener: () => {
+        //noop
+      }
+    };
+
+    const subscribe = () => Observable.fromEvent(<any>obj, 'click').subscribe();
+    expect(subscribe).to.throw(TypeError, 'Invalid event target');
+  });
+
   it('should pass through options to addEventListener', () => {
     let actualOptions;
     const expectedOptions = { capture: true, passive: true };
