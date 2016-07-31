@@ -240,6 +240,11 @@ To reduce polymorphism and get better performance out of operators, some operato
 </table>
 
 
+## Default Scheduling Changed
+
+RxJS v4 defaulted to a scheduler called `Rx.Scheduler.asap` which schedules on the micro task queue. RxJS v5 however defaults to having no scheduler at all; v4 called this `Rx.Scheduler.immediate`. This was done to increase performance for the most common use cases.
+
+
 ## Schedulers Renamed
 
 The names of the Schedulers in RxJS 4 were based off of the Rx.NET implementation. Consequently, some of the names
