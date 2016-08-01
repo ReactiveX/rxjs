@@ -150,7 +150,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
       if (this.project) {
         this._tryProject(values);
       } else {
-        this.destination.next(values);
+        this.destination.next(values.slice());
       }
     }
   }
