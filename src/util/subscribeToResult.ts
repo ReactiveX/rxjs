@@ -56,19 +56,22 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
     });
     return destination;
   } else if (typeof result[$$iterator] === 'function') {
-    for (let item of <any>result) {
-      destination.next(<any>item);
+    const iterator = <any>result[$$iterator]();
+    do {
+      let item = iterator.next();
+      if (item.done) {
+        destination.complete();
+        break;
+      }
+      destination.next(item.value);
       if (destination.closed) {
         break;
       }
-    }
-    if (!destination.closed) {
-      destination.complete();
-    }
+    } while (true);
   } else if (typeof result[$$observable] === 'function') {
     const obs = result[$$observable]();
     if (typeof obs.subscribe !== 'function') {
-      destination.error('invalid observable');
+      destination.error(new Error('invalid observable'));
     } else {
       return obs.subscribe(new InnerSubscriber(outerSubscriber, outerValue, outerIndex));
     }
