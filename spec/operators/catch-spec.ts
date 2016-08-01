@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import {createObservableInputs} from '../helpers/test-helper';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestSchdeuler: Rx.TestScheduler;
@@ -226,5 +227,19 @@ describe('Observable.prototype.catch', () => {
         }, () => {
           done();
         });
+  });
+
+  it('should accept selector returns any ObservableInput', (done: MochaDone) => {
+    const input$ = createObservableInputs(42);
+
+    input$.mergeMap(input =>
+      Observable.throw('bad').catch(err => input)
+    ).subscribe(x => {
+      expect(x).to.be.equal(42);
+    }, (err: any) => {
+      done(new Error('should not be called'));
+    }, () => {
+      done();
+    });
   });
 });
