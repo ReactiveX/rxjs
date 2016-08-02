@@ -148,7 +148,7 @@ export class Subscription implements ISubscription {
         }
         break;
       default:
-        throw new Error('Unrecognized teardown ' + teardown + ' added to Subscription.');
+        throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
     }
 
     return sub;

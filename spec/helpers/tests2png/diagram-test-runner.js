@@ -77,7 +77,7 @@ global.asDiagram = function asDiagram(operatorLabel, glit) {
             outputStreams.push({
               messages: [],
               subscription: {start: 0, end: '100%'}
-            })
+            });
           }
           return true;
         });
@@ -90,7 +90,7 @@ global.asDiagram = function asDiagram(operatorLabel, glit) {
         console.log('Painted ' + filename);
       });
     } else {
-      throw new Error('Cannot generate PNG marble diagram for async test ' + description);
+      throw new Error('cannot generate PNG marble diagram for async test ' + description);
     }
   };
 };

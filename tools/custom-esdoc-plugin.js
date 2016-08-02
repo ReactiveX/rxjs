@@ -17,7 +17,7 @@ function getLongname(ev, name) {
     return t.name === name;
   });
   if (index === -1) {
-    throw new Error('Could not find longname for unknown tag named "' + name +
+    throw new Error('could not find longname for unknown tag named "' + name +
       '"');
   } else {
     return ev.data.tag[index].longname;

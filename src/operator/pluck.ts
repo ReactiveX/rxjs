@@ -31,7 +31,7 @@ import {map} from './map';
 export function pluck<R>(...properties: string[]): Observable<R> {
   const length = properties.length;
   if (length === 0) {
-    throw new Error('List of properties cannot be empty.');
+    throw new Error('list of properties cannot be empty.');
   }
   return map.call(this, plucker(properties, length));
 }

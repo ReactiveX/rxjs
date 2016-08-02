@@ -6,7 +6,7 @@ if (typeof (<any>Object).assign != 'function') {
   (function () {
     (<any>Object).assign = function assignPolyfill(target: Object, ...sources: Array<Object>): Object {
       if (target === undefined || target === null) {
-        throw new TypeError('Cannot convert undefined or null to object');
+        throw new TypeError('cannot convert undefined or null to object');
       }
 
       const output = Object(target);
