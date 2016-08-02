@@ -29,13 +29,13 @@ describe('IteratorObservable', () => {
   it('should not accept boolean as iterator', () => {
     expect(() => {
       IteratorObservable.create(false);
-    }).to.throw(Error, 'Object is not iterable');
+    }).to.throw(Error, 'object is not iterable');
   });
 
   it('should not accept non-function project', () => {
     expect(() => {
       IteratorObservable.create([], 42);
-    }).to.throw(Error, 'When provided, `project` must be a function.');
+    }).to.throw(Error, 'when provided, `project` must be a function.');
   });
 
   it('should emit members of an array iterator', (done: MochaDone) => {

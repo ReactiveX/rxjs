@@ -29,17 +29,17 @@ export class TestScheduler extends VirtualTimeScheduler {
   createTime(marbles: string): number {
     const indexOf: number = marbles.indexOf('|');
     if (indexOf === -1) {
-      throw new Error('Marble diagram for time should have a completion marker "|"');
+      throw new Error('marble diagram for time should have a completion marker "|"');
     }
     return indexOf * TestScheduler.frameTimeFactor;
   }
 
   createColdObservable<T>(marbles: string, values?: any, error?: any): Observable<T> {
     if (marbles.indexOf('^') !== -1) {
-      throw new Error('Cold observable cannot have subscription offset "^"');
+      throw new Error('cold observable cannot have subscription offset "^"');
     }
     if (marbles.indexOf('!') !== -1) {
-      throw new Error('Cold observable cannot have unsubscription marker "!"');
+      throw new Error('cold observable cannot have unsubscription marker "!"');
     }
     const messages = TestScheduler.parseMarbles(marbles, values, error);
     const cold = new ColdObservable<T>(messages, this);
@@ -49,7 +49,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
   createHotObservable<T>(marbles: string, values?: any, error?: any): Subject<T> {
     if (marbles.indexOf('!') !== -1) {
-      throw new Error('Hot observable cannot have unsubscription marker "!"');
+      throw new Error('hot observable cannot have unsubscription marker "!"');
     }
     const messages = TestScheduler.parseMarbles(marbles, values, error);
     const subject = new HotObservable<T>(messages, this);
@@ -159,20 +159,20 @@ export class TestScheduler extends VirtualTimeScheduler {
           break;
         case '^':
           if (subscriptionFrame !== Number.POSITIVE_INFINITY) {
-            throw new Error('Found a second subscription point \'^\' in a ' +
+            throw new Error('found a second subscription point \'^\' in a ' +
               'subscription marble diagram. There can only be one.');
           }
           subscriptionFrame = groupStart > -1 ? groupStart : frame;
           break;
         case '!':
           if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
-            throw new Error('Found a second subscription point \'^\' in a ' +
+            throw new Error('found a second subscription point \'^\' in a ' +
               'subscription marble diagram. There can only be one.');
           }
           unsubscriptionFrame = groupStart > -1 ? groupStart : frame;
           break;
         default:
-          throw new Error('There can only be \'^\' and \'!\' markers in a ' +
+          throw new Error('there can only be \'^\' and \'!\' markers in a ' +
             'subscription marble diagram. Found instead \'' + c + '\'.');
       }
     }
@@ -189,7 +189,7 @@ export class TestScheduler extends VirtualTimeScheduler {
                       errorValue?: any,
                       materializeInnerObservables: boolean = false): TestMessage[] {
     if (marbles.indexOf('!') !== -1) {
-      throw new Error('Conventional marble diagrams cannot have the ' +
+      throw new Error('conventional marble diagrams cannot have the ' +
         'unsubscription marker "!"');
     }
     const len = marbles.length;

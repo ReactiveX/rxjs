@@ -83,7 +83,7 @@ export class IteratorObservable<T> extends Observable<T> {
       this.thisArg = thisArg;
       this.scheduler = scheduler;
     } else if (project != null) {
-      throw new Error('When provided, `project` must be a function.');
+      throw new Error('when provided, `project` must be a function.');
     }
 
     this.iterator = getIterator(iterator);
@@ -165,7 +165,7 @@ function getIterator(obj: any) {
     return new ArrayIterator(obj);
   }
   if (!i) {
-    throw new TypeError('Object is not iterable');
+    throw new TypeError('object is not iterable');
   }
   return obj[$$iterator]();
 }
