@@ -33,9 +33,13 @@ export const createObservableInputs = <T>(value: T) => Rx.Observable.of<Observab
   [value],
   Promise.resolve(value),
   <any>({ [$$iterator]: () => {
+      const iteratorResults = [
+        {value, done: false},
+        {done: true}
+      ];
       return {
         next: () => {
-          return value;
+          return iteratorResults.shift();
         }
       };
     }}),
