@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
 
 const Scheduler = Rx.Scheduler;
@@ -6,31 +7,34 @@ const queue = Scheduler.queue;
 
 /** @test {Scheduler} */
 describe('Scheduler.queue', () => {
-  it('should switch from synchronous to asynchronous at will', (done: MochaDone) => {
-    let lastExecTime = 0;
+  it('should switch from synchronous to asynchronous at will', () => {
+    const sandbox = sinon.sandbox.create();
+    const fakeTimer = sandbox.useFakeTimers();
+
     let asyncExec = false;
+    let state: Array<number> = [];
+
     queue.schedule(function (index) {
+      state.push(index);
       if (index === 0) {
-        lastExecTime = queue.now();
         this.schedule(1, 100);
       } else if (index === 1) {
-        if (queue.now() - lastExecTime < 100) {
-          done(new Error('Execution happened synchronously.'));
-        } else {
-          asyncExec = true;
-          lastExecTime = queue.now();
-          this.schedule(2, 0);
-        }
-      } else if (index === 2) {
-        if (asyncExec === false) {
-          done(new Error('Execution happened synchronously.'));
-        } else {
-          done();
-        }
+        asyncExec = true;
+        this.schedule(2, 0);
       }
     }, 0, 0);
-    asyncExec = false;
+
+    expect(asyncExec).to.be.false;
+    expect(state).to.be.deep.equal([0]);
+
+    fakeTimer.tick(100);
+
+    expect(asyncExec).to.be.true;
+    expect(state).to.be.deep.equal([0, 1, 2]);
+
+    sandbox.restore();
   });
+
   it('should unsubscribe the rest of the scheduled actions if an action throws an error', () => {
     const actions = [];
     let action2Exec = false;
