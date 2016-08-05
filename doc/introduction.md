@@ -73,7 +73,7 @@ With RxJS:
 ```js
 var button = document.querySelector('button');
 Rx.Observable.fromEvent(button, 'click')
-  .throttle(1000)
+  .throttleTime(1000)
   .scan(count => count + 1, 0)
   .subscribe(count => console.log(`Clicked ${count} times`));
 ```
@@ -101,7 +101,7 @@ With RxJS:
 ```js
 var button = document.querySelector('button');
 Rx.Observable.fromEvent(button, 'click')
-  .throttle(1000)
+  .throttleTime(1000)
   .map(event => event.clientX)
   .scan((count, clientX) => count + clientX, 0)
   .subscribe(count => console.log(count));
