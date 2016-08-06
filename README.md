@@ -41,7 +41,7 @@ Rx.Observable.of(1,2,3)
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
 ```js
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 Observable.of(1,2,3).map(x => x + '!!!'); // etc
