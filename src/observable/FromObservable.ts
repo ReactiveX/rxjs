@@ -1,7 +1,5 @@
 import {isArray} from '../util/isArray';
-import {isFunction} from '../util/isFunction';
 import {isPromise} from '../util/isPromise';
-import {isScheduler} from '../util/isScheduler';
 import {PromiseObservable} from './PromiseObservable';
 import {IteratorObservable} from'./IteratorObservable';
 import {ArrayObservable} from './ArrayObservable';
@@ -22,12 +20,12 @@ const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 
  * @hide true
  */
 export class FromObservable<T> extends Observable<T> {
-  constructor(private ish: ObservableInput<T>, private scheduler: Scheduler) {
+  constructor(private ish: ObservableInput<T>, private scheduler?: Scheduler) {
     super(null);
   }
 
   static create<T>(ish: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
-  static create<T, R>(ish: ArrayLike<T>, mapFn: (x: any, y: number) => R, thisArg?: any, scheduler?: Scheduler): Observable<R>;
+  static create<T, R>(ish: ArrayLike<T>, scheduler?: Scheduler): Observable<R>;
 
   /**
    * Creates an Observable from an Array, an array-like object, a Promise, an
@@ -71,11 +69,6 @@ export class FromObservable<T> extends Observable<T> {
    * @param {ObservableInput<T>} ish A subscribable object, a Promise, an
    * Observable-like, an Array, an iterable or an array-like object to be
    * converted.
-   * @param {function(x: any, i: number): T} [mapFn] A "map" function to call
-   * when converting array-like objects, where `x` is a value from the
-   * array-like and `i` is the index of that value in the sequence.
-   * @param {any} [thisArg] The context object to use when calling the `mapFn`,
-   * if provided.
    * @param {Scheduler} [scheduler] The scheduler on which to schedule the
    * emissions of values.
    * @return {Observable<T>} The Observable whose values are originally from the
@@ -84,19 +77,7 @@ export class FromObservable<T> extends Observable<T> {
    * @name from
    * @owner Observable
    */
-  static create<T>(ish: ObservableInput<T>,
-                   mapFnOrScheduler?: Scheduler | ((x: any, y: number) => T),
-                   thisArg?: any,
-                   lastScheduler?: Scheduler): Observable<T> {
-    let scheduler: Scheduler = null;
-    let mapFn: (x: any, i: number) => T = null;
-    if (isFunction(mapFnOrScheduler)) {
-      scheduler = lastScheduler || null;
-      mapFn = <(x: any, i: number) => T> mapFnOrScheduler;
-    } else if (isScheduler(scheduler)) {
-      scheduler = <Scheduler> mapFnOrScheduler;
-    }
-
+  static create<T>(ish: ObservableInput<T>, scheduler?: Scheduler): Observable<T> {
     if (ish != null) {
       if (typeof ish[$$observable] === 'function') {
         if (ish instanceof Observable && !scheduler) {
@@ -108,9 +89,9 @@ export class FromObservable<T> extends Observable<T> {
       } else if (isPromise(ish)) {
         return new PromiseObservable<T>(ish, scheduler);
       } else if (typeof ish[$$iterator] === 'function' || typeof ish === 'string') {
-        return new IteratorObservable<T>(<any>ish, null, null, scheduler);
+        return new IteratorObservable<T>(ish, scheduler);
       } else if (isArrayLike(ish)) {
-        return new ArrayLikeObservable(ish, mapFn, thisArg, scheduler);
+        return new ArrayLikeObservable(ish, scheduler);
       }
     }
 

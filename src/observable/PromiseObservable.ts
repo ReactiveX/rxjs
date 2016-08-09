@@ -39,11 +39,11 @@ export class PromiseObservable<T> extends Observable<T> {
    * @name fromPromise
    * @owner Observable
    */
-  static create<T>(promise: Promise<T>, scheduler: Scheduler = null): Observable<T> {
+  static create<T>(promise: Promise<T>, scheduler?: Scheduler): Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
-  constructor(private promise: Promise<T>, public scheduler: Scheduler = null) {
+  constructor(private promise: Promise<T>, private scheduler?: Scheduler) {
     super();
   }
 

@@ -12,21 +12,19 @@ import {TeardownLogic} from '../Subscription';
  */
 export class ArrayLikeObservable<T> extends Observable<T> {
 
-  private mapFn: (x: T, y: number) => T;
-
-  static create<T>(arrayLike: ArrayLike<T>, mapFn: (x: T, y: number) => T, thisArg: any, scheduler?: Scheduler): Observable<T> {
+  static create<T>(arrayLike: ArrayLike<T>, scheduler?: Scheduler): Observable<T> {
     const length = arrayLike.length;
     if (length === 0) {
       return new EmptyObservable<T>();
-    } else if (length === 1 && !mapFn) {
+    } else if (length === 1) {
       return new ScalarObservable<T>(<any>arrayLike[0], scheduler);
     } else {
-      return new ArrayLikeObservable(arrayLike, mapFn, thisArg, scheduler);
+      return new ArrayLikeObservable(arrayLike, scheduler);
     }
   }
 
   static dispatch(state: any) {
-    const { arrayLike, index, length, mapFn, subscriber } = state;
+    const { arrayLike, index, length, subscriber } = state;
 
     if (subscriber.closed) {
       return;
@@ -37,8 +35,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
       return;
     }
 
-    const result = mapFn ? mapFn(arrayLike[index], index) : arrayLike[index];
-    subscriber.next(result);
+    subscriber.next(arrayLike[index]);
 
     state.index = index + 1;
 
@@ -48,30 +45,26 @@ export class ArrayLikeObservable<T> extends Observable<T> {
   // value used if Array has one value and _isScalar
   private value: any;
 
-  constructor(private arrayLike: ArrayLike<T>, mapFn: (x: T, y: number) => T, thisArg: any, private scheduler?: Scheduler) {
+  constructor(private arrayLike: ArrayLike<T>, private scheduler?: Scheduler) {
     super();
-    if (!mapFn && !scheduler && arrayLike.length === 1) {
+    if (!scheduler && arrayLike.length === 1) {
       this._isScalar = true;
       this.value = arrayLike[0];
-    }
-    if (mapFn) {
-      this.mapFn = mapFn.bind(thisArg);
     }
   }
 
   protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     let index = 0;
-    const { arrayLike, mapFn, scheduler } = this;
+    const { arrayLike, scheduler } = this;
     const length = arrayLike.length;
 
     if (scheduler) {
       return scheduler.schedule(ArrayLikeObservable.dispatch, 0, {
-        arrayLike, index, length, mapFn, subscriber
+        arrayLike, index, length, subscriber
       });
     } else {
       for (let i = 0; i < length && !subscriber.closed; i++) {
-        const result = mapFn ? mapFn(arrayLike[i], i) : arrayLike[i];
-        subscriber.next(result);
+        subscriber.next(arrayLike[i]);
       }
       subscriber.complete();
     }
