@@ -1,3 +1,34 @@
+<a name="5.0.0-beta.11"></a>
+# [5.0.0-beta.11](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.10...v5.0.0-beta.11) (2016-08-09)
+
+
+### Bug Fixes
+
+* **ajaxObservable:** only set default Content-Type header when no body is sent (#1830) ([5a895e8](https://github.com/ReactiveX/RxJS/commit/5a895e8))
+* **AjaxObservable:** drop resultSelector support in ajax method ([7a77437](https://github.com/ReactiveX/RxJS/commit/7a77437)), closes [#1783](https://github.com/ReactiveX/RxJS/issues/1783)
+* **AsyncSubject:** do not allow change value after complete ([801f282](https://github.com/ReactiveX/RxJS/commit/801f282)), closes [#1800](https://github.com/ReactiveX/RxJS/issues/1800)
+* **BoundNodeCallbackObservable:**  cast to `any` to access to private field in `source` ([54f342f](https://github.com/ReactiveX/RxJS/commit/54f342f))
+* **catch:** accept selector returns ObservableInput ([e55c62d](https://github.com/ReactiveX/RxJS/commit/e55c62d)), closes [#1857](https://github.com/ReactiveX/RxJS/issues/1857)
+* **combineLatest:** emit unique array instances with the default projection ([2e30fd1](https://github.com/ReactiveX/RxJS/commit/2e30fd1))
+* **Observable.from:** standardise arguments (remove map/context) ([aa30af2](https://github.com/ReactiveX/RxJS/commit/aa30af2))
+* **schedulers:** fix asap and animationFrame schedulers to execute across async boundaries. (#182 ([548ec2a](https://github.com/ReactiveX/RxJS/commit/548ec2a)), closes [(#1820](https://github.com/(/issues/1820) [#1814](https://github.com/ReactiveX/RxJS/issues/1814)
+* **subscribeToResult:** update subscription to iterables ([5d6339a](https://github.com/ReactiveX/RxJS/commit/5d6339a))
+* **WebSocketSubject:** prevent early close (#1831) ([848a527](https://github.com/ReactiveX/RxJS/commit/848a527)), closes [(#1831](https://github.com/(/issues/1831)
+
+### Features
+
+* **fromEvent:** Pass through event listener options (#1845) ([8f0dc01](https://github.com/ReactiveX/RxJS/commit/8f0dc01))
+* **PairsObservable:** add PairsObservable creation method ([26bafff](https://github.com/ReactiveX/RxJS/commit/26bafff)), closes [#1804](https://github.com/ReactiveX/RxJS/issues/1804)
+
+
+### BREAKING CHANGES
+
+* Observable.from: - Observable.from no longer supports the optional map function and associated context argument.
+This change has been reflected in the related constructors and their properties have been standardised.
+* AjaxObservable: ajax.*() method no longer support resultSelector, encourage to use `map` instead
+
+
+
 <a name="5.0.0-beta.10"></a>
 # [5.0.0-beta.10](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.9...v5.0.0-beta.10) (2016-07-06)
 
