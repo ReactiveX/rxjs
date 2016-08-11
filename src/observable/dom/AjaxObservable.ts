@@ -4,6 +4,7 @@ import {errorObject} from '../../util/errorObject';
 import {Observable} from '../../Observable';
 import {Subscriber} from '../../Subscriber';
 import {TeardownLogic} from '../../Subscription';
+import {MapOperator} from '../../operator/map';
 
 export interface AjaxRequest {
   url?: string;
@@ -66,7 +67,7 @@ export interface AjaxCreationMethod {
   post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
   put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
   delete(url: string, headers?: Object): Observable<AjaxResponse>;
-  getJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R>;
+  getJSON<T, R>(url: string, headers?: Object): Observable<R>;
 }
 
 export function ajaxGet(url: string, headers: Object = null) {
@@ -86,7 +87,8 @@ export function ajaxPut(url: string, body?: any, headers?: Object): Observable<A
 };
 
 export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
-  return new AjaxObservable<AjaxResponse>({ method: 'GET', url, responseType: 'json', headers }).map(x => x.response);
+  return new AjaxObservable<AjaxResponse>({ method: 'GET', url, responseType: 'json', headers })
+    .lift<T>(new MapOperator<AjaxResponse, T>((x: AjaxResponse, index: number): T => x.response, null));
 };
 
 /**

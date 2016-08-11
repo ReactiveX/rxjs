@@ -440,39 +440,66 @@ describe('Observable.ajax', () => {
       expect(complete).to.be.true;
     });
 
-    describe('ajax.post', () => {
-      it('should succeed on 200', () => {
-        const expected = { foo: 'bar', hi: 'there you' };
-        let result: Rx.AjaxResponse;
-        let complete = false;
+    it('should able to select json response via getJSON', () => {
+      const expected = { foo: 'bar' };
+      let result;
+      let complete = false;
 
-        Rx.Observable
-          .ajax.post('/flibbertyJibbet', expected)
-          .subscribe(x => {
-            result = x;
-          }, null, () => {
-            complete = true;
-          });
-
-        const request = MockXMLHttpRequest.mostRecent;
-
-        expect(request.method).to.equal('POST');
-        expect(request.url).to.equal('/flibbertyJibbet');
-        expect(request.requestHeaders).to.deep.equal({
-          'X-Requested-With': 'XMLHttpRequest',
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      Rx.Observable
+        .ajax.getJSON('/flibbertyJibbet')
+        .subscribe(x => {
+          result = x;
+        }, null, () => {
+          complete = true;
         });
 
-        request.respondWith({
-          'status': 200,
-          'contentType': 'application/json',
-          'responseText': JSON.stringify(expected)
-        });
+      const request = MockXMLHttpRequest.mostRecent;
 
-        expect(request.data).to.equal('foo=bar&hi=there%20you');
-        expect(result.response).to.deep.equal(expected);
-        expect(complete).to.be.true;
+      expect(request.url).to.equal('/flibbertyJibbet');
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify(expected)
       });
+
+      expect(result).to.deep.equal(expected);
+      expect(complete).to.be.true;
+    });
+  });
+
+  describe('ajax.post', () => {
+    it('should succeed on 200', () => {
+      const expected = { foo: 'bar', hi: 'there you' };
+      let result: Rx.AjaxResponse;
+      let complete = false;
+
+      Rx.Observable
+        .ajax.post('/flibbertyJibbet', expected)
+        .subscribe(x => {
+          result = x;
+        }, null, () => {
+          complete = true;
+        });
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.method).to.equal('POST');
+      expect(request.url).to.equal('/flibbertyJibbet');
+      expect(request.requestHeaders).to.deep.equal({
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      });
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify(expected)
+      });
+
+      expect(request.data).to.equal('foo=bar&hi=there%20you');
+      expect(result.response).to.deep.equal(expected);
+      expect(complete).to.be.true;
     });
   });
 });
