@@ -111,6 +111,7 @@ enabling "composite" subscription behavior.
 |`tapOnNext`|`-`|
 |`tapOnError`|`-`|
 |`tapOnCompleted`|`-`|
+|`throw`|`-`|
 |`timestamp`|`-`|
 |`toMap`|`-`|
 |`toSet`|`-`|
