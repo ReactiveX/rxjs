@@ -4,7 +4,7 @@ const booleans = { T: true, F: false };
 
 /** @test {sequenceEqual} */
 describe('Observable.prototype.sequenceEqual', () => {
-  it('should return true for two equal sequences', () => {
+  asDiagram('sequenceEqual(observable)')('should return true for two equal sequences', () => {
     const s1 = hot('--a--^--b--c--d--e--f--g--|');
     const s1subs =      '^                        !';
     const s2 = hot('-----^-----b--c--d-e-f------g-|');

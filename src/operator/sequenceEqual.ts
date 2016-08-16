@@ -18,6 +18,8 @@ export interface SequenceEqualSignature<T> {
  *
  * <span class="informal">Checks to see of all values emitted by both observables are equal, in order.</span>
  *
+ * <img src="./img/sequenceEqual.png" width="100%">
+ *
  * `sequenceEqual` subscribes to two observables and buffers incoming values from each observable. Whenever either
  * observable emits a value, the value is buffered and the buffers are shifted and compared from the bottom
  * up; If any value pair doesn't match, the returned observable will emit `false` and complete. If one of the
