@@ -22,7 +22,6 @@ export function _catch<T, R>(selector: (err: any, caught: Observable<T>) => Obse
 }
 
 export interface CatchSignature<T> {
-  (selector: (err: any, caught: Observable<T>) => ObservableInput<T>): Observable<T>;
   <R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<R>;
 }
 
