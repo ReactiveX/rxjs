@@ -5,8 +5,6 @@ import {Subscriber} from '../Subscriber';
 import {tryCatch} from '../util/tryCatch';
 import {errorObject} from '../util/errorObject';
 
-export const defaultComparor = <T>(a: T, b: T) => a === b;
-
 export interface SequenceEqualSignature<T> {
   (compareTo: Observable<T>, comparor?: (a: T, b: T) => boolean): Observable<boolean>;
 }
@@ -64,7 +62,7 @@ export interface SequenceEqualSignature<T> {
  * @owner Observable
  */
 export function sequenceEqual<T>(compareTo: Observable<T>,
-                                 comparor: (a: T, b: T) => boolean = defaultComparor): Observable<boolean> {
+                                 comparor?: (a: T, b: T) => boolean): Observable<boolean> {
   return this.lift(new SequenceEqualOperator(compareTo, comparor));
 }
 
@@ -106,28 +104,7 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
 
   public _complete(): void {
     if (this._oneComplete) {
-      const { _a, _b, comparor } = this;
-      if (_a.length !== _b.length) {
-        this.emit(false);
-      } else {
-        const len = _a.length;
-        for (let i = 0; i < len; i++) {
-          let areEqual = false;
-          let a = _a[i];
-          let b = _b[i];
-          if (comparor) {
-            areEqual = tryCatch(comparor)(a, b);
-            if (areEqual === errorObject) {
-              this.destination.error(errorObject.e);
-              return;
-            }
-          }
-          if (!areEqual) {
-            this.emit(false);
-          }
-        }
-        this.emit(true);
-      }
+      this.emit(this._a.length === 0 && this._b.length === 0);
     } else {
       this._oneComplete = true;
     }

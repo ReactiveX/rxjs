@@ -18,6 +18,54 @@ describe('Observable.prototype.sequenceEqual', () => {
     expectSubscriptions(s2.subscriptions).toBe(s2subs);
   });
 
+  it('should return false for two sync observables that are unequal in length', () => {
+    const s1 = cold('(abcdefg|)');
+    const s2 = cold('(abc|)');
+    const expected = '(F|)';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+  });
+
+  it('should return true for two sync observables that match', () => {
+    const s1 = cold('(abcdefg|)');
+    const s2 = cold('(abcdefg|)');
+    const expected = '(T|)';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+  });
+
+  it('should return true for two observables that match when the last one emits and completes in the same frame', () => {
+    const s1 = hot('--a--^--b--c--d--e--f--g--|');
+    const s1subs =      '^                        !';
+    const s2 = hot('-----^--b--c--d--e--f--g------|');
+    const s2subs =      '^                        !';
+    const expected =    '-------------------------(T|)';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+    expectSubscriptions(s1.subscriptions).toBe(s1subs);
+    expectSubscriptions(s2.subscriptions).toBe(s2subs);
+  });
+
+  it('should return true for two observables that match when the last one emits and completes in the same frame', () => {
+    const s1 = hot('--a--^--b--c--d--e--f--g--|');
+    const s1subs =      '^                        !';
+    const s2 = hot('-----^--b--c--d--e--f---------(g|)');
+    const s2subs =      '^                        !';
+    const expected =    '-------------------------(T|)';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+    expectSubscriptions(s1.subscriptions).toBe(s1subs);
+    expectSubscriptions(s2.subscriptions).toBe(s2subs);
+  });
+
   it('should error with an errored source', () => {
     const s1 = hot('--a--^--b---c---#');
     const s2 = hot('--a--^--b---c-----|');
