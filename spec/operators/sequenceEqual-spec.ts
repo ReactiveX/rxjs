@@ -1,4 +1,4 @@
-//declare const {rxTestScheduler, time, hot, cold, asDiagram, expectObservable, expectSubscriptions, type};
+declare const {rxTestScheduler, time, type};
 
 const booleans = { T: true, F: false };
 
@@ -16,6 +16,108 @@ describe('Observable.prototype.sequenceEqual', () => {
     expectObservable(source).toBe(expected, booleans);
     expectSubscriptions(s1.subscriptions).toBe(s1subs);
     expectSubscriptions(s2.subscriptions).toBe(s2subs);
+  });
+
+  it('should error with an errored source', () => {
+    const s1 = hot('--a--^--b---c---#');
+    const s2 = hot('--a--^--b---c-----|');
+    const expected =    '-----------#';
+    const sub =         '^          !';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+    expectSubscriptions(s1.subscriptions).toBe(sub);
+    expectSubscriptions(s2.subscriptions).toBe(sub);
+  });
+
+  it('should error with an errored compareTo', () => {
+    const s1 = hot('--a--^--b---c-----|');
+    const s2 = hot('--a--^--b---c---#');
+    const expected =    '-----------#';
+    const sub =         '^          !';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+    expectSubscriptions(s1.subscriptions).toBe(sub);
+    expectSubscriptions(s2.subscriptions).toBe(sub);
+  });
+
+  it('should error if the source is a throw', () => {
+    const s1 =  cold('#'); // throw
+    const s2 =  cold('---a--b--c--|');
+    const expected = '#'; // throw
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected);
+  });
+
+  it('should never return if source is a never', () => {
+    const s1 =  cold('------------'); // never
+    const s2 =  cold('--a--b--c--|');
+    const expected = '------------'; // never
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected);
+  });
+
+  it('should never return if compareTo is a never', () => {
+    const s1 =  cold('--a--b--c--|');
+    const s2 =  cold('------------'); // never
+    const expected = '------------'; // never
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected);
+  });
+
+  it('should return false if source is empty and compareTo is not', () => {
+    const s1 =  cold('|'); // empty
+    const s2 =  cold('------a------');
+    const expected = '------(F|)';
+    const subs =     '^     !';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+    expectSubscriptions(s1.subscriptions).toBe(subs);
+    expectSubscriptions(s2.subscriptions).toBe(subs);
+  });
+
+  it('should return false if compareTo is empty and source is not', () => {
+    const s1 =  cold('------a------');
+    const s2 =  cold('|'); // empty
+    const expected = '------(F|)';
+    const subs =     '^     !';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected, booleans);
+    expectSubscriptions(s1.subscriptions).toBe(subs);
+    expectSubscriptions(s2.subscriptions).toBe(subs);
+  });
+
+  it('should return never if compareTo is empty and source is never', () => {
+    const s1 = cold('-');
+    const s2 = cold('|');
+    const expected = '-';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected);
+  });
+
+  it('should return never if source is empty and compareTo is never', () => {
+    const s1 = cold('|');
+    const s2 = cold('-');
+    const expected = '-';
+
+    const source = s1.sequenceEqual(s2);
+
+    expectObservable(source).toBe(expected);
   });
 
   it('should error if the comparor errors', () => {
