@@ -2,7 +2,8 @@ var RxOld = require('rx');
 var RxNew = require('../../../../index');
 
 module.exports = function (suite) {
-  var _old = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate).sequenceEqual(RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate));
+  var _old = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate)
+    .sequenceEqual(RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate));
   var _new = RxNew.Observable.range(0, 25).sequenceEqual(RxNew.Observable.range(0, 25));
 
   function _next(x) { }
