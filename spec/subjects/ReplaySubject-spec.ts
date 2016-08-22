@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import {TestScheduler} from '../../dist/cjs/testing/TestScheduler';
+import {SubjectBase} from '../../dist/cjs/Subject';
 declare const {hot, expectObservable};
 
 declare const rxTestScheduler: TestScheduler;
@@ -10,10 +11,9 @@ const Observable = Rx.Observable;
 
 /** @test {ReplaySubject} */
 describe('ReplaySubject', () => {
-  it('should extend Subject', (done: MochaDone) => {
+  it('should extend SubjectBase', () => {
     const subject = new ReplaySubject();
-    expect(subject instanceof Rx.Subject).to.be.true;
-    done();
+    expect(subject).to.instanceOf(SubjectBase);
   });
 
   it('should replay values upon subscription', (done: MochaDone) => {

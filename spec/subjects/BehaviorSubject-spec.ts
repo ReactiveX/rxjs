@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import {SubjectBase} from '../../dist/cjs/Subject';
 declare const {hot, expectObservable};
 
 const BehaviorSubject = Rx.BehaviorSubject;
@@ -8,10 +9,9 @@ const ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
-  it('should extend Subject', (done: MochaDone) => {
+  it('should extend SubjectBase', () => {
     const subject = new BehaviorSubject(null);
-    expect(subject instanceof Rx.Subject).to.be.true;
-    done();
+    expect(subject).to.instanceOf(SubjectBase);
   });
 
   it('should throw if it has received an error and getValue() is called', () => {

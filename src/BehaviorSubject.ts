@@ -1,4 +1,4 @@
-import {Subject} from './Subject';
+import {SubjectBase} from './Subject';
 import {Subscriber} from './Subscriber';
 import {Subscription, ISubscription} from './Subscription';
 import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
@@ -6,7 +6,7 @@ import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 /**
  * @class BehaviorSubject<T>
  */
-export class BehaviorSubject<T> extends Subject<T> {
+export class BehaviorSubject<T> extends SubjectBase<T> {
 
   constructor(private _value: T) {
     super();
