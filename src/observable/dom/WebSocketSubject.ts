@@ -114,18 +114,25 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   private _connectSocket() {
     const { WebSocketCtor } = this;
-    const socket = this.protocol ?
-      new WebSocketCtor(this.url, this.protocol) :
-      new WebSocketCtor(this.url);
-    this.socket = socket;
+    const observer = this._output;
+
+    let socket: WebSocket = null;
+    try {
+      socket = this.protocol ?
+        new WebSocketCtor(this.url, this.protocol) :
+        new WebSocketCtor(this.url);
+      this.socket = socket;
+    } catch (e) {
+      observer.error(e);
+      return;
+    }
+
     const subscription = new Subscription(() => {
       this.socket = null;
       if (socket && socket.readyState === 1) {
         socket.close();
       }
     });
-
-    const observer = this._output;
 
     socket.onopen = (e: Event) => {
       const openObserver = this.openObserver;
