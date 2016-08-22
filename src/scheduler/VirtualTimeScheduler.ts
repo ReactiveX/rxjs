@@ -10,7 +10,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
   public index: number = -1;
 
   constructor(SchedulerAction: typeof AsyncAction = VirtualAction,
-              public maxFrames: number = 750) {
+              public maxFrames: number = Number.POSITIVE_INFINITY) {
     super(SchedulerAction, () => this.frame);
   }
 
