@@ -11,37 +11,25 @@ import {$$rxSubscriber} from './symbol/rxSubscriber';
  * @class SubjectSubscriber<T>
  */
 export class SubjectSubscriber<T> extends Subscriber<T> {
-  constructor(protected destination: Subject<T>) {
+  constructor(protected destination: SubjectBase<T>) {
     super(destination);
   }
 }
 
-/**
- * @class Subject<T>
- */
-export class Subject<T> extends Observable<T> implements ISubscription {
-
+export abstract class SubjectBase<T> extends Observable<T> implements ISubscription {
   [$$rxSubscriber]() {
     return new SubjectSubscriber(this);
   }
 
   observers: Observer<T>[] = [];
-
   closed = false;
-
   isStopped = false;
-
   hasError = false;
-
   thrownError: any = null;
 
   constructor() {
     super();
   }
-
-  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
-    return new AnonymousSubject<T>(destination, source);
-  };
 
   lift<T, R>(operator: Operator<T, R>): Observable<T> {
     const subject = new AnonymousSubject(this, this);
@@ -49,7 +37,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     return <any>subject;
   }
 
-  next(value?: T) {
+  next(value?: T): void {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -63,7 +51,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     }
   }
 
-  error(err: any) {
+  error(err: any): void {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -79,7 +67,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     this.observers.length = 0;
   }
 
-  complete() {
+  complete(): void {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -122,29 +110,38 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 }
 
 /**
+ * @class Subject<T>
+ */
+export class Subject<T> extends SubjectBase<T> {
+  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
+    return new AnonymousSubject<T>(destination, source);
+  };
+}
+
+/**
  * @class AnonymousSubject<T>
  */
-export class AnonymousSubject<T> extends Subject<T> {
+export class AnonymousSubject<T> extends SubjectBase<T> {
   constructor(protected destination?: Observer<T>, source?: Observable<T>) {
     super();
     this.source = source;
   }
 
-  next(value: T) {
+  next(value: T): void {
     const { destination } = this;
     if (destination && destination.next) {
       destination.next(value);
     }
   }
 
-  error(err: any) {
+  error(err: any): void {
     const { destination } = this;
     if (destination && destination.error) {
       this.destination.error(err);
     }
   }
 
-  complete() {
+  complete(): void {
     const { destination } = this;
     if (destination && destination.complete) {
       this.destination.complete();

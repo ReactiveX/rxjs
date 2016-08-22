@@ -1,11 +1,11 @@
-import {Subject} from './Subject';
+import {SubjectBase} from './Subject';
 import {Subscriber} from './Subscriber';
 import {Subscription} from './Subscription';
 
 /**
  * @class AsyncSubject<T>
  */
-export class AsyncSubject<T> extends Subject<T> {
+export class AsyncSubject<T> extends SubjectBase<T> {
   private value: T = null;
   private hasNext: boolean = false;
   private hasCompleted: boolean = false;

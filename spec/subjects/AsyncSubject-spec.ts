@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import {SubjectBase} from '../../dist/cjs/Subject';
 
 const AsyncSubject = Rx.AsyncSubject;
 
@@ -21,6 +22,11 @@ class TestObserver implements Rx.Observer<number> {
 
 /** @test {AsyncSubject} */
 describe('AsyncSubject', () => {
+  it('should extend SubjectBase', () => {
+    const subject = new AsyncSubject();
+    expect(subject).to.instanceOf(SubjectBase);
+  });
+
   it('should emit the last value when complete', () => {
     const subject = new AsyncSubject();
     const observer = new TestObserver();

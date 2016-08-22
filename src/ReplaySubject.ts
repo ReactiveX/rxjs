@@ -1,4 +1,4 @@
-import {Subject} from './Subject';
+import {SubjectBase} from './Subject';
 import {Scheduler} from './Scheduler';
 import {queue} from './scheduler/queue';
 import {Subscriber} from './Subscriber';
@@ -8,7 +8,7 @@ import {ObserveOnSubscriber} from './operator/observeOn';
 /**
  * @class ReplaySubject<T>
  */
-export class ReplaySubject<T> extends Subject<T> {
+export class ReplaySubject<T> extends SubjectBase<T> {
   private _events: ReplayEvent<T>[] = [];
   private _bufferSize: number;
   private _windowTime: number;
