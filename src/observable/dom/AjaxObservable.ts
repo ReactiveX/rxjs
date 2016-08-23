@@ -11,7 +11,7 @@ export interface AjaxRequest {
   body?: any;
   user?: string;
   async?: boolean;
-  method: string;
+  method?: string;
   headers?: Object;
   timeout?: number;
   password?: string;
