@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Scheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
 import { Subscription, TeardownLogic } from '../Subscription';
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
@@ -17,7 +17,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function timeoutWith<T, R>(due: number | Date,
-                                  withObservable: Observable<R>,
+                                  withObservable: ObservableInput<R>,
                                   scheduler: Scheduler = async): Observable<T | R> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
@@ -25,14 +25,14 @@ export function timeoutWith<T, R>(due: number | Date,
 }
 
 export interface TimeoutWithSignature<T> {
-  (due: number | Date, withObservable: Observable<T>, scheduler?: Scheduler): Observable<T>;
-  <R>(due: number | Date, withObservable: Observable<R>, scheduler?: Scheduler): Observable<T | R>;
+  (due: number | Date, withObservable: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
+  <R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: Scheduler): Observable<T | R>;
 }
 
 class TimeoutWithOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
-              private withObservable: Observable<any>,
+              private withObservable: ObservableInput<any>,
               private scheduler: Scheduler) {
   }
 
@@ -63,7 +63,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   constructor(public destination: Subscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
-              private withObservable: Observable<any>,
+              private withObservable: ObservableInput<any>,
               private scheduler: Scheduler) {
     super();
     destination.add(this);
