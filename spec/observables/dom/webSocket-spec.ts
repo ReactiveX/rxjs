@@ -374,6 +374,23 @@ describe('Observable.webSocket', () => {
 
       subject.unsubscribe();
     });
+
+    it('should handle constructor errors', () => {
+      const subject = Observable.webSocket(<any>{
+        url: 'bad_url',
+        WebSocketCtor: (url: string, protocol?: string | string[]): WebSocket => {
+          throw new Error(`connection refused`);
+        }
+      });
+
+      subject.subscribe((x: any) => {
+        expect(x).to.equal('this should not happen');
+      }, (err: any) => {
+        expect(err).to.be.an('error', 'connection refused');
+      });
+
+      subject.unsubscribe();
+    });
   });
 
   describe('multiplex', () => {
