@@ -396,7 +396,7 @@ export class AjaxResponse {
       case 'json':
         if ('response' in xhr) {
           //IE does not support json as responseType, parse it internally
-          this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || '');
+          this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
         } else {
           this.response = JSON.parse(xhr.responseText || '');
         }
