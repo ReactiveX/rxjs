@@ -117,7 +117,7 @@ export class MockXMLHttpRequest {
 
   private previousRequest: MockXMLHttpRequest;
 
-  private responseType: string = '';
+  protected responseType: string = '';
   private eventHandlers: Array<any> = [];
   private readyState: number = 0;
 
@@ -125,9 +125,9 @@ export class MockXMLHttpRequest {
   private password: any;
 
   private responseHeaders: any;
-  private status: any;
-  private responseText: string;
-  private response: any;
+  protected status: any;
+  protected responseText: string;
+  protected response: any;
 
   url: any;
   method: any;
@@ -176,6 +176,18 @@ export class MockXMLHttpRequest {
     this.triggerEvent('error');
   }
 
+  protected jsonResponseValue(response: any) {
+    try {
+      this.response = JSON.parse(response.responseText);
+    } catch (err) {
+      throw new Error('unable to JSON.parse: \n' + response.responseText);
+    }
+  }
+
+  protected defaultResponseValue() {
+    throw new Error('unhandled type "' + this.responseType + '"');
+  }
+
   respondWith(response: any): void {
     this.readyState = 4;
     this.responseHeaders = {
@@ -186,17 +198,13 @@ export class MockXMLHttpRequest {
     if (!('response' in response)) {
       switch (this.responseType) {
       case 'json':
-        try {
-          this.response = JSON.parse(response.responseText);
-        } catch (err) {
-          throw new Error('unable to JSON.parse: \n' + response.responseText);
-        }
+        this.jsonResponseValue(response);
         break;
       case 'text':
         this.response = response.responseText;
         break;
       default:
-        throw new Error('unhandled type "' + this.responseType + '"');
+        this.defaultResponseValue();
       }
     }
     // TODO: pass better event to onload.
@@ -218,4 +226,30 @@ export class MockXMLHttpRequest {
       }
     });
   }
+}
+
+export class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
+
+  private mockHttp204() {
+    this.responseType = '';
+    this.responseText = '';
+    this.response = '';
+  }
+
+  protected jsonResponseValue(response: any) {
+    if (this.status == 204) {
+      this.mockHttp204();
+      return;
+    }
+    return super.jsonResponseValue(response);
+  }
+
+  protected defaultResponseValue() {
+    if (this.status == 204) {
+      this.mockHttp204();
+      return;
+    }
+    return super.defaultResponseValue();
+  }
+
 }
