@@ -215,6 +215,15 @@ To reduce polymorphism and get better performance out of operators, some operato
       <td><code>delay(subscriptionDelay?: Observable<any>, delayDurationSelector: function)</code></td>
       <td><code>delayWhen(delayDurationSelector: function, subscriptionDelay?: Observable<any>)</code></td>
     </tr>
+    <tr>
+      <td rowspan="2"><code>timeout</code></td>
+      <td><code>timeout(dueTime: number | Date, other?: Error, scheduler?: Scheduler)</code></td>
+      <td><code>timeout(due: number | Date, errorToSend?: any, scheduler?: Scheduler)</code></td>
+    </tr>
+    <tr>
+      <td><code>timeout(dueTime: number | Date, other?: Observable | Promise, scheduler?: Scheduler)</code></td>
+      <td><code>timeoutWith(due: number | Date, withObservable: ObservableInput, scheduler: Scheduler)</code></td>
+    </tr>
   </tbody>
 </table>
 
