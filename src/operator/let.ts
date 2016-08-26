@@ -1,4 +1,4 @@
-import {Observable} from '../Observable';
+import { Observable } from '../Observable';
 
 /**
  * @param func

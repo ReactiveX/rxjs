@@ -1,8 +1,8 @@
-import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Scheduler} from '../Scheduler';
-import {async} from '../scheduler/async';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Scheduler } from '../Scheduler';
+import { async } from '../scheduler/async';
 
 /**
  * @param scheduler

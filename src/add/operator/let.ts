@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {letProto, LetSignature} from '../../operator/let';
+import { Observable } from '../../Observable';
+import { letProto, LetSignature } from '../../operator/let';
 
 Observable.prototype.let = letProto;
 Observable.prototype.letBind = letProto;

@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {bufferCount, BufferCountSignature} from '../../operator/bufferCount';
+import { Observable } from '../../Observable';
+import { bufferCount, BufferCountSignature } from '../../operator/bufferCount';
 
 Observable.prototype.bufferCount = bufferCount;
 

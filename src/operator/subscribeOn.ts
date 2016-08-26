@@ -1,6 +1,6 @@
-import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {SubscribeOnObservable} from '../observable/SubscribeOnObservable';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified Scheduler.

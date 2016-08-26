@@ -1,6 +1,6 @@
-import {not} from '../util/not';
-import {filter} from './filter';
-import {Observable} from '../Observable';
+import { not } from '../util/not';
+import { filter } from './filter';
+import { Observable } from '../Observable';
 
 /**
  * Splits the source Observable into two, one with values that satisfy a

@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {filter, FilterSignature} from '../../operator/filter';
+import { Observable } from '../../Observable';
+import { filter, FilterSignature } from '../../operator/filter';
 
 Observable.prototype.filter = filter;
 

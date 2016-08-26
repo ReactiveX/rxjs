@@ -1,7 +1,7 @@
-import {Scheduler} from '../Scheduler';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {TeardownLogic} from '../Subscription';
+import { Scheduler } from '../Scheduler';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
 
 export interface DispatchArg<T> {
   subscriber: Subscriber<T>;

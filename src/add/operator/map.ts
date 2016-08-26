@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {map, MapSignature} from '../../operator/map';
+import { Observable } from '../../Observable';
+import { map, MapSignature } from '../../operator/map';
 
 Observable.prototype.map = map;
 

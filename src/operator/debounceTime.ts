@@ -1,9 +1,9 @@
-import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Scheduler} from '../Scheduler';
-import {Subscription, TeardownLogic} from '../Subscription';
-import {async} from '../scheduler/async';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Scheduler } from '../Scheduler';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { async } from '../scheduler/async';
 
 /**
  * Emits a value from the source Observable only after a particular time span

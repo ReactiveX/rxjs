@@ -1,8 +1,8 @@
-import {Observable} from '../Observable';
-import {Scheduler} from '../Scheduler';
-import {ReplaySubject} from '../ReplaySubject';
-import {Observer} from '../Observer';
-import {Subscription} from '../Subscription';
+import { Observable } from '../Observable';
+import { Scheduler } from '../Scheduler';
+import { ReplaySubject } from '../ReplaySubject';
+import { Observer } from '../Observer';
+import { Subscription } from '../Subscription';
 
 /**
  * @param bufferSize

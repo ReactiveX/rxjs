@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {every, EverySignature} from '../../operator/every';
+import { Observable } from '../../Observable';
+import { every, EverySignature } from '../../operator/every';
 
 Observable.prototype.every = every;
 

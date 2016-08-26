@@ -1,5 +1,5 @@
-import {Observable} from '../Observable';
-import {ReduceOperator} from './reduce';
+import { Observable } from '../Observable';
+import { ReduceOperator } from './reduce';
 
 /**
  * The Max operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),

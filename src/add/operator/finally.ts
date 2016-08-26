@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {_finally, FinallySignature} from '../../operator/finally';
+import { Observable } from '../../Observable';
+import { _finally, FinallySignature } from '../../operator/finally';
 
 Observable.prototype.finally = _finally;
 

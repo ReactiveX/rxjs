@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {groupBy, GroupBySignature} from '../../operator/groupBy';
+import { Observable } from '../../Observable';
+import { groupBy, GroupBySignature } from '../../operator/groupBy';
 
 Observable.prototype.groupBy = <any>groupBy;
 

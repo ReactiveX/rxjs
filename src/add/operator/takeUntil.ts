@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {takeUntil, TakeUntilSignature} from '../../operator/takeUntil';
+import { Observable } from '../../Observable';
+import { takeUntil, TakeUntilSignature } from '../../operator/takeUntil';
 
 Observable.prototype.takeUntil = takeUntil;
 

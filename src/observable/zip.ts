@@ -1,3 +1,3 @@
-import { zipStatic } from '../operator/zip';
+import {  zipStatic  } from '../operator/zip';
 
 export const zip = zipStatic;

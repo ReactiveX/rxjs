@@ -1,8 +1,8 @@
-import {Subject} from '../Subject';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-import {ConnectableObservable} from '../observable/ConnectableObservable';
+import { Subject } from '../Subject';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 
 export class MulticastObservable<T> extends Observable<T> {
   constructor(protected source: Observable<T>,

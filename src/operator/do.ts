@@ -1,8 +1,8 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {PartialObserver} from '../Observer';
-import {TeardownLogic} from '../Subscription';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { PartialObserver } from '../Observer';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * Perform a side effect for every emission on the source Observable, but return

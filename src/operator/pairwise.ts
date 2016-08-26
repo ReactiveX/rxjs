@@ -1,6 +1,6 @@
-import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of

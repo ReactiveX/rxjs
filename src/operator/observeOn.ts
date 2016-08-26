@@ -1,10 +1,10 @@
-import {Observable} from '../Observable';
-import {Scheduler} from '../Scheduler';
-import {Operator} from '../Operator';
-import {PartialObserver} from '../Observer';
-import {Subscriber} from '../Subscriber';
-import {Notification} from '../Notification';
-import {TeardownLogic} from '../Subscription';
+import { Observable } from '../Observable';
+import { Scheduler } from '../Scheduler';
+import { Operator } from '../Operator';
+import { PartialObserver } from '../Observer';
+import { Subscriber } from '../Subscriber';
+import { Notification } from '../Notification';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * @see {@link Notification}

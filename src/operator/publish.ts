@@ -1,7 +1,7 @@
-import {Subject} from '../Subject';
-import {Observable} from '../Observable';
-import {multicast} from './multicast';
-import {ConnectableObservable} from '../observable/ConnectableObservable';
+import { Subject } from '../Subject';
+import { Observable } from '../Observable';
+import { multicast } from './multicast';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 
 /**
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called

@@ -1,4 +1,4 @@
-import { root } from './root';
+import {  root  } from './root';
 
 export class RequestAnimationFrameDefinition {
   cancelAnimationFrame: (handle: number) => void;

@@ -1,6 +1,6 @@
-import {Immediate} from '../util/Immediate';
-import {AsyncAction} from './AsyncAction';
-import {AsapScheduler} from './AsapScheduler';
+import { Immediate } from '../util/Immediate';
+import { AsyncAction } from './AsyncAction';
+import { AsapScheduler } from './AsapScheduler';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

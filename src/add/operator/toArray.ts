@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {toArray, ToArraySignature} from '../../operator/toArray';
+import { Observable } from '../../Observable';
+import { toArray, ToArraySignature } from '../../operator/toArray';
 
 Observable.prototype.toArray = toArray;
 
