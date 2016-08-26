@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../../dist/cjs/Rx';
 import {root} from '../../../dist/cjs/util/root';
-import {MockXMLHttpRequest} from '../../helpers/ajax-helper';
+import {MockXMLHttpRequest, MockXMLHttpRequest_InternetExplorer} from '../../helpers/ajax-helper';
 
 declare const global: any;
 
@@ -555,10 +555,45 @@ describe('Observable.ajax', () => {
       request.respondWith({
         'status': 204,
         'contentType': 'application/json',
+        'responseType': 'json',
         'responseText': expected
       });
 
-      expect(result.response).to.deep.equal(expected);
+      expect(result.response).to.equal(expected);
+      expect(complete).to.be.true;
+    });
+
+    it('should succeed in IE on 204 No Content', () => {
+      const expected = null;
+      let result: Rx.AjaxResponse;
+      let complete = false;
+
+      root.XMLHttpRequest = MockXMLHttpRequest_InternetExplorer;
+
+      Rx.Observable
+        .ajax.post('/flibbertyJibbet', expected)
+        .subscribe(x => {
+          result = x;
+        }, null, () => {
+          complete = true;
+        });
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.method).to.equal('POST');
+      expect(request.url).to.equal('/flibbertyJibbet');
+      expect(request.requestHeaders).to.deep.equal({
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      });
+
+      //IE behavior: IE does not provide the a responseText property, so also exercise the code which handles this.
+      request.respondWith({
+          'status': 204,
+          'contentType': 'application/json'
+      });
+
+      expect(result.response).to.equal(expected);
       expect(complete).to.be.true;
     });
 
