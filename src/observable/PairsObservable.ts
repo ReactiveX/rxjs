@@ -1,7 +1,7 @@
-import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {TeardownLogic} from '../Subscription';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../Subscription';
 
 interface PairsContext<T> {
   obj: Object;

@@ -1,7 +1,7 @@
-import {ReplaySubject} from '../ReplaySubject';
-import {Scheduler} from '../Scheduler';
-import {multicast} from './multicast';
-import {ConnectableObservable} from '../observable/ConnectableObservable';
+import { ReplaySubject } from '../ReplaySubject';
+import { Scheduler } from '../Scheduler';
+import { multicast } from './multicast';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 
 /**
  * @param bufferSize

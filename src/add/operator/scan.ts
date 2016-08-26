@@ -1,7 +1,7 @@
 
-import {Observable} from '../../Observable';
-import {ReduceSignature} from '../../operator/reduce';
-import {scan} from '../../operator/scan';
+import { Observable } from '../../Observable';
+import { ReduceSignature } from '../../operator/reduce';
+import { scan } from '../../operator/scan';
 
 Observable.prototype.scan = scan;
 

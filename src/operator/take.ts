@@ -1,9 +1,9 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
-import {EmptyObservable} from '../observable/EmptyObservable';
-import {Observable} from '../Observable';
-import {TeardownLogic} from '../Subscription';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+import { EmptyObservable } from '../observable/EmptyObservable';
+import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.

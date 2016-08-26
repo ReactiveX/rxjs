@@ -1,9 +1,9 @@
-import {Observable} from '../Observable';
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observer} from '../Observer';
-import {EmptyError} from '../util/EmptyError';
-import {TeardownLogic} from '../Subscription';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observer } from '../Observer';
+import { EmptyError } from '../util/EmptyError';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * Returns an Observable that emits the single item emitted by the source Observable that matches a specified

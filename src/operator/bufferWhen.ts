@@ -1,13 +1,13 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { Subscription } from '../Subscription';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 
-import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Buffers the source Observable values, using a factory function of closing

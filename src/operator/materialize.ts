@@ -1,7 +1,7 @@
-import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Notification} from '../Notification';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Notification } from '../Notification';
 
 /**
  * Represents all of the notifications from the source Observable as `next`

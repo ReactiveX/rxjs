@@ -1,4 +1,4 @@
-import {root} from './root';
+import { root } from './root';
 
 const Object = root.Object;
 

@@ -1,4 +1,4 @@
-import {root} from '../util/root';
+import { root } from '../util/root';
 
 /**
  * @param PromiseCtor

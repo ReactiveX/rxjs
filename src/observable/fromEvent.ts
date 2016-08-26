@@ -1,3 +1,3 @@
-import { FromEventObservable } from './FromEventObservable';
+import {  FromEventObservable  } from './FromEventObservable';
 
 export const fromEvent = FromEventObservable.create;

@@ -1,10 +1,10 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
 
-import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.

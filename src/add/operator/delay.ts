@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {delay, DelaySignature} from '../../operator/delay';
+import { Observable } from '../../Observable';
+import { delay, DelaySignature } from '../../operator/delay';
 
 Observable.prototype.delay = delay;
 

@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {sequenceEqual, SequenceEqualSignature} from '../../operator/sequenceEqual';
+import { Observable } from '../../Observable';
+import { sequenceEqual, SequenceEqualSignature } from '../../operator/sequenceEqual';
 
 Observable.prototype.sequenceEqual = sequenceEqual;
 

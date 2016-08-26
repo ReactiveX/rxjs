@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {timeout, TimeoutSignature} from '../../operator/timeout';
+import { Observable } from '../../Observable';
+import { timeout, TimeoutSignature } from '../../operator/timeout';
 
 Observable.prototype.timeout = timeout;
 

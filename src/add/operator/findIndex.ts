@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {findIndex, FindIndexSignature} from '../../operator/findIndex';
+import { Observable } from '../../Observable';
+import { findIndex, FindIndexSignature } from '../../operator/findIndex';
 
 Observable.prototype.findIndex = findIndex;
 

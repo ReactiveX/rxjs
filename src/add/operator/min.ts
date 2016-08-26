@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {min, MinSignature} from '../../operator/min';
+import { Observable } from '../../Observable';
+import { min, MinSignature } from '../../operator/min';
 
 Observable.prototype.min = min;
 

@@ -1,6 +1,6 @@
-import {Observable} from '../Observable';
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
 
 /**
  * Emits only the first value emitted by the source Observable that meets some

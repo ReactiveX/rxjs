@@ -1,9 +1,9 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-import {Observable} from '../Observable';
-import {TeardownLogic} from '../Subscription';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
+import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.

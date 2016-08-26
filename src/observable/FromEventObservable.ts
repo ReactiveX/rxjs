@@ -1,9 +1,9 @@
-import {Observable} from '../Observable';
-import {tryCatch} from '../util/tryCatch';
-import {isFunction} from '../util/isFunction';
-import {errorObject} from '../util/errorObject';
-import {Subscription} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import { Observable } from '../Observable';
+import { tryCatch } from '../util/tryCatch';
+import { isFunction } from '../util/isFunction';
+import { errorObject } from '../util/errorObject';
+import { Subscription } from '../Subscription';
+import { Subscriber } from '../Subscriber';
 
 export type NodeStyleEventEmmitter = {
   addListener: (eventName: string, handler: Function) => void;

@@ -1,13 +1,13 @@
-import {Observable} from '../Observable';
-import {Scheduler} from '../Scheduler';
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
-import {Subscription} from '../Subscription';
-import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
+import { Observable } from '../Observable';
+import { Scheduler } from '../Scheduler';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
+import { Subscription } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Recursively projects each source value to an Observable which is merged in

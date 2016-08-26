@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {sampleTime, SampleTimeSignature} from '../../operator/sampleTime';
+import { Observable } from '../../Observable';
+import { sampleTime, SampleTimeSignature } from '../../operator/sampleTime';
 
 Observable.prototype.sampleTime = sampleTime;
 

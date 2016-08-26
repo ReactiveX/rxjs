@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {timeoutWith, TimeoutWithSignature} from '../../operator/timeoutWith';
+import { Observable } from '../../Observable';
+import { timeoutWith, TimeoutWithSignature } from '../../operator/timeoutWith';
 
 Observable.prototype.timeoutWith = timeoutWith;
 

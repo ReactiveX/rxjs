@@ -1,6 +1,6 @@
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {noop} from '../util/noop';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { noop } from '../util/noop';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

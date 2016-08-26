@@ -1,3 +1,3 @@
-import { concatStatic } from '../operator/concat';
+import {  concatStatic  } from '../operator/concat';
 
 export const concat = concatStatic;

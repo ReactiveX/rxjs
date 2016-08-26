@@ -1,6 +1,6 @@
-import {AsyncSubject} from '../AsyncSubject';
-import {multicast} from './multicast';
-import {ConnectableObservable} from '../observable/ConnectableObservable';
+import { AsyncSubject } from '../AsyncSubject';
+import { multicast } from './multicast';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 
 /**
  * @return {ConnectableObservable<T>}
