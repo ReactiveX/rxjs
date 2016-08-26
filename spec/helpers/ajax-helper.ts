@@ -228,7 +228,7 @@ export class MockXMLHttpRequest {
   }
 }
 
-export class MockXMLHttpRequest_InternetExplorer extends MockXMLHttpRequest {
+export class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
   constructor() {
     super();
   }
@@ -249,7 +249,7 @@ export class MockXMLHttpRequest_InternetExplorer extends MockXMLHttpRequest {
 
   protected defaultResponseValue() {
     if (this.status == 204) {
-      this.mockHttp204()
+      this.mockHttp204();
       return;
     }
     return super.defaultResponseValue();

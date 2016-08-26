@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../../dist/cjs/Rx';
 import {root} from '../../../dist/cjs/util/root';
-import {MockXMLHttpRequest, MockXMLHttpRequest_InternetExplorer} from '../../helpers/ajax-helper';
+import {MockXMLHttpRequest, MockXMLHttpRequestInternetExplorer} from '../../helpers/ajax-helper';
 
 declare const global: any;
 
@@ -568,7 +568,7 @@ describe('Observable.ajax', () => {
       let result: Rx.AjaxResponse;
       let complete = false;
 
-      root.XMLHttpRequest = MockXMLHttpRequest_InternetExplorer;
+      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
 
       Rx.Observable
         .ajax.post('/flibbertyJibbet', expected)
