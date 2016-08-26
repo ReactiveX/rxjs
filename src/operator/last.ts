@@ -1,7 +1,7 @@
-import {Observable} from '../Observable';
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {EmptyError} from '../util/EmptyError';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { EmptyError } from '../util/EmptyError';
 
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.

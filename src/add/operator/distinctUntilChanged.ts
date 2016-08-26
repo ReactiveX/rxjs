@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {distinctUntilChanged, DistinctUntilChangedSignature} from '../../operator/distinctUntilChanged';
+import { Observable } from '../../Observable';
+import { distinctUntilChanged, DistinctUntilChangedSignature } from '../../operator/distinctUntilChanged';
 
 Observable.prototype.distinctUntilChanged = distinctUntilChanged;
 

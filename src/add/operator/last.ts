@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {last, LastSignature} from '../../operator/last';
+import { Observable } from '../../Observable';
+import { last, LastSignature } from '../../operator/last';
 
 Observable.prototype.last = <any>last;
 

@@ -1,12 +1,12 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Scheduler} from '../Scheduler';
-import {async} from '../scheduler/async';
-import {Subscription, TeardownLogic} from '../Subscription';
-import {Observable} from '../Observable';
-import {isDate} from '../util/isDate';
-import {OuterSubscriber} from '../OuterSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Scheduler } from '../Scheduler';
+import { async } from '../scheduler/async';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { Observable } from '../Observable';
+import { isDate } from '../util/isDate';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * @param due

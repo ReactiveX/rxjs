@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {bufferWhen, BufferWhenSignature} from '../../operator/bufferWhen';
+import { Observable } from '../../Observable';
+import { bufferWhen, BufferWhenSignature } from '../../operator/bufferWhen';
 
 Observable.prototype.bufferWhen = bufferWhen;
 

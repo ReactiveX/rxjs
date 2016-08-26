@@ -1,9 +1,9 @@
-import {Operator} from '../Operator';
-import {Observer} from '../Observer';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {tryCatch} from '../util/tryCatch';
-import {errorObject} from '../util/errorObject';
+import { Operator } from '../Operator';
+import { Observer } from '../Observer';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 
 export interface SequenceEqualSignature<T> {
   (compareTo: Observable<T>, comparor?: (a: T, b: T) => boolean): Observable<boolean>;

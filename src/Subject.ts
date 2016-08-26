@@ -1,11 +1,11 @@
-import {Operator} from './Operator';
-import {Observer} from './Observer';
-import {Observable} from './Observable';
-import {Subscriber} from './Subscriber';
-import {ISubscription, Subscription} from './Subscription';
-import {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
-import {SubjectSubscription} from './SubjectSubscription';
-import {$$rxSubscriber} from './symbol/rxSubscriber';
+import { Operator } from './Operator';
+import { Observer } from './Observer';
+import { Observable } from './Observable';
+import { Subscriber } from './Subscriber';
+import { ISubscription, Subscription } from './Subscription';
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { SubjectSubscription } from './SubjectSubscription';
+import { $$rxSubscriber } from './symbol/rxSubscriber';
 
 /**
  * @class SubjectSubscriber<T>

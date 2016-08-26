@@ -1,7 +1,7 @@
-import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {TeardownLogic} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
+import { Subscriber } from '../Subscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

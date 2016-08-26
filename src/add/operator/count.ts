@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {count, CountSignature} from '../../operator/count';
+import { Observable } from '../../Observable';
+import { count, CountSignature } from '../../operator/count';
 
 Observable.prototype.count = count;
 

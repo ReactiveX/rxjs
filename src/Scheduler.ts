@@ -1,5 +1,5 @@
-import {Action} from './scheduler/Action';
-import {Subscription} from './Subscription';
+import { Action } from './scheduler/Action';
+import { Subscription } from './Subscription';
 
 /**
  * An execution context and a data structure to order tasks and schedule their

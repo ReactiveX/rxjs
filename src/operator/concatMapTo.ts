@@ -1,5 +1,5 @@
-import {Observable, ObservableInput} from '../Observable';
-import {MergeMapToOperator} from './mergeMapTo';
+import { Observable, ObservableInput } from '../Observable';
+import { MergeMapToOperator } from './mergeMapTo';
 
 /**
  * Projects each source value to the same Observable which is merged multiple

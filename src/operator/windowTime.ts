@@ -1,11 +1,11 @@
-import {Scheduler} from '../Scheduler';
-import {Action} from '../scheduler/Action';
-import {Subject} from '../Subject';
-import {Operator} from '../Operator';
-import {async} from '../scheduler/async';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subscription} from '../Subscription';
+import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { Subject } from '../Subject';
+import { Operator } from '../Operator';
+import { async } from '../scheduler/async';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { Subscription } from '../Subscription';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically

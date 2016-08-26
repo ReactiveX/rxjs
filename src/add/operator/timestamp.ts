@@ -1,5 +1,5 @@
-import {Observable} from '../../Observable';
-import {timestamp, TimestampSignature} from '../../operator/timestamp';
+import { Observable } from '../../Observable';
+import { timestamp, TimestampSignature } from '../../operator/timestamp';
 
 Observable.prototype.timestamp = timestamp;
 

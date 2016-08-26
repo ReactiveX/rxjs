@@ -1,6 +1,6 @@
-import {AsyncAction} from './AsyncAction';
-import {Subscription} from '../Subscription';
-import {AsyncScheduler} from './AsyncScheduler';
+import { AsyncAction } from './AsyncAction';
+import { Subscription } from '../Subscription';
+import { AsyncScheduler } from './AsyncScheduler';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
 

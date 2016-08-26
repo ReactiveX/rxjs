@@ -1,5 +1,5 @@
-import {Observable} from '../../Observable';
-import {auditTime, AuditTimeSignature} from '../../operator/auditTime';
+import { Observable } from '../../Observable';
+import { auditTime, AuditTimeSignature } from '../../operator/auditTime';
 
 Observable.prototype.auditTime = auditTime;
 

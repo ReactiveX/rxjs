@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {reduce, ReduceSignature} from '../../operator/reduce';
+import { Observable } from '../../Observable';
+import { reduce, ReduceSignature } from '../../operator/reduce';
 
 Observable.prototype.reduce = reduce;
 

@@ -5,9 +5,9 @@
  * we need these bogus classes, which are not stripped away. This file on the
  * other hand, is not included in the release bundle.
  */
-import {Subscriber} from './Subscriber';
-import {TeardownLogic} from './Subscription';
-import {Observable} from './Observable';
+import { Subscriber } from './Subscriber';
+import { TeardownLogic } from './Subscription';
+import { Observable } from './Observable';
 import './scheduler/MiscJSDoc';
 import './observable/dom/MiscJSDoc';
 

@@ -1,12 +1,12 @@
-import {Observable} from '../Observable';
-import {isArray} from '../util/isArray';
-import {ArrayObservable} from '../observable/ArrayObservable';
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
-import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
+import { Observable } from '../Observable';
+import { isArray } from '../util/isArray';
+import { ArrayObservable } from '../observable/ArrayObservable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item

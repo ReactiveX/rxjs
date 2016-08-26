@@ -1,6 +1,6 @@
-import {Subject} from './Subject';
-import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
+import { Subject } from './Subject';
+import { Subscriber } from './Subscriber';
+import { Subscription } from './Subscription';
 
 /**
  * @class AsyncSubject<T>

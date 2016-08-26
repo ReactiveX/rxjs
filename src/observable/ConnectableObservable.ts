@@ -1,8 +1,8 @@
-import {Subject, SubjectSubscriber} from '../Subject';
-import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
+import { Subject, SubjectSubscriber } from '../Subject';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
 
 /**
  * @class ConnectableObservable<T>

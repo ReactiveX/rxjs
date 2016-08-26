@@ -1,10 +1,10 @@
-import {root} from '../../util/root';
-import {tryCatch} from '../../util/tryCatch';
-import {errorObject} from '../../util/errorObject';
-import {Observable} from '../../Observable';
-import {Subscriber} from '../../Subscriber';
-import {TeardownLogic} from '../../Subscription';
-import {MapOperator} from '../../operator/map';
+import { root } from '../../util/root';
+import { tryCatch } from '../../util/tryCatch';
+import { errorObject } from '../../util/errorObject';
+import { Observable } from '../../Observable';
+import { Subscriber } from '../../Subscriber';
+import { TeardownLogic } from '../../Subscription';
+import { MapOperator } from '../../operator/map';
 
 export interface AjaxRequest {
   url?: string;

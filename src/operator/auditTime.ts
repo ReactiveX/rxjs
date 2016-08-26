@@ -1,9 +1,9 @@
-import {async} from '../scheduler/async';
-import {Operator} from '../Operator';
-import {Scheduler} from '../Scheduler';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
-import {Subscription, TeardownLogic} from '../Subscription';
+import { async } from '../scheduler/async';
+import { Operator } from '../Operator';
+import { Scheduler } from '../Scheduler';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { Subscription, TeardownLogic } from '../Subscription';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent

@@ -1,3 +1,3 @@
-import { PairsObservable } from './PairsObservable';
+import {  PairsObservable  } from './PairsObservable';
 
 export const pairs = PairsObservable.create;

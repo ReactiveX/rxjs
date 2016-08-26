@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {take, TakeSignature} from '../../operator/take';
+import { Observable } from '../../Observable';
+import { take, TakeSignature } from '../../operator/take';
 
 Observable.prototype.take = take;
 

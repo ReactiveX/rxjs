@@ -1,10 +1,10 @@
-import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {ScalarObservable} from './ScalarObservable';
-import {EmptyObservable} from './EmptyObservable';
-import {Subscriber} from '../Subscriber';
-import {isScheduler} from '../util/isScheduler';
-import {TeardownLogic} from '../Subscription';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { ScalarObservable } from './ScalarObservable';
+import { EmptyObservable } from './EmptyObservable';
+import { Subscriber } from '../Subscriber';
+import { isScheduler } from '../util/isScheduler';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

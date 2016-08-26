@@ -1,3 +1,3 @@
-import { ArrayObservable } from './ArrayObservable';
+import {  ArrayObservable  } from './ArrayObservable';
 
 export const of = ArrayObservable.of;

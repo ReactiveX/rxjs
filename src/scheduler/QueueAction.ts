@@ -1,6 +1,6 @@
-import {AsyncAction} from './AsyncAction';
-import {Subscription} from '../Subscription';
-import {QueueScheduler} from './QueueScheduler';
+import { AsyncAction } from './AsyncAction';
+import { Subscription } from '../Subscription';
+import { QueueScheduler } from './QueueScheduler';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

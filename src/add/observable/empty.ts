@@ -1,5 +1,5 @@
-import {Observable} from '../../Observable';
-import {empty as staticEmpty} from '../../observable/empty';
+import { Observable } from '../../Observable';
+import { empty as staticEmpty } from '../../observable/empty';
 
 Observable.empty = staticEmpty;
 

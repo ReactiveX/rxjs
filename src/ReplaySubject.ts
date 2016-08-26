@@ -1,9 +1,9 @@
-import {Subject} from './Subject';
-import {Scheduler} from './Scheduler';
-import {queue} from './scheduler/queue';
-import {Subscriber} from './Subscriber';
-import {Subscription} from './Subscription';
-import {ObserveOnSubscriber} from './operator/observeOn';
+import { Subject } from './Subject';
+import { Scheduler } from './Scheduler';
+import { queue } from './scheduler/queue';
+import { Subscriber } from './Subscriber';
+import { Subscription } from './Subscription';
+import { ObserveOnSubscriber } from './operator/observeOn';
 
 /**
  * @class ReplaySubject<T>

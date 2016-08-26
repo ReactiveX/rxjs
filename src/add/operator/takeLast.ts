@@ -1,5 +1,5 @@
-import {Observable} from '../../Observable';
-import {takeLast, TakeLastSignature} from '../../operator/takeLast';
+import { Observable } from '../../Observable';
+import { takeLast, TakeLastSignature } from '../../operator/takeLast';
 
 Observable.prototype.takeLast = takeLast;
 

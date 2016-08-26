@@ -1,5 +1,5 @@
-import {ZipOperator} from './zip';
-import {Observable} from '../Observable';
+import { ZipOperator } from './zip';
+import { Observable } from '../Observable';
 
 /**
  * @param project

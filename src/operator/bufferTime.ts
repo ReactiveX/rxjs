@@ -1,11 +1,11 @@
-import {Scheduler} from '../Scheduler';
-import {Action} from '../scheduler/Action';
-import {Operator} from '../Operator';
-import {async} from '../scheduler/async';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-import {isScheduler} from '../util/isScheduler';
+import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { Operator } from '../Operator';
+import { async } from '../scheduler/async';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { isScheduler } from '../util/isScheduler';
 
 /**
  * Buffers the source Observable values for a specific time period.

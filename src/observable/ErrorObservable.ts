@@ -1,6 +1,6 @@
-import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {TeardownLogic} from '../Subscription';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
 
 export interface DispatchArg {
   error: any;

@@ -1,6 +1,6 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
 
 /**
  * @return {Observable<any[]>|WebSocketSubject<T>|Observable<T>}

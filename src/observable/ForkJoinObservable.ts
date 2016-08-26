@@ -1,12 +1,12 @@
-import {Observable, SubscribableOrPromise} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-import {EmptyObservable} from './EmptyObservable';
-import {isArray} from '../util/isArray';
+import { Observable, SubscribableOrPromise } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { EmptyObservable } from './EmptyObservable';
+import { isArray } from '../util/isArray';
 
-import {subscribeToResult} from '../util/subscribeToResult';
-import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
