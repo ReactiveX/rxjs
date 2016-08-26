@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {max, MaxSignature} from '../../operator/max';
+import { Observable } from '../../Observable';
+import { max, MaxSignature } from '../../operator/max';
 
 Observable.prototype.max = max;
 

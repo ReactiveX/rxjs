@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {skip, SkipSignature} from '../../operator/skip';
+import { Observable } from '../../Observable';
+import { skip, SkipSignature } from '../../operator/skip';
 
 Observable.prototype.skip = skip;
 

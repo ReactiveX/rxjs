@@ -1,10 +1,10 @@
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-import {Observable} from '../Observable';
-import {Operator} from '../Operator';
-import {Subject} from '../Subject';
-import {Map} from '../util/Map';
-import {FastMap} from '../util/FastMap';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subject } from '../Subject';
+import { Map } from '../util/Map';
+import { FastMap } from '../util/FastMap';
 
 /**
  * Groups the items emitted by an Observable according to a specified criterion,

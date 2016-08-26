@@ -2,7 +2,7 @@
 Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
 */
 
-import { root } from './root';
+import {  root  } from './root';
 
 export class ImmediateDefinition {
   setImmediate: (cb: () => void) => number;

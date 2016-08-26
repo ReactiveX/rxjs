@@ -1,3 +1,3 @@
-import { AjaxObservable, AjaxCreationMethod } from './AjaxObservable';
+import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
 
 export const ajax: AjaxCreationMethod = AjaxObservable.create;

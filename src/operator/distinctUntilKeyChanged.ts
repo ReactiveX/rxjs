@@ -1,5 +1,5 @@
-import {distinctUntilChanged} from './distinctUntilChanged';
-import {Observable} from '../Observable';
+import { distinctUntilChanged } from './distinctUntilChanged';
+import { Observable } from '../Observable';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,

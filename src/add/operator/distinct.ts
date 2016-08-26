@@ -1,5 +1,5 @@
-import {Observable} from '../../Observable';
-import {distinct, DistinctSignature} from '../../operator/distinct';
+import { Observable } from '../../Observable';
+import { distinct, DistinctSignature } from '../../operator/distinct';
 
 Observable.prototype.distinct = distinct;
 

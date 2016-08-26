@@ -1,6 +1,6 @@
-import {Subject} from './Subject';
-import {Observer} from './Observer';
-import {Subscription} from './Subscription';
+import { Subject } from './Subject';
+import { Observer } from './Observer';
+import { Subscription } from './Subscription';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

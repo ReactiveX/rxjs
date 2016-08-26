@@ -1,9 +1,9 @@
-import {Scheduler} from '../Scheduler';
-import {Action} from '../scheduler/Action';
-import {Observable} from '../Observable' ;
-import {Subscriber} from '../Subscriber';
-import {Subscription} from '../Subscription';
-import {isScheduler} from '../util/isScheduler';
+import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { Observable } from '../Observable' ;
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { isScheduler } from '../util/isScheduler';
 
 const selfSelector = <T>(value: T) => value;
 

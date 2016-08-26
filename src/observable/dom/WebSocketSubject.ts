@@ -1,14 +1,14 @@
-import {Subject, AnonymousSubject} from '../../Subject';
-import {Subscriber} from '../../Subscriber';
-import {Observable} from '../../Observable';
-import {Subscription} from '../../Subscription';
-import {Operator} from '../../Operator';
-import {root} from '../../util/root';
-import {ReplaySubject} from '../../ReplaySubject';
-import {Observer, NextObserver} from '../../Observer';
-import {tryCatch} from '../../util/tryCatch';
-import {errorObject} from '../../util/errorObject';
-import {assign} from '../../util/assign';
+import { Subject, AnonymousSubject } from '../../Subject';
+import { Subscriber } from '../../Subscriber';
+import { Observable } from '../../Observable';
+import { Subscription } from '../../Subscription';
+import { Operator } from '../../Operator';
+import { root } from '../../util/root';
+import { ReplaySubject } from '../../ReplaySubject';
+import { Observer, NextObserver } from '../../Observer';
+import { tryCatch } from '../../util/tryCatch';
+import { errorObject } from '../../util/errorObject';
+import { assign } from '../../util/assign';
 
 export interface WebSocketSubjectConfig {
   url: string;

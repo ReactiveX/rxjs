@@ -1,5 +1,5 @@
-import {PartialObserver} from './Observer';
-import {Observable} from './Observable';
+import { PartialObserver } from './Observer';
+import { Observable } from './Observable';
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.

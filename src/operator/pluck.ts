@@ -1,5 +1,5 @@
-import {Observable} from '../Observable';
-import {map} from './map';
+import { Observable } from '../Observable';
+import { map } from './map';
 
 /**
  * Maps each source value (an object) to its specified nested property.

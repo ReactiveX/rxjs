@@ -1,8 +1,8 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {ArgumentOutOfRangeError} from '../util/ArgumentOutOfRangeError';
-import {Observable} from '../Observable';
-import {TeardownLogic} from '../Subscription';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions

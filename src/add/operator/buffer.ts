@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {buffer, BufferSignature} from '../../operator/buffer';
+import { Observable } from '../../Observable';
+import { buffer, BufferSignature } from '../../operator/buffer';
 
 Observable.prototype.buffer = buffer;
 

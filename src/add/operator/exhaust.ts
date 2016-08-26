@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {exhaust, SwitchFirstSignature} from '../../operator/exhaust';
+import { Observable } from '../../Observable';
+import { exhaust, SwitchFirstSignature } from '../../operator/exhaust';
 
 Observable.prototype.exhaust = exhaust;
 

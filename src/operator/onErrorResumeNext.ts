@@ -1,11 +1,11 @@
-import {Observable, ObservableInput} from '../Observable';
-import {FromObservable} from '../observable/FromObservable';
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {isArray} from '../util/isArray';
-import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
+import { Observable, ObservableInput } from '../Observable';
+import { FromObservable } from '../observable/FromObservable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { isArray } from '../util/isArray';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |

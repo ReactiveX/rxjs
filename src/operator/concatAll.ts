@@ -1,5 +1,5 @@
-import {Subscribable} from '../Observable';
-import {MergeAllOperator} from './mergeAll';
+import { Subscribable } from '../Observable';
+import { MergeAllOperator } from './mergeAll';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by

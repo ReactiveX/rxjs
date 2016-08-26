@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {publishReplay, PublishReplaySignature} from '../../operator/publishReplay';
+import { Observable } from '../../Observable';
+import { publishReplay, PublishReplaySignature } from '../../operator/publishReplay';
 
 Observable.prototype.publishReplay = publishReplay;
 

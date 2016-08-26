@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {publishLast, PublishLastSignature} from '../../operator/publishLast';
+import { Observable } from '../../Observable';
+import { publishLast, PublishLastSignature } from '../../operator/publishLast';
 
 Observable.prototype.publishLast = publishLast;
 

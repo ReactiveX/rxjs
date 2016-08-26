@@ -1,3 +1,3 @@
-import { NeverObservable } from './NeverObservable';
+import {  NeverObservable  } from './NeverObservable';
 
 export const never = NeverObservable.create;

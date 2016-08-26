@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {mergeMap, MergeMapSignature} from '../../operator/mergeMap';
+import { Observable } from '../../Observable';
+import { mergeMap, MergeMapSignature } from '../../operator/mergeMap';
 
 Observable.prototype.mergeMap = <any>mergeMap;
 Observable.prototype.flatMap = <any>mergeMap;

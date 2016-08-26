@@ -1,4 +1,4 @@
-import {isArray} from '../util/isArray';
+import { isArray } from '../util/isArray';
 
 export function isNumeric(val: any): val is number {
   // parseFloat NaNs numeric-cast false positives (null|true|false|"")

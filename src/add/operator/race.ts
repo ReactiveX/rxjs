@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {race, RaceSignature} from '../../operator/race';
+import { Observable } from '../../Observable';
+import { race, RaceSignature } from '../../operator/race';
 
 Observable.prototype.race = race;
 

@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {materialize, MaterializeSignature} from '../../operator/materialize';
+import { Observable } from '../../Observable';
+import { materialize, MaterializeSignature } from '../../operator/materialize';
 
 Observable.prototype.materialize = materialize;
 

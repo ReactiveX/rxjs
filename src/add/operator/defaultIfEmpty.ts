@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {defaultIfEmpty, DefaultIfEmptySignature} from '../../operator/defaultIfEmpty';
+import { Observable } from '../../Observable';
+import { defaultIfEmpty, DefaultIfEmptySignature } from '../../operator/defaultIfEmpty';
 
 Observable.prototype.defaultIfEmpty = defaultIfEmpty;
 

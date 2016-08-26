@@ -1,3 +1,3 @@
-import { ErrorObservable } from './ErrorObservable';
+import {  ErrorObservable  } from './ErrorObservable';
 
 export const _throw = ErrorObservable.create;

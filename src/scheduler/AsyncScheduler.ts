@@ -1,5 +1,5 @@
-import {Scheduler} from '../Scheduler';
-import {AsyncAction} from './AsyncAction';
+import { Scheduler } from '../Scheduler';
+import { AsyncAction } from './AsyncAction';
 
 export class AsyncScheduler extends Scheduler {
   public actions: Array<AsyncAction<any>> = [];

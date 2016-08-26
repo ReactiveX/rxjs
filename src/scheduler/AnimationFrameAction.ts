@@ -1,6 +1,6 @@
-import {AsyncAction} from './AsyncAction';
-import {AnimationFrame} from '../util/AnimationFrame';
-import {AnimationFrameScheduler} from './AnimationFrameScheduler';
+import { AsyncAction } from './AsyncAction';
+import { AnimationFrame } from '../util/AnimationFrame';
+import { AnimationFrameScheduler } from './AnimationFrameScheduler';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

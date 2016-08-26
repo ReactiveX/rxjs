@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {isEmpty, IsEmptySignature} from '../../operator/isEmpty';
+import { Observable } from '../../Observable';
+import { isEmpty, IsEmptySignature } from '../../operator/isEmpty';
 
 Observable.prototype.isEmpty = isEmpty;
 

@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {elementAt, ElementAtSignature} from '../../operator/elementAt';
+import { Observable } from '../../Observable';
+import { elementAt, ElementAtSignature } from '../../operator/elementAt';
 
 Observable.prototype.elementAt = elementAt;
 

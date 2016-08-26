@@ -1,8 +1,8 @@
-import {Observable, ObservableInput} from '../Observable';
-import {Scheduler} from '../Scheduler';
-import {ArrayObservable} from '../observable/ArrayObservable';
-import {MergeAllOperator} from './mergeAll';
-import {isScheduler} from '../util/isScheduler';
+import { Observable, ObservableInput } from '../Observable';
+import { Scheduler } from '../Scheduler';
+import { ArrayObservable } from '../observable/ArrayObservable';
+import { MergeAllOperator } from './mergeAll';
+import { isScheduler } from '../util/isScheduler';
 
 /**
  * Creates an output Observable which concurrently emits all values from every
