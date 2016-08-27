@@ -1,3 +1,3 @@
-import { FromEventPatternObservable } from './FromEventPatternObservable';
+import {  FromEventPatternObservable  } from './FromEventPatternObservable';
 
 export const fromEventPattern = FromEventPatternObservable.create;

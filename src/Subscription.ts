@@ -1,9 +1,9 @@
-import {isArray} from './util/isArray';
-import {isObject} from './util/isObject';
-import {isFunction} from './util/isFunction';
-import {tryCatch} from './util/tryCatch';
-import {errorObject} from './util/errorObject';
-import {UnsubscriptionError} from './util/UnsubscriptionError';
+import { isArray } from './util/isArray';
+import { isObject } from './util/isObject';
+import { isFunction } from './util/isFunction';
+import { tryCatch } from './util/tryCatch';
+import { errorObject } from './util/errorObject';
+import { UnsubscriptionError } from './util/UnsubscriptionError';
 
 export interface AnonymousSubscription {
   unsubscribe(): void;

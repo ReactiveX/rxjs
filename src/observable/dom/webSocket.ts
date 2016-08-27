@@ -1,3 +1,3 @@
-import { WebSocketSubject } from './WebSocketSubject';
+import {  WebSocketSubject  } from './WebSocketSubject';
 
 export const webSocket = WebSocketSubject.create;

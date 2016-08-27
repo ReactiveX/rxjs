@@ -1,7 +1,7 @@
-import {root} from '../util/root';
-import {Action} from './Action';
-import {Subscription} from '../Subscription';
-import {AsyncScheduler} from './AsyncScheduler';
+import { root } from '../util/root';
+import { Action } from './Action';
+import { Subscription } from '../Subscription';
+import { AsyncScheduler } from './AsyncScheduler';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

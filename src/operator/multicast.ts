@@ -1,7 +1,7 @@
-import {Subject} from '../Subject';
-import {Observable} from '../Observable';
-import {MulticastObservable} from '../observable/MulticastObservable';
-import {ConnectableObservable} from '../observable/ConnectableObservable';
+import { Subject } from '../Subject';
+import { Observable } from '../Observable';
+import { MulticastObservable } from '../observable/MulticastObservable';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 
 /**
  * Returns an Observable that emits the results of invoking a specified selector on items

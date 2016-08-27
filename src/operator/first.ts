@@ -1,7 +1,7 @@
-import {Observable} from '../Observable';
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {EmptyError} from '../util/EmptyError';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { EmptyError } from '../util/EmptyError';
 
 /**
  * Emits only the first value (or the first value that meets some condition)

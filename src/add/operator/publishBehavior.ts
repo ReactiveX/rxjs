@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {publishBehavior, PublishBehaviorSignature} from '../../operator/publishBehavior';
+import { Observable } from '../../Observable';
+import { publishBehavior, PublishBehaviorSignature } from '../../operator/publishBehavior';
 
 Observable.prototype.publishBehavior = publishBehavior;
 

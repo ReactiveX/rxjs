@@ -1,5 +1,5 @@
-import {Scheduler} from '../Scheduler';
-import {Subscription} from '../Subscription';
+import { Scheduler } from '../Scheduler';
+import { Subscription } from '../Subscription';
 
 /**
  * A unit of work to be executed in a {@link Scheduler}. An action is typically

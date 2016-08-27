@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {combineAll, CombineAllSignature} from '../../operator/combineAll';
+import { Observable } from '../../Observable';
+import { combineAll, CombineAllSignature } from '../../operator/combineAll';
 
 Observable.prototype.combineAll = combineAll;
 

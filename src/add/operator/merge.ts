@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {merge, MergeSignature} from '../../operator/merge';
+import { Observable } from '../../Observable';
+import { merge, MergeSignature } from '../../operator/merge';
 
 Observable.prototype.merge = merge;
 

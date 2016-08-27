@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {throttleTime, ThrottleTimeSignature} from '../../operator/throttleTime';
+import { Observable } from '../../Observable';
+import { throttleTime, ThrottleTimeSignature } from '../../operator/throttleTime';
 
 Observable.prototype.throttleTime = throttleTime;
 

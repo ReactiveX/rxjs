@@ -1,4 +1,4 @@
-import {root} from './root';
-import {MapPolyfill} from './MapPolyfill';
+import { root } from './root';
+import { MapPolyfill } from './MapPolyfill';
 
 export const Map = root.Map || (() => MapPolyfill)();

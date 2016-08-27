@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {_do, DoSignature} from '../../operator/do';
+import { Observable } from '../../Observable';
+import { _do, DoSignature } from '../../operator/do';
 
 Observable.prototype.do = _do;
 

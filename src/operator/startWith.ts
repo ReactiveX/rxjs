@@ -1,10 +1,10 @@
-import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {ArrayObservable} from '../observable/ArrayObservable';
-import {ScalarObservable} from '../observable/ScalarObservable';
-import {EmptyObservable} from '../observable/EmptyObservable';
-import {concatStatic} from './concat';
-import {isScheduler} from '../util/isScheduler';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { ArrayObservable } from '../observable/ArrayObservable';
+import { ScalarObservable } from '../observable/ScalarObservable';
+import { EmptyObservable } from '../observable/EmptyObservable';
+import { concatStatic } from './concat';
+import { isScheduler } from '../util/isScheduler';
 
 /**
  * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the

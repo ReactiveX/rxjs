@@ -1,5 +1,5 @@
-import {CombineLatestOperator} from './combineLatest';
-import {Observable} from '../Observable';
+import { CombineLatestOperator } from './combineLatest';
+import { Observable } from '../Observable';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by waiting

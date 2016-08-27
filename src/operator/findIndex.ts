@@ -1,5 +1,5 @@
-import {Observable} from '../Observable';
-import {FindValueOperator} from './find';
+import { Observable } from '../Observable';
+import { FindValueOperator } from './find';
 
 /**
  * Emits only the index of the first value emitted by the source Observable that

@@ -1,5 +1,5 @@
-import {Observable} from '../../Observable';
-import {concat as concatStatic} from '../../observable/concat';
+import { Observable } from '../../Observable';
+import { concat as concatStatic } from '../../observable/concat';
 
 Observable.concat = concatStatic;
 

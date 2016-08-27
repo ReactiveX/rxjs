@@ -1,9 +1,9 @@
-import {Operator} from '../Operator';
-import {Observable} from '../Observable';
-import {Subscriber} from '../Subscriber';
-import {Subscription, TeardownLogic} from '../Subscription';
-import {OuterSubscriber} from '../OuterSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping

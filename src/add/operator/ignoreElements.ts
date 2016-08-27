@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {ignoreElements, IgnoreElementsSignature} from '../../operator/ignoreElements';
+import { Observable } from '../../Observable';
+import { ignoreElements, IgnoreElementsSignature } from '../../operator/ignoreElements';
 
 Observable.prototype.ignoreElements = ignoreElements;
 

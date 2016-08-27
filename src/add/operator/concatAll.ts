@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {concatAll, ConcatAllSignature} from '../../operator/concatAll';
+import { Observable } from '../../Observable';
+import { concatAll, ConcatAllSignature } from '../../operator/concatAll';
 
 Observable.prototype.concatAll = concatAll;
 

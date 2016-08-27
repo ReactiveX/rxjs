@@ -1,9 +1,9 @@
-import {root} from '../util/root';
-import {Scheduler} from '../Scheduler';
-import {Observable} from '../Observable';
-import {$$iterator} from '../symbol/iterator';
-import {TeardownLogic} from '../Subscription';
-import {Subscriber} from '../Subscriber';
+import { root } from '../util/root';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { $$iterator } from '../symbol/iterator';
+import { TeardownLogic } from '../Subscription';
+import { Subscriber } from '../Subscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

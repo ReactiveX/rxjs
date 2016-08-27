@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {windowCount, WindowCountSignature} from '../../operator/windowCount';
+import { Observable } from '../../Observable';
+import { windowCount, WindowCountSignature } from '../../operator/windowCount';
 
 Observable.prototype.windowCount = windowCount;
 

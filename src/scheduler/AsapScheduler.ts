@@ -1,5 +1,5 @@
-import {AsyncAction} from './AsyncAction';
-import {AsyncScheduler} from './AsyncScheduler';
+import { AsyncAction } from './AsyncAction';
+import { AsyncScheduler } from './AsyncScheduler';
 
 export class AsapScheduler extends AsyncScheduler {
   public flush(): void {

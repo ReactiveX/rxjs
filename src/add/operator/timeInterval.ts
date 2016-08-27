@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {timeInterval, TimeIntervalSignature} from '../../operator/timeInterval';
+import { Observable } from '../../Observable';
+import { timeInterval, TimeIntervalSignature } from '../../operator/timeInterval';
 
 Observable.prototype.timeInterval = timeInterval;
 

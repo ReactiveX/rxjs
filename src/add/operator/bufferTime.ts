@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {bufferTime, BufferTimeSignature} from '../../operator/bufferTime';
+import { Observable } from '../../Observable';
+import { bufferTime, BufferTimeSignature } from '../../operator/bufferTime';
 
 Observable.prototype.bufferTime = bufferTime;
 

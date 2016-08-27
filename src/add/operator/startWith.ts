@@ -1,6 +1,6 @@
 
-import {Observable} from '../../Observable';
-import {startWith, StartWithSignature} from '../../operator/startWith';
+import { Observable } from '../../Observable';
+import { startWith, StartWithSignature } from '../../operator/startWith';
 
 Observable.prototype.startWith = startWith;
 

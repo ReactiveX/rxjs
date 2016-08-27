@@ -1,5 +1,5 @@
-import {Subscriber} from '../../Subscriber';
-import {AjaxResponse} from './AjaxObservable';
+import { Subscriber } from '../../Subscriber';
+import { AjaxResponse } from './AjaxObservable';
 
 /**
  * @see {@link ajax}
