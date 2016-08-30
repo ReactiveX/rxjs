@@ -6,7 +6,7 @@ RxJS is mostly useful for its *operators*, even though the Observable is the fou
 
 Operators are **methods** on the Observable type, such as `.map(...)`, `.filter(...)`, `.merge(...)`, etc. When called, they do not *change* the existing Observable instance. Instead, they return a *new* Observable, whose subscription logic is based on the first Observable.
 
-<span class="informal">An Operator is a function take creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span>
+<span class="informal">An Operator is a function which creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span>
 
 An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. Subscribing to the output Observable will also subscribe to the input Observable. In the following example, we create a custom operator function that multiplies each value received from the input Observable by 10:
 
