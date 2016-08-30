@@ -125,6 +125,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`never`](../class/es6/Observable.js~Observable.html#static-method-never)
 - [`of`](../class/es6/Observable.js~Observable.html#static-method-of)
 - `repeat`
+- `repeatWhen`
 - [`range`](../class/es6/Observable.js~Observable.html#static-method-range)
 - [`throw`](../class/es6/Observable.js~Observable.html#static-method-throw)
 - [`timer`](../class/es6/Observable.js~Observable.html#static-method-timer)

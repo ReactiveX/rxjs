@@ -286,7 +286,12 @@ children:
       children:
       - label: I want to re-subscribe
         children:
-        - label: repeat
+          - label: immediately
+            children:
+            - label: repeat
+          - label: when another Observable emits
+            children:
+            - label: repeatWhen
       - label: I want to start a new Observable
         children:
         - label: concat
