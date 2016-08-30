@@ -229,9 +229,6 @@ export class MockXMLHttpRequest {
 }
 
 export class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
-  constructor() {
-    super();
-  }
 
   private mockHttp204() {
     this.responseType = '';
