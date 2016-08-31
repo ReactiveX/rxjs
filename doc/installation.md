@@ -92,7 +92,7 @@ npm install @reactivex/rxjs@5.0.0-beta.1
 
 ## CDN
 
-For CDN, you can use [npmcdn](https://npmcdn.com). Just replace `version` with the current
+For CDN, you can use [unpkg](https://unpkg.com). Just replace `version` with the current
 version on the link below:
 
 For RxJS 5.0.0-beta.1 through beta.11:
