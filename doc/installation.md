@@ -96,7 +96,7 @@ For CDN, you can use [npmcdn](https://npmcdn.com). Just replace `version` with t
 version on the link below:
 
 For RxJS 5.0.0-beta.1 through beta.11:
-https://npmcdn.com/@reactivex/rxjs@version/dist/global/Rx.umd.js
+https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js
 
 For RxJS 5.0.0-beta.12 and higher:
-https://npmcdn.com/@reactivex/rxjs@version/dist/global/Rx.js
+https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js
