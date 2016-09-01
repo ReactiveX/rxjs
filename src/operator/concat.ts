@@ -44,7 +44,7 @@ import { MergeAllOperator } from './mergeAll';
  * @method concat
  * @owner Observable
  */
-export function concat<T, R>(...observables: Array<ObservableInput<any> | Scheduler>): Observable<R> {
+export function concat<T, R>(...observables: Array<ObservableInput<T | any> | Scheduler>): Observable<R> {
   return concatStatic<T, R>(this, ...observables);
 }
 
@@ -112,7 +112,7 @@ export function concatStatic<T, R>(...observables: (ObservableInput<any> | Sched
  * @name concat
  * @owner Observable
  */
-export function concatStatic<T, R>(...observables: Array<ObservableInput<any> | Scheduler>): Observable<R> {
+export function concatStatic<T, R>(...observables: Array<ObservableInput<T | any> | Scheduler>): Observable<R> {
   let scheduler: Scheduler = null;
   let args = <any[]>observables;
   if (isScheduler(args[observables.length - 1])) {
