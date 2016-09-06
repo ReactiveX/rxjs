@@ -71,51 +71,50 @@ enabling "composite" subscription behavior.
 |`windowWithTime`|`windowTime`|
 |`windowWithCount`|`windowCount`|
 |`where`|`filter`|
-|`and`|`-`|
-|`asObservable`|`-`|
-|`average`|`-`|
-|`controlled`|`-`|
-|`delaySubscription`|`-`|
-|`doWhile`|`-`|
-|`extend`|`-`|
-|`groupByUntil`|`-`|
-|`groupJoin`|`-`|
-|`includes`|`-`|
-|`indexOf`|`-`|
-|`join`|`-`|
-|`jortSort`|`-`|
-|`jortSortUntil`|`-`|
-|`lastIndexOf`|`-`|
-|`manySelect`|`-`|
-|`maxBy`|`-`|
-|`minBy`|`-`|
-|`ofObjectChanges`|`-`|
-|`pausable`|`-`|
-|`pausableBuffered`|`-`|
-|`shareReplay`|`-`|
-|`shareValue`|`-`|
-|`selectConcatObserver` or `concatMapObserver`|`-`|
-|`selectManyObserver` or `flatMapObserver`|`-`|
-|`sequenceEqual`|`-`|
-|`singleInstance`|`-`|
-|`skipLast`|`-`|
-|`skipLastWithTime`|`-`|
-|`skipUntilWithTime`|`-`|
-|`slice`|`-`|
-|`some`|`-`|
-|`sum`|`-`|
-|`takeLastBuffer`|`-`|
-|`takeLastBufferWithTime`|`-`|
-|`takeLastWithTime`|`-`|
-|`takeUntilWithTime`|`-`|
-|`tapOnNext`|`-`|
-|`tapOnError`|`-`|
-|`tapOnCompleted`|`-`|
-|`timestamp`|`-`|
-|`toMap`|`-`|
-|`toSet`|`-`|
-|`transduce`|`-`|
-|`windowWithTimeOrCount`|`-`|
+|`and`|Not yet implemented|
+|`asObservable`|Not yet implemented|
+|`average`|Not yet implemented|
+|`controlled`|Not yet implemented|
+|`delaySubscription`|Not yet implemented|
+|`doWhile`|Not yet implemented|
+|`extend`|Not yet implemented|
+|`groupByUntil`|Not yet implemented|
+|`groupJoin`|Not yet implemented|
+|`includes`|Not yet implemented|
+|`indexOf`|Not yet implemented|
+|`join`|Not yet implemented|
+|`jortSort`|Not yet implemented|
+|`jortSortUntil`|Not yet implemented|
+|`lastIndexOf`|Not yet implemented|
+|`manySelect`|Not yet implemented|
+|`maxBy`|Not yet implemented|
+|`minBy`|Not yet implemented|
+|`ofObjectChanges`|Not yet implemented|
+|`pausable`|Not yet implemented|
+|`pausableBuffered`|Not yet implemented|
+|`shareReplay`|Not yet implemented|
+|`shareValue`|Not yet implemented|
+|`selectConcatObserver` or `concatMapObserver`|Not yet implemented|
+|`selectManyObserver` or `flatMapObserver`|Not yet implemented|
+|`singleInstance`|Not yet implemented|
+|`skipLast`|Not yet implemented|
+|`skipLastWithTime`|Not yet implemented|
+|`skipUntilWithTime`|Not yet implemented|
+|`slice`|Not yet implemented|
+|`some`|Not yet implemented|
+|`sum`|Not yet implemented|
+|`takeLastBuffer`|Not yet implemented|
+|`takeLastBufferWithTime`|Not yet implemented|
+|`takeLastWithTime`|Not yet implemented|
+|`takeUntilWithTime`|Not yet implemented|
+|`tapOnNext`|`do`|
+|`tapOnError`|`do`|
+|`tapOnCompleted`|`do`|
+|`timestamp`|Not yet implemented|
+|`toMap`|Not yet implemented|
+|`toSet`|Not yet implemented|
+|`transduce`|Not yet implemented|
+|`windowWithTimeOrCount`|Not yet implemented|
 
 ## Operator Splits
 
@@ -214,6 +213,15 @@ To reduce polymorphism and get better performance out of operators, some operato
     <tr>
       <td><code>delay(subscriptionDelay?: Observable<any>, delayDurationSelector: function)</code></td>
       <td><code>delayWhen(delayDurationSelector: function, subscriptionDelay?: Observable<any>)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><code>timeout</code></td>
+      <td><code>timeout(dueTime: number | Date, other?: Error, scheduler?: Scheduler)</code></td>
+      <td><code>timeout(due: number | Date, errorToSend?: any, scheduler?: Scheduler)</code></td>
+    </tr>
+    <tr>
+      <td><code>timeout(dueTime: number | Date, other?: Observable | Promise, scheduler?: Scheduler)</code></td>
+      <td><code>timeoutWith(due: number | Date, withObservable: ObservableInput, scheduler: Scheduler)</code></td>
     </tr>
   </tbody>
 </table>

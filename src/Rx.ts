@@ -104,6 +104,7 @@ import './add/operator/publishLast';
 import './add/operator/race';
 import './add/operator/reduce';
 import './add/operator/repeat';
+import './add/operator/repeatWhen';
 import './add/operator/retry';
 import './add/operator/retryWhen';
 import './add/operator/sample';

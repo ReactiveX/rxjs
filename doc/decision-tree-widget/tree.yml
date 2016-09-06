@@ -94,10 +94,10 @@ children:
           children:
           - label: "where time windows are determined by another Observable's emissions"
             children:
-            - label: inspect
+            - label: audit
           - label: where time windows are determined by a time duration
             children:
-            - label: inspectTime
+            - label: auditTime
         - label: by emitting the last value as soon as enough silence has occured
           children:
           - label: where the silence duration threshold is determined by another Observable"
@@ -286,7 +286,12 @@ children:
       children:
       - label: I want to re-subscribe
         children:
-        - label: repeat
+          - label: immediately
+            children:
+            - label: repeat
+          - label: when another Observable emits
+            children:
+            - label: repeatWhen
       - label: I want to start a new Observable
         children:
         - label: concat
