@@ -1,3 +1,25 @@
+<a name="5.0.0-beta.12"></a>
+# [5.0.0-beta.12](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.11...v5.0.0-beta.12) (2016-09-09)
+
+
+### Bug Fixes
+
+* **ajaxObservable:** remove implicit dependency to map operator patch ([1744ae9](https://github.com/ReactiveX/RxJS/commit/1744ae9)), closes [#1874](https://github.com/ReactiveX/RxJS/issues/1874)
+* **AjaxObservable:** return null value from JSON.Parse (#1904) ([6ba374e](https://github.com/ReactiveX/RxJS/commit/6ba374e))
+* **catch:** removed unneeded overload for catch ([dd0e586](https://github.com/ReactiveX/RxJS/commit/dd0e586))
+* **max:** do not return comparer values ([f454e93](https://github.com/ReactiveX/RxJS/commit/f454e93)), closes [#1892](https://github.com/ReactiveX/RxJS/issues/1892)
+* **min:** do not return comparer values ([222fd17](https://github.com/ReactiveX/RxJS/commit/222fd17)), closes [#1892](https://github.com/ReactiveX/RxJS/issues/1892)
+* **operators:** export reserved name operators on prototype ([34c39dd](https://github.com/ReactiveX/RxJS/commit/34c39dd)), closes [#1924](https://github.com/ReactiveX/RxJS/issues/1924)
+* **VirtualTimeScheduler:** remove default maxFrame limit ([1de86f1](https://github.com/ReactiveX/RxJS/commit/1de86f1)), closes [#1889](https://github.com/ReactiveX/RxJS/issues/1889)
+* **WebSocketSubject:** pass constructor errors onto observable ([49c7d67](https://github.com/ReactiveX/RxJS/commit/49c7d67))
+
+### Features
+
+* **operator:** Add repeatWhen operator ([c288d88](https://github.com/ReactiveX/RxJS/commit/c288d88))
+* **sequenceEqual:** adds sequenceEqual operator ([3c30293](https://github.com/ReactiveX/RxJS/commit/3c30293)), closes [#1882](https://github.com/ReactiveX/RxJS/issues/1882)
+
+
+
 <a name="5.0.0-beta.11"></a>
 # [5.0.0-beta.11](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.10...v5.0.0-beta.11) (2016-08-09)
 
