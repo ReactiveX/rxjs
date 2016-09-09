@@ -169,7 +169,7 @@ describe('Observable.prototype.min', () => {
       return 42;
     };
 
-    expectObservable((<any>e1).min(predicate), unsub).toBe(expected, { w: 42 });
+    expectObservable((<any>e1).min(predicate), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -188,30 +188,17 @@ describe('Observable.prototype.min', () => {
       .min(predicate)
       .mergeMap((x: number) => Observable.of(x));
 
-    expectObservable(result, unsub).toBe(expected, { w: 42 });
+    expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should handle a constant predicate on observable with many values', () => {
-    const e1 = hot('-x-^-a-b-c-d-e-f-g-|');
-    const e1subs =    '^               !';
-    const expected =  '----------------(w|)';
-
-    const predicate = () => {
-      return 42;
-    };
-
-    expectObservable((<any>e1).min(predicate)).toBe(expected, { w: 42 });
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should handle a predicate on observable with many values', () => {
+  it('should handle a reverse predicate on observable with many values', () => {
     const e1 = hot('-a-^-b--c--d-|', { a: 42, b: -1, c: 0, d: 666 });
     const e1subs =    '^         !';
     const expected =  '----------(w|)';
 
     const predicate = function (x, y) {
-      return Math.max(x, y);
+      return x > y ? -1 : 1;
     };
 
     expectObservable((<any>e1).min(predicate)).toBe(expected, { w: 666 });
@@ -219,15 +206,15 @@ describe('Observable.prototype.min', () => {
   });
 
   it('should handle a predicate for string on observable with many values', () => {
-    const e1 = hot('-1-^-2--3--4-|');
+    const e1 = hot('-a-^-b--c--d-|');
     const e1subs =    '^         !';
     const expected =  '----------(w|)';
 
     const predicate = function (x, y) {
-      return x < y ? x : y;
+      return x > y ? -1 : 1;
     };
 
-    expectObservable((<any>e1).min(predicate)).toBe(expected, { w: '2' });
+    expectObservable((<any>e1).min(predicate)).toBe(expected, { w: 'd' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
