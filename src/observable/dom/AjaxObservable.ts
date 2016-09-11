@@ -361,7 +361,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
   unsubscribe() {
     const { done, xhr } = this;
-    if (!done && xhr && xhr.readyState !== 4) {
+    if (!done && xhr && xhr.readyState !== 4 && typeof xhr.abort === 'function') {
       xhr.abort();
     }
     super.unsubscribe();
