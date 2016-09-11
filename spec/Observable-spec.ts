@@ -192,6 +192,60 @@ describe('Observable', () => {
       source.subscribe();
     });
 
+    it('should run unsubscription logic when an error is sent synchronously and subscribe is called with no arguments', () => {
+      let unsubscribeCalled = false;
+      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
+        subscriber.error(0);
+        return () => {
+          unsubscribeCalled = true;
+        };
+      });
+
+      try {
+        source.subscribe();
+      } catch (e) {
+        // error'ing to an empty Observer re-throws, so catch and ignore it here.
+      }
+
+      expect(unsubscribeCalled).to.be.true;
+    });
+
+    it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done: MochaDone) => {
+      let unsubscribeCalled = false;
+      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
+        const id = setInterval(() => {
+          try {
+            subscriber.error(0);
+          } catch (e) {
+            // asynchronously error'ing to an empty Observer re-throws, so catch and ignore it here.
+          }
+        }, 1);
+        return () => {
+          clearInterval(id);
+          unsubscribeCalled = true;
+        };
+      });
+
+      source.subscribe();
+
+      setTimeout(() => {
+        let err;
+        let errHappened = false;
+        try {
+          expect(unsubscribeCalled).to.be.true;
+        } catch (e) {
+          err = e;
+          errHappened = true;
+        } finally {
+          if (!errHappened) {
+            done();
+          } else {
+            done(err);
+          }
+        }
+      }, 100);
+    });
+
     it('should return a Subscription that calls the unsubscribe function returned by the subscriber', () => {
       let unsubscribeCalled = false;
 
