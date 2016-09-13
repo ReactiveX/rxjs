@@ -1,6 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx';
 import {expect} from 'chai';
-declare const {hot, cold, time, expectObservable};
+declare const {hot, cold, time, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 
