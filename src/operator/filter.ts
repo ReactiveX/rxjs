@@ -57,7 +57,7 @@ class FilterOperator<T> implements Operator<T, T> {
               private thisArg?: any) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
   }
 }

@@ -52,7 +52,7 @@ class SampleOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SampleSubscriber(subscriber, this.notifier));
   }
 }

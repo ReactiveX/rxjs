@@ -27,8 +27,8 @@ class TimestampOperator<T> implements Operator<T, Timestamp<T>> {
   constructor(private scheduler: Scheduler) {
   }
 
-  call(observer: Subscriber<Timestamp<T>>, source: any): any {
-    return source._subscribe(new TimestampSubscriber(observer, this.scheduler));
+  connect(subscriber: Subscriber<Timestamp<T>>, source: any): any {
+    return source._subscribe(new TimestampSubscriber(subscriber, this.scheduler));
   }
 }
 

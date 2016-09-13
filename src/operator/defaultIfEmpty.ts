@@ -46,7 +46,7 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
   constructor(private defaultValue: R) {
   }
 
-  call(subscriber: Subscriber<T | R>, source: any): any {
+  connect(subscriber: Subscriber<T | R>, source: any): any {
     return source._subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
   }
 }

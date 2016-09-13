@@ -26,8 +26,8 @@ class EveryOperator<T> implements Operator<T, boolean> {
               private source?: Observable<T>) {
   }
 
-  call(observer: Subscriber<boolean>, source: any): any {
-    return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
+  connect(subscriber: Subscriber<boolean>, source: any): any {
+    return source._subscribe(new EverySubscriber(subscriber, this.predicate, this.thisArg, this.source));
   }
 }
 

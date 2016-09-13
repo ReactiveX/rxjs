@@ -60,7 +60,7 @@ class AuditTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
   }
 }

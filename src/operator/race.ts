@@ -56,7 +56,7 @@ export function raceStatic<T>(...observables: Array<Observable<any> | Array<Obse
 }
 
 export class RaceOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RaceSubscriber(subscriber));
   }
 }

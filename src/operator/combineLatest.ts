@@ -90,7 +90,7 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
   constructor(private project?: (...values: Array<any>) => R) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  connect(subscriber: Subscriber<R>, source: any): any {
     return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
   }
 }

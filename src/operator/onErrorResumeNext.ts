@@ -58,7 +58,7 @@ class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
   constructor(private nextSources: Array<ObservableInput<any>>) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  connect(subscriber: Subscriber<R>, source: any): any {
     return source._subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
   }
 }

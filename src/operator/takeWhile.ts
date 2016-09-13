@@ -51,7 +51,7 @@ class TakeWhileOperator<T> implements Operator<T, T> {
   constructor(private predicate: (value: T, index: number) => boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
   }
 }

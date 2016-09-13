@@ -33,7 +33,7 @@ class RetryOperator<T> implements Operator<T, T> {
               private source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RetrySubscriber(subscriber, this.count, this.source));
   }
 }

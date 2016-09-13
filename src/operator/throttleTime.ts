@@ -57,7 +57,7 @@ class ThrottleTimeOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler));
   }
 }

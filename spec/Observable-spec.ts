@@ -629,8 +629,8 @@ describe('Observable.lift', () => {
       constructor(private childOperator: Rx.Operator<T, R>) {
       }
 
-      call(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
-        return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
+      connect(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
+        return this.childOperator.connect(new LogSubscriber<R>(subscriber), source);
       }
     }
 

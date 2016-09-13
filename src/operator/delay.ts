@@ -62,7 +62,7 @@ class DelayOperator<T> implements Operator<T, T> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
   }
 }

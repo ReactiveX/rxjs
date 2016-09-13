@@ -23,7 +23,7 @@ class FinallyOperator<T> implements Operator<T, T> {
   constructor(private callback: () => void) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new FinallySubscriber(subscriber, this.callback));
   }
 }

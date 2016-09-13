@@ -60,7 +60,7 @@ class AuditOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new AuditSubscriber<T, T>(subscriber, this.durationSelector));
   }
 }

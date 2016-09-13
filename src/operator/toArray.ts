@@ -16,7 +16,7 @@ export interface ToArraySignature<T> {
 }
 
 class ToArrayOperator<T> implements Operator<T, T[]> {
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  connect(subscriber: Subscriber<T[]>, source: any): any {
     return source._subscribe(new ToArraySubscriber(subscriber));
   }
 }

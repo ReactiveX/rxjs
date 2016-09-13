@@ -39,7 +39,7 @@ class RepeatWhenOperator<T> implements Operator<T, T> {
               protected source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, this.source));
   }
 }

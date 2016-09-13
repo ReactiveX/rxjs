@@ -82,7 +82,8 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
 class RefCountOperator<T> implements Operator<T, T> {
   constructor(private connectable: ConnectableObservable<T>) {
   }
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
 
     const { connectable } = this;
     (<any> connectable)._refCount++;

@@ -71,7 +71,7 @@ export class SequenceEqualOperator<T> implements Operator<T, T> {
               private comparor: (a: T, b: T) => boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): any {
+  connect(subscriber: Subscriber<T>, source: any): any {
     return source._subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
   }
 }

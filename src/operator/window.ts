@@ -56,7 +56,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
   constructor(private windowBoundaries: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  connect(subscriber: Subscriber<Observable<T>>, source: any): any {
     const windowSubscriber = new WindowSubscriber(subscriber);
     const sourceSubscription = source._subscribe(windowSubscriber);
     if (!sourceSubscription.closed) {

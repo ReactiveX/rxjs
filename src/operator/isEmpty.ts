@@ -20,8 +20,8 @@ export interface IsEmptySignature<T> {
 }
 
 class IsEmptyOperator implements Operator<any, boolean> {
-  call (observer: Subscriber<boolean>, source: any): any {
-    return source._subscribe(new IsEmptySubscriber(observer));
+  connect(subscriber: Subscriber<boolean>, source: any): any {
+    return source._subscribe(new IsEmptySubscriber(subscriber));
   }
 }
 

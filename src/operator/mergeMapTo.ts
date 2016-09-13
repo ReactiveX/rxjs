@@ -68,15 +68,15 @@ export interface MergeMapToSignature<T> {
 }
 
 // TODO: Figure out correct signature here: an Operator<Observable<T>, R>
-//       needs to implement call(observer: Subscriber<R>): Subscriber<Observable<T>>
+//       needs to implement connect(subscriber: Subscriber<R>): Subscriber<Observable<T>>
 export class MergeMapToOperator<T, I, R> implements Operator<Observable<T>, R> {
   constructor(private ish: ObservableInput<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
-  call(observer: Subscriber<R>, source: any): any {
-    return source._subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
+  connect(subscriber: Subscriber<R>, source: any): any {
+    return source._subscribe(new MergeMapToSubscriber(subscriber, this.ish, this.resultSelector, this.concurrent));
   }
 }
 

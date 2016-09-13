@@ -85,7 +85,7 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  connect(subscriber: Subscriber<T[]>, source: any): any {
     return source._subscribe(new BufferTimeSubscriber(
       subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler
     ));
