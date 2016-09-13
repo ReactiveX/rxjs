@@ -231,4 +231,24 @@ describe('Observable.merge(...observables, Scheduler, number)', () => {
     const expected = '-d-a-e-b-f-c---x---y---z---|';
     expectObservable(Observable.merge(e1, e2, e3, 2, rxTestScheduler)).toBe(expected);
   });
+
+  it('should use the scheduler even when one Observable is merged', (done: MochaDone) => {
+    let e1Subscribed = false;
+    const e1 = Observable.defer(() => {
+      e1Subscribed = true;
+      return Observable.of('a');
+    });
+
+    Observable
+      .merge(e1, Rx.Scheduler.async)
+      .subscribe({
+        error: done,
+        complete: () => {
+          expect(e1Subscribed).to.be.true;
+          done();
+        }
+      });
+
+    expect(e1Subscribed).to.be.false;
+  });
 });

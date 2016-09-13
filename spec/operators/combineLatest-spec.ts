@@ -6,8 +6,8 @@ const Observable = Rx.Observable;
 /** @test {combineLatest} */
 describe('Observable.prototype.combineLatest', () => {
   asDiagram('combineLatest')('should combine events from two cold observables', () => {
-    const e1 =   hot('-a--b-----c-d-e-|');
-    const e2 =   hot('--1--2-3-4---|   ');
+    const e1 =   cold('-a--b-----c-d-e-|');
+    const e2 =   cold('--1--2-3-4---|   ');
     const expected = '--A-BC-D-EF-G-H-|';
 
     const result = e1.combineLatest(e2, (a: any, b: any) => String(a) + String(b));

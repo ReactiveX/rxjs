@@ -579,16 +579,22 @@ describe('Observable.create', () => {
 
 /** @test {Observable} */
 describe('Observable.lift', () => {
-  it('should be overrideable in a custom Observable type that composes', (done: MochaDone) => {
-    class MyCustomObservable<T> extends Rx.Observable<T> {
-      lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
-        const observable = new MyCustomObservable<R>();
-        (<any>observable).source = this;
-        (<any>observable).operator = operator;
-        return observable;
-      }
-    }
 
+  class MyCustomObservable<T> extends Rx.Observable<T> {
+    static from<T>(source: any) {
+      const observable = new MyCustomObservable<T>();
+      observable.source = <Rx.Observable<T>> source;
+      return observable;
+    }
+    lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
+      const observable = new MyCustomObservable<R>();
+      (<any>observable).source = this;
+      (<any>observable).operator = operator;
+      return observable;
+    }
+  }
+
+  it('should be overrideable in a custom Observable type that composes', (done: MochaDone) => {
     const result = new MyCustomObservable((observer: Rx.Observer<number>) => {
       observer.next(1);
       observer.next(2);
@@ -608,6 +614,122 @@ describe('Observable.lift', () => {
       }, () => {
         done();
       });
+  });
+
+  it('should compose through multicast and refCount', (done: MochaDone) => {
+    const result = new MyCustomObservable((observer: Rx.Observer<number>) => {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
+    .multicast(() => new Rx.Subject())
+    .refCount()
+    .map((x: number) => { return 10 * x; });
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    const expected = [10, 20, 30];
+
+    result.subscribe(
+      function (x) {
+        expect(x).to.equal(expected.shift());
+      }, (x) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+  });
+
+  it('should compose through multicast with selector function', (done: MochaDone) => {
+    const result = new MyCustomObservable((observer: Rx.Observer<number>) => {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    })
+    .multicast(() => new Rx.Subject(), (shared) => shared.map((x: number) => { return 10 * x; }));
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    const expected = [10, 20, 30];
+
+    result.subscribe(
+      function (x) {
+        expect(x).to.equal(expected.shift());
+      }, (x) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+  });
+
+  it('should compose through combineLatest', () => {
+    const e1 =   cold('-a--b-----c-d-e-|');
+    const e2 =   cold('--1--2-3-4---|   ');
+    const expected = '--A-BC-D-EF-G-H-|';
+
+    const result = MyCustomObservable.from(e1).combineLatest(e2, (a: any, b: any) => String(a) + String(b));
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    expectObservable(result).toBe(expected, {
+      A: 'a1', B: 'b1', C: 'b2', D: 'b3', E: 'b4', F: 'c4', G: 'd4', H: 'e4'
+    });
+  });
+
+  it('should compose through concat', () => {
+    const e1 =   cold('--a--b-|');
+    const e2 =   cold(       '--x---y--|');
+    const expected =  '--a--b---x---y--|';
+
+    const result = MyCustomObservable.from(e1).concat(e2, rxTestScheduler);
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    expectObservable(result).toBe(expected);
+  });
+
+  it('should compose through merge', () => {
+    const e1 =   cold('-a--b-| ');
+    const e2 =   cold('--x--y-|');
+    const expected =  '-ax-by-|';
+
+    const result = MyCustomObservable.from(e1).merge(e2, rxTestScheduler);
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    expectObservable(result).toBe(expected);
+  });
+
+  it('should compose through race', () => {
+    const e1 =  cold('---a-----b-----c----|');
+    const e1subs =   '^                   !';
+    const e2 =  cold('------x-----y-----z----|');
+    const e2subs =   '^  !';
+    const expected = '---a-----b-----c----|';
+
+    const result = MyCustomObservable.from(e1).race(e2);
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should compose through zip', () => {
+    const e1 =   cold('-a--b-----c-d-e-|');
+    const e2 =   cold('--1--2-3-4---|   ');
+    const expected = ('--A--B----C-D|   ');
+
+    const result = MyCustomObservable.from(e1).zip(e2, (a: any, b: any) => String(a) + String(b));
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    expectObservable(result).toBe(expected, {
+      A: 'a1', B: 'b2', C: 'c3', D: 'd4'
+    });
   });
 
   it('should allow injecting behaviors into all subscribers in an operator ' +

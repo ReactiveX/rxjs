@@ -16,8 +16,7 @@ import { $$iterator } from '../symbol/iterator';
  * @owner Observable
  */
 export function zipProto<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
-  observables.unshift(this);
-  return zipStatic.apply(this, observables);
+  return this.lift.call(zipStatic<R>(this, ...observables));
 }
 
 /* tslint:disable:max-line-length */
