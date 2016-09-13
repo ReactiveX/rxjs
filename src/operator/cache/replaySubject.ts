@@ -84,11 +84,11 @@ class CacheSubscriber<T> extends Subscriber<T> implements RefCountSubscription {
     this._referenceCount -= 1;
   }
 
-  protected _next(value:T):void{
+  protected _next(value: T): void {
     this._subject.next(value);
   }
 
-  protected _error(err:any):void{
+  protected _error(err: any): void {
     this._adapter.resetSubject();
     this._subject.error(err);
   }

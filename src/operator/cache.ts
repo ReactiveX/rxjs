@@ -39,5 +39,5 @@ class CacheOperator<T> implements Operator<T, T> {
 }
 
 export interface CacheAdapterInterface<T> {
-  cache(source: Observable<T>): Observable<T>
+  cache(source: Observable<T>): Observable<T>;
 }
