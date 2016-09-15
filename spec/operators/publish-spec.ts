@@ -18,9 +18,12 @@ describe('Observable.prototype.publish', () => {
     published.connect();
   });
 
-  it('should return a ConnectableObservable', () => {
+  it('should return a ConnectableObservable-ish', () => {
     const source = Observable.of(1).publish();
-    expect(source instanceof Rx.ConnectableObservable).to.be.true;
+    expect(typeof (<any> source)._subscribe === 'function').to.be.true;
+    expect(typeof (<any> source).getSubject === 'function').to.be.true;
+    expect(typeof source.connect === 'function').to.be.true;
+    expect(typeof source.refCount === 'function').to.be.true;
   });
 
   it('should do nothing if connect is not called, despite subscriptions', () => {

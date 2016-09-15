@@ -342,4 +342,24 @@ describe('Observable.concat', () => {
       expect(vals).to.equal(r.shift());
     }, null, done);
   });
+
+  it('should use the scheduler even when one Observable is concat\'d', (done: MochaDone) => {
+    let e1Subscribed = false;
+    const e1 = Observable.defer(() => {
+      e1Subscribed = true;
+      return Observable.of('a');
+    });
+
+    Observable
+      .concat(e1, Rx.Scheduler.async)
+      .subscribe({
+        error: done,
+        complete: () => {
+          expect(e1Subscribed).to.be.true;
+          done();
+        }
+      });
+
+    expect(e1Subscribed).to.be.false;
+  });
 });

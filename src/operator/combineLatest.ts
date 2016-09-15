@@ -62,7 +62,7 @@ export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
 
   observables.unshift(this);
 
-  return new ArrayObservable(observables).lift(new CombineLatestOperator(project));
+  return this.lift.call(new ArrayObservable(observables), new CombineLatestOperator(project));
 }
 
 /* tslint:disable:max-line-length */

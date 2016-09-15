@@ -51,8 +51,7 @@ import { isScheduler } from '../util/isScheduler';
  * @owner Observable
  */
 export function merge<T, R>(...observables: Array<ObservableInput<any> | Scheduler | number>): Observable<R> {
-  observables.unshift(this);
-  return mergeStatic.apply(this, observables);
+  return this.lift.call(mergeStatic<T, R>(this, ...observables));
 }
 
 /* tslint:disable:max-line-length */
@@ -149,7 +148,7 @@ export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | S
     concurrent = <number>observables.pop();
   }
 
-  if (observables.length === 1) {
+  if (scheduler === null && observables.length === 1) {
     return <Observable<R>>observables[0];
   }
 
