@@ -120,7 +120,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
               private scheduler: Scheduler) {
     super(destination);
     const context = this.openContext();
-    this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval < 0;
+    this.timespanOnly = bufferCreationInterval === null || bufferCreationInterval < 0;
     if (this.timespanOnly) {
       const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
       this.add(context.closeAction = scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
@@ -168,13 +168,13 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     this.contexts = null;
   }
 
-  protected onBufferFull(context: Context<T>) {
+  protected onBufferFull(context: Context<T>): void {
     this.closeContext(context);
     const closeAction = context.closeAction;
     closeAction.unsubscribe();
     this.remove(closeAction);
 
-    if (this.timespanOnly) {
+    if (this.timespanOnly && this.contexts !== null) {
       context = this.openContext();
       const bufferTimeSpan = this.bufferTimeSpan;
       const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
