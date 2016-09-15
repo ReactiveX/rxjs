@@ -75,7 +75,7 @@ state.subscribe((state) => {
 var prevState = {};
 state.subscribe((state) => {
   if (state.count !== prevState.count) {
-    document.querySelector('#count').innerHTML = state.count;  
+    document.querySelector('#count').innerHTML = state.count;
   }
   if (state.inputValue !== prevState.inputValue) {
     document.querySelector('#hello').innerHTML = 'Hello ' + state.inputValue;
@@ -144,7 +144,7 @@ class MyComponent extends ObservableComponent {
     return (
       <div>
         <ul>
-          {this.state.messages.map(message => <li>{message.text}>/li>)}
+          {this.state.messages.map(message => <li>{message.text}</li>)}
         </ul>
       </div>
     );
