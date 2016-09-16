@@ -50,6 +50,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
 
 export interface FilterSignature<T> {
   (predicate: (value: T, index: number) => boolean, thisArg?: any): Observable<T>;
+  <S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): Observable<S>;
 }
 
 class FilterOperator<T> implements Operator<T, T> {

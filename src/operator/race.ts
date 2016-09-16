@@ -23,8 +23,7 @@ export function race<T>(...observables: Array<Observable<T> | Array<Observable<T
     observables = <Array<Observable<T>>>observables[0];
   }
 
-  observables.unshift(this);
-  return raceStatic.apply(this, observables);
+  return this.lift.call(raceStatic<T>(this, ...observables));
 }
 
 export interface RaceSignature<T> {

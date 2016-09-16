@@ -51,6 +51,15 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
+export const connectableObservableDescriptor: PropertyDescriptorMap = {
+  operator: { value: null },
+  _refCount: { value: 0, writable: true },
+  _subscribe: { value: (<any> ConnectableObservable.prototype)._subscribe },
+  getSubject: { value: (<any> ConnectableObservable.prototype).getSubject },
+  connect: { value: (<any> ConnectableObservable.prototype).connect },
+  refCount: { value: (<any> ConnectableObservable.prototype).refCount }
+};
+
 class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
   constructor(destination: Subject<T>,
               private connectable: ConnectableObservable<T>) {
