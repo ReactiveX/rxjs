@@ -14,7 +14,7 @@ export interface Subscribable<T> {
             complete?: () => void): AnonymousSubscription;
 }
 
-export type SubscribableOrPromise<T> = Subscribable<T> | Promise<T>;
+export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
 
 /**
