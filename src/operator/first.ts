@@ -58,9 +58,15 @@ export function first<T, R>(predicate?: (value: T, index: number, source: Observ
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
+// We can cast `T -> R` in it if we pass the result selector.
+// Therefore we don't provide the signature which takes both a type guard function
+// as the predicate and the result selector.
+// (see #1936)
 export interface FirstSignature<T> {
   (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+  <S extends T>(predicate?: (value: T, index: number, source: Observable<T>) => value is S): Observable<S>;
   (predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
+  <S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, resultSelector: void, defaultValue?: S): Observable<S>;
   <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
       defaultValue?: R): Observable<R>;
 }
