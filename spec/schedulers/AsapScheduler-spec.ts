@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
 
 const asap = Rx.Scheduler.asap;
@@ -7,6 +8,21 @@ const asap = Rx.Scheduler.asap;
 describe('Scheduler.asap', () => {
   it('should exist', () => {
     expect(asap).exist;
+  });
+
+  it('should act like the async scheduler if delay > 0', () => {
+    let actionHappened = false;
+    const sandbox = sinon.sandbox.create();
+    const fakeTimer = sandbox.useFakeTimers();
+    asap.schedule(() => {
+      actionHappened = true;
+    }, 50);
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.true;
+    sandbox.restore();
   });
 
   it('should schedule an action to happen later', (done: MochaDone) => {
