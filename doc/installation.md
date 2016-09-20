@@ -24,10 +24,11 @@ Observable.of(1,2,3).map(x => x + '!!!'); // etc
 To import what you need and use it with ES next function bind (best overall method, if possible):
 
 ```js
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operator/map';
 
-Observable.of(1,2,3)::map(x => x + '!!!'); // etc
+Observable::of(1,2,3)::map(x => x + '!!!'); // etc
 ```
 
 ## CommonJS via npm
