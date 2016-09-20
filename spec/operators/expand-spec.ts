@@ -3,6 +3,7 @@ import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
 
 declare const Symbol: any;
+declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {expand} */
@@ -11,11 +12,24 @@ describe('Observable.prototype.expand', () => {
   ('should recursively map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--x----|  ', {x: 1});
     const e1subs =    '^        !';
-    const e2 =   cold('--c|      ', {c: 2});
+    const e2 =   cold(  '--c|    ', {c: 2});
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
 
-    const result = e1.expand(x => x === 8 ? Observable.empty() : e2.mapTo(2 * x));
+    const result = e1.expand(x => x === 8 ? Observable.empty() : e2.map(c => c * x));
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should work with scheduler', () => {
+    const e1 =    hot('--x----|  ', {x: 1});
+    const e1subs =    '^        !';
+    const e2 =   cold(  '--c|    ', {c: 2});
+    const expected =  '--a-b-c-d|';
+    const values = {a: 1, b: 2, c: 4, d: 8};
+
+    const result = e1.expand(x => x === 8 ? Observable.empty() : e2.map(c => c * x), Number.POSITIVE_INFINITY, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -48,7 +62,7 @@ describe('Observable.prototype.expand', () => {
       a--b--c--d--(e|)
     */
 
-    const result = (<any>e1).expand((x: any, index: number): Rx.Observable<any> => {
+    const result = e1.expand((x: any, index: number): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       } else {
@@ -73,7 +87,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
-    const result = (<any>e1).expand((x: number) => {
+    const result = e1.expand((x: number) => {
       if (x === 8) {
         return cold('#');
       }
@@ -97,7 +111,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
-    const result = (<any>e1).expand((x: number) => {
+    const result = e1.expand((x: number) => {
       if (x === 8) {
         throw 'error';
       }
@@ -122,7 +136,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)   ';
     const expected = 'a--b--c-  ';
 
-    const result = (<any>e1).expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x: number): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       }
@@ -174,7 +188,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)           ';
     const expected = 'a-ab-bc-cd-de-(e|)';
 
-    const result = (<any>e1).expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x: number): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       }
@@ -212,7 +226,7 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a--u--b--v--c--x--d--y--(ez|)';
     const concurrencyLimit = 1;
 
-    const result = (<any>e1).expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x: number): Rx.Observable<any> => {
       if (x === 16 || x === 160) {
         return Observable.empty();
       }
@@ -245,7 +259,7 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a---a-u---b-b---v-(cc)(x|)';
     const concurrencyLimit = 2;
 
-    const result = (<any>e1).expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x: number): Rx.Observable<any> => {
       if (x === 4 || x === 40) {
         return Observable.empty();
       }
@@ -275,7 +289,7 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a-ub-vc-xd-ye-(z|)';
     const concurrencyLimit = 100;
 
-    const result = (<any>e1).expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x: number): Rx.Observable<any> => {
       if (x === 16 || x === 160) {
         return Observable.empty();
       }
@@ -298,7 +312,7 @@ describe('Observable.prototype.expand', () => {
     const e1subs =   '(^!)';
     const expected = '(abcde|)';
 
-    const result = (<any>e1).expand((x: number) => {
+    const result = e1.expand((x: number) => {
       if (x === 16) {
         return Observable.empty();
       }
@@ -311,7 +325,7 @@ describe('Observable.prototype.expand', () => {
 
   it('should recursively flatten promises', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
-    (<any>Observable.of(1))
+    Observable.of(1)
       .expand((x: number): any => {
         if (x === 16) {
           return Observable.empty();
@@ -328,7 +342,7 @@ describe('Observable.prototype.expand', () => {
 
   it('should recursively flatten Arrays', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
-    (<any>Observable).of(1)
+    Observable.of(1)
       .expand((x: number): any => {
         if (x === 16) {
           return Observable.empty();
@@ -393,7 +407,7 @@ describe('Observable.prototype.expand', () => {
       return cold(e2shape, { z: x + x });
     };
 
-    const result = (<any>e1).expand(project, undefined, undefined);
+    const result = e1.expand(project, undefined, undefined);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
