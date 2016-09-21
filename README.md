@@ -47,13 +47,16 @@ import 'rxjs/add/operator/map';
 Observable.of(1,2,3).map(x => x + '!!!'); // etc
 ```
 
-To import what you need and use it with ES next function bind (best overall method, if possible):
+To import what you need and use it with proposed [bind operator](https://github.com/tc39/proposal-bind-operator):
+
+> Note: This additional syntax requires [transpiler support](http://babeljs.io/docs/plugins/transform-function-bind/) and this syntax may be completely withdrawn from TC39 without notice! Use at your own risk.
 
 ```js
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operator/map';
 
-Observable.of(1,2,3)::map(x => x + '!!!'); // etc
+Observable::of(1,2,3)::map(x => x + '!!!'); // etc
 ```
 
 ### CommonJS via npm

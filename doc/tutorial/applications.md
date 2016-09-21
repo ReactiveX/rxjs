@@ -138,7 +138,7 @@ class MyComponent extends ObservableComponent {
       .forEach(messages => this.setState({messages: messages}));
   }
   componentWillUnmount() {
-    this.messages.dispose();
+    this.messages.unsubscribe();
   }
   render() {
     return (
