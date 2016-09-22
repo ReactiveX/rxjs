@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
+const Subject = Rx.Subject;
 const Observable = Rx.Observable;
 
 /** @test {take} */
@@ -134,5 +135,20 @@ describe('Observable.prototype.take', () => {
     }).take(1);
 
     source.subscribe();
+  });
+
+  it('should complete when the source is reentrant', () => {
+    let completed = false;
+    const source = new Subject();
+    source.take(5).subscribe({
+      next() {
+        source.next();
+      },
+      complete() {
+        completed = true;
+      }
+    });
+    source.next();
+    expect(completed).to.be.true;
   });
 });
