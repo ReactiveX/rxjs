@@ -88,7 +88,7 @@ export function ajaxPut(url: string, body?: any, headers?: Object): Observable<A
 
 export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, responseType: 'json', headers })
-    .lift<T>(new MapOperator<AjaxResponse, T>((x: AjaxResponse, index: number): T => x.response, null));
+    .lift<T>(new MapOperator<AjaxResponse, T>((x: AjaxResponse, _index: number): T => x.response, null));
 };
 
 /**

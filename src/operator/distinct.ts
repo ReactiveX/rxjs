@@ -50,13 +50,13 @@ export class DistinctSubscriber<T> extends OuterSubscriber<T, T> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
+  notifyNext(_outerValue: T, _innerValue: T,
+             _outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, T>): void {
     this.values.length = 0;
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, T>): void {
+  notifyError(error: any, _innerSub: InnerSubscriber<T, T>): void {
     this._error(error);
   }
 

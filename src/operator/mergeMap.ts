@@ -134,7 +134,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
 
   notifyNext(outerValue: T, innerValue: I,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, I>): void {
+             _innerSub: InnerSubscriber<T, I>): void {
     if (this.resultSelector) {
       this._notifyResultSelector(outerValue, innerValue, outerIndex, innerIndex);
     } else {

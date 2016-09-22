@@ -65,7 +65,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
       ).schedule(state, delay);
   }
 
-  protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
+  protected requestAsyncId(scheduler: VirtualTimeScheduler, _id?: any, delay: number = 0): any {
     this.delay = scheduler.frame + delay;
     const {actions} = scheduler;
     actions.push(this);
@@ -73,7 +73,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
     return true;
   }
 
-  protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
+  protected recycleAsyncId(_scheduler: VirtualTimeScheduler, _id?: any, _delay: number = 0): any {
     return undefined;
   }
 

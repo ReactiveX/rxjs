@@ -29,7 +29,7 @@ class IgnoreElementsOperator<T, R> implements Operator<T, R> {
  * @extends {Ignored}
  */
 class IgnoreElementsSubscriber<T> extends Subscriber<T> {
-  protected _next(unused: T): void {
+  protected _next(_value: T): void {
     noop();
   }
 }

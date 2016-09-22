@@ -38,7 +38,7 @@ class IsEmptySubscriber extends Subscriber<any> {
     destination.complete();
   }
 
-  protected _next(value: boolean) {
+  protected _next(_value: boolean) {
     this.notifyComplete(false);
   }
 

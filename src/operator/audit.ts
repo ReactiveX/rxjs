@@ -104,7 +104,7 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
+  notifyNext(_outerValue: T, _innerValue: R, _outerIndex: number, _innerIndex: number): void {
     this.clearThrottle();
   }
 

@@ -115,8 +115,8 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
   }
 
   notifyNext(outerValue: any, innerValue: O,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, O>): void {
+             _outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, O>): void {
     outerValue ? this.closeBuffer(outerValue) : this.openBuffer(innerValue);
   }
 

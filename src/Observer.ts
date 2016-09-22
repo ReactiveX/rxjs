@@ -30,7 +30,7 @@ export interface Observer<T> {
 
 export const empty: Observer<any> = {
   closed: true,
-  next(value: any): void { /* noop */},
+  next(_value: any): void { /* noop */},
   error(err: any): void { throw err; },
   complete(): void { /*noop*/ }
 };

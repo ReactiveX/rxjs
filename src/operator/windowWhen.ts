@@ -77,13 +77,13 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     this.openWindow();
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
+  notifyNext(_outerValue: T, _innerValue: any,
+             _outerIndex: number, _innerIndex: number,
              innerSub: InnerSubscriber<T, any>): void {
     this.openWindow(innerSub);
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
+  notifyError(error: any, _innerSub: InnerSubscriber<T, any>): void {
     this._error(error);
   }
 

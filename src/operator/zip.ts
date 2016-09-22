@@ -236,7 +236,7 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
     return this;
   }
 
-  next(value?: any): IteratorResult<T> {
+  next(_value?: any): IteratorResult<T> {
     const i = this.index++;
     const array = this.array;
     return i < this.length ? { value: array[i], done: false } : { value: null, done: true };
@@ -300,14 +300,14 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
     }
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: any,
+             _outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, R>): void {
     this.buffer.push(innerValue);
     this.parent.checkIterators();
   }
 
-  subscribe(value: any, index: number) {
+  subscribe(_value: any, index: number) {
     return subscribeToResult<any, any>(this, this.observable, this, index);
   }
 }

@@ -72,9 +72,9 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.hasValue = true;
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, _innerValue: R,
+             _outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, R>): void {
     this.emitValue();
   }
 

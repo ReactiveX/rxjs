@@ -85,15 +85,15 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
+  notifyNext(outerValue: T, _innerValue: any,
+             _outerIndex: number, _innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
     this.destination.next(outerValue);
     this.removeSubscription(innerSub);
     this.tryComplete();
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+  notifyError(error: any, _innerSub: InnerSubscriber<T, R>): void {
     this._error(error);
   }
 
@@ -178,7 +178,7 @@ class SubscriptionDelaySubscriber<T> extends Subscriber<T> {
     super();
   }
 
-  protected _next(unused: any) {
+  protected _next(_value: any) {
     this.subscribeToSource();
   }
 

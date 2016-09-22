@@ -104,9 +104,9 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R,
+             outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, R>): void {
     this.values[outerIndex] = innerValue;
     const toRespond = this.toRespond;
     if (toRespond.length > 0) {

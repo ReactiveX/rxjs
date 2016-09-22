@@ -128,7 +128,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
 
   notifyNext(outerValue: T, innerValue: I,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, I>): void {
+             _innerSub: InnerSubscriber<T, I>): void {
     if (this.resultSelector) {
       this._tryNotifyNext(outerValue, innerValue, outerIndex, innerIndex);
     } else {

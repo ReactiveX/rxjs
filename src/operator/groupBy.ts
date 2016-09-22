@@ -132,7 +132,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
   protected _error(err: any): void {
     const groups = this.groups;
     if (groups) {
-      groups.forEach((group, key) => {
+      groups.forEach((group) => {
         group.error(err);
       });
 
@@ -144,7 +144,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
   protected _complete(): void {
     const groups = this.groups;
     if (groups) {
-      groups.forEach((group, key) => {
+      groups.forEach((group) => {
         group.complete();
       });
 
@@ -179,7 +179,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
     super();
   }
 
-  protected _next(value: T): void {
+  protected _next(_value: T): void {
     this._complete();
   }
 
