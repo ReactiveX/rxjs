@@ -76,9 +76,10 @@ class TakeSubscriber<T> extends Subscriber<T> {
 
   protected _next(value: T): void {
     const total = this.total;
-    if (++this.count <= total) {
+    const count = ++this.count;
+    if (count <= total) {
       this.destination.next(value);
-      if (this.count === total) {
+      if (count === total) {
         this.destination.complete();
         this.unsubscribe();
       }
