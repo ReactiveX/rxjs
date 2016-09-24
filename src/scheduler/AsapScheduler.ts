@@ -2,7 +2,7 @@ import { AsyncAction } from './AsyncAction';
 import { AsyncScheduler } from './AsyncScheduler';
 
 export class AsapScheduler extends AsyncScheduler {
-  public flush(): void {
+  public flush(action?: AsyncAction<any>): void {
 
     this.active = true;
     this.scheduled = undefined;
@@ -11,7 +11,7 @@ export class AsapScheduler extends AsyncScheduler {
     let error: any;
     let index: number = -1;
     let count: number = actions.length;
-    let action: AsyncAction<any> = actions.shift();
+    action = action || actions.shift();
 
     do {
       if (error = action.execute(action.state, action.delay)) {

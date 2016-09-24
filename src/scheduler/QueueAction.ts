@@ -31,8 +31,10 @@ export class QueueAction<T> extends AsyncAction<T> {
   }
 
   protected requestAsyncId(scheduler: QueueScheduler, id?: any, delay: number = 0): any {
-    // If delay is greater than 0, enqueue as an async action.
-    if (delay !== null && delay > 0) {
+    // If delay exists and is greater than 0, or if the delay is null (the
+    // action wasn't rescheduled) but was originally scheduled as an async
+    // action, then recycle as an async action.
+    if ((delay !== null && delay > 0) || (delay === null && this.delay > 0)) {
       return super.requestAsyncId(scheduler, id, delay);
     }
     // Otherwise flush the scheduler starting with this action.

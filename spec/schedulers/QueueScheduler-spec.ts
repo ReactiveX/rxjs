@@ -7,6 +7,21 @@ const queue = Scheduler.queue;
 
 /** @test {Scheduler} */
 describe('Scheduler.queue', () => {
+  it('should act like the async scheduler if delay > 0', () => {
+    let actionHappened = false;
+    const sandbox = sinon.sandbox.create();
+    const fakeTimer = sandbox.useFakeTimers();
+    queue.schedule(() => {
+      actionHappened = true;
+    }, 50);
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.true;
+    sandbox.restore();
+  });
+
   it('should switch from synchronous to asynchronous at will', () => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
