@@ -69,7 +69,7 @@ class DelayWhenOperator<T> implements Operator<T, T> {
   constructor(private delayDurationSelector: (value: T) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
   }
 }

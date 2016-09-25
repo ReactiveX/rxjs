@@ -34,7 +34,7 @@ class SingleOperator<T> implements Operator<T, T> {
               private source?: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
   }
 }

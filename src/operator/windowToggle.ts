@@ -67,7 +67,7 @@ class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
               private closingSelector: (openValue: O) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  connect(subscriber: Subscriber<Observable<T>>, source: any): any {
     return source._subscribe(new WindowToggleSubscriber(
       subscriber, this.openings, this.closingSelector
     ));

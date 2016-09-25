@@ -55,7 +55,7 @@ class GroupByOperator<T, K, R> implements Operator<T, GroupedObservable<K, R>> {
               private durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>) {
   }
 
-  call(subscriber: Subscriber<GroupedObservable<K, R>>, source: any): any {
+  connect(subscriber: Subscriber<GroupedObservable<K, R>>, source: any): any {
     return source._subscribe(new GroupBySubscriber(
       subscriber, this.keySelector, this.elementSelector, this.durationSelector
     ));

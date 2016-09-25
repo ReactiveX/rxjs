@@ -90,7 +90,7 @@ export class Observable<T> implements Subscribable<T> {
     const sink = toSubscriber(observerOrNext, error, complete);
 
     if (operator) {
-      operator.call(sink, this);
+      operator.connect(sink, this);
     } else {
       sink.add(this._subscribe(sink));
     }

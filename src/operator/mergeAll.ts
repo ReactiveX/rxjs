@@ -4,6 +4,7 @@ import { Observer } from '../Observer';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
+import { Subscriber } from '../Subscriber';
 
 /**
  * Converts a higher-order Observable into a first-order Observable which
@@ -61,8 +62,8 @@ export class MergeAllOperator<T> implements Operator<Observable<T>, T> {
   constructor(private concurrent: number) {
   }
 
-  call(observer: Observer<T>, source: any): any {
-    return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
+  connect(subscriber: Subscriber<T>, source: any): any {
+    return source._subscribe(new MergeAllSubscriber(subscriber, this.concurrent));
   }
 }
 

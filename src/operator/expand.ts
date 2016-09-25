@@ -73,7 +73,7 @@ export class ExpandOperator<T, R> implements Operator<T, R> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  connect(subscriber: Subscriber<R>, source: any): any {
     return source._subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
   }
 }

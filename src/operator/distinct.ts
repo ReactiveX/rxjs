@@ -30,7 +30,7 @@ class DistinctOperator<T> implements Operator<T, T> {
   constructor(private compare: (x: T, y: T) => boolean, private flushes: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new DistinctSubscriber(subscriber, this.compare, this.flushes));
   }
 }

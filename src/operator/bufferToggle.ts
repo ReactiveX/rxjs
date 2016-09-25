@@ -60,7 +60,7 @@ class BufferToggleOperator<T, O> implements Operator<T, T[]> {
               private closingSelector: (value: O) => SubscribableOrPromise<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  connect(subscriber: Subscriber<T[]>, source: any): any {
     return source._subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
   }
 }

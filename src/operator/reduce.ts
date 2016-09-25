@@ -62,7 +62,7 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, value: T) => R, private seed?: R) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  connect(subscriber: Subscriber<R>, source: any): any {
     return source._subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed));
   }
 }

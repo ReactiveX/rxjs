@@ -66,7 +66,7 @@ class WindowCountOperator<T> implements Operator<T, Observable<T>> {
               private startWindowEvery: number) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  connect(subscriber: Subscriber<Observable<T>>, source: any): any {
     return source._subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
   }
 }

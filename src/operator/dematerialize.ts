@@ -47,7 +47,7 @@ export interface DematerializeSignature<T> {
 }
 
 class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<any>, source: any): any {
+  connect(subscriber: Subscriber<any>, source: any): any {
     return source._subscribe(new DeMaterializeSubscriber(subscriber));
   }
 }

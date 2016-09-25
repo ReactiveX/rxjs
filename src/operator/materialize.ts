@@ -49,7 +49,7 @@ export interface MaterializeSignature<T> {
 }
 
 class MaterializeOperator<T> implements Operator<T, Notification<T>> {
-  call(subscriber: Subscriber<Notification<T>>, source: any): any {
+  connect(subscriber: Subscriber<Notification<T>>, source: any): any {
     return source._subscribe(new MaterializeSubscriber(subscriber));
   }
 }

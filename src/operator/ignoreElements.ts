@@ -22,7 +22,7 @@ export interface IgnoreElementsSignature<T> {
 }
 
 class IgnoreElementsOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<R>, source: any): any {
+  connect(subscriber: Subscriber<R>, source: any): any {
     return source._subscribe(new IgnoreElementsSubscriber(subscriber));
   }
 }

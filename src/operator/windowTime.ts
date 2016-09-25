@@ -73,7 +73,7 @@ class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
               private scheduler: Scheduler) {
   }
 
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
+  connect(subscriber: Subscriber<Observable<T>>, source: any): any {
     return source._subscribe(new WindowTimeSubscriber(
       subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler
     ));

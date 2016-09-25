@@ -39,7 +39,7 @@ class RetryWhenOperator<T> implements Operator<T, T> {
               protected source: Observable<T>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  connect(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
   }
 }

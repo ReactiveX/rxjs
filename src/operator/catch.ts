@@ -31,7 +31,7 @@ class CatchOperator<T, R> implements Operator<T, R> {
   constructor(private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>) {
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  connect(subscriber: Subscriber<R>, source: any): any {
     return source._subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
   }
 }
