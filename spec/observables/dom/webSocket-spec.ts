@@ -394,6 +394,81 @@ describe('Observable.webSocket', () => {
   });
 
   describe('multiplex', () => {
+    it('should be retryable', () => {
+      const results = [];
+      const subject = Observable.webSocket('ws://websocket');
+      const source = subject.multiplex(() => {
+        return { sub: 'foo'};
+      }, () => {
+        return { unsub: 'foo' };
+      }, function (value: any) {
+        return value.name === 'foo';
+      });
+
+      source
+        .retry(1)
+        .map((x: any) => x.value)
+        .take(2)
+        .subscribe((x: any) => {
+          results.push(x);
+        });
+
+      const socket = MockWebSocket.lastSocket;
+      socket.open();
+
+      expect(socket.lastMessageSent).to.deep.equal({ sub: 'foo' });
+      socket.triggerClose({ wasClean: false }); // Bad connection
+
+      const socket2 = MockWebSocket.lastSocket;
+      expect(socket2).not.to.equal(socket);
+
+      socket2.open();
+      expect(socket2.lastMessageSent).to.deep.equal({ sub: 'foo' });
+
+      socket2.triggerMessage(JSON.stringify({ name: 'foo', value: 'test' }));
+      socket2.triggerMessage(JSON.stringify({ name: 'foo', value: 'this' }));
+
+      expect(results).to.deep.equal(['test', 'this']);
+    });
+
+    it('should be repeatable', () => {
+      const results = [];
+      const subject = Observable.webSocket('ws://websocket');
+      const source = subject.multiplex(() => {
+        return { sub: 'foo'};
+      }, () => {
+        return { unsub: 'foo' };
+      }, function (value: any) {
+        return value.name === 'foo';
+      });
+
+      source
+        .repeat(2)
+        .map((x: any) => x.value)
+        .subscribe((x: any) => {
+          results.push(x);
+        });
+
+      const socket = MockWebSocket.lastSocket;
+      socket.open();
+
+      expect(socket.lastMessageSent).to.deep.equal({ sub: 'foo' }, 'first multiplexed sub');
+      socket.triggerMessage(JSON.stringify({ name: 'foo', value: 'test' }));
+      socket.triggerMessage(JSON.stringify({ name: 'foo', value: 'this' }));
+      socket.triggerClose({ wasClean: true });
+
+      const socket2 = MockWebSocket.lastSocket;
+      expect(socket2).not.to.equal(socket, 'a new socket was not created');
+
+      socket2.open();
+      expect(socket2.lastMessageSent).to.deep.equal({ sub: 'foo' }, 'second multiplexed sub');
+      socket2.triggerMessage(JSON.stringify({ name: 'foo', value: 'test' }));
+      socket2.triggerMessage(JSON.stringify({ name: 'foo', value: 'this' }));
+      socket2.triggerClose({ wasClean: true });
+
+      expect(results).to.deep.equal(['test', 'this', 'test', 'this'], 'results were not equal');
+    });
+
     it('should multiplex over the websocket', () => {
       const results = [];
       const subject = Observable.webSocket('ws://websocket');
@@ -430,28 +505,6 @@ describe('Observable.webSocket', () => {
 
       expect(socket.close).have.been.called;
       (<any>socket.close).restore();
-    });
-
-    it('should work in combination with retry (issue #1466)', () => {
-      const error = { wasClean: false};
-      const results = [];
-
-      const subject = Observable.webSocket(<any>{url: 'ws://mysocket'})
-        .multiplex(
-          () => results.push('sub'),
-          () => results.push('unsub'),
-          () => true)
-        .retry(1);
-
-      subject.subscribe(
-        () => results.push('next'),
-        (e) => results.push(e));
-
-      let socket = MockWebSocket.lastSocket;
-
-      socket.triggerClose(error);
-
-      expect(results).to.deep.equal(['sub', 'unsub', 'sub', error, 'unsub']);
     });
 
     it('should not close the socket until all subscriptions complete', () => {
