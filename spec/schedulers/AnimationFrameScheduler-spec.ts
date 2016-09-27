@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
 
 const animationFrame = Rx.Scheduler.animationFrame;
@@ -7,6 +8,21 @@ const animationFrame = Rx.Scheduler.animationFrame;
 describe('Scheduler.animationFrame', () => {
   it('should exist', () => {
     expect(animationFrame).exist;
+  });
+
+  it('should act like the async scheduler if delay > 0', () => {
+    let actionHappened = false;
+    const sandbox = sinon.sandbox.create();
+    const fakeTimer = sandbox.useFakeTimers();
+    animationFrame.schedule(() => {
+      actionHappened = true;
+    }, 50);
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.true;
+    sandbox.restore();
   });
 
   it('should schedule an action to happen later', (done: MochaDone) => {
