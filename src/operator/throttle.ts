@@ -28,7 +28,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * @example <caption>Emit clicks at a rate of at most one click per second</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.throttle(ev => Rx.Observable.interval(1000));
+ * var result = clicks.throttle(1000);
  * result.subscribe(x => console.log(x));
  *
  * @see {@link audit}
