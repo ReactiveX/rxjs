@@ -82,6 +82,9 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
    * @return {ISubscription} a subscription reference to the registered handlers
    */
+  subscribe(): Subscription;
+  subscribe(observer: PartialObserver<T>): Subscription;
+  subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
             complete?: () => void): Subscription {
