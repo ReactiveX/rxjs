@@ -5,6 +5,7 @@ import { Subscriber } from '../Subscriber';
 import { Scheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
+import { TimeoutError } from '../util/TimeoutError';
 
 /**
  * @param due
@@ -80,7 +81,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     this._previousIndex = currentIndex;
   }
 
-  protected _next(value: T) {
+  protected _next(value: T): void {
     this.destination.next(value);
 
     if (!this.absoluteTimeout) {
@@ -88,17 +89,17 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  protected _error(err: any) {
+  protected _error(err: any): void {
     this.destination.error(err);
     this._hasCompleted = true;
   }
 
-  protected _complete() {
+  protected _complete(): void {
     this.destination.complete();
     this._hasCompleted = true;
   }
 
-  notifyTimeout() {
-    this.error(this.errorToSend || new Error('timeout'));
+  notifyTimeout(): void {
+    this.error(this.errorToSend || new TimeoutError());
   }
 }

@@ -155,6 +155,7 @@ export {Notification} from './Notification';
 export {EmptyError} from './util/EmptyError';
 export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
+export {TimeoutError} from './util/TimeoutError';
 export {UnsubscriptionError} from './util/UnsubscriptionError';
 export {TimeInterval} from './operator/timeInterval';
 export {Timestamp} from './operator/timestamp';
