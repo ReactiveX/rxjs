@@ -2,7 +2,7 @@
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
 // definition
-export {Subject} from './Subject';
+export {Subject, AnonymousSubject} from './Subject';
 /* tslint:enable:no-unused-variable */
 export {Observable} from './Observable';
 
