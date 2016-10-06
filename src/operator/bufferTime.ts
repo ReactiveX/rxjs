@@ -174,7 +174,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     closeAction.unsubscribe();
     this.remove(closeAction);
 
-    if (this.timespanOnly) {
+    if (!this.closed && this.timespanOnly) {
       context = this.openContext();
       const bufferTimeSpan = this.bufferTimeSpan;
       const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
