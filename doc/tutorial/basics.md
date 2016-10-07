@@ -29,7 +29,7 @@ rename('file.txt', 'else.txt').subscribe(() => console.log('Renamed!'));
 ## Creating observables
 Externally produce new events.
 ```js
-var myObservable = Rx.Subject.create();
+var myObservable = new Rx.Subject();
 myObservable.subscribe(value => console.log(value));
 myObservable.next('foo');
 ```
