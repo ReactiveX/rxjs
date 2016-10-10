@@ -16,14 +16,10 @@ import { InnerSubscriber } from '../InnerSubscriber';
  * @method mergeScan
  * @owner Observable
  */
-export function mergeScan<T, R>(project: (acc: R, value: T) => Observable<R>,
+export function mergeScan<T, R>(this: Observable<T>, project: (acc: R, value: T) => Observable<R>,
                                 seed: R,
                                 concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
   return this.lift(new MergeScanOperator(project, seed, concurrent));
-}
-
-export interface MergeScanSignature<T> {
-  <R>(project: (acc: R, value: T) => Observable<R>, seed: R, concurrent?: number): Observable<R>;
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {

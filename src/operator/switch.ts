@@ -1,3 +1,4 @@
+import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
@@ -47,12 +48,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name switch
  * @owner Observable
  */
-export function _switch<T>(): T {
-  return this.lift(new SwitchOperator());
-}
-
-export interface SwitchSignature<T> {
-  (): T;
+export function _switch<T>(this: Observable<T>): T {
+  return <any>this.lift<any>(new SwitchOperator());
 }
 
 class SwitchOperator<T, R> implements Operator<T, R> {

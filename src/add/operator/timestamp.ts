@@ -1,10 +1,10 @@
 import { Observable } from '../../Observable';
-import { timestamp, TimestampSignature } from '../../operator/timestamp';
+import { timestamp } from '../../operator/timestamp';
 
 Observable.prototype.timestamp = timestamp;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    timestamp: TimestampSignature<T>;
+    timestamp: typeof timestamp;
   }
 }

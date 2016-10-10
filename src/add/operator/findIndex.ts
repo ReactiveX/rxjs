@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { findIndex, FindIndexSignature } from '../../operator/findIndex';
+import { findIndex } from '../../operator/findIndex';
 
 Observable.prototype.findIndex = findIndex;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    findIndex: FindIndexSignature<T>;
+    findIndex: typeof findIndex;
   }
 }

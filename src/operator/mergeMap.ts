@@ -55,21 +55,18 @@ import { InnerSubscriber } from '../InnerSubscriber';
  * @method mergeMap
  * @owner Observable
  */
-export function mergeMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>,
+/* tslint:disable:max-line-length */
+export function mergeMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): Observable<R>;
+export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): Observable<R>;
+/* tslint:disable:max-line-length */
+export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<I>,
                                   resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
-                                  concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+                                  concurrent: number = Number.POSITIVE_INFINITY): Observable<I | R> {
   if (typeof resultSelector === 'number') {
     concurrent = <number>resultSelector;
     resultSelector = null;
   }
   return this.lift(new MergeMapOperator(project, <any>resultSelector, concurrent));
-}
-
-export interface MergeMapSignature<T> {
-  <R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): Observable<R>;
-  <I, R>(project: (value: T, index: number) => ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
-         concurrent?: number): Observable<R>;
 }
 
 export class MergeMapOperator<T, I, R> implements Operator<T, I> {

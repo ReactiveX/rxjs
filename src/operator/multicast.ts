@@ -23,7 +23,11 @@ import { ConnectableObservable, connectableObservableDescriptor } from '../obser
  * @method multicast
  * @owner Observable
  */
-export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
+/* tslint:disable:max-line-length */
+export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
+export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: selector<T>): Observable<T>;
+/* tslint:disable:max-line-length */
+export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
                              selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
   let subjectFactory: () => Subject<T>;
   if (typeof subjectOrSubjectFactory === 'function') {
@@ -47,11 +51,6 @@ export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subjec
 
 export type factoryOrValue<T> = T | (() => T);
 export type selector<T> = (source: Observable<T>) => Observable<T>;
-
-export interface MulticastSignature<T> {
-  (subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
-  (SubjectFactory: () => Subject<T>, selector?: selector<T>): Observable<T>;
-}
 
 export class MulticastOperator<T> implements Operator<T, T> {
   constructor(private subjectFactory: () => Subject<T>,

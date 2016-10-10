@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { exhaust, SwitchFirstSignature } from '../../operator/exhaust';
+import { exhaust } from '../../operator/exhaust';
 
 Observable.prototype.exhaust = exhaust;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    exhaust: SwitchFirstSignature<T>;
+    exhaust: typeof exhaust;
   }
 }
