@@ -1,3 +1,4 @@
+import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
 import { Scheduler } from '../Scheduler';
 import { multicast } from './multicast';
@@ -11,12 +12,8 @@ import { ConnectableObservable } from '../observable/ConnectableObservable';
  * @method publishReplay
  * @owner Observable
  */
-export function publishReplay<T>(bufferSize: number = Number.POSITIVE_INFINITY,
+export function publishReplay<T>(this: Observable<T>, bufferSize: number = Number.POSITIVE_INFINITY,
                                  windowTime: number = Number.POSITIVE_INFINITY,
                                  scheduler?: Scheduler): ConnectableObservable<T> {
   return multicast.call(this, new ReplaySubject<T>(bufferSize, windowTime, scheduler));
-}
-
-export interface PublishReplaySignature<T> {
-  (bufferSize?: number, windowTime?: number, scheduler?: Scheduler): ConnectableObservable<T>;
 }

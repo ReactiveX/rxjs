@@ -40,12 +40,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method sample
  * @owner Observable
  */
-export function sample<T>(notifier: Observable<any>): Observable<T> {
+export function sample<T>(this: Observable<T>, notifier: Observable<any>): Observable<T> {
   return this.lift(new SampleOperator(notifier));
-}
-
-export interface SampleSignature<T> {
-  (notifier: Observable<any>): Observable<T>;
 }
 
 class SampleOperator<T> implements Operator<T, T> {

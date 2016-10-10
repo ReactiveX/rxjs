@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { publishLast, PublishLastSignature } from '../../operator/publishLast';
+import { publishLast } from '../../operator/publishLast';
 
 Observable.prototype.publishLast = publishLast;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    publishLast: PublishLastSignature<T>;
+    publishLast: typeof publishLast;
   }
 }

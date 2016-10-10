@@ -39,7 +39,12 @@ import { Subscriber } from '../Subscriber';
  * @method scan
  * @owner Observable
  */
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): Observable<R> {
+/* tslint:disable:max-line-length */
+export function scan<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
+export function scan<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
+export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
+/* tslint:disable:max-line-length */
+export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): Observable<R> {
   return this.lift(new ScanOperator(accumulator, seed));
 }
 

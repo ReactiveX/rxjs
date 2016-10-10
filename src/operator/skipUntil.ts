@@ -18,12 +18,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method skipUntil
  * @owner Observable
  */
-export function skipUntil<T>(notifier: Observable<any>): Observable<T> {
+export function skipUntil<T>(this: Observable<T>, notifier: Observable<any>): Observable<T> {
   return this.lift(new SkipUntilOperator(notifier));
-}
-
-export interface SkipUntilSignature<T> {
-  (notifier: Observable<any>): Observable<T>;
 }
 
 class SkipUntilOperator<T> implements Operator<T, T> {

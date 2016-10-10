@@ -40,12 +40,8 @@ import { Notification } from '../Notification';
  * @method materialize
  * @owner Observable
  */
-export function materialize<T>(): Observable<Notification<T>> {
+export function materialize<T>(this: Observable<T>): Observable<Notification<T>> {
   return this.lift(new MaterializeOperator());
-}
-
-export interface MaterializeSignature<T> {
-  (): Observable<Notification<T>>;
 }
 
 class MaterializeOperator<T> implements Operator<T, Notification<T>> {

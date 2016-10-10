@@ -13,10 +13,6 @@ import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
  * @method subscribeOn
  * @owner Observable
  */
-export function subscribeOn<T>(scheduler: Scheduler, delay: number = 0): Observable<T> {
+export function subscribeOn<T>(this: Observable<T>, scheduler: Scheduler, delay: number = 0): Observable<T> {
   return new SubscribeOnObservable<T>(this, delay, scheduler);
-}
-
-export interface SubscribeOnSignature<T> {
-  (scheduler: Scheduler, delay?: number): Observable<T>;
 }

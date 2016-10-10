@@ -28,16 +28,12 @@ import { map } from './map';
  * @method pluck
  * @owner Observable
  */
-export function pluck<R>(...properties: string[]): Observable<R> {
+export function pluck<T, R>(this: Observable<T>, ...properties: string[]): Observable<R> {
   const length = properties.length;
   if (length === 0) {
     throw new Error('list of properties cannot be empty.');
   }
   return map.call(this, plucker(properties, length));
-}
-
-export interface PluckSignature<T> {
-  <R>(...properties: string[]): Observable<R>;
 }
 
 function plucker(props: string[], length: number): (x: string) => any {

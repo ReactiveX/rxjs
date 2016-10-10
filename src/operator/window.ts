@@ -43,12 +43,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method window
  * @owner Observable
  */
-export function window<T>(windowBoundaries: Observable<any>): Observable<Observable<T>> {
+export function window<T>(this: Observable<T>, windowBoundaries: Observable<any>): Observable<Observable<T>> {
   return this.lift(new WindowOperator<T>(windowBoundaries));
-}
-
-export interface WindowSignature<T> {
-  (windowBoundaries: Observable<any>): Observable<Observable<T>>;
 }
 
 class WindowOperator<T> implements Operator<T, Observable<T>> {

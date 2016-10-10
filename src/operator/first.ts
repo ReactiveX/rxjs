@@ -52,28 +52,22 @@ import { EmptyError } from '../util/EmptyError';
  * @method first
  * @owner Observable
  */
-export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                            resultSelector?: (value: T, index: number) => R,
+/* tslint:disable:max-line-length */
+export function first<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+export function first<T, S extends T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => value is S): Observable<S>;
+export function first<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
+export function first<T, S extends T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => value is S, resultSelector: void, defaultValue?: S): Observable<S>;
+export function first<T, R>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R, defaultValue?: R): Observable<R>;
+/* tslint:disable:max-line-length */
+export function first<T, R>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                            resultSelector?: ((value: T, index: number) => R) | void,
                             defaultValue?: R): Observable<T | R> {
   return this.lift(new FirstOperator(predicate, resultSelector, defaultValue, this));
 }
 
-// We can cast `T -> R` in it if we pass the result selector.
-// Therefore we don't provide the signature which takes both a type guard function
-// as the predicate and the result selector.
-// (see #1936)
-export interface FirstSignature<T> {
-  (predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
-  <S extends T>(predicate?: (value: T, index: number, source: Observable<T>) => value is S): Observable<S>;
-  (predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
-  <S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, resultSelector: void, defaultValue?: S): Observable<S>;
-  <R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R,
-      defaultValue?: R): Observable<R>;
-}
-
 class FirstOperator<T, R> implements Operator<T, R> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+              private resultSelector?: ((value: T, index: number) => R) | void,
               private defaultValue?: any,
               private source?: Observable<T>) {
   }
@@ -94,7 +88,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
 
   constructor(destination: Subscriber<R>,
               private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: (value: T, index: number) => R,
+              private resultSelector?: ((value: T, index: number) => R) | void,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);
@@ -133,7 +127,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   private _tryResultSelector(value: T, index: number) {
     let result: any;
     try {
-      result = this.resultSelector(value, index);
+      result = (<any>this).resultSelector(value, index);
     } catch (err) {
       this.destination.error(err);
       return;

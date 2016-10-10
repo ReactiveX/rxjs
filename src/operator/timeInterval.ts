@@ -10,12 +10,8 @@ import { async } from '../scheduler/async';
  * @method timeInterval
  * @owner Observable
  */
-export function timeInterval<T>(scheduler: Scheduler = async): Observable<TimeInterval<T>> {
+export function timeInterval<T>(this: Observable<T>, scheduler: Scheduler = async): Observable<TimeInterval<T>> {
   return this.lift(new TimeIntervalOperator(scheduler));
-}
-
-export interface TimeIntervalSignature<T> {
-  (scheduler?: Scheduler): Observable<TimeInterval<T>>;
 }
 
 export class TimeInterval<T> {

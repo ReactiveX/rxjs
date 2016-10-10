@@ -53,15 +53,13 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method switchMap
  * @owner Observable
  */
-export function switchMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>,
-                                   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {
+/* tslint:disable:max-line-length */
+export function switchMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>): Observable<R>;
+export function switchMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+/* tslint:disable:max-line-length */
+export function switchMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<I>,
+                                   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<I | R> {
   return this.lift(new SwitchMapOperator(project, resultSelector));
-}
-
-export interface SwitchMapSignature<T> {
-  <R>(project: (value: T, index: number) => ObservableInput<R>): Observable<R>;
-  <I, R>(project: (value: T, index: number) => ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
 }
 
 class SwitchMapOperator<T, I, R> implements Operator<T, I> {

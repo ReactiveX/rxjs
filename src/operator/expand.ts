@@ -54,17 +54,16 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method expand
  * @owner Observable
  */
-export function expand<T, R>(project: (value: T, index: number) => Observable<R>,
+/* tslint:disable:max-line-length */
+export function expand<T>(this: Observable<T>, project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): Observable<T>;
+export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): Observable<R>;
+/* tslint:disable:max-line-length */
+export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
                              scheduler: Scheduler = undefined): Observable<R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
 
   return this.lift(new ExpandOperator(project, concurrent, scheduler));
-}
-
-export interface ExpandSignature<T> {
-  (project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): Observable<T>;
-  <R>(project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): Observable<R>;
 }
 
 export class ExpandOperator<T, R> implements Operator<T, R> {

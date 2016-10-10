@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { expand, ExpandSignature } from '../../operator/expand';
+import { expand } from '../../operator/expand';
 
 Observable.prototype.expand = expand;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    expand: ExpandSignature<T>;
+    expand: typeof expand;
   }
 }
