@@ -44,7 +44,8 @@ describe('BehaviorSubject', () => {
     const subject = new BehaviorSubject('flibberty');
 
     try {
-      subject.value = 'jibbets';
+      // XXX: escape from readonly restriction for testing.
+      (subject as any).value = 'jibbets';
     } catch (e) {
       //noop
     }
