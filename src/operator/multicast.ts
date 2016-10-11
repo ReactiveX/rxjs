@@ -56,11 +56,11 @@ export class MulticastOperator<T> implements Operator<T, T> {
   constructor(private subjectFactory: () => Subject<T>,
               private selector: (source: Observable<T>) => Observable<T>) {
   }
-  call(subscriber: Subscriber<T>, self: any): any {
+  call(subscriber: Subscriber<T>, source: any): any {
     const { selector } = this;
-    const connectable = new ConnectableObservable(self.source, this.subjectFactory);
-    const subscription = selector(connectable).subscribe(subscriber);
-    subscription.add(connectable.connect());
+    const subject = this.subjectFactory();
+    const subscription = selector(subject).subscribe(subscriber);
+    subscription.add(source._subscribe(subject));
     return subscription;
   }
 }
