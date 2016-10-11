@@ -17,11 +17,6 @@ var cjsPkg = Object.assign({}, pkg, {
   main: 'Rx.js',
   typings: 'Rx.d.ts'
 });
-var es6Pkg = Object.assign({}, cjsPkg, {
-  name: 'rxjs-es',
-  main: 'Rx.js',
-  typings: 'Rx.d.ts'
-});
 
 fs.writeFileSync('dist/cjs/package.json', JSON.stringify(cjsPkg, null, 2));
 fs.writeFileSync('dist/cjs/LICENSE.txt', fs.readFileSync('./LICENSE.txt').toString());
@@ -33,11 +28,6 @@ mkdirp.sync('dist/cjs/bundles');
 fs.writeFileSync('dist/cjs/bundles/Rx.js', fs.readFileSync('dist/global/Rx.js').toString());
 fs.writeFileSync('dist/cjs/bundles/Rx.min.js', fs.readFileSync('dist/global/Rx.min.js').toString());
 fs.writeFileSync('dist/cjs/bundles/Rx.min.js.map', fs.readFileSync('dist/global/Rx.min.js.map').toString());
-
-// ES6 Package
-fs.writeFileSync('dist/es6/package.json', JSON.stringify(es6Pkg, null, 2));
-fs.writeFileSync('dist/es6/LICENSE.txt', fs.readFileSync('./LICENSE.txt').toString());
-fs.writeFileSync('dist/es6/README.md', fs.readFileSync('./README.md').toString());
 
 // Add licenses to tops of bundles
 addLicenseToFile('LICENSE.txt', 'dist/cjs/bundles/Rx.js');
