@@ -51,7 +51,7 @@
   },
   "scripts": {
     "info": "npm-scripts-info",
-    "build_all": "npm-run-all build_es6 build_cjs build_global generate_packages",
+    "build_all": "npm-run-all build_cjs build_global generate_packages",
     "build_cjs": "npm-run-all clean_dist_cjs copy_src_cjs compile_dist_cjs",
     "build_es6": "npm-run-all clean_dist_es6 copy_src_es6 compile_dist_es6",
     "build_es6_for_docs": "npm-run-all clean_dist_es6 copy_src_es6 compile_dist_es6_for_docs",
