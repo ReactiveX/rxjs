@@ -30,6 +30,7 @@
 
 ### BREAKING CHANGES
 
+* **cache:** The .cache() operator has been removed, pending further discussion ([1b23ace](https://github.com/ReactiveX/RxJS/commit/1b23ace))
 * ES2015: `rxjs-es` is no longer being published
 * ES2015: `@reactivex/rxjs` no longer has `/dist/es6` output
 
