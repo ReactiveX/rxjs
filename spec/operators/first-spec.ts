@@ -149,7 +149,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------(a|)';
     const sub =        '^        !';
-    const predicate = function (value, index) {
+    const predicate = function (_value, index) {
       return index === 2;
     };
 
@@ -193,7 +193,7 @@ describe('Observable.prototype.first', () => {
     const expected =    '--------#';
     const sub =         '^       !';
     const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
+    const resultSelector = function (_x, _i) {
       throw 'error';
     };
 

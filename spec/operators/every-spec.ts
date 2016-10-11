@@ -6,7 +6,7 @@ const Observable = Rx.Observable;
 
 /** @test {every} */
 describe('Observable.prototype.every', () => {
-  function truePredicate(x) {
+  function truePredicate(_x) {
     return true;
   }
 
@@ -26,7 +26,7 @@ describe('Observable.prototype.every', () => {
   it('should accept thisArg with scalar observables', () => {
     const thisArg = {};
 
-    Observable.of(1).every(function (value: number, index: number) {
+    Observable.of(1).every(function (_value: number, _index: number) {
       expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
@@ -36,7 +36,7 @@ describe('Observable.prototype.every', () => {
   it('should accept thisArg with array observables', () => {
     const thisArg = {};
 
-    Observable.of(1, 2, 3, 4).every(function (value: number, index: number) {
+    Observable.of(1, 2, 3, 4).every(function (_value: number, _index: number) {
       expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
@@ -49,7 +49,7 @@ describe('Observable.prototype.every', () => {
       observer.next(1);
       observer.complete();
     })
-    .every(function (value: number, index: number) {
+    .every(function (_value: number, _index: number) {
       expect(this).to.deep.equal(thisArg);
     }, thisArg).subscribe();
   });
@@ -161,7 +161,7 @@ describe('Observable.prototype.every', () => {
     const source = Observable.of(3);
     const expected = '#';
 
-    function faultyPredicate(x) {
+    function faultyPredicate(_x) {
       throw 'error';
     }
 

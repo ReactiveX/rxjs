@@ -14,7 +14,7 @@ describe('Observable.prototype.let', () => {
       .let(foo)
       .subscribe(function (x) {
         expect(x).to.equal(expected[i++]);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();

@@ -322,7 +322,7 @@ describe('Observable.prototype.concatMapTo', () => {
       (x: any) => {
         results.push(x);
       },
-      (err: any) => {
+      (_err: any) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -335,7 +335,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
     source.concatMapTo(Observable.from(Promise.reject(42))).subscribe(
-      (x: any) => {
+      (_x: any) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
       (err: any) => {
@@ -351,7 +351,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const resultSelectorCalledWith = [];
     const inner = Observable.from(Promise.resolve(42));
-    const resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
+    const resultSelector = function (_outerVal, _innerVal, _outerIndex, _innerIndex) {
       resultSelectorCalledWith.push([].slice.call(arguments));
       return 8;
     };
@@ -367,7 +367,7 @@ describe('Observable.prototype.concatMapTo', () => {
       (x: any) => {
         results.push(x);
       },
-      (err: any) => {
+      (_err: any) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -385,7 +385,7 @@ describe('Observable.prototype.concatMapTo', () => {
     };
 
     source.concatMapTo(inner, resultSelector).subscribe(
-      (x: any) => {
+      (_x: any) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
       (err: any) => {

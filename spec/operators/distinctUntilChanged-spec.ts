@@ -167,7 +167,7 @@ describe('Observable.prototype.distinctUntilChanged', () => {
     const e1 =   hot('--a--b--c--d--e--f--|', {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6});
     const e1subs =   '^                   !';
     const expected = '--a-----c-----e-----|';
-    const comparator = (x: number, y: number) => y % 2 === 0;
+    const comparator = (_X: number, y: number) => y % 2 === 0;
 
     expectObservable(e1.distinctUntilChanged(comparator)).toBe(expected, {a: 1, c: 3, e: 5});
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -192,7 +192,7 @@ describe('Observable.prototype.distinctUntilChanged', () => {
     const e1 =   hot('--a--b--c--d--e--f--|', {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6});
     const e1subs =   '^                   !';
     const expected = '--a--b-----d-----f--|';
-    const comparator = (x: number, y: number) => y % 2 === 1;
+    const comparator = (_x: number, y: number) => y % 2 === 1;
     const keySelector = (x: number) => x % 2;
 
     expectObservable(e1.distinctUntilChanged(comparator, keySelector)).toBe(expected, {a: 1, b: 2, d: 4, f: 6});

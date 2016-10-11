@@ -12,7 +12,7 @@ describe('Observable.fromPromise', () => {
     Observable.fromPromise(promise)
       .subscribe(
         (x: number) => { expect(x).to.equal(42); },
-        (x) => {
+        (_x) => {
           done(new Error('should not be called'));
         }, () => {
           done();
@@ -22,7 +22,7 @@ describe('Observable.fromPromise', () => {
   it('should raise error from a rejected promise', (done: MochaDone) => {
     const promise = Promise.reject('bad');
     Observable.fromPromise(promise)
-      .subscribe((x: any) => {
+      .subscribe((_x: any) => {
           done(new Error('should not be called'));
         },
         (e: any) => {
@@ -40,14 +40,14 @@ describe('Observable.fromPromise', () => {
     observable
       .subscribe(
         (x: number) => { expect(x).to.equal(42); },
-        (x) => {
+        (_err) => {
           done(new Error('should not be called'));
         }, null);
     setTimeout(() => {
       observable
         .subscribe(
           (x: number) => { expect(x).to.equal(42); },
-          (x) => {
+          (_err) => {
             done(new Error('should not be called'));
           }, () => {
             done();
@@ -62,7 +62,7 @@ describe('Observable.fromPromise', () => {
       Observable.fromPromise(promise)
         .subscribe(
           (y: number) => { expect(y).to.equal(42); },
-          (x) => {
+          (_err) => {
             done(new Error('should not be called'));
           }, () => {
             done();
@@ -77,7 +77,7 @@ describe('Observable.fromPromise', () => {
     Observable.fromPromise(promise, Rx.Scheduler.asap)
       .subscribe(
         (x: number) => { expect(x).to.equal(42); },
-        (x) => {
+        (_err) => {
           done(new Error('should not be called'));
         }, () => {
           done();
@@ -88,7 +88,7 @@ describe('Observable.fromPromise', () => {
     const promise = Promise.reject('bad');
     Observable.fromPromise(promise, Rx.Scheduler.asap)
       .subscribe(
-        (x: any) => { done(new Error('should not be called')); },
+        (_x: any) => { done(new Error('should not be called')); },
         (e: any) => {
           expect(e).to.equal('bad');
           done();
@@ -104,7 +104,7 @@ describe('Observable.fromPromise', () => {
     observable
       .subscribe(
         (x: number) => { expect(x).to.equal(42); },
-        (x) => {
+        (_err) => {
           done(new Error('should not be called'));
         },
         null);
@@ -112,7 +112,7 @@ describe('Observable.fromPromise', () => {
       observable
         .subscribe(
           (x: number) => { expect(x).to.equal(42); },
-          (x) => {
+          (_err) => {
             done(new Error('should not be called'));
           }, () => {
             done();
@@ -149,7 +149,7 @@ describe('Observable.fromPromise', () => {
 
         Observable.fromPromise(Promise.reject('bad'))
           .subscribe(
-            (x: any) => { done(new Error('should not be called')); },
+            (_x: any) => { done(new Error('should not be called')); },
             (e: any) => {
               expect(e).to.equal('bad');
               throw new Error('fail');
@@ -179,7 +179,7 @@ describe('Observable.fromPromise', () => {
 
       Observable.fromPromise(Promise.reject('bad'))
         .subscribe(
-          (x: any) => { done(new Error('should not be called')); },
+          (_x: any) => { done(new Error('should not be called')); },
           (e: any) => {
             expect(e).to.equal('bad');
             throw 'fail';

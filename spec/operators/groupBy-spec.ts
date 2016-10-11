@@ -1374,7 +1374,7 @@ describe('Observable.prototype.groupBy', () => {
         g.subscribe((x: any) => {
           expect(x).to.deep.equal(expectedGroup.values.shift());
         });
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();

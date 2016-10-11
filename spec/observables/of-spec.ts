@@ -26,7 +26,7 @@ describe('Observable.of', () => {
     Observable.of<any>(1, 'a', x)
       .subscribe((y: any) => {
         expect(y).to.equal(expected[i++]);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -64,7 +64,7 @@ describe('Observable.of', () => {
     Observable.of(42).subscribe((x: number) => {
       expect(++calls).to.equal(1);
       expect(x).to.equal(42);
-    }, (err: any) => {
+    }, (_err: any) => {
       done(new Error('should not be called'));
     }, () => {
       done();

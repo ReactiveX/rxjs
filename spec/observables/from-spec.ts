@@ -73,7 +73,7 @@ describe('Observable.from', () => {
     { name: 'iterator', value: fakerator('x') },
     { name: 'array-like', value: { [0]: 'x', length: 1 }},
     { name: 'string', value: 'x'},
-    { name: 'arguments', value: function(x) { return arguments; }('x') },
+    { name: 'arguments', value: function(_x) { return arguments; }('x') },
   ];
 
   for (const source of sources) {
@@ -85,7 +85,7 @@ describe('Observable.from', () => {
             nextInvoked = true;
             expect(x).to.equal('x');
           },
-          (x) => {
+          (_err) => {
             done(new Error('should not be called'));
           },
           () => {
@@ -102,7 +102,7 @@ describe('Observable.from', () => {
             nextInvoked = true;
             expect(x).to.equal('x');
           },
-          (x) => {
+          (_err) => {
             done(new Error('should not be called'));
           },
           () => {

@@ -203,7 +203,7 @@ describe('Observable.prototype.exhaust', () => {
   it('should handle an observable of promises, where one rejects', (done: MochaDone) => {
     (<any>Observable.of<any>(Promise.reject(2), Promise.resolve(1)))
       .exhaust()
-      .subscribe((x: any) => {
+      .subscribe((_x: any) => {
         done(new Error('should not be called'));
       }, (err: any) => {
         expect(err).to.equal(2);

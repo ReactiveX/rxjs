@@ -62,7 +62,7 @@ describe('Observable.prototype.expand', () => {
       a--b--c--d--(e|)
     */
 
-    const result = e1.expand((x: any, index: number): Rx.Observable<any> => {
+    const result = e1.expand((x: any, _index: number): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       } else {
@@ -359,7 +359,7 @@ describe('Observable.prototype.expand', () => {
 
   it('should recursively flatten lowercase-o observables', (done: MochaDone) => {
     const expected = [1, 2, 4, 8, 16];
-    const project = (x: any, index: number) => {
+    const project = (x: any, _index: number) => {
       if (x === 16) {
         return Observable.empty();
       }
@@ -400,7 +400,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)         ';
     const expected = 'a--b--c--d--(e|)';
 
-    const project = (x: any, index: number): Rx.Observable<any> => {
+    const project = (x: any, _index: number): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       }

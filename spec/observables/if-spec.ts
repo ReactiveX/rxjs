@@ -41,7 +41,7 @@ describe('Observable.if', () => {
 
     e1.subscribe(x => {
       expect(x).to.equal(expected);
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -56,7 +56,7 @@ describe('Observable.if', () => {
 
     e1.subscribe(x => {
       expect(x).to.equal(expected);
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -67,9 +67,9 @@ describe('Observable.if', () => {
     const expected = 42;
     const e1 = Observable.if(() => false,
       Observable.of('a'),
-      new Promise((resolve: any, reject: any) => { reject(expected); }));
+      new Promise((_resolve: any, reject: any) => { reject(expected); }));
 
-    e1.subscribe(x => {
+    e1.subscribe(_x => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.equal(expected);
@@ -81,9 +81,9 @@ describe('Observable.if', () => {
 
   it('should accept rejected promise as thenSource', (done: MochaDone) => {
     const expected = 42;
-    const e1 = Observable.if(() => true, new Promise((resolve: any, reject: any) => { reject(expected); }));
+    const e1 = Observable.if(() => true, new Promise((_resolve: any, reject: any) => { reject(expected); }));
 
-    e1.subscribe(x => {
+    e1.subscribe(_x => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.equal(expected);

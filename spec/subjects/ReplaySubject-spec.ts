@@ -28,7 +28,7 @@ describe('ReplaySubject', () => {
       if (i === 3) {
         subject.complete();
       }
-    }, (err: any) => {
+    }, (_err: any) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -76,7 +76,7 @@ describe('ReplaySubject', () => {
       if (i === 2) {
         subject.complete();
       }
-    }, (err: any) => {
+    }, (_err: any) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -138,7 +138,7 @@ describe('ReplaySubject', () => {
 
       const subscription1 = subject.subscribe(
         (x: number) => { results1.push(x); },
-        (err: any) => { results1.push('E'); },
+        (_err: any) => { results1.push('E'); },
         () => { results1.push('C'); }
       );
 
@@ -146,7 +146,7 @@ describe('ReplaySubject', () => {
 
       const subscription2 = subject.subscribe(
         (x: number) => { results2.push(x); },
-        (err: any) => { results2.push('E'); },
+        (_err: any) => { results2.push('E'); },
         () => { results2.push('C'); }
       );
 
@@ -164,7 +164,7 @@ describe('ReplaySubject', () => {
 
       const subscription3 = subject.subscribe(
         (x: number) => { results3.push(x); },
-        (err: any) => { results3.push('E'); },
+        (_err: any) => { results3.push('E'); },
         () => { results3.push('C'); }
       );
 

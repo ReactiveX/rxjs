@@ -8,7 +8,7 @@ import {root} from '../../dist/cjs/util/root';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
-export function lowerCaseO<T>(...args): Rx.Observable<T> {
+export function lowerCaseO<T>(..._args): Rx.Observable<T> {
   const values = [].slice.apply(arguments);
 
   const o = {

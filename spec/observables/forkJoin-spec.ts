@@ -123,7 +123,7 @@ describe('Observable.forkJoin', () => {
     e1.subscribe((x: Array<number>) => {
       expect(x).to.deep.equal([1, 2]);
     },
-    (err: any) => {
+    (_err: any) => {
       done(new Error('should not be called'));
     }, () => {
       done();

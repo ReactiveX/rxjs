@@ -52,7 +52,7 @@ describe('ConnectableObservable.prototype.refCount', () => {
     const sub2 = refCounted.subscribe(() => {
       //noop
     });
-    const sub3 = refCounted.subscribe((x: any) => {
+    const sub3 = refCounted.subscribe((_x: any) => {
       expect((<any>connectable)._refCount).to.equal(1);
     });
 

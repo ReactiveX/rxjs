@@ -166,7 +166,7 @@ describe('Observable.ajax', () => {
     };
 
     Rx.Observable.ajax(<any>obj)
-      .subscribe((x: any) => {
+      .subscribe((_x: any) => {
         throw 'should not next';
       }, (err: any) => {
         error = err;
@@ -211,7 +211,7 @@ describe('Observable.ajax', () => {
     let error;
     const obj = {
       url: '/flibbertyJibbet',
-      normalizeError: (e: any, xhr: any, type: any) => {
+      normalizeError: (_e: any, xhr: any, _type: any) => {
         return xhr.response || xhr.responseText;
       },
       responseType: 'text',
@@ -219,7 +219,7 @@ describe('Observable.ajax', () => {
     };
 
     Rx.Observable.ajax(obj)
-      .subscribe((x: any) => {
+      .subscribe((_x: any) => {
         throw 'should not next';
       }, (err: any) => {
         error = err;
@@ -244,14 +244,14 @@ describe('Observable.ajax', () => {
     let error;
     const obj = {
       url: '/flibbertyJibbet',
-      normalizeError: (e: any, xhr: any, type: any) => {
+      normalizeError: (_e: any, xhr: any, _type: any) => {
         return xhr.response || xhr.responseText;
       },
       responseType: 'text',
       method: ''
     };
 
-    Rx.Observable.ajax(obj).subscribe(x => {
+    Rx.Observable.ajax(obj).subscribe(_ => {
       throw 'should not next';
     }, (err: any) => {
       error = err;

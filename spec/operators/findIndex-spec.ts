@@ -5,7 +5,7 @@ const Observable = Rx.Observable;
 
 /** @test {findIndex} */
 describe('Observable.prototype.findIndex', () => {
-  function truePredicate(x) {
+  function truePredicate(_x) {
     return true;
   }
 
@@ -141,7 +141,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^ !';
     const expected =   '--#';
 
-    const predicate = function (value) {
+    const predicate = function (_value) {
       throw 'error';
     };
 

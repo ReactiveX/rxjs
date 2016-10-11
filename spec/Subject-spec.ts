@@ -56,7 +56,7 @@ describe('Subject', () => {
 
     const subscription1 = subject.subscribe(
       function (x) { results1.push(x); },
-      function (e) { results1.push('E'); },
+      function (_e) { results1.push('E'); },
       () => { results1.push('C'); }
     );
 
@@ -64,7 +64,7 @@ describe('Subject', () => {
 
     const subscription2 = subject.subscribe(
       function (x) { results2.push(x); },
-      function (e) { results2.push('E'); },
+      function (_e) { results2.push('E'); },
       () => { results2.push('C'); }
     );
 
@@ -82,7 +82,7 @@ describe('Subject', () => {
 
     const subscription3 = subject.subscribe(
       function (x) { results3.push(x); },
-      function (e) { results3.push('E'); },
+      function (_e) { results3.push('E'); },
       () => { results3.push('C'); }
     );
 
@@ -109,7 +109,7 @@ describe('Subject', () => {
 
     const subscription1 = subject.subscribe(
       function (x) { results1.push(x); },
-      function (e) { results1.push('E'); },
+      function (_e) { results1.push('E'); },
       () => { results1.push('C'); }
     );
 
@@ -117,7 +117,7 @@ describe('Subject', () => {
 
     const subscription2 = subject.subscribe(
       function (x) { results2.push(x); },
-      function (e) { results2.push('E'); },
+      function (_e) { results2.push('E'); },
       () => { results2.push('C'); }
     );
 
@@ -132,7 +132,7 @@ describe('Subject', () => {
 
     const subscription3 = subject.subscribe(
       function (x) { results3.push(x); },
-      function (e) { results3.push('E'); },
+      function (_e) { results3.push('E'); },
       () => { results3.push('C'); }
     );
 
@@ -157,7 +157,7 @@ describe('Subject', () => {
 
     const subscription1 = subject.subscribe(
       function (x) { results1.push(x); },
-      function (e) { results1.push('E'); },
+      function (_e) { results1.push('E'); },
       () => { results1.push('C'); }
     );
 
@@ -165,7 +165,7 @@ describe('Subject', () => {
 
     const subscription2 = subject.subscribe(
       function (x) { results2.push(x); },
-      function (e) { results2.push('E'); },
+      function (_e) { results2.push('E'); },
       () => { results2.push('C'); }
     );
 
@@ -180,7 +180,7 @@ describe('Subject', () => {
 
     const subscription3 = subject.subscribe(
       function (x) { results3.push(x); },
-      function (e) { results3.push('E'); },
+      function (_e) { results3.push('E'); },
       () => { results3.push('C'); }
     );
 
@@ -200,13 +200,13 @@ describe('Subject', () => {
 
     const subscription1 = subject.subscribe(
       function (x) { results1.push(x); },
-      function (e) { results1.push('E'); },
+      function (_e) { results1.push('E'); },
       () => { results1.push('C'); }
     );
 
     const subscription2 = subject.subscribe(
       function (x) { results2.push(x); },
-      function (e) { results2.push('E'); },
+      function (_e) { results2.push('E'); },
       () => { results2.push('C'); }
     );
 
@@ -218,7 +218,7 @@ describe('Subject', () => {
 
     const subscription3 = subject.subscribe(
       function (x) { results3.push(x); },
-      function (e) { results3.push('E'); },
+      function (_e) { results3.push('E'); },
       () => { results3.push('C'); }
     );
 
@@ -237,7 +237,7 @@ describe('Subject', () => {
 
     const subscription1 = subject.subscribe(
       function (x) { results1.push(x); },
-      function (e) { results1.push('E'); },
+      function (_e) { results1.push('E'); },
       () => { results1.push('C'); }
     );
 
@@ -246,7 +246,7 @@ describe('Subject', () => {
 
     const subscription2 = subject.subscribe(
       function (x) { results2.push(x); },
-      function (e) { results2.push('E'); },
+      function (_e) { results2.push('E'); },
       () => { results2.push('C'); }
     );
 
@@ -261,7 +261,7 @@ describe('Subject', () => {
     expect(() => {
       subject.subscribe(
         function (x) { results3.push(x); },
-        function (e) { results3.push('E'); },
+        function (_e) { results3.push('E'); },
         () => { results3.push('C'); }
       );
     }).to.throw();
@@ -288,11 +288,11 @@ describe('Subject', () => {
   it('should clean out unsubscribed subscribers', (done: MochaDone) => {
     const subject = new Subject();
 
-    const sub1 = subject.subscribe(function (x) {
+    const sub1 = subject.subscribe(function (_x) {
       //noop
     });
 
-    const sub2 = subject.subscribe(function (x) {
+    const sub2 = subject.subscribe(function (_x) {
       //noop
     });
 
@@ -404,7 +404,7 @@ describe('Subject', () => {
     subject.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -422,7 +422,7 @@ describe('Subject', () => {
     subject.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();

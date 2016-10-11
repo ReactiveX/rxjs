@@ -29,7 +29,7 @@ describe('Observable.prototype.merge', () => {
 
     a.merge(b).subscribe((val: number) => {
       expect(val).to.equal(r.shift());
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -43,7 +43,7 @@ describe('Observable.prototype.merge', () => {
 
     a.merge(b, queueScheduler).subscribe((val: number) => {
       expect(val).to.equal(r.shift());
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       done();

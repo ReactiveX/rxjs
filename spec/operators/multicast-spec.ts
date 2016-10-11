@@ -25,7 +25,7 @@ describe('Observable.prototype.multicast', () => {
     const connectable = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
 
     connectable.subscribe((x: number) => { expect(x).to.equal(expected.shift()); },
-        (x) => {
+        (_) => {
           done(new Error('should not be called'));
         }, () => {
           done();
@@ -40,7 +40,7 @@ describe('Observable.prototype.multicast', () => {
     const connectable = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
 
     connectable.subscribe((x: number) => { expect(x).to.equal(expected.shift()); },
-        (x) => {
+        (_) => {
           done(new Error('should not be called'));
         }, () => {
           done();
@@ -554,7 +554,7 @@ describe('Observable.prototype.multicast', () => {
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).to.equal(expected.shift());
-        }, (x) => {
+        }, (_err) => {
           done(new Error('should not be called'));
         }, () => {
           expect(expected.length).to.equal(0);
@@ -576,7 +576,7 @@ describe('Observable.prototype.multicast', () => {
         .switchMap((letter: string) => source.map((n: number) => String(letter + n)))
         .subscribe((x: string) => {
           expect(x).to.equal(expected.shift());
-        }, (x) => {
+        }, (_err) => {
           done(new Error('should not be called'));
         }, () => {
           expect(expected.length).to.equal(0);

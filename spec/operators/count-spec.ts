@@ -73,7 +73,7 @@ describe('Observable.prototype.count', () => {
     Rx.Observable.range(1, 10).count().subscribe(
       (value: number) => {
         expect(value).to.equal(10);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -84,7 +84,7 @@ describe('Observable.prototype.count', () => {
     Rx.Observable.range(1, 10).skip(1).count().subscribe(
       (value: number) => {
         expect(value).to.equal(9);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -95,7 +95,7 @@ describe('Observable.prototype.count', () => {
     Rx.Observable.range(1, 10).take(1).count().subscribe(
       (value: number) => {
         expect(value).to.equal(1);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();

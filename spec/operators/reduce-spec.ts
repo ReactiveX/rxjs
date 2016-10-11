@@ -54,7 +54,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =     '^    !   ';
     const expected =   '-----#   ';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (_o, _x) {
       throw 'error';
     };
 
@@ -131,7 +131,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '--#     ';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (_o, _x) {
       throw 'error';
     };
 

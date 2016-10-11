@@ -14,7 +14,7 @@ function err(): any {
 describe('Observable.generate', () => {
   asDiagram('generate(1, x => false, x => x + 1)')
   ('should complete if condition does not meet', () => {
-    const source = Observable.generate(1, x => false, x => x + 1);
+    const source = Observable.generate(1, _x => false, x => x + 1);
     const expected = '|';
 
     expectObservable(source).toBe(expected);
@@ -80,7 +80,7 @@ describe('Observable.generate', () => {
     const expected = '(123|)';
 
     let count = 0;
-    source.subscribe(x => count++);
+    source.subscribe(_x => count++);
 
     expect(count).to.be.equal(0);
     rxTestScheduler.flush();

@@ -289,7 +289,7 @@ describe('Observable.prototype.debounce', () => {
     const e1subs =   '^                                   !';
     const expected = '--------a-x-yz---bxy---z--c--x--y--z|';
 
-    function selectorFunction(x) { return Observable.empty<number>(); }
+    function selectorFunction(_x) { return Observable.empty<number>(); }
 
     expectObservable(e1.debounce(selectorFunction)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -300,7 +300,7 @@ describe('Observable.prototype.debounce', () => {
     const e1subs =   '^                                   !';
     const expected = '------------------------------------(z|)';
 
-    function selectorFunction(x) { return Observable.never<number>(); }
+    function selectorFunction(_x) { return Observable.never<number>(); }
 
     expectObservable(e1.debounce(selectorFunction)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -360,7 +360,7 @@ describe('Observable.prototype.debounce', () => {
       return new Promise((resolve: any) => { resolve(42); });
     }).subscribe((x: number) => {
       expect(x).to.equal(expected.shift()); },
-      (x) => {
+      (_err) => {
         done(new Error('should not be called'));
       },
       () => {
@@ -380,7 +380,7 @@ describe('Observable.prototype.debounce', () => {
 
     e1.debounce((x: number) => {
       if (x === 3) {
-        return new Promise((resolve: any, reject: any) => { reject(error); });
+        return new Promise((_resolve: any, reject: any) => { reject(error); });
       } else {
         return new Promise((resolve: any) => { resolve(42); });
       }

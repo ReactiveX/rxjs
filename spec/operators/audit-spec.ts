@@ -310,7 +310,7 @@ describe('Observable.prototype.audit', () => {
 
     e1.audit((x: number) => {
       if (x === 3) {
-        return new Promise((resolve: any, reject: any) => { reject(error); });
+        return new Promise((_resolve: any, reject: any) => { reject(error); });
       } else {
         return new Promise((resolve: any) => { resolve(42); });
       }

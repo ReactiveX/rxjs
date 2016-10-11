@@ -70,7 +70,7 @@ describe('Observable.bindNodeCallback', () => {
       }
 
       const expected = new Error('Yikes!');
-      const boundCallback = Observable.bindNodeCallback(callback, (err: any) => { throw expected; });
+      const boundCallback = Observable.bindNodeCallback(callback, (_err: any) => { throw expected; });
 
       boundCallback()
         .subscribe(() => {
@@ -130,13 +130,13 @@ describe('Observable.bindNodeCallback', () => {
 
     it('should error if callback throws', () => {
       const expected = new Error('haha no callback for you');
-      function callback(datum, cb) {
+      function callback(_datum, _cb) {
         throw expected;
       }
       const boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
 
       boundCallback(42)
-        .subscribe((x: number) => {
+        .subscribe((_x: number) => {
           throw 'should not next';
         }, (err: any) => {
           expect(err).to.equal(expected);
@@ -182,7 +182,7 @@ describe('Observable.bindNodeCallback', () => {
       const boundCallback = Observable.bindNodeCallback(callback, selector, rxTestScheduler);
 
       boundCallback(42)
-        .subscribe((x: any) => {
+        .subscribe((_x: any) => {
           throw 'should not next';
         }, (err: any) => {
           expect(err).to.equal(expected);

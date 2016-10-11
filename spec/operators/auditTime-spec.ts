@@ -21,7 +21,7 @@ describe('Observable.prototype.auditTime', () => {
   it('should auditTime events by 50 time units', (done: MochaDone) => {
     Observable.of(1, 2, 3)
       .auditTime(50)
-      .subscribe((x: number) => {
+      .subscribe((_x: number) => {
         done(new Error('should not be called'));
       }, null, () => {
         done();

@@ -29,7 +29,7 @@ describe('Observable.prototype.concat', () => {
 
     s1.subscribe((x: number) => {
           results.push('Next: ' + x);
-        }, (x) => {
+        }, (_err) => {
           done(new Error('should not be called'));
         }, () => {
           results.push('Completed');

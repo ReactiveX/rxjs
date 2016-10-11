@@ -38,7 +38,7 @@ describe('IteratorObservable', () => {
     IteratorObservable.create([10, 20, 30, 40])
       .subscribe(
         (x: number) => { expect(x).to.equal(expected.shift()); },
-        (x) => {
+        (_err) => {
           done(new Error('should not be called'));
         }, () => {
           expect(expected.length).to.equal(0);
@@ -136,7 +136,7 @@ describe('IteratorObservable', () => {
           subscriber.unsubscribe();
           done();
         }
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done(new Error('should not be called'));
@@ -150,7 +150,7 @@ describe('IteratorObservable', () => {
     IteratorObservable.create('foo')
       .subscribe(
         (x: number) => { expect(x).to.equal(expected.shift()); },
-        (x) => {
+        (_err) => {
           done(new Error('should not be called'));
         }, () => {
           expect(expected.length).to.equal(0);
@@ -169,7 +169,7 @@ describe('IteratorObservable', () => {
           subscriber.unsubscribe();
           done();
         }
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done(new Error('should not be called'));
