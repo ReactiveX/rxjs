@@ -5,6 +5,7 @@ declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
+const ReplaySubject = Rx.ReplaySubject;
 
 /** @test {groupBy} */
 describe('Observable.prototype.groupBy', () => {
@@ -96,6 +97,27 @@ describe('Observable.prototype.groupBy', () => {
       });
 
       expect(resultingGroups).to.deep.equal(expectedGroups);
+  });
+
+  it('should group values with a subject selector', (done: MochaDone) => {
+    const expectedGroups = [
+      { key: 1, values: [3] },
+      { key: 0, values: [2] }
+    ];
+
+    Observable.of(1, 2, 3)
+      .groupBy((x: number) => x % 2, null, null, () => new ReplaySubject(1))
+      // Ensure each inner group reaches the destination after the first event
+      // has been next'd to the group
+      .delay(5)
+      .subscribe((g: any) => {
+        const expectedGroup = expectedGroups.shift();
+        expect(g.key).to.equal(expectedGroup.key);
+
+        g.subscribe((x: any) => {
+          expect(x).to.deep.equal(expectedGroup.values.shift());
+        });
+      }, null, done);
   });
 
   it('should handle an empty Observable', () => {
