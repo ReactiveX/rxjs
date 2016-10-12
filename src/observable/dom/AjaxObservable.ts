@@ -304,7 +304,6 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     (<any>xhrTimeout).request = request;
     (<any>xhrTimeout).subscriber = this;
     (<any>xhrTimeout).progressSubscriber = progressSubscriber;
-
     if (xhr.upload && 'withCredentials' in xhr && root.XDomainRequest) {
       if (progressSubscriber) {
         let xhrProgress: (e: ProgressEvent) => void;

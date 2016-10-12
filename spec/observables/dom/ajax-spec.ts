@@ -598,4 +598,166 @@ describe('Observable.ajax', () => {
     });
 
   });
+
+  it('should work fine when XMLHttpRequest onreadystatechange property is monkey patched', function() {
+    Object.defineProperty(root.XMLHttpRequest.prototype, 'onreadystatechange', {
+      set: function (fn: (e: ProgressEvent) => any) {
+        const wrapFn = (ev: ProgressEvent) => {
+          const result = fn.call(this, ev);
+          if (result === false) {
+            ev.preventDefault();
+          }
+        };
+        this['_onreadystatechange'] = wrapFn;
+      },
+      get() {
+        return this['_onreadystatechange'];
+      },
+      configurable: true
+    });
+
+    Rx.Observable.ajax({
+      url: '/flibbertyJibbet'
+    })
+      .subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+    expect(() => {
+      request.onreadystatechange((<any>'onreadystatechange'));
+    }).not.throw();
+
+    delete root.XMLHttpRequest.prototype.onreadystatechange;
+  });
+
+  it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function() {
+    Object.defineProperty(root.XMLHttpRequest.prototype, 'ontimeout', {
+      set: function (fn: (e: ProgressEvent) => any) {
+        const wrapFn = (ev: ProgressEvent) => {
+          const result = fn.call(this, ev);
+          if (result === false) {
+            ev.preventDefault();
+          }
+        };
+        this['_ontimeout'] = wrapFn;
+      },
+      get() {
+        return this['_ontimeout'];
+      },
+      configurable: true
+    });
+
+    const ajaxRequest = {
+      url: '/flibbertyJibbet'
+    };
+
+    Rx.Observable.ajax(ajaxRequest)
+      .subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+    try {
+      request.ontimeout((<any>'ontimeout'));
+    } catch (e) {
+      expect(e.message).to.equal(new Rx.AjaxTimeoutError((<any>request), ajaxRequest).message);
+    }
+    delete root.XMLHttpRequest.prototype.ontimeout;
+  });
+
+  it('should work fine when XMLHttpRequest onprogress property is monkey patched', function() {
+    Object.defineProperty(root.XMLHttpRequest.prototype, 'onprogress', {
+      set: function (fn: (e: ProgressEvent) => any) {
+        const wrapFn = (ev: ProgressEvent) => {
+          const result = fn.call(this, ev);
+          if (result === false) {
+            ev.preventDefault();
+          }
+        };
+        this['_onprogress'] = wrapFn;
+      },
+      get() {
+        return this['_onprogress'];
+      },
+      configurable: true
+    });
+
+    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
+      get() {
+        return true;
+      },
+      configurable: true
+    });
+
+    // mock for onprogress
+    root.XDomainRequest = true;
+
+    Rx.Observable.ajax({
+      url: '/flibbertyJibbet',
+      progressSubscriber: (<any>{
+        next: () => {
+          // noop
+        },
+        error: () => {
+          // noop
+        },
+        complete: () => {
+          // noop
+        }
+      })
+    })
+      .subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(() => {
+      request.onprogress((<any>'onprogress'));
+    }).not.throw();
+
+    delete root.XMLHttpRequest.prototype.onprogress;
+    delete root.XMLHttpRequest.prototype.upload;
+    delete root.XDomainRequest;
+  });
+
+  it('should work fine when XMLHttpRequest onerror property is monkey patched', function() {
+    Object.defineProperty(root.XMLHttpRequest.prototype, 'onerror', {
+      set: function (fn: (e: ProgressEvent) => any) {
+        const wrapFn = (ev: ProgressEvent) => {
+          const result = fn.call(this, ev);
+          if (result === false) {
+            ev.preventDefault();
+          }
+        };
+        this['_onerror'] = wrapFn;
+      },
+      get() {
+        return this['_onerror'];
+      },
+      configurable: true
+    });
+
+    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
+      get() {
+        return true;
+      },
+      configurable: true
+    });
+
+    // mock for onprogress
+    root.XDomainRequest = true;
+
+    Rx.Observable.ajax({
+      url: '/flibbertyJibbet'
+    })
+      .subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    try {
+      request.onerror((<any>'onerror'));
+    } catch (e) {
+      expect(e.message).to.equal('ajax error');
+    }
+
+    delete root.XMLHttpRequest.prototype.onerror;
+    delete root.XMLHttpRequest.prototype.upload;
+    delete root.XDomainRequest;
+  });
 });
