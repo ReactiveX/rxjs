@@ -831,3 +831,21 @@ describe('Observable.lift', () => {
       });
   });
 });
+
+/** @test {Observable} */
+describe('Observable.op', () => {
+  it('should apply the provided operator and args to the given stream', () => {
+    const { map, filter } = Rx.Observable.prototype;
+    const e1 =   cold('-a-b-c-|', { a: 1, b: 2, c: 3 });
+    const expected =  '---b-c-|';
+
+    const result = e1
+      .op(filter, i => i > 1)
+      .op(map, i => i * 10);
+
+    expectObservable(result).toBe(expected, {
+      b: 20,
+      c: 30
+    });
+  });
+});
