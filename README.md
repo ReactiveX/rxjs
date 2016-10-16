@@ -27,7 +27,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 ### ES6 via npm
 
 ```sh
-npm install rxjs-es
+npm install rxjs
 ```
 
 To import the entire core set of functionality:
