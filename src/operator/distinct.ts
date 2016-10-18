@@ -21,7 +21,7 @@ import { ISet, Set } from '../util/Set';
  * @owner Observable
  */
 export function distinct<T, K>(this: Observable<T>,
-                               keySelector: (value: T) => K,
+                               keySelector?: (value: T) => K,
                                flushes?: Observable<any>): Observable<T> {
   return this.lift(new DistinctOperator(keySelector, flushes));
 }
@@ -43,12 +43,8 @@ class DistinctOperator<T, K> implements Operator<T, T> {
 export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
   private values: ISet<K> = new Set<K>();
 
-  constructor(destination: Subscriber<T>, keySelector: (value: T) => K, flushes: Observable<any>) {
+  constructor(destination: Subscriber<T>, private keySelector: (value: T) => K, flushes: Observable<any>) {
     super(destination);
-
-    if (typeof keySelector === 'function') {
-      this.keySelector = keySelector;
-    }
 
     if (flushes) {
       this.add(subscribeToResult(this, flushes));
@@ -66,22 +62,31 @@ export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
   }
 
   protected _next(value: T): void {
-    const { values, destination } = this;
+    if (this.keySelector) {
+      this._useKeySelector(value);
+    } else {
+      this._finalizeNext(value, value);
+    }
+  }
+
+  private _useKeySelector(value: T): void {
     let key: K;
+    const { destination } = this;
     try {
       key = this.keySelector(value);
     } catch (err) {
       destination.error(err);
       return;
     }
-    if (values.has(key)) {
-      return;
-    }
-    values.add(key);
-    destination.next(value);
+    this._finalizeNext(key, value);
   }
 
-  private keySelector(value: T|K): K {
-    return <K>value;
+  private _finalizeNext(key: K|T, value: T) {
+    const { values } = this;
+    if (!values.has(<K>key)) {
+      values.add(<K>key);
+      this.destination.next(value);
+    }
   }
+
 }
