@@ -115,6 +115,7 @@ import './add/operator/single';
 import './add/operator/skip';
 import './add/operator/skipUntil';
 import './add/operator/skipWhile';
+import './add/operator/some';
 import './add/operator/startWith';
 import './add/operator/subscribeOn';
 import './add/operator/switch';
