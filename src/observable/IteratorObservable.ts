@@ -36,6 +36,9 @@ export class IteratorObservable<T> extends Observable<T> {
     state.index = index + 1;
 
     if (subscriber.closed) {
+      if (typeof iterator.return === 'function') {
+        iterator.return();
+      }
       return;
     }
 
@@ -71,6 +74,9 @@ export class IteratorObservable<T> extends Observable<T> {
           subscriber.next(result.value);
         }
         if (subscriber.closed) {
+          if (typeof iterator.return === 'function') {
+            iterator.return();
+          }
           break;
         }
       } while (true);
