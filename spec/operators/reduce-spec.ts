@@ -35,6 +35,36 @@ describe('Observable.prototype.reduce', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should reduce with a seed of undefined', () => {
+    const e1 = hot('--a--^--b--c--d--e--f--g--|');
+    const e1subs =      '^                    !';
+    const expected =    '---------------------(x|)';
+
+    const values = {
+      x: 'undefined b c d e f g'
+    };
+
+    const source = e1.reduce((acc: any, x: string) => acc + ' ' + x, undefined);
+
+    expectObservable(source).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should reduce without a seed', () => {
+    const e1 = hot('--a--^--b--c--d--e--f--g--|');
+    const e1subs =      '^                    !';
+    const expected =    '---------------------(x|)';
+
+    const values = {
+      x: 'b c d e f g'
+    };
+
+    const source = e1.reduce((acc: any, x: string) => acc + ' ' + x);
+
+    expectObservable(source).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should reduce with seed if source is empty', () => {
     const e1 = hot('--a--^-------|');
     const e1subs =      '^       !';
