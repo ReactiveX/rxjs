@@ -43,6 +43,26 @@ describe('Observable.prototype.scan', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should scan with a seed of undefined', () => {
+    const e1 = hot('--a--^--b--c--d--e--f--g--|');
+    const e1subs =      '^                    !';
+    const expected =    '---u--v--w--x--y--z--|';
+
+    const values = {
+      u: 'undefined b',
+      v: 'undefined b c',
+      w: 'undefined b c d',
+      x: 'undefined b c d e',
+      y: 'undefined b c d e f',
+      z: 'undefined b c d e f g'
+    };
+
+    const source = e1.scan((acc: any, x: string) => acc + ' ' + x, undefined);
+
+    expectObservable(source).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should scan without seed', () => {
     const e1 = hot('--a--^--b--c--d--|');
     const e1subs =      '^           !';
