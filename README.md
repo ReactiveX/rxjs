@@ -27,7 +27,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 ### ES6 via npm
 
 ```sh
-npm install rxjs-es
+npm install rxjs
 ```
 
 To import the entire core set of functionality:
@@ -180,6 +180,9 @@ For Mac OS X with [Homebrew](http://brew.sh/):
 - `brew install imagemagick`
 - `brew install graphicsmagick`
 - `brew install ghostscript`
+- You may need to install the Ghostscript fonts manually:
+  - Download the tarball from the [gs-fonts project](https://sourceforge.net/projects/gs-fonts)
+  - `mkdir -p /usr/local/share/ghostscript && tar zxvf /path/to/ghostscript-fonts.tar.gz -C /usr/local/share/ghostscript`
 
 For Debian Linux:
 
