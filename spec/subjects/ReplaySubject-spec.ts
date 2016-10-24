@@ -16,6 +16,21 @@ describe('ReplaySubject', () => {
     done();
   });
 
+  it('should add the observer before running subscription code', () => {
+    const subject = new ReplaySubject<number>();
+    subject.next(1);
+    const results = [];
+
+    subject.subscribe((value) => {
+      results.push(value);
+      if (value < 3) {
+        subject.next(value + 1);
+      }
+    });
+
+    expect(results).to.deep.equal([1, 2, 3]);
+  });
+
   it('should replay values upon subscription', (done: MochaDone) => {
     const subject = new ReplaySubject();
     const expects = [1, 2, 3];

@@ -4,7 +4,8 @@ import { queue } from './scheduler/queue';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { ObserveOnSubscriber } from './operator/observeOn';
-
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { SubjectSubscription } from './SubjectSubscription';
 /**
  * @class ReplaySubject<T>
  */
@@ -31,6 +32,18 @@ export class ReplaySubject<T> extends Subject<T> {
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     const _events = this._trimBufferThenGetEvents();
     const scheduler = this.scheduler;
+    let subscription: Subscription;
+
+    if (this.closed) {
+      throw new ObjectUnsubscribedError();
+    } else if (this.hasError) {
+      subscription = Subscription.EMPTY;
+    } else if (this.isStopped) {
+      subscription = Subscription.EMPTY;
+    } else {
+      this.observers.push(subscriber);
+      subscription = new SubjectSubscription(this, subscriber);
+    }
 
     if (scheduler) {
       subscriber.add(subscriber = new ObserveOnSubscriber<T>(subscriber, scheduler));
@@ -41,7 +54,13 @@ export class ReplaySubject<T> extends Subject<T> {
       subscriber.next(_events[i].value);
     }
 
-    return super._subscribe(subscriber);
+    if (this.hasError) {
+      subscriber.error(this.thrownError);
+    } else if (this.isStopped) {
+      subscriber.complete();
+    }
+
+    return subscription;
   }
 
   _getNow(): number {
