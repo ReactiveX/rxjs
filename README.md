@@ -5,7 +5,7 @@
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/rxjs5.svg)](https://saucelabs.com/u/rxjs5)
 
-# RxJS 5 (beta)
+# RxJS 5 (release candidate)
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is intended to supersede it once this is ready. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
@@ -27,7 +27,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 ### ES6 via npm
 
 ```sh
-npm install rxjs-es
+npm install rxjs
 ```
 
 To import the entire core set of functionality:
@@ -106,7 +106,7 @@ npm install @reactivex/rxjs
 If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
 
 ```sh
-npm install @reactivex/rxjs@5.0.0-beta.1
+npm install @reactivex/rxjs@5.0.0-rc.1
 ```
 
 ### CDN
@@ -180,6 +180,9 @@ For Mac OS X with [Homebrew](http://brew.sh/):
 - `brew install imagemagick`
 - `brew install graphicsmagick`
 - `brew install ghostscript`
+- You may need to install the Ghostscript fonts manually:
+  - Download the tarball from the [gs-fonts project](https://sourceforge.net/projects/gs-fonts)
+  - `mkdir -p /usr/local/share/ghostscript && tar zxvf /path/to/ghostscript-fonts.tar.gz -C /usr/local/share/ghostscript`
 
 For Debian Linux:
 

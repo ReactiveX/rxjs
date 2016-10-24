@@ -14,13 +14,12 @@ import { TeardownLogic } from '../Subscription';
  * @method distinctUntilChanged
  * @owner Observable
  */
-export function distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
+/* tslint:disable:max-line-length */
+export function distinctUntilChanged<T>(this: Observable<T>, compare?: (x: T, y: T) => boolean): Observable<T>;
+export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
+/* tslint:disable:max-line-length */
+export function distinctUntilChanged<T, K>(this: Observable<T>, compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
   return this.lift(new DistinctUntilChangedOperator<T, K>(compare, keySelector));
-}
-
-export interface DistinctUntilChangedSignature<T> {
- (compare?: (x: T, y: T) => boolean): Observable<T>;
- <K>(compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
 }
 
 class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {

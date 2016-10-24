@@ -18,12 +18,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method distinct
  * @owner Observable
  */
-export function distinct<T>(compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
+export function distinct<T>(this: Observable<T>, compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
   return this.lift(new DistinctOperator(compare, flushes));
-}
-
-export interface DistinctSignature<T> {
-  (compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T>;
 }
 
 class DistinctOperator<T> implements Operator<T, T> {

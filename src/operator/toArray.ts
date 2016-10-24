@@ -7,12 +7,8 @@ import { Observable } from '../Observable';
  * @method toArray
  * @owner Observable
  */
-export function toArray<T>(): Observable<T[]> {
+export function toArray<T>(this: Observable<T>): Observable<T[]> {
   return this.lift(new ToArrayOperator());
-}
-
-export interface ToArraySignature<T> {
-  (): Observable<T[]>;
 }
 
 class ToArrayOperator<T> implements Operator<T, T[]> {

@@ -43,12 +43,8 @@ import { Observable } from '../Observable';
  * @method bufferCount
  * @owner Observable
  */
-export function bufferCount<T>(bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
+export function bufferCount<T>(this: Observable<T>, bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
   return this.lift(new BufferCountOperator<T>(bufferSize, startBufferEvery));
-}
-
-export interface BufferCountSignature<T> {
-  (bufferSize: number, startBufferEvery?: number): Observable<T[]>;
 }
 
 class BufferCountOperator<T> implements Operator<T, T[]> {

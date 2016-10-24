@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { map, MapSignature } from '../../operator/map';
+import { map } from '../../operator/map';
 
 Observable.prototype.map = map;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    map: MapSignature<T>;
+    map: typeof map;
   }
 }

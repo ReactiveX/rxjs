@@ -43,14 +43,13 @@ import { TeardownLogic } from '../Subscription';
  * @method filter
  * @owner Observable
  */
-export function filter<T>(predicate: (value: T, index: number) => boolean,
+/* tslint:disable:max-line-length */
+export function filter<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean, thisArg?: any): Observable<T>;
+export function filter<T, S extends T>(this: Observable<T>, predicate: (value: T, index: number) => value is S, thisArg?: any): Observable<S>;
+/* tslint:disable:max-line-length */
+export function filter<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean,
                           thisArg?: any): Observable<T> {
   return this.lift(new FilterOperator(predicate, thisArg));
-}
-
-export interface FilterSignature<T> {
-  (predicate: (value: T, index: number) => boolean, thisArg?: any): Observable<T>;
-  <S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): Observable<S>;
 }
 
 class FilterOperator<T> implements Operator<T, T> {

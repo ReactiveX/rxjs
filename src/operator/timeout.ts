@@ -15,16 +15,12 @@ import { TimeoutError } from '../util/TimeoutError';
  * @method timeout
  * @owner Observable
  */
-export function timeout<T>(due: number | Date,
+export function timeout<T>(this: Observable<T>, due: number | Date,
                            errorToSend: any = null,
                            scheduler: Scheduler = async): Observable<T> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
-}
-
-export interface TimeoutSignature<T> {
-  (due: number | Date, errorToSend?: any, scheduler?: Scheduler): Observable<T>;
 }
 
 class TimeoutOperator<T> implements Operator<T, T> {

@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { defaultIfEmpty, DefaultIfEmptySignature } from '../../operator/defaultIfEmpty';
+import { defaultIfEmpty } from '../../operator/defaultIfEmpty';
 
 Observable.prototype.defaultIfEmpty = defaultIfEmpty;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    defaultIfEmpty: DefaultIfEmptySignature<T>;
+    defaultIfEmpty: typeof defaultIfEmpty;
   }
 }

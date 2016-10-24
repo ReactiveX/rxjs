@@ -18,10 +18,6 @@ function shareSubjectFactory() {
  * @method share
  * @owner Observable
  */
-export function share<T>(): Observable<T> {
+export function share<T>(this: Observable<T>): Observable<T> {
   return multicast.call(this, shareSubjectFactory).refCount();
 };
-
-export interface ShareSignature<T> {
-  (): Observable<T>;
-}

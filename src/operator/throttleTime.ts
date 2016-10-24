@@ -44,12 +44,8 @@ import { Observable } from '../Observable';
  * @method throttleTime
  * @owner Observable
  */
-export function throttleTime<T>(duration: number, scheduler: Scheduler = async): Observable<T> {
+export function throttleTime<T>(this: Observable<T>, duration: number, scheduler: Scheduler = async): Observable<T> {
   return this.lift(new ThrottleTimeOperator(duration, scheduler));
-}
-
-export interface ThrottleTimeSignature<T> {
-  (duration: number, scheduler?: Scheduler): Observable<T>;
 }
 
 class ThrottleTimeOperator<T> implements Operator<T, T> {

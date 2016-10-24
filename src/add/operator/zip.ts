@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { zipProto, ZipSignature } from '../../operator/zip';
+import { zipProto } from '../../operator/zip';
 
 Observable.prototype.zip = zipProto;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    zip: ZipSignature<T>;
+    zip: typeof zipProto;
   }
 }

@@ -15,14 +15,10 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method catch
  * @owner Observable
  */
-export function _catch<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<R> {
+export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<R> {
   const operator = new CatchOperator(selector);
   const caught = this.lift(operator);
   return (operator.caught = caught);
-}
-
-export interface CatchSignature<T> {
-  <R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<R>;
 }
 
 class CatchOperator<T, R> implements Operator<T, R> {

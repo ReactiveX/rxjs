@@ -32,13 +32,12 @@ import { Subscriber } from '../Subscriber';
  * @method defaultIfEmpty
  * @owner Observable
  */
-export function defaultIfEmpty<T, R>(defaultValue: R = null): Observable<T | R> {
+/* tslint:disable:max-line-length */
+export function defaultIfEmpty<T>(this: Observable<T>, defaultValue?: T): Observable<T>;
+export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue?: R): Observable<T | R>;
+/* tslint:disable:max-line-length */
+export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue: R = null): Observable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
-}
-
-export interface DefaultIfEmptySignature<T> {
-  (defaultValue?: T): Observable<T>;
-  <R>(defaultValue?: R): Observable<T | R>;
 }
 
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {

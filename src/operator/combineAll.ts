@@ -41,10 +41,6 @@ import { Observable } from '../Observable';
  * @method combineAll
  * @owner Observable
  */
-export function combineAll<R>(project?: (...values: Array<any>) => R): Observable<R> {
+export function combineAll<T, R>(this: Observable<T>, project?: (...values: Array<any>) => R): Observable<R> {
   return this.lift(new CombineLatestOperator(project));
-}
-
-export interface CombineAllSignature<T> {
-  <R>(project?: (...values: Array<T>) => R): Observable<R>;
 }

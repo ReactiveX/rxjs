@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import {queue} from '../../dist/cjs/scheduler/queue';
 import {IteratorObservable} from '../../dist/cjs/observable/IteratorObservable';
 
 declare const expectObservable;
@@ -44,6 +45,68 @@ describe('IteratorObservable', () => {
           done();
         }
       );
+  });
+
+  it('should finalize generators if the subscription ends', () => {
+    const iterator = {
+      finalized: false,
+      next() {
+        return { value: 'duck', done: false };
+      },
+      return() {
+        this.finalized = true;
+      }
+    };
+
+    const iterable = {
+      [Rx.Symbol.iterator]() {
+        return iterator;
+      }
+    };
+
+    const results = [];
+
+    IteratorObservable.create(iterable)
+      .take(3)
+      .subscribe(
+        x => results.push(x),
+        null,
+        () => results.push('GOOSE!')
+      );
+
+    expect(results).to.deep.equal(['duck', 'duck', 'duck', 'GOOSE!']);
+    expect(iterator.finalized).to.be.true;
+  });
+
+  it('should finalize generators if the subscription and it is scheduled', () => {
+    const iterator = {
+      finalized: false,
+      next() {
+        return { value: 'duck', done: false };
+      },
+      return() {
+        this.finalized = true;
+      }
+    };
+
+    const iterable = {
+      [Rx.Symbol.iterator]() {
+        return iterator;
+      }
+    };
+
+    const results = [];
+
+    IteratorObservable.create(iterable, queue)
+      .take(3)
+      .subscribe(
+        x => results.push(x),
+        null,
+        () => results.push('GOOSE!')
+      );
+
+    expect(results).to.deep.equal(['duck', 'duck', 'duck', 'GOOSE!']);
+    expect(iterator.finalized).to.be.true;
   });
 
   it('should emit members of an array iterator on a particular scheduler', () => {

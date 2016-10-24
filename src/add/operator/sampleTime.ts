@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { sampleTime, SampleTimeSignature } from '../../operator/sampleTime';
+import { sampleTime } from '../../operator/sampleTime';
 
 Observable.prototype.sampleTime = sampleTime;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    sampleTime: SampleTimeSignature<T>;
+    sampleTime: typeof sampleTime;
   }
 }

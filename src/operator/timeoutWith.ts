@@ -16,17 +16,16 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method timeoutWith
  * @owner Observable
  */
-export function timeoutWith<T, R>(due: number | Date,
+/* tslint:disable:max-line-length */
+export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
+export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<R>, scheduler?: Scheduler): Observable<T | R>;
+/* tslint:disable:max-line-length */
+export function timeoutWith<T, R>(this: Observable<T>, due: number | Date,
                                   withObservable: ObservableInput<R>,
                                   scheduler: Scheduler = async): Observable<T | R> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
-}
-
-export interface TimeoutWithSignature<T> {
-  (due: number | Date, withObservable: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
-  <R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: Scheduler): Observable<T | R>;
 }
 
 class TimeoutWithOperator<T> implements Operator<T, T> {
