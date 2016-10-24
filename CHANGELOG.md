@@ -1,3 +1,49 @@
+<a name="5.0.0-rc.1"></a>
+# [5.0.0-rc.1](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.12...v5.0.0-rc.1) (2016-10-11)
+
+
+### Bug Fixes
+
+* **AjaxObservable:** Fix for [#1921](https://github.com/ReactiveX/RxJS/issues/1921) exposed AjaxObservable unsubscription error calling xhr.abort(). ([4d23f87](https://github.com/ReactiveX/RxJS/commit/4d23f87))
+* **AnonymousSubject:** is now exposed on Rx namespace ([0a6f049](https://github.com/ReactiveX/RxJS/commit/0a6f049)), closes [#2002](https://github.com/ReactiveX/RxJS/issues/2002)
+* **bufferTime:** no errors with take after bufferTime with maxBufferSize ([ecec640](https://github.com/ReactiveX/RxJS/commit/ecec640)), closes [#1944](https://github.com/ReactiveX/RxJS/issues/1944)
+* **docs:** Fix esdoc for Observable.merge spread argument ([b794e9b](https://github.com/ReactiveX/RxJS/commit/b794e9b))
+* **Observer:** fix Observable#subscribe() signature to suggest correct usable ([459d2a2](https://github.com/ReactiveX/RxJS/commit/459d2a2))
+* **operator:** Fix take to complete when the source is re-entrant. ([86615cb](https://github.com/ReactiveX/RxJS/commit/86615cb))
+* **root:** find global context (window/self/global) in a more safe way ([a098132](https://github.com/ReactiveX/RxJS/commit/a098132)), closes [#1930](https://github.com/ReactiveX/RxJS/issues/1930)
+* **schedulers:** Queue, Asap, and AnimationFrame Schedulers should be Async if delay > 0 ([d5c682c](https://github.com/ReactiveX/RxJS/commit/d5c682c))
+* **util/toSubscriber:** Supplies the Subscriber constructor with emptyObserver as destination if no ([8e7e4e3](https://github.com/ReactiveX/RxJS/commit/8e7e4e3))
+* **WebSocketSubject:** ensure all internal state properly reset when socket is nulled out ([62d242e](https://github.com/ReactiveX/RxJS/commit/62d242e)), closes [#1863](https://github.com/ReactiveX/RxJS/issues/1863)
+
+
+### Features
+
+* **cache:** remove `cache` operator ([1b23ace](https://github.com/ReactiveX/RxJS/commit/1b23ace))
+* **ES2015:** stop publishing `rxjs-es`, ES2015 output no longer included in `@reactivex/rxjs` package under `/dist/es6` ([6be9968](https://github.com/ReactiveX/RxJS/commit/6be9968)), closes [#1671](https://github.com/ReactiveX/RxJS/issues/1671)
+* **filter:** Observable<T>.filter() can take type guard as the predicate function ([d62fbf0](https://github.com/ReactiveX/RxJS/commit/d62fbf0))
+* **find:** Observable<T>.find() can take type guard as the predicate function ([b952718](https://github.com/ReactiveX/RxJS/commit/b952718))
+* **first:** Observable<T>.first() can take type guard as the predicate function ([f99ca49](https://github.com/ReactiveX/RxJS/commit/f99ca49))
+* **last:** Observable<T>.last() can take type guard as the predicate function ([76a8a57](https://github.com/ReactiveX/RxJS/commit/76a8a57))
+* **operators:** Use lift in the operators that don't currently use lift. ([68af9ef](https://github.com/ReactiveX/RxJS/commit/68af9ef))
+* **TypeScript:** update TypeScript to v2.0 ([3478b0b](https://github.com/ReactiveX/RxJS/commit/3478b0b))
+
+
+### BREAKING CHANGES
+
+* **cache:** The .cache() operator has been removed, pending further discussion ([1b23ace](https://github.com/ReactiveX/RxJS/commit/1b23ace))
+* ES2015: `rxjs-es` is no longer being published
+* ES2015: `@reactivex/rxjs` no longer has `/dist/es6` output
+
+related #2016
+related #1992
+* package.json: TypeScript definitions are now for TS 2.0 and higher
+
+Even if we use getter for class, they are marked with `readonly` properties
+in d.ts.
+* operators: Removes MulticastObservable subclass in favor of a MulticastOperator.
+
+
+
 <a name="5.0.0-beta.12"></a>
 # [5.0.0-beta.12](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.11...v5.0.0-beta.12) (2016-09-09)
 

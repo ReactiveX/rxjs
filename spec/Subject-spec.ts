@@ -524,6 +524,10 @@ describe('Subject', () => {
 });
 
 describe('AnonymousSubject', () => {
+  it('should be exposed', () => {
+    expect(Rx.AnonymousSubject).to.be.a('function');
+  });
+
   it('should not eager', () => {
     let subscribed = false;
 

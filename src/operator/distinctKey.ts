@@ -15,16 +15,15 @@ import { Observable } from '../Observable';
  * @method distinctKey
  * @owner Observable
  */
-export function distinctKey<T>(key: string, compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
+/* tslint:disable:max-line-length */
+export function distinctKey<T>(this: Observable<T>, key: string): Observable<T>;
+export function distinctKey<T, K>(this: Observable<T>, key: string, compare: (x: K, y: K) => boolean, flushes?: Observable<any>): Observable<T>;
+/* tslint:disable:max-line-length */
+export function distinctKey<T>(this: Observable<T>, key: string, compare?: (x: T, y: T) => boolean, flushes?: Observable<any>): Observable<T> {
   return distinct.call(this, function(x: T, y: T) {
     if (compare) {
       return compare(x[key], y[key]);
     }
     return x[key] === y[key];
   }, flushes);
-}
-
-export interface DistinctKeySignature<T> {
-  (key: string): Observable<T>;
-  <K>(key: string, compare: (x: K, y: K) => boolean, flushes?: Observable<any>): Observable<T>;
 }

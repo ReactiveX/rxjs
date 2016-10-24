@@ -6,7 +6,7 @@ const Observable = Rx.Observable;
 
 /** @test {timeout} */
 describe('Observable.prototype.timeout', () => {
-  const defaultTimeoutError = new Error('timeout');
+  const defaultTimeoutError = new Rx.TimeoutError();
 
   asDiagram('timeout(50)')('should timeout after a specified timeout period', () => {
     const e1 =  cold('-------a--b--|');

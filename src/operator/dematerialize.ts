@@ -38,12 +38,8 @@ import { Notification } from '../Notification';
  * @method dematerialize
  * @owner Observable
  */
-export function dematerialize<T>(): Observable<any> {
+export function dematerialize<T>(this: Observable<T>): Observable<any> {
   return this.lift(new DeMaterializeOperator());
-}
-
-export interface DematerializeSignature<T> {
-  <R>(): Observable<R>;
 }
 
 class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {

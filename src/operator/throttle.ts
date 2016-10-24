@@ -45,12 +45,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method throttle
  * @owner Observable
  */
-export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
+export function throttle<T>(this: Observable<T>, durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
   return this.lift(new ThrottleOperator(durationSelector));
-}
-
-export interface ThrottleSignature<T> {
-  (durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T>;
 }
 
 class ThrottleOperator<T> implements Operator<T, T> {

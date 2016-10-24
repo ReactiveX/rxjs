@@ -50,18 +50,16 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method switchMapTo
  * @owner Observable
  */
-export function switchMapTo<T, I, R>(innerObservable: Observable<I>,
+/* tslint:disable:max-line-length */
+export function switchMapTo<T, R>(this: Observable<T>, observable: ObservableInput<R>): Observable<R>;
+export function switchMapTo<T, I, R>(this: Observable<T>, observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+/* tslint:disable:max-line-length */
+export function switchMapTo<T, I, R>(this: Observable<T>, innerObservable: Observable<I>,
                                      resultSelector?: (outerValue: T,
                                                        innerValue: I,
                                                        outerIndex: number,
-                                                       innerIndex: number) => R): Observable<R> {
+                                                       innerIndex: number) => R): Observable<I | R> {
   return this.lift(new SwitchMapToOperator(innerObservable, resultSelector));
-}
-
-export interface SwitchMapToSignature<T> {
-  <R>(observable: ObservableInput<R>): Observable<R>;
-  <I, R>(observable: ObservableInput<I>,
-         resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
 }
 
 class SwitchMapToOperator<T, I, R> implements Operator<T, I> {

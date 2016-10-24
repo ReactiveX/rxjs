@@ -18,7 +18,16 @@ import { isScheduler } from '../util/isScheduler';
  * @method startWith
  * @owner Observable
  */
-export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
+/* tslint:disable:max-line-length */
+export function startWith<T>(this: Observable<T>, v1: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, ...array: Array<T | Scheduler>): Observable<T>;
+/* tslint:disable:max-line-length */
+export function startWith<T>(this: Observable<T>, ...array: Array<T | Scheduler>): Observable<T> {
   let scheduler = <Scheduler>array[array.length - 1];
   if (isScheduler(scheduler)) {
     array.pop();
@@ -34,14 +43,4 @@ export function startWith<T>(...array: Array<T | Scheduler>): Observable<T> {
   } else {
     return concatStatic(new EmptyObservable<T>(scheduler), <Observable<T>>this);
   }
-}
-
-export interface StartWithSignature<T> {
-  (v1: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, v4: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: Scheduler): Observable<T>;
-  (v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: Scheduler): Observable<T>;
-  (...array: Array<T | Scheduler>): Observable<T>;
 }

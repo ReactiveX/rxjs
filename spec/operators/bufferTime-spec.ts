@@ -300,4 +300,23 @@ describe('Observable.prototype.bufferTime', () => {
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
+
+  it('should not have errors when take follows and maxBufferSize is provided', () => {
+    const tick = 10;
+    const bufferTime = 50;
+    const expected = '-----a----b----c----d----(e|)';
+    const values = {
+      a: [0, 1, 2, 3],
+      b: [4, 5, 6, 7, 8],
+      c: [9, 10, 11, 12, 13],
+      d: [14, 15, 16, 17, 18],
+      e: [19, 20, 21, 22, 23]
+    };
+
+    const source = Rx.Observable.interval(tick, rxTestScheduler)
+      .bufferTime(bufferTime, null, 10, rxTestScheduler)
+      .take(5);
+
+    expectObservable(source).toBe(expected, values);
+  });
 });

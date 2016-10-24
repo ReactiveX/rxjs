@@ -2,7 +2,7 @@
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
 // definition
-export {Subject} from './Subject';
+export {Subject, AnonymousSubject} from './Subject';
 /* tslint:enable:no-unused-variable */
 export {Observable} from './Observable';
 
@@ -44,7 +44,6 @@ import './add/operator/bufferCount';
 import './add/operator/bufferTime';
 import './add/operator/bufferToggle';
 import './add/operator/bufferWhen';
-import './add/operator/cache';
 import './add/operator/catch';
 import './add/operator/combineAll';
 import './add/operator/combineLatest';
@@ -155,6 +154,7 @@ export {Notification} from './Notification';
 export {EmptyError} from './util/EmptyError';
 export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
+export {TimeoutError} from './util/TimeoutError';
 export {UnsubscriptionError} from './util/UnsubscriptionError';
 export {TimeInterval} from './operator/timeInterval';
 export {Timestamp} from './operator/timestamp';

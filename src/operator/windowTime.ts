@@ -56,14 +56,10 @@ import { Subscription } from '../Subscription';
  * @method windowTime
  * @owner Observable
  */
-export function windowTime<T>(windowTimeSpan: number,
+export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
                               windowCreationInterval: number = null,
                               scheduler: Scheduler = async): Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, scheduler));
-}
-
-export interface WindowTimeSignature<T> {
-  (windowTimeSpan: number, windowCreationInterval?: number, scheduler?: Scheduler): Observable<Observable<T>>;
 }
 
 class WindowTimeOperator<T> implements Operator<T, Observable<T>> {

@@ -1,11 +1,11 @@
 
 import { Observable } from '../../Observable';
-import { takeUntil, TakeUntilSignature } from '../../operator/takeUntil';
+import { takeUntil } from '../../operator/takeUntil';
 
 Observable.prototype.takeUntil = takeUntil;
 
 declare module '../../Observable' {
   interface Observable<T> {
-    takeUntil: TakeUntilSignature<T>;
+    takeUntil: typeof takeUntil;
   }
 }

@@ -50,7 +50,12 @@ import { isScheduler } from '../util/isScheduler';
  * @method bufferTime
  * @owner Observable
  */
-export function bufferTime<T>(bufferTimeSpan: number): Observable<T[]> {
+/* tslint:disable:max-line-length */
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
+/* tslint:disable:max-line-length */
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number): Observable<T[]> {
   let length: number = arguments.length;
 
   let scheduler: Scheduler = async;
@@ -70,12 +75,6 @@ export function bufferTime<T>(bufferTimeSpan: number): Observable<T[]> {
   }
 
   return this.lift(new BufferTimeOperator<T>(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler));
-}
-
-export interface BufferTimeSignature<T> {
-  (bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
-  (bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
-  (bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
 }
 
 class BufferTimeOperator<T> implements Operator<T, T[]> {
@@ -174,7 +173,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     closeAction.unsubscribe();
     this.remove(closeAction);
 
-    if (this.timespanOnly) {
+    if (!this.closed && this.timespanOnly) {
       context = this.openContext();
       const bufferTimeSpan = this.bufferTimeSpan;
       const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };

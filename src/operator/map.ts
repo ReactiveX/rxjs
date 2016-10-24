@@ -35,15 +35,11 @@ import { Observable } from '../Observable';
  * @method map
  * @owner Observable
  */
-export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): Observable<R> {
+export function map<T, R>(this: Observable<T>, project: (value: T, index: number) => R, thisArg?: any): Observable<R> {
   if (typeof project !== 'function') {
     throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
   }
   return this.lift(new MapOperator(project, thisArg));
-}
-
-export interface MapSignature<T> {
-  <R>(project: (value: T, index: number) => R, thisArg?: any): Observable<R>;
 }
 
 export class MapOperator<T, R> implements Operator<T, R> {

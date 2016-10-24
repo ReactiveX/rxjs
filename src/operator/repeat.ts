@@ -18,7 +18,7 @@ import { TeardownLogic } from '../Subscription';
  * @method repeat
  * @owner Observable
  */
-export function repeat<T>(count: number = -1): Observable<T> {
+export function repeat<T>(this: Observable<T>, count: number = -1): Observable<T> {
   if (count === 0) {
     return new EmptyObservable<T>();
   } else if (count < 0) {
@@ -26,10 +26,6 @@ export function repeat<T>(count: number = -1): Observable<T> {
   } else {
     return this.lift(new RepeatOperator(count - 1, this));
   }
-}
-
-export interface RepeatSignature<T> {
-  (count?: number): Observable<T>;
 }
 
 class RepeatOperator<T> implements Operator<T, T> {

@@ -16,7 +16,11 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method race
  * @owner Observable
  */
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T> {
+/* tslint:disable:max-line-length */
+export function race<T>(this: Observable<T>, ...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
+export function race<T, R>(this: Observable<T>, ...observables: Array<Observable<any> | Array<Observable<T>>>): Observable<R>;
+/* tslint:disable:max-line-length */
+export function race<T>(this: Observable<T>, ...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T> {
   // if the only argument is an array, it was most likely called with
   // `pair([obs1, obs2, ...])`
   if (observables.length === 1 && isArray(observables[0])) {
@@ -24,11 +28,6 @@ export function race<T>(...observables: Array<Observable<T> | Array<Observable<T
   }
 
   return this.lift.call(raceStatic<T>(this, ...observables));
-}
-
-export interface RaceSignature<T> {
-  (...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
-  <R>(...observables: Array<Observable<any> | Array<Observable<T>>>): Observable<R>;
 }
 
 /**

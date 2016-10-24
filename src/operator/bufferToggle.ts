@@ -45,13 +45,9 @@ import { InnerSubscriber } from '../InnerSubscriber';
  * @method bufferToggle
  * @owner Observable
  */
-export function bufferToggle<T, O>(openings: SubscribableOrPromise<O>,
+export function bufferToggle<T, O>(this: Observable<T>, openings: SubscribableOrPromise<O>,
                                    closingSelector: (value: O) => SubscribableOrPromise<any>): Observable<T[]> {
   return this.lift(new BufferToggleOperator<T, O>(openings, closingSelector));
-}
-
-export interface BufferToggleSignature<T> {
-  <O>(openings: SubscribableOrPromise<O>, closingSelector: (value: O) => SubscribableOrPromise<any>): Observable<T[]>;
 }
 
 class BufferToggleOperator<T, O> implements Operator<T, T[]> {
