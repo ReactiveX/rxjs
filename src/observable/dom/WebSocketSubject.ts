@@ -220,10 +220,12 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     subscription.add(this._output.subscribe(subscriber));
     subscription.add(() => {
       const { socket } = this;
-      if (this._output.observers.length === 0 && socket && socket.readyState === 1) {
-        socket.close();
+      if (this._output.observers.length === 0) {
+        if (socket && socket.readyState === 1) {
+          socket.close();
+        }
+        this._resetState();
       }
-      this._resetState();
     });
     return subscription;
   }
