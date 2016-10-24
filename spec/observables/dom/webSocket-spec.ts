@@ -507,6 +507,61 @@ describe('Observable.webSocket', () => {
       (<any>socket.close).restore();
     });
 
+    it('should keep the same socket for multiple multiplex subscriptions', () => {
+      const socketSubject = Rx.Observable.webSocket(<any>{url: 'ws://mysocket'});
+      const results = [];
+      const socketMessages = [
+        {id: 'A'},
+        {id: 'B'},
+        {id: 'A'},
+        {id: 'B'},
+        {id: 'B'},
+      ];
+
+      const sub1 = socketSubject.multiplex(
+        () => 'no-op',
+        () => results.push('A unsub'),
+        (req: any) => req.id === 'A')
+        .takeWhile((req: any) => !req.complete)
+        .subscribe(
+          () => results.push('A next'),
+          (e) => results.push('A error ' + e),
+          () => results.push('A complete')
+        );
+
+      socketSubject.multiplex(
+        () => 'no-op',
+        () => results.push('B unsub'),
+        (req: any) => req.id === 'B')
+        .subscribe(
+          () => results.push('B next'),
+          (e) => results.push('B error ' + e),
+          () => results.push('B complete')
+        );
+
+      // Setup socket and send messages
+      let socket = MockWebSocket.lastSocket;
+      socket.open();
+      socketMessages.forEach((msg, i) => {
+        if (i === 1) {
+          sub1.unsubscribe();
+          expect(socketSubject.socket).to.equal(socket);
+        }
+        socket.triggerMessage(JSON.stringify(msg));
+      });
+      socket.triggerClose({ wasClean: true });
+
+      expect(results).to.deep.equal([
+        'A next',
+        'A unsub',
+        'B next',
+        'B next',
+        'B next',
+        'B complete',
+        'B unsub',
+      ]);
+    });
+
     it('should not close the socket until all subscriptions complete', () => {
       const socketSubject = Rx.Observable.webSocket(<any>{url: 'ws://mysocket'});
       const results = [];

@@ -4,6 +4,7 @@ declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions, time
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
+const ReplaySubject = Rx.ReplaySubject;
 
 /** @test {multicast} */
 describe('Observable.prototype.multicast', () => {
@@ -79,6 +80,26 @@ describe('Observable.prototype.multicast', () => {
     const expected1   =     '-2-4-6----8-|';
     const expected2   =     '    -2-4-6----8-|';
     const expected3   =     '        -2-4-6----8-|';
+    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+
+    expectObservable(subscriber1).toBe(expected1);
+    expectObservable(subscriber2).toBe(expected2);
+    expectObservable(subscriber3).toBe(expected3);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should accept a multicast selector and respect the subject\'s messaging semantics', () => {
+    const source =     cold('-1-2-3----4-|');
+    const sourceSubs =     ['^           !',
+                            '    ^           !',
+                            '        ^           !'];
+    const multicasted = source.multicast(() => new ReplaySubject(1),
+      x => x.concat(x.takeLast(1)));
+    const expected1   =     '-1-2-3----4-(4|)';
+    const expected2   =     '    -1-2-3----4-(4|)';
+    const expected3   =     '        -1-2-3----4-(4|)';
     const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
     const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
     const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
