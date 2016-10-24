@@ -293,39 +293,42 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private setupEvents(xhr: XMLHttpRequest, request: AjaxRequest) {
     const progressSubscriber = request.progressSubscriber;
 
-    xhr.ontimeout = function xhrTimeout(e) {
+    function xhrTimeout(e: ProgressEvent) {
       const {subscriber, progressSubscriber, request } = (<any>xhrTimeout);
       if (progressSubscriber) {
         progressSubscriber.error(e);
       }
       subscriber.error(new AjaxTimeoutError(this, request)); //TODO: Make betterer.
     };
-    (<any>xhr.ontimeout).request = request;
-    (<any>xhr.ontimeout).subscriber = this;
-    (<any>xhr.ontimeout).progressSubscriber = progressSubscriber;
-
+    xhr.ontimeout = xhrTimeout;
+    (<any>xhrTimeout).request = request;
+    (<any>xhrTimeout).subscriber = this;
+    (<any>xhrTimeout).progressSubscriber = progressSubscriber;
     if (xhr.upload && 'withCredentials' in xhr && root.XDomainRequest) {
       if (progressSubscriber) {
-        xhr.onprogress = function xhrProgress(e) {
+        let xhrProgress: (e: ProgressEvent) => void;
+        xhrProgress = function(e: ProgressEvent) {
           const { progressSubscriber } = (<any>xhrProgress);
           progressSubscriber.next(e);
         };
-        (<any>xhr.onprogress).progressSubscriber = progressSubscriber;
+        xhr.onprogress = xhrProgress;
+        (<any>xhrProgress).progressSubscriber = progressSubscriber;
       }
-
-      xhr.onerror = function xhrError(e) {
+      let xhrError: (e: ErrorEvent) => void;
+      xhrError = function(e: ErrorEvent) {
         const { progressSubscriber, subscriber, request } = (<any>xhrError);
         if (progressSubscriber) {
           progressSubscriber.error(e);
         }
         subscriber.error(new AjaxError('ajax error', this, request));
       };
-      (<any>xhr.onerror).request = request;
-      (<any>xhr.onerror).subscriber = this;
-      (<any>xhr.onerror).progressSubscriber = progressSubscriber;
+      xhr.onerror = xhrError;
+      (<any>xhrError).request = request;
+      (<any>xhrError).subscriber = this;
+      (<any>xhrError).progressSubscriber = progressSubscriber;
     }
 
-    xhr.onreadystatechange = function xhrReadyStateChange(e) {
+    function xhrReadyStateChange(e: ProgressEvent) {
       const { subscriber, progressSubscriber, request } = (<any>xhrReadyStateChange);
       if (this.readyState === 4) {
         // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
@@ -354,9 +357,10 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         }
       }
     };
-    (<any>xhr.onreadystatechange).subscriber = this;
-    (<any>xhr.onreadystatechange).progressSubscriber = progressSubscriber;
-    (<any>xhr.onreadystatechange).request = request;
+    xhr.onreadystatechange = xhrReadyStateChange;
+    (<any>xhrReadyStateChange).subscriber = this;
+    (<any>xhrReadyStateChange).progressSubscriber = progressSubscriber;
+    (<any>xhrReadyStateChange).request = request;
   }
 
   unsubscribe() {

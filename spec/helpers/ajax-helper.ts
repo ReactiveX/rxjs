@@ -135,6 +135,12 @@ export class MockXMLHttpRequest {
   requestHeaders: any = {};
   withCredentials: boolean = false;
 
+  onreadystatechange: (e: ProgressEvent) => any;
+  onerror: (e: ErrorEvent) => any;
+  onprogress: (e: ProgressEvent) => any;
+  ontimeout: (e: ProgressEvent) => any;
+  upload: XMLHttpRequestUpload;
+
   constructor() {
     this.previousRequest = MockXMLHttpRequest.recentRequest;
     MockXMLHttpRequest.recentRequest = this;
