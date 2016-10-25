@@ -22,7 +22,7 @@ interface SchedulerState<T, S> {
 
 export interface GenerateBaseOptions<S> {
   /**
-   * Inital state.
+   * Initial state.
   */
   initialState: S;
   /**
@@ -124,7 +124,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * Generates an observable sequence by running a state-driven loop
    * producing the sequence's elements, using the specified scheduler
    * to send out observer messages.
-   * The overload accepts options object that might contain inital state, iterate,
+   * The overload accepts options object that might contain initial state, iterate,
    * condition and scheduler.
    *
    * <img src="./img/generate.png" width="100%">
@@ -148,7 +148,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * Generates an observable sequence by running a state-driven loop
    * producing the sequence's elements, using the specified scheduler
    * to send out observer messages.
-   * The overload accepts options object that might contain inital state, iterate,
+   * The overload accepts options object that might contain initial state, iterate,
    * condition, result selector and scheduler.
    *
    * <img src="./img/generate.png" width="100%">
