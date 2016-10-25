@@ -48,7 +48,7 @@ export type SelectorMethodSignature<T> = (...args: Array<any>) => T;
  * @extends {Ignored}
  * @hide true
  */
-export class FromEventObservable<T, R> extends Observable<T> {
+export class FromEventObservable<T> extends Observable<T> {
 
   /* tslint:disable:max-line-length */
   static create<T>(target: EventTargetLike, eventName: string): Observable<T>;
