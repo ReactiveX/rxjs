@@ -67,7 +67,7 @@ export interface AjaxCreationMethod {
   post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
   put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
   delete(url: string, headers?: Object): Observable<AjaxResponse>;
-  getJSON<T, R>(url: string, headers?: Object): Observable<R>;
+  getJSON<T>(url: string, headers?: Object): Observable<T>;
 }
 
 export function ajaxGet(url: string, headers: Object = null) {
