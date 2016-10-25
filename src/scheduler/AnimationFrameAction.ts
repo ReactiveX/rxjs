@@ -10,7 +10,7 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
 export class AnimationFrameAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: AnimationFrameScheduler,
-              protected work: (state?: T) => void) {
+              protected work: (this: AnimationFrameAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 

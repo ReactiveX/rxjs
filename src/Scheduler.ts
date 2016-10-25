@@ -53,7 +53,7 @@ export class Scheduler {
    * @return {Subscription} A subscription in order to be able to unsubscribe
    * the scheduled work.
    */
-  public schedule<T>(work: (state?: T) => void, delay: number = 0, state?: T): Subscription {
+  public schedule<T>(work: (this: Action<T>, state?: T) => void, delay: number = 0, state?: T): Subscription {
     return new this.SchedulerAction<T>(this, work).schedule(state, delay);
   }
 }

@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import { VirtualAction } from '../../dist/cjs/scheduler/VirtualTimeScheduler';
 
 const VirtualTimeScheduler = Rx.VirtualTimeScheduler;
 
@@ -68,7 +69,7 @@ describe('VirtualTimeScheduler', () => {
     let count = 0;
     const expected = [100, 200, 300];
 
-    v.schedule(function(state) {
+    v.schedule<string>(function(this: VirtualAction<string>, state: string) {
       if (++count === 3) {
         return;
       }
