@@ -13,7 +13,7 @@ rollup.rollup({
   var out = babel.transform(result.code, {
     compact: false,
     presets: [
-      ['es2015', {loose: true}]
+      ['es2015', { loose: true }]
     ],
   });
 
