@@ -141,7 +141,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     // Compare the local RefCountSubscriber's connection Subscription to the
     // connection Subscription on the shared ConnectableObservable. In cases
     // where the ConnectableObservable source synchronously emits values, and
-    // the RefCountSubscriber's dowstream Observers synchronously unsubscribe,
+    // the RefCountSubscriber's downstream Observers synchronously unsubscribe,
     // execution continues to here before the RefCountOperator has a chance to
     // supply the RefCountSubscriber with the shared connection Subscription.
     // For example:
