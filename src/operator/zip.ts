@@ -93,7 +93,6 @@ export class ZipOperator<T, R> implements Operator<T, R> {
  * @extends {Ignored}
  */
 export class ZipSubscriber<T, R> extends Subscriber<T> {
-  private index = 0;
   private values: any;
   private project: (...values: Array<any>) => R;
   private iterators: LookAheadIterator<any>[] = [];
@@ -109,13 +108,12 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
 
   protected _next(value: any) {
     const iterators = this.iterators;
-    const index = this.index++;
     if (isArray(value)) {
       iterators.push(new StaticArrayIterator(value));
     } else if (typeof value[$$iterator] === 'function') {
       iterators.push(new StaticIterator(value[$$iterator]()));
     } else {
-      iterators.push(new ZipBufferIterator(this.destination, this, value, index));
+      iterators.push(new ZipBufferIterator(this.destination, this, value));
     }
   }
 
@@ -263,8 +261,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
 
   constructor(destination: PartialObserver<T>,
               private parent: ZipSubscriber<T, R>,
-              private observable: Observable<T>,
-              private index: number) {
+              private observable: Observable<T>) {
     super(destination);
   }
 
