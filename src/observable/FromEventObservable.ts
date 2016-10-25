@@ -84,7 +84,7 @@ export class FromEventObservable<T, R> extends Observable<T> {
    * EventEmitter, NodeList or HTMLCollection to attach the event handler to.
    * @param {string} eventName The event name of interest, being emitted by the
    * `target`.
-   * @parm {EventListenerOptions} [options] Options to pass through to addEventListener
+   * @param {EventListenerOptions} [options] Options to pass through to addEventListener
    * @param {SelectorMethodSignature<T>} [selector] An optional function to
    * post-process results. It takes the arguments from the event handler and
    * should return a single value.
