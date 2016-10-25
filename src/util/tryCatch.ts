@@ -2,7 +2,7 @@ import { errorObject } from './errorObject';
 
 let tryCatchTarget: Function;
 
-function tryCatcher(): any {
+function tryCatcher(this: any): any {
   try {
     return tryCatchTarget.apply(this, arguments);
   } catch (e) {

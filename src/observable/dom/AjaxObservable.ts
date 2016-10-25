@@ -23,7 +23,7 @@ export interface AjaxRequest {
   responseType?: string;
 }
 
-function getCORSRequest(): XMLHttpRequest {
+function getCORSRequest(this: AjaxRequest): XMLHttpRequest {
   if (root.XMLHttpRequest) {
     const xhr = new root.XMLHttpRequest();
     if ('withCredentials' in xhr) {
@@ -144,7 +144,7 @@ export class AjaxObservable<T> extends Observable<T> {
 
     const request: AjaxRequest = {
       async: true,
-      createXHR: function() {
+      createXHR: function(this: AjaxRequest) {
         return this.crossDomain ? getCORSRequest.call(this) : getXMLHttpRequest();
       },
       crossDomain: false,
@@ -293,7 +293,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private setupEvents(xhr: XMLHttpRequest, request: AjaxRequest) {
     const progressSubscriber = request.progressSubscriber;
 
-    function xhrTimeout(e: ProgressEvent) {
+    function xhrTimeout(this: XMLHttpRequest, e: ProgressEvent) {
       const {subscriber, progressSubscriber, request } = (<any>xhrTimeout);
       if (progressSubscriber) {
         progressSubscriber.error(e);
@@ -315,7 +315,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         (<any>xhrProgress).progressSubscriber = progressSubscriber;
       }
       let xhrError: (e: ErrorEvent) => void;
-      xhrError = function(e: ErrorEvent) {
+      xhrError = function(this: XMLHttpRequest, e: ErrorEvent) {
         const { progressSubscriber, subscriber, request } = (<any>xhrError);
         if (progressSubscriber) {
           progressSubscriber.error(e);
@@ -328,7 +328,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       (<any>xhrError).progressSubscriber = progressSubscriber;
     }
 
-    function xhrReadyStateChange(e: ProgressEvent) {
+    function xhrReadyStateChange(this: XMLHttpRequest, e: ProgressEvent) {
       const { subscriber, progressSubscriber, request } = (<any>xhrReadyStateChange);
       if (this.readyState === 4) {
         // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
