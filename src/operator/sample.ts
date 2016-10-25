@@ -49,7 +49,10 @@ class SampleOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new SampleSubscriber(subscriber, this.notifier));
+    const sampleSubscriber = new SampleSubscriber(subscriber);
+    const subscription = source._subscribe(sampleSubscriber);
+    subscription.add(subscribeToResult(sampleSubscriber, this.notifier));
+    return subscription;
   }
 }
 
@@ -61,11 +64,6 @@ class SampleOperator<T> implements Operator<T, T> {
 class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private value: T;
   private hasValue: boolean = false;
-
-  constructor(destination: Subscriber<any>, notifier: Observable<any>) {
-    super(destination);
-    this.add(subscribeToResult(this, notifier));
-  }
 
   protected _next(value: T) {
     this.value = value;
