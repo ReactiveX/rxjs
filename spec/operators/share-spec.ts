@@ -19,7 +19,7 @@ describe('Observable.prototype.share', () => {
 
   it('should share a single subscription', () => {
     let subscriptionCount = 0;
-    const obs = new Observable((observer: Rx.Observer<any>) => {
+    const obs = new Observable((_observer: Rx.Observer<any>) => {
       subscriptionCount++;
     });
 

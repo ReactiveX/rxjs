@@ -35,7 +35,7 @@ describe('subscribeToResult', () => {
 
   it('should emit error when observable emits error', (done: MochaDone) => {
     const result = Rx.Observable.throw(new Error('error'));
-    const subscriber = new OuterSubscriber(x => {
+    const subscriber = new OuterSubscriber(_x => {
       done(new Error('should not be called'));
     }, (err) => {
       expect(err).to.be.an('error', 'error');
@@ -73,7 +73,7 @@ describe('subscribeToResult', () => {
   it('should emits error when the promise rejects', (done: MochaDone) => {
     const result = Promise.reject(42);
 
-    const subscriber = new OuterSubscriber(x => {
+    const subscriber = new OuterSubscriber(_x => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.be.equal(42);
@@ -122,7 +122,7 @@ describe('subscribeToResult', () => {
   it('should emit an error if value returned by Symbol.observable call is not a valid observable', (done: MochaDone) => {
     const observableSymbolObject = { [$$symbolObservable]: () => ({}) };
 
-    const subscriber = new OuterSubscriber(x => {
+    const subscriber = new OuterSubscriber(_x => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.be.an('error', 'invalid observable');
@@ -135,7 +135,7 @@ describe('subscribeToResult', () => {
   });
 
   it('should emit an error when trying to subscribe to an unknown type of object', (done: MochaDone) => {
-    const subscriber = new OuterSubscriber(x => {
+    const subscriber = new OuterSubscriber(_x => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.be.an('error', 'unknown type returned');

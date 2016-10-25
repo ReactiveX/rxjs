@@ -150,8 +150,8 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   }
 
   notifyNext(outerValue: any, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+             _outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, any>): void {
 
     if (outerValue === this.openings) {
 

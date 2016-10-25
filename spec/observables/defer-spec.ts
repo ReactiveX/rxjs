@@ -44,7 +44,7 @@ describe('Observable.defer', () => {
     e1.subscribe((x: number) => {
       expect(x).to.equal(expected);
       done();
-    }, x => {
+    }, _err => {
       done(new Error('should not be called'));
     });
   });
@@ -52,10 +52,10 @@ describe('Observable.defer', () => {
   it('should accept factory returns promise rejects', (done: MochaDone) => {
     const expected = 42;
     const e1 = Observable.defer(() => {
-      return new Promise((resolve: any, reject: any) => { reject(expected); });
+      return new Promise((_resolve: any, reject: any) => { reject(expected); });
     });
 
-    e1.subscribe((x: number) => {
+    e1.subscribe((_x: number) => {
       done(new Error('should not be called'));
     }, x => {
       expect(x).to.equal(expected);

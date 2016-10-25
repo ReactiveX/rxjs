@@ -73,7 +73,7 @@ describe('Observable.prototype.min', () => {
     (<any>Rx.Observable.range(1, 10000)).min().subscribe(
       (value: number) => {
         expect(value).to.equal(1);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -84,7 +84,7 @@ describe('Observable.prototype.min', () => {
     (<any>Rx.Observable.range(1, 10)).skip(1).min().subscribe(
       (value: number) => {
         expect(value).to.equal(2);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -95,7 +95,7 @@ describe('Observable.prototype.min', () => {
     (<any>Rx.Observable.range(1, 10)).take(1).min().subscribe(
       (value: number) => {
         expect(value).to.equal(1);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -125,7 +125,7 @@ describe('Observable.prototype.min', () => {
     const e1subs =    '^   !';
     const expected =  '----|';
 
-    const predicate = function (x, y) {
+    const predicate = function (_x, _y) {
       return 42;
     };
 
@@ -138,7 +138,7 @@ describe('Observable.prototype.min', () => {
     const e1subs =    '^    ';
     const expected =  '-----';
 
-    const predicate = function (x, y) {
+    const predicate = function (_x, _y) {
       return 42;
     };
 

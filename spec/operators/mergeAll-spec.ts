@@ -383,7 +383,7 @@ describe('Observable.prototype.mergeAll', () => {
     const res = [];
     (<any>e1.mergeAll()).subscribe(
       (x: any) => { res.push(x); },
-      (err: any) => { done(new Error('should not be called')); },
+      (_err: any) => { done(new Error('should not be called')); },
       () => {
         expect(res).to.deep.equal(expected);
         done();
@@ -394,7 +394,7 @@ describe('Observable.prototype.mergeAll', () => {
     const error = 'error';
     const e1 = Rx.Observable.from([
       new Promise((res: any) => { res('a'); }),
-      new Promise((res: any, rej: any) => { rej(error); }),
+      new Promise((_res: any, rej: any) => { rej(error); }),
       new Promise((res: any) => { res('c'); }),
       new Promise((res: any) => { res('d'); }),
     ]);

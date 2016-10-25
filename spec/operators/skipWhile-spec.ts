@@ -73,7 +73,7 @@ describe('Observable.prototype.skipWhile', () => {
     const sourceSubs =        '^                   !';
     const expected =          '--------e--f--g--h--|';
 
-    const predicate = function (v, index) {
+    const predicate = function (_v, index) {
       return index < 2;
     };
 
@@ -87,7 +87,7 @@ describe('Observable.prototype.skipWhile', () => {
     const unsub =             '-----------!';
     const expected =          '-----d--e---';
 
-    const predicate = function (v, index) {
+    const predicate = function (_v, index) {
       return index < 1;
     };
 
@@ -101,7 +101,7 @@ describe('Observable.prototype.skipWhile', () => {
     const expected =          '-----d--e---';
     const unsub =             '           !';
 
-    const predicate = function (v, index) {
+    const predicate = function (_v, index) {
       return index < 1;
     };
 

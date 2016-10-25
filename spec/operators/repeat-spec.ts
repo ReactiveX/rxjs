@@ -284,7 +284,7 @@ describe('Observable.prototype.repeat', () => {
       .repeat(5)
       .subscribe(
         (x: number) => { expect(x).to.equal(expected.shift()); },
-        (x) => {
+        (_err) => {
           done(new Error('should not be called'));
         }, () => {
           expect(expected.length).to.equal(0);

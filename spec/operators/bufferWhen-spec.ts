@@ -304,11 +304,11 @@ describe('Observable.prototype.bufferWhen', () => {
 
     source
       .bufferWhen(() => closing)
-      .takeWhile((val: any, index: number) => index < TOO_MANY_INVOCATIONS)
+      .takeWhile((_val: any, index: number) => index < TOO_MANY_INVOCATIONS)
       .subscribe((val: any) => {
         expect(Array.isArray(val)).to.be.true;
         expect(val.length).to.equal(0);
-      }, (err: any) => {
+      }, (_err: any) => {
         done(new Error('should not be called'));
       }, () => {
         done();

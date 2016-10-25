@@ -50,7 +50,7 @@ describe('Observable.range', () => {
       expect(asap.schedule).have.been.called;
       const exp = expected.shift();
       expect(x).to.equal(exp);
-    }, function (x) {
+    }, function (_err) {
       done(new Error('should not be called'));
     }, () => {
       (<any>asap.schedule).restore();

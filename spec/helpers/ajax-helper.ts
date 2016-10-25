@@ -151,7 +151,7 @@ export class MockXMLHttpRequest {
     this.data = data;
   }
 
-  open(method: any, url: any, async: any, user: any, password: any): void {
+  open(method: any, url: any, _async: any, user: any, password: any): void {
     this.method = method;
     this.url = url;
     this.user = user;
@@ -177,7 +177,7 @@ export class MockXMLHttpRequest {
     }
   }
 
-  throwError(err: any): void {
+  throwError(_err: any): void {
     // TODO: something better with errors
     this.triggerEvent('error');
   }

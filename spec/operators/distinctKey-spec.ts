@@ -202,7 +202,7 @@ describe('Observable.prototype.distinctKey', () => {
     const e1 =   hot('--a--b--c--d--e--|', values);
     const e1subs =   '^                !';
     const expected = '--a-----c-----e--|';
-    const selector = (x: number, y: number) => y % 2 === 0;
+    const selector = (_x: number, y: number) => y % 2 === 0;
 
     expectObservable((<any>e1).distinctKey('val', selector)).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

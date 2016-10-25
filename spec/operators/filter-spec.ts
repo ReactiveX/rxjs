@@ -78,7 +78,7 @@ describe('Observable.prototype.filter', () => {
     const expected =          '--3---5-#           ';
 
     let invoked = 0;
-    function predicate(x: any, index: number) {
+    function predicate(x: any, _index: number) {
       invoked++;
       if (invoked === 4) {
         throw 'error';
@@ -245,10 +245,10 @@ describe('Observable.prototype.filter', () => {
   });
 
   it('should send errors down the error path', (done: MochaDone) => {
-    Observable.of(42).filter(<any>((x: number, index: number) => {
+    Observable.of(42).filter(<any>((_x: number, _index: number) => {
       throw 'bad';
     }))
-      .subscribe((x: number) => {
+      .subscribe((_x: number) => {
         done(new Error('should not be called'));
       }, (err: any) => {
         expect(err).to.equal('bad');

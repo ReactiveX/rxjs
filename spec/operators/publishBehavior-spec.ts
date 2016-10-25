@@ -229,7 +229,7 @@ describe('Observable.prototype.publishBehavior', () => {
 
     connectable.subscribe(function (x) {
       results2.push(x);
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       expect(results2).to.deep.equal([]);

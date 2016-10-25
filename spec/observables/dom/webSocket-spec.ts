@@ -289,7 +289,7 @@ describe('Observable.webSocket', () => {
     it('if the resultSelector fails it should go down the error path', () => {
       const subject = Observable.webSocket({
         url: 'ws://mysocket',
-        resultSelector: (e: any) => {
+        resultSelector: (_e: any) => {
           throw new Error('I am a bad error');
         }
       });
@@ -378,7 +378,7 @@ describe('Observable.webSocket', () => {
     it('should handle constructor errors', () => {
       const subject = Observable.webSocket(<any>{
         url: 'bad_url',
-        WebSocketCtor: (url: string, protocol?: string | string[]): WebSocket => {
+        WebSocketCtor: (_url: string, _protocol?: string | string[]): WebSocket => {
           throw new Error(`connection refused`);
         }
       });

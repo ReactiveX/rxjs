@@ -135,7 +135,7 @@ describe('Observable.prototype.last', () => {
     const expected =    '--------#           ';
 
     const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
+    const resultSelector = function (_x, _i) {
       throw 'error';
     };
 

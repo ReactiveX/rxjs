@@ -83,13 +83,13 @@ module.exports = function(suite) {
      * exceptional type definition won't be used in test cases.
      */
 
-    context.type = function (title, fn) {
+    context.type = function (_title, _fn) {
       //intentionally does not execute to avoid unexpected side effect occurs by subscription,
       //or infinite source. Suffecient to check build time only.
     };
 
     function stringify(x): string {
-      return JSON.stringify(x, function (key, value) {
+      return JSON.stringify(x, function (_key, value) {
         if (Array.isArray(value)) {
           return '[' + value
             .map(function (i) {

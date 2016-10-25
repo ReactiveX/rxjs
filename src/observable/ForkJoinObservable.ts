@@ -105,8 +105,8 @@ class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
     }
   }
 
-  notifyNext(outerValue: any, innerValue: T,
-             outerIndex: number, innerIndex: number,
+  notifyNext(_outerValue: any, innerValue: T,
+             outerIndex: number, _innerIndex: number,
              innerSub: InnerSubscriber<T, T>): void {
     this.values[outerIndex] = innerValue;
     if (!(<any>innerSub)._hasValue) {

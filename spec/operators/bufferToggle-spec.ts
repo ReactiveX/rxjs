@@ -16,7 +16,7 @@ describe('Observable.prototype.bufferToggle', () => {
       y: ['f'],
     };
 
-    const result = e1.bufferToggle(e2, (x: any) => e3);
+    const result = e1.bufferToggle(e2, (_x: any) => e3);
 
     expectObservable(result).toBe(expected, values);
   });
@@ -356,7 +356,7 @@ describe('Observable.prototype.bufferToggle', () => {
       return Observable.timer(50);
     }).subscribe((x) => {
       expect(x).to.deep.equal(expected.shift());
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       expect(expected.length).to.be.equal(0);
@@ -373,9 +373,9 @@ describe('Observable.prototype.bufferToggle', () => {
 
     const expected = 42;
 
-    e1.bufferToggle(new Promise((resolve: any, reject: any) => { reject(expected); }), () => {
+    e1.bufferToggle(new Promise((_resolve: any, reject: any) => { reject(expected); }), () => {
       return Observable.timer(50);
-    }).subscribe((x) => {
+    }).subscribe((_x) => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.equal(expected);
@@ -413,8 +413,8 @@ describe('Observable.prototype.bufferToggle', () => {
 
     const expected = 42;
 
-    e1.bufferToggle(Observable.of(10), () => new Promise((resolve: any, reject: any) => { reject(expected); }))
-      .subscribe((x) => {
+    e1.bufferToggle(Observable.of(10), () => new Promise((_resolve: any, reject: any) => { reject(expected); }))
+      .subscribe((_x) => {
         done(new Error('should not be called'));
       }, (x) => {
         expect(x).to.equal(expected);

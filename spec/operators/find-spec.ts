@@ -6,7 +6,7 @@ const Observable = Rx.Observable;
 
 /** @test {find} */
 describe('Observable.prototype.find', () => {
-  function truePredicate(x) {
+  function truePredicate(_x) {
     return true;
   }
 
@@ -148,7 +148,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^ !';
     const expected =   '--#';
 
-    const predicate = function (value) {
+    const predicate = function (_value) {
       throw 'error';
     };
 

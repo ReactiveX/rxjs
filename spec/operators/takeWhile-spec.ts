@@ -110,7 +110,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^       !      ';
     const expected =   '--b--c--|      ';
 
-    function predicate(value, index) {
+    function predicate(_value, index) {
       return index < 2;
     }
 
@@ -159,7 +159,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^ !            ';
     const expected =   '--#            ';
 
-    function predicate(value) {
+    function predicate(_value) {
       throw 'error';
     }
 

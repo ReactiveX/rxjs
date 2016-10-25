@@ -85,7 +85,7 @@ describe('Observable.prototype.switchMap', () => {
       throw 'error';
     }
 
-    const result = e1.switchMap((value: string) => x, selector);
+    const result = e1.switchMap((_value: string) => x, selector);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);

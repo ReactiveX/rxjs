@@ -31,7 +31,7 @@ describe('Observable.prototype.concatAll', () => {
     const res = [];
     (<any>sources.concatAll()).subscribe(
       (x: number) => { res.push(x); },
-      (err: any) => { done(new Error('should not be called')); },
+      (_err: any) => { done(new Error('should not be called')); },
       () => {
         expect(res).to.deep.equal([0, 1, 2, 3]);
         done();
@@ -43,7 +43,7 @@ describe('Observable.prototype.concatAll', () => {
 
     const sources = Rx.Observable.from([
       new Promise((res: any) => { res(0); }),
-      new Promise((res: any, rej: any) => { rej(1); }),
+      new Promise((_res: any, rej: any) => { rej(1); }),
       new Promise((res: any) => { res(2); }),
       new Promise((res: any) => { res(3); }),
     ]).take(10);

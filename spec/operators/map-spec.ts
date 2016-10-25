@@ -55,7 +55,7 @@ describe('Observable.prototype.map', () => {
     const asubs =    '^ !   ';
     const expected = '--#   ';
 
-    const r = a.map((x: any) => {
+    const r = a.map((_x: any) => {
       throw 'too bad';
     });
 

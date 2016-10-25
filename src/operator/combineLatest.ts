@@ -125,15 +125,15 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyComplete(unused: Subscriber<R>): void {
+  notifyComplete(_innerSub: Subscriber<R>): void {
     if ((this.active -= 1) === 0) {
       this.destination.complete();
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R,
+             outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, R>): void {
     const values = this.values;
     const oldVal = values[outerIndex];
     const toRespond = !this.toRespond

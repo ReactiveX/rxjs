@@ -55,7 +55,7 @@ describe('Observable.prototype.concatMap', () => {
                      '                               ^         !'];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|';
 
-    const result = e1.concatMap((value: any) => inner);
+    const result = e1.concatMap((_errors: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -159,7 +159,7 @@ describe('Observable.prototype.concatMap', () => {
                      '                               ^         !       '];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l--------|';
 
-    const result = e1.concatMap((value: any) => inner);
+    const result = e1.concatMap((_value: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -177,7 +177,7 @@ describe('Observable.prototype.concatMap', () => {
                      '                               ^         !       '];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l---------';
 
-    const result = e1.concatMap((value: any) => inner);
+    const result = e1.concatMap((_value: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -192,7 +192,7 @@ describe('Observable.prototype.concatMap', () => {
     const innersubs =  ' ^                ';
     const expected =   '---i-j-k-l--------';
 
-    const result = e1.concatMap((value: any) => inner);
+    const result = e1.concatMap((_value: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -207,7 +207,7 @@ describe('Observable.prototype.concatMap', () => {
     const innersubs =  ' ^         !      ';
     const expected =   '---i-j-k-l-#      ';
 
-    const result = e1.concatMap((value: any) => inner);
+    const result = e1.concatMap((_value: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -223,7 +223,7 @@ describe('Observable.prototype.concatMap', () => {
                      '           ^     !'];
     const expected =   '---i-j-k-l---i-j-#';
 
-    const result = e1.concatMap((value: any) => inner);
+    const result = e1.concatMap((_value: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -238,7 +238,7 @@ describe('Observable.prototype.concatMap', () => {
     const innersubs =  ' ^         !      ';
     const expected =   '---i-j-k-l-#      ';
 
-    const result = e1.concatMap((value: any) => inner);
+    const result = e1.concatMap((_value: any) => inner);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -653,13 +653,13 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
-    const project = (value: any) => Observable.from(Promise.resolve(42));
+    const project = (_value: any) => Observable.from(Promise.resolve(42));
 
     const results = [];
     source.concatMap(project).subscribe(
       (x: any) => {
         results.push(x);
-      }, (err: any) => {
+      }, (_err: any) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       }, () => {
         expect(results).to.deep.equal([42, 42, 42, 42]);
@@ -669,10 +669,10 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should map values to constant rejected promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
-    const project = (value: any) => Observable.from(Promise.reject(42));
+    const project = (_value: any) => Observable.from(Promise.reject(42));
 
     source.concatMap(project).subscribe(
-      (x: any) => {
+      (_x: any) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       }, (err: any) => {
         expect(err).to.deep.equal(42);
@@ -690,7 +690,7 @@ describe('Observable.prototype.concatMap', () => {
     source.concatMap(project).subscribe(
       (x: any) => {
         results.push(x);
-      }, (err: any) => {
+      }, (_err: any) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       }, () => {
         expect(results).to.deep.equal([4, 4, 4, 4]);
@@ -703,7 +703,7 @@ describe('Observable.prototype.concatMap', () => {
     const project = (value: number, index: number) => Observable.from(Promise.reject('' + value + '-' + index));
 
     source.concatMap(project).subscribe(
-      (x: any) => {
+      (_x: any) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       }, (err: any) => {
         expect(err).to.deep.equal('4-0');
@@ -718,7 +718,7 @@ describe('Observable.prototype.concatMap', () => {
     const resultSelectorCalledWith = [];
     const project = (value: number, index: number) => Observable.from((Promise.resolve([value, index])));
 
-    const resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
+    const resultSelector = function (_outerVal, _innerVal, _outerIndex, _innerIndex) {
       resultSelectorCalledWith.push([].slice.call(arguments));
       return 8;
     };
@@ -733,7 +733,7 @@ describe('Observable.prototype.concatMap', () => {
     source.concatMap(project, resultSelector).subscribe(
       (x: any) => {
         results.push(x);
-      }, (err: any) => {
+      }, (_err: any) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       }, () => {
         expect(results).to.deep.equal([8, 8, 8, 8]);
@@ -751,7 +751,7 @@ describe('Observable.prototype.concatMap', () => {
     };
 
     source.concatMap(project, resultSelector).subscribe(
-      (x: any) => {
+      (_x: any) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       }, (err: any) => {
         expect(err).to.deep.equal('4-0');

@@ -48,7 +48,7 @@ describe('Observable.prototype.mergeMapTo', () => {
       (x: any) => {
         results.push(x);
       },
-      (err: any) => {
+      (_err: any) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -61,7 +61,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
     source.mergeMapTo(Observable.from(Promise.reject(42))).subscribe(
-      (x: any) => {
+      (_x: any) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
       (err: any) => {
@@ -77,7 +77,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const resultSelectorCalledWith = [];
     const inner = Observable.from(Promise.resolve(42));
-    const resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
+    const resultSelector = function (_outerVal, _innerVal, _outerIndex, _innerIndex) {
       resultSelectorCalledWith.push([].slice.call(arguments));
       return 8;
     };
@@ -93,7 +93,7 @@ describe('Observable.prototype.mergeMapTo', () => {
       (x: any) => {
         results.push(x);
       },
-      (err: any) => {
+      (_err: any) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -111,7 +111,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     };
 
     source.mergeMapTo(inner, resultSelector).subscribe(
-      (x: any) => {
+      (_x: any) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
       (err: any) => {
@@ -272,7 +272,7 @@ describe('Observable.prototype.mergeMapTo', () => {
                      '                                         ^                   !'];
     const expected =   '-----i---j---k---l-------i---j---k---l-------i---j---k---l---|';
 
-    function resultSelector(oV, iV, oI, iI) { return iV; }
+    function resultSelector(_oV, iV, _oI, _iI) { return iV; }
     const result = e1.mergeMapTo(inner, resultSelector, 1);
 
     expectObservable(result).toBe(expected, values);
@@ -290,7 +290,7 @@ describe('Observable.prototype.mergeMapTo', () => {
                      '                     ^                   !'];
     const expected =   '-----i---j---(ki)(lj)k---(li)j---k---l---|';
 
-    function resultSelector(oV, iV, oI, iI) { return iV; }
+    function resultSelector(_oV, iV, _oI, _iI) { return iV; }
     const result = e1.mergeMapTo(inner, resultSelector, 2);
 
     expectObservable(result).toBe(expected, values);

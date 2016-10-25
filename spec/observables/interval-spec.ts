@@ -63,7 +63,7 @@ describe('Observable.interval', () => {
         expect(values).to.deep.equal(expected);
         done();
       }
-    }, (err: any) => {
+    }, (_err: any) => {
       done(new Error('should not be called'));
     }, () => {
       done(new Error('should not be called'));

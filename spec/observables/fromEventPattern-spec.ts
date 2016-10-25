@@ -59,7 +59,7 @@ describe('Observable.fromEventPattern', () => {
   });
 
   it('should send errors in addHandler down the error path', () => {
-    Observable.fromEventPattern((h: any) => {
+    Observable.fromEventPattern((_h: any) => {
       throw 'bad';
     }, () => {
         //noop
@@ -72,7 +72,7 @@ describe('Observable.fromEventPattern', () => {
 
   it('should accept a selector that maps outgoing values', (done: MochaDone) => {
     let target;
-    const trigger = function (...args) {
+    const trigger = function (..._args) {
       if (target) {
         target.apply(null, arguments);
       }
@@ -81,7 +81,7 @@ describe('Observable.fromEventPattern', () => {
     const addHandler = (handler: any) => {
       target = handler;
     };
-    const removeHandler = (handler: any) => {
+    const removeHandler = (_handler: any) => {
       target = null;
     };
     const selector = (a: any, b: any) => {
@@ -91,7 +91,7 @@ describe('Observable.fromEventPattern', () => {
     Observable.fromEventPattern(addHandler, removeHandler, selector).take(1)
       .subscribe((x: any) => {
         expect(x).to.equal('testme!');
-      }, (err: any) => {
+      }, (_err: any) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -111,15 +111,15 @@ describe('Observable.fromEventPattern', () => {
     const addHandler = (handler: any) => {
       target = handler;
     };
-    const removeHandler = (handler: any) => {
+    const removeHandler = (_handler: any) => {
       target = null;
     };
-    const selector = (x: any) => {
+    const selector = (_x: any) => {
       throw 'bad';
     };
 
     Observable.fromEventPattern(addHandler, removeHandler, selector)
-      .subscribe((x: any) => {
+      .subscribe((_x: any) => {
         done(new Error('should not be called'));
       }, (err: any) => {
         expect(err).to.equal('bad');

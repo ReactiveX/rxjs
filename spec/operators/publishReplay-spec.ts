@@ -359,7 +359,7 @@ describe('Observable.prototype.publishReplay', () => {
 
     connectable.subscribe((x: number) => {
       results2.push(x);
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       expect(results2).to.deep.equal([3, 4]);

@@ -69,9 +69,9 @@ class BufferSubscriber<T> extends OuterSubscriber<T, any> {
     this.buffer.push(value);
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(_outerValue: T, _innerValue: any,
+             _outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, any>): void {
     const buffer = this.buffer;
     this.buffer = [];
     this.destination.next(buffer);

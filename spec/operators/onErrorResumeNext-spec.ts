@@ -110,7 +110,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     source.onErrorResumeNext(Promise.resolve(2))
       .subscribe(x => {
         expect(expected.shift()).to.equal(x);
-      }, (err: any) => {
+      }, (_err: any) => {
         done(new Error('should not be called'));
       }, () => {
         expect(expected).to.be.empty;

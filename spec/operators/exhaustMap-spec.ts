@@ -65,7 +65,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const e1subs =   '^  !';
     const expected = '---#';
 
-    const result = (<any>e1).exhaustMap((value: any) => {
+    const result = (<any>e1).exhaustMap((_value: any) => {
       throw 'error';
     });
 
@@ -80,7 +80,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const e1subs =   '^    !                  ';
     const expected = '-----#                  ';
 
-    const result = (<any>e1).exhaustMap((value: any) => x,
+    const result = (<any>e1).exhaustMap((_value: any) => x,
       () => {
         throw 'error';
       });

@@ -50,7 +50,7 @@ describe('Observable.prototype.do', () => {
         next: (x: number) => {
           results.push(x);
         },
-        error: (err: any) => {
+        error: (_err: any) => {
           done(new Error('should not be called'));
         },
         complete: () => {
@@ -69,7 +69,7 @@ describe('Observable.prototype.do', () => {
       next: (x: any) => {
         results.push(x);
       },
-      error: (err: any) => {
+      error: (_err: any) => {
         done(new Error('should not be called'));
       },
       complete: () => {
@@ -135,7 +135,7 @@ describe('Observable.prototype.do', () => {
 
   it('should raise error if next handler raises error', () => {
     Observable.of('hi').do(<any>{
-      next: (x: string) => {
+      next: (_err: string) => {
         throw new Error('bad');
       }
     }).subscribe(null, (err: any) => {
@@ -145,7 +145,7 @@ describe('Observable.prototype.do', () => {
 
   it('should raise error if error handler raises error', () => {
     Observable.throw('ops').do(<any>{
-      error: (x: any) => {
+      error: (_err: any) => {
         throw new Error('bad');
       }
     }).subscribe(null, (err: any) => {

@@ -1,6 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
 import { Operator } from '../Operator';
-import { PartialObserver } from '../Observer';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
@@ -97,21 +96,17 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
 
   protected _next(value: T): void {
     if (this.active < this.concurrent) {
-      const resultSelector = this.resultSelector;
       const index = this.index++;
       const ish = this.ish;
-      const destination = this.destination;
 
       this.active++;
-      this._innerSub(ish, destination, resultSelector, value, index);
+      this._innerSub(ish, value, index);
     } else {
       this.buffer.push(value);
     }
   }
 
   private _innerSub(ish: ObservableInput<I>,
-                    destination: PartialObserver<I>,
-                    resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
                     value: T,
                     index: number): void {
     this.add(subscribeToResult<T, I>(this, ish, value, index));
@@ -126,7 +121,7 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
 
   notifyNext(outerValue: T, innerValue: I,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, I>): void {
+             _innerSub: InnerSubscriber<T, I>): void {
     const { resultSelector, destination } = this;
     if (resultSelector) {
       this.trySelectResult(outerValue, innerValue, outerIndex, innerIndex);

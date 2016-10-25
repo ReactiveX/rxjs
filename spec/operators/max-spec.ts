@@ -98,7 +98,7 @@ describe('Observable.prototype.max', () => {
     (<any>Rx.Observable.range(1, 10000)).max().subscribe(
       (value: number) => {
         expect(value).to.equal(10000);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -109,7 +109,7 @@ describe('Observable.prototype.max', () => {
     (<any>Rx.Observable.range(1, 10)).skip(1).max().subscribe(
       (value: number) => {
         expect(value).to.equal(10);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -120,7 +120,7 @@ describe('Observable.prototype.max', () => {
     (<any>Rx.Observable.range(1, 10)).take(1).max().subscribe(
       (value: number) => {
         expect(value).to.equal(1);
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -150,7 +150,7 @@ describe('Observable.prototype.max', () => {
     const e1subs =    '^   !';
     const expected =  '----|';
 
-    const predicate = function (x, y) {
+    const predicate = function (_x, _y) {
       return 42;
     };
 
@@ -163,7 +163,7 @@ describe('Observable.prototype.max', () => {
     const e1subs =    '^    ';
     const expected =  '-----';
 
-    const predicate = function (x, y) {
+    const predicate = function (_x, _y) {
       return 42;
     };
 

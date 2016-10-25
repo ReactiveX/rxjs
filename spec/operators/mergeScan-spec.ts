@@ -157,7 +157,7 @@ describe('Observable.prototype.mergeScan', () => {
     const e1subs =      '^  !';
     const expected =    '---#';
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.throw('bad!'), []);
+    const source = (<any>e1).mergeScan((_acc: any, _x: string) => Observable.throw('bad!'), []);
 
     expectObservable(source).toBe(expected, undefined, 'bad!');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -170,7 +170,7 @@ describe('Observable.prototype.mergeScan', () => {
 
     const values = { x: [] };
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.empty(), []);
+    const source = (<any>e1).mergeScan((_acc: any, _x: string) => Observable.empty(), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -183,7 +183,7 @@ describe('Observable.prototype.mergeScan', () => {
 
     const values = { x: [] };
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.never(), []);
+    const source = (<any>e1).mergeScan((_acc: any, _x: string) => Observable.never(), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -262,7 +262,7 @@ describe('Observable.prototype.mergeScan', () => {
     const expected = '--x-d--e--f--f-g--h--i--i-j--k--l--|';
 
     let index = 0;
-    const source = (<any>e1).mergeScan((acc: any, x: string) => {
+    const source = (<any>e1).mergeScan((acc: any, _x: string) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 1);
@@ -280,7 +280,7 @@ describe('Observable.prototype.mergeScan', () => {
     const e1subs =      '^                    !';
     const expected =    '---------------------(x|)';
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) => Observable.empty(), ['1']);
+    const source = (<any>e1).mergeScan((_acc: any, _x: string) => Observable.empty(), ['1']);
 
     expectObservable(source).toBe(expected, {x: ['1']});
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -291,7 +291,7 @@ describe('Observable.prototype.mergeScan', () => {
     const e1subs =      '^                      !';
     const expected =    '-----------------------(x|)';
 
-    const source = (<any>e1).mergeScan((acc: any, x: string) =>
+    const source = (<any>e1).mergeScan((_acc: any, _x: string) =>
       Observable.empty().delay(50, rxTestScheduler), ['1']);
 
     expectObservable(source).toBe(expected, {x: ['1']});
@@ -315,7 +315,7 @@ describe('Observable.prototype.mergeScan', () => {
     const expected = '---x-e--f--f--i----i-l------|';
 
     let index = 0;
-    const source = (<any>e1).mergeScan((acc: any, x: string) => {
+    const source = (<any>e1).mergeScan((acc: any, _x: string) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 1);
@@ -345,7 +345,7 @@ describe('Observable.prototype.mergeScan', () => {
     const expected = '----x--d-d-eg--fh--hi-j---k---l---|';
 
     let index = 0;
-    const source = (<any>e1).mergeScan((acc: any, x: string) => {
+    const source = (<any>e1).mergeScan((acc: any, _x: string) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 2);
@@ -375,7 +375,7 @@ describe('Observable.prototype.mergeScan', () => {
     const expected = '---x-e-efh-h-ki------l------|';
 
     let index = 0;
-    const source = (<any>e1).mergeScan((acc: any, x: string) => {
+    const source = (<any>e1).mergeScan((acc: any, _x: string) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 2);

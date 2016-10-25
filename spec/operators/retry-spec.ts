@@ -38,7 +38,7 @@ describe('Observable.prototype.retry', () => {
         (x: number) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        (_err: any) => {
           expect('this was called').to.be.true;
         }, done);
   });
@@ -50,7 +50,7 @@ describe('Observable.prototype.retry', () => {
       observer.next(42);
       observer.complete();
     })
-      .map((x: any) => {
+      .map((_x: any) => {
         errors += 1;
         throw 'bad';
       })
@@ -59,7 +59,7 @@ describe('Observable.prototype.retry', () => {
         (x: number) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        (_err: any) => {
           expect(errors).to.equal(2);
           done();
         }, () => {
@@ -87,7 +87,7 @@ describe('Observable.prototype.retry', () => {
         (x: number) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        (_err: any) => {
           expect('this was called').to.be.true;
         }, done);
   });

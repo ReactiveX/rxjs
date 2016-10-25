@@ -9,20 +9,20 @@ describe('Subscription', () => {
   it('should not leak', (done: MochaDone) => {
     const tearDowns = [];
 
-    const source1 = Observable.create((observer: Rx.Observer<any>) => {
+    const source1 = Observable.create((_observer: Rx.Observer<any>) => {
       return () => {
         tearDowns.push(1);
       };
     });
 
-    const source2 = Observable.create((observer: Rx.Observer<any>) => {
+    const source2 = Observable.create((_observer: Rx.Observer<any>) => {
       return () => {
         tearDowns.push(2);
         throw new Error('oops, I am a bad unsubscribe!');
       };
     });
 
-    const source3 = Observable.create((observer: Rx.Observer<any>) => {
+    const source3 = Observable.create((_observer: Rx.Observer<any>) => {
       return () => {
         tearDowns.push(3);
       };
@@ -44,13 +44,13 @@ describe('Subscription', () => {
 
     const sub = new Subscription();
 
-    const source1 = Observable.create((observer: Rx.Observer<any>) => {
+    const source1 = Observable.create((_observer: Rx.Observer<any>) => {
       return () => {
         tearDowns.push(1);
       };
     });
 
-    const source2 = Observable.create((observer: Rx.Observer<any>) => {
+    const source2 = Observable.create((_observer: Rx.Observer<any>) => {
       return () => {
         tearDowns.push(2);
         sub.add(<any>({
@@ -62,7 +62,7 @@ describe('Subscription', () => {
       };
     });
 
-    const source3 = Observable.create((observer: Rx.Observer<any>) => {
+    const source3 = Observable.create((_observer: Rx.Observer<any>) => {
       return () => {
         tearDowns.push(3);
       };

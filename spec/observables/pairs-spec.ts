@@ -26,7 +26,7 @@ describe('Observable.pairs', () => {
 
     Observable.pairs({a: 1, b: 2, c: 3}).subscribe(x => {
       expect(x).to.deep.equal(expected.shift());
-    }, x => {
+    }, _err => {
       done(new Error('should not be called'));
     }, () => {
       expect(expected).to.be.empty;

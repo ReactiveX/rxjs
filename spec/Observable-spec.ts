@@ -42,7 +42,7 @@ describe('Observable', () => {
     });
 
     it('should reject promise when in error', (done: MochaDone) => {
-      Observable.throw('bad').forEach((x: any) => {
+      Observable.throw('bad').forEach((_x: any) => {
         done(new Error('should not be called'));
       }, Promise).then(() => {
         done(new Error('should not complete'));
@@ -609,7 +609,7 @@ describe('Observable.lift', () => {
     result.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -634,7 +634,7 @@ describe('Observable.lift', () => {
     result.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -657,7 +657,7 @@ describe('Observable.lift', () => {
     result.subscribe(
       function (x) {
         expect(x).to.equal(expected.shift());
-      }, (x) => {
+      }, (_err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -785,7 +785,7 @@ describe('Observable.lift', () => {
       function (x) {
         expect(x).to.equal(expected.shift());
       },
-      (x) => {
+      (_err) => {
         done(new Error('should not be called'));
       }, () => {
         expect(log).to.deep.equal([

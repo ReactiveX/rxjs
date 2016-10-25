@@ -7,17 +7,17 @@ import { InnerSubscriber } from './InnerSubscriber';
  * @extends {Ignored}
  */
 export class OuterSubscriber<T, R> extends Subscriber<T> {
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(_outerValue: T, innerValue: R,
+             _outerIndex: number, _innerIndex: number,
+             _innerSub: InnerSubscriber<T, R>): void {
     this.destination.next(innerValue);
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, R>): void {
+  notifyError(error: any, _innerSub: InnerSubscriber<T, R>): void {
     this.destination.error(error);
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+  notifyComplete(_innerSub: InnerSubscriber<T, R>): void {
     this.destination.complete();
   }
 }

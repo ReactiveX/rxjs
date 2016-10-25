@@ -65,15 +65,15 @@ class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
+  notifyError(_error: any, _innerSub: InnerSubscriber<T, any>): void {
     this.subscribeToNextSource();
   }
 
-  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
+  notifyComplete(_innerSub: InnerSubscriber<T, any>): void {
     this.subscribeToNextSource();
   }
 
-  protected _error(err: any): void {
+  protected _error(_err: any): void {
     this.subscribeToNextSource();
   }
 

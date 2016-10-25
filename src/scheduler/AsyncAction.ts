@@ -68,11 +68,11 @@ export class AsyncAction<T> extends Action<T> {
     return this;
   }
 
-  protected requestAsyncId(scheduler: AsyncScheduler, id?: any, delay: number = 0): any {
+  protected requestAsyncId(scheduler: AsyncScheduler, _id?: any, delay: number = 0): any {
     return root.setInterval(scheduler.flush.bind(scheduler, this), delay);
   }
 
-  protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number = 0): any {
+  protected recycleAsyncId(_scheduler: AsyncScheduler, id: any, delay: number = 0): any {
     // If this action is rescheduled with the same delay time, don't clear the interval id.
     if (delay !== null && this.delay === delay) {
       return id;
@@ -114,7 +114,7 @@ export class AsyncAction<T> extends Action<T> {
     }
   }
 
-  protected _execute(state: T, delay: number): any {
+  protected _execute(state: T, _delay: number): any {
     let errored: boolean = false;
     let errorValue: any = undefined;
     try {

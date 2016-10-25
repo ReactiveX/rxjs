@@ -16,7 +16,7 @@ import { Subscription } from '../Subscription';
  * @class Action<T>
  */
 export class Action<T> extends Subscription {
-  constructor(scheduler: Scheduler, work: (state?: T) => void) {
+  constructor(_scheduler: Scheduler, _work: (state?: T) => void) {
     super();
   }
   /**
@@ -29,7 +29,7 @@ export class Action<T> extends Subscription {
    * time unit is implicit and defined by the Scheduler.
    * @return {void}
    */
-  public schedule(state?: T, delay: number = 0): Subscription {
+  public schedule(_state?: T, _delay: number = 0): Subscription {
     return this;
   }
 }

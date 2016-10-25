@@ -9,7 +9,7 @@ describe('Observable.using', () => {
     let disposed = false;
     const source = Observable.using(
       () => new Subscription(() => disposed = true),
-      (resource) => Observable.range(0, 3)
+      (_resource) => Observable.range(0, 3)
     )
     .take(2);
 
@@ -28,11 +28,11 @@ describe('Observable.using', () => {
     let disposed = false;
     const e1 = Observable.using(
       () => new Subscription(() => disposed = true),
-      (resource) => new Promise((resolve: any) => { resolve(expected); }));
+      (_resource) => new Promise((resolve: any) => { resolve(expected); }));
 
     e1.subscribe(x => {
       expect(x).to.equal(expected);
-    }, (x) => {
+    }, (_err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -45,9 +45,9 @@ describe('Observable.using', () => {
     let disposed = false;
     const e1 = Observable.using(
       () => new Subscription(() => disposed = true),
-      (resource) => new Promise((resolve: any, reject: any) => { reject(expected); }));
+      (_resource) => new Promise((_resolve: any, reject: any) => { reject(expected); }));
 
-    e1.subscribe(x => {
+    e1.subscribe(_x => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.equal(expected);
@@ -65,12 +65,12 @@ describe('Observable.using', () => {
       () => {
         throw expectedError;
       },
-      (resource) => {
+      (_err) => {
         throw error;
       }
     );
 
-    source.subscribe((x) => {
+    source.subscribe((_x) => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.equal(expectedError);
@@ -86,12 +86,12 @@ describe('Observable.using', () => {
 
     const source = Observable.using(
       () => new Subscription(() => disposed = true),
-      (resource) => {
+      (_err) => {
         throw error;
       }
     );
 
-    source.subscribe((x) => {
+    source.subscribe((_x) => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.equal(error);
