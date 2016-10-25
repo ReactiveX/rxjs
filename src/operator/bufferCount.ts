@@ -62,7 +62,7 @@ class BufferCountOperator<T> implements Operator<T, T[]> {
  * @extends {Ignored}
  */
 class BufferCountSubscriber<T> extends Subscriber<T> {
-  private buffers: Array<T[]> = [[]];
+  private buffers: Array<T[]> = [];
   private count: number = 0;
 
   constructor(destination: Subscriber<T[]>, private bufferSize: number, private startBufferEvery: number) {
@@ -70,29 +70,21 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
   }
 
   protected _next(value: T) {
-    const count = (this.count += 1);
-    const destination = this.destination;
-    const bufferSize = this.bufferSize;
-    const startBufferEvery = (this.startBufferEvery == null) ? bufferSize : this.startBufferEvery;
-    const buffers = this.buffers;
-    const len = buffers.length;
-    let remove = -1;
+    const count = this.count++;
+    const { destination, bufferSize, startBufferEvery, buffers } = this;
+    const startOn = (startBufferEvery == null) ? bufferSize : startBufferEvery;
 
-    if (count % startBufferEvery === 0) {
+    if (count % startOn === 0) {
       buffers.push([]);
     }
 
-    for (let i = 0; i < len; i++) {
+    for (let i = buffers.length; i--; ) {
       const buffer = buffers[i];
       buffer.push(value);
       if (buffer.length === bufferSize) {
-        remove = i;
+        buffers.splice(i, 1);
         destination.next(buffer);
       }
-    }
-
-    if (remove !== -1) {
-      buffers.splice(remove, 1);
     }
   }
 
