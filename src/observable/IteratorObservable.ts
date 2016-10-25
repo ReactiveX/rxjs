@@ -13,7 +13,7 @@ import { Subscriber } from '../Subscriber';
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
 
-  static create<T>(iterator: any, scheduler?: Scheduler) {
+  static create<T>(iterator: any, scheduler?: Scheduler): IteratorObservable<T> {
     return new IteratorObservable(iterator, scheduler);
   }
 
