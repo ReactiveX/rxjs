@@ -1,4 +1,5 @@
 import * as Rx from '../../dist/cjs/Rx';
+import { expect } from 'chai';
 declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 const Observable = Rx.Observable;
@@ -29,6 +30,26 @@ describe('Observable.prototype.bufferCount', () => {
     const expected = '-----x-----y-----z--|';
 
     expectObservable(e1.bufferCount(2)).toBe(expected, values);
+  });
+
+  it('should buffer properly (issue #2062)', () => {
+    const item$ = new Rx.Subject();
+    const results = [];
+    item$
+      .bufferCount(3, 1)
+      .subscribe(value => {
+        results.push(value);
+
+        if (value.join() === '1,2,3') {
+          item$.next(4);
+        }
+      });
+
+    item$.next(1);
+    item$.next(2);
+    item$.next(3);
+
+    expect(results).to.deep.equal([[1, 2, 3], [2, 3, 4]]);
   });
 
   it('should emit partial buffers if source completes before reaching specified buffer count', () => {

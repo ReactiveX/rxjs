@@ -1,4 +1,3 @@
-///<reference path='../../typings/index.d.ts'/>
 declare const global: any;
 declare const Symbol: any;
 
