@@ -59,7 +59,6 @@ import './add/operator/defaultIfEmpty';
 import './add/operator/delay';
 import './add/operator/delayWhen';
 import './add/operator/distinct';
-import './add/operator/distinctKey';
 import './add/operator/distinctUntilChanged';
 import './add/operator/distinctUntilKeyChanged';
 import './add/operator/do';
