@@ -47,7 +47,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
 export class VirtualAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: VirtualTimeScheduler,
-              protected work: (state?: T) => void,
+              protected work: (this: VirtualAction<T>, state?: T) => void,
               protected index: number = scheduler.index += 1) {
     super(scheduler, work);
     this.index = scheduler.index = index;

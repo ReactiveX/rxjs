@@ -10,7 +10,7 @@ import { QueueScheduler } from './QueueScheduler';
 export class QueueAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: QueueScheduler,
-              protected work: (state?: T) => void) {
+              protected work: (this: QueueAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
