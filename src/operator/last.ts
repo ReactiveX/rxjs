@@ -58,7 +58,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
   constructor(destination: Subscriber<R>,
               private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
+              defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);
     if (typeof defaultValue !== 'undefined') {

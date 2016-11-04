@@ -86,7 +86,7 @@ class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
   private haveValues = 0;
 
   constructor(destination: Subscriber<T>,
-              private sources: Array<SubscribableOrPromise<any>>,
+              sources: Array<SubscribableOrPromise<any>>,
               private resultSelector?: (...values: Array<any>) => T) {
     super(destination);
 
@@ -117,7 +117,8 @@ class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
 
   notifyComplete(innerSub: InnerSubscriber<T, T>): void {
     const destination = this.destination;
-    const { haveValues, resultSelector, values } = this;
+    const { haveValues, values } = this;
+    const resultSelector = this.resultSelector;
     const len = values.length;
 
     if (!(<any>innerSub)._hasValue) {

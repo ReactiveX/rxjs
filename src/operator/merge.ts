@@ -131,7 +131,7 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | Schedu
  * @name merge
  * @owner Observable
  */
-export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | Scheduler | number>): Observable<R> {
+export function mergeStatic<R>(...observables: Array<ObservableInput<any> | Scheduler | number>): Observable<R> {
  let concurrent = Number.POSITIVE_INFINITY;
  let scheduler: Scheduler = null;
   let last: any = observables[observables.length - 1];

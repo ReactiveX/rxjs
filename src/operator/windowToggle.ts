@@ -155,7 +155,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
 
     if (outerValue === this.openings) {
 
-      const { closingSelector } = this;
+      const closingSelector = this.closingSelector;
       const closingNotifier = tryCatch(closingSelector)(innerValue);
 
       if (closingNotifier === errorObject) {

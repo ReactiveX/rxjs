@@ -188,7 +188,12 @@ import { $$observable as observable } from './symbol/observable';
  * @property {Scheduler} animationFrame Schedules work with `requestAnimationFrame`.
  * Use this for synchronizing with the platform's painting
  */
-let Scheduler = {
+let Scheduler: {
+  asap: AsapScheduler;
+  queue: QueueScheduler;
+  animationFrame: AnimationFrameScheduler;
+  async: AsyncScheduler;
+} = {
   asap,
   queue,
   animationFrame,

@@ -75,7 +75,7 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
   private contexts: Array<BufferContext<T>> = [];
 
   constructor(destination: Subscriber<T[]>,
-              private openings: SubscribableOrPromise<O>,
+              openings: SubscribableOrPromise<O>,
               private closingSelector: (value: O) => SubscribableOrPromise<any> | void) {
     super(destination);
     this.add(subscribeToResult(this, openings));

@@ -58,7 +58,8 @@ export class IteratorObservable<T> extends Observable<T> {
   protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
 
     let index = 0;
-    const { iterator, scheduler } = this;
+    const iterator = this.iterator;
+    const scheduler = this.scheduler;
 
     if (scheduler) {
       return scheduler.schedule(IteratorObservable.dispatch, 0, {
