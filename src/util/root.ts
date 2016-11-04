@@ -1,6 +1,4 @@
 declare let global: NodeJS.Global;
-declare let module: any;
-declare let exports: any;
 
 declare module NodeJS {
   interface Global {
