@@ -94,8 +94,9 @@ export class BoundCallbackObservable<T> extends Observable<T> {
       if (!subject) {
         subject = this.subject = new AsyncSubject<T>();
         const handler = function handlerFn(...innerArgs: any[]) {
-          const source = (<any>handlerFn).source;
-          const { selector, subject } = source;
+          const source: BoundCallbackObservable<T> = (<any>handlerFn).source;
+          const { subject } = source;
+          const selector = source.selector;
           if (selector) {
             const result = tryCatch(selector).apply(this, innerArgs);
             if (result === errorObject) {

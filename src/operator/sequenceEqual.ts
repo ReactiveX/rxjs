@@ -83,7 +83,7 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
   private _oneComplete = false;
 
   constructor(destination: Observer<R>,
-              private compareTo: Observable<T>,
+              compareTo: Observable<T>,
               private comparor: (a: T, b: T) => boolean) {
     super(destination);
     this.add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, this)));
@@ -107,7 +107,8 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
   }
 
   checkValues() {
-    const { _a, _b, comparor } = this;
+    const { _a, _b, } = this;
+    const comparor = this.comparor;
     while (_a.length > 0 && _b.length > 0) {
       let a = _a.shift();
       let b = _b.shift();

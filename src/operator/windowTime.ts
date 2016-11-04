@@ -92,9 +92,9 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: Subject<T>[] = [];
 
   constructor(protected destination: Subscriber<Observable<T>>,
-              private windowTimeSpan: number,
-              private windowCreationInterval: number,
-              private scheduler: Scheduler) {
+              windowTimeSpan: number,
+              windowCreationInterval: number,
+              scheduler: Scheduler) {
     super(destination);
     if (windowCreationInterval !== null && windowCreationInterval >= 0) {
       let window = this.openWindow();

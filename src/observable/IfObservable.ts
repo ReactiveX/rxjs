@@ -24,7 +24,9 @@ export class IfObservable<T, R> extends Observable<T> {
   }
 
   protected _subscribe(subscriber: Subscriber<T|R>): TeardownLogic {
-    const { condition, thenSource, elseSource } = this;
+    const condition = this.condition;
+    const thenSource = this.thenSource;
+    const elseSource = this.elseSource;
 
     return new IfSubscriber(subscriber, condition, thenSource, elseSource);
   }
@@ -40,7 +42,9 @@ class IfSubscriber<T, R> extends OuterSubscriber<T, T> {
   }
 
   private tryIf(): void {
-    const { condition, thenSource, elseSource } = this;
+    const condition = this.condition;
+    const thenSource = this.thenSource;
+    const elseSource = this.elseSource;
 
     let result: boolean;
     try {

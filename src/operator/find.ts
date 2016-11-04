@@ -83,7 +83,8 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
   }
 
   protected _next(value: T): void {
-    const { predicate, thisArg } = this;
+    const predicate = this.predicate;
+    const thisArg = this.thisArg;
     const index = this.index++;
     try {
       const result = predicate.call(thisArg || this, value, index, this.source);

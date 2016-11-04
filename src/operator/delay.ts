@@ -104,7 +104,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
     }));
   }
 
-  private scheduleNotification(notification: Notification<any>): void {
+  private scheduleNotification(notification: Notification<T>): void {
     if (this.errored === true) {
       return;
     }
@@ -134,7 +134,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
 }
 
 class DelayMessage<T> {
-  constructor(private time: number,
-              private notification: any) {
+  constructor(public time: number,
+              public notification: Notification<T>) {
   }
 }

@@ -221,7 +221,8 @@ export class GroupedObservable<K, T> extends Observable<T> {
 
   protected _subscribe(subscriber: Subscriber<T>) {
     const subscription = new Subscription();
-    const {refCountSubscription, groupSubject} = this;
+    const groupSubject = this.groupSubject;
+    const refCountSubscription = this.refCountSubscription;
     if (refCountSubscription && !refCountSubscription.closed) {
       subscription.add(new InnerRefCountSubscription(refCountSubscription));
     }
