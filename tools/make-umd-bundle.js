@@ -1,21 +1,17 @@
 var rollup = require('rollup');
 var fs = require('fs');
-
-var babel = require('babel-core');
+var path = require('path');
 
 rollup.rollup({
   entry: 'dist/es6/Rx.js'
 }).then(function (bundle) {
   var result = bundle.generate({
-    format: 'es'
+    format: 'umd',
+    moduleName: 'Rx',
+    sourceMap: true
   });
+  var tslib = fs.readFileSync(path.join(process.cwd() + '/node_modules/tslib/tslib.js'), 'utf8')
 
-  var out = babel.transform(result.code, {
-    compact: false,
-    presets: [
-      ['es2015', { loose: true }]
-    ],
-  });
-
-  fs.writeFileSync('dist/global/Rx.js', out.code);
+  fs.writeFileSync('dist/global/Rx.js', tslib + result.code);
+  fs.writeFileSync('dist/global/Rx.js.map', result.map);
 });
