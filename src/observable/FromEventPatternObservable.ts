@@ -7,7 +7,7 @@ import { Subscriber } from '../Subscriber';
  * @extends {Ignored}
  * @hide true
  */
-export class FromEventPatternObservable<T, R> extends Observable<T> {
+export class FromEventPatternObservable<T> extends Observable<T> {
 
   /**
    * Creates an Observable from an API based on addHandler/removeHandler
