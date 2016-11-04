@@ -61,7 +61,7 @@ class TakeUntilOperator<T> implements Operator<T, T> {
 class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   constructor(destination: Subscriber<any>,
-              private notifier: Observable<any>) {
+              notifier: Observable<any>) {
     super(destination);
     this.add(subscribeToResult(this, notifier));
   }

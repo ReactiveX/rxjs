@@ -114,7 +114,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T[]>,
               private bufferTimeSpan: number,
-              private bufferCreationInterval: number,
+              bufferCreationInterval: number,
               private maxBufferSize: number,
               private scheduler: Scheduler) {
     super(destination);

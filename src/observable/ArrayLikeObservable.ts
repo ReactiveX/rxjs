@@ -55,7 +55,8 @@ export class ArrayLikeObservable<T> extends Observable<T> {
 
   protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     let index = 0;
-    const { arrayLike, scheduler } = this;
+    const arrayLike = this.arrayLike;
+    const scheduler = this.scheduler;
     const length = arrayLike.length;
 
     if (scheduler) {

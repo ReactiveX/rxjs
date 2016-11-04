@@ -71,7 +71,9 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
 
   protected _next(value: T) {
     const count = this.count++;
-    const { destination, bufferSize, startBufferEvery, buffers } = this;
+    const { destination, buffers } = this;
+    const bufferSize = this.bufferSize;
+    const startBufferEvery = this.startBufferEvery;
     const startOn = (startBufferEvery == null) ? bufferSize : startBufferEvery;
 
     if (count % startOn === 0) {

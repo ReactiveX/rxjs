@@ -47,7 +47,8 @@ class RetrySubscriber<T> extends Subscriber<T> {
   }
   error(err: any) {
     if (!this.isStopped) {
-      const { source, count } = this;
+      const count = this.count;
+      const source = this.source;
       if (count === 0) {
         return super.error(err);
       } else if (count > -1) {

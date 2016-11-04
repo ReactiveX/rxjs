@@ -50,7 +50,8 @@ class RepeatSubscriber<T> extends Subscriber<T> {
   }
   complete() {
     if (!this.isStopped) {
-      const { source, count } = this;
+      const count = this.count;
+      const source = this.source;
       if (count === 0) {
         return super.complete();
       } else if (count > -1) {

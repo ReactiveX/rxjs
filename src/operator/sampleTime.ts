@@ -65,8 +65,8 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   hasValue: boolean = false;
 
   constructor(destination: Subscriber<T>,
-              private period: number,
-              private scheduler: Scheduler) {
+              period: number,
+              scheduler: Scheduler) {
     super(destination);
     this.add(scheduler.schedule(dispatchNotification, period, { subscriber: this, period }));
   }
@@ -84,7 +84,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNotification<T>(state: any) {
+function dispatchNotification(state: any) {
   let { subscriber, period } = state;
   subscriber.notifyNext();
   (<any>this).schedule(state, period);
