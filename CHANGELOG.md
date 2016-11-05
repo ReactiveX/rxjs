@@ -1,3 +1,54 @@
+<a name="5.0.0-rc.2"></a>
+# [5.0.0-rc.2](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.1...v5.0.0-rc.2) (2016-11-05)
+
+
+### Bug Fixes
+
+* **AjaxObservable:** remove needless type param R from AjaxObservable.getJSON() ([#2069](https://github.com/ReactiveX/RxJS/issues/2069)) ([0c3d4a4](https://github.com/ReactiveX/RxJS/commit/0c3d4a4))
+* **bufferCount:** will behave as expected when `startBufferEvery` is less than `bufferSize` ([#2076](https://github.com/ReactiveX/RxJS/issues/2076)) ([d13dbb4](https://github.com/ReactiveX/RxJS/commit/d13dbb4)), closes [#2062](https://github.com/ReactiveX/RxJS/issues/2062)
+* **build_docs:** fix doc building ([#1974](https://github.com/ReactiveX/RxJS/issues/1974)) ([1bbbe8b](https://github.com/ReactiveX/RxJS/commit/1bbbe8b))
+* **ErrorObservable:** Add generic error type for ErrorObservable. ([#2071](https://github.com/ReactiveX/RxJS/issues/2071)) ([9df86ba](https://github.com/ReactiveX/RxJS/commit/9df86ba))
+* **first:** will now only emit one value in recursive cases ([#2100](https://github.com/ReactiveX/RxJS/issues/2100)) ([a047e7a](https://github.com/ReactiveX/RxJS/commit/a047e7a)), closes [#2098](https://github.com/ReactiveX/RxJS/issues/2098)
+* **fromEvent:** Throw if event target is invalid ([#2107](https://github.com/ReactiveX/RxJS/issues/2107)) ([147ce3e](https://github.com/ReactiveX/RxJS/commit/147ce3e))
+* **IteratorObservable:** clarify the return type of IteratorObservable.create() ([#2070](https://github.com/ReactiveX/RxJS/issues/2070)) ([4f0f865](https://github.com/ReactiveX/RxJS/commit/4f0f865))
+* **IteratorObservable:** Observables `from` generators will now finalize when subscription ends ([22d286a](https://github.com/ReactiveX/RxJS/commit/22d286a)), closes [#1938](https://github.com/ReactiveX/RxJS/issues/1938)
+* **multicast:** fix a bug that caused multicast to omit messages after termination ([#2021](https://github.com/ReactiveX/RxJS/issues/2021)) ([44fbc14](https://github.com/ReactiveX/RxJS/commit/44fbc14))
+* **Notification:** `materialize` output will now match Rx4 ([#2106](https://github.com/ReactiveX/RxJS/issues/2106)) ([c83bab9](https://github.com/ReactiveX/RxJS/commit/c83bab9)), closes [#2105](https://github.com/ReactiveX/RxJS/issues/2105)
+* **Object.assign:** stop polyfilling Object assign ([#2080](https://github.com/ReactiveX/RxJS/issues/2080)) ([b5f8ab3](https://github.com/ReactiveX/RxJS/commit/b5f8ab3))
+* **Observable/Ajax:** mount properties to origin readystatechange fn ([#2025](https://github.com/ReactiveX/RxJS/issues/2025)) ([76a9abb](https://github.com/ReactiveX/RxJS/commit/76a9abb))
+* **operator/do:** fix typings ([9a40297](https://github.com/ReactiveX/RxJS/commit/9a40297))
+* **reduce/scan:** both scan/reduce operators now accepts `undefined` itself as a valid seed ([#2050](https://github.com/ReactiveX/RxJS/issues/2050)) ([fee7585](https://github.com/ReactiveX/RxJS/commit/fee7585)), closes [#2047](https://github.com/ReactiveX/RxJS/issues/2047)
+* **ReplaySubject:** observer now subscribed prior to running subscription function ([#2046](https://github.com/ReactiveX/RxJS/issues/2046)) ([fea08e9](https://github.com/ReactiveX/RxJS/commit/fea08e9)), closes [#2044](https://github.com/ReactiveX/RxJS/issues/2044)
+* **sample:** source is now subscribed to before the notifier ([ffe99e8](https://github.com/ReactiveX/RxJS/commit/ffe99e8)), closes [#2075](https://github.com/ReactiveX/RxJS/issues/2075)
+* **Symbol.iterator:** will not polyfill Symbol iterator unless Symbol exists ([#2082](https://github.com/ReactiveX/RxJS/issues/2082)) ([1138c99](https://github.com/ReactiveX/RxJS/commit/1138c99))
+* **typings:** fixed Subject<T>.lift to have the same shape as Observable<T>.lift ([b07f597](https://github.com/ReactiveX/RxJS/commit/b07f597))
+* **WebSocketSubject.prototype.multiplex:** no longer nulls out socket after first unsubscribe ([#2039](https://github.com/ReactiveX/RxJS/issues/2039)) ([a5e9cfe](https://github.com/ReactiveX/RxJS/commit/a5e9cfe)), closes [#2037](https://github.com/ReactiveX/RxJS/issues/2037)
+
+
+### Features
+
+* **distinct:** remove `distinctKey`,  `distinct` signature change and perf improvements ([#2049](https://github.com/ReactiveX/RxJS/issues/2049)) ([89612b2](https://github.com/ReactiveX/RxJS/commit/89612b2)), closes [#2009](https://github.com/ReactiveX/RxJS/issues/2009)
+* **groupBy:** Adds subjectSelector argument to groupBy ([#2023](https://github.com/ReactiveX/RxJS/issues/2023)) ([f94ceb9](https://github.com/ReactiveX/RxJS/commit/f94ceb9))
+* **typescript:** remove dependency to 3rd party es2015 definition ([#2027](https://github.com/ReactiveX/RxJS/issues/2027)) ([4c31974](https://github.com/ReactiveX/RxJS/commit/4c31974)), closes [#2016](https://github.com/ReactiveX/RxJS/issues/2016)
+
+
+### BREAKING CHANGES
+
+* Notification: `Notification.prototype.exception` is now `Notification.prototype.error` to match Rx4 semantics
+* Symbol.iterator: RxJS will no longer polyfill `Symbol.iterator` if `Symbol` does not exist. This may break code that inadvertently relies on this behavior
+* Object.assign: RxJS will no longer polyfill `Object.assign`. It does
+not require `Object.assign` to function, however, your code may be
+inadvertently relying on this polyfill.
+* AjaxObservable: Observable.ajax.getJSON() now only supports a single type parameter,
+`getJSON<T>(url: string, headers?: Object): Observable<T>`.
+The extra type parameter it accepted previously was superfluous.
+* distinct: `distinctKey` has been removed. Use `distinct`
+* distinct: `distinct` operator has changed, first argument is an
+optional `keySelector`. The custom `compare` function is no longer
+supported.
+
+
+
 <a name="5.0.0-rc.1"></a>
 # [5.0.0-rc.1](https://github.com/ReactiveX/RxJS/compare/5.0.0-beta.12...v5.0.0-rc.1) (2016-10-11)
 
