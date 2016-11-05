@@ -85,6 +85,7 @@ class FirstOperator<T, R> implements Operator<T, R> {
 class FirstSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
   private hasCompleted: boolean = false;
+  private _emitted: boolean = false;
 
   constructor(destination: Subscriber<R>,
               private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
@@ -137,9 +138,12 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
 
   private _emitFinal(value: any) {
     const destination = this.destination;
-    destination.next(value);
-    destination.complete();
-    this.hasCompleted = true;
+    if (!this._emitted) {
+      this._emitted = true;
+      destination.next(value);
+      destination.complete();
+      this.hasCompleted = true;
+    }
   }
 
   protected _complete(): void {

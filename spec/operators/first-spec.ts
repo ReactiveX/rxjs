@@ -42,6 +42,20 @@ describe('Observable.prototype.first', () => {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
+  it('should only emit one value in recursive cases', () => {
+    const subject = new Rx.Subject<number>();
+    const results = [];
+
+    subject.first().subscribe(x => {
+      results.push(x);
+      subject.next(x + 1);
+    });
+
+    subject.next(0);
+
+    expect(results).to.deep.equal([0]);
+  });
+
   it('should propagate error from the source observable', () => {
     const e1 = hot('---^---#');
     const expected =  '----#';
