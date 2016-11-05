@@ -1,5 +1,4 @@
 declare const global: any;
-declare const Symbol: any;
 
 import * as Rx from '../../dist/cjs/Rx';
 import {ObservableInput} from '../../dist/cjs/Observable';
@@ -19,7 +18,7 @@ export function lowerCaseO<T>(...args): Rx.Observable<T> {
     }
   };
 
-  o[Symbol.observable] = function () {
+  o[$$symbolObservable] = function () {
     return this;
   };
 
