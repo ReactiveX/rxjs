@@ -22,7 +22,7 @@ describe('Notification', () => {
       expect(n instanceof Notification).to.be.true;
       expect(n.value).to.equal('test');
       expect(n.kind).to.equal('N');
-      expect(n.exception).to.be.a('undefined');
+      expect(n.error).to.be.a('undefined');
       expect(n.hasValue).to.be.true;
     });
   });
@@ -33,7 +33,7 @@ describe('Notification', () => {
       expect(n instanceof Notification).to.be.true;
       expect(n.value).to.be.a('undefined');
       expect(n.kind).to.equal('E');
-      expect(n.exception).to.equal('test');
+      expect(n.error).to.equal('test');
       expect(n.hasValue).to.be.false;
     });
   });
@@ -44,7 +44,7 @@ describe('Notification', () => {
       expect(n instanceof Notification).to.be.true;
       expect(n.value).to.be.a('undefined');
       expect(n.kind).to.equal('C');
-      expect(n.exception).to.be.a('undefined');
+      expect(n.error).to.be.a('undefined');
       expect(n.hasValue).to.be.false;
     });
   });
