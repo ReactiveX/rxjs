@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/publish.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> publish.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>5/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>2/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>4/4</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Subject } from '../Subject';
+import { Observable } from '../Observable';
+import { multicast } from './multicast';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
+&nbsp;
+/**
+ * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
+ * before it begins emitting items to those Observers that have subscribed to it.
+ *
+ * &lt;img src="./img/publish.png" width="100%"&gt;
+ *
+ * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,
+ * without causing multiple subscriptions to the source sequence.
+ * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.
+ * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
+ * @method publish
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function publish&lt;T&gt;(this: Observable&lt;T&gt;): ConnectableObservable&lt;T&gt;;
+export function publish&lt;T&gt;(this: Observable&lt;T&gt;, selector: selector&lt;T&gt;): Observable&lt;T&gt;;
+/* tslint:disable:max-line-length */
+export function publish&lt;T&gt;(this: Observable&lt;T&gt;, selector?: (source: Observable&lt;T&gt;) =&gt; Observable&lt;T&gt;): Observable&lt;T&gt; | ConnectableObservable&lt;T&gt; {
+  return selector ? multicast.call(this, () =&gt; new Subject&lt;T&gt;(), selector) :
+                    multicast.call(this, new Subject&lt;T&gt;());
+}
+&nbsp;
+export type selector&lt;T&gt; = (source: Observable&lt;T&gt;) =&gt; Observable&lt;T&gt;;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

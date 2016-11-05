@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/partition.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> partition.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>4/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/1</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>4/4</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { not } from '../util/not';
+import { filter } from './filter';
+import { Observable } from '../Observable';
+&nbsp;
+/**
+ * Splits the source Observable into two, one with values that satisfy a
+ * predicate, and another with values that don't satisfy the predicate.
+ *
+ * &lt;span class="informal"&gt;It's like {@link filter}, but returns two Observables:
+ * one like the output of {@link filter}, and the other with values that did not
+ * pass the condition.&lt;/span&gt;
+ *
+ * &lt;img src="./img/partition.png" width="100%"&gt;
+ *
+ * `partition` outputs an array with two Observables that partition the values
+ * from the source Observable through the given `predicate` function. The first
+ * Observable in that array emits source values for which the predicate argument
+ * returns true. The second Observable emits source values for which the
+ * predicate returns false. The first behaves like {@link filter} and the second
+ * behaves like {@link filter} with the predicate negated.
+ *
+ * @example &lt;caption&gt;Partition click events into those on DIV elements and those elsewhere&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var parts = clicks.partition(ev =&gt; ev.target.tagName === 'DIV');
+ * var clicksOnDivs = parts[0];
+ * var clicksElsewhere = parts[1];
+ * clicksOnDivs.subscribe(x =&gt; console.log('DIV clicked: ', x));
+ * clicksElsewhere.subscribe(x =&gt; console.log('Other clicked: ', x));
+ *
+ * @see {@link filter}
+ *
+ * @param {function(value: T, index: number): boolean} predicate A function that
+ * evaluates each value emitted by the source Observable. If it returns `true`,
+ * the value is emitted on the first Observable in the returned array, if
+ * `false` the value is emitted on the second Observable in the array. The
+ * `index` parameter is the number `i` for the i-th source emission that has
+ * happened since the subscription, starting from the number `0`.
+ * @param {any} [thisArg] An optional argument to determine the value of `this`
+ * in the `predicate` function.
+ * @return {[Observable&lt;T&gt;, Observable&lt;T&gt;]} An array with two Observables: one
+ * with values that passed the predicate, and another with values that did not
+ * pass the predicate.
+ * @method partition
+ * @owner Observable
+ */
+export function partition&lt;T&gt;(this: Observable&lt;T&gt;, predicate: (value: T) =&gt; boolean, thisArg?: any): [Observable&lt;T&gt;, Observable&lt;T&gt;] {
+  return [
+    filter.call(this, predicate),
+    filter.call(this, not(predicate, thisArg))
+  ];
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

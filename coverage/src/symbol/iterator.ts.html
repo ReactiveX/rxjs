@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/symbol/iterator.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/symbol</a> iterator.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">29.41% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>5/17</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">11.76% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>2/17</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">29.41% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>5/17</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { root } from '../util/root';
+&nbsp;
+export let $$iterator: any;
+&nbsp;
+const Symbol: any = root.Symbol;
+&nbsp;
+<span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Symbol === 'function') {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (Symbol.iterator) {
+    $$iterator = Symbol.iterator;
+  } else <span class="cstat-no" title="statement not covered" >if (typeof Symbol.for === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >    $$iterator = Symbol.for('iterator');</span>
+  }
+} else {
+<span class="cstat-no" title="statement not covered" >    if (root.Set &amp;&amp; typeof new root.Set()['@@iterator'] === 'function') {</span>
+      // Bug for mozilla version
+<span class="cstat-no" title="statement not covered" >      $$iterator = '@@iterator';</span>
+    } else <span class="cstat-no" title="statement not covered" >if (root.Map) {</span>
+      // es6-shim specific logic
+      let keys = <span class="cstat-no" title="statement not covered" >Object.getOwnPropertyNames(root.Map.prototype);</span>
+<span class="cstat-no" title="statement not covered" >      for (let i = 0; i &lt; keys.length; ++i) {</span>
+        let key = <span class="cstat-no" title="statement not covered" >keys[i];</span>
+<span class="cstat-no" title="statement not covered" >        if (key !== 'entries' &amp;&amp; key !== 'size' &amp;&amp; root.Map.prototype[key] === root.Map.prototype['entries']) {</span>
+<span class="cstat-no" title="statement not covered" >          $$iterator = key;</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+        }
+      }
+    } else {
+<span class="cstat-no" title="statement not covered" >      $$iterator = '@@iterator';</span>
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

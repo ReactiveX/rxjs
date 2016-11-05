@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/dematerialize.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> dematerialize.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>13/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>6/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>12/12</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Notification } from '../Notification';
+&nbsp;
+/**
+ * Converts an Observable of {@link Notification} objects into the emissions
+ * that they represent.
+ *
+ * &lt;span class="informal"&gt;Unwraps {@link Notification} objects as actual `next`,
+ * `error` and `complete` emissions. The opposite of {@link materialize}.&lt;/span&gt;
+ *
+ * &lt;img src="./img/dematerialize.png" width="100%"&gt;
+ *
+ * `dematerialize` is assumed to operate an Observable that only emits
+ * {@link Notification} objects as `next` emissions, and does not emit any
+ * `error`. Such Observable is the output of a `materialize` operation. Those
+ * notifications are then unwrapped using the metadata they contain, and emitted
+ * as `next`, `error`, and `complete` on the output Observable.
+ *
+ * Use this operator in conjunction with {@link materialize}.
+ *
+ * @example &lt;caption&gt;Convert an Observable of Notifications to an actual Observable&lt;/caption&gt;
+ * var notifA = new Rx.Notification('N', 'A');
+ * var notifB = new Rx.Notification('N', 'B');
+ * var notifE = new Rx.Notification('E', void 0,
+ *   new TypeError('x.toUpperCase is not a function')
+ * );
+ * var materialized = Rx.Observable.of(notifA, notifB, notifE);
+ * var upperCase = materialized.dematerialize();
+ * upperCase.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));
+ *
+ * @see {@link Notification}
+ * @see {@link materialize}
+ *
+ * @return {Observable} An Observable that emits items and notifications
+ * embedded in Notification objects emitted by the source Observable.
+ * @method dematerialize
+ * @owner Observable
+ */
+export function dematerialize&lt;T&gt;(this: Observable&lt;T&gt;): Observable&lt;any&gt; {
+  return this.lift(new DeMaterializeOperator());
+}
+&nbsp;
+class DeMaterializeOperator&lt;T extends Notification&lt;any&gt;, R&gt; implements Operator&lt;T, R&gt; {
+  call(subscriber: Subscriber&lt;any&gt;, source: any): any {
+    return source._subscribe(new DeMaterializeSubscriber(subscriber));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class DeMaterializeSubscriber&lt;T extends Notification&lt;any&gt;&gt; extends Subscriber&lt;T&gt; {
+  constructor(destination: Subscriber&lt;any&gt;) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(value: T) {
+    value.observe(this.destination);
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

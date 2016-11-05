@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/window.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> window.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>43/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>2/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>14/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>42/42</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { Subject } from '../Subject';
+&nbsp;
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+&nbsp;
+/**
+ * Branch out the source Observable values as a nested Observable whenever
+ * `windowBoundaries` emits.
+ *
+ * &lt;span class="informal"&gt;It's like {@link buffer}, but emits a nested Observable
+ * instead of an array.&lt;/span&gt;
+ *
+ * &lt;img src="./img/window.png" width="100%"&gt;
+ *
+ * Returns an Observable that emits windows of items it collects from the source
+ * Observable. The output Observable emits connected, non-overlapping
+ * windows. It emits the current window and opens a new one whenever the
+ * Observable `windowBoundaries` emits an item. Because each window is an
+ * Observable, the output is a higher-order Observable.
+ *
+ * @example &lt;caption&gt;In every window of 1 second each, emit at most 2 click events&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var interval = Rx.Observable.interval(1000);
+ * var result = clicks.window(interval)
+ *   .map(win =&gt; win.take(2)) // each window has at most 2 emissions
+ *   .mergeAll(); // flatten the Observable-of-Observables
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link windowCount}
+ * @see {@link windowTime}
+ * @see {@link windowToggle}
+ * @see {@link windowWhen}
+ * @see {@link buffer}
+ *
+ * @param {Observable&lt;any&gt;} windowBoundaries An Observable that completes the
+ * previous window and starts a new window.
+ * @return {Observable&lt;Observable&lt;T&gt;&gt;} An Observable of windows, which are
+ * Observables emitting values of the source Observable.
+ * @method window
+ * @owner Observable
+ */
+export function window&lt;T&gt;(this: Observable&lt;T&gt;, windowBoundaries: Observable&lt;any&gt;): Observable&lt;Observable&lt;T&gt;&gt; {
+  return this.lift(new WindowOperator&lt;T&gt;(windowBoundaries));
+}
+&nbsp;
+class WindowOperator&lt;T&gt; implements Operator&lt;T, Observable&lt;T&gt;&gt; {
+&nbsp;
+  constructor(private windowBoundaries: Observable&lt;any&gt;) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;Observable&lt;T&gt;&gt;, source: any): any {
+    const windowSubscriber = new WindowSubscriber(subscriber);
+    const sourceSubscription = source._subscribe(windowSubscriber);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!sourceSubscription.closed) {
+      windowSubscriber.add(subscribeToResult(windowSubscriber, this.windowBoundaries));
+    }
+    return sourceSubscription;
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class WindowSubscriber&lt;T&gt; extends OuterSubscriber&lt;T, any&gt; {
+&nbsp;
+  private window: Subject&lt;T&gt; = new Subject&lt;T&gt;();
+&nbsp;
+  constructor(destination: Subscriber&lt;Observable&lt;T&gt;&gt;) {
+    super(destination);
+    destination.next(this.window);
+  }
+&nbsp;
+  notifyNext(outerValue: T, innerValue: any,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber&lt;T, any&gt;): void {
+    this.openWindow();
+  }
+&nbsp;
+  notifyError(error: any, innerSub: InnerSubscriber&lt;T, any&gt;): void {
+    this._error(error);
+  }
+&nbsp;
+  notifyComplete(innerSub: InnerSubscriber&lt;T, any&gt;): void {
+    this._complete();
+  }
+&nbsp;
+  protected _next(value: T): void {
+    this.window.next(value);
+  }
+&nbsp;
+  protected _error(err: any): void {
+    this.window.error(err);
+    this.destination.error(err);
+  }
+&nbsp;
+  protected _complete(): void {
+    this.window.complete();
+    this.destination.complete();
+  }
+&nbsp;
+  protected _unsubscribe() {
+    this.window = null;
+  }
+&nbsp;
+  private openWindow(): void  {
+    const prevWindow = this.window;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (prevWindow) {
+      prevWindow.complete();
+    }
+    const destination = this.destination;
+    const newWindow = this.window = new Subject&lt;T&gt;();
+    destination.next(newWindow);
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

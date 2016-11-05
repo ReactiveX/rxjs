@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/scheduler/AsyncAction.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/scheduler</a> AsyncAction.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.88% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>62/64</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>30/36</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>8/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.61% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>57/59</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15123x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15123x</span>
+<span class="cline-any cline-yes">15123x</span>
+<span class="cline-any cline-yes">15123x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15155x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-yes">50x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15134x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57x</span>
+<span class="cline-any cline-yes">57x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">92x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">92x</span>
+<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14321x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14321x</span>
+<span class="cline-any cline-yes">14321x</span>
+<span class="cline-any cline-yes">14321x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">14317x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12857x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14448x</span>
+<span class="cline-any cline-yes">14448x</span>
+<span class="cline-any cline-yes">14448x</span>
+<span class="cline-any cline-yes">14448x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14448x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">801x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4711x</span>
+<span class="cline-any cline-yes">2223x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { root } from '../util/root';
+import { Action } from './Action';
+import { Subscription } from '../Subscription';
+import { AsyncScheduler } from './AsyncScheduler';
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export class AsyncAction&lt;T&gt; extends Action&lt;T&gt; {
+&nbsp;
+  public id: any;
+  public state: T;
+  public delay: number;
+  protected pending: boolean = false;
+&nbsp;
+  constructor(protected scheduler: AsyncScheduler,
+              protected work: (state?: T) =&gt; void) {
+    super(scheduler, work);
+  }
+&nbsp;
+  public schedule(state?: T, delay: number = 0): Subscription {
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.closed) {
+<span class="cstat-no" title="statement not covered" >      return this;</span>
+     }
+&nbsp;
+    // Always replace the current state with the new state.
+    this.state = state;
+&nbsp;
+    // Set the pending flag indicating that this action has been scheduled, or
+    // has recursively rescheduled itself.
+    this.pending = true;
+&nbsp;
+    const id = this.id;
+    const scheduler = this.scheduler;
+&nbsp;
+    //
+    // Important implementation note:
+    //
+    // Actions only execute once by default, unless rescheduled from within the
+    // scheduled callback. This allows us to implement single and repeat
+    // actions via the same code path, without adding API surface area, as well
+    // as mimic traditional recursion but across asynchronous boundaries.
+    //
+    // However, JS runtimes and timers distinguish between intervals achieved by
+    // serial `setTimeout` calls vs. a single `setInterval` call. An interval of
+    // serial `setTimeout` calls can be individually delayed, which delays
+    // scheduling the next `setTimeout`, and so on. `setInterval` attempts to
+    // guarantee the interval callback will be invoked more precisely to the
+    // interval period, regardless of load.
+    //
+    // Therefore, we use `setInterval` to schedule single and repeat actions.
+    // If the action reschedules itself with the same delay, the interval is not
+    // canceled. If the action doesn't reschedule, or reschedules with a
+    // different delay, the interval will be canceled after scheduled callback
+    // execution.
+    //
+    if (id != null) {
+      this.id = this.recycleAsyncId(scheduler, id, delay);
+    }
+&nbsp;
+    this.delay = delay;
+    // If this action has already an async Id, don't request a new one.
+    this.id = this.id || this.requestAsyncId(scheduler, this.id, delay);
+&nbsp;
+    return this;
+  }
+&nbsp;
+  protected requestAsyncId(scheduler: AsyncScheduler, id?: any, <span class="missing-if-branch" title="if path not taken" >I</span>delay: number = 0): any {
+    return root.setInterval(scheduler.flush.bind(scheduler, this), delay);
+  }
+&nbsp;
+  protected recycleAsyncId(scheduler: AsyncScheduler, id: any, <span class="missing-if-branch" title="if path not taken" >I</span>delay: number = 0): any {
+    // If this action is rescheduled with the same delay time, don't clear the interval id.
+    if (delay !== null &amp;&amp; this.delay === delay) {
+      return id;
+    }
+    // Otherwise, if the action's delay time is different from the current delay,
+    // clear the interval id
+    return root.clearInterval(id) &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >undefined </span>|| undefined;
+  }
+&nbsp;
+  /**
+   * Immediately executes this action and the `work` it contains.
+   * @return {any}
+   */
+  public execute(state: T, delay: number): any {
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.closed) {
+<span class="cstat-no" title="statement not covered" >      return new Error('executing a cancelled action');</span>
+    }
+&nbsp;
+    this.pending = false;
+    const error = this._execute(state, delay);
+    if (error) {
+      return error;
+    } else if (this.pending === false &amp;&amp; this.id != null) {
+      // Dequeue if the action didn't reschedule itself. Don't call
+      // unsubscribe(), because the action could reschedule later.
+      // For example:
+      // ```
+      // scheduler.schedule(function doWork(counter) {
+      //   /* ... I'm a busy worker bee ... */
+      //   var originalAction = this;
+      //   /* wait 100ms before rescheduling the action */
+      //   setTimeout(function () {
+      //     originalAction.schedule(counter + 1);
+      //   }, 100);
+      // }, 1000);
+      // ```
+      this.id = this.recycleAsyncId(this.scheduler, this.id, null);
+    }
+  }
+&nbsp;
+  protected _execute(state: T, delay: number): any {
+    let errored: boolean = false;
+    let errorValue: any = undefined;
+    try {
+      this.work(state);
+    } catch (e) {
+      errored = true;
+      errorValue = !!e &amp;&amp; e || <span class="branch-2 cbranch-no" title="branch not covered" >new Error(e);</span>
+    }
+    if (errored) {
+      this.unsubscribe();
+      return errorValue;
+    }
+  }
+&nbsp;
+  protected _unsubscribe() {
+&nbsp;
+    const id = this.id;
+    const scheduler = this.scheduler;
+    const actions = scheduler.actions;
+    const index = actions.indexOf(this);
+&nbsp;
+    this.work  = null;
+    this.delay = null;
+    this.state = null;
+    this.pending = false;
+    this.scheduler = null;
+&nbsp;
+    if (index !== -1) {
+      actions.splice(index, 1);
+    }
+&nbsp;
+    if (id != null) {
+      this.id = this.recycleAsyncId(scheduler, id, null);
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

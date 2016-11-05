@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/throttle.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> throttle.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>38/38</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>37/37</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">196x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Operator } from '../Operator';
+import { Observable, SubscribableOrPromise } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
+&nbsp;
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+&nbsp;
+/**
+ * Emits a value from the source Observable, then ignores subsequent source
+ * values for a duration determined by another Observable, then repeats this
+ * process.
+ *
+ * &lt;span class="informal"&gt;It's like {@link throttleTime}, but the silencing
+ * duration is determined by a second Observable.&lt;/span&gt;
+ *
+ * &lt;img src="./img/throttle.png" width="100%"&gt;
+ *
+ * `throttle` emits the source Observable values on the output Observable
+ * when its internal timer is disabled, and ignores source values when the timer
+ * is enabled. Initially, the timer is disabled. As soon as the first source
+ * value arrives, it is forwarded to the output Observable, and then the timer
+ * is enabled by calling the `durationSelector` function with the source value,
+ * which returns the "duration" Observable. When the duration Observable emits a
+ * value or completes, the timer is disabled, and this process repeats for the
+ * next source value.
+ *
+ * @example &lt;caption&gt;Emit clicks at a rate of at most one click per second&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.throttle(ev =&gt; Rx.Observable.interval(1000));
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link audit}
+ * @see {@link debounce}
+ * @see {@link delayWhen}
+ * @see {@link sample}
+ * @see {@link throttleTime}
+ *
+ * @param {function(value: T): Observable|Promise} durationSelector A function
+ * that receives a value from the source Observable, for computing the silencing
+ * duration for each source value, returned as an Observable or a Promise.
+ * @return {Observable&lt;T&gt;} An Observable that performs the throttle operation to
+ * limit the rate of emissions from the source.
+ * @method throttle
+ * @owner Observable
+ */
+export function throttle&lt;T&gt;(this: Observable&lt;T&gt;, durationSelector: (value: T) =&gt; SubscribableOrPromise&lt;number&gt;): Observable&lt;T&gt; {
+  return this.lift(new ThrottleOperator(durationSelector));
+}
+&nbsp;
+class ThrottleOperator&lt;T&gt; implements Operator&lt;T, T&gt; {
+  constructor(private durationSelector: (value: T) =&gt; SubscribableOrPromise&lt;number&gt;) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;T&gt;, source: any): TeardownLogic {
+    return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class ThrottleSubscriber&lt;T, R&gt; extends OuterSubscriber&lt;T, R&gt; {
+  private throttled: Subscription;
+&nbsp;
+  constructor(protected destination: Subscriber&lt;T&gt;,
+              private durationSelector: (value: T) =&gt; SubscribableOrPromise&lt;number&gt;) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(value: T): void {
+    if (!this.throttled) {
+      this.tryDurationSelector(value);
+    }
+  }
+&nbsp;
+  private tryDurationSelector(value: T): void {
+    let duration: SubscribableOrPromise&lt;number&gt; = null;
+    try {
+      duration = this.durationSelector(value);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.emitAndThrottle(value, duration);
+  }
+&nbsp;
+  private emitAndThrottle(value: T, duration: SubscribableOrPromise&lt;number&gt;) {
+    this.add(this.throttled = subscribeToResult(this, duration));
+    this.destination.next(value);
+  }
+&nbsp;
+  protected _unsubscribe() {
+    const throttled = this.throttled;
+    if (throttled) {
+      this.remove(throttled);
+      this.throttled = null;
+      throttled.unsubscribe();
+    }
+  }
+&nbsp;
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber&lt;T, R&gt;): void {
+    this._unsubscribe();
+  }
+&nbsp;
+  notifyComplete(): void {
+    this._unsubscribe();
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

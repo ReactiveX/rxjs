@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/ReplaySubject.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">src</a> ReplaySubject.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.46% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>64/65</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>27/30</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>8/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.39% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>61/62</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">171x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">285x</span>
+<span class="cline-any cline-yes">319x</span>
+<span class="cline-any cline-yes">171x</span>
+<span class="cline-any cline-yes">171x</span>
+<span class="cline-any cline-yes">171x</span>
+<span class="cline-any cline-yes">171x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">233x</span>
+<span class="cline-any cline-yes">233x</span>
+<span class="cline-any cline-yes">233x</span>
+<span class="cline-any cline-yes">233x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">130x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">113x</span>
+<span class="cline-any cline-yes">113x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-yes">102x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">130x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">606x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-yes">317x</span>
+<span class="cline-any cline-yes">306x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-yes">123x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-yes">130x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">373x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">233x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Subject } from './Subject';
+import { Scheduler } from './Scheduler';
+import { queue } from './scheduler/queue';
+import { Subscriber } from './Subscriber';
+import { Subscription } from './Subscription';
+import { ObserveOnSubscriber } from './operator/observeOn';
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { SubjectSubscription } from './SubjectSubscription';
+/**
+ * @class ReplaySubject&lt;T&gt;
+ */
+export class ReplaySubject&lt;T&gt; extends Subject&lt;T&gt; {
+  private _events: ReplayEvent&lt;T&gt;[] = [];
+  private _bufferSize: number;
+  private _windowTime: number;
+&nbsp;
+  constructor(bufferSize: number = Number.POSITIVE_INFINITY,
+              windowTime: number = Number.POSITIVE_INFINITY,
+              private scheduler?: Scheduler) {
+    super();
+    this._bufferSize = bufferSize &lt; 1 ? <span class="branch-0 cbranch-no" title="branch not covered" >1 </span>: bufferSize;
+    this._windowTime = windowTime &lt; 1 ? <span class="branch-0 cbranch-no" title="branch not covered" >1 </span>: windowTime;
+  }
+&nbsp;
+  next(value: T): void {
+    const now = this._getNow();
+    this._events.push(new ReplayEvent(now, value));
+    this._trimBufferThenGetEvents();
+    super.next(value);
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T&gt;): Subscription {
+    const _events = this._trimBufferThenGetEvents();
+    const scheduler = this.scheduler;
+    let subscription: Subscription;
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.closed) {
+<span class="cstat-no" title="statement not covered" >      throw new ObjectUnsubscribedError();</span>
+    } else if (this.hasError) {
+      subscription = Subscription.EMPTY;
+    } else if (this.isStopped) {
+      subscription = Subscription.EMPTY;
+    } else {
+      this.observers.push(subscriber);
+      subscription = new SubjectSubscription(this, subscriber);
+    }
+&nbsp;
+    if (scheduler) {
+      subscriber.add(subscriber = new ObserveOnSubscriber&lt;T&gt;(subscriber, scheduler));
+    }
+&nbsp;
+    const len = _events.length;
+    for (let i = 0; i &lt; len &amp;&amp; !subscriber.closed; i++) {
+      subscriber.next(_events[i].value);
+    }
+&nbsp;
+    if (this.hasError) {
+      subscriber.error(this.thrownError);
+    } else if (this.isStopped) {
+      subscriber.complete();
+    }
+&nbsp;
+    return subscription;
+  }
+&nbsp;
+  _getNow(): number {
+    return (this.scheduler || queue).now();
+  }
+&nbsp;
+  private _trimBufferThenGetEvents(): ReplayEvent&lt;T&gt;[] {
+    const now = this._getNow();
+    const _bufferSize = this._bufferSize;
+    const _windowTime = this._windowTime;
+    const _events = this._events;
+&nbsp;
+    let eventsCount = _events.length;
+    let spliceCount = 0;
+&nbsp;
+    // Trim events that fall out of the time window.
+    // Start at the front of the list. Break early once
+    // we encounter an event that falls within the window.
+    while (spliceCount &lt; eventsCount) {
+      if ((now - _events[spliceCount].time) &lt; _windowTime) {
+        break;
+      }
+      spliceCount++;
+    }
+&nbsp;
+    if (eventsCount &gt; _bufferSize) {
+      spliceCount = Math.max(spliceCount, eventsCount - _bufferSize);
+    }
+&nbsp;
+    if (spliceCount &gt; 0) {
+      _events.splice(0, spliceCount);
+    }
+&nbsp;
+    return _events;
+  }
+}
+&nbsp;
+class ReplayEvent&lt;T&gt; {
+  constructor(public time: number, public value: T) {
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

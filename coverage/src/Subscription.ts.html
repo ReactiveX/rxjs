@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/Subscription.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">src</a> Subscription.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.65% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>66/69</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">91.67% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>44/48</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>6/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.45% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>63/66</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34417x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34417x</span>
+<span class="cline-any cline-yes">3821x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">19448x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19448x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19418x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19418x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19418x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19418x</span>
+<span class="cline-any cline-yes">10746x</span>
+<span class="cline-any cline-yes">10746x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19418x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7836x</span>
+<span class="cline-any cline-yes">7836x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7836x</span>
+<span class="cline-any cline-yes">14964x</span>
+<span class="cline-any cline-yes">14964x</span>
+<span class="cline-any cline-yes">14964x</span>
+<span class="cline-any cline-yes">14964x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19418x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">21536x</span>
+<span class="cline-any cline-yes">1705x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19831x</span>
+<span class="cline-any cline-yes">2146x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17685x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17685x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">324x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17685x</span>
+<span class="cline-any cline-yes">165x</span>
+<span class="cline-any cline-yes">17520x</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17475x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17519x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17684x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1798x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1798x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1798x</span>
+<span class="cline-any cline-yes">1688x</span>
+<span class="cline-any cline-yes">1688x</span>
+<span class="cline-any cline-yes">1024x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isArray } from './util/isArray';
+import { isObject } from './util/isObject';
+import { isFunction } from './util/isFunction';
+import { tryCatch } from './util/tryCatch';
+import { errorObject } from './util/errorObject';
+import { UnsubscriptionError } from './util/UnsubscriptionError';
+&nbsp;
+export interface AnonymousSubscription {
+  unsubscribe(): void;
+}
+&nbsp;
+export type TeardownLogic = AnonymousSubscription | Function | void;
+&nbsp;
+export interface ISubscription extends AnonymousSubscription {
+  unsubscribe(): void;
+  closed: boolean;
+}
+&nbsp;
+/**
+ * Represents a disposable resource, such as the execution of an Observable. A
+ * Subscription has one important method, `unsubscribe`, that takes no argument
+ * and just disposes the resource held by the subscription.
+ *
+ * Additionally, subscriptions may be grouped together through the `add()`
+ * method, which will attach a child Subscription to the current Subscription.
+ * When a Subscription is unsubscribed, all its children (and its grandchildren)
+ * will be unsubscribed as well.
+ *
+ * @class Subscription
+ */
+export class Subscription implements ISubscription {
+  public static EMPTY: Subscription = (function(empty: any){
+    empty.closed = true;
+    return empty;
+  }(new Subscription()));
+&nbsp;
+  /**
+   * A flag to indicate whether this Subscription has already been unsubscribed.
+   * @type {boolean}
+   */
+  public closed: boolean = false;
+&nbsp;
+  /**
+   * @param {function(): void} [unsubscribe] A function describing how to
+   * perform the disposal of resources when the `unsubscribe` method is called.
+   */
+  constructor(unsubscribe?: () =&gt; void) {
+    if (unsubscribe) {
+      (&lt;any&gt; this)._unsubscribe = unsubscribe;
+    }
+  }
+&nbsp;
+  /**
+   * Disposes the resources held by the subscription. May, for instance, cancel
+   * an ongoing Observable execution or cancel any other type of work that
+   * started when the Subscription was created.
+   * @return {void}
+   */
+  unsubscribe(): void {
+    let hasErrors = false;
+    let errors: any[];
+&nbsp;
+    if (this.closed) {
+      return;
+    }
+&nbsp;
+    this.closed = true;
+&nbsp;
+    const { _unsubscribe, _subscriptions } = (&lt;any&gt; this);
+&nbsp;
+    (&lt;any&gt; this)._subscriptions = null;
+&nbsp;
+    if (isFunction(_unsubscribe)) {
+      let trial = tryCatch(_unsubscribe).call(this);
+      if (trial === errorObject) {
+        hasErrors = true;
+        (errors = errors || []).push(errorObject.e);
+      }
+    }
+&nbsp;
+    if (isArray(_subscriptions)) {
+&nbsp;
+      let index = -1;
+      const len = _subscriptions.length;
+&nbsp;
+      while (++index &lt; len) {
+        const sub = _subscriptions[index];
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (isObject(sub)) {
+          let trial = tryCatch(sub.unsubscribe).call(sub);
+          if (trial === errorObject) {
+            hasErrors = true;
+            errors = errors || [];
+            let err = errorObject.e;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (err instanceof UnsubscriptionError) {
+              errors = errors.concat(err.errors);
+            } else {
+<span class="cstat-no" title="statement not covered" >              errors.push(err);</span>
+            }
+          }
+        }
+      }
+    }
+&nbsp;
+    if (hasErrors) {
+      throw new UnsubscriptionError(errors);
+    }
+  }
+&nbsp;
+  /**
+   * Adds a tear down to be called during the unsubscribe() of this
+   * Subscription.
+   *
+   * If the tear down being added is a subscription that is already
+   * unsubscribed, is the same reference `add` is being called on, or is
+   * `Subscription.EMPTY`, it will not be added.
+   *
+   * If this subscription is already in an `closed` state, the passed
+   * tear down logic will be executed immediately.
+   *
+   * @param {TeardownLogic} teardown The additional logic to execute on
+   * teardown.
+   * @return {Subscription} Returns the Subscription used or created to be
+   * added to the inner subscriptions list. This Subscription can be used with
+   * `remove()` to remove the passed teardown logic from the inner subscriptions
+   * list.
+   */
+  add(teardown: TeardownLogic): Subscription {
+    if (!teardown || (teardown === Subscription.EMPTY)) {
+      return Subscription.EMPTY;
+    }
+&nbsp;
+    if (teardown === this) {
+      return this;
+    }
+&nbsp;
+    let sub = (&lt;Subscription&gt; teardown);
+&nbsp;
+    switch (typeof teardown) {
+      case 'function':
+        sub = new Subscription(&lt;(() =&gt; void) &gt; teardown);
+      case 'object':
+        if (sub.closed || typeof sub.unsubscribe !== 'function') {
+          break;
+        } else if (this.closed) {
+          sub.unsubscribe();
+        } else {
+          ((&lt;any&gt; this)._subscriptions || ((&lt;any&gt; this)._subscriptions = [])).push(sub);
+        }
+        break;
+<span class="branch-2 cbranch-no" title="branch not covered" >      default:</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');</span>
+    }
+&nbsp;
+    return sub;
+  }
+&nbsp;
+  /**
+   * Removes a Subscription from the internal list of subscriptions that will
+   * unsubscribe during the unsubscribe process of this Subscription.
+   * @param {Subscription} subscription The subscription to remove.
+   * @return {void}
+   */
+  remove(subscription: Subscription): void {
+&nbsp;
+    // HACK: This might be redundant because of the logic in `add()`
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (subscription == null   || (
+        subscription === this) || (
+        subscription === Subscription.EMPTY)) {
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    const subscriptions = (&lt;any&gt; this)._subscriptions;
+&nbsp;
+    if (subscriptions) {
+      const subscriptionIndex = subscriptions.indexOf(subscription);
+      if (subscriptionIndex !== -1) {
+        subscriptions.splice(subscriptionIndex, 1);
+      }
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

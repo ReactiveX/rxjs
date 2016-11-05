@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/bufferCount.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> bufferCount.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>42/42</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>9/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>8/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>34/34</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+&nbsp;
+/**
+ * Buffers the source Observable values until the size hits the maximum
+ * `bufferSize` given.
+ *
+ * &lt;span class="informal"&gt;Collects values from the past as an array, and emits
+ * that array only when its size reaches `bufferSize`.&lt;/span&gt;
+ *
+ * &lt;img src="./img/bufferCount.png" width="100%"&gt;
+ *
+ * Buffers a number of values from the source Observable by `bufferSize` then
+ * emits the buffer and clears it, and starts a new buffer each
+ * `startBufferEvery` values. If `startBufferEvery` is not provided or is
+ * `null`, then new buffers are started immediately at the start of the source
+ * and when each buffer closes and is emitted.
+ *
+ * @example &lt;caption&gt;Emit the last two click events as an array&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var buffered = clicks.bufferCount(2);
+ * buffered.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;On every click, emit the last two click events as an array&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var buffered = clicks.bufferCount(2, 1);
+ * buffered.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link buffer}
+ * @see {@link bufferTime}
+ * @see {@link bufferToggle}
+ * @see {@link bufferWhen}
+ * @see {@link pairwise}
+ * @see {@link windowCount}
+ *
+ * @param {number} bufferSize The maximum size of the buffer emitted.
+ * @param {number} [startBufferEvery] Interval at which to start a new buffer.
+ * For example if `startBufferEvery` is `2`, then a new buffer will be started
+ * on every other value from the source. A new buffer is started at the
+ * beginning of the source by default.
+ * @return {Observable&lt;T[]&gt;} An Observable of arrays of buffered values.
+ * @method bufferCount
+ * @owner Observable
+ */
+export function bufferCount&lt;T&gt;(this: Observable&lt;T&gt;, bufferSize: number, startBufferEvery: number = null): Observable&lt;T[]&gt; {
+  return this.lift(new BufferCountOperator&lt;T&gt;(bufferSize, startBufferEvery));
+}
+&nbsp;
+class BufferCountOperator&lt;T&gt; implements Operator&lt;T, T[]&gt; {
+  constructor(private bufferSize: number, private startBufferEvery: number) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;T[]&gt;, source: any): any {
+    return source._subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class BufferCountSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private buffers: Array&lt;T[]&gt; = [];
+  private count: number = 0;
+&nbsp;
+  constructor(destination: Subscriber&lt;T[]&gt;, private bufferSize: number, private startBufferEvery: number) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(value: T) {
+    const count = this.count++;
+    const { destination, bufferSize, startBufferEvery, buffers } = this;
+    const startOn = (startBufferEvery == null) ? bufferSize : startBufferEvery;
+&nbsp;
+    if (count % startOn === 0) {
+      buffers.push([]);
+    }
+&nbsp;
+    for (let i = buffers.length; i--; ) {
+      const buffer = buffers[i];
+      buffer.push(value);
+      if (buffer.length === bufferSize) {
+        buffers.splice(i, 1);
+        destination.next(buffer);
+      }
+    }
+  }
+&nbsp;
+  protected _complete() {
+    const destination = this.destination;
+    const buffers = this.buffers;
+    while (buffers.length &gt; 0) {
+      let buffer = buffers.shift();
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (buffer.length &gt; 0) {
+        destination.next(buffer);
+      }
+    }
+    super._complete();
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

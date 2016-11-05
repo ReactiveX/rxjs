@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/TimerObservable.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/observable</a> TimerObservable.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>43/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">84.21% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>16/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>35/35</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">82x</span>
+<span class="cline-any cline-yes">82x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">82x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">82x</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isNumeric } from '../util/isNumeric';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { async } from '../scheduler/async';
+import { isScheduler } from '../util/isScheduler';
+import { isDate } from '../util/isDate';
+import { TeardownLogic } from '../Subscription';
+import { Subscriber } from '../Subscriber';
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class TimerObservable extends Observable&lt;number&gt; {
+&nbsp;
+  /**
+   * Creates an Observable that starts emitting after an `initialDelay` and
+   * emits ever increasing numbers after each `period` of time thereafter.
+   *
+   * &lt;span class="informal"&gt;Its like {@link interval}, but you can specify when
+   * should the emissions start.&lt;/span&gt;
+   *
+   * &lt;img src="./img/timer.png" width="100%"&gt;
+   *
+   * `timer` returns an Observable that emits an infinite sequence of ascending
+   * integers, with a constant interval of time, `period` of your choosing
+   * between those emissions. The first emission happens after the specified
+   * `initialDelay`. The initial delay may be a {@link Date}. By default, this
+   * operator uses the `async` Scheduler to provide a notion of time, but you
+   * may pass any Scheduler to it. If `period` is not specified, the output
+   * Observable emits only one value, `0`. Otherwise, it emits an infinite
+   * sequence.
+   *
+   * @example &lt;caption&gt;Emits ascending numbers, one every second (1000ms), starting after 3 seconds&lt;/caption&gt;
+   * var numbers = Rx.Observable.timer(3000, 1000);
+   * numbers.subscribe(x =&gt; console.log(x));
+   *
+   * @example &lt;caption&gt;Emits one number after five seconds&lt;/caption&gt;
+   * var numbers = Rx.Observable.timer(5000);
+   * numbers.subscribe(x =&gt; console.log(x));
+   *
+   * @see {@link interval}
+   * @see {@link delay}
+   *
+   * @param {number|Date} initialDelay The initial delay time to wait before
+   * emitting the first value of `0`.
+   * @param {number} [period] The period of time between emissions of the
+   * subsequent numbers.
+   * @param {Scheduler} [scheduler=async] The Scheduler to use for scheduling
+   * the emission of values, and providing a notion of "time".
+   * @return {Observable} An Observable that emits a `0` after the
+   * `initialDelay` and ever increasing numbers after each `period` of time
+   * thereafter.
+   * @static true
+   * @name timer
+   * @owner Observable
+   */
+  static create(<span class="missing-if-branch" title="if path not taken" >I</span>initialDelay: number | Date = 0,
+                period?: number | Scheduler,
+                scheduler?: Scheduler): Observable&lt;number&gt; {
+    return new TimerObservable(initialDelay, period, scheduler);
+  }
+&nbsp;
+  static dispatch(state: any) {
+&nbsp;
+    const { index, period, subscriber } = state;
+    const action = (&lt;any&gt; this);
+&nbsp;
+    subscriber.next(index);
+&nbsp;
+    if (subscriber.closed) {
+      return;
+    } else if (period === -1) {
+      return subscriber.complete();
+    }
+&nbsp;
+    state.index = index + 1;
+    action.schedule(state, period);
+  }
+&nbsp;
+  private period: number = -1;
+  private dueTime: number = 0;
+  private scheduler: Scheduler;
+&nbsp;
+  constructor(<span class="missing-if-branch" title="if path not taken" >I</span>dueTime: number | Date = 0,
+              period?: number | Scheduler,
+              scheduler?: Scheduler) {
+    super();
+&nbsp;
+    if (isNumeric(period)) {
+      this.period = Number(period) &lt; 1 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >1 </span>|| Number(period);
+    } else if (isScheduler(period)) {
+      scheduler = &lt;Scheduler&gt; period;
+    }
+&nbsp;
+    if (!isScheduler(scheduler)) {
+      scheduler = async;
+    }
+&nbsp;
+    this.scheduler = scheduler;
+    this.dueTime = isDate(dueTime) ?
+      (+dueTime - this.scheduler.now()) :
+      (&lt;number&gt; dueTime);
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;number&gt;): TeardownLogic {
+    const index = 0;
+    const { period, dueTime, scheduler } = this;
+&nbsp;
+    return scheduler.schedule(TimerObservable.dispatch, dueTime, {
+      index, period, subscriber
+    });
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

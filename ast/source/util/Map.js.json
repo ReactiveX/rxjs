@@ -194,17 +194,17 @@
               "type": "Identifier",
               "name": "Map",
               "range": [
-                89,
-                92
+                87,
+                90
               ],
               "loc": {
                 "start": {
                   "line": 3,
-                  "column": 13
+                  "column": 11
                 },
                 "end": {
                   "line": 3,
-                  "column": 16
+                  "column": 14
                 }
               }
             },
@@ -218,17 +218,17 @@
                   "type": "Identifier",
                   "name": "root",
                   "range": [
-                    95,
-                    99
+                    93,
+                    97
                   ],
                   "loc": {
                     "start": {
                       "line": 3,
-                      "column": 19
+                      "column": 17
                     },
                     "end": {
                       "line": 3,
-                      "column": 23
+                      "column": 21
                     }
                   }
                 },
@@ -236,127 +236,163 @@
                   "type": "Identifier",
                   "name": "Map",
                   "range": [
-                    100,
-                    103
+                    98,
+                    101
                   ],
                   "loc": {
                     "start": {
                       "line": 3,
-                      "column": 24
+                      "column": 22
                     },
                     "end": {
                       "line": 3,
-                      "column": 27
+                      "column": 25
                     }
                   }
                 },
                 "range": [
-                  95,
-                  103
+                  93,
+                  101
                 ],
                 "loc": {
                   "start": {
                     "line": 3,
-                    "column": 19
+                    "column": 17
                   },
                   "end": {
                     "line": 3,
-                    "column": 27
+                    "column": 25
                   }
                 }
               },
               "right": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "ArrowFunctionExpression",
+                  "type": "FunctionExpression",
                   "id": null,
                   "params": [],
                   "body": {
-                    "type": "Identifier",
-                    "name": "MapPolyfill",
+                    "type": "BlockStatement",
+                    "body": [
+                      {
+                        "type": "ReturnStatement",
+                        "argument": {
+                          "type": "Identifier",
+                          "name": "MapPolyfill",
+                          "range": [
+                            127,
+                            138
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 3,
+                              "column": 51
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 62
+                            }
+                          }
+                        },
+                        "range": [
+                          120,
+                          139
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 44
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 63
+                          }
+                        }
+                      }
+                    ],
                     "range": [
-                      114,
-                      125
+                      118,
+                      141
                     ],
                     "loc": {
                       "start": {
                         "line": 3,
-                        "column": 38
+                        "column": 42
                       },
                       "end": {
                         "line": 3,
-                        "column": 49
+                        "column": 65
                       }
                     }
                   },
                   "generator": false,
-                  "expression": true,
+                  "expression": false,
                   "range": [
-                    108,
-                    125
+                    106,
+                    141
                   ],
                   "loc": {
                     "start": {
                       "line": 3,
-                      "column": 32
+                      "column": 30
                     },
                     "end": {
                       "line": 3,
-                      "column": 49
+                      "column": 65
                     }
                   }
                 },
                 "arguments": [],
                 "range": [
-                  107,
-                  128
+                  105,
+                  144
                 ],
                 "loc": {
                   "start": {
                     "line": 3,
-                    "column": 31
+                    "column": 29
                   },
                   "end": {
                     "line": 3,
-                    "column": 52
+                    "column": 68
                   }
                 }
               },
               "range": [
-                95,
-                128
+                93,
+                144
               ],
               "loc": {
                 "start": {
                   "line": 3,
-                  "column": 19
+                  "column": 17
                 },
                 "end": {
                   "line": 3,
-                  "column": 52
+                  "column": 68
                 }
               }
             },
             "range": [
-              89,
-              128
+              87,
+              144
             ],
             "loc": {
               "start": {
                 "line": 3,
-                "column": 13
+                "column": 11
               },
               "end": {
                 "line": 3,
-                "column": 52
+                "column": 68
               }
             }
           }
         ],
-        "kind": "const",
+        "kind": "var",
         "range": [
           83,
-          129
+          145
         ],
         "loc": {
           "start": {
@@ -365,7 +401,7 @@
           },
           "end": {
             "line": 3,
-            "column": 53
+            "column": 69
           }
         },
         "leadingComments": [],
@@ -374,8 +410,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=Map.js.map",
             "range": [
-              130,
-              161
+              146,
+              177
             ],
             "loc": {
               "start": {
@@ -394,7 +430,7 @@
       "source": null,
       "range": [
         76,
-        129
+        145
       ],
       "loc": {
         "start": {
@@ -403,7 +439,7 @@
         },
         "end": {
           "line": 3,
-          "column": 53
+          "column": 69
         }
       },
       "trailingComments": [
@@ -411,8 +447,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=Map.js.map",
           "range": [
-            130,
-            161
+            146,
+            177
           ],
           "loc": {
             "start": {
@@ -431,7 +467,7 @@
   "sourceType": "module",
   "range": [
     0,
-    129
+    145
   ],
   "loc": {
     "start": {
@@ -440,7 +476,7 @@
     },
     "end": {
       "line": 3,
-      "column": 53
+      "column": 69
     }
   },
   "comments": [
@@ -448,8 +484,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=Map.js.map",
       "range": [
-        130,
-        161
+        146,
+        177
       ],
       "loc": {
         "start": {

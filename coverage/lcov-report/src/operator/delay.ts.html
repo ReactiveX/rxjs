@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/delay.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> delay.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.28% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>57/58</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">91.67% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>11/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>14/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.25% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>56/57</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">65x</span>
+<span class="cline-any cline-yes">65x</span>
+<span class="cline-any cline-yes">65x</span>
+<span class="cline-any cline-yes">65x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">65x</span>
+<span class="cline-any cline-yes">108x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">65x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">118x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">118x</span>
+<span class="cline-any cline-yes">118x</span>
+<span class="cline-any cline-yes">118x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">118x</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">118x</span>
+<span class="cline-any cline-yes">118x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { async } from '../scheduler/async';
+import { isDate } from '../util/isDate';
+import { Operator } from '../Operator';
+import { Scheduler } from '../Scheduler';
+import { Subscriber } from '../Subscriber';
+import { Notification } from '../Notification';
+import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
+&nbsp;
+/**
+ * Delays the emission of items from the source Observable by a given timeout or
+ * until a given Date.
+ *
+ * &lt;span class="informal"&gt;Time shifts each item by some specified amount of
+ * milliseconds.&lt;/span&gt;
+ *
+ * &lt;img src="./img/delay.png" width="100%"&gt;
+ *
+ * If the delay argument is a Number, this operator time shifts the source
+ * Observable by that amount of time expressed in milliseconds. The relative
+ * time intervals between the values are preserved.
+ *
+ * If the delay argument is a Date, this operator time shifts the start of the
+ * Observable execution until the given date occurs.
+ *
+ * @example &lt;caption&gt;Delay each click by one second&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second
+ * delayedClicks.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Delay all clicks until a future date happens&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var date = new Date('March 15, 2050 12:00:00'); // in the future
+ * var delayedClicks = clicks.delay(date); // click emitted only after that date
+ * delayedClicks.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link debounceTime}
+ * @see {@link delayWhen}
+ *
+ * @param {number|Date} delay The delay duration in milliseconds (a `number`) or
+ * a `Date` until which the emission of the source items is delayed.
+ * @param {Scheduler} [scheduler=async] The Scheduler to use for
+ * managing the timers that handle the time-shift for each item.
+ * @return {Observable} An Observable that delays the emissions of the source
+ * Observable by the specified timeout or Date.
+ * @method delay
+ * @owner Observable
+ */
+export function delay&lt;T&gt;(this: Observable&lt;T&gt;, delay: number|Date,
+                         scheduler: Scheduler = async): Observable&lt;T&gt; {
+  const absoluteDelay = isDate(delay);
+  const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(&lt;number&gt;delay);
+  return this.lift(new DelayOperator(delayFor, scheduler));
+}
+&nbsp;
+class DelayOperator&lt;T&gt; implements Operator&lt;T, T&gt; {
+  constructor(private delay: number,
+              private scheduler: Scheduler) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;T&gt;, source: any): TeardownLogic {
+    return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class DelaySubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private queue: Array&lt;any&gt; = [];
+  private active: boolean = false;
+  private errored: boolean = false;
+&nbsp;
+  private static dispatch(state: any): void {
+    const source = state.source;
+    const queue = source.queue;
+    const scheduler = state.scheduler;
+    const destination = state.destination;
+&nbsp;
+    while (queue.length &gt; 0 &amp;&amp; (queue[0].time - scheduler.now()) &lt;= 0) {
+      queue.shift().notification.observe(destination);
+    }
+&nbsp;
+    if (queue.length &gt; 0) {
+      const delay = Math.max(0, queue[0].time - scheduler.now());
+      (&lt;any&gt; this).schedule(state, delay);
+    } else {
+      source.active = false;
+    }
+  }
+&nbsp;
+  constructor(destination: Subscriber&lt;T&gt;,
+              private delay: number,
+              private scheduler: Scheduler) {
+    super(destination);
+  }
+&nbsp;
+  private _schedule(scheduler: Scheduler): void {
+    this.active = true;
+    this.add(scheduler.schedule(DelaySubscriber.dispatch, this.delay, {
+      source: this, destination: this.destination, scheduler: scheduler
+    }));
+  }
+&nbsp;
+  private scheduleNotification(notification: Notification&lt;any&gt;): void {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.errored === true) {
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    const scheduler = this.scheduler;
+    const message = new DelayMessage(scheduler.now() + this.delay, notification);
+    this.queue.push(message);
+&nbsp;
+    if (this.active === false) {
+      this._schedule(scheduler);
+    }
+  }
+&nbsp;
+  protected _next(value: T) {
+    this.scheduleNotification(Notification.createNext(value));
+  }
+&nbsp;
+  protected _error(err: any) {
+    this.errored = true;
+    this.queue = [];
+    this.destination.error(err);
+  }
+&nbsp;
+  protected _complete() {
+    this.scheduleNotification(Notification.createComplete());
+  }
+}
+&nbsp;
+class DelayMessage&lt;T&gt; {
+  constructor(private time: number,
+              private notification: any) {
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

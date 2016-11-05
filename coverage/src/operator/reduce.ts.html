@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/reduce.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> reduce.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>39/39</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>12/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>33/33</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">102x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">20099x</span>
+<span class="cline-any cline-yes">20065x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20065x</span>
+<span class="cline-any cline-yes">20065x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20061x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+&nbsp;
+/**
+ * Applies an accumulator function over the source Observable, and returns the
+ * accumulated result when the source completes, given an optional seed value.
+ *
+ * &lt;span class="informal"&gt;Combines together all values emitted on the source,
+ * using an accumulator function that knows how to join a new source value into
+ * the accumulation from the past.&lt;/span&gt;
+ *
+ * &lt;img src="./img/reduce.png" width="100%"&gt;
+ *
+ * Like
+ * [Array.prototype.reduce()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce),
+ * `reduce` applies an `accumulator` function against an accumulation and each
+ * value of the source Observable (from the past) to reduce it to a single
+ * value, emitted on the output Observable. Note that `reduce` will only emit
+ * one value, only when the source Observable completes. It is equivalent to
+ * applying operator {@link scan} followed by operator {@link last}.
+ *
+ * Returns an Observable that applies a specified `accumulator` function to each
+ * item emitted by the source Observable. If a `seed` value is specified, then
+ * that value will be used as the initial value for the accumulator. If no seed
+ * value is specified, the first item of the source is used as the seed.
+ *
+ * @example &lt;caption&gt;Count the number of click events that happened in 5 seconds&lt;/caption&gt;
+ * var clicksInFiveSeconds = Rx.Observable.fromEvent(document, 'click')
+ *   .takeUntil(Rx.Observable.interval(5000));
+ * var ones = clicksInFiveSeconds.mapTo(1);
+ * var seed = 0;
+ * var count = ones.reduce((acc, one) =&gt; acc + one, seed);
+ * count.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link count}
+ * @see {@link expand}
+ * @see {@link mergeScan}
+ * @see {@link scan}
+ *
+ * @param {function(acc: R, value: T): R} accumulator The accumulator function
+ * called on each source value.
+ * @param {R} [seed] The initial accumulation value.
+ * @return {Observable&lt;R&gt;} An observable of the accumulated values.
+ * @return {Observable&lt;R&gt;} An Observable that emits a single value that is the
+ * result of accumulating the values emitted by the source Observable.
+ * @method reduce
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function reduce&lt;T&gt;(this: Observable&lt;T&gt;, accumulator: (acc: T, value: T, index: number) =&gt; T, seed?: T): Observable&lt;T&gt;;
+export function reduce&lt;T&gt;(this: Observable&lt;T&gt;, accumulator: (acc: T[], value: T, index: number) =&gt; T[], seed?: T[]): Observable&lt;T[]&gt;;
+export function reduce&lt;T, R&gt;(this: Observable&lt;T&gt;, accumulator: (acc: R, value: T, index: number) =&gt; R, seed?: R): Observable&lt;R&gt;;
+/* tslint:disable:max-line-length */
+export function reduce&lt;T, R&gt;(this: Observable&lt;T&gt;, accumulator: (acc: R, value: T) =&gt; R, seed?: R): Observable&lt;R&gt; {
+  let hasSeed = false;
+  // providing a seed of `undefined` *should* be valid and trigger
+  // hasSeed! so don't use `seed !== undefined` checks!
+  // For this reason, we have to check it here at the original call site
+  // otherwise inside Operator/Subscriber we won't know if `undefined`
+  // means they didn't provide anything or if they literally provided `undefined`
+  if (arguments.length &gt;= 2) {
+    hasSeed = true;
+  }
+&nbsp;
+  return this.lift(new ReduceOperator(accumulator, seed, hasSeed));
+}
+&nbsp;
+export class ReduceOperator&lt;T, R&gt; implements Operator&lt;T, R&gt; {
+  constructor(private accumulator: (acc: R, value: T) =&gt; R, private seed?: R, private hasSeed: boolean = false) {}
+&nbsp;
+  call(subscriber: Subscriber&lt;R&gt;, source: any): any {
+    return source._subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export class ReduceSubscriber&lt;T, R&gt; extends Subscriber&lt;T&gt; {
+  acc: T | R;
+  hasValue: boolean = false;
+&nbsp;
+  constructor(destination: Subscriber&lt;R&gt;,
+              private accumulator: (acc: R, value: T) =&gt; R,
+              seed: R,
+              private hasSeed: boolean) {
+    super(destination);
+    this.acc = seed;
+  }
+&nbsp;
+  protected _next(value: T) {
+    if (this.hasValue || (this.hasValue = this.hasSeed)) {
+      this._tryReduce(value);
+    } else {
+      this.acc = value;
+      this.hasValue = true;
+    }
+  }
+&nbsp;
+  private _tryReduce(value: T) {
+    let result: any;
+    try {
+      result = this.accumulator(&lt;R&gt;this.acc, value);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.acc = result;
+  }
+&nbsp;
+  protected _complete() {
+    if (this.hasValue || this.hasSeed) {
+      this.destination.next(this.acc);
+    }
+    this.destination.complete();
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

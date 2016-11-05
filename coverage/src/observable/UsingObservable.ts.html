@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/UsingObservable.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/observable</a> UsingObservable.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>34/34</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>1/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>7/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>29/29</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable, SubscribableOrPromise } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { AnonymousSubscription, TeardownLogic } from '../Subscription';
+&nbsp;
+import { subscribeToResult } from '../util/subscribeToResult';
+import { OuterSubscriber } from '../OuterSubscriber';
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class UsingObservable&lt;T&gt; extends Observable&lt;T&gt; {
+&nbsp;
+  static create&lt;T&gt;(resourceFactory: () =&gt; AnonymousSubscription | void,
+                   observableFactory: (resource: AnonymousSubscription) =&gt; SubscribableOrPromise&lt;T&gt; | void): Observable&lt;T&gt; {
+    return new UsingObservable&lt;T&gt;(resourceFactory, observableFactory);
+  }
+&nbsp;
+  constructor(private resourceFactory: () =&gt; AnonymousSubscription | void,
+              private observableFactory: (resource: AnonymousSubscription) =&gt; SubscribableOrPromise&lt;T&gt; | void) {
+    super();
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T&gt;): TeardownLogic {
+    const { resourceFactory, observableFactory } = this;
+&nbsp;
+    let resource: AnonymousSubscription;
+&nbsp;
+    try {
+      resource = &lt;AnonymousSubscription&gt;resourceFactory();
+      return new UsingSubscriber(subscriber, resource, observableFactory);
+    } catch (err) {
+      subscriber.error(err);
+    }
+  }
+}
+&nbsp;
+class UsingSubscriber&lt;T&gt; extends OuterSubscriber&lt;T, T&gt; {
+  constructor(destination: Subscriber&lt;T&gt;,
+              private resource: AnonymousSubscription,
+              private observableFactory: (resource: AnonymousSubscription) =&gt; SubscribableOrPromise&lt;T&gt; | void) {
+    super(destination);
+    destination.add(resource);
+    this.tryUse();
+  }
+&nbsp;
+  private tryUse(): void {
+    try {
+      const source = this.observableFactory.call(this, this.resource);
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (source) {
+        this.add(subscribeToResult(this, source));
+      }
+    } catch (err) {
+      this._error(err);
+    }
+  }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

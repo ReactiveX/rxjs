@@ -10,7 +10,7 @@
   
   
   <script src="script/manual.js"></script>
-<script data-ice="userScript" src="user/script/0-Rx.umd.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
 <script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
 <script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
 <script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
@@ -117,8 +117,7 @@
     <h1 class="manual-toc-title"><a href="identifiers.html" data-ice="title">Reference</a></h1>
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#class" data-ice="link">Class</a></li>
-<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#interface" data-ice="link">Interface</a></li>
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#typedef" data-ice="link">Typedef</a></li>
 </ul>
   </div>
@@ -166,19 +165,19 @@ button.addEventListener(&apos;click&apos;, () =&gt; console.log(`Clicked ${++cou
 <pre><code class="lang-Js"><code class="source-code prettyprint">var button = document.querySelector(&apos;button&apos;);
 Rx.Observable.fromEvent(button, &apos;click&apos;)
   .scan(count =&gt; count + 1, 0)
-  .subscribe(count =&gt; console.log(&apos;Clicked ${count} times&apos;));</code>
+  .subscribe(count =&gt; console.log(`Clicked ${count} times`));</code>
 </code></pre>
 <p>The <strong>scan</strong> operator works just like <strong>reduce</strong> for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.</p>
 <h3 id="flow">Flow</h3>
 <p>RxJS has a whole range of operators that helps you control how the events flow through your observables.</p>
 <p>This is how you would allow at most one click per second, with plain JavaScript:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">var count = 0;
-var lastClick = null;
+var rate = 1000;
+var lastClick = Date.now() - rate;
 var button = document.querySelector(&apos;button&apos;);
 button.addEventListener(&apos;click&apos;, () =&gt; {
-  if (lastClick &amp;&amp; Date.now() - lastClick &gt;= 1000) {
-    console.log(`Clicked ${++count} times`);  
-  } else {
+  if (Date.now() - lastClick &gt;= rate) {
+    console.log(`Clicked ${++count} times`);
     lastClick = Date.now();
   }
 });</code>
@@ -186,21 +185,21 @@ button.addEventListener(&apos;click&apos;, () =&gt; {
 <p>With RxJS:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">var button = document.querySelector(&apos;button&apos;);
 Rx.Observable.fromEvent(button, &apos;click&apos;)
-  .throttle(1000)
+  .throttleTime(1000)
   .scan(count =&gt; count + 1, 0)
-  .subscribe(count =&gt; console.log(&apos;Clicked ${count} times&apos;));</code>
+  .subscribe(count =&gt; console.log(`Clicked ${count} times`));</code>
 </code></pre>
 <p>Other flow control operators are <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-filter"><strong>filter</strong></a>, <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-delay"><strong>delay</strong></a>, <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-debounceTime"><strong>debounceTime</strong></a>, <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-take"><strong>take</strong></a>, <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-takeUntil"><strong>takeUntil</strong></a>, <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-distinct"><strong>distinct</strong></a>, <a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged"><strong>distinctUntilChanged</strong></a> etc.</p>
 <h3 id="values">Values</h3>
 <p>You can transform the values passed through your observables.</p>
 <p>Here&apos;s how you can add the current mouse x position for every click, in plain JavaScript:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">var count = 0;
-var lastClick = null;
+var rate = 1000;
+var lastClick = Date.now() - rate;
 var button = document.querySelector(&apos;button&apos;);
 button.addEventListener(&apos;click&apos;, (event) =&gt; {
-  if (lastClick &amp;&amp; Date.now() - lastClick &gt;= 1000) {
-    console.log(count + event.clientX);
-  } else {
+  if (Date.now() - lastClick &gt;= rate) {
+    console.log(++count + event.clientX)
     lastClick = Date.now();
   }
 });</code>
@@ -208,7 +207,7 @@ button.addEventListener(&apos;click&apos;, (event) =&gt; {
 <p>With RxJS:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">var button = document.querySelector(&apos;button&apos;);
 Rx.Observable.fromEvent(button, &apos;click&apos;)
-  .throttle(1000)
+  .throttleTime(1000)
   .map(event =&gt; event.clientX)
   .scan((count, clientX) =&gt; count + clientX, 0)
   .subscribe(count =&gt; console.log(count));</code>
@@ -907,7 +906,7 @@ observerB: 5</code>
 <p>RxJS is mostly useful for its <em>operators</em>, even though the Observable is the foundation. Operators are the essential pieces that allow complex asynchronous code to be easily composed in a declarative manner.</p>
 <h2 id="what-are-operators-">What are operators?</h2>
 <p>Operators are <strong>methods</strong> on the Observable type, such as <code>.map(...)</code>, <code>.filter(...)</code>, <code>.merge(...)</code>, etc. When called, they do not <em>change</em> the existing Observable instance. Instead, they return a <em>new</em> Observable, whose subscription logic is based on the first Observable.</p>
-<p><span class="informal">An Operator is a function take creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span></p>
+<p><span class="informal">An Operator is a function which creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span></p>
 <p>An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. Subscribing to the output Observable will also subscribe to the input Observable. In the following example, we create a custom operator function that multiplies each value received from the input Observable by 10:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">function multiplyByTen(input) {
   var output = Rx.Observable.create(function subscribe(observer) {
@@ -992,6 +991,7 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-never"><code>never</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-of"><code>of</code></a></li>
 <li><code>repeat</code></li>
+<li><code>repeatWhen</code></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-range"><code>range</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-throw"><code>throw</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-timer"><code>timer</code></a></li>
@@ -1244,7 +1244,7 @@ console.log(&apos;just after subscribe&apos;);</code>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

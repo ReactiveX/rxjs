@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/operator/sequenceEqual.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AsyncSubject">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BehaviorSubject">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Notification">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Observable">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReplaySubject">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Scheduler">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AnonymousSubject">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subject">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SubjectSubscriber">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subscriber">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subscription">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConnectableObservable">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxError">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxResponse">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxTimeoutError">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GroupedObservable">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Action">Action</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ArgumentOutOfRangeError">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EmptyError">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ObjectUnsubscribedError">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TimeoutError">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-UnsubscriptionError">UnsubscriptionError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/operator/sequenceEqual.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
+import { tryCatch } from &apos;../util/tryCatch&apos;;
+import { errorObject } from &apos;../util/errorObject&apos;;
+/**
+ * Compares all values of two observables in sequence using an optional comparor function
+ * and returns an observable of a single boolean value representing whether or not the two sequences
+ * are equal.
+ *
+ * &lt;span class=&quot;informal&quot;&gt;Checks to see of all values emitted by both observables are equal, in order.&lt;/span&gt;
+ *
+ * &lt;img src=&quot;./img/sequenceEqual.png&quot; width=&quot;100%&quot;&gt;
+ *
+ * `sequenceEqual` subscribes to two observables and buffers incoming values from each observable. Whenever either
+ * observable emits a value, the value is buffered and the buffers are shifted and compared from the bottom
+ * up; If any value pair doesn&apos;t match, the returned observable will emit `false` and complete. If one of the
+ * observables completes, the operator will wait for the other observable to complete; If the other
+ * observable emits before completing, the returned observable will emit `false` and complete. If one observable never
+ * completes or emits after the other complets, the returned observable will never complete.
+ *
+ * @example &lt;caption&gt;figure out if the Konami code matches&lt;/caption&gt;
+ * var code = Observable.from([
+ *  &quot;ArrowUp&quot;,
+ *  &quot;ArrowUp&quot;,
+ *  &quot;ArrowDown&quot;,
+ *  &quot;ArrowDown&quot;,
+ *  &quot;ArrowLeft&quot;,
+ *  &quot;ArrowRight&quot;,
+ *  &quot;ArrowLeft&quot;,
+ *  &quot;ArrowRight&quot;,
+ *  &quot;KeyB&quot;,
+ *  &quot;KeyA&quot;,
+ *  &quot;Enter&quot; // no start key, clearly.
+ * ]);
+ *
+ * var keys = Rx.Observable.fromEvent(document, &apos;keyup&apos;)
+ *  .map(e =&gt; e.code);
+ * var matches = keys.bufferCount(11, 1)
+ *  .mergeMap(
+ *    last11 =&gt;
+ *      Rx.Observable.from(last11)
+ *        .sequenceEqual(code)
+ *   );
+ * matches.subscribe(matched =&gt; console.log(&apos;Successful cheat at Contra? &apos;, matched));
+ *
+ * @see {@link combineLatest}
+ * @see {@link zip}
+ * @see {@link withLatestFrom}
+ *
+ * @param {Observable} compareTo the observable sequence to compare the source sequence to.
+ * @param {function} [comparor] An optional function to compare each value pair
+ * @return {Observable} An Observable of a single boolean value representing whether or not
+ * the values emitted by both observables were equal in sequence
+ * @method sequenceEqual
+ * @owner Observable
+ */
+export function sequenceEqual(compareTo, comparor) {
+    return this.lift(new SequenceEqualOperator(compareTo, comparor));
+}
+export var SequenceEqualOperator = (function () {
+    function SequenceEqualOperator(compareTo, comparor) {
+        this.compareTo = compareTo;
+        this.comparor = comparor;
+    }
+    SequenceEqualOperator.prototype.call = function (subscriber, source) {
+        return source._subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
+    };
+    return SequenceEqualOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export var SequenceEqualSubscriber = (function (_super) {
+    __extends(SequenceEqualSubscriber, _super);
+    function SequenceEqualSubscriber(destination, compareTo, comparor) {
+        _super.call(this, destination);
+        this.compareTo = compareTo;
+        this.comparor = comparor;
+        this._a = [];
+        this._b = [];
+        this._oneComplete = false;
+        this.add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, this)));
+    }
+    SequenceEqualSubscriber.prototype._next = function (value) {
+        if (this._oneComplete &amp;&amp; this._b.length === 0) {
+            this.emit(false);
+        }
+        else {
+            this._a.push(value);
+            this.checkValues();
+        }
+    };
+    SequenceEqualSubscriber.prototype._complete = function () {
+        if (this._oneComplete) {
+            this.emit(this._a.length === 0 &amp;&amp; this._b.length === 0);
+        }
+        else {
+            this._oneComplete = true;
+        }
+    };
+    SequenceEqualSubscriber.prototype.checkValues = function () {
+        var _c = this, _a = _c._a, _b = _c._b, comparor = _c.comparor;
+        while (_a.length &gt; 0 &amp;&amp; _b.length &gt; 0) {
+            var a = _a.shift();
+            var b = _b.shift();
+            var areEqual = false;
+            if (comparor) {
+                areEqual = tryCatch(comparor)(a, b);
+                if (areEqual === errorObject) {
+                    this.destination.error(errorObject.e);
+                }
+            }
+            else {
+                areEqual = a === b;
+            }
+            if (!areEqual) {
+                this.emit(false);
+            }
+        }
+    };
+    SequenceEqualSubscriber.prototype.emit = function (value) {
+        var destination = this.destination;
+        destination.next(value);
+        destination.complete();
+    };
+    SequenceEqualSubscriber.prototype.nextB = function (value) {
+        if (this._oneComplete &amp;&amp; this._a.length === 0) {
+            this.emit(false);
+        }
+        else {
+            this._b.push(value);
+            this.checkValues();
+        }
+    };
+    return SequenceEqualSubscriber;
+}(Subscriber));
+var SequenceEqualCompareToSubscriber = (function (_super) {
+    __extends(SequenceEqualCompareToSubscriber, _super);
+    function SequenceEqualCompareToSubscriber(destination, parent) {
+        _super.call(this, destination);
+        this.parent = parent;
+    }
+    SequenceEqualCompareToSubscriber.prototype._next = function (value) {
+        this.parent.nextB(value);
+    };
+    SequenceEqualCompareToSubscriber.prototype._error = function (err) {
+        this.parent.error(err);
+    };
+    SequenceEqualCompareToSubscriber.prototype._complete = function () {
+        this.parent._complete();
+    };
+    return SequenceEqualCompareToSubscriber;
+}(Subscriber));
+//# sourceMappingURL=sequenceEqual.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/mergeAll.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> mergeAll.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>37/37</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>14/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>33/33</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">200x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">204x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">204x</span>
+<span class="cline-any cline-yes">204x</span>
+<span class="cline-any cline-yes">204x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">204x</span>
+<span class="cline-any cline-yes">204x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">545x</span>
+<span class="cline-any cline-yes">415x</span>
+<span class="cline-any cline-yes">415x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">130x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">186x</span>
+<span class="cline-any cline-yes">186x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">295x</span>
+<span class="cline-any cline-yes">295x</span>
+<span class="cline-any cline-yes">295x</span>
+<span class="cline-any cline-yes">295x</span>
+<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-yes">195x</span>
+<span class="cline-any cline-yes">96x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Observer } from '../Observer';
+import { Subscription } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+&nbsp;
+/**
+ * Converts a higher-order Observable into a first-order Observable which
+ * concurrently delivers all values that are emitted on the inner Observables.
+ *
+ * &lt;span class="informal"&gt;Flattens an Observable-of-Observables.&lt;/span&gt;
+ *
+ * &lt;img src="./img/mergeAll.png" width="100%"&gt;
+ *
+ * `mergeAll` subscribes to an Observable that emits Observables, also known as
+ * a higher-order Observable. Each time it observes one of these emitted inner
+ * Observables, it subscribes to that and delivers all the values from the
+ * inner Observable on the output Observable. The output Observable only
+ * completes once all inner Observables have completed. Any error delivered by
+ * a inner Observable will be immediately emitted on the output Observable.
+ *
+ * @example &lt;caption&gt;Spawn a new interval Observable for each click event, and blend their outputs as one Observable&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var higherOrder = clicks.map((ev) =&gt; Rx.Observable.interval(1000));
+ * var firstOrder = higherOrder.mergeAll();
+ * firstOrder.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Count from 0 to 9 every second for each click, but only allow 2 concurrent timers&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var higherOrder = clicks.map((ev) =&gt; Rx.Observable.interval(1000).take(10));
+ * var firstOrder = higherOrder.mergeAll(2);
+ * firstOrder.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link combineAll}
+ * @see {@link concatAll}
+ * @see {@link exhaust}
+ * @see {@link merge}
+ * @see {@link mergeMap}
+ * @see {@link mergeMapTo}
+ * @see {@link mergeScan}
+ * @see {@link switch}
+ * @see {@link zipAll}
+ *
+ * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner
+ * Observables being subscribed to concurrently.
+ * @return {Observable} An Observable that emits values coming from all the
+ * inner Observables emitted by the source Observable.
+ * @method mergeAll
+ * @owner Observable
+ */
+export function mergeAll&lt;T&gt;(this: Observable&lt;T&gt;, concurrent: number = Number.POSITIVE_INFINITY): T {
+  return &lt;any&gt;this.lift&lt;any&gt;(new MergeAllOperator&lt;T&gt;(concurrent));
+}
+&nbsp;
+export class MergeAllOperator&lt;T&gt; implements Operator&lt;Observable&lt;T&gt;, T&gt; {
+  constructor(private concurrent: number) {
+  }
+&nbsp;
+  call(observer: Observer&lt;T&gt;, source: any): any {
+    return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export class MergeAllSubscriber&lt;T&gt; extends OuterSubscriber&lt;Observable&lt;T&gt;, T&gt; {
+  private hasCompleted: boolean = false;
+  private buffer: Observable&lt;T&gt;[] = [];
+  private active: number = 0;
+&nbsp;
+  constructor(destination: Observer&lt;T&gt;, private concurrent: number) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(observable: Observable&lt;T&gt;) {
+    if (this.active &lt; this.concurrent) {
+      this.active++;
+      this.add(subscribeToResult&lt;Observable&lt;T&gt;, T&gt;(this, observable));
+    } else {
+      this.buffer.push(observable);
+    }
+  }
+&nbsp;
+  protected _complete() {
+    this.hasCompleted = true;
+    if (this.active === 0 &amp;&amp; this.buffer.length === 0) {
+      this.destination.complete();
+    }
+  }
+&nbsp;
+  notifyComplete(innerSub: Subscription) {
+    const buffer = this.buffer;
+    this.remove(innerSub);
+    this.active--;
+    if (buffer.length &gt; 0) {
+      this._next(buffer.shift());
+    } else if (this.active === 0 &amp;&amp; this.hasCompleted) {
+      this.destination.complete();
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

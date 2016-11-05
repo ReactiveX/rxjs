@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/ConnectableObservable.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/observable</a> ConnectableObservable.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">93.18% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>82/88</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>23/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.12% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>16/17</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.86% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>78/84</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">353x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">530x</span>
+<span class="cline-any cline-yes">530x</span>
+<span class="cline-any cline-yes">243x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">530x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">240x</span>
+<span class="cline-any cline-yes">240x</span>
+<span class="cline-any cline-yes">177x</span>
+<span class="cline-any cline-yes">177x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">177x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">146x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">240x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">177x</span>
+<span class="cline-any cline-yes">177x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">54x</span>
+<span class="cline-any cline-yes">54x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">311x</span>
+<span class="cline-any cline-yes">311x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-yes">182x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-yes">239x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">236x</span>
+<span class="cline-any cline-yes">236x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">236x</span>
+<span class="cline-any cline-yes">236x</span>
+<span class="cline-any cline-yes">236x</span>
+<span class="cline-any cline-yes">139x</span>
+<span class="cline-any cline-yes">139x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">97x</span>
+<span class="cline-any cline-yes">97x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">81x</span>
+<span class="cline-any cline-yes">81x</span>
+<span class="cline-any cline-yes">81x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">81x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Subject, SubjectSubscriber } from '../Subject';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
+&nbsp;
+/**
+ * @class ConnectableObservable&lt;T&gt;
+ */
+export class ConnectableObservable&lt;T&gt; extends Observable&lt;T&gt; {
+&nbsp;
+  protected _subject: Subject&lt;T&gt;;
+  protected <span class="cstat-no" title="statement not covered" >_refCount: number = 0;</span>
+  protected _connection: Subscription;
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor(protected <span class="cstat-no" title="statement not covered" ></span>source: Observable&lt;T&gt;,</span>
+              protected <span class="cstat-no" title="statement not covered" >subjectFactory: () =&gt; Subject&lt;T&gt;)</span> {
+<span class="cstat-no" title="statement not covered" >    super();</span>
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T&gt;) {
+    return this.getSubject().subscribe(subscriber);
+  }
+&nbsp;
+  protected getSubject(): Subject&lt;T&gt; {
+    const subject = this._subject;
+    if (!subject || subject.isStopped) {
+      this._subject = this.subjectFactory();
+    }
+    return this._subject;
+  }
+&nbsp;
+  connect(): Subscription {
+    let connection = this._connection;
+    if (!connection) {
+      connection = this._connection = new Subscription();
+      connection.add(this.source
+        .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
+      if (connection.closed) {
+        this._connection = null;
+        connection = Subscription.EMPTY;
+      } else {
+        this._connection = connection;
+      }
+    }
+    return connection;
+  }
+&nbsp;
+  refCount(): Observable&lt;T&gt; {
+    return this.lift(new RefCountOperator&lt;T&gt;(this));
+  }
+}
+&nbsp;
+export const connectableObservableDescriptor: PropertyDescriptorMap = {
+  operator: { value: null },
+  _refCount: { value: 0, writable: true },
+  _subscribe: { value: (&lt;any&gt; ConnectableObservable.prototype)._subscribe },
+  getSubject: { value: (&lt;any&gt; ConnectableObservable.prototype).getSubject },
+  connect: { value: (&lt;any&gt; ConnectableObservable.prototype).connect },
+  refCount: { value: (&lt;any&gt; ConnectableObservable.prototype).refCount }
+};
+&nbsp;
+class ConnectableSubscriber&lt;T&gt; extends SubjectSubscriber&lt;T&gt; {
+  constructor(destination: Subject&lt;T&gt;,
+              private connectable: ConnectableObservable&lt;T&gt;) {
+    super(destination);
+  }
+  protected _error(err: any): void {
+    this._unsubscribe();
+    super._error(err);
+  }
+  protected _complete(): void {
+    this._unsubscribe();
+    super._complete();
+  }
+  protected _unsubscribe() {
+    const { connectable } = this;
+    if (connectable) {
+      this.connectable = null;
+      const connection = (&lt;any&gt; connectable)._connection;
+      (&lt;any&gt; connectable)._refCount = 0;
+      (&lt;any&gt; connectable)._subject = null;
+      (&lt;any&gt; connectable)._connection = null;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (connection) {
+        connection.unsubscribe();
+      }
+    }
+  }
+}
+&nbsp;
+class RefCountOperator&lt;T&gt; implements Operator&lt;T, T&gt; {
+  constructor(private connectable: ConnectableObservable&lt;T&gt;) {
+  }
+  call(subscriber: Subscriber&lt;T&gt;, source: any): TeardownLogic {
+&nbsp;
+    const { connectable } = this;
+    (&lt;any&gt; connectable)._refCount++;
+&nbsp;
+    const refCounter = new RefCountSubscriber(subscriber, connectable);
+    const subscription = source._subscribe(refCounter);
+&nbsp;
+    if (!refCounter.closed) {
+      (&lt;any&gt; refCounter).connection = connectable.connect();
+    }
+&nbsp;
+    return subscription;
+  }
+}
+&nbsp;
+class RefCountSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+&nbsp;
+  private connection: Subscription;
+&nbsp;
+  constructor(destination: Subscriber&lt;T&gt;,
+              private connectable: ConnectableObservable&lt;T&gt;) {
+    super(destination);
+  }
+&nbsp;
+  protected _unsubscribe() {
+&nbsp;
+    const { connectable } = this;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!connectable) {
+<span class="cstat-no" title="statement not covered" >      this.connection = null;</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    this.connectable = null;
+    const refCount = (&lt;any&gt; connectable)._refCount;
+    if (refCount &lt;= 0) {
+      this.connection = null;
+      return;
+    }
+&nbsp;
+    (&lt;any&gt; connectable)._refCount = refCount - 1;
+    if (refCount &gt; 1) {
+      this.connection = null;
+      return;
+    }
+&nbsp;
+    ///
+    // Compare the local RefCountSubscriber's connection Subscription to the
+    // connection Subscription on the shared ConnectableObservable. In cases
+    // where the ConnectableObservable source synchronously emits values, and
+    // the RefCountSubscriber's downstream Observers synchronously unsubscribe,
+    // execution continues to here before the RefCountOperator has a chance to
+    // supply the RefCountSubscriber with the shared connection Subscription.
+    // For example:
+    // ```
+    // Observable.range(0, 10)
+    //   .publish()
+    //   .refCount()
+    //   .take(5)
+    //   .subscribe();
+    // ```
+    // In order to account for this case, RefCountSubscriber should only dispose
+    // the ConnectableObservable's shared connection Subscription if the
+    // connection Subscription exists, *and* either:
+    //   a. RefCountSubscriber doesn't have a reference to the shared connection
+    //      Subscription yet, or,
+    //   b. RefCountSubscriber's connection Subscription reference is identical
+    //      to the shared connection Subscription
+    ///
+    const { connection } = this;
+    const sharedConnection = (&lt;any&gt; connectable)._connection;
+    this.connection = null;
+&nbsp;
+    if (sharedConnection &amp;&amp; (!connection || sharedConnection === connection)) {
+      sharedConnection.unsubscribe();
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -8,10 +8,10 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "AnimationFrameScheduler",
+            "name": "AnimationFrameAction",
             "range": [
               9,
-              32
+              29
             ],
             "loc": {
               "start": {
@@ -20,16 +20,16 @@
               },
               "end": {
                 "line": 1,
-                "column": 32
+                "column": 29
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "AnimationFrameScheduler",
+            "name": "AnimationFrameAction",
             "range": [
               9,
-              32
+              29
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 32
+                "column": 29
               }
             }
           },
           "range": [
             9,
-            32
+            29
           ],
           "loc": {
             "start": {
@@ -53,6 +53,97 @@
             },
             "end": {
               "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./AnimationFrameAction",
+        "raw": "'./AnimationFrameAction'",
+        "range": [
+          37,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 37
+          },
+          "end": {
+            "line": 1,
+            "column": 61
+          }
+        }
+      },
+      "range": [
+        0,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "AnimationFrameScheduler",
+            "range": [
+              72,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 32
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "AnimationFrameScheduler",
+            "range": [
+              72,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 32
+              }
+            }
+          },
+          "range": [
+            72,
+            95
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
               "column": 32
             }
           }
@@ -63,31 +154,31 @@
         "value": "./AnimationFrameScheduler",
         "raw": "'./AnimationFrameScheduler'",
         "range": [
-          40,
-          67
+          103,
+          130
         ],
         "loc": {
           "start": {
-            "line": 1,
+            "line": 2,
             "column": 40
           },
           "end": {
-            "line": 1,
+            "line": 2,
             "column": 67
           }
         }
       },
       "range": [
-        0,
-        68
+        63,
+        131
       ],
       "loc": {
         "start": {
-          "line": 1,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 1,
+          "line": 2,
           "column": 68
         }
       }
@@ -103,17 +194,17 @@
               "type": "Identifier",
               "name": "animationFrame",
               "range": [
-                82,
-                96
+                143,
+                157
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 13
+                  "line": 3,
+                  "column": 11
                 },
                 "end": {
-                  "line": 2,
-                  "column": 27
+                  "line": 3,
+                  "column": 25
                 }
               }
             },
@@ -123,65 +214,84 @@
                 "type": "Identifier",
                 "name": "AnimationFrameScheduler",
                 "range": [
-                  103,
-                  126
+                  164,
+                  187
                 ],
                 "loc": {
                   "start": {
-                    "line": 2,
-                    "column": 34
+                    "line": 3,
+                    "column": 32
                   },
                   "end": {
-                    "line": 2,
-                    "column": 57
+                    "line": 3,
+                    "column": 55
                   }
                 }
               },
-              "arguments": [],
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "name": "AnimationFrameAction",
+                  "range": [
+                    188,
+                    208
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 56
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 76
+                    }
+                  }
+                }
+              ],
               "range": [
-                99,
-                128
+                160,
+                209
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 30
+                  "line": 3,
+                  "column": 28
                 },
                 "end": {
-                  "line": 2,
-                  "column": 59
+                  "line": 3,
+                  "column": 77
                 }
               }
             },
             "range": [
-              82,
-              128
+              143,
+              209
             ],
             "loc": {
               "start": {
-                "line": 2,
-                "column": 13
+                "line": 3,
+                "column": 11
               },
               "end": {
-                "line": 2,
-                "column": 59
+                "line": 3,
+                "column": 77
               }
             }
           }
         ],
-        "kind": "const",
+        "kind": "var",
         "range": [
-          76,
-          129
+          139,
+          210
         ],
         "loc": {
           "start": {
-            "line": 2,
+            "line": 3,
             "column": 7
           },
           "end": {
-            "line": 2,
-            "column": 60
+            "line": 3,
+            "column": 78
           }
         },
         "leadingComments": [],
@@ -190,16 +300,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=animationFrame.js.map",
             "range": [
-              130,
-              172
+              211,
+              253
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 4,
                 "column": 0
               },
               "end": {
-                "line": 3,
+                "line": 4,
                 "column": 42
               }
             }
@@ -209,17 +319,17 @@
       "specifiers": [],
       "source": null,
       "range": [
-        69,
-        129
+        132,
+        210
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 2,
-          "column": 60
+          "line": 3,
+          "column": 78
         }
       },
       "trailingComments": [
@@ -227,16 +337,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=animationFrame.js.map",
           "range": [
-            130,
-            172
+            211,
+            253
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 4,
               "column": 0
             },
             "end": {
-              "line": 3,
+              "line": 4,
               "column": 42
             }
           }
@@ -247,7 +357,7 @@
   "sourceType": "module",
   "range": [
     0,
-    129
+    210
   ],
   "loc": {
     "start": {
@@ -255,8 +365,8 @@
       "column": 0
     },
     "end": {
-      "line": 2,
-      "column": 60
+      "line": 3,
+      "column": 78
     }
   },
   "comments": [
@@ -264,16 +374,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=animationFrame.js.map",
       "range": [
-        130,
-        172
+        211,
+        253
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 4,
           "column": 0
         },
         "end": {
-          "line": 3,
+          "line": 4,
           "column": 42
         }
       }

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/PromiseObservable.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/observable</a> PromiseObservable.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.08% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>49/51</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">72.73% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>16/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">85.71% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">97.67% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>42/43</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">67x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { root } from '../util/root';
+import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../Subscription';
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class PromiseObservable&lt;T&gt; extends Observable&lt;T&gt; {
+&nbsp;
+  public value: T;
+&nbsp;
+  /**
+   * Converts a Promise to an Observable.
+   *
+   * &lt;span class="informal"&gt;Returns an Observable that just emits the Promise's
+   * resolved value, then completes.&lt;/span&gt;
+   *
+   * Converts an ES2015 Promise or a Promises/A+ spec compliant Promise to an
+   * Observable. If the Promise resolves with a value, the output Observable
+   * emits that resolved value as a `next`, and then completes. If the Promise
+   * is rejected, then the output Observable emits the corresponding Error.
+   *
+   * @example &lt;caption&gt;Convert the Promise returned by Fetch to an Observable&lt;/caption&gt;
+   * var result = Rx.Observable.fromPromise(fetch('http://myserver.com/'));
+   * result.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));
+   *
+   * @see {@link bindCallback}
+   * @see {@link from}
+   *
+   * @param {Promise&lt;T&gt;} promise The promise to be converted.
+   * @param {Scheduler} [scheduler] An optional Scheduler to use for scheduling
+   * the delivery of the resolved value (or the rejection).
+   * @return {Observable&lt;T&gt;} An Observable which wraps the Promise.
+   * @static true
+   * @name fromPromise
+   * @owner Observable
+   */
+  static create&lt;T&gt;(promise: Promise&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt; {
+    return new PromiseObservable(promise, scheduler);
+  }
+&nbsp;
+  constructor(private promise: Promise&lt;T&gt;, private scheduler?: Scheduler) {
+    super();
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T&gt;): TeardownLogic {
+    const promise = this.promise;
+    const scheduler = this.scheduler;
+&nbsp;
+    if (scheduler == null) {
+      if (this._isScalar) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.closed) {
+          subscriber.next(this.value);
+          subscriber.complete();
+        }
+      } else {
+        promise.then(
+          (value) =&gt; {
+            this.value = value;
+            this._isScalar = true;
+            if (!subscriber.closed) {
+              subscriber.next(value);
+              subscriber.complete();
+            }
+          },
+          (err) =&gt; {
+            if (!subscriber.closed) {
+              subscriber.error(err);
+            }
+          }
+        )
+        .then(null, err =&gt; {
+          // escape the promise trap, throw unhandled errors
+          root.setTimeout(() =&gt; { throw err; });
+        });
+      }
+    } else {
+      if (this._isScalar) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.closed) {
+          return scheduler.schedule(dispatchNext, 0, { value: this.value, subscriber });
+        }
+      } else {
+        promise.then(
+          (value) =&gt; {
+            this.value = value;
+            this._isScalar = true;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.closed) {
+              subscriber.add(scheduler.schedule(dispatchNext, 0, { value, subscriber }));
+            }
+          },
+          (err) =&gt; {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.closed) {
+              subscriber.add(scheduler.schedule(dispatchError, 0, { err, subscriber }));
+            }
+          })
+          .then(null, <span class="fstat-no" title="function not covered" >(</span>err) =&gt; {
+            // escape the promise trap, throw unhandled errors
+<span class="cstat-no" title="statement not covered" >            root.setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; { <span class="cstat-no" title="statement not covered" ></span>throw err; </span>});</span>
+          });
+      }
+    }
+  }
+}
+&nbsp;
+interface DispatchNextArg&lt;T&gt; {
+  subscriber: Subscriber&lt;T&gt;;
+  value: T;
+}
+function dispatchNext&lt;T&gt;(arg: DispatchNextArg&lt;T&gt;) {
+  const { value, subscriber } = arg;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.closed) {
+    subscriber.next(value);
+    subscriber.complete();
+  }
+}
+&nbsp;
+interface DispatchErrorArg&lt;T&gt; {
+  subscriber: Subscriber&lt;T&gt;;
+  err: any;
+}
+function dispatchError&lt;T&gt;(arg: DispatchErrorArg&lt;T&gt;) {
+  const { err, subscriber } = arg;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.closed) {
+    subscriber.error(err);
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

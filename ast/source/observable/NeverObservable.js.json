@@ -206,386 +206,49 @@
     {
       "type": "ExportNamedDeclaration",
       "declaration": {
-        "type": "ClassDeclaration",
-        "id": {
-          "type": "Identifier",
-          "name": "NeverObservable",
-          "range": [
-            189,
-            204
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 13
-            },
-            "end": {
-              "line": 8,
-              "column": 28
-            }
-          }
-        },
-        "superClass": {
-          "type": "Identifier",
-          "name": "Observable",
-          "range": [
-            213,
-            223
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 37
-            },
-            "end": {
-              "line": 8,
-              "column": 47
-            }
-          }
-        },
-        "body": {
-          "type": "ClassBody",
-          "body": [
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "constructor",
-                "range": [
-                  230,
-                  241
-                ],
-                "loc": {
-                  "start": {
-                    "line": 9,
-                    "column": 4
-                  },
-                  "end": {
-                    "line": 9,
-                    "column": 15
-                  }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
-                "id": null,
-                "params": [],
-                "body": {
-                  "type": "BlockStatement",
-                  "body": [
-                    {
-                      "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "CallExpression",
-                        "callee": {
-                          "type": "Super",
-                          "range": [
-                            254,
-                            259
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 10,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 10,
-                              "column": 13
-                            }
-                          }
-                        },
-                        "arguments": [],
-                        "range": [
-                          254,
-                          261
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 10,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 10,
-                            "column": 15
-                          }
-                        }
-                      },
-                      "range": [
-                        254,
-                        262
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 10,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 10,
-                          "column": 16
-                        }
-                      }
-                    }
-                  ],
-                  "range": [
-                    244,
-                    268
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 9,
-                      "column": 18
-                    },
-                    "end": {
-                      "line": 11,
-                      "column": 5
-                    }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  241,
-                  268
-                ],
-                "loc": {
-                  "start": {
-                    "line": 9,
-                    "column": 15
-                  },
-                  "end": {
-                    "line": 11,
-                    "column": 5
-                  }
-                }
-              },
-              "kind": "constructor",
-              "computed": false,
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "NeverObservable",
               "range": [
-                230,
-                268
+                187,
+                202
               ],
               "loc": {
                 "start": {
-                  "line": 9,
-                  "column": 4
+                  "line": 8,
+                  "column": 11
                 },
                 "end": {
-                  "line": 11,
-                  "column": 5
+                  "line": 8,
+                  "column": 26
                 }
-              },
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
-                  "range": [
-                    273,
-                    1483
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 12,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 42,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "static": false
+              }
             },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "create",
-                "range": [
-                  1495,
-                  1501
-                ],
-                "loc": {
-                  "start": {
-                    "line": 43,
-                    "column": 11
-                  },
-                  "end": {
-                    "line": 43,
-                    "column": 17
-                  }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
-                "id": null,
-                "params": [],
-                "body": {
-                  "type": "BlockStatement",
-                  "body": [
-                    {
-                      "type": "ReturnStatement",
-                      "argument": {
-                        "type": "NewExpression",
-                        "callee": {
-                          "type": "Identifier",
-                          "name": "NeverObservable",
-                          "range": [
-                            1525,
-                            1540
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 44,
-                              "column": 19
-                            },
-                            "end": {
-                              "line": 44,
-                              "column": 34
-                            }
-                          }
-                        },
-                        "arguments": [],
-                        "range": [
-                          1521,
-                          1542
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 44,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 44,
-                            "column": 36
-                          }
-                        }
-                      },
-                      "range": [
-                        1514,
-                        1543
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 44,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 44,
-                          "column": 37
-                        }
-                      }
-                    }
-                  ],
-                  "range": [
-                    1504,
-                    1549
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 43,
-                      "column": 20
-                    },
-                    "end": {
-                      "line": 45,
-                      "column": 5
-                    }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  1501,
-                  1549
-                ],
-                "loc": {
-                  "start": {
-                    "line": 43,
-                    "column": 17
-                  },
-                  "end": {
-                    "line": 45,
-                    "column": 5
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                1488,
-                1549
-              ],
-              "loc": {
-                "start": {
-                  "line": 43,
-                  "column": 4
-                },
-                "end": {
-                  "line": 45,
-                  "column": 5
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
-                  "range": [
-                    273,
-                    1483
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 12,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 42,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "static": true
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "_subscribe",
-                "range": [
-                  1554,
-                  1564
-                ],
-                "loc": {
-                  "start": {
-                    "line": 46,
-                    "column": 4
-                  },
-                  "end": {
-                    "line": 46,
-                    "column": 14
-                  }
-                }
-              },
-              "value": {
+            "init": {
+              "type": "CallExpression",
+              "callee": {
                 "type": "FunctionExpression",
                 "id": null,
                 "params": [
                   {
                     "type": "Identifier",
-                    "name": "subscriber",
+                    "name": "_super",
                     "range": [
-                      1565,
-                      1575
+                      216,
+                      222
                     ],
                     "loc": {
                       "start": {
-                        "line": 46,
-                        "column": 15
+                        "line": 8,
+                        "column": 40
                       },
                       "end": {
-                        "line": 46,
-                        "column": 25
+                        "line": 8,
+                        "column": 46
                       }
                     }
                   }
@@ -599,123 +262,836 @@
                         "type": "CallExpression",
                         "callee": {
                           "type": "Identifier",
-                          "name": "noop",
+                          "name": "__extends",
                           "range": [
-                            1587,
-                            1591
+                            230,
+                            239
                           ],
                           "loc": {
                             "start": {
-                              "line": 47,
-                              "column": 8
+                              "line": 9,
+                              "column": 4
                             },
                             "end": {
-                              "line": 47,
-                              "column": 12
+                              "line": 9,
+                              "column": 13
                             }
                           }
                         },
-                        "arguments": [],
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "name": "NeverObservable",
+                            "range": [
+                              240,
+                              255
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 9,
+                                "column": 14
+                              },
+                              "end": {
+                                "line": 9,
+                                "column": 29
+                              }
+                            }
+                          },
+                          {
+                            "type": "Identifier",
+                            "name": "_super",
+                            "range": [
+                              257,
+                              263
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 9,
+                                "column": 31
+                              },
+                              "end": {
+                                "line": 9,
+                                "column": 37
+                              }
+                            }
+                          }
+                        ],
                         "range": [
-                          1587,
-                          1593
+                          230,
+                          264
                         ],
                         "loc": {
                           "start": {
-                            "line": 47,
-                            "column": 8
+                            "line": 9,
+                            "column": 4
                           },
                           "end": {
-                            "line": 47,
-                            "column": 14
+                            "line": 9,
+                            "column": 38
                           }
                         }
                       },
                       "range": [
-                        1587,
-                        1594
+                        230,
+                        265
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 39
+                        }
+                      }
+                    },
+                    {
+                      "type": "FunctionDeclaration",
+                      "id": {
+                        "type": "Identifier",
+                        "name": "NeverObservable",
+                        "range": [
+                          279,
+                          294
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 10,
+                            "column": 13
+                          },
+                          "end": {
+                            "line": 10,
+                            "column": 28
+                          }
+                        }
+                      },
+                      "params": [],
+                      "body": {
+                        "type": "BlockStatement",
+                        "body": [
+                          {
+                            "type": "ExpressionStatement",
+                            "expression": {
+                              "type": "CallExpression",
+                              "callee": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "_super",
+                                  "range": [
+                                    307,
+                                    313
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 11,
+                                      "column": 8
+                                    },
+                                    "end": {
+                                      "line": 11,
+                                      "column": 14
+                                    }
+                                  }
+                                },
+                                "property": {
+                                  "type": "Identifier",
+                                  "name": "call",
+                                  "range": [
+                                    314,
+                                    318
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 11,
+                                      "column": 15
+                                    },
+                                    "end": {
+                                      "line": 11,
+                                      "column": 19
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  307,
+                                  318
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 11,
+                                    "column": 8
+                                  },
+                                  "end": {
+                                    "line": 11,
+                                    "column": 19
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "ThisExpression",
+                                  "range": [
+                                    319,
+                                    323
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 11,
+                                      "column": 20
+                                    },
+                                    "end": {
+                                      "line": 11,
+                                      "column": 24
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                307,
+                                324
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 11,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 11,
+                                  "column": 25
+                                }
+                              }
+                            },
+                            "range": [
+                              307,
+                              325
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 11,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 11,
+                                "column": 26
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          297,
+                          331
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 10,
+                            "column": 31
+                          },
+                          "end": {
+                            "line": 12,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "generator": false,
+                      "expression": false,
+                      "range": [
+                        270,
+                        331
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 10,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 12,
+                          "column": 5
+                        }
+                      },
+                      "trailingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
+                          "range": [
+                            336,
+                            1546
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 43,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "NeverObservable",
+                            "range": [
+                              1551,
+                              1566
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 19
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "create",
+                            "range": [
+                              1567,
+                              1573
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 20
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 26
+                              }
+                            }
+                          },
+                          "range": [
+                            1551,
+                            1573
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 44,
+                              "column": 26
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "FunctionExpression",
+                          "id": null,
+                          "params": [],
+                          "body": {
+                            "type": "BlockStatement",
+                            "body": [
+                              {
+                                "type": "ReturnStatement",
+                                "argument": {
+                                  "type": "NewExpression",
+                                  "callee": {
+                                    "type": "Identifier",
+                                    "name": "NeverObservable",
+                                    "range": [
+                                      1609,
+                                      1624
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 45,
+                                        "column": 19
+                                      },
+                                      "end": {
+                                        "line": 45,
+                                        "column": 34
+                                      }
+                                    }
+                                  },
+                                  "arguments": [],
+                                  "range": [
+                                    1605,
+                                    1626
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 45,
+                                      "column": 15
+                                    },
+                                    "end": {
+                                      "line": 45,
+                                      "column": 36
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  1598,
+                                  1627
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 45,
+                                    "column": 8
+                                  },
+                                  "end": {
+                                    "line": 45,
+                                    "column": 37
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1588,
+                              1633
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 41
+                              },
+                              "end": {
+                                "line": 46,
+                                "column": 5
+                              }
+                            }
+                          },
+                          "generator": false,
+                          "expression": false,
+                          "range": [
+                            1576,
+                            1633
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 5
+                            }
+                          }
+                        },
+                        "range": [
+                          1551,
+                          1633
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 44,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 46,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "range": [
+                        1551,
+                        1634
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 44,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 46,
+                          "column": 6
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
+                          "range": [
+                            336,
+                            1546
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 43,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "Identifier",
+                              "name": "NeverObservable",
+                              "range": [
+                                1639,
+                                1654
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 47,
+                                  "column": 4
+                                },
+                                "end": {
+                                  "line": 47,
+                                  "column": 19
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "prototype",
+                              "range": [
+                                1655,
+                                1664
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 47,
+                                  "column": 20
+                                },
+                                "end": {
+                                  "line": 47,
+                                  "column": 29
+                                }
+                              }
+                            },
+                            "range": [
+                              1639,
+                              1664
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 29
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "_subscribe",
+                            "range": [
+                              1665,
+                              1675
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 40
+                              }
+                            }
+                          },
+                          "range": [
+                            1639,
+                            1675
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 47,
+                              "column": 40
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "FunctionExpression",
+                          "id": null,
+                          "params": [
+                            {
+                              "type": "Identifier",
+                              "name": "subscriber",
+                              "range": [
+                                1688,
+                                1698
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 47,
+                                  "column": 53
+                                },
+                                "end": {
+                                  "line": 47,
+                                  "column": 63
+                                }
+                              }
+                            }
+                          ],
+                          "body": {
+                            "type": "BlockStatement",
+                            "body": [
+                              {
+                                "type": "ExpressionStatement",
+                                "expression": {
+                                  "type": "CallExpression",
+                                  "callee": {
+                                    "type": "Identifier",
+                                    "name": "noop",
+                                    "range": [
+                                      1710,
+                                      1714
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 8
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 12
+                                      }
+                                    }
+                                  },
+                                  "arguments": [],
+                                  "range": [
+                                    1710,
+                                    1716
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 48,
+                                      "column": 8
+                                    },
+                                    "end": {
+                                      "line": 48,
+                                      "column": 14
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  1710,
+                                  1717
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 48,
+                                    "column": 8
+                                  },
+                                  "end": {
+                                    "line": 48,
+                                    "column": 15
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1700,
+                              1723
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 65
+                              },
+                              "end": {
+                                "line": 49,
+                                "column": 5
+                              }
+                            }
+                          },
+                          "generator": false,
+                          "expression": false,
+                          "range": [
+                            1678,
+                            1723
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 43
+                            },
+                            "end": {
+                              "line": 49,
+                              "column": 5
+                            }
+                          }
+                        },
+                        "range": [
+                          1639,
+                          1723
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 47,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 49,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "range": [
+                        1639,
+                        1724
                       ],
                       "loc": {
                         "start": {
                           "line": 47,
-                          "column": 8
+                          "column": 4
                         },
                         "end": {
-                          "line": 47,
-                          "column": 15
+                          "line": 49,
+                          "column": 6
+                        }
+                      }
+                    },
+                    {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "Identifier",
+                        "name": "NeverObservable",
+                        "range": [
+                          1736,
+                          1751
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 50,
+                            "column": 11
+                          },
+                          "end": {
+                            "line": 50,
+                            "column": 26
+                          }
+                        }
+                      },
+                      "range": [
+                        1729,
+                        1752
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 50,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 50,
+                          "column": 27
                         }
                       }
                     }
                   ],
                   "range": [
-                    1577,
-                    1600
+                    224,
+                    1754
                   ],
                   "loc": {
                     "start": {
-                      "line": 46,
-                      "column": 27
+                      "line": 8,
+                      "column": 48
                     },
                     "end": {
-                      "line": 48,
-                      "column": 5
+                      "line": 51,
+                      "column": 1
                     }
                   }
                 },
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1564,
-                  1600
+                  206,
+                  1754
                 ],
                 "loc": {
                   "start": {
-                    "line": 46,
-                    "column": 14
+                    "line": 8,
+                    "column": 30
                   },
                   "end": {
-                    "line": 48,
-                    "column": 5
+                    "line": 51,
+                    "column": 1
                   }
                 }
               },
-              "kind": "method",
-              "computed": false,
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "name": "Observable",
+                  "range": [
+                    1755,
+                    1765
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 51,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 51,
+                      "column": 12
+                    }
+                  }
+                }
+              ],
               "range": [
-                1554,
-                1600
+                206,
+                1766
               ],
               "loc": {
                 "start": {
-                  "line": 46,
-                  "column": 4
+                  "line": 8,
+                  "column": 30
                 },
                 "end": {
-                  "line": 48,
-                  "column": 5
+                  "line": 51,
+                  "column": 13
                 }
-              },
-              "static": false
-            }
-          ],
-          "range": [
-            224,
-            1602
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 48
+              }
             },
-            "end": {
-              "line": 49,
-              "column": 1
+            "range": [
+              187,
+              1767
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 11
+              },
+              "end": {
+                "line": 51,
+                "column": 14
+              }
             }
           }
-        },
+        ],
+        "kind": "var",
         "range": [
           183,
-          1602
+          1768
         ],
         "loc": {
           "start": {
@@ -723,8 +1099,8 @@
             "column": 7
           },
           "end": {
-            "line": 49,
-            "column": 1
+            "line": 51,
+            "column": 15
           }
         },
         "leadingComments": [
@@ -752,16 +1128,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=NeverObservable.js.map",
             "range": [
-              1603,
-              1646
+              1769,
+              1812
             ],
             "loc": {
               "start": {
-                "line": 50,
+                "line": 52,
                 "column": 0
               },
               "end": {
-                "line": 50,
+                "line": 52,
                 "column": 43
               }
             }
@@ -772,7 +1148,7 @@
       "source": null,
       "range": [
         176,
-        1602
+        1768
       ],
       "loc": {
         "start": {
@@ -780,8 +1156,8 @@
           "column": 0
         },
         "end": {
-          "line": 49,
-          "column": 1
+          "line": 51,
+          "column": 15
         }
       },
       "leadingComments": [
@@ -809,16 +1185,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=NeverObservable.js.map",
           "range": [
-            1603,
-            1646
+            1769,
+            1812
           ],
           "loc": {
             "start": {
-              "line": 50,
+              "line": 52,
               "column": 0
             },
             "end": {
-              "line": 50,
+              "line": 52,
               "column": 43
             }
           }
@@ -829,7 +1205,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1602
+    1768
   ],
   "loc": {
     "start": {
@@ -837,8 +1213,8 @@
       "column": 0
     },
     "end": {
-      "line": 49,
-      "column": 1
+      "line": 51,
+      "column": 15
     }
   },
   "comments": [
@@ -864,16 +1240,16 @@
       "type": "Block",
       "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
       "range": [
-        273,
-        1483
+        336,
+        1546
       ],
       "loc": {
         "start": {
-          "line": 12,
+          "line": 13,
           "column": 4
         },
         "end": {
-          "line": 42,
+          "line": 43,
           "column": 7
         }
       }
@@ -882,16 +1258,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=NeverObservable.js.map",
       "range": [
-        1603,
-        1646
+        1769,
+        1812
       ],
       "loc": {
         "start": {
-          "line": 50,
+          "line": 52,
           "column": 0
         },
         "end": {
-          "line": 50,
+          "line": 52,
           "column": 43
         }
       }

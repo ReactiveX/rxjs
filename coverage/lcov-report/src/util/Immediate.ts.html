@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/util/Immediate.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/util</a> Immediate.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>139/139</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.55% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>28/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>26/26</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>129/129</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
+*/
+&nbsp;
+import {  root  } from './root';
+&nbsp;
+export class ImmediateDefinition {
+  setImmediate: (cb: () =&gt; void) =&gt; number;
+&nbsp;
+  clearImmediate: (handle: number) =&gt; void;
+&nbsp;
+  private identify(o: any): string {
+    return this.root.Object.prototype.toString.call(o);
+  }
+&nbsp;
+  tasksByHandle: any;
+&nbsp;
+  nextHandle: number;
+&nbsp;
+  currentlyRunningATask: boolean;
+&nbsp;
+  constructor(private root: any) {
+    if (root.setImmediate &amp;&amp; typeof root.setImmediate === 'function') {
+      this.setImmediate = root.setImmediate.bind(root);
+      this.clearImmediate = root.clearImmediate.bind(root);
+    } else {
+      this.nextHandle = 1;
+      this.tasksByHandle = {};
+      this.currentlyRunningATask = false;
+&nbsp;
+      // Don't get fooled by e.g. browserify environments.
+      if (this.canUseProcessNextTick()) {
+        // For Node.js before 0.9
+        this.setImmediate = this.createProcessNextTickSetImmediate();
+      } else if (this.canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        this.setImmediate = this.createPostMessageSetImmediate();
+      } else if (this.canUseMessageChannel()) {
+        // For web workers, where supported
+        this.setImmediate = this.createMessageChannelSetImmediate();
+      } else if (this.canUseReadyStateChange()) {
+        // For IE 6–8
+        this.setImmediate = this.createReadyStateChangeSetImmediate();
+      } else {
+        // For older browsers
+        this.setImmediate = this.createSetTimeoutSetImmediate();
+      }
+&nbsp;
+      let ci = function clearImmediate(handle: any) {
+        delete (&lt;any&gt;clearImmediate).instance.tasksByHandle[handle];
+      };
+&nbsp;
+      (&lt;any&gt;ci).instance = this;
+&nbsp;
+      this.clearImmediate = ci;
+    }
+  }
+&nbsp;
+  canUseProcessNextTick() {
+    return this.identify(this.root.process) === '[object process]';
+  }
+&nbsp;
+  canUseMessageChannel() {
+    return Boolean(this.root.MessageChannel);
+  }
+&nbsp;
+  canUseReadyStateChange() {
+    const document = this.root.document;
+    return Boolean(document &amp;&amp; 'onreadystatechange' in document.createElement('script'));
+  }
+&nbsp;
+  canUsePostMessage() {
+    const root = this.root;
+    // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+    // where `root.postMessage` means something completely different and can't be used for this purpose.
+    if (root.postMessage &amp;&amp; !root.importScripts) {
+      let postMessageIsAsynchronous = true;
+      let oldOnMessage = root.onmessage;
+      root.onmessage = function() {
+        postMessageIsAsynchronous = false;
+      };
+      root.postMessage('', '*');
+      root.onmessage = oldOnMessage;
+      return postMessageIsAsynchronous;
+    }
+&nbsp;
+    return false;
+  }
+&nbsp;
+  // This function accepts the same arguments as setImmediate, but
+  // returns a function that requires no arguments.
+  partiallyApplied(handler: any, ...args: any[]) {
+    let fn = function result () {
+      const { handler, args } = &lt;any&gt;result;
+      if (typeof handler === 'function') {
+        handler.apply(undefined, args);
+      } else {
+        (new Function('' + handler))();
+      }
+    };
+&nbsp;
+    (&lt;any&gt;fn).handler = handler;
+    (&lt;any&gt;fn).args = args;
+&nbsp;
+    return fn;
+  }
+&nbsp;
+  addFromSetImmediateArguments(args: any[]) {
+    this.tasksByHandle[this.nextHandle] = this.partiallyApplied.apply(undefined, args);
+    return this.nextHandle++;
+  }
+&nbsp;
+  createProcessNextTickSetImmediate() {
+    let fn = function setImmediate() {
+      const { instance } = (&lt;any&gt;setImmediate);
+      let handle = instance.addFromSetImmediateArguments(arguments);
+      instance.root.process.nextTick(instance.partiallyApplied(instance.runIfPresent, handle));
+      return handle;
+    };
+&nbsp;
+    (&lt;any&gt;fn).instance = this;
+&nbsp;
+    return fn;
+  }
+&nbsp;
+  createPostMessageSetImmediate() {
+    // Installs an event handler on `global` for the `message` event: see
+    // * https://developer.mozilla.org/en/DOM/window.postMessage
+    // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+    const root = this.root;
+&nbsp;
+    let messagePrefix = 'setImmediate$' + root.Math.random() + '$';
+    let onGlobalMessage = function globalMessageHandler(event: any) {
+      const instance = (&lt;any&gt;globalMessageHandler).instance;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (event.source === root &amp;&amp;
+        typeof event.data === 'string' &amp;&amp;
+        event.data.indexOf(messagePrefix) === 0) {
+        instance.runIfPresent(+event.data.slice(messagePrefix.length));
+      }
+    };
+    (&lt;any&gt;onGlobalMessage).instance = this;
+&nbsp;
+    root.addEventListener('message', onGlobalMessage, false);
+&nbsp;
+    let fn = function setImmediate() {
+      const { messagePrefix, instance } = (&lt;any&gt;setImmediate);
+      let handle = instance.addFromSetImmediateArguments(arguments);
+      instance.root.postMessage(messagePrefix + handle, '*');
+      return handle;
+    };
+&nbsp;
+    (&lt;any&gt;fn).instance = this;
+    (&lt;any&gt;fn).messagePrefix = messagePrefix;
+&nbsp;
+    return fn;
+  }
+&nbsp;
+  runIfPresent(handle: any) {
+    // From the spec: 'Wait until any invocations of this algorithm started before this one have completed.'
+    // So if we're currently running a task, we'll need to delay this invocation.
+    if (this.currentlyRunningATask) {
+      // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+      // 'too much recursion' error.
+      this.root.setTimeout(this.partiallyApplied(this.runIfPresent, handle), 0);
+    } else {
+      let task = this.tasksByHandle[handle];
+      if (task) {
+        this.currentlyRunningATask = true;
+        try {
+          task();
+        } finally {
+          this.clearImmediate(handle);
+          this.currentlyRunningATask = false;
+        }
+      }
+    }
+  }
+&nbsp;
+  createMessageChannelSetImmediate() {
+    let channel = new this.root.MessageChannel();
+    channel.port1.onmessage = (event: any) =&gt; {
+      let handle = event.data;
+      this.runIfPresent(handle);
+    };
+&nbsp;
+    let fn = function setImmediate() {
+      const { channel, instance } = (&lt;any&gt;setImmediate);
+      let handle = instance.addFromSetImmediateArguments(arguments);
+      channel.port2.postMessage(handle);
+      return handle;
+    };
+&nbsp;
+    (&lt;any&gt;fn).channel = channel;
+    (&lt;any&gt;fn).instance = this;
+&nbsp;
+    return fn;
+  }
+&nbsp;
+  createReadyStateChangeSetImmediate() {
+    let fn = function setImmediate() {
+      const instance = (&lt;any&gt;setImmediate).instance;
+      const root = instance.root;
+      const doc = root.document;
+      const html = doc.documentElement;
+&nbsp;
+      let handle = instance.addFromSetImmediateArguments(arguments);
+      // Create a &lt;script&gt; element; its readystatechange event will be fired asynchronously once it is inserted
+      // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+      let script = doc.createElement('script');
+      script.onreadystatechange = () =&gt; {
+        instance.runIfPresent(handle);
+        script.onreadystatechange = null;
+        html.removeChild(script);
+        script = null;
+      };
+      html.appendChild(script);
+      return handle;
+    };
+&nbsp;
+    (&lt;any&gt;fn).instance = this;
+&nbsp;
+    return fn;
+  }
+&nbsp;
+  createSetTimeoutSetImmediate() {
+    let fn = function setImmediate() {
+      const instance = (&lt;any&gt;setImmediate).instance;
+      let handle = instance.addFromSetImmediateArguments(arguments);
+      instance.root.setTimeout(instance.partiallyApplied(instance.runIfPresent, handle), 0);
+      return handle;
+    };
+&nbsp;
+    (&lt;any&gt;fn).instance = this;
+&nbsp;
+    return fn;
+  }
+}
+export const Immediate = new ImmediateDefinition(root);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

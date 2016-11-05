@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/switchMapTo.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> switchMapTo.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>49/49</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>10/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>44/44</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">64x</span>
+<span class="cline-any cline-yes">64x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Operator } from '../Operator';
+import { Observable, ObservableInput } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+&nbsp;
+/**
+ * Projects each source value to the same Observable which is flattened multiple
+ * times with {@link switch} in the output Observable.
+ *
+ * &lt;span class="informal"&gt;It's like {@link switchMap}, but maps each value
+ * always to the same inner Observable.&lt;/span&gt;
+ *
+ * &lt;img src="./img/switchMapTo.png" width="100%"&gt;
+ *
+ * Maps each source value to the given Observable `innerObservable` regardless
+ * of the source value, and then flattens those resulting Observables into one
+ * single Observable, which is the output Observable. The output Observables
+ * emits values only from the most recently emitted instance of
+ * `innerObservable`.
+ *
+ * @example &lt;caption&gt;Rerun an interval Observable on every click event&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.switchMapTo(Rx.Observable.interval(1000));
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link concatMapTo}
+ * @see {@link switch}
+ * @see {@link switchMap}
+ * @see {@link mergeMapTo}
+ *
+ * @param {Observable} innerObservable An Observable to replace each value from
+ * the source Observable.
+ * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
+ * A function to produce the value on the output Observable based on the values
+ * and the indices of the source (outer) emission and the inner Observable
+ * emission. The arguments passed to this function are:
+ * - `outerValue`: the value that came from the source
+ * - `innerValue`: the value that came from the projected Observable
+ * - `outerIndex`: the "index" of the value that came from the source
+ * - `innerIndex`: the "index" of the value from the projected Observable
+ * @return {Observable} An Observable that emits items from the given
+ * `innerObservable` every time a value is emitted on the source Observable.
+ * @return {Observable} An Observable that emits items from the given
+ * `innerObservable` (and optionally transformed through `resultSelector`) every
+ * time a value is emitted on the source Observable, and taking only the values
+ * from the most recently projected inner Observable.
+ * @method switchMapTo
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function switchMapTo&lt;T, R&gt;(this: Observable&lt;T&gt;, observable: ObservableInput&lt;R&gt;): Observable&lt;R&gt;;
+export function switchMapTo&lt;T, I, R&gt;(this: Observable&lt;T&gt;, observable: ObservableInput&lt;I&gt;, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) =&gt; R): Observable&lt;R&gt;;
+/* tslint:disable:max-line-length */
+export function switchMapTo&lt;T, I, R&gt;(this: Observable&lt;T&gt;, innerObservable: Observable&lt;I&gt;,
+                                     resultSelector?: (outerValue: T,
+                                                       innerValue: I,
+                                                       outerIndex: number,
+                                                       innerIndex: number) =&gt; R): Observable&lt;I | R&gt; {
+  return this.lift(new SwitchMapToOperator(innerObservable, resultSelector));
+}
+&nbsp;
+class SwitchMapToOperator&lt;T, I, R&gt; implements Operator&lt;T, I&gt; {
+  constructor(private observable: Observable&lt;I&gt;,
+              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) =&gt; R) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;I&gt;, source: any): any {
+    return source._subscribe(new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class SwitchMapToSubscriber&lt;T, I, R&gt; extends OuterSubscriber&lt;T, I&gt; {
+  private index: number = 0;
+  private innerSubscription: Subscription;
+&nbsp;
+  constructor(destination: Subscriber&lt;I&gt;,
+              private inner: Observable&lt;I&gt;,
+              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) =&gt; R) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(value: any) {
+    const innerSubscription = this.innerSubscription;
+    if (innerSubscription) {
+      innerSubscription.unsubscribe();
+    }
+    this.add(this.innerSubscription = subscribeToResult(this, this.inner, value, this.index++));
+  }
+&nbsp;
+  protected _complete() {
+    const {innerSubscription} = this;
+    if (!innerSubscription || innerSubscription.closed) {
+      super._complete();
+    }
+  }
+&nbsp;
+  protected _unsubscribe() {
+    this.innerSubscription = null;
+  }
+&nbsp;
+  notifyComplete(innerSub: Subscription) {
+    this.remove(innerSub);
+    this.innerSubscription = null;
+    if (this.isStopped) {
+      super._complete();
+    }
+  }
+&nbsp;
+  notifyNext(outerValue: T, innerValue: I,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber&lt;T, I&gt;): void {
+    const { resultSelector, destination } = this;
+    if (resultSelector) {
+      this.tryResultSelector(outerValue, innerValue, outerIndex, innerIndex);
+    } else {
+      destination.next(innerValue);
+    }
+  }
+&nbsp;
+  private tryResultSelector(outerValue: T, innerValue: I,
+                            outerIndex: number, innerIndex: number): void {
+    const { resultSelector, destination } = this;
+    let result: R;
+    try {
+      result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+    } catch (err) {
+      destination.error(err);
+      return;
+    }
+&nbsp;
+    destination.next(result);
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

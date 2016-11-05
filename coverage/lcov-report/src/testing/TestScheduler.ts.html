@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/testing/TestScheduler.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/testing</a> TestScheduler.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.52% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>138/146</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">86.89% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>53/61</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>25/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.29% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>132/140</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2210x</span>
+<span class="cline-any cline-yes">2210x</span>
+<span class="cline-any cline-yes">2210x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2210x</span>
+<span class="cline-any cline-yes">2210x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">68x</span>
+<span class="cline-any cline-yes">68x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">67x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1601x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1601x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1601x</span>
+<span class="cline-any cline-yes">1601x</span>
+<span class="cline-any cline-yes">1601x</span>
+<span class="cline-any cline-yes">1601x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1778x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1778x</span>
+<span class="cline-any cline-yes">1778x</span>
+<span class="cline-any cline-yes">1778x</span>
+<span class="cline-any cline-yes">1778x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">205x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">205x</span>
+<span class="cline-any cline-yes">205x</span>
+<span class="cline-any cline-yes">376x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">142x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">205x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-yes">3743x</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-yes">4724x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4724x</span>
+<span class="cline-any cline-yes">205x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4724x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">515x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">947x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-yes">245x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1994x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1992x</span>
+<span class="cline-any cline-yes">1992x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2512x</span>
+<span class="cline-any cline-yes">2512x</span>
+<span class="cline-any cline-yes">2512x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2510x</span>
+<span class="cline-any cline-yes">2510x</span>
+<span class="cline-any cline-yes">2510x</span>
+<span class="cline-any cline-yes">2680x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2239x</span>
+<span class="cline-any cline-yes">2239x</span>
+<span class="cline-any cline-yes">1778x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2239x</span>
+<span class="cline-any cline-yes">4517x</span>
+<span class="cline-any cline-yes">2235x</span>
+<span class="cline-any cline-yes">4513x</span>
+<span class="cline-any cline-yes">4513x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4696x</span>
+<span class="cline-any cline-yes">1749x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2947x</span>
+<span class="cline-any cline-yes">2947x</span>
+<span class="cline-any cline-yes">2947x</span>
+<span class="cline-any cline-yes">2947x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2947x</span>
+<span class="cline-any cline-yes">55753x</span>
+<span class="cline-any cline-yes">55753x</span>
+<span class="cline-any cline-yes">55753x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">49640x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357x</span>
+<span class="cline-any cline-yes">357x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357x</span>
+<span class="cline-any cline-yes">357x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2693x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2693x</span>
+<span class="cline-any cline-yes">2693x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2706x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2706x</span>
+<span class="cline-any cline-yes">2706x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2947x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2947x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8818x</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-yes">10279x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3247x</span>
+<span class="cline-any cline-yes">205x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3042x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-yes">88207x</span>
+<span class="cline-any cline-yes">88207x</span>
+<span class="cline-any cline-yes">88207x</span>
+<span class="cline-any cline-yes">88207x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68127x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">734x</span>
+<span class="cline-any cline-yes">734x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735x</span>
+<span class="cline-any cline-yes">735x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3402x</span>
+<span class="cline-any cline-yes">3402x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">626x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1057x</span>
+<span class="cline-any cline-yes">1057x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13526x</span>
+<span class="cline-any cline-yes">13526x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">88207x</span>
+<span class="cline-any cline-yes">17985x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5405x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable } from '../Observable';
+import { Notification } from '../Notification';
+import { Subject } from '../Subject';
+import { ColdObservable } from './ColdObservable';
+import { HotObservable } from './HotObservable';
+import { TestMessage } from './TestMessage';
+import { SubscriptionLog } from './SubscriptionLog';
+import { Subscription } from '../Subscription';
+import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
+&nbsp;
+const defaultMaxFrame: number = 750;
+&nbsp;
+interface FlushableTest {
+  ready: boolean;
+  actual?: any[];
+  expected?: any[];
+}
+&nbsp;
+export type observableToBeFn = (marbles: string, values?: any, errorValue?: any) =&gt; void;
+export type subscriptionLogsToBeFn = (marbles: string | string[]) =&gt; void;
+&nbsp;
+export class TestScheduler extends VirtualTimeScheduler {
+  private hotObservables: HotObservable&lt;any&gt;[] = [];
+  private coldObservables: ColdObservable&lt;any&gt;[] = [];
+  private flushTests: FlushableTest[] = [];
+&nbsp;
+  constructor(public assertDeepEqual: (actual: any, expected: any) =&gt; boolean | void) {
+    super(VirtualAction, defaultMaxFrame);
+  }
+&nbsp;
+  createTime(marbles: string): number {
+    const indexOf: number = marbles.indexOf('|');
+    if (indexOf === -1) {
+      throw new Error('marble diagram for time should have a completion marker "|"');
+    }
+    return indexOf * TestScheduler.frameTimeFactor;
+  }
+&nbsp;
+  createColdObservable&lt;T&gt;(marbles: string, values?: any, error?: any): Observable&lt;T&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (marbles.indexOf('^') !== -1) {
+<span class="cstat-no" title="statement not covered" >      throw new Error('cold observable cannot have subscription offset "^"');</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (marbles.indexOf('!') !== -1) {
+<span class="cstat-no" title="statement not covered" >      throw new Error('cold observable cannot have unsubscription marker "!"');</span>
+    }
+    const messages = TestScheduler.parseMarbles(marbles, values, error);
+    const cold = new ColdObservable&lt;T&gt;(messages, this);
+    this.coldObservables.push(cold);
+    return cold;
+  }
+&nbsp;
+  createHotObservable&lt;T&gt;(marbles: string, values?: any, error?: any): Subject&lt;T&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (marbles.indexOf('!') !== -1) {
+<span class="cstat-no" title="statement not covered" >      throw new Error('hot observable cannot have unsubscription marker "!"');</span>
+    }
+    const messages = TestScheduler.parseMarbles(marbles, values, error);
+    const subject = new HotObservable&lt;T&gt;(messages, this);
+    this.hotObservables.push(subject);
+    return subject;
+  }
+&nbsp;
+  private materializeInnerObservable(observable: Observable&lt;any&gt;,
+                                     outerFrame: number): TestMessage[] {
+    const messages: TestMessage[] = [];
+    observable.subscribe((value) =&gt; {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
+    }, (err) =&gt; {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(err) });
+    }, () =&gt; {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+    });
+    return messages;
+  }
+&nbsp;
+  expectObservable(observable: Observable&lt;any&gt;,
+                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+    const actual: TestMessage[] = [];
+    const flushTest: FlushableTest = { actual, ready: false };
+    const unsubscriptionFrame = TestScheduler
+      .parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
+    let subscription: Subscription;
+&nbsp;
+    this.schedule(() =&gt; {
+      subscription = observable.subscribe(x =&gt; {
+        let value = x;
+        // Support Observable-of-Observables
+        if (x instanceof Observable) {
+          value = this.materializeInnerObservable(value, this.frame);
+        }
+        actual.push({ frame: this.frame, notification: Notification.createNext(value) });
+      }, (err) =&gt; {
+        actual.push({ frame: this.frame, notification: Notification.createError(err) });
+      }, () =&gt; {
+        actual.push({ frame: this.frame, notification: Notification.createComplete() });
+      });
+    }, 0);
+&nbsp;
+    if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
+      this.schedule(() =&gt; subscription.unsubscribe(), unsubscriptionFrame);
+    }
+&nbsp;
+    this.flushTests.push(flushTest);
+&nbsp;
+    return {
+      toBe(marbles: string, values?: any, errorValue?: any) {
+        flushTest.ready = true;
+        flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
+      }
+    };
+  }
+&nbsp;
+  expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn }) {
+    const flushTest: FlushableTest = { actual: actualSubscriptionLogs, ready: false };
+    this.flushTests.push(flushTest);
+    return {
+      toBe(marbles: string | string[]) {
+        const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
+        flushTest.ready = true;
+        flushTest.expected = marblesArray.map(marbles =&gt;
+          TestScheduler.parseMarblesAsSubscriptions(marbles)
+        );
+      }
+    };
+  }
+&nbsp;
+  flush() {
+    const hotObservables = this.hotObservables;
+    while (hotObservables.length &gt; 0) {
+      hotObservables.shift().setup();
+    }
+&nbsp;
+    super.flush();
+    const readyFlushTests = this.flushTests.filter(test =&gt; test.ready);
+    while (readyFlushTests.length &gt; 0) {
+      const test = readyFlushTests.shift();
+      this.assertDeepEqual(test.actual, test.expected);
+    }
+  }
+&nbsp;
+  static parseMarblesAsSubscriptions(marbles: string): SubscriptionLog {
+    if (typeof marbles !== 'string') {
+      return new SubscriptionLog(Number.POSITIVE_INFINITY);
+    }
+    const len = marbles.length;
+    let groupStart = -1;
+    let subscriptionFrame = Number.POSITIVE_INFINITY;
+    let unsubscriptionFrame = Number.POSITIVE_INFINITY;
+&nbsp;
+    for (let i = 0; i &lt; len; i++) {
+      const frame = i * this.frameTimeFactor;
+      const c = marbles[i];
+      switch (c) {
+        case '-':
+        case ' ':
+          break;
+        case '(':
+          groupStart = frame;
+          break;
+        case ')':
+          groupStart = -1;
+          break;
+        case '^':
+          <span class="missing-if-branch" title="if path not taken" >I</span>if (subscriptionFrame !== Number.POSITIVE_INFINITY) {
+<span class="cstat-no" title="statement not covered" >            throw new Error('found a second subscription point \'^\' in a ' +</span>
+              'subscription marble diagram. There can only be one.');
+          }
+          subscriptionFrame = groupStart &gt; -1 ? groupStart : frame;
+          break;
+        case '!':
+          <span class="missing-if-branch" title="if path not taken" >I</span>if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
+<span class="cstat-no" title="statement not covered" >            throw new Error('found a second subscription point \'^\' in a ' +</span>
+              'subscription marble diagram. There can only be one.');
+          }
+          unsubscriptionFrame = groupStart &gt; -1 ? groupStart : frame;
+          break;
+<span class="branch-6 cbranch-no" title="branch not covered" >        default:</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error('there can only be \'^\' and \'!\' markers in a ' +</span>
+            'subscription marble diagram. Found instead \'' + c + '\'.');
+      }
+    }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (unsubscriptionFrame &lt; 0) {
+<span class="cstat-no" title="statement not covered" >      return new SubscriptionLog(subscriptionFrame);</span>
+    } else {
+      return new SubscriptionLog(subscriptionFrame, unsubscriptionFrame);
+    }
+  }
+&nbsp;
+  static parseMarbles(marbles: string,
+                      values?: any,
+                      errorValue?: any,
+                      materializeInnerObservables: boolean = false): TestMessage[] {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (marbles.indexOf('!') !== -1) {
+<span class="cstat-no" title="statement not covered" >      throw new Error('conventional marble diagrams cannot have the ' +</span>
+        'unsubscription marker "!"');
+    }
+    const len = marbles.length;
+    const testMessages: TestMessage[] = [];
+    const subIndex = marbles.indexOf('^');
+    const frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
+    const getValue = typeof values !== 'object' ?
+      (x: any) =&gt; x :
+      (x: any) =&gt; {
+        // Support Observable-of-Observables
+        if (materializeInnerObservables &amp;&amp; values[x] instanceof ColdObservable) {
+          return values[x].messages;
+        }
+        return values[x];
+      };
+    let groupStart = -1;
+&nbsp;
+    for (let i = 0; i &lt; len; i++) {
+      const frame = i * this.frameTimeFactor + frameOffset;
+      let notification: Notification&lt;any&gt;;
+      const c = marbles[i];
+      switch (c) {
+        case '-':
+        case ' ':
+          break;
+        case '(':
+          groupStart = frame;
+          break;
+        case ')':
+          groupStart = -1;
+          break;
+        case '|':
+          notification = Notification.createComplete();
+          break;
+        case '^':
+          break;
+        case '#':
+          notification = Notification.createError(errorValue || 'error');
+          break;
+        default:
+          notification = Notification.createNext(getValue(c));
+          break;
+      }
+&nbsp;
+      if (notification) {
+        testMessages.push({ frame: groupStart &gt; -1 ? groupStart : frame, notification });
+      }
+    }
+    return testMessages;
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -8,10 +8,10 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "AsapScheduler",
+            "name": "AsapAction",
             "range": [
               9,
-              22
+              19
             ],
             "loc": {
               "start": {
@@ -20,16 +20,16 @@
               },
               "end": {
                 "line": 1,
-                "column": 22
+                "column": 19
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "AsapScheduler",
+            "name": "AsapAction",
             "range": [
               9,
-              22
+              19
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 22
+                "column": 19
               }
             }
           },
           "range": [
             9,
-            22
+            19
           ],
           "loc": {
             "start": {
@@ -53,6 +53,97 @@
             },
             "end": {
               "line": 1,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./AsapAction",
+        "raw": "'./AsapAction'",
+        "range": [
+          27,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 27
+          },
+          "end": {
+            "line": 1,
+            "column": 41
+          }
+        }
+      },
+      "range": [
+        0,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "AsapScheduler",
+            "range": [
+              52,
+              65
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 22
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "AsapScheduler",
+            "range": [
+              52,
+              65
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            52,
+            65
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
               "column": 22
             }
           }
@@ -63,31 +154,31 @@
         "value": "./AsapScheduler",
         "raw": "'./AsapScheduler'",
         "range": [
-          30,
-          47
+          73,
+          90
         ],
         "loc": {
           "start": {
-            "line": 1,
+            "line": 2,
             "column": 30
           },
           "end": {
-            "line": 1,
+            "line": 2,
             "column": 47
           }
         }
       },
       "range": [
-        0,
-        48
+        43,
+        91
       ],
       "loc": {
         "start": {
-          "line": 1,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 1,
+          "line": 2,
           "column": 48
         }
       }
@@ -103,17 +194,17 @@
               "type": "Identifier",
               "name": "asap",
               "range": [
-                62,
-                66
+                103,
+                107
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 13
+                  "line": 3,
+                  "column": 11
                 },
                 "end": {
-                  "line": 2,
-                  "column": 17
+                  "line": 3,
+                  "column": 15
                 }
               }
             },
@@ -123,65 +214,84 @@
                 "type": "Identifier",
                 "name": "AsapScheduler",
                 "range": [
-                  73,
-                  86
+                  114,
+                  127
                 ],
                 "loc": {
                   "start": {
-                    "line": 2,
-                    "column": 24
+                    "line": 3,
+                    "column": 22
                   },
                   "end": {
-                    "line": 2,
-                    "column": 37
+                    "line": 3,
+                    "column": 35
                   }
                 }
               },
-              "arguments": [],
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "name": "AsapAction",
+                  "range": [
+                    128,
+                    138
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 36
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 46
+                    }
+                  }
+                }
+              ],
               "range": [
-                69,
-                88
+                110,
+                139
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 20
+                  "line": 3,
+                  "column": 18
                 },
                 "end": {
-                  "line": 2,
-                  "column": 39
+                  "line": 3,
+                  "column": 47
                 }
               }
             },
             "range": [
-              62,
-              88
+              103,
+              139
             ],
             "loc": {
               "start": {
-                "line": 2,
-                "column": 13
+                "line": 3,
+                "column": 11
               },
               "end": {
-                "line": 2,
-                "column": 39
+                "line": 3,
+                "column": 47
               }
             }
           }
         ],
-        "kind": "const",
+        "kind": "var",
         "range": [
-          56,
-          89
+          99,
+          140
         ],
         "loc": {
           "start": {
-            "line": 2,
+            "line": 3,
             "column": 7
           },
           "end": {
-            "line": 2,
-            "column": 40
+            "line": 3,
+            "column": 48
           }
         },
         "leadingComments": [],
@@ -190,16 +300,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=asap.js.map",
             "range": [
-              90,
-              122
+              141,
+              173
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 4,
                 "column": 0
               },
               "end": {
-                "line": 3,
+                "line": 4,
                 "column": 32
               }
             }
@@ -209,17 +319,17 @@
       "specifiers": [],
       "source": null,
       "range": [
-        49,
-        89
+        92,
+        140
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 2,
-          "column": 40
+          "line": 3,
+          "column": 48
         }
       },
       "trailingComments": [
@@ -227,16 +337,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=asap.js.map",
           "range": [
-            90,
-            122
+            141,
+            173
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 4,
               "column": 0
             },
             "end": {
-              "line": 3,
+              "line": 4,
               "column": 32
             }
           }
@@ -247,7 +357,7 @@
   "sourceType": "module",
   "range": [
     0,
-    89
+    140
   ],
   "loc": {
     "start": {
@@ -255,8 +365,8 @@
       "column": 0
     },
     "end": {
-      "line": 2,
-      "column": 40
+      "line": 3,
+      "column": 48
     }
   },
   "comments": [
@@ -264,16 +374,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=asap.js.map",
       "range": [
-        90,
-        122
+        141,
+        173
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 4,
           "column": 0
         },
         "end": {
-          "line": 3,
+          "line": 4,
           "column": 32
         }
       }

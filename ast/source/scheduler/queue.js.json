@@ -8,10 +8,10 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "QueueScheduler",
+            "name": "QueueAction",
             "range": [
               9,
-              23
+              20
             ],
             "loc": {
               "start": {
@@ -20,16 +20,16 @@
               },
               "end": {
                 "line": 1,
-                "column": 23
+                "column": 20
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "QueueScheduler",
+            "name": "QueueAction",
             "range": [
               9,
-              23
+              20
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 23
+                "column": 20
               }
             }
           },
           "range": [
             9,
-            23
+            20
           ],
           "loc": {
             "start": {
@@ -53,6 +53,97 @@
             },
             "end": {
               "line": 1,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./QueueAction",
+        "raw": "'./QueueAction'",
+        "range": [
+          28,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 28
+          },
+          "end": {
+            "line": 1,
+            "column": 43
+          }
+        }
+      },
+      "range": [
+        0,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "QueueScheduler",
+            "range": [
+              54,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "QueueScheduler",
+            "range": [
+              54,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          "range": [
+            54,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
               "column": 23
             }
           }
@@ -63,31 +154,31 @@
         "value": "./QueueScheduler",
         "raw": "'./QueueScheduler'",
         "range": [
-          31,
-          49
+          76,
+          94
         ],
         "loc": {
           "start": {
-            "line": 1,
+            "line": 2,
             "column": 31
           },
           "end": {
-            "line": 1,
+            "line": 2,
             "column": 49
           }
         }
       },
       "range": [
-        0,
-        50
+        45,
+        95
       ],
       "loc": {
         "start": {
-          "line": 1,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 1,
+          "line": 2,
           "column": 50
         }
       }
@@ -103,17 +194,17 @@
               "type": "Identifier",
               "name": "queue",
               "range": [
-                64,
-                69
+                107,
+                112
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 13
+                  "line": 3,
+                  "column": 11
                 },
                 "end": {
-                  "line": 2,
-                  "column": 18
+                  "line": 3,
+                  "column": 16
                 }
               }
             },
@@ -123,65 +214,84 @@
                 "type": "Identifier",
                 "name": "QueueScheduler",
                 "range": [
-                  76,
-                  90
+                  119,
+                  133
                 ],
                 "loc": {
                   "start": {
-                    "line": 2,
-                    "column": 25
+                    "line": 3,
+                    "column": 23
                   },
                   "end": {
-                    "line": 2,
-                    "column": 39
+                    "line": 3,
+                    "column": 37
                   }
                 }
               },
-              "arguments": [],
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "name": "QueueAction",
+                  "range": [
+                    134,
+                    145
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 38
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 49
+                    }
+                  }
+                }
+              ],
               "range": [
-                72,
-                92
+                115,
+                146
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 21
+                  "line": 3,
+                  "column": 19
                 },
                 "end": {
-                  "line": 2,
-                  "column": 41
+                  "line": 3,
+                  "column": 50
                 }
               }
             },
             "range": [
-              64,
-              92
+              107,
+              146
             ],
             "loc": {
               "start": {
-                "line": 2,
-                "column": 13
+                "line": 3,
+                "column": 11
               },
               "end": {
-                "line": 2,
-                "column": 41
+                "line": 3,
+                "column": 50
               }
             }
           }
         ],
-        "kind": "const",
+        "kind": "var",
         "range": [
-          58,
-          93
+          103,
+          147
         ],
         "loc": {
           "start": {
-            "line": 2,
+            "line": 3,
             "column": 7
           },
           "end": {
-            "line": 2,
-            "column": 42
+            "line": 3,
+            "column": 51
           }
         },
         "leadingComments": [],
@@ -190,16 +300,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=queue.js.map",
             "range": [
-              94,
-              127
+              148,
+              181
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 4,
                 "column": 0
               },
               "end": {
-                "line": 3,
+                "line": 4,
                 "column": 33
               }
             }
@@ -209,17 +319,17 @@
       "specifiers": [],
       "source": null,
       "range": [
-        51,
-        93
+        96,
+        147
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 2,
-          "column": 42
+          "line": 3,
+          "column": 51
         }
       },
       "trailingComments": [
@@ -227,16 +337,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=queue.js.map",
           "range": [
-            94,
-            127
+            148,
+            181
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 4,
               "column": 0
             },
             "end": {
-              "line": 3,
+              "line": 4,
               "column": 33
             }
           }
@@ -247,7 +357,7 @@
   "sourceType": "module",
   "range": [
     0,
-    93
+    147
   ],
   "loc": {
     "start": {
@@ -255,8 +365,8 @@
       "column": 0
     },
     "end": {
-      "line": 2,
-      "column": 42
+      "line": 3,
+      "column": 51
     }
   },
   "comments": [
@@ -264,16 +374,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=queue.js.map",
       "range": [
-        94,
-        127
+        148,
+        181
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 4,
           "column": 0
         },
         "end": {
-          "line": 3,
+          "line": 4,
           "column": 33
         }
       }

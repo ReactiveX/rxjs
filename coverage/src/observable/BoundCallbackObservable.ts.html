@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/BoundCallbackObservable.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/observable</a> BoundCallbackObservable.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.78% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>81/82</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>21/24</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>10/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">98.51% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>66/67</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { Scheduler } from '../Scheduler';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
+import { AsyncSubject } from '../AsyncSubject';
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class BoundCallbackObservable&lt;T&gt; extends Observable&lt;T&gt; {
+  subject: AsyncSubject&lt;T&gt;;
+&nbsp;
+  /* tslint:disable:max-line-length */
+  static create&lt;R&gt;(callbackFunc: (callback: (result: R) =&gt; any) =&gt; any, selector?: void, scheduler?: Scheduler): () =&gt; Observable&lt;R&gt;;
+  static create&lt;T, R&gt;(callbackFunc: (v1: T, callback: (result: R) =&gt; any) =&gt; any, selector?: void, scheduler?: Scheduler): (v1: T) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, R&gt;(callbackFunc: (v1: T, v2: T2, callback: (result: R) =&gt; any) =&gt; any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (result: R) =&gt; any) =&gt; any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, T4, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (result: R) =&gt; any) =&gt; any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, T4, T5, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (result: R) =&gt; any) =&gt; any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, T4, T5, T6, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (result: R) =&gt; any) =&gt; any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) =&gt; Observable&lt;R&gt;;
+  static create&lt;R&gt;(callbackFunc: (callback: (...args: any[]) =&gt; any) =&gt; any, selector: (...args: any[]) =&gt; R, scheduler?: Scheduler): () =&gt; Observable&lt;R&gt;;
+  static create&lt;T, R&gt;(callbackFunc: (v1: T, callback: (...args: any[]) =&gt; any) =&gt; any, selector: (...args: any[]) =&gt; R, scheduler?: Scheduler): (v1: T) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, R&gt;(callbackFunc: (v1: T, v2: T2, callback: (...args: any[]) =&gt; any) =&gt; any, selector: (...args: any[]) =&gt; R, scheduler?: Scheduler): (v1: T, v2: T2) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (...args: any[]) =&gt; any) =&gt; any, selector: (...args: any[]) =&gt; R, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, T4, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (...args: any[]) =&gt; any) =&gt; any, selector: (...args: any[]) =&gt; R, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, T4, T5, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (...args: any[]) =&gt; any) =&gt; any, selector: (...args: any[]) =&gt; R, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) =&gt; Observable&lt;R&gt;;
+  static create&lt;T, T2, T3, T4, T5, T6, R&gt;(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (...args: any[]) =&gt; any) =&gt; any, selector: (...args: any[]) =&gt; R, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) =&gt; Observable&lt;R&gt;;
+  static create&lt;T&gt;(callbackFunc: Function, selector?: void, scheduler?: Scheduler): (...args: any[]) =&gt; Observable&lt;T&gt;;
+  static create&lt;T&gt;(callbackFunc: Function, selector?: (...args: any[]) =&gt; T, scheduler?: Scheduler): (...args: any[]) =&gt; Observable&lt;T&gt;;
+  /* tslint:enable:max-line-length */
+&nbsp;
+  /**
+   * Converts a callback API to a function that returns an Observable.
+   *
+   * &lt;span class="informal"&gt;Give it a function `f` of type `f(x, callback)` and
+   * it will return a function `g` that when called as `g(x)` will output an
+   * Observable.&lt;/span&gt;
+   *
+   * `bindCallback` is not an operator because its input and output are not
+   * Observables. The input is a function `func` with some parameters, but the
+   * last parameter must be a callback function that `func` calls when it is
+   * done. The output of `bindCallback` is a function that takes the same
+   * parameters as `func`, except the last one (the callback). When the output
+   * function is called with arguments, it will return an Observable where the
+   * results will be delivered to.
+   *
+   * @example &lt;caption&gt;Convert jQuery's getJSON to an Observable API&lt;/caption&gt;
+   * // Suppose we have jQuery.getJSON('/my/url', callback)
+   * var getJSONAsObservable = Rx.Observable.bindCallback(jQuery.getJSON);
+   * var result = getJSONAsObservable('/my/url');
+   * result.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));
+   *
+   * @see {@link bindNodeCallback}
+   * @see {@link from}
+   * @see {@link fromPromise}
+   *
+   * @param {function} func Function with a callback as the last parameter.
+   * @param {function} [selector] A function which takes the arguments from the
+   * callback and maps those a value to emit on the output Observable.
+   * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+   * callbacks.
+   * @return {function(...params: *): Observable} A function which returns the
+   * Observable that delivers the same values the callback would deliver.
+   * @static true
+   * @name bindCallback
+   * @owner Observable
+   */
+  static create&lt;T&gt;(func: Function,
+                   selector: Function | void = undefined,
+                   scheduler?: Scheduler): (...args: any[]) =&gt; Observable&lt;T&gt; {
+    return (...args: any[]): Observable&lt;T&gt; =&gt; {
+      return new BoundCallbackObservable&lt;T&gt;(func, &lt;any&gt;selector, args, scheduler);
+    };
+  }
+&nbsp;
+  constructor(private callbackFunc: Function,
+              private selector: Function,
+              private args: any[],
+              private scheduler: Scheduler) {
+    super();
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T | T[]&gt;): Subscription {
+    const callbackFunc = this.callbackFunc;
+    const args = this.args;
+    const scheduler = this.scheduler;
+    let subject = this.subject;
+&nbsp;
+    if (!scheduler) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!subject) {
+        subject = this.subject = new AsyncSubject&lt;T&gt;();
+        const handler = function handlerFn(...innerArgs: any[]) {
+          const source = (&lt;any&gt;handlerFn).source;
+          const { selector, subject } = source;
+          if (selector) {
+            const result = tryCatch(selector).apply(this, innerArgs);
+            if (result === errorObject) {
+              subject.error(errorObject.e);
+          } else {
+              subject.next(result);
+              subject.complete();
+            }
+          } else {
+            subject.next(innerArgs.length === 1 ? innerArgs[0] : <span class="branch-1 cbranch-no" title="branch not covered" >innerArgs)</span>;
+            subject.complete();
+          }
+        };
+        // use named function instance to avoid closure.
+        (&lt;any&gt;handler).source = this;
+&nbsp;
+        const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (result === errorObject) {
+<span class="cstat-no" title="statement not covered" >          subject.error(errorObject.e);</span>
+        }
+      }
+      return subject.subscribe(subscriber);
+    } else {
+      return scheduler.schedule(BoundCallbackObservable.dispatch, 0, { source: this, subscriber });
+    }
+  }
+&nbsp;
+  static dispatch&lt;T&gt;(state: { source: BoundCallbackObservable&lt;T&gt;, subscriber: Subscriber&lt;T&gt; }) {
+    const self = (&lt;Subscription&gt;&lt;any&gt;this);
+    const { source, subscriber } = state;
+    const { callbackFunc, args, scheduler } = source;
+    let subject = source.subject;
+&nbsp;
+    if (!subject) {
+      subject = source.subject = new AsyncSubject&lt;T&gt;();
+&nbsp;
+      const handler = function handlerFn(...innerArgs: any[]) {
+        const source = (&lt;any&gt;handlerFn).source;
+        const { selector, subject } = source;
+        if (selector) {
+          const result = tryCatch(selector).apply(this, innerArgs);
+          if (result === errorObject) {
+            self.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
+          } else {
+            self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
+          }
+        } else {
+          const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+          self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
+        }
+      };
+      // use named function to pass values in without closure
+      (&lt;any&gt;handler).source = source;
+&nbsp;
+      const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+      if (result === errorObject) {
+        subject.error(errorObject.e);
+      }
+    }
+&nbsp;
+    self.add(subject.subscribe(subscriber));
+  }
+}
+&nbsp;
+interface DispatchNextArg&lt;T&gt; {
+  subject: AsyncSubject&lt;T&gt;;
+  value: T;
+}
+function dispatchNext&lt;T&gt;(arg: DispatchNextArg&lt;T&gt;) {
+  const { value, subject } = arg;
+  subject.next(value);
+  subject.complete();
+}
+&nbsp;
+interface DispatchErrorArg&lt;T&gt; {
+  subject: AsyncSubject&lt;T&gt;;
+  err: any;
+}
+function dispatchError&lt;T&gt;(arg: DispatchErrorArg&lt;T&gt;) {
+  const { err, subject } = arg;
+  subject.error(err);
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

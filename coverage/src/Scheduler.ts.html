@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/Scheduler.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">src</a> Scheduler.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90.91% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>10/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>5/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">75% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>8/8</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2218x</span>
+<span class="cline-any cline-yes">2222x</span>
+<span class="cline-any cline-yes">2218x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14896x</span>
+<span class="cline-any cline-yes">14871x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Action } from './scheduler/Action';
+import { Subscription } from './Subscription';
+&nbsp;
+/**
+ * An execution context and a data structure to order tasks and schedule their
+ * execution. Provides a notion of (potentially virtual) time, through the
+ * `now()` getter method.
+ *
+ * Each unit of work in a Scheduler is called an {@link Action}.
+ *
+ * ```ts
+ * class Scheduler {
+ *   now(): number;
+ *   schedule(work, delay?, state?): Subscription;
+ * }
+ * ```
+ *
+ * @class Scheduler
+ */
+export class Scheduler {
+&nbsp;
+  public static now: () =&gt; number = Date.now ? Date.now : <span class="fstat-no" title="function not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >() =&gt; <span class="cstat-no" title="statement not covered" ></span>+new Date();</span></span>
+&nbsp;
+  constructor(private SchedulerAction: typeof Action,
+              now: () =&gt; number = Scheduler.now) {
+    this.now = now;
+  }
+&nbsp;
+  /**
+   * A getter method that returns a number representing the current time
+   * (at the time this function was called) according to the scheduler's own
+   * internal clock.
+   * @return {number} A number that represents the current time. May or may not
+   * have a relation to wall-clock time. May or may not refer to a time unit
+   * (e.g. milliseconds).
+   */
+  public now: () =&gt; number;
+&nbsp;
+  /**
+   * Schedules a function, `work`, for execution. May happen at some point in
+   * the future, according to the `delay` parameter, if specified. May be passed
+   * some context object, `state`, which will be passed to the `work` function.
+   *
+   * The given arguments will be processed an stored as an Action object in a
+   * queue of actions.
+   *
+   * @param {function(state: ?T): ?Subscription} work A function representing a
+   * task, or some unit of work to be executed by the Scheduler.
+   * @param {number} [delay] Time to wait before executing the work, where the
+   * time unit is implicit and defined by the Scheduler itself.
+   * @param {T} [state] Some contextual data that the `work` function uses when
+   * called by the Scheduler.
+   * @return {Subscription} A subscription in order to be able to unsubscribe
+   * the scheduled work.
+   */
+  public schedule&lt;T&gt;(work: (state?: T) =&gt; void, delay: number = 0, state?: T): Subscription {
+    return new this.SchedulerAction&lt;T&gt;(this, work).schedule(state, delay);
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

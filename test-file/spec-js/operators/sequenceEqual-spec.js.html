@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/sequenceEqual-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AsyncSubject">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BehaviorSubject">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Notification">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Observable">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReplaySubject">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Scheduler">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AnonymousSubject">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subject">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SubjectSubscriber">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subscriber">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subscription">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConnectableObservable">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxError">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxResponse">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxTimeoutError">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GroupedObservable">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Action">Action</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ArgumentOutOfRangeError">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EmptyError">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ObjectUnsubscribedError">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TimeoutError">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-UnsubscriptionError">UnsubscriptionError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/sequenceEqual-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var booleans = { T: true, F: false };
+/** @test {sequenceEqual} */
+describe(&apos;Observable.prototype.sequenceEqual&apos;, function () {
+    asDiagram(&apos;sequenceEqual(observable)&apos;)(&apos;should return true for two equal sequences&apos;, function () {
+        var s1 = hot(&apos;--a--^--b--c--d--e--f--g--|&apos;);
+        var s1subs = &apos;^                        !&apos;;
+        var s2 = hot(&apos;-----^-----b--c--d-e-f------g-|&apos;);
+        var s2subs = &apos;^                        !&apos;;
+        var expected = &apos;-------------------------(T|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should return false for two sync observables that are unequal in length&apos;, function () {
+        var s1 = cold(&apos;(abcdefg|)&apos;);
+        var s2 = cold(&apos;(abc|)&apos;);
+        var expected = &apos;(F|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+    });
+    it(&apos;should return true for two sync observables that match&apos;, function () {
+        var s1 = cold(&apos;(abcdefg|)&apos;);
+        var s2 = cold(&apos;(abcdefg|)&apos;);
+        var expected = &apos;(T|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+    });
+    it(&apos;should return true for two observables that match when the last one emits and completes in the same frame&apos;, function () {
+        var s1 = hot(&apos;--a--^--b--c--d--e--f--g--|&apos;);
+        var s1subs = &apos;^                        !&apos;;
+        var s2 = hot(&apos;-----^--b--c--d--e--f--g------|&apos;);
+        var s2subs = &apos;^                        !&apos;;
+        var expected = &apos;-------------------------(T|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should return true for two observables that match when the last one emits and completes in the same frame&apos;, function () {
+        var s1 = hot(&apos;--a--^--b--c--d--e--f--g--|&apos;);
+        var s1subs = &apos;^                        !&apos;;
+        var s2 = hot(&apos;-----^--b--c--d--e--f---------(g|)&apos;);
+        var s2subs = &apos;^                        !&apos;;
+        var expected = &apos;-------------------------(T|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should error with an errored source&apos;, function () {
+        var s1 = hot(&apos;--a--^--b---c---#&apos;);
+        var s2 = hot(&apos;--a--^--b---c-----|&apos;);
+        var expected = &apos;-----------#&apos;;
+        var sub = &apos;^          !&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(sub);
+        expectSubscriptions(s2.subscriptions).toBe(sub);
+    });
+    it(&apos;should error with an errored compareTo&apos;, function () {
+        var s1 = hot(&apos;--a--^--b---c-----|&apos;);
+        var s2 = hot(&apos;--a--^--b---c---#&apos;);
+        var expected = &apos;-----------#&apos;;
+        var sub = &apos;^          !&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(sub);
+        expectSubscriptions(s2.subscriptions).toBe(sub);
+    });
+    it(&apos;should error if the source is a throw&apos;, function () {
+        var s1 = cold(&apos;#&apos;); // throw
+        var s2 = cold(&apos;---a--b--c--|&apos;);
+        var expected = &apos;#&apos;; // throw
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected);
+    });
+    it(&apos;should never return if source is a never&apos;, function () {
+        var s1 = cold(&apos;------------&apos;); // never
+        var s2 = cold(&apos;--a--b--c--|&apos;);
+        var expected = &apos;------------&apos;; // never
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected);
+    });
+    it(&apos;should never return if compareTo is a never&apos;, function () {
+        var s1 = cold(&apos;--a--b--c--|&apos;);
+        var s2 = cold(&apos;------------&apos;); // never
+        var expected = &apos;------------&apos;; // never
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected);
+    });
+    it(&apos;should return false if source is empty and compareTo is not&apos;, function () {
+        var s1 = cold(&apos;|&apos;); // empty
+        var s2 = cold(&apos;------a------&apos;);
+        var expected = &apos;------(F|)&apos;;
+        var subs = &apos;^     !&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(subs);
+        expectSubscriptions(s2.subscriptions).toBe(subs);
+    });
+    it(&apos;should return false if compareTo is empty and source is not&apos;, function () {
+        var s1 = cold(&apos;------a------&apos;);
+        var s2 = cold(&apos;|&apos;); // empty
+        var expected = &apos;------(F|)&apos;;
+        var subs = &apos;^     !&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(subs);
+        expectSubscriptions(s2.subscriptions).toBe(subs);
+    });
+    it(&apos;should return never if compareTo is empty and source is never&apos;, function () {
+        var s1 = cold(&apos;-&apos;);
+        var s2 = cold(&apos;|&apos;);
+        var expected = &apos;-&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected);
+    });
+    it(&apos;should return never if source is empty and compareTo is never&apos;, function () {
+        var s1 = cold(&apos;|&apos;);
+        var s2 = cold(&apos;-&apos;);
+        var expected = &apos;-&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected);
+    });
+    it(&apos;should error if the comparor errors&apos;, function () {
+        var s1 = hot(&apos;--a--^--b-----c------d--|&apos;);
+        var s1subs = &apos;^            !&apos;;
+        var s2 = hot(&apos;-----^--------x---y---z-------|&apos;);
+        var s2subs = &apos;^            !&apos;;
+        var expected = &apos;-------------#&apos;;
+        var i = 0;
+        var source = s1.sequenceEqual(s2, function (a, b) {
+            if (++i === 2) {
+                throw new Error(&apos;shazbot&apos;);
+            }
+            return a.value === b.value;
+        });
+        var values = {
+            a: null,
+            b: { value: &apos;bees knees&apos; },
+            c: { value: &apos;carpy dumb&apos; },
+            d: { value: &apos;derp&apos; },
+            x: { value: &apos;bees knees&apos;, foo: &apos;lol&apos; },
+            y: { value: &apos;carpy dumb&apos;, scooby: &apos;doo&apos; },
+            z: { value: &apos;derp&apos;, weCouldBe: &apos;dancin, yeah&apos; }
+        };
+        expectObservable(source).toBe(expected, Object.assign({}, booleans, values), new Error(&apos;shazbot&apos;));
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should use the provided comparor&apos;, function () {
+        var s1 = hot(&apos;--a--^--b-----c------d--|&apos;);
+        var s1subs = &apos;^                        !&apos;;
+        var s2 = hot(&apos;-----^--------x---y---z-------|&apos;);
+        var s2subs = &apos;^                        !&apos;;
+        var expected = &apos;-------------------------(T|)&apos;;
+        var source = s1.sequenceEqual(s2, function (a, b) { return a.value === b.value; });
+        var values = {
+            a: null,
+            b: { value: &apos;bees knees&apos; },
+            c: { value: &apos;carpy dumb&apos; },
+            d: { value: &apos;derp&apos; },
+            x: { value: &apos;bees knees&apos;, foo: &apos;lol&apos; },
+            y: { value: &apos;carpy dumb&apos;, scooby: &apos;doo&apos; },
+            z: { value: &apos;derp&apos;, weCouldBe: &apos;dancin, yeah&apos; }
+        };
+        expectObservable(source).toBe(expected, Object.assign({}, booleans, values));
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should return false for two unequal sequences, compareTo finishing last&apos;, function () {
+        var s1 = hot(&apos;--a--^--b--c--d--e--f--g--|&apos;);
+        var s1subs = &apos;^                      !&apos;;
+        var s2 = hot(&apos;-----^-----b--c--d-e-f------z-|&apos;);
+        var s2subs = &apos;^                      !&apos;;
+        var expected = &apos;-----------------------(F|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should return false for two unequal sequences, early wrong value from source&apos;, function () {
+        var s1 = hot(&apos;--a--^--b--c---x-----------|&apos;);
+        var s1subs = &apos;^         !&apos;;
+        var s2 = hot(&apos;-----^--b--c--d--e--f--|&apos;);
+        var s2subs = &apos;^         !&apos;;
+        var expected = &apos;----------(F|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should return false when the source emits an extra value after the compareTo completes&apos;, function () {
+        var s1 = hot(&apos;--a--^--b--c--d--e--f--g--h--|&apos;);
+        var s1subs = &apos;^           !&apos;;
+        var s2 = hot(&apos;-----^--b--c--d-|&apos;);
+        var s2subs = &apos;^           !&apos;;
+        var expected = &apos;------------(F|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should return false when the compareTo emits an extra value after the source completes&apos;, function () {
+        var s1 = hot(&apos;--a--^--b--c--d-|&apos;);
+        var s1subs = &apos;^           !&apos;;
+        var s2 = hot(&apos;-----^--b--c--d--e--f--g--h--|&apos;);
+        var s2subs = &apos;^           !&apos;;
+        var expected = &apos;------------(F|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+        expectSubscriptions(s1.subscriptions).toBe(s1subs);
+        expectSubscriptions(s2.subscriptions).toBe(s2subs);
+    });
+    it(&apos;should return true for two empty observables&apos;, function () {
+        var s1 = cold(&apos;|&apos;);
+        var s2 = cold(&apos;|&apos;);
+        var expected = &apos;(T|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+    });
+    it(&apos;should return false for an empty observable and an observable that emits&apos;, function () {
+        var s1 = cold(&apos;|&apos;);
+        var s2 = cold(&apos;---a--|&apos;);
+        var expected = &apos;---(F|)&apos;;
+        var source = s1.sequenceEqual(s2);
+        expectObservable(source).toBe(expected, booleans);
+    });
+    it(&apos;should return compare hot and cold observables&apos;, function () {
+        var s1 = hot(&apos;---a--^---b---c---d---e---f---g---h---i---j---|&apos;);
+        var s2 = cold(&apos;----b---c-|&apos;);
+        var expected1 = &apos;------------(F|)&apos;;
+        var subs1 = &apos;^           !&apos;;
+        var delay = &apos;-------------------|&apos;;
+        var s3 = cold(&apos;-f---g---h---i---j---|&apos;);
+        var expected2 = &apos;                   ---------------------(T|)&apos;;
+        var subs2 = &apos;                   ^                    !&apos;;
+        var test1 = s1.sequenceEqual(s2);
+        var test2 = s1.sequenceEqual(s3);
+        expectObservable(test1).toBe(expected1, booleans);
+        rxTestScheduler.schedule(function () { return expectObservable(test2).toBe(expected2, booleans); }, time(delay));
+        expectSubscriptions(s2.subscriptions).toBe(subs1);
+        expectSubscriptions(s3.subscriptions).toBe(subs2);
+    });
+});
+//# sourceMappingURL=sequenceEqual-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

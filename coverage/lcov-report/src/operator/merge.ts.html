@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/merge.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> merge.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>22/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>12/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>18/18</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">113x</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable, ObservableInput } from '../Observable';
+import { Scheduler } from '../Scheduler';
+import { ArrayObservable } from '../observable/ArrayObservable';
+import { MergeAllOperator } from './mergeAll';
+import { isScheduler } from '../util/isScheduler';
+&nbsp;
+/**
+ * Creates an output Observable which concurrently emits all values from every
+ * given input Observable.
+ *
+ * &lt;span class="informal"&gt;Flattens multiple Observables together by blending
+ * their values into one Observable.&lt;/span&gt;
+ *
+ * &lt;img src="./img/merge.png" width="100%"&gt;
+ *
+ * `merge` subscribes to each given input Observable (either the source or an
+ * Observable given as argument), and simply forwards (without doing any
+ * transformation) all the values from all the input Observables to the output
+ * Observable. The output Observable only completes once all input Observables
+ * have completed. Any error delivered by an input Observable will be immediately
+ * emitted on the output Observable.
+ *
+ * @example &lt;caption&gt;Merge together two Observables: 1s interval and clicks&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var timer = Rx.Observable.interval(1000);
+ * var clicksOrTimer = clicks.merge(timer);
+ * clicksOrTimer.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Merge together 3 Observables, but only 2 run concurrently&lt;/caption&gt;
+ * var timer1 = Rx.Observable.interval(1000).take(10);
+ * var timer2 = Rx.Observable.interval(2000).take(6);
+ * var timer3 = Rx.Observable.interval(500).take(10);
+ * var concurrent = 2; // the argument
+ * var merged = timer1.merge(timer2, timer3, concurrent);
+ * merged.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link mergeAll}
+ * @see {@link mergeMap}
+ * @see {@link mergeMapTo}
+ * @see {@link mergeScan}
+ *
+ * @param {Observable} other An input Observable to merge with the source
+ * Observable. More than one input Observables may be given as argument.
+ * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
+ * Observables being subscribed to concurrently.
+ * @param {Scheduler} [scheduler=null] The Scheduler to use for managing
+ * concurrency of input Observables.
+ * @return {Observable} an Observable that emits items that are the result of
+ * every input Observable.
+ * @method merge
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function merge&lt;T&gt;(this: Observable&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt;;
+export function merge&lt;T&gt;(this: Observable&lt;T&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T&gt;;
+export function merge&lt;T, T2&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, scheduler?: Scheduler): Observable&lt;T | T2&gt;;
+export function merge&lt;T, T2&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2&gt;;
+export function merge&lt;T, T2, T3&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3&gt;;
+export function merge&lt;T, T2, T3&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3&gt;;
+export function merge&lt;T, T2, T3, T4&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4&gt;;
+export function merge&lt;T, T2, T3, T4&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4&gt;;
+export function merge&lt;T, T2, T3, T4, T5&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5&gt;;
+export function merge&lt;T, T2, T3, T4, T5&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5&gt;;
+export function merge&lt;T, T2, T3, T4, T5, T6&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, v6: ObservableInput&lt;T6&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5 | T6&gt;;
+export function merge&lt;T, T2, T3, T4, T5, T6&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, v6: ObservableInput&lt;T6&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5 | T6&gt;;
+export function merge&lt;T&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;ObservableInput&lt;T&gt; | Scheduler | number&gt;): Observable&lt;T&gt;;
+export function merge&lt;T, R&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;ObservableInput&lt;any&gt; | Scheduler | number&gt;): Observable&lt;R&gt;;
+/* tslint:disable:max-line-length */
+export function merge&lt;T, R&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;ObservableInput&lt;any&gt; | Scheduler | number&gt;): Observable&lt;R&gt; {
+  return this.lift.call(mergeStatic&lt;T, R&gt;(this, ...observables));
+}
+&nbsp;
+/* tslint:disable:max-line-length */
+export function mergeStatic&lt;T&gt;(v1: ObservableInput&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt;;
+export function mergeStatic&lt;T&gt;(v1: ObservableInput&lt;T&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T&gt;;
+export function mergeStatic&lt;T, T2&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, scheduler?: Scheduler): Observable&lt;T | T2&gt;;
+export function mergeStatic&lt;T, T2&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2&gt;;
+export function mergeStatic&lt;T, T2, T3&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3&gt;;
+export function mergeStatic&lt;T, T2, T3&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3&gt;;
+export function mergeStatic&lt;T, T2, T3, T4&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4&gt;;
+export function mergeStatic&lt;T, T2, T3, T4&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4&gt;;
+export function mergeStatic&lt;T, T2, T3, T4, T5&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5&gt;;
+export function mergeStatic&lt;T, T2, T3, T4, T5&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5&gt;;
+export function mergeStatic&lt;T, T2, T3, T4, T5, T6&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, v6: ObservableInput&lt;T6&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5 | T6&gt;;
+export function mergeStatic&lt;T, T2, T3, T4, T5, T6&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, v6: ObservableInput&lt;T6&gt;, concurrent?: number, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5 | T6&gt;;
+export function mergeStatic&lt;T&gt;(...observables: (ObservableInput&lt;T&gt; | Scheduler | number)[]): Observable&lt;T&gt;;
+export function mergeStatic&lt;T, R&gt;(...observables: (ObservableInput&lt;any&gt; | Scheduler | number)[]): Observable&lt;R&gt;;
+/* tslint:enable:max-line-length */
+/**
+ * Creates an output Observable which concurrently emits all values from every
+ * given input Observable.
+ *
+ * &lt;span class="informal"&gt;Flattens multiple Observables together by blending
+ * their values into one Observable.&lt;/span&gt;
+ *
+ * &lt;img src="./img/merge.png" width="100%"&gt;
+ *
+ * `merge` subscribes to each given input Observable (as arguments), and simply
+ * forwards (without doing any transformation) all the values from all the input
+ * Observables to the output Observable. The output Observable only completes
+ * once all input Observables have completed. Any error delivered by an input
+ * Observable will be immediately emitted on the output Observable.
+ *
+ * @example &lt;caption&gt;Merge together two Observables: 1s interval and clicks&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var timer = Rx.Observable.interval(1000);
+ * var clicksOrTimer = Rx.Observable.merge(clicks, timer);
+ * clicksOrTimer.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Merge together 3 Observables, but only 2 run concurrently&lt;/caption&gt;
+ * var timer1 = Rx.Observable.interval(1000).take(10);
+ * var timer2 = Rx.Observable.interval(2000).take(6);
+ * var timer3 = Rx.Observable.interval(500).take(10);
+ * var concurrent = 2; // the argument
+ * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);
+ * merged.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link mergeAll}
+ * @see {@link mergeMap}
+ * @see {@link mergeMapTo}
+ * @see {@link mergeScan}
+ *
+ * @param {...Observable} observables Input Observables to merge together.
+ * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
+ * Observables being subscribed to concurrently.
+ * @param {Scheduler} [scheduler=null] The Scheduler to use for managing
+ * concurrency of input Observables.
+ * @return {Observable} an Observable that emits items that are the result of
+ * every input Observable.
+ * @static true
+ * @name merge
+ * @owner Observable
+ */
+export function mergeStatic&lt;T, R&gt;(...observables: Array&lt;ObservableInput&lt;any&gt; | Scheduler | number&gt;): Observable&lt;R&gt; {
+ let concurrent = Number.POSITIVE_INFINITY;
+ let scheduler: Scheduler = null;
+  let last: any = observables[observables.length - 1];
+  if (isScheduler(last)) {
+    scheduler = &lt;Scheduler&gt;observables.pop();
+    if (observables.length &gt; 1 &amp;&amp; typeof observables[observables.length - 1] === 'number') {
+      concurrent = &lt;number&gt;observables.pop();
+    }
+  } else if (typeof last === 'number') {
+    concurrent = &lt;number&gt;observables.pop();
+  }
+&nbsp;
+  if (scheduler === null &amp;&amp; observables.length === 1) {
+    return &lt;Observable&lt;R&gt;&gt;observables[0];
+  }
+&nbsp;
+  return new ArrayObservable(&lt;any&gt;observables, scheduler).lift(new MergeAllOperator&lt;R&gt;(concurrent));
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

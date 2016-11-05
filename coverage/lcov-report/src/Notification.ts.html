@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/Notification.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">src</a> Notification.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>40/40</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>27/27</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>37/37</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20241x</span>
+<span class="cline-any cline-yes">20241x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">11498x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8701x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">540x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2257x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">18811x</span>
+<span class="cline-any cline-yes">18604x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">207x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1634x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4587x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { PartialObserver } from './Observer';
+import { Observable } from './Observable';
+&nbsp;
+/**
+ * Represents a push-based event or value that an {@link Observable} can emit.
+ * This class is particularly useful for operators that manage notifications,
+ * like {@link materialize}, {@link dematerialize}, {@link observeOn}, and
+ * others. Besides wrapping the actual delivered value, it also annotates it
+ * with metadata of, for instance, what type of push message it is (`next`,
+ * `error`, or `complete`).
+ *
+ * @see {@link materialize}
+ * @see {@link dematerialize}
+ * @see {@link observeOn}
+ *
+ * @class Notification&lt;T&gt;
+ */
+export class Notification&lt;T&gt; {
+  hasValue: boolean;
+&nbsp;
+  constructor(public kind: string, public value?: T, public exception?: any) {
+    this.hasValue = kind === 'N';
+  }
+&nbsp;
+  /**
+   * Delivers to the given `observer` the value wrapped by this Notification.
+   * @param {Observer} observer
+   * @return
+   */
+  observe(observer: PartialObserver&lt;T&gt;): any {
+    switch (this.kind) {
+      case 'N':
+        return observer.next &amp;&amp; observer.next(this.value);
+      case 'E':
+        return observer.error &amp;&amp; observer.error(this.exception);
+      case 'C':
+        return observer.complete &amp;&amp; observer.complete();
+    }
+  }
+&nbsp;
+  /**
+   * Given some {@link Observer} callbacks, deliver the value represented by the
+   * current Notification to the correctly corresponding callback.
+   * @param {function(value: T): void} next An Observer `next` callback.
+   * @param {function(err: any): void} [error] An Observer `error` callback.
+   * @param {function(): void} [complete] An Observer `complete` callback.
+   * @return {any}
+   */
+  do(next: (value: T) =&gt; void, error?: (err: any) =&gt; void, complete?: () =&gt; void): any {
+    const kind = this.kind;
+    switch (kind) {
+      case 'N':
+        return next &amp;&amp; next(this.value);
+      case 'E':
+        return error &amp;&amp; error(this.exception);
+      case 'C':
+        return complete &amp;&amp; complete();
+    }
+  }
+&nbsp;
+  /**
+   * Takes an Observer or its individual callback functions, and calls `observe`
+   * or `do` methods accordingly.
+   * @param {Observer|function(value: T): void} nextOrObserver An Observer or
+   * the `next` callback.
+   * @param {function(err: any): void} [error] An Observer `error` callback.
+   * @param {function(): void} [complete] An Observer `complete` callback.
+   * @return {any}
+   */
+  accept(nextOrObserver: PartialObserver&lt;T&gt; | ((value: T) =&gt; void), error?: (err: any) =&gt; void, complete?: () =&gt; void) {
+    if (nextOrObserver &amp;&amp; typeof (&lt;PartialObserver&lt;T&gt;&gt;nextOrObserver).next === 'function') {
+      return this.observe(&lt;PartialObserver&lt;T&gt;&gt;nextOrObserver);
+    } else {
+      return this.do(&lt;(value: T) =&gt; void&gt;nextOrObserver, error, complete);
+    }
+  }
+&nbsp;
+  /**
+   * Returns a simple Observable that just delivers the notification represented
+   * by this Notification instance.
+   * @return {any}
+   */
+  toObservable(): Observable&lt;T&gt; {
+    const kind = this.kind;
+    switch (kind) {
+      case 'N':
+        return Observable.of(this.value);
+      case 'E':
+        return Observable.throw(this.exception);
+      case 'C':
+        return Observable.empty&lt;T&gt;();
+    }
+    throw new Error('unexpected notification kind value');
+  }
+&nbsp;
+  private static completeNotification: Notification&lt;any&gt; = new Notification('C');
+  private static undefinedValueNotification: Notification&lt;any&gt; = new Notification('N', undefined);
+&nbsp;
+  /**
+   * A shortcut to create a Notification instance of the type `next` from a
+   * given value.
+   * @param {T} value The `next` value.
+   * @return {Notification&lt;T&gt;} The "next" Notification representing the
+   * argument.
+   */
+  static createNext&lt;T&gt;(value: T): Notification&lt;T&gt; {
+    if (typeof value !== 'undefined') {
+      return new Notification('N', value);
+    }
+    return this.undefinedValueNotification;
+  }
+&nbsp;
+  /**
+   * A shortcut to create a Notification instance of the type `error` from a
+   * given error.
+   * @param {any} [err] The `error` exception.
+   * @return {Notification&lt;T&gt;} The "error" Notification representing the
+   * argument.
+   */
+  static createError&lt;T&gt;(err?: any): Notification&lt;T&gt; {
+    return new Notification('E', undefined, err);
+  }
+&nbsp;
+  /**
+   * A shortcut to create a Notification instance of the type `complete`.
+   * @return {Notification&lt;any&gt;} The valueless "complete" Notification.
+   */
+  static createComplete(): Notification&lt;any&gt; {
+    return this.completeNotification;
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

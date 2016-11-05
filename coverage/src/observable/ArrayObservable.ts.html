@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/ArrayObservable.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/observable</a> ArrayObservable.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.15% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>50/52</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.44% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>17/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.45% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>42/44</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1237x</span>
+<span class="cline-any cline-yes">831x</span>
+<span class="cline-any cline-yes">831x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">793x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">831x</span>
+<span class="cline-any cline-yes">831x</span>
+<span class="cline-any cline-yes">211x</span>
+<span class="cline-any cline-yes">620x</span>
+<span class="cline-any cline-yes">618x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">221x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">221x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">56x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">163x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">576x</span>
+<span class="cline-any cline-yes">576x</span>
+<span class="cline-any cline-yes">576x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">591x</span>
+<span class="cline-any cline-yes">591x</span>
+<span class="cline-any cline-yes">591x</span>
+<span class="cline-any cline-yes">591x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">591x</span>
+<span class="cline-any cline-yes">65x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">526x</span>
+<span class="cline-any cline-yes">1267x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">526x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Scheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { ScalarObservable } from './ScalarObservable';
+import { EmptyObservable } from './EmptyObservable';
+import { Subscriber } from '../Subscriber';
+import { isScheduler } from '../util/isScheduler';
+import { TeardownLogic } from '../Subscription';
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class ArrayObservable&lt;T&gt; extends Observable&lt;T&gt; {
+&nbsp;
+<span class="fstat-no" title="function not covered" >  static create&lt;T&gt;(</span>array: T[], scheduler?: Scheduler): Observable&lt;T&gt; {
+<span class="cstat-no" title="statement not covered" >    return new ArrayObservable(array, scheduler);</span>
+  }
+&nbsp;
+  static of&lt;T&gt;(item1: T, scheduler?: Scheduler): Observable&lt;T&gt;;
+  static of&lt;T&gt;(item1: T, item2: T, scheduler?: Scheduler): Observable&lt;T&gt;;
+  static of&lt;T&gt;(item1: T, item2: T, item3: T, scheduler?: Scheduler): Observable&lt;T&gt;;
+  static of&lt;T&gt;(item1: T, item2: T, item3: T, item4: T, scheduler?: Scheduler): Observable&lt;T&gt;;
+  static of&lt;T&gt;(item1: T, item2: T, item3: T, item4: T, item5: T, scheduler?: Scheduler): Observable&lt;T&gt;;
+  static of&lt;T&gt;(item1: T, item2: T, item3: T, item4: T, item5: T, item6: T, scheduler?: Scheduler): Observable&lt;T&gt;;
+  static of&lt;T&gt;(...array: Array&lt;T | Scheduler&gt;): Observable&lt;T&gt;;
+  /**
+   * Creates an Observable that emits some values you specify as arguments,
+   * immediately one after the other, and then emits a complete notification.
+   *
+   * &lt;span class="informal"&gt;Emits the arguments you provide, then completes.
+   * &lt;/span&gt;
+   *
+   * &lt;img src="./img/of.png" width="100%"&gt;
+   *
+   * This static operator is useful for creating a simple Observable that only
+   * emits the arguments given, and the complete notification thereafter. It can
+   * be used for composing with other Observables, such as with {@link concat}.
+   * By default, it uses a `null` Scheduler, which means the `next`
+   * notifications are sent synchronously, although with a different Scheduler
+   * it is possible to determine when those notifications will be delivered.
+   *
+   * @example &lt;caption&gt;Emit 10, 20, 30, then 'a', 'b', 'c', then start ticking every second.&lt;/caption&gt;
+   * var numbers = Rx.Observable.of(10, 20, 30);
+   * var letters = Rx.Observable.of('a', 'b', 'c');
+   * var interval = Rx.Observable.interval(1000);
+   * var result = numbers.concat(letters).concat(interval);
+   * result.subscribe(x =&gt; console.log(x));
+   *
+   * @see {@link create}
+   * @see {@link empty}
+   * @see {@link never}
+   * @see {@link throw}
+   *
+   * @param {...T} values Arguments that represent `next` values to be emitted.
+   * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+   * the emissions of the `next` notifications.
+   * @return {Observable&lt;T&gt;} An Observable that emits each given input value.
+   * @static true
+   * @name of
+   * @owner Observable
+   */
+  static of&lt;T&gt;(...array: Array&lt;T | Scheduler&gt;): Observable&lt;T&gt; {
+    let scheduler = &lt;Scheduler&gt;array[array.length - 1];
+    if (isScheduler(scheduler)) {
+      array.pop();
+    } else {
+      scheduler = null;
+    }
+&nbsp;
+    const len = array.length;
+    if (len &gt; 1) {
+      return new ArrayObservable&lt;T&gt;(&lt;any&gt;array, scheduler);
+    } else if (len === 1) {
+      return new ScalarObservable&lt;T&gt;(&lt;any&gt;array[0], scheduler);
+    } else {
+      return new EmptyObservable&lt;T&gt;(scheduler);
+    }
+  }
+&nbsp;
+  static dispatch(state: any) {
+&nbsp;
+    const { array, index, count, subscriber } = state;
+&nbsp;
+    if (index &gt;= count) {
+      subscriber.complete();
+      return;
+    }
+&nbsp;
+    subscriber.next(array[index]);
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (subscriber.closed) {
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    state.index = index + 1;
+&nbsp;
+    (&lt;any&gt; this).schedule(state);
+  }
+&nbsp;
+  // value used if Array has one value and _isScalar
+  value: any;
+&nbsp;
+  constructor(private array: T[], private scheduler?: Scheduler) {
+    super();
+    if (!scheduler &amp;&amp; array.length === 1) {
+      this._isScalar = true;
+      this.value = array[0];
+    }
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T&gt;): TeardownLogic {
+    let index = 0;
+    const array = this.array;
+    const count = array.length;
+    const scheduler = this.scheduler;
+&nbsp;
+    if (scheduler) {
+      return scheduler.schedule(ArrayObservable.dispatch, 0, {
+        array, index, count, subscriber
+      });
+    } else {
+      for (let i = 0; i &lt; count &amp;&amp; !subscriber.closed; i++) {
+        subscriber.next(array[i]);
+      }
+      subscriber.complete();
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

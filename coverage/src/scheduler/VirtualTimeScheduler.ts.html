@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/scheduler/VirtualTimeScheduler.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/scheduler</a> VirtualTimeScheduler.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.61% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>57/59</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">85.71% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>24/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>10/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.65% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>44/46</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2214x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2214x</span>
+<span class="cline-any cline-yes">2214x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2218x</span>
+<span class="cline-any cline-yes">2218x</span>
+<span class="cline-any cline-yes">6861x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2243x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2243x</span>
+<span class="cline-any cline-yes">14206x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2243x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">30006x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15343x</span>
+<span class="cline-any cline-yes">15255x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-yes">15003x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14999x</span>
+<span class="cline-any cline-yes">14999x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">121467x</span>
+<span class="cline-any cline-yes">9642x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9642x</span>
+<span class="cline-any cline-yes">1362x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8280x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">111825x</span>
+<span class="cline-any cline-yes">40441x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">71384x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { AsyncAction } from './AsyncAction';
+import { Subscription } from '../Subscription';
+import { AsyncScheduler } from './AsyncScheduler';
+&nbsp;
+export class VirtualTimeScheduler extends AsyncScheduler {
+&nbsp;
+  protected static frameTimeFactor: number = 10;
+&nbsp;
+  public frame: number = 0;
+  public index: number = -1;
+&nbsp;
+  constructor(SchedulerAction: typeof AsyncAction = VirtualAction,
+              public maxFrames: number = Number.POSITIVE_INFINITY) {
+    super(SchedulerAction, () =&gt; this.frame);
+  }
+&nbsp;
+  /**
+   * Prompt the Scheduler to execute all of its queued actions, therefore
+   * clearing its queue.
+   * @return {void}
+   */
+  public flush(): void {
+&nbsp;
+    const {actions, maxFrames} = this;
+    let error: any, action: AsyncAction&lt;any&gt;;
+&nbsp;
+    while ((action = actions.shift()) &amp;&amp; (this.frame = action.delay) &lt;= maxFrames) {
+      if (error = action.execute(action.state, action.delay)) {
+        break;
+      }
+    }
+&nbsp;
+    if (error) {
+      while (action = actions.shift()) {
+<span class="cstat-no" title="statement not covered" >        action.unsubscribe();</span>
+      }
+      throw error;
+    }
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export class VirtualAction&lt;T&gt; extends AsyncAction&lt;T&gt; {
+&nbsp;
+  constructor(protected scheduler: VirtualTimeScheduler,
+              protected work: (state?: T) =&gt; void,
+              <span class="missing-if-branch" title="else path not taken" >E</span>protected index: number = scheduler.index += 1) {
+    super(scheduler, work);
+    this.index = scheduler.index = index;
+  }
+&nbsp;
+  public schedule(state?: T, delay: number = 0): Subscription {
+    return !this.id ?
+      super.schedule(state, delay) : (
+      // If an action is rescheduled, we save allocations by mutating its state,
+      // pushing it to the end of the scheduler queue, and recycling the action.
+      // But since the VirtualTimeScheduler is used for testing, VirtualActions
+      // must be immutable so they can be inspected later.
+      &lt;VirtualAction&lt;T&gt;&gt; this.add(
+        new VirtualAction&lt;T&gt;(this.scheduler, this.work))
+      ).schedule(state, delay);
+  }
+&nbsp;
+  protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, <span class="missing-if-branch" title="if path not taken" >I</span>delay: number = 0): any {
+    this.delay = scheduler.frame + delay;
+    const {actions} = scheduler;
+    actions.push(this);
+    actions.sort(VirtualAction.sortActions);
+    return true;
+  }
+&nbsp;
+  protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, <span class="missing-if-branch" title="if path not taken" >I</span>delay: number = 0): any {
+    return undefined;
+  }
+&nbsp;
+  public static sortActions&lt;T&gt;(a: VirtualAction&lt;T&gt;, b: VirtualAction&lt;T&gt;) {
+    if (a.delay === b.delay) {
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (a.index === b.index) {
+<span class="cstat-no" title="statement not covered" >        return 0;</span>
+      } else if (a.index &gt; b.index) {
+        return 1;
+      } else {
+        return -1;
+      }
+    } else if (a.delay &gt; b.delay) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

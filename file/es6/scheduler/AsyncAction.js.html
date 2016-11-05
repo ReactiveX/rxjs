@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">es6/scheduler/AsyncAction.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AsyncSubject">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BehaviorSubject">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Notification">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Observable">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReplaySubject">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Scheduler">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AnonymousSubject">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subject">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SubjectSubscriber">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subscriber">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Subscription">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConnectableObservable">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxError">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxResponse">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AjaxTimeoutError">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GroupedObservable">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Action">Action</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ArgumentOutOfRangeError">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EmptyError">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ObjectUnsubscribedError">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TimeoutError">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-UnsubscriptionError">UnsubscriptionError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/scheduler/AsyncAction.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { root } from &apos;../util/root&apos;;
+import { Action } from &apos;./Action&apos;;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export var AsyncAction = (function (_super) {
+    __extends(AsyncAction, _super);
+    function AsyncAction(scheduler, work) {
+        _super.call(this, scheduler, work);
+        this.scheduler = scheduler;
+        this.work = work;
+        this.pending = false;
+    }
+    AsyncAction.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
+        if (this.closed) {
+            return this;
+        }
+        // Always replace the current state with the new state.
+        this.state = state;
+        // Set the pending flag indicating that this action has been scheduled, or
+        // has recursively rescheduled itself.
+        this.pending = true;
+        var id = this.id;
+        var scheduler = this.scheduler;
+        //
+        // Important implementation note:
+        //
+        // Actions only execute once by default, unless rescheduled from within the
+        // scheduled callback. This allows us to implement single and repeat
+        // actions via the same code path, without adding API surface area, as well
+        // as mimic traditional recursion but across asynchronous boundaries.
+        //
+        // However, JS runtimes and timers distinguish between intervals achieved by
+        // serial `setTimeout` calls vs. a single `setInterval` call. An interval of
+        // serial `setTimeout` calls can be individually delayed, which delays
+        // scheduling the next `setTimeout`, and so on. `setInterval` attempts to
+        // guarantee the interval callback will be invoked more precisely to the
+        // interval period, regardless of load.
+        //
+        // Therefore, we use `setInterval` to schedule single and repeat actions.
+        // If the action reschedules itself with the same delay, the interval is not
+        // canceled. If the action doesn&apos;t reschedule, or reschedules with a
+        // different delay, the interval will be canceled after scheduled callback
+        // execution.
+        //
+        if (id != null) {
+            this.id = this.recycleAsyncId(scheduler, id, delay);
+        }
+        this.delay = delay;
+        // If this action has already an async Id, don&apos;t request a new one.
+        this.id = this.id || this.requestAsyncId(scheduler, this.id, delay);
+        return this;
+    };
+    AsyncAction.prototype.requestAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
+        return root.setInterval(scheduler.flush.bind(scheduler, this), delay);
+    };
+    AsyncAction.prototype.recycleAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
+        // If this action is rescheduled with the same delay time, don&apos;t clear the interval id.
+        if (delay !== null &amp;&amp; this.delay === delay) {
+            return id;
+        }
+        // Otherwise, if the action&apos;s delay time is different from the current delay,
+        // clear the interval id
+        return root.clearInterval(id) &amp;&amp; undefined || undefined;
+    };
+    /**
+     * Immediately executes this action and the `work` it contains.
+     * @return {any}
+     */
+    AsyncAction.prototype.execute = function (state, delay) {
+        if (this.closed) {
+            return new Error(&apos;executing a cancelled action&apos;);
+        }
+        this.pending = false;
+        var error = this._execute(state, delay);
+        if (error) {
+            return error;
+        }
+        else if (this.pending === false &amp;&amp; this.id != null) {
+            // Dequeue if the action didn&apos;t reschedule itself. Don&apos;t call
+            // unsubscribe(), because the action could reschedule later.
+            // For example:
+            // ```
+            // scheduler.schedule(function doWork(counter) {
+            //   /* ... I&apos;m a busy worker bee ... */
+            //   var originalAction = this;
+            //   /* wait 100ms before rescheduling the action */
+            //   setTimeout(function () {
+            //     originalAction.schedule(counter + 1);
+            //   }, 100);
+            // }, 1000);
+            // ```
+            this.id = this.recycleAsyncId(this.scheduler, this.id, null);
+        }
+    };
+    AsyncAction.prototype._execute = function (state, delay) {
+        var errored = false;
+        var errorValue = undefined;
+        try {
+            this.work(state);
+        }
+        catch (e) {
+            errored = true;
+            errorValue = !!e &amp;&amp; e || new Error(e);
+        }
+        if (errored) {
+            this.unsubscribe();
+            return errorValue;
+        }
+    };
+    AsyncAction.prototype._unsubscribe = function () {
+        var id = this.id;
+        var scheduler = this.scheduler;
+        var actions = scheduler.actions;
+        var index = actions.indexOf(this);
+        this.work = null;
+        this.delay = null;
+        this.state = null;
+        this.pending = false;
+        this.scheduler = null;
+        if (index !== -1) {
+            actions.splice(index, 1);
+        }
+        if (id != null) {
+            this.id = this.recycleAsyncId(scheduler, id, null);
+        }
+    };
+    return AsyncAction;
+}(Action));
+//# sourceMappingURL=AsyncAction.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

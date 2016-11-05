@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/bufferTime.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> bufferTime.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>108/108</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">82.14% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>23/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>17/17</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>101/101</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">114x</span>
+<span class="cline-any cline-yes">114x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">114x</span>
+<span class="cline-any cline-yes">128x</span>
+<span class="cline-any cline-yes">128x</span>
+<span class="cline-any cline-yes">128x</span>
+<span class="cline-any cline-yes">128x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">114x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { Operator } from '../Operator';
+import { async } from '../scheduler/async';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { isScheduler } from '../util/isScheduler';
+&nbsp;
+/**
+ * Buffers the source Observable values for a specific time period.
+ *
+ * &lt;span class="informal"&gt;Collects values from the past as an array, and emits
+ * those arrays periodically in time.&lt;/span&gt;
+ *
+ * &lt;img src="./img/bufferTime.png" width="100%"&gt;
+ *
+ * Buffers values from the source for a specific time duration `bufferTimeSpan`.
+ * Unless the optional argument `bufferCreationInterval` is given, it emits and
+ * resets the buffer every `bufferTimeSpan` milliseconds. If
+ * `bufferCreationInterval` is given, this operator opens the buffer every
+ * `bufferCreationInterval` milliseconds and closes (emits and resets) the
+ * buffer every `bufferTimeSpan` milliseconds. When the optional argument
+ * `maxBufferSize` is specified, the buffer will be closed either after
+ * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.
+ *
+ * @example &lt;caption&gt;Every second, emit an array of the recent click events&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var buffered = clicks.bufferTime(1000);
+ * buffered.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Every 5 seconds, emit the click events from the next 2 seconds&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var buffered = clicks.bufferTime(2000, 5000);
+ * buffered.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link buffer}
+ * @see {@link bufferCount}
+ * @see {@link bufferToggle}
+ * @see {@link bufferWhen}
+ * @see {@link windowTime}
+ *
+ * @param {number} bufferTimeSpan The amount of time to fill each buffer array.
+ * @param {number} [bufferCreationInterval] The interval at which to start new
+ * buffers.
+ * @param {number} [maxBufferSize] The maximum buffer size.
+ * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
+ * intervals that determine buffer boundaries.
+ * @return {Observable&lt;T[]&gt;} An observable of arrays of buffered values.
+ * @method bufferTime
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function bufferTime&lt;T&gt;(this: Observable&lt;T&gt;, bufferTimeSpan: number, scheduler?: Scheduler): Observable&lt;T[]&gt;;
+export function bufferTime&lt;T&gt;(this: Observable&lt;T&gt;, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable&lt;T[]&gt;;
+export function bufferTime&lt;T&gt;(this: Observable&lt;T&gt;, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable&lt;T[]&gt;;
+/* tslint:disable:max-line-length */
+export function bufferTime&lt;T&gt;(this: Observable&lt;T&gt;, bufferTimeSpan: number): Observable&lt;T[]&gt; {
+  let length: number = arguments.length;
+&nbsp;
+  let scheduler: Scheduler = async;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (isScheduler(arguments[arguments.length - 1])) {
+    scheduler = arguments[arguments.length - 1];
+    length--;
+  }
+&nbsp;
+  let bufferCreationInterval: number = null;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (length &gt;= 2) {
+    bufferCreationInterval = arguments[1];
+  }
+&nbsp;
+  let maxBufferSize: number = Number.POSITIVE_INFINITY;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (length &gt;= 3) {
+    maxBufferSize = arguments[2];
+  }
+&nbsp;
+  return this.lift(new BufferTimeOperator&lt;T&gt;(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler));
+}
+&nbsp;
+class BufferTimeOperator&lt;T&gt; implements Operator&lt;T, T[]&gt; {
+  constructor(private bufferTimeSpan: number,
+              private bufferCreationInterval: number,
+              private maxBufferSize: number,
+              private scheduler: Scheduler) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;T[]&gt;, source: any): any {
+    return source._subscribe(new BufferTimeSubscriber(
+      subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler
+    ));
+  }
+}
+&nbsp;
+class Context&lt;T&gt; {
+  buffer: T[] = [];
+  closeAction: Subscription;
+}
+&nbsp;
+type CreationState&lt;T&gt; = {
+  bufferTimeSpan: number;
+  bufferCreationInterval: number,
+  subscriber: BufferTimeSubscriber&lt;T&gt;;
+  scheduler: Scheduler;
+};
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class BufferTimeSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private contexts: Array&lt;Context&lt;T&gt;&gt; = [];
+  private timespanOnly: boolean;
+&nbsp;
+  constructor(destination: Subscriber&lt;T[]&gt;,
+              private bufferTimeSpan: number,
+              private bufferCreationInterval: number,
+              private maxBufferSize: number,
+              private scheduler: Scheduler) {
+    super(destination);
+    const context = this.openContext();
+    this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval &lt; 0;
+    if (this.timespanOnly) {
+      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
+      this.add(context.closeAction = scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+    } else {
+      const closeState = { subscriber: this, context };
+      const creationState: CreationState&lt;T&gt; = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+      this.add(context.closeAction = scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
+      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
+    }
+  }
+&nbsp;
+  protected _next(value: T) {
+    const contexts = this.contexts;
+    const len = contexts.length;
+    let filledBufferContext: Context&lt;T&gt;;
+    for (let i = 0; i &lt; len; i++) {
+      const context = contexts[i];
+      const buffer = context.buffer;
+      buffer.push(value);
+      if (buffer.length == this.maxBufferSize) {
+        filledBufferContext = context;
+      }
+    }
+&nbsp;
+    if (filledBufferContext) {
+      this.onBufferFull(filledBufferContext);
+    }
+  }
+&nbsp;
+  protected _error(err: any) {
+    this.contexts.length = 0;
+    super._error(err);
+  }
+&nbsp;
+  protected _complete() {
+    const { contexts, destination } = this;
+    while (contexts.length &gt; 0) {
+      const context = contexts.shift();
+      destination.next(context.buffer);
+    }
+    super._complete();
+  }
+&nbsp;
+  protected _unsubscribe() {
+    this.contexts = null;
+  }
+&nbsp;
+  protected onBufferFull(context: Context&lt;T&gt;) {
+    this.closeContext(context);
+    const closeAction = context.closeAction;
+    closeAction.unsubscribe();
+    this.remove(closeAction);
+&nbsp;
+    if (!this.closed &amp;&amp; this.timespanOnly) {
+      context = this.openContext();
+      const bufferTimeSpan = this.bufferTimeSpan;
+      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
+      this.add(context.closeAction = this.scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+    }
+  }
+&nbsp;
+  openContext(): Context&lt;T&gt; {
+    const context: Context&lt;T&gt; = new Context&lt;T&gt;();
+    this.contexts.push(context);
+    return context;
+  }
+&nbsp;
+  closeContext(context: Context&lt;T&gt;) {
+    this.destination.next(context.buffer);
+    const contexts = this.contexts;
+&nbsp;
+    const spliceIndex = contexts ? contexts.indexOf(context) : -1;
+    if (spliceIndex &gt;= 0) {
+      contexts.splice(contexts.indexOf(context), 1);
+    }
+  }
+}
+&nbsp;
+function dispatchBufferTimeSpanOnly(state: any) {
+  const subscriber: BufferTimeSubscriber&lt;any&gt; = state.subscriber;
+&nbsp;
+  const prevContext = state.context;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (prevContext) {
+    subscriber.closeContext(prevContext);
+  }
+&nbsp;
+  if (!subscriber.closed) {
+    state.context = subscriber.openContext();
+    state.context.closeAction = (&lt;any&gt;this).schedule(state, state.bufferTimeSpan);
+  }
+}
+&nbsp;
+interface DispatchArg&lt;T&gt; {
+  subscriber: BufferTimeSubscriber&lt;T&gt;;
+  context: Context&lt;T&gt;;
+}
+&nbsp;
+function dispatchBufferCreation&lt;T&gt;(state: CreationState&lt;T&gt;) {
+  const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
+  const context = subscriber.openContext();
+  const action = &lt;Action&lt;CreationState&lt;T&gt;&gt;&gt;this;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!subscriber.closed) {
+    subscriber.add(context.closeAction = scheduler.schedule&lt;DispatchArg&lt;T&gt;&gt;(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
+    action.schedule(state, bufferCreationInterval);
+  }
+}
+&nbsp;
+function dispatchBufferClose&lt;T&gt;(arg: DispatchArg&lt;T&gt;) {
+  const { subscriber, context } = arg;
+  subscriber.closeContext(context);
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/race.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> race.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.36% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>53/55</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>14/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.83% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>46/48</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">44x</span>
+<span class="cline-any cline-yes">44x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable } from '../Observable';
+import { isArray } from '../util/isArray';
+import { ArrayObservable } from '../observable/ArrayObservable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+&nbsp;
+/**
+ * Returns an Observable that mirrors the first source Observable to emit an item
+ * from the combination of this Observable and supplied Observables
+ * @param {...Observables} ...observables sources used to race for which Observable emits first.
+ * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @method race
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function race&lt;T&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;Observable&lt;T&gt; | Array&lt;Observable&lt;T&gt;&gt;&gt;): Observable&lt;T&gt;;
+export function race&lt;T, R&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;Observable&lt;any&gt; | Array&lt;Observable&lt;T&gt;&gt;&gt;): Observable&lt;R&gt;;
+/* tslint:disable:max-line-length */
+export function race&lt;T&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;Observable&lt;T&gt; | Array&lt;Observable&lt;T&gt;&gt;&gt;): Observable&lt;T&gt; {
+  // if the only argument is an array, it was most likely called with
+  // `pair([obs1, obs2, ...])`
+  if (observables.length === 1 &amp;&amp; isArray(observables[0])) {
+    observables = &lt;Array&lt;Observable&lt;T&gt;&gt;&gt;observables[0];
+  }
+&nbsp;
+  return this.lift.call(raceStatic&lt;T&gt;(this, ...observables));
+}
+&nbsp;
+/**
+ * Returns an Observable that mirrors the first source Observable to emit an item.
+ * @param {...Observables} ...observables sources used to race for which Observable emits first.
+ * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @static true
+ * @name race
+ * @owner Observable
+ */
+export function raceStatic&lt;T&gt;(...observables: Array&lt;Observable&lt;T&gt; | Array&lt;Observable&lt;T&gt;&gt;&gt;): Observable&lt;T&gt;;
+export function raceStatic&lt;T&gt;(...observables: Array&lt;Observable&lt;any&gt; | Array&lt;Observable&lt;any&gt;&gt;&gt;): Observable&lt;T&gt; {
+  // if the only argument is an array, it was most likely called with
+  // `pair([obs1, obs2, ...])`
+  if (observables.length === 1) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (isArray(observables[0])) {
+<span class="cstat-no" title="statement not covered" >      observables = &lt;Array&lt;Observable&lt;any&gt;&gt;&gt;observables[0];</span>
+    } else {
+      return &lt;Observable&lt;any&gt;&gt;observables[0];
+    }
+  }
+&nbsp;
+  return new ArrayObservable&lt;T&gt;(&lt;any&gt;observables).lift(new RaceOperator&lt;T&gt;());
+}
+&nbsp;
+export class RaceOperator&lt;T&gt; implements Operator&lt;T, T&gt; {
+  call(subscriber: Subscriber&lt;T&gt;, source: any): TeardownLogic {
+    return source._subscribe(new RaceSubscriber(subscriber));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export class RaceSubscriber&lt;T&gt; extends OuterSubscriber&lt;T, T&gt; {
+  private hasFirst: boolean = false;
+  private observables: Observable&lt;any&gt;[] = [];
+  private subscriptions: Subscription[] = [];
+&nbsp;
+  constructor(destination: Subscriber&lt;T&gt;) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(observable: any): void {
+    this.observables.push(observable);
+  }
+&nbsp;
+  protected _complete() {
+    const observables = this.observables;
+    const len = observables.length;
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (len === 0) {
+<span class="cstat-no" title="statement not covered" >      this.destination.complete();</span>
+    } else {
+      for (let i = 0; i &lt; len; i++) {
+        let observable = observables[i];
+        let subscription = subscribeToResult(this, observable, observable, i);
+&nbsp;
+        if (this.subscriptions) {
+          this.subscriptions.push(subscription);
+          this.add(subscription);
+        }
+      }
+      this.observables = null;
+    }
+  }
+&nbsp;
+  notifyNext(outerValue: T, innerValue: T,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber&lt;T, T&gt;): void {
+    if (!this.hasFirst) {
+      this.hasFirst = true;
+&nbsp;
+      for (let i = 0; i &lt; this.subscriptions.length; i++) {
+        if (i !== outerIndex) {
+          let subscription = this.subscriptions[i];
+&nbsp;
+          subscription.unsubscribe();
+          this.remove(subscription);
+        }
+      }
+&nbsp;
+      this.subscriptions = null;
+    }
+&nbsp;
+    this.destination.next(innerValue);
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

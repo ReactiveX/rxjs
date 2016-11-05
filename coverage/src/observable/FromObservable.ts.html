@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/FromObservable.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/observable</a> FromObservable.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>40/40</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>23/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>36/36</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">96x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">49x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isArray } from '../util/isArray';
+import { isPromise } from '../util/isPromise';
+import { PromiseObservable } from './PromiseObservable';
+import { IteratorObservable } from'./IteratorObservable';
+import { ArrayObservable } from './ArrayObservable';
+import { ArrayLikeObservable } from './ArrayLikeObservable';
+&nbsp;
+import { Scheduler } from '../Scheduler';
+import { $$iterator } from '../symbol/iterator';
+import { Observable, ObservableInput } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { ObserveOnSubscriber } from '../operator/observeOn';
+import { $$observable } from '../symbol/observable';
+&nbsp;
+const isArrayLike = (&lt;T&gt;(x: any): x is ArrayLike&lt;T&gt; =&gt; x &amp;&amp; typeof x.length === 'number');
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class FromObservable&lt;T&gt; extends Observable&lt;T&gt; {
+  constructor(private ish: ObservableInput&lt;T&gt;, private scheduler?: Scheduler) {
+    super(null);
+  }
+&nbsp;
+  static create&lt;T&gt;(ish: ObservableInput&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt;;
+  static create&lt;T, R&gt;(ish: ArrayLike&lt;T&gt;, scheduler?: Scheduler): Observable&lt;R&gt;;
+&nbsp;
+  /**
+   * Creates an Observable from an Array, an array-like object, a Promise, an
+   * iterable object, or an Observable-like object.
+   *
+   * &lt;span class="informal"&gt;Converts almost anything to an Observable.&lt;/span&gt;
+   *
+   * &lt;img src="./img/from.png" width="100%"&gt;
+   *
+   * Convert various other objects and data types into Observables. `from`
+   * converts a Promise or an array-like or an
+   * [iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+   * object into an Observable that emits the items in that promise or array or
+   * iterable. A String, in this context, is treated as an array of characters.
+   * Observable-like objects (contains a function named with the ES2015 Symbol
+   * for Observable) can also be converted through this operator.
+   *
+   * @example &lt;caption&gt;Converts an array to an Observable&lt;/caption&gt;
+   * var array = [10, 20, 30];
+   * var result = Rx.Observable.from(array);
+   * result.subscribe(x =&gt; console.log(x));
+   *
+   * @example &lt;caption&gt;Convert an infinite iterable (from a generator) to an Observable&lt;/caption&gt;
+   * function* generateDoubles(seed) {
+   *   var i = seed;
+   *   while (true) {
+   *     yield i;
+   *     i = 2 * i; // double it
+   *   }
+   * }
+   *  
+   * var iterator = generateDoubles(3);
+   * var result = Rx.Observable.from(iterator).take(10);
+   * result.subscribe(x =&gt; console.log(x));
+   *
+   * @see {@link create}
+   * @see {@link fromEvent}
+   * @see {@link fromEventPattern}
+   * @see {@link fromPromise}
+   *  
+   * @param {ObservableInput&lt;T&gt;} ish A subscribable object, a Promise, an
+   * Observable-like, an Array, an iterable or an array-like object to be
+   * converted.
+   * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+   * emissions of values.
+   * @return {Observable&lt;T&gt;} The Observable whose values are originally from the
+   * input object that was converted.
+   * @static true
+   * @name from
+   * @owner Observable
+   */
+  static create&lt;T&gt;(ish: ObservableInput&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt; {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (ish != null) {
+      if (typeof ish[$$observable] === 'function') {
+        if (ish instanceof Observable &amp;&amp; !scheduler) {
+          return ish;
+        }
+        return new FromObservable&lt;T&gt;(ish, scheduler);
+      } else if (isArray(ish)) {
+        return new ArrayObservable&lt;T&gt;(ish, scheduler);
+      } else if (isPromise(ish)) {
+        return new PromiseObservable&lt;T&gt;(ish, scheduler);
+      } else if (typeof ish[$$iterator] === 'function' || typeof ish === 'string') {
+        return new IteratorObservable&lt;T&gt;(ish, scheduler);
+      } else if (isArrayLike(ish)) {
+        return new ArrayLikeObservable(ish, scheduler);
+      }
+    }
+&nbsp;
+    throw new TypeError((ish !== null &amp;&amp; typeof ish || <span class="branch-2 cbranch-no" title="branch not covered" >ish)</span> + ' is not observable');
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T&gt;) {
+    const ish = this.ish;
+    const scheduler = this.scheduler;
+    if (scheduler == null) {
+      return ish[$$observable]().subscribe(subscriber);
+    } else {
+      return ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/count.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> count.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>31/31</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>30/30</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">49x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Observer } from '../Observer';
+import { Subscriber } from '../Subscriber';
+&nbsp;
+/**
+ * Counts the number of emissions on the source and emits that number when the
+ * source completes.
+ *
+ * &lt;span class="informal"&gt;Tells how many values were emitted, when the source
+ * completes.&lt;/span&gt;
+ *
+ * &lt;img src="./img/count.png" width="100%"&gt;
+ *
+ * `count` transforms an Observable that emits values into an Observable that
+ * emits a single value that represents the number of values emitted by the
+ * source Observable. If the source Observable terminates with an error, `count`
+ * will pass this error notification along without emitting an value first. If
+ * the source Observable does not terminate at all, `count` will neither emit
+ * a value nor terminate. This operator takes an optional `predicate` function
+ * as argument, in which case the output emission will represent the number of
+ * source values that matched `true` with the `predicate`.
+ *
+ * @example &lt;caption&gt;Counts how many seconds have passed before the first click happened&lt;/caption&gt;
+ * var seconds = Rx.Observable.interval(1000);
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var secondsBeforeClick = seconds.takeUntil(clicks);
+ * var result = secondsBeforeClick.count();
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Counts how many odd numbers are there between 1 and 7&lt;/caption&gt;
+ * var numbers = Rx.Observable.range(1, 7);
+ * var result = numbers.count(i =&gt; i % 2 === 1);
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link max}
+ * @see {@link min}
+ * @see {@link reduce}
+ *
+ * @param {function(value: T, i: number, source: Observable&lt;T&gt;): boolean} [predicate] A
+ * boolean function to select what values are to be counted. It is provided with
+ * arguments of:
+ * - `value`: the value from the source Observable.
+ * - `index`: the (zero-based) "index" of the value from the source Observable.
+ * - `source`: the source Observable instance itself.
+ * @return {Observable} An Observable of one number that represents the count as
+ * described above.
+ * @method count
+ * @owner Observable
+ */
+export function count&lt;T&gt;(this: Observable&lt;T&gt;, predicate?: (value: T, index: number, source: Observable&lt;T&gt;) =&gt; boolean): Observable&lt;number&gt; {
+  return this.lift(new CountOperator(predicate, this));
+}
+&nbsp;
+class CountOperator&lt;T&gt; implements Operator&lt;T, number&gt; {
+  constructor(private predicate?: (value: T, index: number, source: Observable&lt;T&gt;) =&gt; boolean,
+              private source?: Observable&lt;T&gt;) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;number&gt;, source: any): any {
+    return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class CountSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private count: number = 0;
+  private index: number = 0;
+&nbsp;
+  constructor(destination: Observer&lt;number&gt;,
+              private predicate?: (value: T, index: number, source: Observable&lt;T&gt;) =&gt; boolean,
+              private source?: Observable&lt;T&gt;) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(value: T): void {
+    if (this.predicate) {
+      this._tryPredicate(value);
+    } else {
+      this.count++;
+    }
+  }
+&nbsp;
+  private _tryPredicate(value: T) {
+    let result: any;
+&nbsp;
+    try {
+      result = this.predicate(value, this.index++, this.source);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+&nbsp;
+    if (result) {
+      this.count++;
+    }
+  }
+&nbsp;
+  protected _complete(): void {
+    this.destination.next(this.count);
+    this.destination.complete();
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

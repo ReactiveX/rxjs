@@ -93,102 +93,923 @@
       }
     },
     {
-      "type": "VariableDeclaration",
-      "declarations": [
-        {
-          "type": "VariableDeclarator",
-          "id": {
-            "type": "Identifier",
-            "name": "Symbol",
-            "range": [
-              43,
-              49
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 6
-              },
-              "end": {
-                "line": 2,
-                "column": 12
-              }
-            }
-          },
-          "init": {
-            "type": "MemberExpression",
-            "computed": false,
-            "object": {
-              "type": "Identifier",
-              "name": "root",
-              "range": [
-                52,
-                56
-              ],
-              "loc": {
-                "start": {
-                  "line": 2,
-                  "column": 15
-                },
-                "end": {
-                  "line": 2,
-                  "column": 19
-                }
-              }
-            },
-            "property": {
-              "type": "Identifier",
-              "name": "Symbol",
-              "range": [
-                57,
-                63
-              ],
-              "loc": {
-                "start": {
-                  "line": 2,
-                  "column": 20
-                },
-                "end": {
-                  "line": 2,
-                  "column": 26
-                }
-              }
-            },
-            "range": [
-              52,
-              63
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 15
-              },
-              "end": {
-                "line": 2,
-                "column": 26
-              }
-            }
-          },
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "getSymbolObservable",
           "range": [
-            43,
-            63
+            53,
+            72
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 6
+              "column": 16
             },
             "end": {
               "line": 2,
-              "column": 26
+              "column": 35
             }
           }
-        }
-      ],
-      "kind": "const",
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "context",
+            "range": [
+              73,
+              80
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 36
+              },
+              "end": {
+                "line": 2,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "$$observable",
+                    "range": [
+                      92,
+                      104
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "init": null,
+                  "range": [
+                    92,
+                    104
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 20
+                    }
+                  }
+                }
+              ],
+              "kind": "var",
+              "range": [
+                88,
+                105
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 21
+                }
+              }
+            },
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "Symbol",
+                    "range": [
+                      114,
+                      120
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 14
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "context",
+                      "range": [
+                        123,
+                        130
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 17
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 24
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "Symbol",
+                      "range": [
+                        131,
+                        137
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 25
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 31
+                        }
+                      }
+                    },
+                    "range": [
+                      123,
+                      137
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 31
+                      }
+                    }
+                  },
+                  "range": [
+                    114,
+                    137
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 31
+                    }
+                  }
+                }
+              ],
+              "kind": "var",
+              "range": [
+                110,
+                138
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 32
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                  "type": "UnaryExpression",
+                  "operator": "typeof",
+                  "argument": {
+                    "type": "Identifier",
+                    "name": "Symbol",
+                    "range": [
+                      154,
+                      160
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 21
+                      }
+                    }
+                  },
+                  "prefix": true,
+                  "range": [
+                    147,
+                    160
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 21
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": "function",
+                  "raw": "'function'",
+                  "range": [
+                    165,
+                    175
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 26
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 36
+                    }
+                  }
+                },
+                "range": [
+                  147,
+                  175
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 36
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "IfStatement",
+                    "test": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "Symbol",
+                        "range": [
+                          191,
+                          197
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 6,
+                            "column": 12
+                          },
+                          "end": {
+                            "line": 6,
+                            "column": 18
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "observable",
+                        "range": [
+                          198,
+                          208
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 6,
+                            "column": 19
+                          },
+                          "end": {
+                            "line": 6,
+                            "column": 29
+                          }
+                        }
+                      },
+                      "range": [
+                        191,
+                        208
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 12
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 29
+                        }
+                      }
+                    },
+                    "consequent": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "AssignmentExpression",
+                            "operator": "=",
+                            "left": {
+                              "type": "Identifier",
+                              "name": "$$observable",
+                              "range": [
+                                224,
+                                236
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 7,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 7,
+                                  "column": 24
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "Symbol",
+                                "range": [
+                                  239,
+                                  245
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 7,
+                                    "column": 27
+                                  },
+                                  "end": {
+                                    "line": 7,
+                                    "column": 33
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "observable",
+                                "range": [
+                                  246,
+                                  256
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 7,
+                                    "column": 34
+                                  },
+                                  "end": {
+                                    "line": 7,
+                                    "column": 44
+                                  }
+                                }
+                              },
+                              "range": [
+                                239,
+                                256
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 7,
+                                  "column": 27
+                                },
+                                "end": {
+                                  "line": 7,
+                                  "column": 44
+                                }
+                              }
+                            },
+                            "range": [
+                              224,
+                              256
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 7,
+                                "column": 12
+                              },
+                              "end": {
+                                "line": 7,
+                                "column": 44
+                              }
+                            }
+                          },
+                          "range": [
+                            224,
+                            257
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 7,
+                              "column": 12
+                            },
+                            "end": {
+                              "line": 7,
+                              "column": 45
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        210,
+                        267
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 31
+                        },
+                        "end": {
+                          "line": 8,
+                          "column": 9
+                        }
+                      }
+                    },
+                    "alternate": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "AssignmentExpression",
+                            "operator": "=",
+                            "left": {
+                              "type": "Identifier",
+                              "name": "$$observable",
+                              "range": [
+                                295,
+                                307
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 10,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 10,
+                                  "column": 24
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "CallExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "Symbol",
+                                "range": [
+                                  310,
+                                  316
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 10,
+                                    "column": 27
+                                  },
+                                  "end": {
+                                    "line": 10,
+                                    "column": 33
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Literal",
+                                  "value": "observable",
+                                  "raw": "'observable'",
+                                  "range": [
+                                    317,
+                                    329
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 10,
+                                      "column": 34
+                                    },
+                                    "end": {
+                                      "line": 10,
+                                      "column": 46
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                310,
+                                330
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 10,
+                                  "column": 27
+                                },
+                                "end": {
+                                  "line": 10,
+                                  "column": 47
+                                }
+                              }
+                            },
+                            "range": [
+                              295,
+                              330
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 10,
+                                "column": 12
+                              },
+                              "end": {
+                                "line": 10,
+                                "column": 47
+                              }
+                            }
+                          },
+                          "range": [
+                            295,
+                            331
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 10,
+                              "column": 12
+                            },
+                            "end": {
+                              "line": 10,
+                              "column": 48
+                            }
+                          }
+                        },
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "AssignmentExpression",
+                            "operator": "=",
+                            "left": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "Symbol",
+                                "range": [
+                                  344,
+                                  350
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 11,
+                                    "column": 12
+                                  },
+                                  "end": {
+                                    "line": 11,
+                                    "column": 18
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "observable",
+                                "range": [
+                                  351,
+                                  361
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 11,
+                                    "column": 19
+                                  },
+                                  "end": {
+                                    "line": 11,
+                                    "column": 29
+                                  }
+                                }
+                              },
+                              "range": [
+                                344,
+                                361
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 11,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 11,
+                                  "column": 29
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "Identifier",
+                              "name": "$$observable",
+                              "range": [
+                                364,
+                                376
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 11,
+                                  "column": 32
+                                },
+                                "end": {
+                                  "line": 11,
+                                  "column": 44
+                                }
+                              }
+                            },
+                            "range": [
+                              344,
+                              376
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 11,
+                                "column": 12
+                              },
+                              "end": {
+                                "line": 11,
+                                "column": 44
+                              }
+                            }
+                          },
+                          "range": [
+                            344,
+                            377
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 11,
+                              "column": 12
+                            },
+                            "end": {
+                              "line": 11,
+                              "column": 45
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        281,
+                        387
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 13
+                        },
+                        "end": {
+                          "line": 12,
+                          "column": 9
+                        }
+                      }
+                    },
+                    "range": [
+                      187,
+                      387
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 12,
+                        "column": 9
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  177,
+                  393
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 38
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "$$observable",
+                        "range": [
+                          413,
+                          425
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 15,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 15,
+                            "column": 20
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": "@@observable",
+                        "raw": "'@@observable'",
+                        "range": [
+                          428,
+                          442
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 15,
+                            "column": 23
+                          },
+                          "end": {
+                            "line": 15,
+                            "column": 37
+                          }
+                        }
+                      },
+                      "range": [
+                        413,
+                        442
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 15,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 15,
+                          "column": 37
+                        }
+                      }
+                    },
+                    "range": [
+                      413,
+                      443
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 15,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 15,
+                        "column": 38
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  403,
+                  449
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 9
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 5
+                  }
+                }
+              },
+              "range": [
+                143,
+                449
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 4
+                },
+                "end": {
+                  "line": 16,
+                  "column": 5
+                }
+              }
+            },
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "Identifier",
+                "name": "$$observable",
+                "range": [
+                  461,
+                  473
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 23
+                  }
+                }
+              },
+              "range": [
+                454,
+                474
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 24
+                }
+              }
+            }
+          ],
+          "range": [
+            82,
+            476
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 45
+            },
+            "end": {
+              "line": 18,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          44,
+          476
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 7
+          },
+          "end": {
+            "line": 18,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
       "range": [
         37,
-        64
+        476
       ],
       "loc": {
         "start": {
@@ -196,8 +1017,8 @@
           "column": 0
         },
         "end": {
-          "line": 2,
-          "column": 27
+          "line": 18,
+          "column": 1
         }
       }
     },
@@ -212,1012 +1033,142 @@
               "type": "Identifier",
               "name": "$$observable",
               "range": [
-                76,
-                88
+                488,
+                500
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 19,
                   "column": 11
                 },
                 "end": {
-                  "line": 3,
+                  "line": 19,
                   "column": 23
                 }
               }
             },
-            "init": null,
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "Identifier",
+                "name": "getSymbolObservable",
+                "range": [
+                  503,
+                  522
+                ],
+                "loc": {
+                  "start": {
+                    "line": 19,
+                    "column": 26
+                  },
+                  "end": {
+                    "line": 19,
+                    "column": 45
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "name": "root",
+                  "range": [
+                    523,
+                    527
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 19,
+                      "column": 46
+                    },
+                    "end": {
+                      "line": 19,
+                      "column": 50
+                    }
+                  }
+                }
+              ],
+              "range": [
+                503,
+                528
+              ],
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 26
+                },
+                "end": {
+                  "line": 19,
+                  "column": 51
+                }
+              }
+            },
             "range": [
-              76,
-              88
+              488,
+              528
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 19,
                 "column": 11
               },
               "end": {
-                "line": 3,
-                "column": 23
+                "line": 19,
+                "column": 51
               }
             }
           }
         ],
-        "kind": "let",
+        "kind": "var",
         "range": [
-          72,
-          89
+          484,
+          529
         ],
         "loc": {
           "start": {
-            "line": 3,
+            "line": 19,
             "column": 7
           },
           "end": {
-            "line": 3,
-            "column": 24
+            "line": 19,
+            "column": 52
           }
         },
         "leadingComments": [],
-        "trailingComments": []
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=observable.js.map",
+            "range": [
+              530,
+              568
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 0
+              },
+              "end": {
+                "line": 20,
+                "column": 38
+              }
+            }
+          }
+        ]
       },
       "specifiers": [],
       "source": null,
       "range": [
-        65,
-        89
+        477,
+        529
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 19,
           "column": 0
         },
         "end": {
-          "line": 3,
-          "column": 24
-        }
-      }
-    },
-    {
-      "type": "IfStatement",
-      "test": {
-        "type": "BinaryExpression",
-        "operator": "===",
-        "left": {
-          "type": "UnaryExpression",
-          "operator": "typeof",
-          "argument": {
-            "type": "Identifier",
-            "name": "Symbol",
-            "range": [
-              101,
-              107
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 11
-              },
-              "end": {
-                "line": 4,
-                "column": 17
-              }
-            }
-          },
-          "prefix": true,
-          "range": [
-            94,
-            107
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 4
-            },
-            "end": {
-              "line": 4,
-              "column": 17
-            }
-          }
-        },
-        "right": {
-          "type": "Literal",
-          "value": "function",
-          "raw": "'function'",
-          "range": [
-            112,
-            122
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 22
-            },
-            "end": {
-              "line": 4,
-              "column": 32
-            }
-          }
-        },
-        "range": [
-          94,
-          122
-        ],
-        "loc": {
-          "start": {
-            "line": 4,
-            "column": 4
-          },
-          "end": {
-            "line": 4,
-            "column": 32
-          }
-        }
-      },
-      "consequent": {
-        "type": "BlockStatement",
-        "body": [
-          {
-            "type": "IfStatement",
-            "test": {
-              "type": "MemberExpression",
-              "computed": false,
-              "object": {
-                "type": "Identifier",
-                "name": "Symbol",
-                "range": [
-                  134,
-                  140
-                ],
-                "loc": {
-                  "start": {
-                    "line": 5,
-                    "column": 8
-                  },
-                  "end": {
-                    "line": 5,
-                    "column": 14
-                  }
-                }
-              },
-              "property": {
-                "type": "Identifier",
-                "name": "observable",
-                "range": [
-                  141,
-                  151
-                ],
-                "loc": {
-                  "start": {
-                    "line": 5,
-                    "column": 15
-                  },
-                  "end": {
-                    "line": 5,
-                    "column": 25
-                  }
-                }
-              },
-              "range": [
-                134,
-                151
-              ],
-              "loc": {
-                "start": {
-                  "line": 5,
-                  "column": 8
-                },
-                "end": {
-                  "line": 5,
-                  "column": 25
-                }
-              }
-            },
-            "consequent": {
-              "type": "BlockStatement",
-              "body": [
-                {
-                  "type": "ExpressionStatement",
-                  "expression": {
-                    "type": "AssignmentExpression",
-                    "operator": "=",
-                    "left": {
-                      "type": "Identifier",
-                      "name": "$$observable",
-                      "range": [
-                        163,
-                        175
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 6,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 6,
-                          "column": 20
-                        }
-                      }
-                    },
-                    "right": {
-                      "type": "MemberExpression",
-                      "computed": false,
-                      "object": {
-                        "type": "Identifier",
-                        "name": "Symbol",
-                        "range": [
-                          178,
-                          184
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 6,
-                            "column": 23
-                          },
-                          "end": {
-                            "line": 6,
-                            "column": 29
-                          }
-                        }
-                      },
-                      "property": {
-                        "type": "Identifier",
-                        "name": "observable",
-                        "range": [
-                          185,
-                          195
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 6,
-                            "column": 30
-                          },
-                          "end": {
-                            "line": 6,
-                            "column": 40
-                          }
-                        }
-                      },
-                      "range": [
-                        178,
-                        195
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 6,
-                          "column": 23
-                        },
-                        "end": {
-                          "line": 6,
-                          "column": 40
-                        }
-                      }
-                    },
-                    "range": [
-                      163,
-                      195
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 6,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 6,
-                        "column": 40
-                      }
-                    }
-                  },
-                  "range": [
-                    163,
-                    196
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 6,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 6,
-                      "column": 41
-                    }
-                  }
-                }
-              ],
-              "range": [
-                153,
-                202
-              ],
-              "loc": {
-                "start": {
-                  "line": 5,
-                  "column": 27
-                },
-                "end": {
-                  "line": 7,
-                  "column": 5
-                }
-              }
-            },
-            "alternate": {
-              "type": "BlockStatement",
-              "body": [
-                {
-                  "type": "IfStatement",
-                  "test": {
-                    "type": "BinaryExpression",
-                    "operator": "===",
-                    "left": {
-                      "type": "UnaryExpression",
-                      "operator": "typeof",
-                      "argument": {
-                        "type": "MemberExpression",
-                        "computed": false,
-                        "object": {
-                          "type": "Identifier",
-                          "name": "Symbol",
-                          "range": [
-                            233,
-                            239
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 9,
-                              "column": 19
-                            },
-                            "end": {
-                              "line": 9,
-                              "column": 25
-                            }
-                          }
-                        },
-                        "property": {
-                          "type": "Identifier",
-                          "name": "for",
-                          "range": [
-                            240,
-                            243
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 9,
-                              "column": 26
-                            },
-                            "end": {
-                              "line": 9,
-                              "column": 29
-                            }
-                          }
-                        },
-                        "range": [
-                          233,
-                          243
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 9,
-                            "column": 19
-                          },
-                          "end": {
-                            "line": 9,
-                            "column": 29
-                          }
-                        }
-                      },
-                      "prefix": true,
-                      "range": [
-                        226,
-                        243
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 9,
-                          "column": 12
-                        },
-                        "end": {
-                          "line": 9,
-                          "column": 29
-                        }
-                      }
-                    },
-                    "right": {
-                      "type": "Literal",
-                      "value": "function",
-                      "raw": "'function'",
-                      "range": [
-                        248,
-                        258
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 9,
-                          "column": 34
-                        },
-                        "end": {
-                          "line": 9,
-                          "column": 44
-                        }
-                      }
-                    },
-                    "range": [
-                      226,
-                      258
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 9,
-                        "column": 12
-                      },
-                      "end": {
-                        "line": 9,
-                        "column": 44
-                      }
-                    }
-                  },
-                  "consequent": {
-                    "type": "BlockStatement",
-                    "body": [
-                      {
-                        "type": "ExpressionStatement",
-                        "expression": {
-                          "type": "AssignmentExpression",
-                          "operator": "=",
-                          "left": {
-                            "type": "Identifier",
-                            "name": "$$observable",
-                            "range": [
-                              274,
-                              286
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 10,
-                                "column": 12
-                              },
-                              "end": {
-                                "line": 10,
-                                "column": 24
-                              }
-                            }
-                          },
-                          "right": {
-                            "type": "CallExpression",
-                            "callee": {
-                              "type": "MemberExpression",
-                              "computed": false,
-                              "object": {
-                                "type": "Identifier",
-                                "name": "Symbol",
-                                "range": [
-                                  289,
-                                  295
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 10,
-                                    "column": 27
-                                  },
-                                  "end": {
-                                    "line": 10,
-                                    "column": 33
-                                  }
-                                }
-                              },
-                              "property": {
-                                "type": "Identifier",
-                                "name": "for",
-                                "range": [
-                                  296,
-                                  299
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 10,
-                                    "column": 34
-                                  },
-                                  "end": {
-                                    "line": 10,
-                                    "column": 37
-                                  }
-                                }
-                              },
-                              "range": [
-                                289,
-                                299
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 10,
-                                  "column": 27
-                                },
-                                "end": {
-                                  "line": 10,
-                                  "column": 37
-                                }
-                              }
-                            },
-                            "arguments": [
-                              {
-                                "type": "Literal",
-                                "value": "observable",
-                                "raw": "'observable'",
-                                "range": [
-                                  300,
-                                  312
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 10,
-                                    "column": 38
-                                  },
-                                  "end": {
-                                    "line": 10,
-                                    "column": 50
-                                  }
-                                }
-                              }
-                            ],
-                            "range": [
-                              289,
-                              313
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 10,
-                                "column": 27
-                              },
-                              "end": {
-                                "line": 10,
-                                "column": 51
-                              }
-                            }
-                          },
-                          "range": [
-                            274,
-                            313
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 10,
-                              "column": 12
-                            },
-                            "end": {
-                              "line": 10,
-                              "column": 51
-                            }
-                          }
-                        },
-                        "range": [
-                          274,
-                          314
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 10,
-                            "column": 12
-                          },
-                          "end": {
-                            "line": 10,
-                            "column": 52
-                          }
-                        }
-                      }
-                    ],
-                    "range": [
-                      260,
-                      324
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 9,
-                        "column": 46
-                      },
-                      "end": {
-                        "line": 11,
-                        "column": 9
-                      }
-                    }
-                  },
-                  "alternate": {
-                    "type": "BlockStatement",
-                    "body": [
-                      {
-                        "type": "ExpressionStatement",
-                        "expression": {
-                          "type": "AssignmentExpression",
-                          "operator": "=",
-                          "left": {
-                            "type": "Identifier",
-                            "name": "$$observable",
-                            "range": [
-                              352,
-                              364
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 13,
-                                "column": 12
-                              },
-                              "end": {
-                                "line": 13,
-                                "column": 24
-                              }
-                            }
-                          },
-                          "right": {
-                            "type": "CallExpression",
-                            "callee": {
-                              "type": "Identifier",
-                              "name": "Symbol",
-                              "range": [
-                                367,
-                                373
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 13,
-                                  "column": 27
-                                },
-                                "end": {
-                                  "line": 13,
-                                  "column": 33
-                                }
-                              }
-                            },
-                            "arguments": [
-                              {
-                                "type": "Literal",
-                                "value": "observable",
-                                "raw": "'observable'",
-                                "range": [
-                                  374,
-                                  386
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 13,
-                                    "column": 34
-                                  },
-                                  "end": {
-                                    "line": 13,
-                                    "column": 46
-                                  }
-                                }
-                              }
-                            ],
-                            "range": [
-                              367,
-                              387
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 13,
-                                "column": 27
-                              },
-                              "end": {
-                                "line": 13,
-                                "column": 47
-                              }
-                            }
-                          },
-                          "range": [
-                            352,
-                            387
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 13,
-                              "column": 12
-                            },
-                            "end": {
-                              "line": 13,
-                              "column": 47
-                            }
-                          }
-                        },
-                        "range": [
-                          352,
-                          388
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 13,
-                            "column": 12
-                          },
-                          "end": {
-                            "line": 13,
-                            "column": 48
-                          }
-                        }
-                      }
-                    ],
-                    "range": [
-                      338,
-                      398
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 12,
-                        "column": 13
-                      },
-                      "end": {
-                        "line": 14,
-                        "column": 9
-                      }
-                    }
-                  },
-                  "range": [
-                    222,
-                    398
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 9,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 14,
-                      "column": 9
-                    }
-                  }
-                },
-                {
-                  "type": "ExpressionStatement",
-                  "expression": {
-                    "type": "AssignmentExpression",
-                    "operator": "=",
-                    "left": {
-                      "type": "MemberExpression",
-                      "computed": false,
-                      "object": {
-                        "type": "Identifier",
-                        "name": "Symbol",
-                        "range": [
-                          407,
-                          413
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 15,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 15,
-                            "column": 14
-                          }
-                        }
-                      },
-                      "property": {
-                        "type": "Identifier",
-                        "name": "observable",
-                        "range": [
-                          414,
-                          424
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 15,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 15,
-                            "column": 25
-                          }
-                        }
-                      },
-                      "range": [
-                        407,
-                        424
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 15,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 15,
-                          "column": 25
-                        }
-                      }
-                    },
-                    "right": {
-                      "type": "Identifier",
-                      "name": "$$observable",
-                      "range": [
-                        427,
-                        439
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 15,
-                          "column": 28
-                        },
-                        "end": {
-                          "line": 15,
-                          "column": 40
-                        }
-                      }
-                    },
-                    "range": [
-                      407,
-                      439
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 15,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 15,
-                        "column": 40
-                      }
-                    }
-                  },
-                  "range": [
-                    407,
-                    440
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 15,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 15,
-                      "column": 41
-                    }
-                  }
-                }
-              ],
-              "range": [
-                212,
-                446
-              ],
-              "loc": {
-                "start": {
-                  "line": 8,
-                  "column": 9
-                },
-                "end": {
-                  "line": 16,
-                  "column": 5
-                }
-              }
-            },
-            "range": [
-              130,
-              446
-            ],
-            "loc": {
-              "start": {
-                "line": 5,
-                "column": 4
-              },
-              "end": {
-                "line": 16,
-                "column": 5
-              }
-            }
-          }
-        ],
-        "range": [
-          124,
-          448
-        ],
-        "loc": {
-          "start": {
-            "line": 4,
-            "column": 34
-          },
-          "end": {
-            "line": 17,
-            "column": 1
-          }
-        }
-      },
-      "alternate": {
-        "type": "BlockStatement",
-        "body": [
-          {
-            "type": "ExpressionStatement",
-            "expression": {
-              "type": "AssignmentExpression",
-              "operator": "=",
-              "left": {
-                "type": "Identifier",
-                "name": "$$observable",
-                "range": [
-                  460,
-                  472
-                ],
-                "loc": {
-                  "start": {
-                    "line": 19,
-                    "column": 4
-                  },
-                  "end": {
-                    "line": 19,
-                    "column": 16
-                  }
-                }
-              },
-              "right": {
-                "type": "Literal",
-                "value": "@@observable",
-                "raw": "'@@observable'",
-                "range": [
-                  475,
-                  489
-                ],
-                "loc": {
-                  "start": {
-                    "line": 19,
-                    "column": 19
-                  },
-                  "end": {
-                    "line": 19,
-                    "column": 33
-                  }
-                }
-              },
-              "range": [
-                460,
-                489
-              ],
-              "loc": {
-                "start": {
-                  "line": 19,
-                  "column": 4
-                },
-                "end": {
-                  "line": 19,
-                  "column": 33
-                }
-              }
-            },
-            "range": [
-              460,
-              490
-            ],
-            "loc": {
-              "start": {
-                "line": 19,
-                "column": 4
-              },
-              "end": {
-                "line": 19,
-                "column": 34
-              }
-            }
-          }
-        ],
-        "range": [
-          454,
-          492
-        ],
-        "loc": {
-          "start": {
-            "line": 18,
-            "column": 5
-          },
-          "end": {
-            "line": 20,
-            "column": 1
-          }
-        }
-      },
-      "range": [
-        90,
-        492
-      ],
-      "loc": {
-        "start": {
-          "line": 4,
-          "column": 0
-        },
-        "end": {
-          "line": 20,
-          "column": 1
+          "line": 19,
+          "column": 52
         }
       },
       "trailingComments": [
@@ -1225,16 +1176,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=observable.js.map",
           "range": [
-            493,
-            531
+            530,
+            568
           ],
           "loc": {
             "start": {
-              "line": 21,
+              "line": 20,
               "column": 0
             },
             "end": {
-              "line": 21,
+              "line": 20,
               "column": 38
             }
           }
@@ -1245,7 +1196,7 @@
   "sourceType": "module",
   "range": [
     0,
-    492
+    529
   ],
   "loc": {
     "start": {
@@ -1253,8 +1204,8 @@
       "column": 0
     },
     "end": {
-      "line": 20,
-      "column": 1
+      "line": 19,
+      "column": 52
     }
   },
   "comments": [
@@ -1262,16 +1213,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=observable.js.map",
       "range": [
-        493,
-        531
+        530,
+        568
       ],
       "loc": {
         "start": {
-          "line": 21,
+          "line": 20,
           "column": 0
         },
         "end": {
-          "line": 21,
+          "line": 20,
           "column": 38
         }
       }

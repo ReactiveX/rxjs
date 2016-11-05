@@ -154,47 +154,11 @@
             }
           },
           {
-            "type": "AssignmentPattern",
-            "left": {
-              "type": "Identifier",
-              "name": "delay",
-              "range": [
-                503,
-                508
-              ],
-              "loc": {
-                "start": {
-                  "line": 13,
-                  "column": 39
-                },
-                "end": {
-                  "line": 13,
-                  "column": 44
-                }
-              }
-            },
-            "right": {
-              "type": "Literal",
-              "value": 0,
-              "raw": "0",
-              "range": [
-                511,
-                512
-              ],
-              "loc": {
-                "start": {
-                  "line": 13,
-                  "column": 47
-                },
-                "end": {
-                  "line": 13,
-                  "column": 48
-                }
-              }
-            },
+            "type": "Identifier",
+            "name": "delay",
             "range": [
               503,
-              512
+              508
             ],
             "loc": {
               "start": {
@@ -203,7 +167,7 @@
               },
               "end": {
                 "line": 13,
-                "column": 48
+                "column": 44
               }
             }
           }
@@ -212,100 +176,176 @@
           "type": "BlockStatement",
           "body": [
             {
-              "type": "ReturnStatement",
-              "argument": {
-                "type": "NewExpression",
-                "callee": {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
                   "type": "Identifier",
-                  "name": "SubscribeOnObservable",
+                  "name": "delay",
                   "range": [
-                    531,
-                    552
+                    520,
+                    525
                   ],
                   "loc": {
                     "start": {
                       "line": 14,
-                      "column": 15
+                      "column": 8
                     },
                     "end": {
                       "line": 14,
-                      "column": 36
+                      "column": 13
                     }
                   }
                 },
-                "arguments": [
-                  {
-                    "type": "ThisExpression",
+                "right": {
+                  "type": "UnaryExpression",
+                  "operator": "void",
+                  "argument": {
+                    "type": "Literal",
+                    "value": 0,
+                    "raw": "0",
                     "range": [
-                      553,
-                      557
+                      535,
+                      536
                     ],
                     "loc": {
                       "start": {
                         "line": 14,
-                        "column": 37
+                        "column": 23
                       },
                       "end": {
                         "line": 14,
-                        "column": 41
+                        "column": 24
                       }
                     }
                   },
-                  {
-                    "type": "Identifier",
-                    "name": "delay",
-                    "range": [
-                      559,
-                      564
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 14,
-                        "column": 43
-                      },
-                      "end": {
-                        "line": 14,
-                        "column": 48
-                      }
+                  "prefix": true,
+                  "range": [
+                    530,
+                    536
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 24
                     }
+                  }
+                },
+                "range": [
+                  520,
+                  536
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 8
                   },
+                  "end": {
+                    "line": 14,
+                    "column": 24
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
                   {
-                    "type": "Identifier",
-                    "name": "scheduler",
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "delay",
+                        "range": [
+                          540,
+                          545
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 14,
+                            "column": 28
+                          },
+                          "end": {
+                            "line": 14,
+                            "column": 33
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": 0,
+                        "raw": "0",
+                        "range": [
+                          548,
+                          549
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 14,
+                            "column": 36
+                          },
+                          "end": {
+                            "line": 14,
+                            "column": 37
+                          }
+                        }
+                      },
+                      "range": [
+                        540,
+                        549
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 14,
+                          "column": 28
+                        },
+                        "end": {
+                          "line": 14,
+                          "column": 37
+                        }
+                      }
+                    },
                     "range": [
-                      566,
-                      575
+                      540,
+                      550
                     ],
                     "loc": {
                       "start": {
                         "line": 14,
-                        "column": 50
+                        "column": 28
                       },
                       "end": {
                         "line": 14,
-                        "column": 59
+                        "column": 38
                       }
                     }
                   }
                 ],
                 "range": [
-                  527,
-                  576
+                  538,
+                  552
                 ],
                 "loc": {
                   "start": {
                     "line": 14,
-                    "column": 11
+                    "column": 26
                   },
                   "end": {
                     "line": 14,
-                    "column": 60
+                    "column": 40
                   }
                 }
               },
+              "alternate": null,
               "range": [
-                520,
-                577
+                516,
+                552
               ],
               "loc": {
                 "start": {
@@ -314,22 +354,129 @@
                 },
                 "end": {
                   "line": 14,
+                  "column": 40
+                }
+              }
+            },
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "NewExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "SubscribeOnObservable",
+                  "range": [
+                    568,
+                    589
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 15,
+                      "column": 15
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 36
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      590,
+                      594
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 15,
+                        "column": 37
+                      },
+                      "end": {
+                        "line": 15,
+                        "column": 41
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "delay",
+                    "range": [
+                      596,
+                      601
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 15,
+                        "column": 43
+                      },
+                      "end": {
+                        "line": 15,
+                        "column": 48
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "scheduler",
+                    "range": [
+                      603,
+                      612
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 15,
+                        "column": 50
+                      },
+                      "end": {
+                        "line": 15,
+                        "column": 59
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  564,
+                  613
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 60
+                  }
+                }
+              },
+              "range": [
+                557,
+                614
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 4
+                },
+                "end": {
+                  "line": 15,
                   "column": 61
                 }
               }
             }
           ],
           "range": [
-            514,
-            579
+            510,
+            616
           ],
           "loc": {
             "start": {
               "line": 13,
-              "column": 50
+              "column": 46
             },
             "end": {
-              "line": 15,
+              "line": 16,
               "column": 1
             }
           }
@@ -338,7 +485,7 @@
         "expression": false,
         "range": [
           471,
-          579
+          616
         ],
         "loc": {
           "start": {
@@ -346,7 +493,7 @@
             "column": 7
           },
           "end": {
-            "line": 15,
+            "line": 16,
             "column": 1
           }
         },
@@ -375,16 +522,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=subscribeOn.js.map",
             "range": [
-              580,
-              619
+              617,
+              656
             ],
             "loc": {
               "start": {
-                "line": 16,
+                "line": 17,
                 "column": 0
               },
               "end": {
-                "line": 16,
+                "line": 17,
                 "column": 39
               }
             }
@@ -395,7 +542,7 @@
       "source": null,
       "range": [
         464,
-        579
+        616
       ],
       "loc": {
         "start": {
@@ -403,7 +550,7 @@
           "column": 0
         },
         "end": {
-          "line": 15,
+          "line": 16,
           "column": 1
         }
       },
@@ -432,16 +579,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=subscribeOn.js.map",
           "range": [
-            580,
-            619
+            617,
+            656
           ],
           "loc": {
             "start": {
-              "line": 16,
+              "line": 17,
               "column": 0
             },
             "end": {
-              "line": 16,
+              "line": 17,
               "column": 39
             }
           }
@@ -452,7 +599,7 @@
   "sourceType": "module",
   "range": [
     0,
-    579
+    616
   ],
   "loc": {
     "start": {
@@ -460,7 +607,7 @@
       "column": 0
     },
     "end": {
-      "line": 15,
+      "line": 16,
       "column": 1
     }
   },
@@ -487,16 +634,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=subscribeOn.js.map",
       "range": [
-        580,
-        619
+        617,
+        656
       ],
       "loc": {
         "start": {
-          "line": 16,
+          "line": 17,
           "column": 0
         },
         "end": {
-          "line": 16,
+          "line": 17,
           "column": 39
         }
       }

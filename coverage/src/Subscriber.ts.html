@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/Subscriber.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">src</a> Subscriber.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.09% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>123/128</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">91.11% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>41/45</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.74% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>18/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.77% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>120/124</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12367x</span>
+<span class="cline-any cline-yes">12367x</span>
+<span class="cline-any cline-yes">12367x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12367x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12367x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12367x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6101x</span>
+<span class="cline-any cline-yes">6101x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3524x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3524x</span>
+<span class="cline-any cline-yes">3519x</span>
+<span class="cline-any cline-yes">3260x</span>
+<span class="cline-any cline-yes">3260x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">259x</span>
+<span class="cline-any cline-yes">259x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3519x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2747x</span>
+<span class="cline-any cline-yes">2747x</span>
+<span class="cline-any cline-yes">2747x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">38696x</span>
+<span class="cline-any cline-yes">38673x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1387x</span>
+<span class="cline-any cline-yes">1348x</span>
+<span class="cline-any cline-yes">1348x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5242x</span>
+<span class="cline-any cline-yes">5100x</span>
+<span class="cline-any cline-yes">5100x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">15094x</span>
+<span class="cline-any cline-yes">4205x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10889x</span>
+<span class="cline-any cline-yes">10889x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8058x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1034x</span>
+<span class="cline-any cline-yes">1028x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2107x</span>
+<span class="cline-any cline-yes">2105x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-yes">2686x</span>
+<span class="cline-any cline-yes">320x</span>
+<span class="cline-any cline-yes">299x</span>
+<span class="cline-any cline-yes">299x</span>
+<span class="cline-any cline-yes">299x</span>
+<span class="cline-any cline-yes">299x</span>
+<span class="cline-any cline-yes">299x</span>
+<span class="cline-any cline-yes">259x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">299x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-yes">3006x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6183x</span>
+<span class="cline-any cline-yes">6144x</span>
+<span class="cline-any cline-yes">6144x</span>
+<span class="cline-any cline-yes">5524x</span>
+<span class="cline-any cline-yes">620x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">651x</span>
+<span class="cline-any cline-yes">651x</span>
+<span class="cline-any cline-yes">651x</span>
+<span class="cline-any cline-yes">649x</span>
+<span class="cline-any cline-yes">596x</span>
+<span class="cline-any cline-yes">592x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1432x</span>
+<span class="cline-any cline-yes">1432x</span>
+<span class="cline-any cline-yes">1432x</span>
+<span class="cline-any cline-yes">1353x</span>
+<span class="cline-any cline-yes">1169x</span>
+<span class="cline-any cline-yes">1167x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">184x</span>
+<span class="cline-any cline-yes">184x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">79x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">7289x</span>
+<span class="cline-any cline-yes">7289x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">857x</span>
+<span class="cline-any cline-yes">857x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">844x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2123x</span>
+<span class="cline-any cline-yes">2123x</span>
+<span class="cline-any cline-yes">2123x</span>
+<span class="cline-any cline-yes">2123x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isFunction } from './util/isFunction';
+import { Observer, PartialObserver } from './Observer';
+import { Subscription } from './Subscription';
+import { empty as emptyObserver } from './Observer';
+import { $$rxSubscriber } from './symbol/rxSubscriber';
+&nbsp;
+/**
+ * Implements the {@link Observer} interface and extends the
+ * {@link Subscription} class. While the {@link Observer} is the public API for
+ * consuming the values of an {@link Observable}, all Observers get converted to
+ * a Subscriber, in order to provide Subscription-like capabilities such as
+ * `unsubscribe`. Subscriber is a common type in RxJS, and crucial for
+ * implementing operators, but it is rarely used as a public API.
+ *
+ * @class Subscriber&lt;T&gt;
+ */
+export class Subscriber&lt;T&gt; extends Subscription implements Observer&lt;T&gt; {
+&nbsp;
+<span class="fstat-no" title="function not covered" >  [$$rxSubscriber]() { <span class="cstat-no" title="statement not covered" ></span>return this; </span>}
+&nbsp;
+  /**
+   * A static factory for a Subscriber, given a (potentially partial) definition
+   * of an Observer.
+   * @param {function(x: ?T): void} [next] The `next` callback of an Observer.
+   * @param {function(e: ?any): void} [error] The `error` callback of an
+   * Observer.
+   * @param {function(): void} [complete] The `complete` callback of an
+   * Observer.
+   * @return {Subscriber&lt;T&gt;} A Subscriber wrapping the (partially defined)
+   * Observer represented by the given arguments.
+   */
+  static create&lt;T&gt;(next?: (x?: T) =&gt; void,
+                   error?: (e?: any) =&gt; void,
+                   complete?: () =&gt; void): Subscriber&lt;T&gt; {
+    const subscriber = new Subscriber(next, error, complete);
+    subscriber.syncErrorThrowable = false;
+    return subscriber;
+  }
+&nbsp;
+  public syncErrorValue: any = null;
+  public syncErrorThrown: boolean = false;
+  public syncErrorThrowable: boolean = false;
+&nbsp;
+  protected isStopped: boolean = false;
+  protected destination: PartialObserver&lt;any&gt;; // this `any` is the escape hatch to erase extra type param (e.g. R)
+&nbsp;
+  /**
+   * @param {Observer|function(value: T): void} [destinationOrNext] A partially
+   * defined Observer or a `next` callback function.
+   * @param {function(e: ?any): void} [error] The `error` callback of an
+   * Observer.
+   * @param {function(): void} [complete] The `complete` callback of an
+   * Observer.
+   */
+  constructor(destinationOrNext?: PartialObserver&lt;any&gt; | ((value: T) =&gt; void),
+              error?: (e?: any) =&gt; void,
+              complete?: () =&gt; void) {
+    super();
+&nbsp;
+    switch (arguments.length) {
+      case 0:
+        this.destination = emptyObserver;
+        break;
+      case 1:
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!destinationOrNext) {
+<span class="cstat-no" title="statement not covered" >          this.destination = emptyObserver;</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+        }
+        if (typeof destinationOrNext === 'object') {
+          if (destinationOrNext instanceof Subscriber) {
+            this.destination = (&lt;Subscriber&lt;any&gt;&gt; destinationOrNext);
+            (&lt;any&gt; this.destination).add(this);
+          } else {
+            this.syncErrorThrowable = true;
+            this.destination = new SafeSubscriber&lt;T&gt;(this, &lt;PartialObserver&lt;any&gt;&gt; destinationOrNext);
+          }
+          break;
+        }
+      default:
+        this.syncErrorThrowable = true;
+        this.destination = new SafeSubscriber&lt;T&gt;(this, &lt;((value: T) =&gt; void)&gt; destinationOrNext, error, complete);
+        break;
+    }
+  }
+&nbsp;
+  /**
+   * The {@link Observer} callback to receive notifications of type `next` from
+   * the Observable, with a value. The Observable may call this method 0 or more
+   * times.
+   * @param {T} [value] The `next` value.
+   * @return {void}
+   */
+  next(value?: T): void {
+    if (!this.isStopped) {
+      this._next(value);
+    }
+  }
+&nbsp;
+  /**
+   * The {@link Observer} callback to receive notifications of type `error` from
+   * the Observable, with an attached {@link Error}. Notifies the Observer that
+   * the Observable has experienced an error condition.
+   * @param {any} [err] The `error` exception.
+   * @return {void}
+   */
+  error(err?: any): void {
+    if (!this.isStopped) {
+      this.isStopped = true;
+      this._error(err);
+    }
+  }
+&nbsp;
+  /**
+   * The {@link Observer} callback to receive a valueless notification of type
+   * `complete` from the Observable. Notifies the Observer that the Observable
+   * has finished sending push-based notifications.
+   * @return {void}
+   */
+  complete(): void {
+    if (!this.isStopped) {
+      this.isStopped = true;
+      this._complete();
+    }
+  }
+&nbsp;
+  unsubscribe(): void {
+    if (this.closed) {
+      return;
+    }
+    this.isStopped = true;
+    super.unsubscribe();
+  }
+&nbsp;
+  protected _next(value: T): void {
+    this.destination.next(value);
+  }
+&nbsp;
+  protected _error(err: any): void {
+    this.destination.error(err);
+    this.unsubscribe();
+  }
+&nbsp;
+  protected _complete(): void {
+    this.destination.complete();
+    this.unsubscribe();
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class SafeSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+&nbsp;
+  private _context: any;
+&nbsp;
+  constructor(private _parent: Subscriber&lt;T&gt;,
+              observerOrNext?: PartialObserver&lt;T&gt; | ((value: T) =&gt; void),
+              error?: (e?: any) =&gt; void,
+              complete?: () =&gt; void) {
+    super();
+&nbsp;
+    let next: ((value: T) =&gt; void);
+    let context: any = this;
+&nbsp;
+    if (isFunction(observerOrNext)) {
+      next = (&lt;((value: T) =&gt; void)&gt; observerOrNext);
+    } else if (observerOrNext) {
+      context = observerOrNext;
+      next = (&lt;PartialObserver&lt;T&gt;&gt; observerOrNext).next;
+      error = (&lt;PartialObserver&lt;T&gt;&gt; observerOrNext).error;
+      complete = (&lt;PartialObserver&lt;T&gt;&gt; observerOrNext).complete;
+      if (isFunction(context.unsubscribe)) {
+        this.add(&lt;() =&gt; void&gt; context.unsubscribe.bind(context));
+      }
+      context.unsubscribe = this.unsubscribe.bind(this);
+    }
+&nbsp;
+    this._context = context;
+    this._next = next;
+    this._error = error;
+    this._complete = complete;
+  }
+&nbsp;
+  next(value?: T): void {
+    if (!this.isStopped &amp;&amp; this._next) {
+      const { _parent } = this;
+      if (!_parent.syncErrorThrowable) {
+        this.__tryOrUnsub(this._next, value);
+      } else if (this.__tryOrSetError(_parent, this._next, value)) {
+        this.unsubscribe();
+      }
+    }
+  }
+&nbsp;
+  error(err?: any): void {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!this.isStopped) {
+      const { _parent } = this;
+      if (this._error) {
+        if (!_parent.syncErrorThrowable) {
+          this.__tryOrUnsub(this._error, err);
+          this.unsubscribe();
+        } else {
+          this.__tryOrSetError(_parent, this._error, err);
+          this.unsubscribe();
+        }
+      } else <span class="missing-if-branch" title="if path not taken" >I</span>if (!_parent.syncErrorThrowable) {
+<span class="cstat-no" title="statement not covered" >        this.unsubscribe();</span>
+<span class="cstat-no" title="statement not covered" >        throw err;</span>
+      } else {
+        _parent.syncErrorValue = err;
+        _parent.syncErrorThrown = true;
+        this.unsubscribe();
+      }
+    }
+  }
+&nbsp;
+  complete(): void {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!this.isStopped) {
+      const { _parent } = this;
+      if (this._complete) {
+        if (!_parent.syncErrorThrowable) {
+          this.__tryOrUnsub(this._complete);
+          this.unsubscribe();
+        } else {
+          this.__tryOrSetError(_parent, this._complete);
+          this.unsubscribe();
+        }
+      } else {
+        this.unsubscribe();
+      }
+    }
+  }
+&nbsp;
+  private __tryOrUnsub(fn: Function, value?: any): void {
+    try {
+      fn.call(this._context, value);
+    } catch (err) {
+      this.unsubscribe();
+      throw err;
+    }
+  }
+&nbsp;
+  private __tryOrSetError(parent: Subscriber&lt;T&gt;, fn: Function, value?: any): boolean {
+    try {
+      fn.call(this._context, value);
+    } catch (err) {
+      parent.syncErrorValue = err;
+      parent.syncErrorThrown = true;
+      return true;
+    }
+    return false;
+  }
+&nbsp;
+  protected _unsubscribe(): void {
+    const { _parent } = this;
+    this._context = null;
+    this._parent = null;
+    _parent.unsubscribe();
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

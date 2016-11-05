@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/debounceTime.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> debounceTime.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>41/41</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>5/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>11/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>38/38</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">59x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Scheduler } from '../Scheduler';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { async } from '../scheduler/async';
+&nbsp;
+/**
+ * Emits a value from the source Observable only after a particular time span
+ * has passed without another source emission.
+ *
+ * &lt;span class="informal"&gt;It's like {@link delay}, but passes only the most
+ * recent value from each burst of emissions.&lt;/span&gt;
+ *
+ * &lt;img src="./img/debounceTime.png" width="100%"&gt;
+ *
+ * `debounceTime` delays values emitted by the source Observable, but drops
+ * previous pending delayed emissions if a new value arrives on the source
+ * Observable. This operator keeps track of the most recent value from the
+ * source Observable, and emits that only when `dueTime` enough time has passed
+ * without any other value appearing on the source Observable. If a new value
+ * appears before `dueTime` silence occurs, the previous value will be dropped
+ * and will not be emitted on the output Observable.
+ *
+ * This is a rate-limiting operator, because it is impossible for more than one
+ * value to be emitted in any time window of duration `dueTime`, but it is also
+ * a delay-like operator since output emissions do not occur at the same time as
+ * they did on the source Observable. Optionally takes a {@link Scheduler} for
+ * managing timers.
+ *
+ * @example &lt;caption&gt;Emit the most recent click after a burst of clicks&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.debounceTime(1000);
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link auditTime}
+ * @see {@link debounce}
+ * @see {@link delay}
+ * @see {@link sampleTime}
+ * @see {@link throttleTime}
+ *
+ * @param {number} dueTime The timeout duration in milliseconds (or the time
+ * unit determined internally by the optional `scheduler`) for the window of
+ * time required to wait for emission silence before emitting the most recent
+ * source value.
+ * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * managing the timers that handle the timeout for each value.
+ * @return {Observable} An Observable that delays the emissions of the source
+ * Observable by the specified `dueTime`, and may drop some values if they occur
+ * too frequently.
+ * @method debounceTime
+ * @owner Observable
+ */
+export function debounceTime&lt;T&gt;(this: Observable&lt;T&gt;, dueTime: number, <span class="missing-if-branch" title="if path not taken" >I</span>scheduler: Scheduler = async): Observable&lt;T&gt; {
+  return this.lift(new DebounceTimeOperator(dueTime, scheduler));
+}
+&nbsp;
+class DebounceTimeOperator&lt;T&gt; implements Operator&lt;T, T&gt; {
+  constructor(private dueTime: number, private scheduler: Scheduler) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;T&gt;, source: any): TeardownLogic {
+    return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class DebounceTimeSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private debouncedSubscription: Subscription = null;
+  private lastValue: T = null;
+  private hasValue: boolean = false;
+&nbsp;
+  constructor(destination: Subscriber&lt;T&gt;,
+              private dueTime: number,
+              private scheduler: Scheduler) {
+    super(destination);
+  }
+&nbsp;
+  protected _next(value: T) {
+    this.clearDebounce();
+    this.lastValue = value;
+    this.hasValue = true;
+    this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
+  }
+&nbsp;
+  protected _complete() {
+    this.debouncedNext();
+    this.destination.complete();
+  }
+&nbsp;
+  debouncedNext(): void {
+    this.clearDebounce();
+&nbsp;
+    if (this.hasValue) {
+      this.destination.next(this.lastValue);
+      this.lastValue = null;
+      this.hasValue = false;
+    }
+  }
+&nbsp;
+  private clearDebounce(): void {
+    const debouncedSubscription = this.debouncedSubscription;
+&nbsp;
+    if (debouncedSubscription !== null) {
+      this.remove(debouncedSubscription);
+      debouncedSubscription.unsubscribe();
+      this.debouncedSubscription = null;
+    }
+  }
+}
+&nbsp;
+function dispatchNext(subscriber: DebounceTimeSubscriber&lt;any&gt;) {
+  subscriber.debouncedNext();
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

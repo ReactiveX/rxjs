@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/timeoutWith.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> timeoutWith.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>62/62</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">91.67% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>11/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>14/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>61/61</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Scheduler } from '../Scheduler';
+import { async } from '../scheduler/async';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { Observable, ObservableInput } from '../Observable';
+import { isDate } from '../util/isDate';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+&nbsp;
+/**
+ * @param due
+ * @param withObservable
+ * @param scheduler
+ * @return {Observable&lt;R&gt;|WebSocketSubject&lt;T&gt;|Observable&lt;T&gt;}
+ * @method timeoutWith
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function timeoutWith&lt;T&gt;(this: Observable&lt;T&gt;, due: number | Date, withObservable: ObservableInput&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt;;
+export function timeoutWith&lt;T, R&gt;(this: Observable&lt;T&gt;, due: number | Date, withObservable: ObservableInput&lt;R&gt;, scheduler?: Scheduler): Observable&lt;T | R&gt;;
+/* tslint:disable:max-line-length */
+export function timeoutWith&lt;T, R&gt;(this: Observable&lt;T&gt;, due: number | Date,
+                                  withObservable: ObservableInput&lt;R&gt;,
+                                  <span class="missing-if-branch" title="if path not taken" >I</span>scheduler: Scheduler = async): Observable&lt;T | R&gt; {
+  let absoluteTimeout = isDate(due);
+  let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(&lt;number&gt;due);
+  return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
+}
+&nbsp;
+class TimeoutWithOperator&lt;T&gt; implements Operator&lt;T, T&gt; {
+  constructor(private waitFor: number,
+              private absoluteTimeout: boolean,
+              private withObservable: ObservableInput&lt;any&gt;,
+              private scheduler: Scheduler) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;T&gt;, source: any): TeardownLogic {
+    return source._subscribe(new TimeoutWithSubscriber(
+      subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler
+    ));
+  }
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class TimeoutWithSubscriber&lt;T, R&gt; extends OuterSubscriber&lt;T, R&gt; {
+  private timeoutSubscription: Subscription = undefined;
+  private index: number = 0;
+  private _previousIndex: number = 0;
+  get previousIndex(): number {
+    return this._previousIndex;
+  }
+  private _hasCompleted: boolean = false;
+  get hasCompleted(): boolean {
+    return this._hasCompleted;
+  }
+&nbsp;
+  constructor(public destination: Subscriber&lt;T&gt;,
+              private absoluteTimeout: boolean,
+              private waitFor: number,
+              private withObservable: ObservableInput&lt;any&gt;,
+              private scheduler: Scheduler) {
+    super();
+    destination.add(this);
+    this.scheduleTimeout();
+  }
+&nbsp;
+  private static dispatchTimeout(state: any): void {
+    const source = state.subscriber;
+    const currentIndex = state.index;
+    if (!source.hasCompleted &amp;&amp; source.previousIndex === currentIndex) {
+      source.handleTimeout();
+    }
+  }
+&nbsp;
+  private scheduleTimeout(): void {
+    let currentIndex = this.index;
+    const timeoutState = { subscriber: this, index: currentIndex };
+    this.scheduler.schedule(TimeoutWithSubscriber.dispatchTimeout, this.waitFor, timeoutState);
+    this.index++;
+    this._previousIndex = currentIndex;
+  }
+&nbsp;
+  protected _next(value: T) {
+    this.destination.next(value);
+    if (!this.absoluteTimeout) {
+      this.scheduleTimeout();
+    }
+  }
+&nbsp;
+  protected _error(err: any) {
+    this.destination.error(err);
+    this._hasCompleted = true;
+  }
+&nbsp;
+  protected _complete() {
+    this.destination.complete();
+    this._hasCompleted = true;
+  }
+&nbsp;
+  handleTimeout(): void {
+    if (!this.closed) {
+      const withObservable = this.withObservable;
+      this.unsubscribe();
+      this.destination.add(this.timeoutSubscription = subscribeToResult(this, withObservable));
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

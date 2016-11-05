@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/concat.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> concat.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>17/17</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>6/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>13/13</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">225x</span>
+<span class="cline-any cline-yes">99x</span>
+<span class="cline-any cline-yes">99x</span>
+<span class="cline-any cline-yes">99x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">99x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">98x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Observable, ObservableInput } from '../Observable';
+import { Scheduler } from '../Scheduler';
+import { isScheduler } from '../util/isScheduler';
+import { ArrayObservable } from '../observable/ArrayObservable';
+import { MergeAllOperator } from './mergeAll';
+&nbsp;
+/**
+ * Creates an output Observable which sequentially emits all values from every
+ * given input Observable after the current Observable.
+ *
+ * &lt;span class="informal"&gt;Concatenates multiple Observables together by
+ * sequentially emitting their values, one Observable after the other.&lt;/span&gt;
+ *
+ * &lt;img src="./img/concat.png" width="100%"&gt;
+ *
+ * Joins this Observable with multiple other Observables by subscribing to them
+ * one at a time, starting with the source, and merging their results into the
+ * output Observable. Will wait for each Observable to complete before moving
+ * on to the next.
+ *
+ * @example &lt;caption&gt;Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10&lt;/caption&gt;
+ * var timer = Rx.Observable.interval(1000).take(4);
+ * var sequence = Rx.Observable.range(1, 10);
+ * var result = timer.concat(sequence);
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Concatenate 3 Observables&lt;/caption&gt;
+ * var timer1 = Rx.Observable.interval(1000).take(10);
+ * var timer2 = Rx.Observable.interval(2000).take(6);
+ * var timer3 = Rx.Observable.interval(500).take(10);
+ * var result = timer1.concat(timer2, timer3);
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link concatAll}
+ * @see {@link concatMap}
+ * @see {@link concatMapTo}
+ *
+ * @param {Observable} other An input Observable to concatenate after the source
+ * Observable. More than one input Observables may be given as argument.
+ * @param {Scheduler} [scheduler=null] An optional Scheduler to schedule each
+ * Observable subscription on.
+ * @return {Observable} All values of each passed Observable merged into a
+ * single Observable, in order, in serial fashion.
+ * @method concat
+ * @owner Observable
+ */
+/* tslint:disable:max-line-length */
+export function concat&lt;T&gt;(this: Observable&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt;;
+export function concat&lt;T, T2&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, scheduler?: Scheduler): Observable&lt;T | T2&gt;;
+export function concat&lt;T, T2, T3&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3&gt;;
+export function concat&lt;T, T2, T3, T4&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4&gt;;
+export function concat&lt;T, T2, T3, T4, T5&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5&gt;;
+export function concat&lt;T, T2, T3, T4, T5, T6&gt;(this: Observable&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, v6: ObservableInput&lt;T6&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5 | T6&gt;;
+export function concat&lt;T&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;ObservableInput&lt;T&gt; | Scheduler&gt;): Observable&lt;T&gt;;
+export function concat&lt;T, R&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;ObservableInput&lt;any&gt; | Scheduler&gt;): Observable&lt;R&gt;;
+/* tslint:disable:max-line-length */
+export function concat&lt;T, R&gt;(this: Observable&lt;T&gt;, ...observables: Array&lt;ObservableInput&lt;any&gt; | Scheduler&gt;): Observable&lt;R&gt; {
+  return this.lift.call(concatStatic&lt;T, R&gt;(this, ...observables));
+}
+&nbsp;
+/* tslint:disable:max-line-length */
+export function concatStatic&lt;T&gt;(v1: ObservableInput&lt;T&gt;, scheduler?: Scheduler): Observable&lt;T&gt;;
+export function concatStatic&lt;T, T2&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, scheduler?: Scheduler): Observable&lt;T | T2&gt;;
+export function concatStatic&lt;T, T2, T3&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3&gt;;
+export function concatStatic&lt;T, T2, T3, T4&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4&gt;;
+export function concatStatic&lt;T, T2, T3, T4, T5&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5&gt;;
+export function concatStatic&lt;T, T2, T3, T4, T5, T6&gt;(v1: ObservableInput&lt;T&gt;, v2: ObservableInput&lt;T2&gt;, v3: ObservableInput&lt;T3&gt;, v4: ObservableInput&lt;T4&gt;, v5: ObservableInput&lt;T5&gt;, v6: ObservableInput&lt;T6&gt;, scheduler?: Scheduler): Observable&lt;T | T2 | T3 | T4 | T5 | T6&gt;;
+export function concatStatic&lt;T&gt;(...observables: (ObservableInput&lt;T&gt; | Scheduler)[]): Observable&lt;T&gt;;
+export function concatStatic&lt;T, R&gt;(...observables: (ObservableInput&lt;any&gt; | Scheduler)[]): Observable&lt;R&gt;;
+/* tslint:enable:max-line-length */
+/**
+ * Creates an output Observable which sequentially emits all values from every
+ * given input Observable after the current Observable.
+ *
+ * &lt;span class="informal"&gt;Concatenates multiple Observables together by
+ * sequentially emitting their values, one Observable after the other.&lt;/span&gt;
+ *
+ * &lt;img src="./img/concat.png" width="100%"&gt;
+ *
+ * Joins multiple Observables together by subscribing to them one at a time and
+ * merging their results into the output Observable. Will wait for each
+ * Observable to complete before moving on to the next.
+ *
+ * @example &lt;caption&gt;Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10&lt;/caption&gt;
+ * var timer = Rx.Observable.interval(1000).take(4);
+ * var sequence = Rx.Observable.range(1, 10);
+ * var result = Rx.Observable.concat(timer, sequence);
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Concatenate 3 Observables&lt;/caption&gt;
+ * var timer1 = Rx.Observable.interval(1000).take(10);
+ * var timer2 = Rx.Observable.interval(2000).take(6);
+ * var timer3 = Rx.Observable.interval(500).take(10);
+ * var result = Rx.Observable.concat(timer1, timer2, timer3);
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link concatAll}
+ * @see {@link concatMap}
+ * @see {@link concatMapTo}
+ *
+ * @param {Observable} input1 An input Observable to concatenate with others.
+ * @param {Observable} input2 An input Observable to concatenate with others.
+ * More than one input Observables may be given as argument.
+ * @param {Scheduler} [scheduler=null] An optional Scheduler to schedule each
+ * Observable subscription on.
+ * @return {Observable} All values of each passed Observable merged into a
+ * single Observable, in order, in serial fashion.
+ * @static true
+ * @name concat
+ * @owner Observable
+ */
+export function concatStatic&lt;T, R&gt;(...observables: Array&lt;ObservableInput&lt;any&gt; | Scheduler&gt;): Observable&lt;R&gt; {
+  let scheduler: Scheduler = null;
+  let args = &lt;any[]&gt;observables;
+  if (isScheduler(args[observables.length - 1])) {
+    scheduler = args.pop();
+  }
+&nbsp;
+  if (scheduler === null &amp;&amp; observables.length === 1) {
+    return &lt;Observable&lt;R&gt;&gt;observables[0];
+  }
+&nbsp;
+  return new ArrayObservable(observables, scheduler).lift(new MergeAllOperator&lt;R&gt;(1));
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

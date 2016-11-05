@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/operator/windowTime.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/operator</a> windowTime.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>85/85</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">73.68% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>14/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>14/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>77/77</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { Subject } from '../Subject';
+import { Operator } from '../Operator';
+import { async } from '../scheduler/async';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { Subscription } from '../Subscription';
+&nbsp;
+/**
+ * Branch out the source Observable values as a nested Observable periodically
+ * in time.
+ *
+ * &lt;span class="informal"&gt;It's like {@link bufferTime}, but emits a nested
+ * Observable instead of an array.&lt;/span&gt;
+ *
+ * &lt;img src="./img/windowTime.png" width="100%"&gt;
+ *
+ * Returns an Observable that emits windows of items it collects from the source
+ * Observable. The output Observable starts a new window periodically, as
+ * determined by the `windowCreationInterval` argument. It emits each window
+ * after a fixed timespan, specified by the `windowTimeSpan` argument. When the
+ * source Observable completes or encounters an error, the output Observable
+ * emits the current window and propagates the notification from the source
+ * Observable. If `windowCreationInterval` is not provided, the output
+ * Observable starts a new window when the previous window of duration
+ * `windowTimeSpan` completes.
+ *
+ * @example &lt;caption&gt;In every window of 1 second each, emit at most 2 click events&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.windowTime(1000)
+ *   .map(win =&gt; win.take(2)) // each window has at most 2 emissions
+ *   .mergeAll(); // flatten the Observable-of-Observables
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @example &lt;caption&gt;Every 5 seconds start a window 1 second long, and emit at most 2 click events per window&lt;/caption&gt;
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.windowTime(1000, 5000)
+ *   .map(win =&gt; win.take(2)) // each window has at most 2 emissions
+ *   .mergeAll(); // flatten the Observable-of-Observables
+ * result.subscribe(x =&gt; console.log(x));
+ *
+ * @see {@link window}
+ * @see {@link windowCount}
+ * @see {@link windowToggle}
+ * @see {@link windowWhen}
+ * @see {@link bufferTime}
+ *
+ * @param {number} windowTimeSpan The amount of time to fill each window.
+ * @param {number} [windowCreationInterval] The interval at which to start new
+ * windows.
+ * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
+ * intervals that determine window boundaries.
+ * @return {Observable&lt;Observable&lt;T&gt;&gt;} An observable of windows, which in turn
+ * are Observables.
+ * @method windowTime
+ * @owner Observable
+ */
+export function windowTime&lt;T&gt;(this: Observable&lt;T&gt;, windowTimeSpan: number,
+                              <span class="missing-if-branch" title="if path not taken" >I</span>windowCreationInterval: number = null,
+                              <span class="missing-if-branch" title="if path not taken" >I</span>scheduler: Scheduler = async): Observable&lt;Observable&lt;T&gt;&gt; {
+  return this.lift(new WindowTimeOperator&lt;T&gt;(windowTimeSpan, windowCreationInterval, scheduler));
+}
+&nbsp;
+class WindowTimeOperator&lt;T&gt; implements Operator&lt;T, Observable&lt;T&gt;&gt; {
+&nbsp;
+  constructor(private windowTimeSpan: number,
+              private windowCreationInterval: number,
+              private scheduler: Scheduler) {
+  }
+&nbsp;
+  call(subscriber: Subscriber&lt;Observable&lt;T&gt;&gt;, source: any): any {
+    return source._subscribe(new WindowTimeSubscriber(
+      subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler
+    ));
+  }
+}
+&nbsp;
+interface CreationState&lt;T&gt; {
+  windowTimeSpan: number;
+  windowCreationInterval: number;
+  subscriber: WindowTimeSubscriber&lt;T&gt;;
+  scheduler: Scheduler;
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class WindowTimeSubscriber&lt;T&gt; extends Subscriber&lt;T&gt; {
+  private windows: Subject&lt;T&gt;[] = [];
+&nbsp;
+  constructor(protected destination: Subscriber&lt;Observable&lt;T&gt;&gt;,
+              private windowTimeSpan: number,
+              private windowCreationInterval: number,
+              private scheduler: Scheduler) {
+    super(destination);
+    if (windowCreationInterval !== null &amp;&amp; windowCreationInterval &gt;= 0) {
+      let window = this.openWindow();
+      const closeState = { subscriber: this, window, context: &lt;any&gt;null };
+      const creationState: CreationState&lt;T&gt; = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
+      this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
+      this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
+    } else {
+      let window = this.openWindow();
+      const timeSpanOnlyState = { subscriber: this, window, windowTimeSpan };
+      this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
+    }
+  }
+&nbsp;
+  protected _next(value: T) {
+    const windows = this.windows;
+    const len = windows.length;
+    for (let i = 0; i &lt; len; i++) {
+      const window = windows[i];
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!window.closed) {
+        window.next(value);
+      }
+    }
+  }
+&nbsp;
+  protected _error(err: any) {
+    const windows = this.windows;
+    while (windows.length &gt; 0) {
+      windows.shift().error(err);
+    }
+    this.destination.error(err);
+  }
+&nbsp;
+  protected _complete() {
+    const windows = this.windows;
+    while (windows.length &gt; 0) {
+      const window = windows.shift();
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!window.closed) {
+        window.complete();
+      }
+    }
+    this.destination.complete();
+  }
+&nbsp;
+  openWindow(): Subject&lt;T&gt; {
+    const window = new Subject&lt;T&gt;();
+    this.windows.push(window);
+    const destination = this.destination;
+    destination.next(window);
+    return window;
+  }
+&nbsp;
+  closeWindow(window: Subject&lt;T&gt;) {
+    window.complete();
+    const windows = this.windows;
+    windows.splice(windows.indexOf(window), 1);
+  }
+}
+&nbsp;
+interface TimeSpanOnlyState&lt;T&gt; {
+  window: Subject&lt;any&gt;;
+  windowTimeSpan: number;
+  subscriber: WindowTimeSubscriber&lt;T&gt;;
+}
+&nbsp;
+function dispatchWindowTimeSpanOnly&lt;T&gt;(state: TimeSpanOnlyState&lt;T&gt;) {
+  const { subscriber, windowTimeSpan, window } = state;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (window) {
+    window.complete();
+  }
+  state.window = subscriber.openWindow();
+  (&lt;any&gt;this).schedule(state, windowTimeSpan);
+}
+&nbsp;
+interface Context&lt;T&gt; {
+  action: Action&lt;CreationState&lt;T&gt;&gt;;
+  subscription: Subscription;
+}
+&nbsp;
+interface DispatchArg&lt;T&gt; {
+  subscriber: WindowTimeSubscriber&lt;T&gt;;
+  window: Subject&lt;T&gt;;
+  context: Context&lt;T&gt;;
+}
+&nbsp;
+function dispatchWindowCreation&lt;T&gt;(state: CreationState&lt;T&gt;) {
+  let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
+  let window = subscriber.openWindow();
+  let action = &lt;Action&lt;CreationState&lt;T&gt;&gt;&gt;this;
+  let context: Context&lt;T&gt; = { action, subscription: &lt;any&gt;null };
+  const timeSpanState: DispatchArg&lt;T&gt; = { subscriber, window, context };
+  context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);
+  action.add(context.subscription);
+  action.schedule(state, windowCreationInterval);
+}
+&nbsp;
+function dispatchWindowClose&lt;T&gt;(arg: DispatchArg&lt;T&gt;) {
+  const { subscriber, window, context } = arg;
+  if (context &amp;&amp; context.action &amp;&amp; context.subscription) {
+    context.action.remove(context.subscription);
+  }
+  subscriber.closeWindow(window);
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

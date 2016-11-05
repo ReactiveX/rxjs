@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/observable/dom/WebSocketSubject.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">All files</a> / <a href="index.html">src/observable/dom</a> WebSocketSubject.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">91.85% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>124/135</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">78.33% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>47/60</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">91.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>22/24</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">91.47% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>118/129</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Subject, AnonymousSubject } from '../../Subject';
+import { Subscriber } from '../../Subscriber';
+import { Observable } from '../../Observable';
+import { Subscription } from '../../Subscription';
+import { Operator } from '../../Operator';
+import { root } from '../../util/root';
+import { ReplaySubject } from '../../ReplaySubject';
+import { Observer, NextObserver } from '../../Observer';
+import { tryCatch } from '../../util/tryCatch';
+import { errorObject } from '../../util/errorObject';
+import { assign } from '../../util/assign';
+&nbsp;
+export interface WebSocketSubjectConfig {
+  url: string;
+  protocol?: string | Array&lt;string&gt;;
+  resultSelector?: &lt;T&gt;(e: MessageEvent) =&gt; T;
+  openObserver?: NextObserver&lt;Event&gt;;
+  closeObserver?: NextObserver&lt;CloseEvent&gt;;
+  closingObserver?: NextObserver&lt;void&gt;;
+  WebSocketCtor?: { new(url: string, protocol?: string|Array&lt;string&gt;): WebSocket };
+}
+&nbsp;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+export class WebSocketSubject&lt;T&gt; extends AnonymousSubject&lt;T&gt; {
+&nbsp;
+  url: string;
+  protocol: string|Array&lt;string&gt;;
+  socket: WebSocket;
+  openObserver: NextObserver&lt;Event&gt;;
+  closeObserver: NextObserver&lt;CloseEvent&gt;;
+  closingObserver: NextObserver&lt;void&gt;;
+  WebSocketCtor: { new(url: string, protocol?: string|Array&lt;string&gt;): WebSocket };
+&nbsp;
+  private _output: Subject&lt;T&gt;;
+&nbsp;
+  resultSelector(e: MessageEvent) {
+    return JSON.parse(e.data);
+  }
+&nbsp;
+  /**
+   * @param urlConfigOrSource
+   * @return {WebSocketSubject}
+   * @static true
+   * @name webSocket
+   * @owner Observable
+   */
+  static create&lt;T&gt;(urlConfigOrSource: string | WebSocketSubjectConfig): WebSocketSubject&lt;T&gt; {
+    return new WebSocketSubject&lt;T&gt;(urlConfigOrSource);
+  }
+&nbsp;
+  constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable&lt;T&gt;, destination?: Observer&lt;T&gt;) {
+    if (urlConfigOrSource instanceof Observable) {
+      super(destination, &lt;Observable&lt;T&gt;&gt; urlConfigOrSource);
+    } else {
+      super();
+      this.WebSocketCtor = root.WebSocket;
+      this._output = new Subject&lt;T&gt;();
+      if (typeof urlConfigOrSource === 'string') {
+        this.url = urlConfigOrSource;
+      } else {
+        // WARNING: config object could override important members here.
+        assign(this, urlConfigOrSource);
+      }
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.WebSocketCtor) {
+<span class="cstat-no" title="statement not covered" >        throw new Error('no WebSocket constructor can be found');</span>
+      }
+      this.destination = new ReplaySubject();
+    }
+  }
+&nbsp;
+  lift&lt;R&gt;(operator: Operator&lt;T, R&gt;): WebSocketSubject&lt;R&gt; {
+    const sock = new WebSocketSubject&lt;R&gt;(this, &lt;any&gt; this.destination);
+    sock.operator = operator;
+    return sock;
+  }
+&nbsp;
+  private _resetState() {
+    this.socket = null;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!this.source) {
+      this.destination = new ReplaySubject();
+    }
+    this._output = new Subject&lt;T&gt;();
+  }
+&nbsp;
+  // TODO: factor this out to be a proper Operator/Subscriber implementation and eliminate closures
+  multiplex(subMsg: () =&gt; any, unsubMsg: () =&gt; any, messageFilter: (value: T) =&gt; boolean) {
+    const self = this;
+    return new Observable((observer: Observer&lt;any&gt;) =&gt; {
+      const result = tryCatch(subMsg)();
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (result === errorObject) {
+<span class="cstat-no" title="statement not covered" >        observer.error(errorObject.e);</span>
+      } else {
+        self.next(result);
+      }
+&nbsp;
+      let subscription = self.subscribe(x =&gt; {
+        const result = tryCatch(messageFilter)(x);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (result === errorObject) {
+<span class="cstat-no" title="statement not covered" >          observer.error(errorObject.e);</span>
+        } else if (result) {
+          observer.next(x);
+        }
+      },
+        err =&gt; observer.error(err),
+        () =&gt; observer.complete());
+&nbsp;
+      return () =&gt; {
+        const result = tryCatch(unsubMsg)();
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (result === errorObject) {
+<span class="cstat-no" title="statement not covered" >          observer.error(errorObject.e);</span>
+        } else {
+          self.next(result);
+        }
+        subscription.unsubscribe();
+      };
+    });
+  }
+&nbsp;
+  private _connectSocket() {
+    const { WebSocketCtor } = this;
+    const observer = this._output;
+&nbsp;
+    let socket: WebSocket = null;
+    try {
+      socket = this.protocol ?
+        new WebSocketCtor(this.url, this.protocol) :
+        new WebSocketCtor(this.url);
+      this.socket = socket;
+    } catch (e) {
+      observer.error(e);
+      return;
+    }
+&nbsp;
+    const subscription = new Subscription(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      this.socket = null;</span>
+<span class="cstat-no" title="statement not covered" >      if (socket &amp;&amp; socket.readyState === 1) {</span>
+<span class="cstat-no" title="statement not covered" >        socket.close();</span>
+      }
+    });
+&nbsp;
+    socket.onopen = (e: Event) =&gt; {
+      const openObserver = this.openObserver;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (openObserver) {
+<span class="cstat-no" title="statement not covered" >        openObserver.next(e);</span>
+      }
+&nbsp;
+      const queue = this.destination;
+&nbsp;
+      this.destination = Subscriber.create(
+        (x) =&gt; socket.readyState === 1 &amp;&amp; socket.send(x),
+        (e) =&gt; {
+          const closingObserver = this.closingObserver;
+          if (closingObserver) {
+            closingObserver.next(undefined);
+          }
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (e &amp;&amp; e.code) {
+            socket.close(e.code, e.reason);
+          } else {
+<span class="cstat-no" title="statement not covered" >            observer.error(new TypeError('WebSocketSubject.error must be called with an object with an error code, ' +</span>
+              'and an optional reason: { code: number, reason: string }'));
+          }
+          this._resetState();
+        },
+        ( ) =&gt; {
+          const closingObserver = this.closingObserver;
+          if (closingObserver) {
+            closingObserver.next(undefined);
+          }
+          socket.close();
+          this._resetState();
+        }
+      );
+&nbsp;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (queue &amp;&amp; queue instanceof ReplaySubject) {
+        subscription.add((&lt;ReplaySubject&lt;T&gt;&gt;queue).subscribe(this.destination));
+      }
+    };
+&nbsp;
+    socket.onerror = <span class="fstat-no" title="function not covered" >(</span>e: Event) =&gt; {
+<span class="cstat-no" title="statement not covered" >      this._resetState();</span>
+<span class="cstat-no" title="statement not covered" >      observer.error(e);</span>
+    };
+&nbsp;
+    socket.onclose = (e: CloseEvent) =&gt; {
+      this._resetState();
+      const closeObserver = this.closeObserver;
+      if (closeObserver) {
+        closeObserver.next(e);
+      }
+      if (e.wasClean) {
+        observer.complete();
+      } else {
+        observer.error(e);
+      }
+    };
+&nbsp;
+    socket.onmessage = (e: MessageEvent) =&gt; {
+      const result = tryCatch(this.resultSelector)(e);
+      if (result === errorObject) {
+        observer.error(errorObject.e);
+      } else {
+        observer.next(result);
+      }
+    };
+  }
+&nbsp;
+  protected _subscribe(subscriber: Subscriber&lt;T&gt;): Subscription {
+    const { source } = this;
+    if (source) {
+      return source.subscribe(subscriber);
+    }
+    if (!this.socket) {
+      this._connectSocket();
+    }
+    let subscription = new Subscription();
+    subscription.add(this._output.subscribe(subscriber));
+    subscription.add(() =&gt; {
+      const { socket } = this;
+      if (this._output.observers.length === 0) {
+        if (socket &amp;&amp; socket.readyState === 1) {
+          socket.close();
+        }
+        this._resetState();
+      }
+    });
+    return subscription;
+  }
+&nbsp;
+  unsubscribe() {
+    const { source, socket } = this;
+    if (socket &amp;&amp; socket.readyState === 1) {
+      socket.close();
+      this._resetState();
+    }
+    super.unsubscribe();
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!source) {
+      this.destination = new ReplaySubject();
+    }
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 04 2016 10:11:12 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
