@@ -23,7 +23,10 @@ module.exports = {
   globals: {
     document: {
       querySelector: function () {
-        return {addEventListener: function () {}}
+        return {
+          addEventListener: function () {},
+          removeEventListener: function () {}
+        }
       }
     },
     hot: marbleTesting.hot,
