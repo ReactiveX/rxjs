@@ -15,6 +15,10 @@ chai.use(sinonChai);
 
 declare const module, global, Suite, Test: any;
 
+if (!global.Promise) {
+  global.Promise = require('promise'); // tslint:disable-line
+}
+
 const diagramFunction = global.asDiagram;
 
 //mocha creates own global context per each test suite, simple patching to global won't deliver its context into test cases.
