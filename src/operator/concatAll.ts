@@ -2,6 +2,11 @@ import { Observable } from '../Observable';
 import { Subscribable } from '../Observable';
 import { MergeAllOperator } from './mergeAll';
 
+/* tslint:disable:max-line-length */
+export function concatAll<T>(this: Observable<T>): T;
+export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
+/* tslint:disable:max-line-length */
+
 /**
  * Converts a higher-order Observable into a first-order Observable by
  * concatenating the inner Observables in order.
@@ -44,10 +49,6 @@ import { MergeAllOperator } from './mergeAll';
  * @method concatAll
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function concatAll<T>(this: Observable<T>): T;
-export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
-/* tslint:disable:max-line-length */
 export function concatAll<T>(this: Observable<T>): T {
   return <any>this.lift<any>(new MergeAllOperator<T>(1));
 }

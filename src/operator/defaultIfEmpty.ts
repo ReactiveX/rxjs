@@ -2,6 +2,11 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 
+/* tslint:disable:max-line-length */
+export function defaultIfEmpty<T>(this: Observable<T>, defaultValue?: T): Observable<T>;
+export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue?: R): Observable<T | R>;
+/* tslint:disable:max-line-length */
+
 /**
  * Emits a given value if the source Observable completes without emitting any
  * `next` value, otherwise mirrors the source Observable.
@@ -32,10 +37,6 @@ import { Subscriber } from '../Subscriber';
  * @method defaultIfEmpty
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function defaultIfEmpty<T>(this: Observable<T>, defaultValue?: T): Observable<T>;
-export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue?: R): Observable<T | R>;
-/* tslint:disable:max-line-length */
 export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue: R = null): Observable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }

@@ -37,6 +37,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
   static create<T>(...sources: SubscribableOrPromise<T>[]): Observable<T[]>;
   static create<R>(...sources: SubscribableOrPromise<any>[]): Observable<R>;
   /* tslint:enable:max-line-length */
+
   /**
    * @param sources
    * @return {any}

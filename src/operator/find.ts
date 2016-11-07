@@ -2,6 +2,13 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 
+/* tslint:disable:max-line-length */
+export function find<T, S extends T>(this: Observable<T>,
+                                     predicate: ((value: T, index: number, source: Observable<T>) => boolean) |
+                                                ((value: T, index: number, source: Observable<T>) => value is S),
+                                     thisArg?: any): Observable<S>;
+/* tslint:disable:max-line-length */
+
 /**
  * Emits only the first value emitted by the source Observable that meets some
  * condition.
@@ -35,12 +42,6 @@ import { Subscriber } from '../Subscriber';
  * @method find
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function find<T, S extends T>(this: Observable<T>,
-                                     predicate: ((value: T, index: number, source: Observable<T>) => boolean) |
-                                                ((value: T, index: number, source: Observable<T>) => value is S),
-                                     thisArg?: any): Observable<S>;
-/* tslint:disable:max-line-length */
 export function find<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
                         thisArg?: any): Observable<T> {
   if (typeof predicate !== 'function') {

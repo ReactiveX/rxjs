@@ -1,16 +1,17 @@
 import { Observable } from '../Observable';
 import { root } from '../util/root';
 
+/* tslint:disable:max-line-length */
+export function toPromise<T>(this: Observable<T>): Promise<T>;
+export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
+/* tslint:disable:max-line-length */
+
 /**
  * @param PromiseCtor
  * @return {Promise<T>}
  * @method toPromise
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function toPromise<T>(this: Observable<T>): Promise<T>;
-export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
-/* tslint:disable:max-line-length */
 export function toPromise<T>(this: Observable<T>, PromiseCtor?: typeof Promise): Promise<T> {
   if (!PromiseCtor) {
     if (root.Rx && root.Rx.config && root.Rx.config.Promise) {

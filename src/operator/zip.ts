@@ -9,12 +9,6 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { $$iterator } from '../symbol/iterator';
 
-/**
- * @param observables
- * @return {Observable<R>}
- * @method zip
- * @owner Observable
- */
 /* tslint:disable:max-line-length */
 export function zipProto<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;
 export function zipProto<T, T2, R>(this: Observable<T>, v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): Observable<R>;
@@ -31,6 +25,13 @@ export function zipProto<T, R>(this: Observable<T>, ...observables: Array<Observ
 export function zipProto<T, R>(this: Observable<T>, array: Array<ObservableInput<T>>): Observable<R>;
 export function zipProto<T, TOther, R>(this: Observable<T>, array: Array<ObservableInput<TOther>>, project: (v1: T, ...values: Array<TOther>) => R): Observable<R>;
 /* tslint:disable:max-line-length */
+
+/**
+ * @param observables
+ * @return {Observable<R>}
+ * @method zip
+ * @owner Observable
+ */
 export function zipProto<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
   return this.lift.call(zipStatic<R>(this, ...observables));
 }
