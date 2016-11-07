@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import * as Rx from '../dist/cjs/Rx';
 import {TeardownLogic} from '../dist/cjs/Subscription';
 
-declare const {asDiagram, expectObservable};
+declare const {asDiagram, expectObservable, rxTestScheduler};
 const Subscriber = Rx.Subscriber;
 const Observable = Rx.Observable;
 
