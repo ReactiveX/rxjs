@@ -1,4 +1,5 @@
 declare const {rxTestScheduler, time, type};
+import * as _ from 'lodash';
 
 const booleans = { T: true, F: false };
 
@@ -193,7 +194,7 @@ describe('Observable.prototype.sequenceEqual', () => {
       z: { value: 'derp', weCouldBe: 'dancin, yeah' }
     };
 
-    expectObservable(source).toBe(expected, Object.assign({}, booleans, values), new Error('shazbot'));
+    expectObservable(source).toBe(expected, _.assign(booleans, values), new Error('shazbot'));
     expectSubscriptions(s1.subscriptions).toBe(s1subs);
     expectSubscriptions(s2.subscriptions).toBe(s2subs);
   });
@@ -217,7 +218,7 @@ describe('Observable.prototype.sequenceEqual', () => {
       z: { value: 'derp', weCouldBe: 'dancin, yeah' }
     };
 
-    expectObservable(source).toBe(expected, Object.assign({}, booleans, values));
+    expectObservable(source).toBe(expected, _.assign(booleans, values));
     expectSubscriptions(s1.subscriptions).toBe(s1subs);
     expectSubscriptions(s2.subscriptions).toBe(s2subs);
   });
