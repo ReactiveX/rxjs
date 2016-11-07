@@ -4,6 +4,11 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
 
+/* tslint:disable:max-line-length */
+export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
+export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: selector<T>): Observable<T>;
+/* tslint:disable:max-line-length */
+
 /**
  * Returns an Observable that emits the results of invoking a specified selector on items
  * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.
@@ -23,10 +28,6 @@ import { ConnectableObservable, connectableObservableDescriptor } from '../obser
  * @method multicast
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
-export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: selector<T>): Observable<T>;
-/* tslint:disable:max-line-length */
 export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
                              selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
   let subjectFactory: () => Subject<T>;

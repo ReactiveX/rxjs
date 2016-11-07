@@ -7,6 +7,12 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
 
+/* tslint:disable:max-line-length */
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
+/* tslint:disable:max-line-length */
+
 /**
  * Buffers the source Observable values for a specific time period.
  *
@@ -50,11 +56,6 @@ import { isScheduler } from '../util/isScheduler';
  * @method bufferTime
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
-/* tslint:disable:max-line-length */
 export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number): Observable<T[]> {
   let length: number = arguments.length;
 

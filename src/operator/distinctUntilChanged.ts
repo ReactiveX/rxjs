@@ -5,6 +5,11 @@ import { errorObject } from '../util/errorObject';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
+/* tslint:disable:max-line-length */
+export function distinctUntilChanged<T>(this: Observable<T>, compare?: (x: T, y: T) => boolean): Observable<T>;
+export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
+/* tslint:disable:max-line-length */
+
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
  * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
@@ -14,10 +19,6 @@ import { TeardownLogic } from '../Subscription';
  * @method distinctUntilChanged
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function distinctUntilChanged<T>(this: Observable<T>, compare?: (x: T, y: T) => boolean): Observable<T>;
-export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
-/* tslint:disable:max-line-length */
 export function distinctUntilChanged<T, K>(this: Observable<T>, compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T> {
   return this.lift(new DistinctUntilChangedOperator<T, K>(compare, keySelector));
 }

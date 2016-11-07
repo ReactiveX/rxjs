@@ -2,6 +2,12 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 
+/* tslint:disable:max-line-length */
+export function reduce<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
+export function reduce<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
+export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
+/* tslint:disable:max-line-length */
+
 /**
  * Applies an accumulator function over the source Observable, and returns the
  * accumulated result when the source completes, given an optional seed value.
@@ -47,11 +53,6 @@ import { Subscriber } from '../Subscriber';
  * @method reduce
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function reduce<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
-export function reduce<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
-export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
-/* tslint:disable:max-line-length */
 export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T) => R, seed?: R): Observable<R> {
   let hasSeed = false;
   // providing a seed of `undefined` *should* be valid and trigger

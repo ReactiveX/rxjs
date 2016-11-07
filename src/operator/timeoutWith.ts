@@ -8,6 +8,11 @@ import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
+/* tslint:disable:max-line-length */
+export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
+export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<R>, scheduler?: Scheduler): Observable<T | R>;
+/* tslint:disable:max-line-length */
+
 /**
  * @param due
  * @param withObservable
@@ -16,10 +21,6 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method timeoutWith
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
-export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<R>, scheduler?: Scheduler): Observable<T | R>;
-/* tslint:disable:max-line-length */
 export function timeoutWith<T, R>(this: Observable<T>, due: number | Date,
                                   withObservable: ObservableInput<R>,
                                   scheduler: Scheduler = async): Observable<T | R> {

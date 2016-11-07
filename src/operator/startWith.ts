@@ -6,6 +6,16 @@ import { EmptyObservable } from '../observable/EmptyObservable';
 import { concatStatic } from './concat';
 import { isScheduler } from '../util/isScheduler';
 
+/* tslint:disable:max-line-length */
+export function startWith<T>(this: Observable<T>, v1: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: Scheduler): Observable<T>;
+export function startWith<T>(this: Observable<T>, ...array: Array<T | Scheduler>): Observable<T>;
+/* tslint:disable:max-line-length */
+
 /**
  * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the
  * source Observable.
@@ -18,15 +28,6 @@ import { isScheduler } from '../util/isScheduler';
  * @method startWith
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function startWith<T>(this: Observable<T>, v1: T, scheduler?: Scheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, scheduler?: Scheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, scheduler?: Scheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, scheduler?: Scheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: Scheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: Scheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, ...array: Array<T | Scheduler>): Observable<T>;
-/* tslint:disable:max-line-length */
 export function startWith<T>(this: Observable<T>, ...array: Array<T | Scheduler>): Observable<T> {
   let scheduler = <Scheduler>array[array.length - 1];
   if (isScheduler(scheduler)) {

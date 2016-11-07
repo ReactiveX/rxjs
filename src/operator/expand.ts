@@ -9,6 +9,11 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
+/* tslint:disable:max-line-length */
+export function expand<T>(this: Observable<T>, project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): Observable<T>;
+export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): Observable<R>;
+/* tslint:disable:max-line-length */
+
 /**
  * Recursively projects each source value to an Observable which is merged in
  * the output Observable.
@@ -54,10 +59,6 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method expand
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function expand<T>(this: Observable<T>, project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: Scheduler): Observable<T>;
-export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: Scheduler): Observable<R>;
-/* tslint:disable:max-line-length */
 export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
                              scheduler: Scheduler = undefined): Observable<R> {

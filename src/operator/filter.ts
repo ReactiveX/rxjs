@@ -3,6 +3,13 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
+/* tslint:disable:max-line-length */
+export function filter<T, S extends T>(this: Observable<T>,
+                                       predicate: ((value: T, index: number) => boolean) |
+                                                  ((value: T, index: number) => value is S),
+                                       thisArg?: any): Observable<S>;
+/* tslint:disable:max-line-length */
+
 /**
  * Filter items emitted by the source Observable by only emitting those that
  * satisfy a specified predicate.
@@ -43,11 +50,6 @@ import { TeardownLogic } from '../Subscription';
  * @method filter
  * @owner Observable
  */
-/* tslint:disable:max-line-length */
-export function filter<T, S extends T>(this: Observable<T>,
-                                       predicate: ((value: T, index: number) => boolean) |
-                                                  ((value: T, index: number) => value is S),
-                                       thisArg?: any): Observable<S>;
 export function filter<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean,
                           thisArg?: any): Observable<T> {
   return this.lift(new FilterOperator(predicate, thisArg));
