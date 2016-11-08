@@ -179,7 +179,7 @@ describe('Observable.ajax', () => {
 
   it('should succeed on 200', () => {
     const expected = { foo: 'bar' };
-    let result;
+    let result: Rx.AjaxResponse;
     let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
@@ -188,7 +188,7 @@ describe('Observable.ajax', () => {
     };
 
     Rx.Observable.ajax(obj)
-      .subscribe((x: any) => {
+      .subscribe(x => {
         result = x;
       }, null, () => {
         complete = true;
@@ -208,7 +208,7 @@ describe('Observable.ajax', () => {
   });
 
   it('should fail on 404', () => {
-    let error;
+    let error: Rx.AjaxError;
     const obj = {
       url: '/flibbertyJibbet',
       normalizeError: (e: any, xhr: any, type: any) => {
@@ -241,7 +241,7 @@ describe('Observable.ajax', () => {
   });
 
   it('should fail on 404', () => {
-    let error;
+    let error: Rx.AjaxError;
     const obj = {
       url: '/flibbertyJibbet',
       normalizeError: (e: any, xhr: any, type: any) => {
