@@ -25,10 +25,10 @@ env:
   - alias grunt=./node_modules/grunt-cli/bin/grunt
 
 before_install:
-  - npm install -g npm@latest && npm install -g yarn
+  - npm install -g npm@3 && npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run
 
 install:
-  - yarn && npm install grunt-cli && npm install grunt@0.4.1 grunt-contrib-connect grunt-run && npm run lint
+  - npm install && npm run lint
 
 script:
   - npm run build_spec && npm run test_mocha && node ./node_modules/markdown-doctest/bin/cmd.js
