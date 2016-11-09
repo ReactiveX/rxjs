@@ -1,3 +1,4 @@
+///<reference path='../../typings/index.d.ts'/>
 declare const global: any;
 
 import * as Rx from '../../dist/cjs/Rx';
