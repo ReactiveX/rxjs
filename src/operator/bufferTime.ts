@@ -198,7 +198,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchBufferTimeSpanOnly(state: any) {
+function dispatchBufferTimeSpanOnly(this: Action<any>, state: any) {
   const subscriber: BufferTimeSubscriber<any> = state.subscriber;
 
   const prevContext = state.context;
@@ -208,7 +208,7 @@ function dispatchBufferTimeSpanOnly(state: any) {
 
   if (!subscriber.closed) {
     state.context = subscriber.openContext();
-    state.context.closeAction = (<any>this).schedule(state, state.bufferTimeSpan);
+    state.context.closeAction = this.schedule(state, state.bufferTimeSpan);
   }
 }
 
@@ -217,7 +217,7 @@ interface DispatchArg<T> {
   context: Context<T>;
 }
 
-function dispatchBufferCreation<T>(state: CreationState<T>) {
+function dispatchBufferCreation<T>(this: Action<CreationState<T>>, state: CreationState<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const context = subscriber.openContext();
   const action = <Action<CreationState<T>>>this;

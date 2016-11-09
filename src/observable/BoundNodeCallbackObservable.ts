@@ -2,6 +2,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
 import { tryCatch } from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
 import { AsyncSubject } from '../AsyncSubject';
@@ -89,7 +90,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
     if (!scheduler) {
       if (!subject) {
         subject = this.subject = new AsyncSubject<T>();
-        const handler = function handlerFn(...innerArgs: any[]) {
+        const handler = function handlerFn(this: any, ...innerArgs: any[]) {
           const source = (<any>handlerFn).source;
           const { selector, subject } = source;
           const err = innerArgs.shift();
@@ -124,7 +125,12 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   }
 }
 
-function dispatch<T>(state: { source: BoundNodeCallbackObservable<T>, subscriber: Subscriber<T> }) {
+interface DispatchState<T> {
+  source: BoundNodeCallbackObservable<T>;
+  subscriber: Subscriber<T>;
+}
+
+function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
   const self = (<Subscription> this);
   const { source, subscriber } = state;
   // XXX: cast to `any` to access to the private field in `source`.
@@ -134,7 +140,7 @@ function dispatch<T>(state: { source: BoundNodeCallbackObservable<T>, subscriber
   if (!subject) {
     subject = source.subject = new AsyncSubject<T>();
 
-    const handler = function handlerFn(...innerArgs: any[]) {
+    const handler = function handlerFn(this: any, ...innerArgs: any[]) {
       const source = (<any>handlerFn).source;
       const { selector, subject } = source;
       const err = innerArgs.shift();

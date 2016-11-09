@@ -2,6 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
 import { TeardownLogic } from '../Subscription';
 
@@ -84,8 +85,8 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNotification<T>(state: any) {
+function dispatchNotification<T>(this: Action<any>, state: any) {
   let { subscriber, period } = state;
   subscriber.notifyNext();
-  (<any>this).schedule(state, period);
+  this.schedule(state, period);
 }
