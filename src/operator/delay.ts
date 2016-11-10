@@ -2,9 +2,11 @@ import { async } from '../scheduler/async';
 import { isDate } from '../util/isDate';
 import { Operator } from '../Operator';
 import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
 import { Observable } from '../Observable';
+import { PartialObserver } from '../Observer';
 import { TeardownLogic } from '../Subscription';
 
 /**
@@ -63,17 +65,23 @@ class DelayOperator<T> implements Operator<T, T> {
   }
 }
 
+interface DelayState<T> {
+  source: DelaySubscriber<T>;
+  destination: PartialObserver<T>;
+  scheduler: Scheduler;
+}
+
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
 class DelaySubscriber<T> extends Subscriber<T> {
-  private queue: Array<any> = [];
+  private queue: Array<DelayMessage<T>> = [];
   private active: boolean = false;
   private errored: boolean = false;
 
-  private static dispatch(state: any): void {
+  private static dispatch<T>(this: Action<DelayState<T>>, state: DelayState<T>): void {
     const source = state.source;
     const queue = source.queue;
     const scheduler = state.scheduler;
@@ -85,7 +93,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
 
     if (queue.length > 0) {
       const delay = Math.max(0, queue[0].time - scheduler.now());
-      (<any> this).schedule(state, delay);
+      this.schedule(state, delay);
     } else {
       source.active = false;
     }
@@ -99,12 +107,12 @@ class DelaySubscriber<T> extends Subscriber<T> {
 
   private _schedule(scheduler: Scheduler): void {
     this.active = true;
-    this.add(scheduler.schedule(DelaySubscriber.dispatch, this.delay, {
+    this.add(scheduler.schedule<DelayState<T>>(DelaySubscriber.dispatch, this.delay, {
       source: this, destination: this.destination, scheduler: scheduler
     }));
   }
 
-  private scheduleNotification(notification: Notification<any>): void {
+  private scheduleNotification(notification: Notification<T>): void {
     if (this.errored === true) {
       return;
     }
@@ -134,7 +142,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
 }
 
 class DelayMessage<T> {
-  constructor(private time: number,
-              private notification: any) {
+  constructor(public time: number,
+              public notification: Notification<T>) {
   }
 }
