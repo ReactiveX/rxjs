@@ -83,7 +83,7 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
   private _oneComplete = false;
 
   constructor(destination: Observer<R>,
-              private compareTo: Observable<T>,
+              compareTo: Observable<T>,
               private comparor: (a: T, b: T) => boolean) {
     super(destination);
     this.add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, this)));
