@@ -89,7 +89,7 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
   private toRespond: number[] = [];
 
   constructor(destination: Subscriber<R>,
-              private observables: Observable<any>[],
+              observables: Observable<any>[],
               private project?: (...values: any[]) => Observable<R>) {
     super(destination);
     const len = observables.length;
