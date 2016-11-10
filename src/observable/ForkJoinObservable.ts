@@ -87,7 +87,7 @@ class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
   private haveValues = 0;
 
   constructor(destination: Subscriber<T>,
-              private sources: Array<SubscribableOrPromise<any>>,
+              sources: Array<SubscribableOrPromise<any>>,
               private resultSelector?: (...values: Array<any>) => T) {
     super(destination);
 
