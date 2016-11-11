@@ -53,68 +53,72 @@ enabling "composite" subscription behavior.
 |RxJS 4|RxJS 5|
 |---|---|
 |`amb`|`race`|
-|`bufferWithCount`|`bufferCount`|
-|`bufferWithTime`|`bufferTime`|
-|`flatMap` or `selectMany`|`mergeMap` or `flatMap`(alias)|
-|`flatMapFirst`|`exhaustMap`|
-|`flatMapLatest`|`switchMap`|
-|`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
-|`fromCallback`|`bindCallback`|
-|`fromNodeCallback`|`bindNodeCallback`|
-|`publishValue`|`publishBehavior`|
-|`replay`|`publishReplay`|
-|`return` or `just`|`of`|
-|`select`|`map`|
-|`selectConcat`|`concatMap`|
-|`switchFirst`|`exhaust`|
-|`tap`|`do`|
-|`windowWithTime`|`windowTime`|
-|`windowWithCount`|`windowCount`|
-|`where`|`filter`|
 |`and`|Not yet implemented|
 |`asObservable`|Not yet implemented|
 |`average`|Not yet implemented|
+|`bufferWithCount`|`bufferCount`|
+|`bufferWithTime`|`bufferTime`|
 |`controlled`|Not yet implemented|
 |`delaySubscription`|Not yet implemented|
 |`doWhile`|Not yet implemented|
 |`extend`|Not yet implemented|
+|`flatMapFirst`|`exhaustMap`|
+|`flatMapLatest`|`switchMap`|
+|`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
+|`flatMap` or `selectMany`|`mergeMap` or `flatMap`(alias)|
+|`fromCallback`|`bindCallback`|
+|`fromNodeCallback`|`bindNodeCallback`|
 |`groupByUntil`|Not yet implemented|
 |`groupJoin`|Not yet implemented|
 |`includes`|Not yet implemented|
 |`indexOf`|Not yet implemented|
 |`join`|Not yet implemented|
-|`jortSort`|Not yet implemented|
 |`jortSortUntil`|Not yet implemented|
+|`jortSort`|Not yet implemented|
+|`just`|`of`|
 |`lastIndexOf`|Not yet implemented|
 |`manySelect`|Not yet implemented|
 |`maxBy`|Not yet implemented|
 |`minBy`|Not yet implemented|
+|`of`|`of`|
 |`ofObjectChanges`|Not yet implemented|
-|`pausable`|Not yet implemented|
 |`pausableBuffered`|Not yet implemented|
+|`pausable`|Not yet implemented|
+|`pluck`|`pluck`|
+|`publishLast`|`publishLast`|
+|`publishValue`|`publishBehavior`|
+|`replay`|`publishReplay`|
+|`return`|`of`|
+|`selectConcatObserver` or `concatMapObserver`|Not yet implemented|
+|`selectConcat`|`concatMap`|
+|`selectManyObserver` or `flatMapObserver`|Not yet implemented|
+|`select`|`map`|
 |`shareReplay`|Not yet implemented|
 |`shareValue`|Not yet implemented|
-|`selectConcatObserver` or `concatMapObserver`|Not yet implemented|
-|`selectManyObserver` or `flatMapObserver`|Not yet implemented|
 |`singleInstance`|Not yet implemented|
-|`skipLast`|Not yet implemented|
 |`skipLastWithTime`|Not yet implemented|
+|`skipLast`|Not yet implemented|
 |`skipUntilWithTime`|Not yet implemented|
 |`slice`|Not yet implemented|
 |`some`|Not yet implemented|
-|`sum`|Not yet implemented|
-|`takeLastBuffer`|Not yet implemented|
+|`sum`|`Not yet implemented`|
+|`switchFirst`|`exhaust`|
 |`takeLastBufferWithTime`|Not yet implemented|
+|`takeLastBuffer`|Not yet implemented|
 |`takeLastWithTime`|Not yet implemented|
 |`takeUntilWithTime`|Not yet implemented|
-|`tapOnNext`|`do`|
-|`tapOnError`|`do`|
 |`tapOnCompleted`|`do`|
+|`tapOnError`|`do`|
+|`tapOnNext`|`do`|
+|`tap`|`do`|
 |`timestamp`|Not yet implemented|
 |`toMap`|Not yet implemented|
 |`toSet`|Not yet implemented|
 |`transduce`|Not yet implemented|
+|`where`|`filter`|
+|`windowWithCount`|`windowCount`|
 |`windowWithTimeOrCount`|Not yet implemented|
+|`windowWithTime`|`windowTime`|
 
 ## Operator Splits
 
