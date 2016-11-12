@@ -58,28 +58,39 @@ enabling "composite" subscription behavior.
 |`average`|Not yet implemented|
 |`bufferWithCount`|`bufferCount`|
 |`bufferWithTime`|`bufferTime`|
+|`concat`|`concat`|
+|`concatAll`|`concatAll`|
+|`concatMap`|`concatMap`|
+|`concatMapObserver`|Not yet implemented|
 |`controlled`|Not yet implemented|
 |`delaySubscription`|Not yet implemented|
+|`do`|`do`|
+|`doAction`|`do`|
+|`doOnCompleted`|`do(null, null, fn)`|
+|`doOnError`|`do(null, fn)`|
+|`doOnNext`|`do(fn)`|
 |`doWhile`|Not yet implemented|
 |`extend`|Not yet implemented|
 |`flatMapFirst`|`exhaustMap`|
 |`flatMapLatest`|`switchMap`|
 |`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
-|`flatMap` or `selectMany`|`mergeMap` or `flatMap`(alias)|
+|`flatMap`|`mergeMap` or `flatMap`(alias)|
 |`fromCallback`|`bindCallback`|
 |`fromNodeCallback`|`bindNodeCallback`|
-|`groupByUntil`|Not yet implemented|
+|`groupByUntil`|`groupBy(keySelector, elementSelector, durationSelector)`|
 |`groupJoin`|Not yet implemented|
-|`includes`|Not yet implemented|
-|`indexOf`|Not yet implemented|
+|`includes(v)`|`.first(x => x === v, () => true, false)`|
+|`indexOf(v)`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).first()`|
 |`join`|Not yet implemented|
 |`jortSortUntil`|Not yet implemented|
 |`jortSort`|Not yet implemented|
-|`just`|`of`|
-|`lastIndexOf`|Not yet implemented|
+|`just(v)` or `just(a, b, c)`|`of(v)`, `of(a, b, c)`|
+|`lastIndexOf`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).last()`|
 |`manySelect`|Not yet implemented|
-|`maxBy`|Not yet implemented|
-|`minBy`|Not yet implemented|
+|`map(fn)`|`map(fn)`|
+|`map(value)`|`mapTo(value)`|
+|`maxBy(fn)`|`scan((s, v, i) => { let max = Math.max(s.max, fn(v, i)); return { max, value: max === s.max ? s.value : v }; }, { max: null, value: undefined }).last(x => x.max !== null, x => x.value)`|
+|`minBy(fn)`|`scan((s, v, i) => { let min = Math.min(s.min, fn(v, i)); return { min, value: min === s.min ? s.value : v }; }, { min: null, value: undefined }).last(x => x.min !== null, x => x.value)`|
 |`of`|`of`|
 |`ofObjectChanges`|Not yet implemented|
 |`pausableBuffered`|Not yet implemented|
@@ -89,36 +100,41 @@ enabling "composite" subscription behavior.
 |`publishValue`|`publishBehavior`|
 |`replay`|`publishReplay`|
 |`return`|`of`|
-|`selectConcatObserver` or `concatMapObserver`|Not yet implemented|
+|`selectConcatObserver`|Not yet implemented|
 |`selectConcat`|`concatMap`|
+|`selectMany(fn)`|`mergeMap(fn)` or `flatMap(fn)` (alias)|
+|`selectMany(observable)`|`mergeMapTo(observable)`|
 |`selectManyObserver` or `flatMapObserver`|Not yet implemented|
 |`select`|`map`|
-|`shareReplay`|Not yet implemented|
+|`shareReplay`|`publishReplay().refCount()`|
 |`shareValue`|Not yet implemented|
-|`singleInstance`|Not yet implemented|
+|`singleInstance`|`share`|
 |`skipLastWithTime`|Not yet implemented|
 |`skipLast`|Not yet implemented|
 |`skipUntilWithTime`|Not yet implemented|
 |`slice`|Not yet implemented|
-|`some`|Not yet implemented|
-|`sum`|`Not yet implemented`|
+|`some`|`first(fn, () => true, false)`|
+|`sum`|`reduce((s, v) => s + v, 0)`|
 |`switchFirst`|`exhaust`|
+|`takeLast`|`takeLast`|
 |`takeLastBufferWithTime`|Not yet implemented|
 |`takeLastBuffer`|Not yet implemented|
 |`takeLastWithTime`|Not yet implemented|
 |`takeUntilWithTime`|Not yet implemented|
-|`tapOnCompleted`|`do`|
-|`tapOnError`|`do`|
-|`tapOnNext`|`do`|
+|`tapOnCompleted(fn)`|`do(null, null, fn)`|
+|`tapOnError(fn)`|`do(null, fn)`|
+|`tapOnNext(fn)`|`do(fn)`|
 |`tap`|`do`|
-|`timestamp`|Not yet implemented|
-|`toMap`|Not yet implemented|
-|`toSet`|Not yet implemented|
+|`timestamp`|`map(v => ({ value: v, timestamp: Date.now() }))`|
+|`toMap(keySelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), v), new Map())`|
+|`toMap(keySelector, elmentSelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), elementSelector(v)), new Map())`|
+|`toSet`|`reduce((set, v) => set.add(v))`|
 |`transduce`|Not yet implemented|
 |`where`|`filter`|
 |`windowWithCount`|`windowCount`|
 |`windowWithTimeOrCount`|Not yet implemented|
 |`windowWithTime`|`windowTime`|
+|`zip`|`zip`|
 
 ## Operator Splits
 
