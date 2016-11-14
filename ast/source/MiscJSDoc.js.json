@@ -454,10 +454,10 @@
         "trailingComments": [
           {
             "type": "Block",
-            "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   isUnsubscribed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
+            "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   closed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
             "range": [
               2430,
-              3155
+              3147
             ],
             "loc": {
               "start": {
@@ -511,10 +511,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   isUnsubscribed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
+          "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   closed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
           "range": [
             2430,
-            3155
+            3147
           ],
           "loc": {
             "start": {
@@ -537,8 +537,8 @@
           "type": "Identifier",
           "name": "ObserverDoc",
           "range": [
-            3169,
-            3180
+            3161,
+            3172
           ],
           "loc": {
             "start": {
@@ -561,8 +561,8 @@
                 "type": "Identifier",
                 "name": "constructor",
                 "range": [
-                  3187,
-                  3198
+                  3179,
+                  3190
                 ],
                 "loc": {
                   "start": {
@@ -593,8 +593,8 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              3414,
-                              3418
+                              3406,
+                              3410
                             ],
                             "loc": {
                               "start": {
@@ -609,10 +609,10 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "name": "isUnsubscribed",
+                            "name": "closed",
                             "range": [
-                              3419,
-                              3433
+                              3411,
+                              3417
                             ],
                             "loc": {
                               "start": {
@@ -621,13 +621,13 @@
                               },
                               "end": {
                                 "line": 92,
-                                "column": 27
+                                "column": 19
                               }
                             }
                           },
                           "range": [
-                            3414,
-                            3433
+                            3406,
+                            3417
                           ],
                           "loc": {
                             "start": {
@@ -636,7 +636,7 @@
                             },
                             "end": {
                               "line": 92,
-                              "column": 27
+                              "column": 19
                             }
                           }
                         },
@@ -645,23 +645,23 @@
                           "value": false,
                           "raw": "false",
                           "range": [
-                            3436,
-                            3441
+                            3420,
+                            3425
                           ],
                           "loc": {
                             "start": {
                               "line": 92,
-                              "column": 30
+                              "column": 22
                             },
                             "end": {
                               "line": 92,
-                              "column": 35
+                              "column": 27
                             }
                           }
                         },
                         "range": [
-                          3414,
-                          3441
+                          3406,
+                          3425
                         ],
                         "loc": {
                           "start": {
@@ -670,13 +670,13 @@
                           },
                           "end": {
                             "line": 92,
-                            "column": 35
+                            "column": 27
                           }
                         }
                       },
                       "range": [
-                        3414,
-                        3442
+                        3406,
+                        3426
                       ],
                       "loc": {
                         "start": {
@@ -685,7 +685,7 @@
                         },
                         "end": {
                           "line": 92,
-                          "column": 36
+                          "column": 28
                         }
                       },
                       "leadingComments": [
@@ -693,8 +693,8 @@
                           "type": "Block",
                           "value": "*\n         * An optional flag to indicate whether this Observer, when used as a\n         * subscriber, has already been unsubscribed from its Observable.\n         * @type {boolean}\n         ",
                           "range": [
-                            3211,
-                            3405
+                            3203,
+                            3397
                           ],
                           "loc": {
                             "start": {
@@ -711,8 +711,8 @@
                     }
                   ],
                   "range": [
-                    3201,
-                    3448
+                    3193,
+                    3432
                   ],
                   "loc": {
                     "start": {
@@ -728,8 +728,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  3198,
-                  3448
+                  3190,
+                  3432
                 ],
                 "loc": {
                   "start": {
@@ -745,8 +745,8 @@
               "kind": "constructor",
               "computed": false,
               "range": [
-                3187,
-                3448
+                3179,
+                3432
               ],
               "loc": {
                 "start": {
@@ -763,8 +763,8 @@
                   "type": "Block",
                   "value": "*\n     * The callback to receive notifications of type `next` from the Observable,\n     * with a value. The Observable may call this method 0 or more times.\n     * @param {T} value The `next` value.\n     * @return {void}\n     ",
                   "range": [
-                    3453,
-                    3683
+                    3437,
+                    3667
                   ],
                   "loc": {
                     "start": {
@@ -786,8 +786,8 @@
                 "type": "Identifier",
                 "name": "next",
                 "range": [
-                  3688,
-                  3692
+                  3672,
+                  3676
                 ],
                 "loc": {
                   "start": {
@@ -808,8 +808,8 @@
                     "type": "Identifier",
                     "name": "value",
                     "range": [
-                      3693,
-                      3698
+                      3677,
+                      3682
                     ],
                     "loc": {
                       "start": {
@@ -836,8 +836,8 @@
                           "value": 0,
                           "raw": "0",
                           "range": [
-                            3722,
-                            3723
+                            3706,
+                            3707
                           ],
                           "loc": {
                             "start": {
@@ -852,8 +852,8 @@
                         },
                         "prefix": true,
                         "range": [
-                          3717,
-                          3723
+                          3701,
+                          3707
                         ],
                         "loc": {
                           "start": {
@@ -867,8 +867,8 @@
                         }
                       },
                       "range": [
-                        3710,
-                        3724
+                        3694,
+                        3708
                       ],
                       "loc": {
                         "start": {
@@ -883,8 +883,8 @@
                     }
                   ],
                   "range": [
-                    3700,
-                    3730
+                    3684,
+                    3714
                   ],
                   "loc": {
                     "start": {
@@ -900,8 +900,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  3692,
-                  3730
+                  3676,
+                  3714
                 ],
                 "loc": {
                   "start": {
@@ -917,8 +917,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                3688,
-                3730
+                3672,
+                3714
               ],
               "loc": {
                 "start": {
@@ -935,8 +935,8 @@
                   "type": "Block",
                   "value": "*\n     * The callback to receive notifications of type `next` from the Observable,\n     * with a value. The Observable may call this method 0 or more times.\n     * @param {T} value The `next` value.\n     * @return {void}\n     ",
                   "range": [
-                    3453,
-                    3683
+                    3437,
+                    3667
                   ],
                   "loc": {
                     "start": {
@@ -955,8 +955,8 @@
                   "type": "Block",
                   "value": "*\n     * The callback to receive notifications of type `error` from the Observable,\n     * with an attached {@link Error}. Notifies the Observer that the Observable\n     * has experienced an error condition.\n     * @param {any} err The `error` exception.\n     * @return {void}\n     ",
                   "range": [
-                    3735,
-                    4021
+                    3719,
+                    4005
                   ],
                   "loc": {
                     "start": {
@@ -978,8 +978,8 @@
                 "type": "Identifier",
                 "name": "error",
                 "range": [
-                  4026,
-                  4031
+                  4010,
+                  4015
                 ],
                 "loc": {
                   "start": {
@@ -1000,8 +1000,8 @@
                     "type": "Identifier",
                     "name": "err",
                     "range": [
-                      4032,
-                      4035
+                      4016,
+                      4019
                     ],
                     "loc": {
                       "start": {
@@ -1028,8 +1028,8 @@
                           "value": 0,
                           "raw": "0",
                           "range": [
-                            4059,
-                            4060
+                            4043,
+                            4044
                           ],
                           "loc": {
                             "start": {
@@ -1044,8 +1044,8 @@
                         },
                         "prefix": true,
                         "range": [
-                          4054,
-                          4060
+                          4038,
+                          4044
                         ],
                         "loc": {
                           "start": {
@@ -1059,8 +1059,8 @@
                         }
                       },
                       "range": [
-                        4047,
-                        4061
+                        4031,
+                        4045
                       ],
                       "loc": {
                         "start": {
@@ -1075,8 +1075,8 @@
                     }
                   ],
                   "range": [
-                    4037,
-                    4067
+                    4021,
+                    4051
                   ],
                   "loc": {
                     "start": {
@@ -1092,8 +1092,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  4031,
-                  4067
+                  4015,
+                  4051
                 ],
                 "loc": {
                   "start": {
@@ -1109,8 +1109,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                4026,
-                4067
+                4010,
+                4051
               ],
               "loc": {
                 "start": {
@@ -1127,8 +1127,8 @@
                   "type": "Block",
                   "value": "*\n     * The callback to receive notifications of type `error` from the Observable,\n     * with an attached {@link Error}. Notifies the Observer that the Observable\n     * has experienced an error condition.\n     * @param {any} err The `error` exception.\n     * @return {void}\n     ",
                   "range": [
-                    3735,
-                    4021
+                    3719,
+                    4005
                   ],
                   "loc": {
                     "start": {
@@ -1147,8 +1147,8 @@
                   "type": "Block",
                   "value": "*\n     * The callback to receive a valueless notification of type `complete` from\n     * the Observable. Notifies the Observer that the Observable has finished\n     * sending push-based notifications.\n     * @return {void}\n     ",
                   "range": [
-                    4072,
-                    4304
+                    4056,
+                    4288
                   ],
                   "loc": {
                     "start": {
@@ -1170,8 +1170,8 @@
                 "type": "Identifier",
                 "name": "complete",
                 "range": [
-                  4309,
-                  4317
+                  4293,
+                  4301
                 ],
                 "loc": {
                   "start": {
@@ -1201,8 +1201,8 @@
                           "value": 0,
                           "raw": "0",
                           "range": [
-                            4342,
-                            4343
+                            4326,
+                            4327
                           ],
                           "loc": {
                             "start": {
@@ -1217,8 +1217,8 @@
                         },
                         "prefix": true,
                         "range": [
-                          4337,
-                          4343
+                          4321,
+                          4327
                         ],
                         "loc": {
                           "start": {
@@ -1232,8 +1232,8 @@
                         }
                       },
                       "range": [
-                        4330,
-                        4344
+                        4314,
+                        4328
                       ],
                       "loc": {
                         "start": {
@@ -1248,8 +1248,8 @@
                     }
                   ],
                   "range": [
-                    4320,
-                    4350
+                    4304,
+                    4334
                   ],
                   "loc": {
                     "start": {
@@ -1265,8 +1265,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  4317,
-                  4350
+                  4301,
+                  4334
                 ],
                 "loc": {
                   "start": {
@@ -1282,8 +1282,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                4309,
-                4350
+                4293,
+                4334
               ],
               "loc": {
                 "start": {
@@ -1300,8 +1300,8 @@
                   "type": "Block",
                   "value": "*\n     * The callback to receive a valueless notification of type `complete` from\n     * the Observable. Notifies the Observer that the Observable has finished\n     * sending push-based notifications.\n     * @return {void}\n     ",
                   "range": [
-                    4072,
-                    4304
+                    4056,
+                    4288
                   ],
                   "loc": {
                     "start": {
@@ -1319,8 +1319,8 @@
             }
           ],
           "range": [
-            3181,
-            4352
+            3173,
+            4336
           ],
           "loc": {
             "start": {
@@ -1334,8 +1334,8 @@
           }
         },
         "range": [
-          3163,
-          4352
+          3155,
+          4336
         ],
         "loc": {
           "start": {
@@ -1350,10 +1350,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   isUnsubscribed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
+            "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   closed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
             "range": [
               2430,
-              3155
+              3147
             ],
             "loc": {
               "start": {
@@ -1369,11 +1369,11 @@
         ],
         "trailingComments": [
           {
-            "type": "Block",
-            "value": "*\n * An execution context and a data structure to order tasks and schedule their\n * execution. Provides a notion of (potentially virtual) time, through the\n * `now()` getter method.\n *\n * Each unit of work in a Scheduler is called an {@link Action}.\n *\n * ```ts\n * interface Scheduler {\n *   now(): number;\n *   schedule(work, delay?, state?): Subscription;\n *   flush(): void;\n *   active: boolean;\n *   actions: Action[];\n *   scheduledId: number;\n * }\n * ```\n *\n * @interface\n * @name Scheduler\n * @noimport true\n ",
+            "type": "Line",
+            "value": "# sourceMappingURL=MiscJSDoc.js.map",
             "range": [
-              4353,
-              4874
+              4337,
+              4374
             ],
             "loc": {
               "start": {
@@ -1381,8 +1381,8 @@
                 "column": 0
               },
               "end": {
-                "line": 144,
-                "column": 3
+                "line": 123,
+                "column": 37
               }
             }
           }
@@ -1391,8 +1391,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        3156,
-        4352
+        3148,
+        4336
       ],
       "loc": {
         "start": {
@@ -1407,10 +1407,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   isUnsubscribed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
+          "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   closed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
           "range": [
             2430,
-            3155
+            3147
           ],
           "loc": {
             "start": {
@@ -1426,1226 +1426,19 @@
       ],
       "trailingComments": [
         {
-          "type": "Block",
-          "value": "*\n * An execution context and a data structure to order tasks and schedule their\n * execution. Provides a notion of (potentially virtual) time, through the\n * `now()` getter method.\n *\n * Each unit of work in a Scheduler is called an {@link Action}.\n *\n * ```ts\n * interface Scheduler {\n *   now(): number;\n *   schedule(work, delay?, state?): Subscription;\n *   flush(): void;\n *   active: boolean;\n *   actions: Action[];\n *   scheduledId: number;\n * }\n * ```\n *\n * @interface\n * @name Scheduler\n * @noimport true\n ",
-          "range": [
-            4353,
-            4874
-          ],
-          "loc": {
-            "start": {
-              "line": 123,
-              "column": 0
-            },
-            "end": {
-              "line": 144,
-              "column": 3
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "ExportNamedDeclaration",
-      "declaration": {
-        "type": "ClassDeclaration",
-        "id": {
-          "type": "Identifier",
-          "name": "SchedulerDoc",
-          "range": [
-            4888,
-            4900
-          ],
-          "loc": {
-            "start": {
-              "line": 145,
-              "column": 13
-            },
-            "end": {
-              "line": 145,
-              "column": 25
-            }
-          }
-        },
-        "superClass": null,
-        "body": {
-          "type": "ClassBody",
-          "body": [
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "constructor",
-                "range": [
-                  4907,
-                  4918
-                ],
-                "loc": {
-                  "start": {
-                    "line": 146,
-                    "column": 4
-                  },
-                  "end": {
-                    "line": 146,
-                    "column": 15
-                  }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
-                "id": null,
-                "params": [],
-                "body": {
-                  "type": "BlockStatement",
-                  "body": [
-                    {
-                      "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              5095,
-                              5099
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 152,
-                                "column": 8
-                              },
-                              "end": {
-                                "line": 152,
-                                "column": 12
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "active",
-                            "range": [
-                              5100,
-                              5106
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 152,
-                                "column": 13
-                              },
-                              "end": {
-                                "line": 152,
-                                "column": 19
-                              }
-                            }
-                          },
-                          "range": [
-                            5095,
-                            5106
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 152,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 152,
-                              "column": 19
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Literal",
-                          "value": false,
-                          "raw": "false",
-                          "range": [
-                            5109,
-                            5114
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 152,
-                              "column": 22
-                            },
-                            "end": {
-                              "line": 152,
-                              "column": 27
-                            }
-                          }
-                        },
-                        "range": [
-                          5095,
-                          5114
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 152,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 152,
-                            "column": 27
-                          }
-                        }
-                      },
-                      "range": [
-                        5095,
-                        5115
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 152,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 152,
-                          "column": 28
-                        }
-                      },
-                      "leadingComments": [
-                        {
-                          "type": "Block",
-                          "value": "*\n         * A flag to indicate whether the Scheduler is currently executing a batch of\n         * queued actions.\n         * @type {boolean}\n         ",
-                          "range": [
-                            4931,
-                            5086
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 147,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 151,
-                              "column": 11
-                            }
-                          }
-                        }
-                      ],
-                      "trailingComments": [
-                        {
-                          "type": "Block",
-                          "value": "*\n         * The queue of scheduled actions as an array.\n         * @type {Action[]}\n         ",
-                          "range": [
-                            5124,
-                            5222
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 153,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 156,
-                              "column": 11
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              5231,
-                              5235
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 157,
-                                "column": 8
-                              },
-                              "end": {
-                                "line": 157,
-                                "column": 12
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "actions",
-                            "range": [
-                              5236,
-                              5243
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 157,
-                                "column": 13
-                              },
-                              "end": {
-                                "line": 157,
-                                "column": 20
-                              }
-                            }
-                          },
-                          "range": [
-                            5231,
-                            5243
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 157,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 157,
-                              "column": 20
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "ArrayExpression",
-                          "elements": [],
-                          "range": [
-                            5246,
-                            5248
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 157,
-                              "column": 23
-                            },
-                            "end": {
-                              "line": 157,
-                              "column": 25
-                            }
-                          }
-                        },
-                        "range": [
-                          5231,
-                          5248
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 157,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 157,
-                            "column": 25
-                          }
-                        }
-                      },
-                      "range": [
-                        5231,
-                        5249
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 157,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 157,
-                          "column": 26
-                        }
-                      },
-                      "leadingComments": [
-                        {
-                          "type": "Block",
-                          "value": "*\n         * The queue of scheduled actions as an array.\n         * @type {Action[]}\n         ",
-                          "range": [
-                            5124,
-                            5222
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 153,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 156,
-                              "column": 11
-                            }
-                          }
-                        }
-                      ],
-                      "trailingComments": [
-                        {
-                          "type": "Block",
-                          "value": "*\n         * An internal ID used to track the latest asynchronous task such as those\n         * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and\n         * others.\n         * @type {number}\n         ",
-                          "range": [
-                            5258,
-                            5482
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 158,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 163,
-                              "column": 11
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              5491,
-                              5495
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 164,
-                                "column": 8
-                              },
-                              "end": {
-                                "line": 164,
-                                "column": 12
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "scheduledId",
-                            "range": [
-                              5496,
-                              5507
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 164,
-                                "column": 13
-                              },
-                              "end": {
-                                "line": 164,
-                                "column": 24
-                              }
-                            }
-                          },
-                          "range": [
-                            5491,
-                            5507
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 164,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 164,
-                              "column": 24
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Literal",
-                          "value": 0,
-                          "raw": "0",
-                          "range": [
-                            5510,
-                            5511
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 164,
-                              "column": 27
-                            },
-                            "end": {
-                              "line": 164,
-                              "column": 28
-                            }
-                          }
-                        },
-                        "range": [
-                          5491,
-                          5511
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 164,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 164,
-                            "column": 28
-                          }
-                        }
-                      },
-                      "range": [
-                        5491,
-                        5512
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 164,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 164,
-                          "column": 29
-                        }
-                      },
-                      "leadingComments": [
-                        {
-                          "type": "Block",
-                          "value": "*\n         * An internal ID used to track the latest asynchronous task such as those\n         * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and\n         * others.\n         * @type {number}\n         ",
-                          "range": [
-                            5258,
-                            5482
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 158,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 163,
-                              "column": 11
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  ],
-                  "range": [
-                    4921,
-                    5518
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 146,
-                      "column": 18
-                    },
-                    "end": {
-                      "line": 165,
-                      "column": 5
-                    }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  4918,
-                  5518
-                ],
-                "loc": {
-                  "start": {
-                    "line": 146,
-                    "column": 15
-                  },
-                  "end": {
-                    "line": 165,
-                    "column": 5
-                  }
-                }
-              },
-              "kind": "constructor",
-              "computed": false,
-              "range": [
-                4907,
-                5518
-              ],
-              "loc": {
-                "start": {
-                  "line": 146,
-                  "column": 4
-                },
-                "end": {
-                  "line": 165,
-                  "column": 5
-                }
-              },
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * A getter method that returns a number representing the current time\n     * (at the time this function was called) according to the scheduler's own\n     * internal clock.\n     * @return {number} A number that represents the current time. May or may not\n     * have a relation to wall-clock time. May or may not refer to a time unit\n     * (e.g. milliseconds).\n     ",
-                  "range": [
-                    5523,
-                    5900
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 166,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 173,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "now",
-                "range": [
-                  5905,
-                  5908
-                ],
-                "loc": {
-                  "start": {
-                    "line": 174,
-                    "column": 4
-                  },
-                  "end": {
-                    "line": 174,
-                    "column": 7
-                  }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
-                "id": null,
-                "params": [],
-                "body": {
-                  "type": "BlockStatement",
-                  "body": [
-                    {
-                      "type": "ReturnStatement",
-                      "argument": {
-                        "type": "Literal",
-                        "value": 0,
-                        "raw": "0",
-                        "range": [
-                          5928,
-                          5929
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 175,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 175,
-                            "column": 16
-                          }
-                        }
-                      },
-                      "range": [
-                        5921,
-                        5930
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 175,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 175,
-                          "column": 17
-                        }
-                      }
-                    }
-                  ],
-                  "range": [
-                    5911,
-                    5936
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 174,
-                      "column": 10
-                    },
-                    "end": {
-                      "line": 176,
-                      "column": 5
-                    }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  5908,
-                  5936
-                ],
-                "loc": {
-                  "start": {
-                    "line": 174,
-                    "column": 7
-                  },
-                  "end": {
-                    "line": 176,
-                    "column": 5
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                5905,
-                5936
-              ],
-              "loc": {
-                "start": {
-                  "line": 174,
-                  "column": 4
-                },
-                "end": {
-                  "line": 176,
-                  "column": 5
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * A getter method that returns a number representing the current time\n     * (at the time this function was called) according to the scheduler's own\n     * internal clock.\n     * @return {number} A number that represents the current time. May or may not\n     * have a relation to wall-clock time. May or may not refer to a time unit\n     * (e.g. milliseconds).\n     ",
-                  "range": [
-                    5523,
-                    5900
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 166,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 173,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * Schedules a function, `work`, for execution. May happen at some point in\n     * the future, according to the `delay` parameter, if specified. May be passed\n     * some context object, `state`, which will be passed to the `work` function.\n     *\n     * The given arguments will be processed an stored as an Action object in a\n     * queue of actions.\n     *\n     * @param {function(state: ?T): ?Subscription} work A function representing a\n     * task, or some unit of work to be executed by the Scheduler.\n     * @param {number} [delay] Time to wait before executing the work, where the\n     * time unit is implicit and defined by the Scheduler itself.\n     * @param {T} [state] Some contextual data that the `work` function uses when\n     * called by the Scheduler.\n     * @return {Subscription} A subscription in order to be able to unsubscribe\n     * the scheduled work.\n     ",
-                  "range": [
-                    5941,
-                    6833
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 177,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 193,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "schedule",
-                "range": [
-                  6838,
-                  6846
-                ],
-                "loc": {
-                  "start": {
-                    "line": 194,
-                    "column": 4
-                  },
-                  "end": {
-                    "line": 194,
-                    "column": 12
-                  }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
-                "id": null,
-                "params": [
-                  {
-                    "type": "Identifier",
-                    "name": "work",
-                    "range": [
-                      6847,
-                      6851
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 194,
-                        "column": 13
-                      },
-                      "end": {
-                        "line": 194,
-                        "column": 17
-                      }
-                    }
-                  },
-                  {
-                    "type": "Identifier",
-                    "name": "delay",
-                    "range": [
-                      6853,
-                      6858
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 194,
-                        "column": 19
-                      },
-                      "end": {
-                        "line": 194,
-                        "column": 24
-                      }
-                    }
-                  },
-                  {
-                    "type": "Identifier",
-                    "name": "state",
-                    "range": [
-                      6860,
-                      6865
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 194,
-                        "column": 26
-                      },
-                      "end": {
-                        "line": 194,
-                        "column": 31
-                      }
-                    }
-                  }
-                ],
-                "body": {
-                  "type": "BlockStatement",
-                  "body": [
-                    {
-                      "type": "ReturnStatement",
-                      "argument": {
-                        "type": "UnaryExpression",
-                        "operator": "void",
-                        "argument": {
-                          "type": "Literal",
-                          "value": 0,
-                          "raw": "0",
-                          "range": [
-                            6889,
-                            6890
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 195,
-                              "column": 20
-                            },
-                            "end": {
-                              "line": 195,
-                              "column": 21
-                            }
-                          }
-                        },
-                        "prefix": true,
-                        "range": [
-                          6884,
-                          6890
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 195,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 195,
-                            "column": 21
-                          }
-                        }
-                      },
-                      "range": [
-                        6877,
-                        6891
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 195,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 195,
-                          "column": 22
-                        }
-                      }
-                    }
-                  ],
-                  "range": [
-                    6867,
-                    6897
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 194,
-                      "column": 33
-                    },
-                    "end": {
-                      "line": 196,
-                      "column": 5
-                    }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  6846,
-                  6897
-                ],
-                "loc": {
-                  "start": {
-                    "line": 194,
-                    "column": 12
-                  },
-                  "end": {
-                    "line": 196,
-                    "column": 5
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                6838,
-                6897
-              ],
-              "loc": {
-                "start": {
-                  "line": 194,
-                  "column": 4
-                },
-                "end": {
-                  "line": 196,
-                  "column": 5
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * Schedules a function, `work`, for execution. May happen at some point in\n     * the future, according to the `delay` parameter, if specified. May be passed\n     * some context object, `state`, which will be passed to the `work` function.\n     *\n     * The given arguments will be processed an stored as an Action object in a\n     * queue of actions.\n     *\n     * @param {function(state: ?T): ?Subscription} work A function representing a\n     * task, or some unit of work to be executed by the Scheduler.\n     * @param {number} [delay] Time to wait before executing the work, where the\n     * time unit is implicit and defined by the Scheduler itself.\n     * @param {T} [state] Some contextual data that the `work` function uses when\n     * called by the Scheduler.\n     * @return {Subscription} A subscription in order to be able to unsubscribe\n     * the scheduled work.\n     ",
-                  "range": [
-                    5941,
-                    6833
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 177,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 193,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * Prompt the Scheduler to execute all of its queued actions, therefore\n     * clearing its queue.\n     * @return {void}\n     ",
-                  "range": [
-                    6902,
-                    7038
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 197,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 201,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "flush",
-                "range": [
-                  7043,
-                  7048
-                ],
-                "loc": {
-                  "start": {
-                    "line": 202,
-                    "column": 4
-                  },
-                  "end": {
-                    "line": 202,
-                    "column": 9
-                  }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
-                "id": null,
-                "params": [],
-                "body": {
-                  "type": "BlockStatement",
-                  "body": [
-                    {
-                      "type": "ReturnStatement",
-                      "argument": {
-                        "type": "UnaryExpression",
-                        "operator": "void",
-                        "argument": {
-                          "type": "Literal",
-                          "value": 0,
-                          "raw": "0",
-                          "range": [
-                            7073,
-                            7074
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 203,
-                              "column": 20
-                            },
-                            "end": {
-                              "line": 203,
-                              "column": 21
-                            }
-                          }
-                        },
-                        "prefix": true,
-                        "range": [
-                          7068,
-                          7074
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 203,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 203,
-                            "column": 21
-                          }
-                        }
-                      },
-                      "range": [
-                        7061,
-                        7075
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 203,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 203,
-                          "column": 22
-                        }
-                      }
-                    }
-                  ],
-                  "range": [
-                    7051,
-                    7081
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 202,
-                      "column": 12
-                    },
-                    "end": {
-                      "line": 204,
-                      "column": 5
-                    }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  7048,
-                  7081
-                ],
-                "loc": {
-                  "start": {
-                    "line": 202,
-                    "column": 9
-                  },
-                  "end": {
-                    "line": 204,
-                    "column": 5
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                7043,
-                7081
-              ],
-              "loc": {
-                "start": {
-                  "line": 202,
-                  "column": 4
-                },
-                "end": {
-                  "line": 204,
-                  "column": 5
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n     * Prompt the Scheduler to execute all of its queued actions, therefore\n     * clearing its queue.\n     * @return {void}\n     ",
-                  "range": [
-                    6902,
-                    7038
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 197,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 201,
-                      "column": 7
-                    }
-                  }
-                }
-              ],
-              "static": false
-            }
-          ],
-          "range": [
-            4901,
-            7083
-          ],
-          "loc": {
-            "start": {
-              "line": 145,
-              "column": 26
-            },
-            "end": {
-              "line": 205,
-              "column": 1
-            }
-          }
-        },
-        "range": [
-          4882,
-          7083
-        ],
-        "loc": {
-          "start": {
-            "line": 145,
-            "column": 7
-          },
-          "end": {
-            "line": 205,
-            "column": 1
-          }
-        },
-        "leadingComments": [
-          {
-            "type": "Block",
-            "value": "*\n * An execution context and a data structure to order tasks and schedule their\n * execution. Provides a notion of (potentially virtual) time, through the\n * `now()` getter method.\n *\n * Each unit of work in a Scheduler is called an {@link Action}.\n *\n * ```ts\n * interface Scheduler {\n *   now(): number;\n *   schedule(work, delay?, state?): Subscription;\n *   flush(): void;\n *   active: boolean;\n *   actions: Action[];\n *   scheduledId: number;\n * }\n * ```\n *\n * @interface\n * @name Scheduler\n * @noimport true\n ",
-            "range": [
-              4353,
-              4874
-            ],
-            "loc": {
-              "start": {
-                "line": 123,
-                "column": 0
-              },
-              "end": {
-                "line": 144,
-                "column": 3
-              }
-            }
-          }
-        ],
-        "trailingComments": [
-          {
-            "type": "Line",
-            "value": "# sourceMappingURL=MiscJSDoc.js.map",
-            "range": [
-              7084,
-              7121
-            ],
-            "loc": {
-              "start": {
-                "line": 206,
-                "column": 0
-              },
-              "end": {
-                "line": 206,
-                "column": 37
-              }
-            }
-          }
-        ]
-      },
-      "specifiers": [],
-      "source": null,
-      "range": [
-        4875,
-        7083
-      ],
-      "loc": {
-        "start": {
-          "line": 145,
-          "column": 0
-        },
-        "end": {
-          "line": 205,
-          "column": 1
-        }
-      },
-      "leadingComments": [
-        {
-          "type": "Block",
-          "value": "*\n * An execution context and a data structure to order tasks and schedule their\n * execution. Provides a notion of (potentially virtual) time, through the\n * `now()` getter method.\n *\n * Each unit of work in a Scheduler is called an {@link Action}.\n *\n * ```ts\n * interface Scheduler {\n *   now(): number;\n *   schedule(work, delay?, state?): Subscription;\n *   flush(): void;\n *   active: boolean;\n *   actions: Action[];\n *   scheduledId: number;\n * }\n * ```\n *\n * @interface\n * @name Scheduler\n * @noimport true\n ",
-          "range": [
-            4353,
-            4874
-          ],
-          "loc": {
-            "start": {
-              "line": 123,
-              "column": 0
-            },
-            "end": {
-              "line": 144,
-              "column": 3
-            }
-          }
-        }
-      ],
-      "trailingComments": [
-        {
           "type": "Line",
           "value": "# sourceMappingURL=MiscJSDoc.js.map",
           "range": [
-            7084,
-            7121
+            4337,
+            4374
           ],
           "loc": {
             "start": {
-              "line": 206,
+              "line": 123,
               "column": 0
             },
             "end": {
-              "line": 206,
+              "line": 123,
               "column": 37
             }
           }
@@ -2656,7 +1449,7 @@
   "sourceType": "module",
   "range": [
     0,
-    7083
+    4336
   ],
   "loc": {
     "start": {
@@ -2664,7 +1457,7 @@
       "column": 0
     },
     "end": {
-      "line": 205,
+      "line": 122,
       "column": 1
     }
   },
@@ -2707,10 +1500,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   isUnsubscribed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
+      "value": "*\n * An interface for a consumer of push-based notifications delivered by an\n * {@link Observable}.\n *\n * ```ts\n * interface Observer<T> {\n *   closed?: boolean;\n *   next: (value: T) => void;\n *   error: (err: any) => void;\n *   complete: () => void;\n * }\n * ```\n *\n * An object conforming to the Observer interface is usually\n * given to the `observable.subscribe(observer)` method, and the Observable will\n * call the Observer's `next(value)` method to provide notifications. A\n * well-behaved Observable will call an Observer's `complete()` method exactly\n * once or the Observer's `error(err)` method exactly once, as the last\n * notification delivered.\n *\n * @interface\n * @name Observer\n * @noimport true\n ",
       "range": [
         2430,
-        3155
+        3147
       ],
       "loc": {
         "start": {
@@ -2727,8 +1520,8 @@
       "type": "Block",
       "value": "*\n         * An optional flag to indicate whether this Observer, when used as a\n         * subscriber, has already been unsubscribed from its Observable.\n         * @type {boolean}\n         ",
       "range": [
-        3211,
-        3405
+        3203,
+        3397
       ],
       "loc": {
         "start": {
@@ -2745,8 +1538,8 @@
       "type": "Block",
       "value": "*\n     * The callback to receive notifications of type `next` from the Observable,\n     * with a value. The Observable may call this method 0 or more times.\n     * @param {T} value The `next` value.\n     * @return {void}\n     ",
       "range": [
-        3453,
-        3683
+        3437,
+        3667
       ],
       "loc": {
         "start": {
@@ -2763,8 +1556,8 @@
       "type": "Block",
       "value": "*\n     * The callback to receive notifications of type `error` from the Observable,\n     * with an attached {@link Error}. Notifies the Observer that the Observable\n     * has experienced an error condition.\n     * @param {any} err The `error` exception.\n     * @return {void}\n     ",
       "range": [
-        3735,
-        4021
+        3719,
+        4005
       ],
       "loc": {
         "start": {
@@ -2781,8 +1574,8 @@
       "type": "Block",
       "value": "*\n     * The callback to receive a valueless notification of type `complete` from\n     * the Observable. Notifies the Observer that the Observable has finished\n     * sending push-based notifications.\n     * @return {void}\n     ",
       "range": [
-        4072,
-        4304
+        4056,
+        4288
       ],
       "loc": {
         "start": {
@@ -2796,11 +1589,11 @@
       }
     },
     {
-      "type": "Block",
-      "value": "*\n * An execution context and a data structure to order tasks and schedule their\n * execution. Provides a notion of (potentially virtual) time, through the\n * `now()` getter method.\n *\n * Each unit of work in a Scheduler is called an {@link Action}.\n *\n * ```ts\n * interface Scheduler {\n *   now(): number;\n *   schedule(work, delay?, state?): Subscription;\n *   flush(): void;\n *   active: boolean;\n *   actions: Action[];\n *   scheduledId: number;\n * }\n * ```\n *\n * @interface\n * @name Scheduler\n * @noimport true\n ",
+      "type": "Line",
+      "value": "# sourceMappingURL=MiscJSDoc.js.map",
       "range": [
-        4353,
-        4874
+        4337,
+        4374
       ],
       "loc": {
         "start": {
@@ -2808,133 +1601,7 @@
           "column": 0
         },
         "end": {
-          "line": 144,
-          "column": 3
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n         * A flag to indicate whether the Scheduler is currently executing a batch of\n         * queued actions.\n         * @type {boolean}\n         ",
-      "range": [
-        4931,
-        5086
-      ],
-      "loc": {
-        "start": {
-          "line": 147,
-          "column": 8
-        },
-        "end": {
-          "line": 151,
-          "column": 11
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n         * The queue of scheduled actions as an array.\n         * @type {Action[]}\n         ",
-      "range": [
-        5124,
-        5222
-      ],
-      "loc": {
-        "start": {
-          "line": 153,
-          "column": 8
-        },
-        "end": {
-          "line": 156,
-          "column": 11
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n         * An internal ID used to track the latest asynchronous task such as those\n         * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and\n         * others.\n         * @type {number}\n         ",
-      "range": [
-        5258,
-        5482
-      ],
-      "loc": {
-        "start": {
-          "line": 158,
-          "column": 8
-        },
-        "end": {
-          "line": 163,
-          "column": 11
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n     * A getter method that returns a number representing the current time\n     * (at the time this function was called) according to the scheduler's own\n     * internal clock.\n     * @return {number} A number that represents the current time. May or may not\n     * have a relation to wall-clock time. May or may not refer to a time unit\n     * (e.g. milliseconds).\n     ",
-      "range": [
-        5523,
-        5900
-      ],
-      "loc": {
-        "start": {
-          "line": 166,
-          "column": 4
-        },
-        "end": {
-          "line": 173,
-          "column": 7
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n     * Schedules a function, `work`, for execution. May happen at some point in\n     * the future, according to the `delay` parameter, if specified. May be passed\n     * some context object, `state`, which will be passed to the `work` function.\n     *\n     * The given arguments will be processed an stored as an Action object in a\n     * queue of actions.\n     *\n     * @param {function(state: ?T): ?Subscription} work A function representing a\n     * task, or some unit of work to be executed by the Scheduler.\n     * @param {number} [delay] Time to wait before executing the work, where the\n     * time unit is implicit and defined by the Scheduler itself.\n     * @param {T} [state] Some contextual data that the `work` function uses when\n     * called by the Scheduler.\n     * @return {Subscription} A subscription in order to be able to unsubscribe\n     * the scheduled work.\n     ",
-      "range": [
-        5941,
-        6833
-      ],
-      "loc": {
-        "start": {
-          "line": 177,
-          "column": 4
-        },
-        "end": {
-          "line": 193,
-          "column": 7
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n     * Prompt the Scheduler to execute all of its queued actions, therefore\n     * clearing its queue.\n     * @return {void}\n     ",
-      "range": [
-        6902,
-        7038
-      ],
-      "loc": {
-        "start": {
-          "line": 197,
-          "column": 4
-        },
-        "end": {
-          "line": 201,
-          "column": 7
-        }
-      }
-    },
-    {
-      "type": "Line",
-      "value": "# sourceMappingURL=MiscJSDoc.js.map",
-      "range": [
-        7084,
-        7121
-      ],
-      "loc": {
-        "start": {
-          "line": 206,
-          "column": 0
-        },
-        "end": {
-          "line": 206,
+          "line": 123,
           "column": 37
         }
       }

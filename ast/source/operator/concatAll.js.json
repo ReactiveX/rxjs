@@ -109,6 +109,24 @@
               "column": 36
             }
           }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
+          "range": [
+            84,
+            1701
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
         }
       ]
     },
@@ -120,16 +138,16 @@
           "type": "Identifier",
           "name": "concatAll",
           "range": [
-            100,
-            109
+            1718,
+            1727
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 45,
               "column": 16
             },
             "end": {
-              "line": 3,
+              "line": 45,
               "column": 25
             }
           }
@@ -148,16 +166,16 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      125,
-                      129
+                      1743,
+                      1747
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 46,
                         "column": 11
                       },
                       "end": {
-                        "line": 4,
+                        "line": 46,
                         "column": 15
                       }
                     }
@@ -166,31 +184,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      130,
-                      134
+                      1748,
+                      1752
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 46,
                         "column": 16
                       },
                       "end": {
-                        "line": 4,
+                        "line": 46,
                         "column": 20
                       }
                     }
                   },
                   "range": [
-                    125,
-                    134
+                    1743,
+                    1752
                   ],
                   "loc": {
                     "start": {
-                      "line": 4,
+                      "line": 46,
                       "column": 11
                     },
                     "end": {
-                      "line": 4,
+                      "line": 46,
                       "column": 20
                     }
                   }
@@ -202,16 +220,16 @@
                       "type": "Identifier",
                       "name": "MergeAllOperator",
                       "range": [
-                        139,
-                        155
+                        1757,
+                        1773
                       ],
                       "loc": {
                         "start": {
-                          "line": 4,
+                          "line": 46,
                           "column": 25
                         },
                         "end": {
-                          "line": 4,
+                          "line": 46,
                           "column": 41
                         }
                       }
@@ -222,79 +240,79 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          156,
-                          157
+                          1774,
+                          1775
                         ],
                         "loc": {
                           "start": {
-                            "line": 4,
+                            "line": 46,
                             "column": 42
                           },
                           "end": {
-                            "line": 4,
+                            "line": 46,
                             "column": 43
                           }
                         }
                       }
                     ],
                     "range": [
-                      135,
-                      158
+                      1753,
+                      1776
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 46,
                         "column": 21
                       },
                       "end": {
-                        "line": 4,
+                        "line": 46,
                         "column": 44
                       }
                     }
                   }
                 ],
                 "range": [
-                  125,
-                  159
+                  1743,
+                  1777
                 ],
                 "loc": {
                   "start": {
-                    "line": 4,
+                    "line": 46,
                     "column": 11
                   },
                   "end": {
-                    "line": 4,
+                    "line": 46,
                     "column": 45
                   }
                 }
               },
               "range": [
-                118,
-                160
+                1736,
+                1778
               ],
               "loc": {
                 "start": {
-                  "line": 4,
+                  "line": 46,
                   "column": 4
                 },
                 "end": {
-                  "line": 4,
+                  "line": 46,
                   "column": 46
                 }
               }
             }
           ],
           "range": [
-            112,
-            162
+            1730,
+            1780
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 45,
               "column": 28
             },
             "end": {
-              "line": 5,
+              "line": 47,
               "column": 1
             }
           }
@@ -302,16 +320,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          91,
-          162
+          1709,
+          1780
         ],
         "loc": {
           "start": {
-            "line": 3,
+            "line": 45,
             "column": 7
           },
           "end": {
-            "line": 5,
+            "line": 47,
             "column": 1
           }
         },
@@ -333,6 +351,24 @@
                 "column": 36
               }
             }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
+            "range": [
+              84,
+              1701
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 44,
+                "column": 3
+              }
+            }
           }
         ],
         "trailingComments": [
@@ -340,16 +376,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=concatAll.js.map",
             "range": [
-              163,
-              200
+              1781,
+              1818
             ],
             "loc": {
               "start": {
-                "line": 6,
+                "line": 48,
                 "column": 0
               },
               "end": {
-                "line": 6,
+                "line": 48,
                 "column": 37
               }
             }
@@ -359,16 +395,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        84,
-        162
+        1702,
+        1780
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 45,
           "column": 0
         },
         "end": {
-          "line": 5,
+          "line": 47,
           "column": 1
         }
       },
@@ -390,6 +426,24 @@
               "column": 36
             }
           }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
+          "range": [
+            84,
+            1701
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
         }
       ],
       "trailingComments": [
@@ -397,16 +451,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=concatAll.js.map",
           "range": [
-            163,
-            200
+            1781,
+            1818
           ],
           "loc": {
             "start": {
-              "line": 6,
+              "line": 48,
               "column": 0
             },
             "end": {
-              "line": 6,
+              "line": 48,
               "column": 37
             }
           }
@@ -417,7 +471,7 @@
   "sourceType": "module",
   "range": [
     0,
-    162
+    1780
   ],
   "loc": {
     "start": {
@@ -425,7 +479,7 @@
       "column": 0
     },
     "end": {
-      "line": 5,
+      "line": 47,
       "column": 1
     }
   },
@@ -449,19 +503,37 @@
       }
     },
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=concatAll.js.map",
+      "type": "Block",
+      "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
       "range": [
-        163,
-        200
+        84,
+        1701
       ],
       "loc": {
         "start": {
-          "line": 6,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 6,
+          "line": 44,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=concatAll.js.map",
+      "range": [
+        1781,
+        1818
+      ],
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 0
+        },
+        "end": {
+          "line": 48,
           "column": 37
         }
       }

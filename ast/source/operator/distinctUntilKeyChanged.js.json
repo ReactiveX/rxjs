@@ -109,6 +109,24 @@
               "column": 36
             }
           }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "range": [
+            100,
+            953
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 3
+            }
+          }
         }
       ]
     },
@@ -120,16 +138,16 @@
           "type": "Identifier",
           "name": "distinctUntilKeyChanged",
           "range": [
-            116,
-            139
+            970,
+            993
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 14,
               "column": 16
             },
             "end": {
-              "line": 3,
+              "line": 14,
               "column": 39
             }
           }
@@ -139,16 +157,16 @@
             "type": "Identifier",
             "name": "key",
             "range": [
-              140,
-              143
+              994,
+              997
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 14,
                 "column": 40
               },
               "end": {
-                "line": 3,
+                "line": 14,
                 "column": 43
               }
             }
@@ -157,16 +175,16 @@
             "type": "Identifier",
             "name": "compare",
             "range": [
-              145,
-              152
+              999,
+              1006
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 14,
                 "column": 45
               },
               "end": {
-                "line": 3,
+                "line": 14,
                 "column": 52
               }
             }
@@ -186,16 +204,16 @@
                     "type": "Identifier",
                     "name": "distinctUntilChanged",
                     "range": [
-                      167,
-                      187
+                      1021,
+                      1041
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 15,
                         "column": 11
                       },
                       "end": {
-                        "line": 4,
+                        "line": 15,
                         "column": 31
                       }
                     }
@@ -204,31 +222,31 @@
                     "type": "Identifier",
                     "name": "call",
                     "range": [
-                      188,
-                      192
+                      1042,
+                      1046
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 15,
                         "column": 32
                       },
                       "end": {
-                        "line": 4,
+                        "line": 15,
                         "column": 36
                       }
                     }
                   },
                   "range": [
-                    167,
-                    192
+                    1021,
+                    1046
                   ],
                   "loc": {
                     "start": {
-                      "line": 4,
+                      "line": 15,
                       "column": 11
                     },
                     "end": {
-                      "line": 4,
+                      "line": 15,
                       "column": 36
                     }
                   }
@@ -237,16 +255,16 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      193,
-                      197
+                      1047,
+                      1051
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 15,
                         "column": 37
                       },
                       "end": {
-                        "line": 4,
+                        "line": 15,
                         "column": 41
                       }
                     }
@@ -259,16 +277,16 @@
                         "type": "Identifier",
                         "name": "x",
                         "range": [
-                          209,
-                          210
+                          1063,
+                          1064
                         ],
                         "loc": {
                           "start": {
-                            "line": 4,
+                            "line": 15,
                             "column": 53
                           },
                           "end": {
-                            "line": 4,
+                            "line": 15,
                             "column": 54
                           }
                         }
@@ -277,16 +295,16 @@
                         "type": "Identifier",
                         "name": "y",
                         "range": [
-                          212,
-                          213
+                          1066,
+                          1067
                         ],
                         "loc": {
                           "start": {
-                            "line": 4,
+                            "line": 15,
                             "column": 56
                           },
                           "end": {
-                            "line": 4,
+                            "line": 15,
                             "column": 57
                           }
                         }
@@ -301,16 +319,16 @@
                             "type": "Identifier",
                             "name": "compare",
                             "range": [
-                              229,
-                              236
+                              1083,
+                              1090
                             ],
                             "loc": {
                               "start": {
-                                "line": 5,
+                                "line": 16,
                                 "column": 12
                               },
                               "end": {
-                                "line": 5,
+                                "line": 16,
                                 "column": 19
                               }
                             }
@@ -326,16 +344,16 @@
                                     "type": "Identifier",
                                     "name": "compare",
                                     "range": [
-                                      259,
-                                      266
+                                      1113,
+                                      1120
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 6,
+                                        "line": 17,
                                         "column": 19
                                       },
                                       "end": {
-                                        "line": 6,
+                                        "line": 17,
                                         "column": 26
                                       }
                                     }
@@ -348,16 +366,16 @@
                                         "type": "Identifier",
                                         "name": "x",
                                         "range": [
-                                          267,
-                                          268
+                                          1121,
+                                          1122
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 27
                                           },
                                           "end": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 28
                                           }
                                         }
@@ -366,31 +384,31 @@
                                         "type": "Identifier",
                                         "name": "key",
                                         "range": [
-                                          269,
-                                          272
+                                          1123,
+                                          1126
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 29
                                           },
                                           "end": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 32
                                           }
                                         }
                                       },
                                       "range": [
-                                        267,
-                                        273
+                                        1121,
+                                        1127
                                       ],
                                       "loc": {
                                         "start": {
-                                          "line": 6,
+                                          "line": 17,
                                           "column": 27
                                         },
                                         "end": {
-                                          "line": 6,
+                                          "line": 17,
                                           "column": 33
                                         }
                                       }
@@ -402,16 +420,16 @@
                                         "type": "Identifier",
                                         "name": "y",
                                         "range": [
-                                          275,
-                                          276
+                                          1129,
+                                          1130
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 35
                                           },
                                           "end": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 36
                                           }
                                         }
@@ -420,94 +438,94 @@
                                         "type": "Identifier",
                                         "name": "key",
                                         "range": [
-                                          277,
-                                          280
+                                          1131,
+                                          1134
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 37
                                           },
                                           "end": {
-                                            "line": 6,
+                                            "line": 17,
                                             "column": 40
                                           }
                                         }
                                       },
                                       "range": [
-                                        275,
-                                        281
+                                        1129,
+                                        1135
                                       ],
                                       "loc": {
                                         "start": {
-                                          "line": 6,
+                                          "line": 17,
                                           "column": 35
                                         },
                                         "end": {
-                                          "line": 6,
+                                          "line": 17,
                                           "column": 41
                                         }
                                       }
                                     }
                                   ],
                                   "range": [
-                                    259,
-                                    282
+                                    1113,
+                                    1136
                                   ],
                                   "loc": {
                                     "start": {
-                                      "line": 6,
+                                      "line": 17,
                                       "column": 19
                                     },
                                     "end": {
-                                      "line": 6,
+                                      "line": 17,
                                       "column": 42
                                     }
                                   }
                                 },
                                 "range": [
-                                  252,
-                                  283
+                                  1106,
+                                  1137
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 6,
+                                    "line": 17,
                                     "column": 12
                                   },
                                   "end": {
-                                    "line": 6,
+                                    "line": 17,
                                     "column": 43
                                   }
                                 }
                               }
                             ],
                             "range": [
-                              238,
-                              293
+                              1092,
+                              1147
                             ],
                             "loc": {
                               "start": {
-                                "line": 5,
+                                "line": 16,
                                 "column": 21
                               },
                               "end": {
-                                "line": 7,
+                                "line": 18,
                                 "column": 9
                               }
                             }
                           },
                           "alternate": null,
                           "range": [
-                            225,
-                            293
+                            1079,
+                            1147
                           ],
                           "loc": {
                             "start": {
-                              "line": 5,
+                              "line": 16,
                               "column": 8
                             },
                             "end": {
-                              "line": 7,
+                              "line": 18,
                               "column": 9
                             }
                           }
@@ -524,16 +542,16 @@
                                 "type": "Identifier",
                                 "name": "x",
                                 "range": [
-                                  309,
-                                  310
+                                  1163,
+                                  1164
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 15
                                   },
                                   "end": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 16
                                   }
                                 }
@@ -542,31 +560,31 @@
                                 "type": "Identifier",
                                 "name": "key",
                                 "range": [
-                                  311,
-                                  314
+                                  1165,
+                                  1168
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 17
                                   },
                                   "end": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 20
                                   }
                                 }
                               },
                               "range": [
-                                309,
-                                315
+                                1163,
+                                1169
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 8,
+                                  "line": 19,
                                   "column": 15
                                 },
                                 "end": {
-                                  "line": 8,
+                                  "line": 19,
                                   "column": 21
                                 }
                               }
@@ -578,16 +596,16 @@
                                 "type": "Identifier",
                                 "name": "y",
                                 "range": [
-                                  320,
-                                  321
+                                  1174,
+                                  1175
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 26
                                   },
                                   "end": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 27
                                   }
                                 }
@@ -596,77 +614,77 @@
                                 "type": "Identifier",
                                 "name": "key",
                                 "range": [
-                                  322,
-                                  325
+                                  1176,
+                                  1179
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 28
                                   },
                                   "end": {
-                                    "line": 8,
+                                    "line": 19,
                                     "column": 31
                                   }
                                 }
                               },
                               "range": [
-                                320,
-                                326
+                                1174,
+                                1180
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 8,
+                                  "line": 19,
                                   "column": 26
                                 },
                                 "end": {
-                                  "line": 8,
+                                  "line": 19,
                                   "column": 32
                                 }
                               }
                             },
                             "range": [
-                              309,
-                              326
+                              1163,
+                              1180
                             ],
                             "loc": {
                               "start": {
-                                "line": 8,
+                                "line": 19,
                                 "column": 15
                               },
                               "end": {
-                                "line": 8,
+                                "line": 19,
                                 "column": 32
                               }
                             }
                           },
                           "range": [
-                            302,
-                            327
+                            1156,
+                            1181
                           ],
                           "loc": {
                             "start": {
-                              "line": 8,
+                              "line": 19,
                               "column": 8
                             },
                             "end": {
-                              "line": 8,
+                              "line": 19,
                               "column": 33
                             }
                           }
                         }
                       ],
                       "range": [
-                        215,
-                        333
+                        1069,
+                        1187
                       ],
                       "loc": {
                         "start": {
-                          "line": 4,
+                          "line": 15,
                           "column": 59
                         },
                         "end": {
-                          "line": 9,
+                          "line": 20,
                           "column": 5
                         }
                       }
@@ -674,63 +692,63 @@
                     "generator": false,
                     "expression": false,
                     "range": [
-                      199,
-                      333
+                      1053,
+                      1187
                     ],
                     "loc": {
                       "start": {
-                        "line": 4,
+                        "line": 15,
                         "column": 43
                       },
                       "end": {
-                        "line": 9,
+                        "line": 20,
                         "column": 5
                       }
                     }
                   }
                 ],
                 "range": [
-                  167,
-                  334
+                  1021,
+                  1188
                 ],
                 "loc": {
                   "start": {
-                    "line": 4,
+                    "line": 15,
                     "column": 11
                   },
                   "end": {
-                    "line": 9,
+                    "line": 20,
                     "column": 6
                   }
                 }
               },
               "range": [
-                160,
-                335
+                1014,
+                1189
               ],
               "loc": {
                 "start": {
-                  "line": 4,
+                  "line": 15,
                   "column": 4
                 },
                 "end": {
-                  "line": 9,
+                  "line": 20,
                   "column": 7
                 }
               }
             }
           ],
           "range": [
-            154,
-            337
+            1008,
+            1191
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 14,
               "column": 54
             },
             "end": {
-              "line": 10,
+              "line": 21,
               "column": 1
             }
           }
@@ -738,16 +756,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          107,
-          337
+          961,
+          1191
         ],
         "loc": {
           "start": {
-            "line": 3,
+            "line": 14,
             "column": 7
           },
           "end": {
-            "line": 10,
+            "line": 21,
             "column": 1
           }
         },
@@ -769,6 +787,24 @@
                 "column": 36
               }
             }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+            "range": [
+              100,
+              953
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 13,
+                "column": 3
+              }
+            }
           }
         ],
         "trailingComments": [
@@ -776,16 +812,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
             "range": [
-              338,
-              389
+              1192,
+              1243
             ],
             "loc": {
               "start": {
-                "line": 11,
+                "line": 22,
                 "column": 0
               },
               "end": {
-                "line": 11,
+                "line": 22,
                 "column": 51
               }
             }
@@ -795,16 +831,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        100,
-        337
+        954,
+        1191
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 14,
           "column": 0
         },
         "end": {
-          "line": 10,
+          "line": 21,
           "column": 1
         }
       },
@@ -826,6 +862,24 @@
               "column": 36
             }
           }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "range": [
+            100,
+            953
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 3
+            }
+          }
         }
       ],
       "trailingComments": [
@@ -833,16 +887,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
           "range": [
-            338,
-            389
+            1192,
+            1243
           ],
           "loc": {
             "start": {
-              "line": 11,
+              "line": 22,
               "column": 0
             },
             "end": {
-              "line": 11,
+              "line": 22,
               "column": 51
             }
           }
@@ -853,7 +907,7 @@
   "sourceType": "module",
   "range": [
     0,
-    337
+    1191
   ],
   "loc": {
     "start": {
@@ -861,7 +915,7 @@
       "column": 0
     },
     "end": {
-      "line": 10,
+      "line": 21,
       "column": 1
     }
   },
@@ -885,19 +939,37 @@
       }
     },
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+      "type": "Block",
+      "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
       "range": [
-        338,
-        389
+        100,
+        953
       ],
       "loc": {
         "start": {
-          "line": 11,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 11,
+          "line": 13,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+      "range": [
+        1192,
+        1243
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
           "column": 51
         }
       }

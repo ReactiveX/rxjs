@@ -1,285 +1,291 @@
 window.esdocSearchIndex = [
   [
     "@reactivex/rxjs/es6/scheduler/action.js~action",
-    "variable/index.html#static-variable-Action",
+    "class/es6/scheduler/Action.js~Action.html",
     "<span>Action</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/scheduler/Action.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/dom/ajaxobservable.js~ajaxerror",
-    "variable/index.html#static-variable-AjaxError",
+    "class/es6/observable/dom/AjaxObservable.js~AjaxError.html",
     "<span>AjaxError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/dom/AjaxObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/dom/ajaxobservable.js~ajaxobservable",
-    "variable/index.html#static-variable-AjaxObservable",
+    "class/es6/observable/dom/AjaxObservable.js~AjaxObservable.html",
     "<span>AjaxObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/dom/AjaxObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/dom/ajaxobservable.js~ajaxresponse",
-    "variable/index.html#static-variable-AjaxResponse",
+    "class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html",
     "<span>AjaxResponse</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/dom/AjaxObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/dom/ajaxobservable.js~ajaxtimeouterror",
-    "variable/index.html#static-variable-AjaxTimeoutError",
+    "class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html",
     "<span>AjaxTimeoutError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/dom/AjaxObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/subject.js~anonymoussubject",
-    "variable/index.html#static-variable-AnonymousSubject",
+    "class/es6/Subject.js~AnonymousSubject.html",
     "<span>AnonymousSubject</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Subject.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/util/argumentoutofrangeerror.js~argumentoutofrangeerror",
-    "variable/index.html#static-variable-ArgumentOutOfRangeError",
+    "class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html",
     "<span>ArgumentOutOfRangeError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/util/ArgumentOutOfRangeError.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/arraylikeobservable.js~arraylikeobservable",
-    "variable/index.html#static-variable-ArrayLikeObservable",
+    "class/es6/observable/ArrayLikeObservable.js~ArrayLikeObservable.html",
     "<span>ArrayLikeObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/ArrayLikeObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/arrayobservable.js~arrayobservable",
-    "variable/index.html#static-variable-ArrayObservable",
+    "class/es6/observable/ArrayObservable.js~ArrayObservable.html",
     "<span>ArrayObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/ArrayObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/asyncsubject.js~asyncsubject",
-    "variable/index.html#static-variable-AsyncSubject",
+    "class/es6/AsyncSubject.js~AsyncSubject.html",
     "<span>AsyncSubject</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/AsyncSubject.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/behaviorsubject.js~behaviorsubject",
-    "variable/index.html#static-variable-BehaviorSubject",
+    "class/es6/BehaviorSubject.js~BehaviorSubject.html",
     "<span>BehaviorSubject</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/BehaviorSubject.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/boundcallbackobservable.js~boundcallbackobservable",
-    "variable/index.html#static-variable-BoundCallbackObservable",
+    "class/es6/observable/BoundCallbackObservable.js~BoundCallbackObservable.html",
     "<span>BoundCallbackObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/BoundCallbackObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/boundnodecallbackobservable.js~boundnodecallbackobservable",
-    "variable/index.html#static-variable-BoundNodeCallbackObservable",
+    "class/es6/observable/BoundNodeCallbackObservable.js~BoundNodeCallbackObservable.html",
     "<span>BoundNodeCallbackObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/BoundNodeCallbackObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/connectableobservable.js~connectableobservable",
-    "variable/index.html#static-variable-ConnectableObservable",
+    "class/es6/observable/ConnectableObservable.js~ConnectableObservable.html",
     "<span>ConnectableObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/ConnectableObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/deferobservable.js~deferobservable",
-    "variable/index.html#static-variable-DeferObservable",
+    "class/es6/observable/DeferObservable.js~DeferObservable.html",
     "<span>DeferObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/DeferObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/util/emptyerror.js~emptyerror",
-    "variable/index.html#static-variable-EmptyError",
+    "class/es6/util/EmptyError.js~EmptyError.html",
     "<span>EmptyError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/util/EmptyError.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/emptyobservable.js~emptyobservable",
-    "variable/index.html#static-variable-EmptyObservable",
+    "class/es6/observable/EmptyObservable.js~EmptyObservable.html",
     "<span>EmptyObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/EmptyObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/errorobservable.js~errorobservable",
-    "variable/index.html#static-variable-ErrorObservable",
+    "class/es6/observable/ErrorObservable.js~ErrorObservable.html",
     "<span>ErrorObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/ErrorObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/forkjoinobservable.js~forkjoinobservable",
-    "variable/index.html#static-variable-ForkJoinObservable",
+    "class/es6/observable/ForkJoinObservable.js~ForkJoinObservable.html",
     "<span>ForkJoinObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/ForkJoinObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/fromeventobservable.js~fromeventobservable",
-    "variable/index.html#static-variable-FromEventObservable",
+    "class/es6/observable/FromEventObservable.js~FromEventObservable.html",
     "<span>FromEventObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/FromEventObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/fromeventpatternobservable.js~fromeventpatternobservable",
-    "variable/index.html#static-variable-FromEventPatternObservable",
+    "class/es6/observable/FromEventPatternObservable.js~FromEventPatternObservable.html",
     "<span>FromEventPatternObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/FromEventPatternObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/fromobservable.js~fromobservable",
-    "variable/index.html#static-variable-FromObservable",
+    "class/es6/observable/FromObservable.js~FromObservable.html",
     "<span>FromObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/FromObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/generateobservable.js~generateobservable",
-    "variable/index.html#static-variable-GenerateObservable",
+    "class/es6/observable/GenerateObservable.js~GenerateObservable.html",
     "<span>GenerateObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/GenerateObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/operator/groupby.js~groupedobservable",
-    "variable/index.html#static-variable-GroupedObservable",
+    "class/es6/operator/groupBy.js~GroupedObservable.html",
     "<span>GroupedObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/operator/groupBy.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/ifobservable.js~ifobservable",
-    "variable/index.html#static-variable-IfObservable",
+    "class/es6/observable/IfObservable.js~IfObservable.html",
     "<span>IfObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/IfObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/intervalobservable.js~intervalobservable",
-    "variable/index.html#static-variable-IntervalObservable",
+    "class/es6/observable/IntervalObservable.js~IntervalObservable.html",
     "<span>IntervalObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/IntervalObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/iteratorobservable.js~iteratorobservable",
-    "variable/index.html#static-variable-IteratorObservable",
+    "class/es6/observable/IteratorObservable.js~IteratorObservable.html",
     "<span>IteratorObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/IteratorObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/neverobservable.js~neverobservable",
-    "variable/index.html#static-variable-NeverObservable",
+    "class/es6/observable/NeverObservable.js~NeverObservable.html",
     "<span>NeverObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/NeverObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/notification.js~notification",
-    "variable/index.html#static-variable-Notification",
+    "class/es6/Notification.js~Notification.html",
     "<span>Notification</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Notification.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/util/objectunsubscribederror.js~objectunsubscribederror",
-    "variable/index.html#static-variable-ObjectUnsubscribedError",
+    "class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html",
     "<span>ObjectUnsubscribedError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/util/ObjectUnsubscribedError.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable.js~observable",
-    "variable/index.html#static-variable-Observable",
+    "class/es6/Observable.js~Observable.html",
     "<span>Observable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Observable.js</span>",
-    "variable"
+    "class"
+  ],
+  [
+    "@reactivex/rxjs/es6/miscjsdoc.js~observabledoc",
+    "class/es6/MiscJSDoc.js~ObservableDoc.html",
+    "<span>ObservableDoc</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/MiscJSDoc.js</span>",
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/pairsobservable.js~pairsobservable",
-    "variable/index.html#static-variable-PairsObservable",
+    "class/es6/observable/PairsObservable.js~PairsObservable.html",
     "<span>PairsObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/PairsObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/promiseobservable.js~promiseobservable",
-    "variable/index.html#static-variable-PromiseObservable",
+    "class/es6/observable/PromiseObservable.js~PromiseObservable.html",
     "<span>PromiseObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/PromiseObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/rangeobservable.js~rangeobservable",
-    "variable/index.html#static-variable-RangeObservable",
+    "class/es6/observable/RangeObservable.js~RangeObservable.html",
     "<span>RangeObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/RangeObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/replaysubject.js~replaysubject",
-    "variable/index.html#static-variable-ReplaySubject",
+    "class/es6/ReplaySubject.js~ReplaySubject.html",
     "<span>ReplaySubject</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/ReplaySubject.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/scalarobservable.js~scalarobservable",
-    "variable/index.html#static-variable-ScalarObservable",
+    "class/es6/observable/ScalarObservable.js~ScalarObservable.html",
     "<span>ScalarObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/ScalarObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/scheduler.js~scheduler",
-    "variable/index.html#static-variable-Scheduler",
+    "class/es6/Scheduler.js~Scheduler.html",
     "<span>Scheduler</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Scheduler.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/subject.js~subject",
-    "variable/index.html#static-variable-Subject",
+    "class/es6/Subject.js~Subject.html",
     "<span>Subject</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Subject.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/subject.js~subjectsubscriber",
-    "variable/index.html#static-variable-SubjectSubscriber",
+    "class/es6/Subject.js~SubjectSubscriber.html",
     "<span>SubjectSubscriber</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Subject.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/subscribeonobservable.js~subscribeonobservable",
-    "variable/index.html#static-variable-SubscribeOnObservable",
+    "class/es6/observable/SubscribeOnObservable.js~SubscribeOnObservable.html",
     "<span>SubscribeOnObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/SubscribeOnObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/subscriber.js~subscriber",
-    "variable/index.html#static-variable-Subscriber",
+    "class/es6/Subscriber.js~Subscriber.html",
     "<span>Subscriber</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Subscriber.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/subscription.js~subscription",
-    "variable/index.html#static-variable-Subscription",
+    "class/es6/Subscription.js~Subscription.html",
     "<span>Subscription</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/Subscription.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/util/timeouterror.js~timeouterror",
-    "variable/index.html#static-variable-TimeoutError",
+    "class/es6/util/TimeoutError.js~TimeoutError.html",
     "<span>TimeoutError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/util/TimeoutError.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/timerobservable.js~timerobservable",
-    "variable/index.html#static-variable-TimerObservable",
+    "class/es6/observable/TimerObservable.js~TimerObservable.html",
     "<span>TimerObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/TimerObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/util/unsubscriptionerror.js~unsubscriptionerror",
-    "variable/index.html#static-variable-UnsubscriptionError",
+    "class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html",
     "<span>UnsubscriptionError</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/util/UnsubscriptionError.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/usingobservable.js~usingobservable",
-    "variable/index.html#static-variable-UsingObservable",
+    "class/es6/observable/UsingObservable.js~UsingObservable.html",
     "<span>UsingObservable</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/UsingObservable.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/observable/dom/websocketsubject.js~websocketsubject",
-    "variable/index.html#static-variable-WebSocketSubject",
+    "class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html",
     "<span>WebSocketSubject</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/observable/dom/WebSocketSubject.js</span>",
-    "variable"
+    "class"
   ],
   [
     "@reactivex/rxjs/es6/util/root.js~root",
@@ -793,13 +799,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber70",
+    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber55",
     "ConnectableObservable.prototype.refCount ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber55",
+    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber70",
     "ConnectableObservable.prototype.refCount ",
     "test"
   ],
@@ -1723,7 +1729,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/Observable-spec.js.html#lineNumber335",
+    "test-file/spec-js/Observable-spec.js.html#lineNumber359",
     "Observable subscribe when called with an anonymous observer ",
     "test"
   ],
@@ -1735,7 +1741,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/Observable-spec.js.html#lineNumber359",
+    "test-file/spec-js/Observable-spec.js.html#lineNumber335",
     "Observable subscribe when called with an anonymous observer ",
     "test"
   ],
@@ -1885,13 +1891,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/ajax-spec.js.html#lineNumber169",
+    "test-file/spec-js/observables/dom/ajax-spec.js.html#lineNumber197",
     "Observable.ajax should fail on 404",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/ajax-spec.js.html#lineNumber197",
+    "test-file/spec-js/observables/dom/ajax-spec.js.html#lineNumber169",
     "Observable.ajax should fail on 404",
     "test"
   ],
@@ -1968,7 +1974,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "bindcallback bindcallback,bindcallback",
+    "bindcallback es6/observable/boundcallbackobservable.js~boundcallbackobservable.create,bindcallback",
     "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber7",
     "Observable.bindCallback",
     "test"
@@ -2058,7 +2064,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "bindnodecallback bindnodecallback,bindnodecallback",
+    "bindnodecallback es6/observable/boundnodecallbackobservable.js~boundnodecallbackobservable.create,bindnodecallback",
     "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber7",
     "Observable.bindNodeCallback",
     "test"
@@ -2394,20 +2400,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "concat es6/operator/concat.js~concatstatic,concat",
+    "concat es6/operator/concat.js~concat,concat",
     "test-file/spec-js/observables/concat-spec.js.html#lineNumber7",
     "Observable.concat",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber146",
-    "Observable.concat ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber208",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber256",
     "Observable.concat ",
     "test"
   ],
@@ -2425,7 +2425,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber256",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber208",
+    "Observable.concat ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber146",
     "Observable.concat ",
     "test"
   ],
@@ -2515,13 +2521,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber230",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber267",
     "Observable.concat should not emit collapsing element from second source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber267",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber230",
     "Observable.concat should not emit collapsing element from second source",
     "test"
   ],
@@ -2586,7 +2592,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "defer defer,defer",
+    "defer es6/observable/deferobservable.js~deferobservable.create,defer",
     "test-file/spec-js/observables/defer-spec.js.html#lineNumber6",
     "Observable.defer",
     "test"
@@ -2640,13 +2646,13 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "empty empty,empty",
+    "empty es6/observable/emptyobservable.js~emptyobservable.create,empty",
     "test-file/spec-js/observables/empty-spec.js.html#lineNumber5",
     "Observable.empty",
     "test"
   ],
   [
-    "forkjoin forkjoin,forkjoin",
+    "forkjoin es6/observable/forkjoinobservable.js~forkjoinobservable.create,forkjoin",
     "test-file/spec-js/observables/forkJoin-spec.js.html#lineNumber7",
     "Observable.forkJoin",
     "test"
@@ -2838,7 +2844,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "from from,from",
+    "from es6/observable/fromobservable.js~fromobservable.create,from",
     "test-file/spec-js/observables/from-spec.js.html#lineNumber6",
     "Observable.from",
     "test"
@@ -2874,7 +2880,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "fromevent fromevent,fromevent",
+    "fromevent es6/observable/fromeventobservable.js~fromeventobservable.create,fromevent",
     "test-file/spec-js/observables/fromEvent-spec.js.html#lineNumber6",
     "Observable.fromEvent",
     "test"
@@ -2940,7 +2946,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "fromeventpattern fromeventpattern,fromeventpattern",
+    "fromeventpattern es6/observable/fromeventpatternobservable.js~fromeventpatternobservable.create,fromeventpattern",
     "test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber6",
     "Observable.fromEventPattern",
     "test"
@@ -2976,7 +2982,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "frompromise frompromise,frompromise",
+    "frompromise es6/observable/promiseobservable.js~promiseobservable.create,frompromise",
     "test-file/spec-js/observables/from-promise-spec.js.html#lineNumber7",
     "Observable.fromPromise",
     "test"
@@ -3168,7 +3174,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "interval interval,interval",
+    "interval es6/observable/intervalobservable.js~intervalobservable.create,interval",
     "test-file/spec-js/observables/interval-spec.js.html#lineNumber10",
     "Observable.interval",
     "test"
@@ -3282,7 +3288,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "merge es6/operator/merge.js~mergestatic,merge",
+    "merge es6/operator/merge.js~merge,merge",
     "test-file/spec-js/observables/merge-spec.js.html#lineNumber6",
     "Observable.merge(...observables)",
     "test"
@@ -3408,13 +3414,13 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "never never,never",
+    "never es6/observable/neverobservable.js~neverobservable.create,never",
     "test-file/spec-js/observables/never-spec.js.html#lineNumber5",
     "Observable.never",
     "test"
   ],
   [
-    "of of,of",
+    "of es6/observable/arrayobservable.js~arrayobservable.of,of",
     "test-file/spec-js/observables/of-spec.js.html#lineNumber9",
     "Observable.of",
     "test"
@@ -3733,13 +3739,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber171",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber186",
     "Observable.prototype.buffer should unsubscribe notifier when source unsubscribed",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber186",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber171",
     "Observable.prototype.buffer should unsubscribe notifier when source unsubscribed",
     "test"
   ],
@@ -3799,13 +3805,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber156",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber137",
     "Observable.prototype.buffer should work with non-empty and selector error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber137",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber156",
     "Observable.prototype.buffer should work with non-empty and selector error",
     "test"
   ],
@@ -3894,20 +3900,20 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "buffertime buffertime,buffertime",
+    "buffertime es6/operator/buffertime.js~buffertime,buffertime",
     "test-file/spec-js/operators/bufferTime-spec.js.html#lineNumber5",
     "Observable.prototype.bufferTime",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/bufferTime-spec.js.html#lineNumber221",
+    "test-file/spec-js/operators/bufferTime-spec.js.html#lineNumber80",
     "Observable.prototype.bufferTime ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/bufferTime-spec.js.html#lineNumber80",
+    "test-file/spec-js/operators/bufferTime-spec.js.html#lineNumber221",
     "Observable.prototype.bufferTime ",
     "test"
   ],
@@ -4230,7 +4236,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "catch catch,catch",
+    "catch es6/operator/catch.js~_catch,catch",
     "test-file/spec-js/operators/catch-spec.js.html#lineNumber7",
     "Observable.prototype.catch",
     "test"
@@ -4710,15 +4716,9 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "concat es6/operator/concat.js~concatstatic,concat",
+    "concat es6/operator/concat.js~concat,concat",
     "test-file/spec-js/operators/concat-spec.js.html#lineNumber6",
     "Observable.prototype.concat",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/operators/concat-spec.js.html#lineNumber123",
-    "Observable.prototype.concat ",
     "test"
   ],
   [
@@ -4730,6 +4730,12 @@ window.esdocSearchIndex = [
   [
     "",
     "test-file/spec-js/operators/concat-spec.js.html#lineNumber200",
+    "Observable.prototype.concat ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/concat-spec.js.html#lineNumber123",
     "Observable.prototype.concat ",
     "test"
   ],
@@ -4854,7 +4860,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "concatall concatall,concatall",
+    "concatall es6/operator/concatall.js~concatall,concatall",
     "test-file/spec-js/operators/concatAll-spec.js.html#lineNumber6",
     "Observable.prototype.concatAll",
     "test"
@@ -5034,7 +5040,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "concatmap concatmap,concatmap",
+    "concatmap es6/operator/concatmap.js~concatmap,concatmap",
     "test-file/spec-js/operators/concatMap-spec.js.html#lineNumber6",
     "Observable.prototype.concatMap",
     "test"
@@ -5262,7 +5268,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "concatmapto concatmapto,concatmapto",
+    "concatmapto es6/operator/concatmapto.js~concatmapto,concatmapto",
     "test-file/spec-js/operators/concatMapTo-spec.js.html#lineNumber6",
     "Observable.prototype.concatMapTo",
     "test"
@@ -5814,7 +5820,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "defaultifempty defaultifempty,defaultifempty",
+    "defaultifempty es6/operator/defaultifempty.js~defaultifempty,defaultifempty",
     "test-file/spec-js/operators/defaultIfEmpty-spec.js.html#lineNumber5",
     "Observable.prototype.defaultIfEmpty",
     "test"
@@ -6204,7 +6210,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "distinctuntilchanged distinctuntilchanged,distinctuntilchanged",
+    "distinctuntilchanged es6/operator/distinctuntilchanged.js~distinctuntilchanged,distinctuntilchanged",
     "test-file/spec-js/operators/distinctUntilChanged-spec.js.html#lineNumber5",
     "Observable.prototype.distinctUntilChanged",
     "test"
@@ -6330,7 +6336,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "distinctuntilkeychanged distinctuntilkeychanged,distinctuntilkeychanged",
+    "distinctuntilkeychanged es6/operator/distinctuntilkeychanged.js~distinctuntilkeychanged,distinctuntilkeychanged",
     "test-file/spec-js/operators/distinctUntilKeyChanged-spec.js.html#lineNumber4",
     "Observable.prototype.distinctUntilKeyChanged",
     "test"
@@ -6456,7 +6462,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "do do,do",
+    "do es6/notification.js~notification#do,do",
     "test-file/spec-js/operators/do-spec.js.html#lineNumber7",
     "Observable.prototype.do",
     "test"
@@ -6876,7 +6882,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "exhaustmap exhaustmap,exhaustmap",
+    "exhaustmap es6/operator/exhaustmap.js~exhaustmap,exhaustmap",
     "test-file/spec-js/operators/exhaustMap-spec.js.html#lineNumber5",
     "Observable.prototype.exhaustMap",
     "test"
@@ -6990,7 +6996,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "expand expand,expand",
+    "expand es6/operator/expand.js~expand,expand",
     "test-file/spec-js/operators/expand-spec.js.html#lineNumber6",
     "Observable.prototype.expand",
     "test"
@@ -7086,7 +7092,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "filter filter,filter",
+    "filter es6/operator/filter.js~filter,filter",
     "test-file/spec-js/operators/filter-spec.js.html#lineNumber6",
     "Observable.prototype.filter",
     "test"
@@ -7290,7 +7296,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "find find,find",
+    "find es6/operator/find.js~find,find",
     "test-file/spec-js/operators/find-spec.js.html#lineNumber6",
     "Observable.prototype.find",
     "test"
@@ -7428,7 +7434,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "first first,first",
+    "first es6/operator/first.js~first,first",
     "test-file/spec-js/operators/first-spec.js.html#lineNumber6",
     "Observable.prototype.first",
     "test"
@@ -7536,7 +7542,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "groupby groupby,groupby",
+    "groupby es6/operator/groupby.js~groupby,groupby",
     "test-file/spec-js/operators/groupBy-spec.js.html#lineNumber13",
     "Observable.prototype.groupBy",
     "test"
@@ -7777,13 +7783,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/ignoreElements-spec.js.html#lineNumber13",
+    "test-file/spec-js/operators/ignoreElements-spec.js.html#lineNumber22",
     "Observable.prototype.ignoreElements should allow unsubscribing early and explicitly",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/ignoreElements-spec.js.html#lineNumber22",
+    "test-file/spec-js/operators/ignoreElements-spec.js.html#lineNumber13",
     "Observable.prototype.ignoreElements should allow unsubscribing early and explicitly",
     "test"
   ],
@@ -7854,7 +7860,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "last last,last",
+    "last es6/operator/last.js~last,last",
     "test-file/spec-js/operators/last-spec.js.html#lineNumber5",
     "Observable.prototype.last",
     "test"
@@ -8280,7 +8286,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "merge es6/operator/merge.js~mergestatic,merge",
+    "merge es6/operator/merge.js~merge,merge",
     "test-file/spec-js/operators/merge-spec.js.html#lineNumber7",
     "Observable.prototype.merge",
     "test"
@@ -8574,7 +8580,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mergemap mergemap,mergemap",
+    "mergemap es6/operator/mergemap.js~mergemap,mergemap",
     "test-file/spec-js/operators/mergeMap-spec.js.html#lineNumber6",
     "Observable.prototype.mergeMap",
     "test"
@@ -8832,7 +8838,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mergemapto mergemapto,mergemapto",
+    "mergemapto es6/operator/mergemapto.js~mergemapto,mergemapto",
     "test-file/spec-js/operators/mergeMapTo-spec.js.html#lineNumber6",
     "Observable.prototype.mergeMapTo",
     "test"
@@ -9252,7 +9258,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "multicast multicast,multicast",
+    "multicast es6/operator/multicast.js~multicast,multicast",
     "test-file/spec-js/operators/multicast-spec.js.html#lineNumber8",
     "Observable.prototype.multicast",
     "test"
@@ -9750,7 +9756,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "publish publish,publish",
+    "publish es6/operator/publish.js~publish,publish",
     "test-file/spec-js/operators/publish-spec.js.html#lineNumber6",
     "Observable.prototype.publish",
     "test"
@@ -10063,13 +10069,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber241",
+    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber79",
     "Observable.prototype.publishReplay ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber79",
+    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber241",
     "Observable.prototype.publishReplay ",
     "test"
   ],
@@ -10176,7 +10182,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "race race,race",
+    "race es6/operator/race.js~race,race",
     "test-file/spec-js/operators/race-spec.js.html#lineNumber6",
     "Observable.prototype.race",
     "test"
@@ -10254,7 +10260,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "reduce reduce,reduce",
+    "reduce es6/operator/reduce.js~reduce,reduce",
     "test-file/spec-js/operators/reduce-spec.js.html#lineNumber5",
     "Observable.prototype.reduce",
     "test"
@@ -10537,13 +10543,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/repeatWhen-spec.js.html#lineNumber221",
+    "test-file/spec-js/operators/repeatWhen-spec.js.html#lineNumber242",
     "Observable.prototype.repeatWhen ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/repeatWhen-spec.js.html#lineNumber242",
+    "test-file/spec-js/operators/repeatWhen-spec.js.html#lineNumber221",
     "Observable.prototype.repeatWhen ",
     "test"
   ],
@@ -10998,7 +11004,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "scan scan,scan",
+    "scan es6/operator/scan.js~scan,scan",
     "test-file/spec-js/operators/scan-spec.js.html#lineNumber6",
     "Observable.prototype.scan",
     "test"
@@ -11089,139 +11095,139 @@ window.esdocSearchIndex = [
   ],
   [
     "sequenceequal es6/operator/sequenceequal.js~sequenceequal,sequenceequal",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber3",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber5",
     "Observable.prototype.sequenceEqual",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber126",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber128",
     "Observable.prototype.sequenceEqual should error if the comparor errors",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber71",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber73",
     "Observable.prototype.sequenceEqual should error if the source is a throw",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber61",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber63",
     "Observable.prototype.sequenceEqual should error with an errored compareTo",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber51",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber53",
     "Observable.prototype.sequenceEqual should error with an errored source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber85",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber87",
     "Observable.prototype.sequenceEqual should never return if compareTo is a never",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber78",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber80",
     "Observable.prototype.sequenceEqual should never return if source is a never",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber230",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber232",
     "Observable.prototype.sequenceEqual should return compare hot and cold observables",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber223",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber225",
     "Observable.prototype.sequenceEqual should return false for an empty observable and an observable that emits",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber15",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber17",
     "Observable.prototype.sequenceEqual should return false for two sync observables that are unequal in length",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber172",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber174",
     "Observable.prototype.sequenceEqual should return false for two unequal sequences, compareTo finishing last",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber183",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber185",
     "Observable.prototype.sequenceEqual should return false for two unequal sequences, early wrong value from source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber102",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber104",
     "Observable.prototype.sequenceEqual should return false if compareTo is empty and source is not",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber92",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber94",
     "Observable.prototype.sequenceEqual should return false if source is empty and compareTo is not",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber205",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber207",
     "Observable.prototype.sequenceEqual should return false when the compareTo emits an extra value after the source completes",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber194",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber196",
     "Observable.prototype.sequenceEqual should return false when the source emits an extra value after the compareTo completes",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber112",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber114",
     "Observable.prototype.sequenceEqual should return never if compareTo is empty and source is never",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber119",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber121",
     "Observable.prototype.sequenceEqual should return never if source is empty and compareTo is never",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber216",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber218",
     "Observable.prototype.sequenceEqual should return true for two empty observables",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber40",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber42",
     "Observable.prototype.sequenceEqual should return true for two observables that match when the last one emits and completes in the same frame",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber29",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber31",
     "Observable.prototype.sequenceEqual should return true for two observables that match when the last one emits and completes in the same frame",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber22",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber24",
     "Observable.prototype.sequenceEqual should return true for two sync observables that match",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber152",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber154",
     "Observable.prototype.sequenceEqual should use the provided comparor",
     "test"
   ],
@@ -11712,7 +11718,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "startwith startwith,startwith",
+    "startwith es6/operator/startwith.js~startwith,startwith",
     "test-file/spec-js/operators/startWith-spec.js.html#lineNumber5",
     "Observable.prototype.startWith",
     "test"
@@ -11946,7 +11952,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "switchmap switchmap,switchmap",
+    "switchmap es6/operator/switchmap.js~switchmap,switchmap",
     "test-file/spec-js/operators/switchMap-spec.js.html#lineNumber6",
     "Observable.prototype.switchMap",
     "test"
@@ -12078,7 +12084,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "switchmapto switchmapto,switchmapto",
+    "switchmapto es6/operator/switchmapto.js~switchmapto,switchmapto",
     "test-file/spec-js/operators/switchMapTo-spec.js.html#lineNumber6",
     "Observable.prototype.switchMapTo",
     "test"
@@ -12840,7 +12846,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "timeout es6/operator/timeout.js~timeout,timeout",
+    "timeout es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#timeout,timeout",
     "test-file/spec-js/operators/timeout-spec.js.html#lineNumber5",
     "Observable.prototype.timeout",
     "test"
@@ -12906,7 +12912,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "timeoutwith timeoutwith,timeoutwith",
+    "timeoutwith es6/operator/timeoutwith.js~timeoutwith,timeoutwith",
     "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber5",
     "Observable.prototype.timeoutWith",
     "test"
@@ -12919,19 +12925,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber106",
-    "Observable.prototype.timeoutWith ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber118",
-    "Observable.prototype.timeoutWith ",
-    "test"
-  ],
-  [
-    "",
     "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber82",
+    "Observable.prototype.timeoutWith ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber94",
     "Observable.prototype.timeoutWith ",
     "test"
   ],
@@ -12943,7 +12943,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber94",
+    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber118",
+    "Observable.prototype.timeoutWith ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber106",
     "Observable.prototype.timeoutWith ",
     "test"
   ],
@@ -13134,7 +13140,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "topromise topromise,topromise",
+    "topromise es6/operator/topromise.js~topromise,topromise",
     "test-file/spec-js/operators/toPromise-spec.js.html#lineNumber6",
     "Observable.prototype.toPromise",
     "test"
@@ -13560,7 +13566,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "withlatestfrom withlatestfrom,withlatestfrom",
+    "withlatestfrom es6/operator/withlatestfrom.js~withlatestfrom,withlatestfrom",
     "test-file/spec-js/operators/withLatestFrom-spec.js.html#lineNumber7",
     "Observable.prototype.withLatestFrom",
     "test"
@@ -14209,13 +14215,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber158",
+    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber134",
     "Observable.prototype.zipAll with iterables should work with non-empty observable and empty iterable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber134",
+    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber158",
     "Observable.prototype.zipAll with iterables should work with non-empty observable and empty iterable",
     "test"
   ],
@@ -14244,7 +14250,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "race race,race",
+    "race es6/operator/race.js~race,race",
     "test-file/spec-js/observables/race-spec.js.html#lineNumber5",
     "Observable.race",
     "test"
@@ -14334,7 +14340,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "range range,range",
+    "range es6/observable/rangeobservable.js~rangeobservable.create,range",
     "test-file/spec-js/observables/range-spec.js.html#lineNumber9",
     "Observable.range",
     "test"
@@ -14352,7 +14358,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "throw throw,throw",
+    "throw es6/observable/errorobservable.js~errorobservable.create,throw",
     "test-file/spec-js/observables/throw-spec.js.html#lineNumber7",
     "Observable.throw",
     "test"
@@ -14382,7 +14388,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "timer timer,timer",
+    "timer es6/observable/timerobservable.js~timerobservable.create,timer",
     "test-file/spec-js/observables/timer-spec.js.html#lineNumber5",
     "Observable.timer",
     "test"
@@ -14407,13 +14413,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/timer-spec.js.html#lineNumber31",
+    "test-file/spec-js/observables/timer-spec.js.html#lineNumber63",
     "Observable.timer should start after delay and periodically emit values",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/timer-spec.js.html#lineNumber63",
+    "test-file/spec-js/observables/timer-spec.js.html#lineNumber31",
     "Observable.timer should start after delay and periodically emit values",
     "test"
   ],
@@ -14466,7 +14472,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "websocket websocket,websocket",
+    "websocket es6/observable/dom/websocketsubject.js~websocketsubject.create,websocket",
     "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber18",
     "Observable.webSocket",
     "test"
@@ -15259,13 +15265,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/Subject-spec.js.html#lineNumber86",
-    "Subject ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/Subject-spec.js.html#lineNumber62",
+    "test-file/spec-js/Subject-spec.js.html#lineNumber110",
     "Subject ",
     "test"
   ],
@@ -15277,7 +15277,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/Subject-spec.js.html#lineNumber110",
+    "test-file/spec-js/Subject-spec.js.html#lineNumber86",
+    "Subject ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/Subject-spec.js.html#lineNumber62",
     "Subject ",
     "test"
   ],
@@ -15924,16 +15930,124 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/miscjsdoc.js",
+    "file/es6/MiscJSDoc.js.html",
+    "es6/MiscJSDoc.js",
+    "file"
+  ],
+  [
+    "es6/miscjsdoc.js~observabledoc.create",
+    "class/es6/Observable.js~Observable.html#static-method-create",
+    "es6/MiscJSDoc.js~ObservableDoc.create",
+    "method"
+  ],
+  [
+    "es6/miscjsdoc.js~observerdoc",
+    "class/es6/MiscJSDoc.js~ObserverDoc.html",
+    "es6/MiscJSDoc.js~ObserverDoc",
+    "class"
+  ],
+  [
+    "es6/miscjsdoc.js~observerdoc#closed",
+    "class/es6/MiscJSDoc.js~ObserverDoc.html#instance-member-closed",
+    "es6/MiscJSDoc.js~ObserverDoc#closed",
+    "member"
+  ],
+  [
+    "es6/miscjsdoc.js~observerdoc#complete",
+    "class/es6/MiscJSDoc.js~ObserverDoc.html#instance-method-complete",
+    "es6/MiscJSDoc.js~ObserverDoc#complete",
+    "method"
+  ],
+  [
+    "es6/miscjsdoc.js~observerdoc#error",
+    "class/es6/MiscJSDoc.js~ObserverDoc.html#instance-method-error",
+    "es6/MiscJSDoc.js~ObserverDoc#error",
+    "method"
+  ],
+  [
+    "es6/miscjsdoc.js~observerdoc#next",
+    "class/es6/MiscJSDoc.js~ObserverDoc.html#instance-method-next",
+    "es6/MiscJSDoc.js~ObserverDoc#next",
+    "method"
+  ],
+  [
     "es6/notification.js",
     "file/es6/Notification.js.html",
     "es6/Notification.js",
     "file"
   ],
   [
+    "es6/notification.js~notification#accept",
+    "class/es6/Notification.js~Notification.html#instance-method-accept",
+    "es6/Notification.js~Notification#accept",
+    "method"
+  ],
+  [
+    "es6/notification.js~notification#do",
+    "class/es6/Notification.js~Notification.html#instance-method-do",
+    "es6/Notification.js~Notification#do",
+    "method"
+  ],
+  [
+    "es6/notification.js~notification#observe",
+    "class/es6/Notification.js~Notification.html#instance-method-observe",
+    "es6/Notification.js~Notification#observe",
+    "method"
+  ],
+  [
+    "es6/notification.js~notification#toobservable",
+    "class/es6/Notification.js~Notification.html#instance-method-toObservable",
+    "es6/Notification.js~Notification#toObservable",
+    "method"
+  ],
+  [
+    "es6/notification.js~notification.createcomplete",
+    "class/es6/Notification.js~Notification.html#static-method-createComplete",
+    "es6/Notification.js~Notification.createComplete",
+    "method"
+  ],
+  [
+    "es6/notification.js~notification.createerror",
+    "class/es6/Notification.js~Notification.html#static-method-createError",
+    "es6/Notification.js~Notification.createError",
+    "method"
+  ],
+  [
+    "es6/notification.js~notification.createnext",
+    "class/es6/Notification.js~Notification.html#static-method-createNext",
+    "es6/Notification.js~Notification.createNext",
+    "method"
+  ],
+  [
     "es6/observable.js",
     "file/es6/Observable.js.html",
     "es6/Observable.js",
     "file"
+  ],
+  [
+    "es6/observable.js~observable#[$$observable]",
+    "class/es6/Observable.js~Observable.html#instance-method-[$$observable]",
+    "es6/Observable.js~Observable#[$$observable]",
+    "method"
+  ],
+  [
+    "es6/observable.js~observable#constructor",
+    "class/es6/Observable.js~Observable.html#instance-constructor-constructor",
+    "es6/Observable.js~Observable#constructor",
+    "method"
+  ],
+  [
+    "es6/observable.js~observable#foreach",
+    "class/es6/Observable.js~Observable.html#instance-method-forEach",
+    "es6/Observable.js~Observable#forEach",
+    "method"
+  ],
+  [
+    "es6/observable.js~observable#lift",
+    "class/es6/Observable.js~Observable.html#instance-method-lift",
+    "es6/Observable.js~Observable#lift",
+    "method"
   ],
   [
     "es6/observer.js",
@@ -15984,6 +16098,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/scheduler.js~scheduler#schedule",
+    "class/es6/Scheduler.js~Scheduler.html#instance-method-schedule",
+    "es6/Scheduler.js~Scheduler#schedule",
+    "method"
+  ],
+  [
     "es6/subject.js",
     "file/es6/Subject.js.html",
     "es6/Subject.js",
@@ -16002,10 +16122,70 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/subscriber.js~subscriber#complete",
+    "class/es6/Subscriber.js~Subscriber.html#instance-method-complete",
+    "es6/Subscriber.js~Subscriber#complete",
+    "method"
+  ],
+  [
+    "es6/subscriber.js~subscriber#constructor",
+    "class/es6/Subscriber.js~Subscriber.html#instance-constructor-constructor",
+    "es6/Subscriber.js~Subscriber#constructor",
+    "method"
+  ],
+  [
+    "es6/subscriber.js~subscriber#error",
+    "class/es6/Subscriber.js~Subscriber.html#instance-method-error",
+    "es6/Subscriber.js~Subscriber#error",
+    "method"
+  ],
+  [
+    "es6/subscriber.js~subscriber#next",
+    "class/es6/Subscriber.js~Subscriber.html#instance-method-next",
+    "es6/Subscriber.js~Subscriber#next",
+    "method"
+  ],
+  [
+    "es6/subscriber.js~subscriber.create",
+    "class/es6/Subscriber.js~Subscriber.html#static-method-create",
+    "es6/Subscriber.js~Subscriber.create",
+    "method"
+  ],
+  [
     "es6/subscription.js",
     "file/es6/Subscription.js.html",
     "es6/Subscription.js",
     "file"
+  ],
+  [
+    "es6/subscription.js~subscription#add",
+    "class/es6/Subscription.js~Subscription.html#instance-method-add",
+    "es6/Subscription.js~Subscription#add",
+    "method"
+  ],
+  [
+    "es6/subscription.js~subscription#closed",
+    "class/es6/Subscription.js~Subscription.html#instance-member-closed",
+    "es6/Subscription.js~Subscription#closed",
+    "member"
+  ],
+  [
+    "es6/subscription.js~subscription#constructor",
+    "class/es6/Subscription.js~Subscription.html#instance-constructor-constructor",
+    "es6/Subscription.js~Subscription#constructor",
+    "method"
+  ],
+  [
+    "es6/subscription.js~subscription#remove",
+    "class/es6/Subscription.js~Subscription.html#instance-method-remove",
+    "es6/Subscription.js~Subscription#remove",
+    "method"
+  ],
+  [
+    "es6/subscription.js~subscription#unsubscribe",
+    "class/es6/Subscription.js~Subscription.html#instance-method-unsubscribe",
+    "es6/Subscription.js~Subscription#unsubscribe",
+    "method"
   ],
   [
     "es6/add/observable/bindcallback.js",
@@ -16782,16 +16962,34 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/arrayobservable.js~arrayobservable.of",
+    "class/es6/Observable.js~Observable.html#static-method-of",
+    "es6/observable/ArrayObservable.js~ArrayObservable.of",
+    "method"
+  ],
+  [
     "es6/observable/boundcallbackobservable.js",
     "file/es6/observable/BoundCallbackObservable.js.html",
     "es6/observable/BoundCallbackObservable.js",
     "file"
   ],
   [
+    "es6/observable/boundcallbackobservable.js~boundcallbackobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-bindCallback",
+    "es6/observable/BoundCallbackObservable.js~BoundCallbackObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/boundnodecallbackobservable.js",
     "file/es6/observable/BoundNodeCallbackObservable.js.html",
     "es6/observable/BoundNodeCallbackObservable.js",
     "file"
+  ],
+  [
+    "es6/observable/boundnodecallbackobservable.js~boundnodecallbackobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-bindNodeCallback",
+    "es6/observable/BoundNodeCallbackObservable.js~BoundNodeCallbackObservable.create",
+    "method"
   ],
   [
     "es6/observable/connectableobservable.js",
@@ -16806,10 +17004,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/deferobservable.js~deferobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-defer",
+    "es6/observable/DeferObservable.js~DeferObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/emptyobservable.js",
     "file/es6/observable/EmptyObservable.js.html",
     "es6/observable/EmptyObservable.js",
     "file"
+  ],
+  [
+    "es6/observable/emptyobservable.js~emptyobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-empty",
+    "es6/observable/EmptyObservable.js~EmptyObservable.create",
+    "method"
   ],
   [
     "es6/observable/errorobservable.js",
@@ -16818,10 +17028,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/errorobservable.js~errorobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-throw",
+    "es6/observable/ErrorObservable.js~ErrorObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/forkjoinobservable.js",
     "file/es6/observable/ForkJoinObservable.js.html",
     "es6/observable/ForkJoinObservable.js",
     "file"
+  ],
+  [
+    "es6/observable/forkjoinobservable.js~forkjoinobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-forkJoin",
+    "es6/observable/ForkJoinObservable.js~ForkJoinObservable.create",
+    "method"
   ],
   [
     "es6/observable/fromeventobservable.js",
@@ -16830,16 +17052,34 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/fromeventobservable.js~fromeventobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-fromEvent",
+    "es6/observable/FromEventObservable.js~FromEventObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/fromeventpatternobservable.js",
     "file/es6/observable/FromEventPatternObservable.js.html",
     "es6/observable/FromEventPatternObservable.js",
     "file"
   ],
   [
+    "es6/observable/fromeventpatternobservable.js~fromeventpatternobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-fromEventPattern",
+    "es6/observable/FromEventPatternObservable.js~FromEventPatternObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/fromobservable.js",
     "file/es6/observable/FromObservable.js.html",
     "es6/observable/FromObservable.js",
     "file"
+  ],
+  [
+    "es6/observable/fromobservable.js~fromobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-from",
+    "es6/observable/FromObservable.js~FromObservable.create",
+    "method"
   ],
   [
     "es6/observable/generateobservable.js",
@@ -16860,6 +17100,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/intervalobservable.js~intervalobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-interval",
+    "es6/observable/IntervalObservable.js~IntervalObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/iteratorobservable.js",
     "file/es6/observable/IteratorObservable.js.html",
     "es6/observable/IteratorObservable.js",
@@ -16872,10 +17118,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/neverobservable.js~neverobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-never",
+    "es6/observable/NeverObservable.js~NeverObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/pairsobservable.js",
     "file/es6/observable/PairsObservable.js.html",
     "es6/observable/PairsObservable.js",
     "file"
+  ],
+  [
+    "es6/observable/pairsobservable.js~pairsobservable.create",
+    "class/es6/observable/PairsObservable.js~PairsObservable.html#static-method-create",
+    "es6/observable/PairsObservable.js~PairsObservable.create",
+    "method"
   ],
   [
     "es6/observable/promiseobservable.js",
@@ -16884,10 +17142,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/promiseobservable.js~promiseobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-fromPromise",
+    "es6/observable/PromiseObservable.js~PromiseObservable.create",
+    "method"
+  ],
+  [
     "es6/observable/rangeobservable.js",
     "file/es6/observable/RangeObservable.js.html",
     "es6/observable/RangeObservable.js",
     "file"
+  ],
+  [
+    "es6/observable/rangeobservable.js~rangeobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-range",
+    "es6/observable/RangeObservable.js~RangeObservable.create",
+    "method"
   ],
   [
     "es6/observable/scalarobservable.js",
@@ -16906,6 +17176,12 @@ window.esdocSearchIndex = [
     "file/es6/observable/TimerObservable.js.html",
     "es6/observable/TimerObservable.js",
     "file"
+  ],
+  [
+    "es6/observable/timerobservable.js~timerobservable.create",
+    "class/es6/Observable.js~Observable.html#static-method-timer",
+    "es6/observable/TimerObservable.js~TimerObservable.create",
+    "method"
   ],
   [
     "es6/observable/usingobservable.js",
@@ -16933,7 +17209,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/observable/combinelatest.js~combinelatest",
-    "variable/index.html#static-method-combineLatest",
+    "class/es6/Observable.js~Observable.html#static-method-combineLatest",
     "es6/observable/combineLatest.js~combineLatest",
     "method"
   ],
@@ -16956,10 +17232,112 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/observable/dom/miscjsdoc.js",
+    "file/es6/observable/dom/MiscJSDoc.js.html",
+    "es6/observable/dom/MiscJSDoc.js",
+    "file"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc",
+    "class"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#async",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-async",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#async",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#body",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-body",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#body",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#createxhr",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-method-createXHR",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#createXHR",
+    "method"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#crossdomain",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-crossDomain",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#crossDomain",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#hascontent",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-hasContent",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#hasContent",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#headers",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-headers",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#headers",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#method",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-method",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#method",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#password",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-password",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#password",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#progresssubscriber",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-progressSubscriber",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#progressSubscriber",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#responsetype",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-responseType",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#responseType",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#resultselector",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-method-resultSelector",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#resultSelector",
+    "method"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#timeout",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-timeout",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#timeout",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#url",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-url",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#url",
+    "member"
+  ],
+  [
+    "es6/observable/dom/miscjsdoc.js~ajaxrequestdoc#user",
+    "class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html#instance-member-user",
+    "es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc#user",
+    "member"
+  ],
+  [
     "es6/observable/dom/websocketsubject.js",
     "file/es6/observable/dom/WebSocketSubject.js.html",
     "es6/observable/dom/WebSocketSubject.js",
     "file"
+  ],
+  [
+    "es6/observable/dom/websocketsubject.js~websocketsubject.create",
+    "class/es6/Observable.js~Observable.html#static-method-webSocket",
+    "es6/observable/dom/WebSocketSubject.js~WebSocketSubject.create",
+    "method"
   ],
   [
     "es6/observable/dom/ajax.js",
@@ -17083,7 +17461,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/audit.js~audit",
-    "variable/index.html#instance-method-audit",
+    "class/es6/Observable.js~Observable.html#instance-method-audit",
     "es6/operator/audit.js~audit",
     "method"
   ],
@@ -17095,7 +17473,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/audittime.js~audittime",
-    "variable/index.html#instance-method-auditTime",
+    "class/es6/Observable.js~Observable.html#instance-method-auditTime",
     "es6/operator/auditTime.js~auditTime",
     "method"
   ],
@@ -17107,7 +17485,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/buffer.js~buffer",
-    "variable/index.html#instance-method-buffer",
+    "class/es6/Observable.js~Observable.html#instance-method-buffer",
     "es6/operator/buffer.js~buffer",
     "method"
   ],
@@ -17119,7 +17497,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/buffercount.js~buffercount",
-    "variable/index.html#instance-method-bufferCount",
+    "class/es6/Observable.js~Observable.html#instance-method-bufferCount",
     "es6/operator/bufferCount.js~bufferCount",
     "method"
   ],
@@ -17130,6 +17508,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/buffertime.js~buffertime",
+    "class/es6/Observable.js~Observable.html#instance-method-bufferTime",
+    "es6/operator/bufferTime.js~bufferTime",
+    "method"
+  ],
+  [
     "es6/operator/buffertoggle.js",
     "file/es6/operator/bufferToggle.js.html",
     "es6/operator/bufferToggle.js",
@@ -17137,7 +17521,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/buffertoggle.js~buffertoggle",
-    "variable/index.html#instance-method-bufferToggle",
+    "class/es6/Observable.js~Observable.html#instance-method-bufferToggle",
     "es6/operator/bufferToggle.js~bufferToggle",
     "method"
   ],
@@ -17149,7 +17533,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/bufferwhen.js~bufferwhen",
-    "variable/index.html#instance-method-bufferWhen",
+    "class/es6/Observable.js~Observable.html#instance-method-bufferWhen",
     "es6/operator/bufferWhen.js~bufferWhen",
     "method"
   ],
@@ -17160,6 +17544,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/catch.js~_catch",
+    "class/es6/Observable.js~Observable.html#instance-method-catch",
+    "es6/operator/catch.js~_catch",
+    "method"
+  ],
+  [
     "es6/operator/combineall.js",
     "file/es6/operator/combineAll.js.html",
     "es6/operator/combineAll.js",
@@ -17167,7 +17557,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/combineall.js~combineall",
-    "variable/index.html#instance-method-combineAll",
+    "class/es6/Observable.js~Observable.html#instance-method-combineAll",
     "es6/operator/combineAll.js~combineAll",
     "method"
   ],
@@ -17178,14 +17568,26 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/combinelatest.js~combinelatest",
+    "class/es6/Observable.js~Observable.html#instance-method-combineLatest",
+    "es6/operator/combineLatest.js~combineLatest",
+    "method"
+  ],
+  [
     "es6/operator/concat.js",
     "file/es6/operator/concat.js.html",
     "es6/operator/concat.js",
     "file"
   ],
   [
+    "es6/operator/concat.js~concat",
+    "class/es6/Observable.js~Observable.html#instance-method-concat",
+    "es6/operator/concat.js~concat",
+    "method"
+  ],
+  [
     "es6/operator/concat.js~concatstatic",
-    "variable/index.html#static-method-concat",
+    "class/es6/Observable.js~Observable.html#static-method-concat",
     "es6/operator/concat.js~concatStatic",
     "method"
   ],
@@ -17196,16 +17598,34 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/concatall.js~concatall",
+    "class/es6/Observable.js~Observable.html#instance-method-concatAll",
+    "es6/operator/concatAll.js~concatAll",
+    "method"
+  ],
+  [
     "es6/operator/concatmap.js",
     "file/es6/operator/concatMap.js.html",
     "es6/operator/concatMap.js",
     "file"
   ],
   [
+    "es6/operator/concatmap.js~concatmap",
+    "class/es6/Observable.js~Observable.html#instance-method-concatMap",
+    "es6/operator/concatMap.js~concatMap",
+    "method"
+  ],
+  [
     "es6/operator/concatmapto.js",
     "file/es6/operator/concatMapTo.js.html",
     "es6/operator/concatMapTo.js",
     "file"
+  ],
+  [
+    "es6/operator/concatmapto.js~concatmapto",
+    "class/es6/Observable.js~Observable.html#instance-method-concatMapTo",
+    "es6/operator/concatMapTo.js~concatMapTo",
+    "method"
   ],
   [
     "es6/operator/count.js",
@@ -17215,7 +17635,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/count.js~count",
-    "variable/index.html#instance-method-count",
+    "class/es6/Observable.js~Observable.html#instance-method-count",
     "es6/operator/count.js~count",
     "method"
   ],
@@ -17227,7 +17647,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/debounce.js~debounce",
-    "variable/index.html#instance-method-debounce",
+    "class/es6/Observable.js~Observable.html#instance-method-debounce",
     "es6/operator/debounce.js~debounce",
     "method"
   ],
@@ -17239,7 +17659,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/debouncetime.js~debouncetime",
-    "variable/index.html#instance-method-debounceTime",
+    "class/es6/Observable.js~Observable.html#instance-method-debounceTime",
     "es6/operator/debounceTime.js~debounceTime",
     "method"
   ],
@@ -17250,6 +17670,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/defaultifempty.js~defaultifempty",
+    "class/es6/Observable.js~Observable.html#instance-method-defaultIfEmpty",
+    "es6/operator/defaultIfEmpty.js~defaultIfEmpty",
+    "method"
+  ],
+  [
     "es6/operator/delay.js",
     "file/es6/operator/delay.js.html",
     "es6/operator/delay.js",
@@ -17257,7 +17683,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/delay.js~delay",
-    "variable/index.html#instance-method-delay",
+    "class/es6/Observable.js~Observable.html#instance-method-delay",
     "es6/operator/delay.js~delay",
     "method"
   ],
@@ -17269,7 +17695,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/delaywhen.js~delaywhen",
-    "variable/index.html#instance-method-delayWhen",
+    "class/es6/Observable.js~Observable.html#instance-method-delayWhen",
     "es6/operator/delayWhen.js~delayWhen",
     "method"
   ],
@@ -17281,7 +17707,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/dematerialize.js~dematerialize",
-    "variable/index.html#instance-method-dematerialize",
+    "class/es6/Observable.js~Observable.html#instance-method-dematerialize",
     "es6/operator/dematerialize.js~dematerialize",
     "method"
   ],
@@ -17293,7 +17719,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/distinct.js~distinct",
-    "variable/index.html#instance-method-distinct",
+    "class/es6/Observable.js~Observable.html#instance-method-distinct",
     "es6/operator/distinct.js~distinct",
     "method"
   ],
@@ -17304,16 +17730,34 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/distinctuntilchanged.js~distinctuntilchanged",
+    "class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged",
+    "es6/operator/distinctUntilChanged.js~distinctUntilChanged",
+    "method"
+  ],
+  [
     "es6/operator/distinctuntilkeychanged.js",
     "file/es6/operator/distinctUntilKeyChanged.js.html",
     "es6/operator/distinctUntilKeyChanged.js",
     "file"
   ],
   [
+    "es6/operator/distinctuntilkeychanged.js~distinctuntilkeychanged",
+    "class/es6/Observable.js~Observable.html#instance-method-distinctUntilKeyChanged",
+    "es6/operator/distinctUntilKeyChanged.js~distinctUntilKeyChanged",
+    "method"
+  ],
+  [
     "es6/operator/do.js",
     "file/es6/operator/do.js.html",
     "es6/operator/do.js",
     "file"
+  ],
+  [
+    "es6/operator/do.js~_do",
+    "class/es6/Observable.js~Observable.html#instance-method-do",
+    "es6/operator/do.js~_do",
+    "method"
   ],
   [
     "es6/operator/elementat.js",
@@ -17323,7 +17767,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/elementat.js~elementat",
-    "variable/index.html#instance-method-elementAt",
+    "class/es6/Observable.js~Observable.html#instance-method-elementAt",
     "es6/operator/elementAt.js~elementAt",
     "method"
   ],
@@ -17335,7 +17779,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/every.js~every",
-    "variable/index.html#instance-method-every",
+    "class/es6/Observable.js~Observable.html#instance-method-every",
     "es6/operator/every.js~every",
     "method"
   ],
@@ -17347,7 +17791,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/exhaust.js~exhaust",
-    "variable/index.html#instance-method-exhaust",
+    "class/es6/Observable.js~Observable.html#instance-method-exhaust",
     "es6/operator/exhaust.js~exhaust",
     "method"
   ],
@@ -17358,16 +17802,34 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/exhaustmap.js~exhaustmap",
+    "class/es6/Observable.js~Observable.html#instance-method-exhaustMap",
+    "es6/operator/exhaustMap.js~exhaustMap",
+    "method"
+  ],
+  [
     "es6/operator/expand.js",
     "file/es6/operator/expand.js.html",
     "es6/operator/expand.js",
     "file"
   ],
   [
+    "es6/operator/expand.js~expand",
+    "class/es6/Observable.js~Observable.html#instance-method-expand",
+    "es6/operator/expand.js~expand",
+    "method"
+  ],
+  [
     "es6/operator/filter.js",
     "file/es6/operator/filter.js.html",
     "es6/operator/filter.js",
     "file"
+  ],
+  [
+    "es6/operator/filter.js~filter",
+    "class/es6/Observable.js~Observable.html#instance-method-filter",
+    "es6/operator/filter.js~filter",
+    "method"
   ],
   [
     "es6/operator/finally.js",
@@ -17382,6 +17844,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/find.js~find",
+    "class/es6/Observable.js~Observable.html#instance-method-find",
+    "es6/operator/find.js~find",
+    "method"
+  ],
+  [
     "es6/operator/findindex.js",
     "file/es6/operator/findIndex.js.html",
     "es6/operator/findIndex.js",
@@ -17389,7 +17857,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/findindex.js~findindex",
-    "variable/index.html#instance-method-findIndex",
+    "class/es6/Observable.js~Observable.html#instance-method-findIndex",
     "es6/operator/findIndex.js~findIndex",
     "method"
   ],
@@ -17400,10 +17868,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/first.js~first",
+    "class/es6/Observable.js~Observable.html#instance-method-first",
+    "es6/operator/first.js~first",
+    "method"
+  ],
+  [
     "es6/operator/groupby.js",
     "file/es6/operator/groupBy.js.html",
     "es6/operator/groupBy.js",
     "file"
+  ],
+  [
+    "es6/operator/groupby.js~groupby",
+    "class/es6/Observable.js~Observable.html#instance-method-groupBy",
+    "es6/operator/groupBy.js~groupBy",
+    "method"
   ],
   [
     "es6/operator/ignoreelements.js",
@@ -17413,7 +17893,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/ignoreelements.js~ignoreelements",
-    "variable/index.html#instance-method-ignoreElements",
+    "class/es6/Observable.js~Observable.html#instance-method-ignoreElements",
     "es6/operator/ignoreElements.js~ignoreElements",
     "method"
   ],
@@ -17425,7 +17905,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/isempty.js~isempty",
-    "variable/index.html#instance-method-isEmpty",
+    "class/es6/Observable.js~Observable.html#instance-method-isEmpty",
     "es6/operator/isEmpty.js~isEmpty",
     "method"
   ],
@@ -17436,6 +17916,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/last.js~last",
+    "class/es6/Observable.js~Observable.html#instance-method-last",
+    "es6/operator/last.js~last",
+    "method"
+  ],
+  [
     "es6/operator/let.js",
     "file/es6/operator/let.js.html",
     "es6/operator/let.js",
@@ -17443,7 +17929,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/let.js~letproto",
-    "variable/index.html#instance-method-letProto",
+    "class/es6/Observable.js~Observable.html#instance-method-letProto",
     "es6/operator/let.js~letProto",
     "method"
   ],
@@ -17455,7 +17941,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/map.js~map",
-    "variable/index.html#instance-method-map",
+    "class/es6/Observable.js~Observable.html#instance-method-map",
     "es6/operator/map.js~map",
     "method"
   ],
@@ -17467,7 +17953,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/mapto.js~mapto",
-    "variable/index.html#instance-method-mapTo",
+    "class/es6/Observable.js~Observable.html#instance-method-mapTo",
     "es6/operator/mapTo.js~mapTo",
     "method"
   ],
@@ -17479,7 +17965,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/materialize.js~materialize",
-    "variable/index.html#instance-method-materialize",
+    "class/es6/Observable.js~Observable.html#instance-method-materialize",
     "es6/operator/materialize.js~materialize",
     "method"
   ],
@@ -17491,7 +17977,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/max.js~max",
-    "variable/index.html#instance-method-max",
+    "class/es6/Observable.js~Observable.html#instance-method-max",
     "es6/operator/max.js~max",
     "method"
   ],
@@ -17502,8 +17988,14 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/merge.js~merge",
+    "class/es6/Observable.js~Observable.html#instance-method-merge",
+    "es6/operator/merge.js~merge",
+    "method"
+  ],
+  [
     "es6/operator/merge.js~mergestatic",
-    "variable/index.html#static-method-merge",
+    "class/es6/Observable.js~Observable.html#static-method-merge",
     "es6/operator/merge.js~mergeStatic",
     "method"
   ],
@@ -17515,7 +18007,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/mergeall.js~mergeall",
-    "variable/index.html#instance-method-mergeAll",
+    "class/es6/Observable.js~Observable.html#instance-method-mergeAll",
     "es6/operator/mergeAll.js~mergeAll",
     "method"
   ],
@@ -17526,10 +18018,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/mergemap.js~mergemap",
+    "class/es6/Observable.js~Observable.html#instance-method-mergeMap",
+    "es6/operator/mergeMap.js~mergeMap",
+    "method"
+  ],
+  [
     "es6/operator/mergemapto.js",
     "file/es6/operator/mergeMapTo.js.html",
     "es6/operator/mergeMapTo.js",
     "file"
+  ],
+  [
+    "es6/operator/mergemapto.js~mergemapto",
+    "class/es6/Observable.js~Observable.html#instance-method-mergeMapTo",
+    "es6/operator/mergeMapTo.js~mergeMapTo",
+    "method"
   ],
   [
     "es6/operator/mergescan.js",
@@ -17539,7 +18043,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/mergescan.js~mergescan",
-    "variable/index.html#instance-method-mergeScan",
+    "class/es6/Observable.js~Observable.html#instance-method-mergeScan",
     "es6/operator/mergeScan.js~mergeScan",
     "method"
   ],
@@ -17551,7 +18055,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/min.js~min",
-    "variable/index.html#instance-method-min",
+    "class/es6/Observable.js~Observable.html#instance-method-min",
     "es6/operator/min.js~min",
     "method"
   ],
@@ -17562,6 +18066,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/multicast.js~multicast",
+    "class/es6/Observable.js~Observable.html#instance-method-multicast",
+    "es6/operator/multicast.js~multicast",
+    "method"
+  ],
+  [
     "es6/operator/observeon.js",
     "file/es6/operator/observeOn.js.html",
     "es6/operator/observeOn.js",
@@ -17569,7 +18079,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/observeon.js~observeon",
-    "variable/index.html#instance-method-observeOn",
+    "class/es6/Observable.js~Observable.html#instance-method-observeOn",
     "es6/operator/observeOn.js~observeOn",
     "method"
   ],
@@ -17587,7 +18097,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/pairwise.js~pairwise",
-    "variable/index.html#instance-method-pairwise",
+    "class/es6/Observable.js~Observable.html#instance-method-pairwise",
     "es6/operator/pairwise.js~pairwise",
     "method"
   ],
@@ -17599,7 +18109,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/partition.js~partition",
-    "variable/index.html#instance-method-partition",
+    "class/es6/Observable.js~Observable.html#instance-method-partition",
     "es6/operator/partition.js~partition",
     "method"
   ],
@@ -17611,7 +18121,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/pluck.js~pluck",
-    "variable/index.html#instance-method-pluck",
+    "class/es6/Observable.js~Observable.html#instance-method-pluck",
     "es6/operator/pluck.js~pluck",
     "method"
   ],
@@ -17622,6 +18132,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/publish.js~publish",
+    "class/es6/Observable.js~Observable.html#instance-method-publish",
+    "es6/operator/publish.js~publish",
+    "method"
+  ],
+  [
     "es6/operator/publishbehavior.js",
     "file/es6/operator/publishBehavior.js.html",
     "es6/operator/publishBehavior.js",
@@ -17629,7 +18145,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/publishbehavior.js~publishbehavior",
-    "variable/index.html#instance-method-publishBehavior",
+    "class/es6/Observable.js~Observable.html#instance-method-publishBehavior",
     "es6/operator/publishBehavior.js~publishBehavior",
     "method"
   ],
@@ -17641,7 +18157,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/publishlast.js~publishlast",
-    "variable/index.html#instance-method-publishLast",
+    "class/es6/Observable.js~Observable.html#instance-method-publishLast",
     "es6/operator/publishLast.js~publishLast",
     "method"
   ],
@@ -17653,7 +18169,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/publishreplay.js~publishreplay",
-    "variable/index.html#instance-method-publishReplay",
+    "class/es6/Observable.js~Observable.html#instance-method-publishReplay",
     "es6/operator/publishReplay.js~publishReplay",
     "method"
   ],
@@ -17664,10 +18180,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/race.js~race",
+    "class/es6/Observable.js~Observable.html#instance-method-race",
+    "es6/operator/race.js~race",
+    "method"
+  ],
+  [
     "es6/operator/reduce.js",
     "file/es6/operator/reduce.js.html",
     "es6/operator/reduce.js",
     "file"
+  ],
+  [
+    "es6/operator/reduce.js~reduce",
+    "class/es6/Observable.js~Observable.html#instance-method-reduce",
+    "es6/operator/reduce.js~reduce",
+    "method"
   ],
   [
     "es6/operator/repeat.js",
@@ -17677,7 +18205,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/repeat.js~repeat",
-    "variable/index.html#instance-method-repeat",
+    "class/es6/Observable.js~Observable.html#instance-method-repeat",
     "es6/operator/repeat.js~repeat",
     "method"
   ],
@@ -17689,7 +18217,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/repeatwhen.js~repeatwhen",
-    "variable/index.html#instance-method-repeatWhen",
+    "class/es6/Observable.js~Observable.html#instance-method-repeatWhen",
     "es6/operator/repeatWhen.js~repeatWhen",
     "method"
   ],
@@ -17701,7 +18229,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/retry.js~retry",
-    "variable/index.html#instance-method-retry",
+    "class/es6/Observable.js~Observable.html#instance-method-retry",
     "es6/operator/retry.js~retry",
     "method"
   ],
@@ -17713,7 +18241,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/retrywhen.js~retrywhen",
-    "variable/index.html#instance-method-retryWhen",
+    "class/es6/Observable.js~Observable.html#instance-method-retryWhen",
     "es6/operator/retryWhen.js~retryWhen",
     "method"
   ],
@@ -17725,7 +18253,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/sample.js~sample",
-    "variable/index.html#instance-method-sample",
+    "class/es6/Observable.js~Observable.html#instance-method-sample",
     "es6/operator/sample.js~sample",
     "method"
   ],
@@ -17737,7 +18265,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/sampletime.js~sampletime",
-    "variable/index.html#instance-method-sampleTime",
+    "class/es6/Observable.js~Observable.html#instance-method-sampleTime",
     "es6/operator/sampleTime.js~sampleTime",
     "method"
   ],
@@ -17748,6 +18276,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/scan.js~scan",
+    "class/es6/Observable.js~Observable.html#instance-method-scan",
+    "es6/operator/scan.js~scan",
+    "method"
+  ],
+  [
     "es6/operator/sequenceequal.js",
     "file/es6/operator/sequenceEqual.js.html",
     "es6/operator/sequenceEqual.js",
@@ -17755,7 +18289,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/sequenceequal.js~sequenceequal",
-    "variable/index.html#instance-method-sequenceEqual",
+    "class/es6/Observable.js~Observable.html#instance-method-sequenceEqual",
     "es6/operator/sequenceEqual.js~sequenceEqual",
     "method"
   ],
@@ -17767,7 +18301,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/share.js~share",
-    "variable/index.html#instance-method-share",
+    "class/es6/Observable.js~Observable.html#instance-method-share",
     "es6/operator/share.js~share",
     "method"
   ],
@@ -17779,7 +18313,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/single.js~single",
-    "variable/index.html#instance-method-single",
+    "class/es6/Observable.js~Observable.html#instance-method-single",
     "es6/operator/single.js~single",
     "method"
   ],
@@ -17791,7 +18325,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/skip.js~skip",
-    "variable/index.html#instance-method-skip",
+    "class/es6/Observable.js~Observable.html#instance-method-skip",
     "es6/operator/skip.js~skip",
     "method"
   ],
@@ -17803,7 +18337,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/skipuntil.js~skipuntil",
-    "variable/index.html#instance-method-skipUntil",
+    "class/es6/Observable.js~Observable.html#instance-method-skipUntil",
     "es6/operator/skipUntil.js~skipUntil",
     "method"
   ],
@@ -17815,7 +18349,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/skipwhile.js~skipwhile",
-    "variable/index.html#instance-method-skipWhile",
+    "class/es6/Observable.js~Observable.html#instance-method-skipWhile",
     "es6/operator/skipWhile.js~skipWhile",
     "method"
   ],
@@ -17826,6 +18360,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/startwith.js~startwith",
+    "class/es6/Observable.js~Observable.html#instance-method-startWith",
+    "es6/operator/startWith.js~startWith",
+    "method"
+  ],
+  [
     "es6/operator/subscribeon.js",
     "file/es6/operator/subscribeOn.js.html",
     "es6/operator/subscribeOn.js",
@@ -17833,7 +18373,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/subscribeon.js~subscribeon",
-    "variable/index.html#instance-method-subscribeOn",
+    "class/es6/Observable.js~Observable.html#instance-method-subscribeOn",
     "es6/operator/subscribeOn.js~subscribeOn",
     "method"
   ],
@@ -17845,7 +18385,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/switch.js~_switch",
-    "variable/index.html#instance-method-switch",
+    "class/es6/Observable.js~Observable.html#instance-method-switch",
     "es6/operator/switch.js~_switch",
     "method"
   ],
@@ -17856,10 +18396,22 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/switchmap.js~switchmap",
+    "class/es6/Observable.js~Observable.html#instance-method-switchMap",
+    "es6/operator/switchMap.js~switchMap",
+    "method"
+  ],
+  [
     "es6/operator/switchmapto.js",
     "file/es6/operator/switchMapTo.js.html",
     "es6/operator/switchMapTo.js",
     "file"
+  ],
+  [
+    "es6/operator/switchmapto.js~switchmapto",
+    "class/es6/Observable.js~Observable.html#instance-method-switchMapTo",
+    "es6/operator/switchMapTo.js~switchMapTo",
+    "method"
   ],
   [
     "es6/operator/take.js",
@@ -17869,7 +18421,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/take.js~take",
-    "variable/index.html#instance-method-take",
+    "class/es6/Observable.js~Observable.html#instance-method-take",
     "es6/operator/take.js~take",
     "method"
   ],
@@ -17881,7 +18433,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/takelast.js~takelast",
-    "variable/index.html#instance-method-takeLast",
+    "class/es6/Observable.js~Observable.html#instance-method-takeLast",
     "es6/operator/takeLast.js~takeLast",
     "method"
   ],
@@ -17893,7 +18445,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/takeuntil.js~takeuntil",
-    "variable/index.html#instance-method-takeUntil",
+    "class/es6/Observable.js~Observable.html#instance-method-takeUntil",
     "es6/operator/takeUntil.js~takeUntil",
     "method"
   ],
@@ -17905,7 +18457,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/takewhile.js~takewhile",
-    "variable/index.html#instance-method-takeWhile",
+    "class/es6/Observable.js~Observable.html#instance-method-takeWhile",
     "es6/operator/takeWhile.js~takeWhile",
     "method"
   ],
@@ -17917,7 +18469,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/throttle.js~throttle",
-    "variable/index.html#instance-method-throttle",
+    "class/es6/Observable.js~Observable.html#instance-method-throttle",
     "es6/operator/throttle.js~throttle",
     "method"
   ],
@@ -17929,7 +18481,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/throttletime.js~throttletime",
-    "variable/index.html#instance-method-throttleTime",
+    "class/es6/Observable.js~Observable.html#instance-method-throttleTime",
     "es6/operator/throttleTime.js~throttleTime",
     "method"
   ],
@@ -17941,7 +18493,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/timeinterval.js~timeinterval",
-    "variable/index.html#instance-method-timeInterval",
+    "class/es6/Observable.js~Observable.html#instance-method-timeInterval",
     "es6/operator/timeInterval.js~timeInterval",
     "method"
   ],
@@ -17953,7 +18505,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/timeout.js~timeout",
-    "variable/index.html#instance-method-timeout",
+    "class/es6/Observable.js~Observable.html#instance-method-timeout",
     "es6/operator/timeout.js~timeout",
     "method"
   ],
@@ -17964,6 +18516,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/timeoutwith.js~timeoutwith",
+    "class/es6/Observable.js~Observable.html#instance-method-timeoutWith",
+    "es6/operator/timeoutWith.js~timeoutWith",
+    "method"
+  ],
+  [
     "es6/operator/timestamp.js",
     "file/es6/operator/timestamp.js.html",
     "es6/operator/timestamp.js",
@@ -17971,7 +18529,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/timestamp.js~timestamp",
-    "variable/index.html#instance-method-timestamp",
+    "class/es6/Observable.js~Observable.html#instance-method-timestamp",
     "es6/operator/timestamp.js~timestamp",
     "method"
   ],
@@ -17983,7 +18541,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/toarray.js~toarray",
-    "variable/index.html#instance-method-toArray",
+    "class/es6/Observable.js~Observable.html#instance-method-toArray",
     "es6/operator/toArray.js~toArray",
     "method"
   ],
@@ -17994,6 +18552,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/topromise.js~topromise",
+    "class/es6/Observable.js~Observable.html#instance-method-toPromise",
+    "es6/operator/toPromise.js~toPromise",
+    "method"
+  ],
+  [
     "es6/operator/window.js",
     "file/es6/operator/window.js.html",
     "es6/operator/window.js",
@@ -18001,7 +18565,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/window.js~window",
-    "variable/index.html#instance-method-window",
+    "class/es6/Observable.js~Observable.html#instance-method-window",
     "es6/operator/window.js~window",
     "method"
   ],
@@ -18013,7 +18577,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/windowcount.js~windowcount",
-    "variable/index.html#instance-method-windowCount",
+    "class/es6/Observable.js~Observable.html#instance-method-windowCount",
     "es6/operator/windowCount.js~windowCount",
     "method"
   ],
@@ -18025,7 +18589,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/windowtime.js~windowtime",
-    "variable/index.html#instance-method-windowTime",
+    "class/es6/Observable.js~Observable.html#instance-method-windowTime",
     "es6/operator/windowTime.js~windowTime",
     "method"
   ],
@@ -18037,7 +18601,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/windowtoggle.js~windowtoggle",
-    "variable/index.html#instance-method-windowToggle",
+    "class/es6/Observable.js~Observable.html#instance-method-windowToggle",
     "es6/operator/windowToggle.js~windowToggle",
     "method"
   ],
@@ -18049,7 +18613,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/windowwhen.js~windowwhen",
-    "variable/index.html#instance-method-windowWhen",
+    "class/es6/Observable.js~Observable.html#instance-method-windowWhen",
     "es6/operator/windowWhen.js~windowWhen",
     "method"
   ],
@@ -18060,14 +18624,26 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "es6/operator/withlatestfrom.js~withlatestfrom",
+    "class/es6/Observable.js~Observable.html#instance-method-withLatestFrom",
+    "es6/operator/withLatestFrom.js~withLatestFrom",
+    "method"
+  ],
+  [
     "es6/operator/zip.js",
     "file/es6/operator/zip.js.html",
     "es6/operator/zip.js",
     "file"
   ],
   [
+    "es6/operator/zip.js~zipproto",
+    "class/es6/Observable.js~Observable.html#instance-method-zipProto",
+    "es6/operator/zip.js~zipProto",
+    "method"
+  ],
+  [
     "es6/operator/zip.js~zipstatic",
-    "variable/index.html#static-method-zip",
+    "class/es6/Observable.js~Observable.html#static-method-zip",
     "es6/operator/zip.js~zipStatic",
     "method"
   ],
@@ -18079,7 +18655,7 @@ window.esdocSearchIndex = [
   ],
   [
     "es6/operator/zipall.js~zipall",
-    "variable/index.html#instance-method-zipAll",
+    "class/es6/Observable.js~Observable.html#instance-method-zipAll",
     "es6/operator/zipAll.js~zipAll",
     "method"
   ],
@@ -18088,6 +18664,12 @@ window.esdocSearchIndex = [
     "file/es6/scheduler/Action.js.html",
     "es6/scheduler/Action.js",
     "file"
+  ],
+  [
+    "es6/scheduler/action.js~action#schedule",
+    "class/es6/scheduler/Action.js~Action.html#instance-method-schedule",
+    "es6/scheduler/Action.js~Action#schedule",
+    "method"
   ],
   [
     "es6/scheduler/animationframeaction.js",
@@ -18445,13 +19027,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/symbol/observable-polyfilled-spec.js.html#lineNumber4",
+    "test-file/spec-js/symbol/observable-spec.js.html#lineNumber6",
     "observable symbol",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/symbol/observable-spec.js.html#lineNumber6",
+    "test-file/spec-js/symbol/observable-polyfilled-spec.js.html#lineNumber4",
     "observable symbol",
     "test"
   ],
