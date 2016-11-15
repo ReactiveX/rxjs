@@ -1,6 +1,9 @@
 <a name="5.0.0-rc.3"></a>
 # [5.0.0-rc.3](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.2...v5.0.0-rc.3) (2016-11-15)
 
+### Bug Fixes
+
+* **typings:** You no longer have to install the type definition for chai ([#2112](https://github.com/ReactiveX/rxjs/issues/2112))
 
 ### Features
 
