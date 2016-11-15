@@ -18,9 +18,10 @@ import { TimeoutError } from '../util/TimeoutError';
 export function timeout<T>(this: Observable<T>, due: number | Date,
                            errorToSend: any = null,
                            scheduler: Scheduler = async): Observable<T> {
-  let absoluteTimeout = isDate(due);
-  let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
-  return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
+  const absoluteTimeout = isDate(due);
+  const waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
+  const error = errorToSend || new TimeoutError();
+  return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, error, scheduler));
 }
 
 class TimeoutOperator<T> implements Operator<T, T> {
@@ -96,6 +97,6 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
   }
 
   notifyTimeout(): void {
-    this.error(this.errorToSend || new TimeoutError());
+    this.error(this.errorToSend);
   }
 }
