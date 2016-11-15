@@ -1,3 +1,16 @@
+<a name="5.0.0-rc.3"></a>
+# [5.0.0-rc.3](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.2...v5.0.0-rc.3) (2016-11-15)
+
+
+### Features
+
+* **filter:** support type guards without casting ([68b7922](https://github.com/ReactiveX/RxJS/commit/68b7922))
+* **find:** support type guards without casting ([9058bf6](https://github.com/ReactiveX/RxJS/commit/9058bf6))
+* **first:** support type guards without casting ([3aa1988](https://github.com/ReactiveX/RxJS/commit/3aa1988))
+* **last:** support type guards without casting ([07ecd5e](https://github.com/ReactiveX/RxJS/commit/07ecd5e))
+
+
+
 <a name="5.0.0-rc.2"></a>
 # [5.0.0-rc.2](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.1...v5.0.0-rc.2) (2016-11-05)
 
