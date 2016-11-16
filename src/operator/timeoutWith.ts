@@ -50,6 +50,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   private timeoutSubscription: Subscription = undefined;
+  private action: Subscription = null;
   private index: number = 0;
   private _previousIndex: number = 0;
   get previousIndex(): number {
@@ -79,11 +80,26 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private scheduleTimeout(): void {
-    let currentIndex = this.index;
+    const currentIndex = this.index;
     const timeoutState = { subscriber: this, index: currentIndex };
-    this.scheduler.schedule(TimeoutWithSubscriber.dispatchTimeout, this.waitFor, timeoutState);
+
+    this.cancelTimeout();
+    this.action = this.scheduler.schedule(
+      TimeoutWithSubscriber.dispatchTimeout, this.waitFor, timeoutState
+    );
+    this.add(this.action);
+
     this.index++;
     this._previousIndex = currentIndex;
+  }
+
+  private cancelTimeout(): void {
+    const { action } = this;
+    if (action !== null) {
+      this.remove(action);
+      action.unsubscribe();
+      this.action = null;
+    }
   }
 
   protected _next(value: T) {
