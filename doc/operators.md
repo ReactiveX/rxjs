@@ -113,7 +113,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - `ajax`
 - [`bindCallback`](../class/es6/Observable.js~Observable.html#static-method-bindCallback)
 - [`bindNodeCallback`](../class/es6/Observable.js~Observable.html#static-method-bindNodeCallback)
-- `create`
+- [`create`](../class/es6/Observable.js~Observable.html#static-method-create)
 - [`defer`](../class/es6/Observable.js~Observable.html#static-method-defer)
 - [`empty`](../class/es6/Observable.js~Observable.html#static-method-empty)
 - [`from`](../class/es6/Observable.js~Observable.html#static-method-from)
@@ -124,8 +124,8 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`interval`](../class/es6/Observable.js~Observable.html#static-method-interval)
 - [`never`](../class/es6/Observable.js~Observable.html#static-method-never)
 - [`of`](../class/es6/Observable.js~Observable.html#static-method-of)
-- `repeat`
-- `repeatWhen`
+- [`repeat`](../class/es6/Observable.js~Observable.html#instance-method-repeat)
+- [`repeatWhen`](../class/es6/Observable.js~Observable.html#instance-method-repeatWhen)
 - [`range`](../class/es6/Observable.js~Observable.html#static-method-range)
 - [`throw`](../class/es6/Observable.js~Observable.html#static-method-throw)
 - [`timer`](../class/es6/Observable.js~Observable.html#static-method-timer)
@@ -199,7 +199,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`mergeAll`](../class/es6/Observable.js~Observable.html#instance-method-mergeAll)
 - [`race`](../class/es6/Observable.js~Observable.html#instance-method-race)
 - [`startWith`](../class/es6/Observable.js~Observable.html#instance-method-startWith)
-- `switch`
+- [`switch`](../class/es6/Observable.js~Observable.html#instance-method-switch)
 - [`withLatestFrom`](../class/es6/Observable.js~Observable.html#instance-method-withLatestFrom)
 - [`zip`](../class/es6/Observable.js~Observable.html#static-method-zip)
 - [`zipAll`](../class/es6/Observable.js~Observable.html#instance-method-zipAll)
@@ -216,13 +216,13 @@ There are operators for different purposes, and they may be categorized as: crea
 
 ### Error Handling Operators
 
-- `catch`
+- [`catch`](../class/es6/Observable.js~Observable.html#instance-method-catch)
 - [`retry`](../class/es6/Observable.js~Observable.html#instance-method-retry)
 - [`retryWhen`](../class/es6/Observable.js~Observable.html#instance-method-retryWhen)
 
 ### Utility Operators
 
-- `do`
+- [`do`](../class/es6/Observable.js~Observable.html#instance-method-do)
 - [`delay`](../class/es6/Observable.js~Observable.html#instance-method-delay)
 - [`delayWhen`](../class/es6/Observable.js~Observable.html#instance-method-delayWhen)
 - [`dematerialize`](../class/es6/Observable.js~Observable.html#instance-method-dematerialize)
