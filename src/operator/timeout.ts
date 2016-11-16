@@ -5,6 +5,7 @@ import { Subscriber } from '../Subscriber';
 import { Scheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
+import { Subscription } from '../Subscription';
 import { TimeoutError } from '../util/TimeoutError';
 
 /**
@@ -46,6 +47,8 @@ class TimeoutOperator<T> implements Operator<T, T> {
 class TimeoutSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
   private _previousIndex: number = 0;
+  private action: Subscription = null;
+
   get previousIndex(): number {
     return this._previousIndex;
   }
@@ -66,16 +69,32 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
   private static dispatchTimeout(state: any): void {
     const source = state.subscriber;
     const currentIndex = state.index;
-    if (!source.hasCompleted && source.previousIndex === currentIndex) {
+    if (source.previousIndex === currentIndex) {
       source.notifyTimeout();
     }
   }
 
   private scheduleTimeout(): void {
-    let currentIndex = this.index;
-    this.scheduler.schedule(TimeoutSubscriber.dispatchTimeout, this.waitFor, { subscriber: this, index: currentIndex });
+    const currentIndex = this.index;
+    const timeoutState = { subscriber: this, index: currentIndex };
+
+    this.cancelTimeout();
+    this.action = this.scheduler.schedule(
+      TimeoutSubscriber.dispatchTimeout, this.waitFor, timeoutState
+    );
+    this.add(this.action);
+
     this.index++;
     this._previousIndex = currentIndex;
+  }
+
+  private cancelTimeout(): void {
+    const { action } = this;
+    if (action !== null) {
+      this.remove(action);
+      action.unsubscribe();
+      this.action = null;
+    }
   }
 
   protected _next(value: T): void {
