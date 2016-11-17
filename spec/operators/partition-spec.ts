@@ -39,6 +39,20 @@ describe('Observable.prototype.partition', () => {
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
+  it('should partition an observable into two using a predicate and thisArg', () => {
+    const e1 =    hot('--a-b---a------d--a---c--|');
+    const e1subs =    '^                        !';
+    const expected = ['--a-----a---------a------|',
+                    '----b----------d------c--|'];
+
+    function predicate(x) {
+      return x === this.value;
+    }
+
+    expectObservableArray(e1.partition(predicate, {value: 'a'}), expected);
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
   it('should pass errors to both returned observables', () => {
     const e1 =    hot('--a-b---#');
     const e1subs =    '^       !';
@@ -224,5 +238,15 @@ describe('Observable.prototype.partition', () => {
   it('should throw without predicate', () => {
     const e1 = hot('--a-b---a------d----');
     expect(e1.partition).to.throw();
+  });
+
+  it('should accept thisArg', () => {
+    const thisArg = {};
+
+    Observable.of(1).partition(function (value: number) {
+      expect(this).to.deep.equal(thisArg);
+      return true;
+    }, thisArg)
+      .forEach((observable: Rx.Observable<number>) => observable.subscribe());
   });
 });
