@@ -45,7 +45,7 @@ import { Observable } from '../Observable';
  */
 export function partition<T>(this: Observable<T>, predicate: (value: T) => boolean, thisArg?: any): [Observable<T>, Observable<T>] {
   return [
-    filter.call(this, predicate),
+    filter.call(this, predicate, thisArg),
     filter.call(this, not(predicate, thisArg))
   ];
 }
