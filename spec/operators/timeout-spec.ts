@@ -1,4 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx';
+import {TimeoutError} from '../../dist/cjs/util/TimeoutError';
+
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
@@ -19,11 +21,35 @@ describe('Observable.prototype.timeout', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should timeout after specified timeout period and send the passed error', () => {
+  it('should timeout after specified timeout period and send the passed error as TimeoutError', () => {
     const e1 =  cold('-');
     const e1subs =   '^    !';
     const expected = '-----#';
     const value = 'hello';
+
+    const result = e1.timeout(50, value, rxTestScheduler);
+
+    expectObservable(result).toBe(expected, null, new TimeoutError(value));
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should timeout after specified timeout period and send the passed error', () => {
+    const e1 =  cold('-');
+    const e1subs =   '^    !';
+    const expected = '-----#';
+    const value = new Error('hello');
+
+    const result = e1.timeout(50, value, rxTestScheduler);
+
+    expectObservable(result).toBe(expected, null, value);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should timeout after specified timeout period and send the passed TimeoutError', () => {
+    const e1 =  cold('-');
+    const e1subs =   '^    !';
+    const expected = '-----#';
+    const value = new TimeoutError('hello');
 
     const result = e1.timeout(50, value, rxTestScheduler);
 
@@ -92,7 +118,7 @@ describe('Observable.prototype.timeout', () => {
   });
 
   it('should timeout after a specified delay with passed error while source emits', () => {
-    const value = 'hello';
+    const value = new TimeoutError('hello');
     const e1 =   hot('---a---b---c------d---e---|');
     const e1subs =   '^               !          ';
     const expected = '---a---b---c----#          ';
@@ -128,7 +154,7 @@ describe('Observable.prototype.timeout', () => {
   });
 
   it('should timeout specified Date with passed error while source emits', () => {
-    const value = 'hello';
+    const value = new TimeoutError('hello');
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^         !       ';
     const expected = '--a--b--c-#       ';

@@ -6,8 +6,8 @@
  * @class TimeoutError
  */
 export class TimeoutError extends Error {
-  constructor() {
-    const err: any = super('Timeout has occurred');
+  constructor(message?: any) {
+    const err: any = super(message || 'Timeout has occurred');
     (<any> this).name = err.name = 'TimeoutError';
     (<any> this).stack = err.stack;
     (<any> this).message = err.message;
