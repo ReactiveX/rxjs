@@ -1,3 +1,14 @@
+<a name="5.0.0-rc.4"></a>
+# [5.0.0-rc.4](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.3...v5.0.0-rc.4) (2016-11-19)
+
+
+### Bug Fixes
+
+* **partition:** handles `thisArg` as expected ([#2138](https://github.com/ReactiveX/RxJS/issues/2138)) ([6cf7296](https://github.com/ReactiveX/RxJS/commit/6cf7296))
+* **timeout:** throw traceable TimeoutError ([#2132](https://github.com/ReactiveX/RxJS/issues/2132)) ([9ebc46b](https://github.com/ReactiveX/RxJS/commit/9ebc46b))
+
+
+
 <a name="5.0.0-rc.3"></a>
 # [5.0.0-rc.3](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.2...v5.0.0-rc.3) (2016-11-15)
 
