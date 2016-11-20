@@ -5,6 +5,8 @@ import { errorObject } from '../util/errorObject';
 import { Subscription } from '../Subscription';
 import { Subscriber } from '../Subscriber';
 
+const toString: Function = Object.prototype.toString;
+
 export type NodeStyleEventEmmitter = {
   addListener: (eventName: string, handler: Function) => void;
   removeListener: (eventName: string, handler: Function) => void;
@@ -22,11 +24,11 @@ function isJQueryStyleEventEmitter(sourceObj: any): sourceObj is JQueryStyleEven
 }
 
 function isNodeList(sourceObj: any): sourceObj is NodeList {
-  return !!sourceObj && sourceObj.toString() === '[object NodeList]';
+  return !!sourceObj && toString.call(sourceObj) === '[object NodeList]';
 }
 
 function isHTMLCollection(sourceObj: any): sourceObj is HTMLCollection {
-  return !!sourceObj && sourceObj.toString() === '[object HTMLCollection]';
+  return !!sourceObj && toString.call(sourceObj) === '[object HTMLCollection]';
 }
 
 function isEventTarget(sourceObj: any): sourceObj is EventTarget {
