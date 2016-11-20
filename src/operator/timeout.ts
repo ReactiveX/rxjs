@@ -1,3 +1,4 @@
+import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
 import { isDate } from '../util/isDate';
 import { Operator } from '../Operator';
@@ -5,7 +6,6 @@ import { Subscriber } from '../Subscriber';
 import { Scheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
-import { Subscription } from '../Subscription';
 import { TimeoutError } from '../util/TimeoutError';
 
 /**
@@ -45,17 +45,8 @@ class TimeoutOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TimeoutSubscriber<T> extends Subscriber<T> {
-  private index: number = 0;
-  private _previousIndex: number = 0;
-  private action: Subscription = null;
 
-  get previousIndex(): number {
-    return this._previousIndex;
-  }
-  private _hasCompleted: boolean = false;
-  get hasCompleted(): boolean {
-    return this._hasCompleted;
-  }
+  private action: Action<TimeoutSubscriber<T>> = null;
 
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
@@ -66,56 +57,36 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     this.scheduleTimeout();
   }
 
-  private static dispatchTimeout(state: any): void {
-    const source = state.subscriber;
-    const currentIndex = state.index;
-    if (source.previousIndex === currentIndex) {
-      source.notifyTimeout();
-    }
+  private static dispatchTimeout<T>(subscriber: TimeoutSubscriber<T>): void {
+    subscriber.error(subscriber.errorToSend);
   }
 
   private scheduleTimeout(): void {
-    const currentIndex = this.index;
-    const timeoutState = { subscriber: this, index: currentIndex };
-
-    this.cancelTimeout();
-    this.action = this.scheduler.schedule(
-      TimeoutSubscriber.dispatchTimeout, this.waitFor, timeoutState
-    );
-    this.add(this.action);
-
-    this.index++;
-    this._previousIndex = currentIndex;
-  }
-
-  private cancelTimeout(): void {
     const { action } = this;
-    if (action !== null) {
-      this.remove(action);
-      action.unsubscribe();
-      this.action = null;
+    if (action) {
+      // Recycle the action if we've already scheduled one. All the production
+      // Scheduler Actions mutate their state/delay time and return themeselves.
+      // VirtualActions are immutable, so they create and return a clone. In this
+      // case, we need to set the action reference to the most recent VirtualAction,
+      // to ensure that's the one we clone from next time.
+      this.action = (<Action<TimeoutSubscriber<T>>> action.schedule(this, this.waitFor));
+    } else {
+      this.add(this.action = (<Action<TimeoutSubscriber<T>>> this.scheduler.schedule(
+        TimeoutSubscriber.dispatchTimeout, this.waitFor, this
+      )));
     }
   }
 
   protected _next(value: T): void {
-    this.destination.next(value);
-
     if (!this.absoluteTimeout) {
       this.scheduleTimeout();
     }
+    super._next(value);
   }
 
-  protected _error(err: any): void {
-    this.destination.error(err);
-    this._hasCompleted = true;
-  }
-
-  protected _complete(): void {
-    this.destination.complete();
-    this._hasCompleted = true;
-  }
-
-  notifyTimeout(): void {
-    this.error(this.errorToSend);
+  protected _unsubscribe() {
+    this.action = null;
+    this.scheduler = null;
+    this.errorToSend = null;
   }
 }

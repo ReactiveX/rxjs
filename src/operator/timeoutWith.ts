@@ -1,8 +1,9 @@
+import { Action } from '../scheduler/Action';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Scheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../Subscription';
 import { Observable, ObservableInput } from '../Observable';
 import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
@@ -49,81 +50,52 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private timeoutSubscription: Subscription = undefined;
-  private action: Subscription = null;
-  private index: number = 0;
-  private _previousIndex: number = 0;
-  get previousIndex(): number {
-    return this._previousIndex;
-  }
-  private _hasCompleted: boolean = false;
-  get hasCompleted(): boolean {
-    return this._hasCompleted;
-  }
 
-  constructor(public destination: Subscriber<T>,
+  private action: Action<TimeoutWithSubscriber<T, R>> = null;
+
+  constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
               private withObservable: ObservableInput<any>,
               private scheduler: Scheduler) {
-    super();
-    destination.add(this);
+    super(destination);
     this.scheduleTimeout();
   }
 
-  private static dispatchTimeout(state: any): void {
-    const source = state.subscriber;
-    const currentIndex = state.index;
-    if (!source.hasCompleted && source.previousIndex === currentIndex) {
-      source.handleTimeout();
-    }
+  private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
+    const { withObservable } = subscriber;
+    subscriber.unsubscribe();
+    subscriber.closed = false;
+    subscriber.isStopped = false;
+    subscriber.add(subscribeToResult(subscriber, withObservable));
   }
 
   private scheduleTimeout(): void {
-    const currentIndex = this.index;
-    const timeoutState = { subscriber: this, index: currentIndex };
-
-    this.cancelTimeout();
-    this.action = this.scheduler.schedule(
-      TimeoutWithSubscriber.dispatchTimeout, this.waitFor, timeoutState
-    );
-    this.add(this.action);
-
-    this.index++;
-    this._previousIndex = currentIndex;
-  }
-
-  private cancelTimeout(): void {
     const { action } = this;
-    if (action !== null) {
-      this.remove(action);
-      action.unsubscribe();
-      this.action = null;
+    if (action) {
+      // Recycle the action if we've already scheduled one. All the production
+      // Scheduler Actions mutate their state/delay time and return themeselves.
+      // VirtualActions are immutable, so they create and return a clone. In this
+      // case, we need to set the action reference to the most recent VirtualAction,
+      // to ensure that's the one we clone from next time.
+      this.action = (<Action<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
+    } else {
+      this.add(this.action = (<Action<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule(
+        TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
+      )));
     }
   }
 
-  protected _next(value: T) {
-    this.destination.next(value);
+  protected _next(value: T): void {
     if (!this.absoluteTimeout) {
       this.scheduleTimeout();
     }
+    super._next(value);
   }
 
-  protected _error(err: any) {
-    this.destination.error(err);
-    this._hasCompleted = true;
-  }
-
-  protected _complete() {
-    this.destination.complete();
-    this._hasCompleted = true;
-  }
-
-  handleTimeout(): void {
-    if (!this.closed) {
-      const withObservable = this.withObservable;
-      this.unsubscribe();
-      this.destination.add(this.timeoutSubscription = subscribeToResult(this, withObservable));
-    }
+  protected _unsubscribe() {
+    this.action = null;
+    this.scheduler = null;
+    this.withObservable = null;
   }
 }

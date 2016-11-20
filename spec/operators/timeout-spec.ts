@@ -139,4 +139,27 @@ describe('Observable.prototype.timeout', () => {
     expectObservable(result).toBe(expected, values, value);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should unsubscribe from the scheduled timeout action when timeout is unsubscribed early', () => {
+    const e1 =   hot('--a--b--c---d--e--|');
+    const e1subs =   '^         !        ';
+    const expected = '--a--b--c--        ';
+    const unsub =    '          !        ';
+
+    const result = e1
+      .lift(function(source) {
+        const timeoutSubscriber = this;
+        const { action } = timeoutSubscriber; // get a ref to the action here
+        timeoutSubscriber.add(() => {         // because it'll be null by the
+          if (!action.closed) {               // time we get into this function.
+            throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
+          }
+        });
+        return source._subscribe(timeoutSubscriber);
+      })
+      .timeout(50, null, rxTestScheduler);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
 });
