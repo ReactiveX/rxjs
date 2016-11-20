@@ -279,4 +279,21 @@ describe('Observable.fromEvent', () => {
 
     send(1, 2, 3);
   });
+
+  it('should not throw an exception calling toString on obj with a null prototype', (done: MochaDone) => {
+    // NOTE: Can not test with Object.create(null) or `class Foo extends null`
+    // due to TypeScript bug. https://github.com/Microsoft/TypeScript/issues/1108
+    class NullProtoEventTarget {
+      on() { /*noop*/ }
+      off() { /*noop*/ }
+    }
+    NullProtoEventTarget.prototype.toString = null;
+    const obj: NullProtoEventTarget = new NullProtoEventTarget();
+
+    expect(() => {
+      Observable.fromEvent(obj, 'foo').subscribe();
+      done();
+    }).to.not.throw(TypeError);
+  });
+
 });
