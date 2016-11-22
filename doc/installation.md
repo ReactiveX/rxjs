@@ -14,8 +14,9 @@ Rx.Observable.of(1,2,3)
 
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
-```js
-import {Observable} from 'rxjs/Observable';
+```js 
+import { Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
 Observable.of(1,2,3).map(x => x + '!!!'); // etc
@@ -52,6 +53,7 @@ Import only what you need and patch Observable (this is useful in size-sensitive
 ```js
 var Observable = require('rxjs/Observable').Observable;
 // patch Observable with appropriate methods
+require('rxjs/add/observable/of');
 require('rxjs/add/operator/map');
 
 Observable.of(1,2,3).map(function (x) { return x + '!!!'; }); // etc
@@ -60,10 +62,10 @@ Observable.of(1,2,3).map(function (x) { return x + '!!!'; }); // etc
 Import operators and use them _manually_ you can do the following (this is also useful for bundling):
 
 ```js
-var Observable = require('rxjs/Observable').Observable;
+var of = require('rxjs/observable/of').of;
 var map = require('rxjs/operator/map').map;
 
-map.call(Observable.of(1,2,3), function (x) { return x + '!!!'; });
+map.call(of(1,2,3), function (x) { return x + '!!!'; });
 ```
 
 You can also use the above method to build your own Observable and export it from your own module.
