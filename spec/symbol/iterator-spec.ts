@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { $$iterator, symbolIteratorPonyfill } from '../../dist/cjs/symbol/iterator';
+import { $$iterator, symbolIteratorPolyfill } from '../../dist/cjs/symbol/iterator';
 
 describe('iterator symbol', () => {
   it('should exist', () => {
@@ -7,13 +7,13 @@ describe('iterator symbol', () => {
   });
 });
 
-describe('symbolIteratorPonyfill', () => {
+describe('symbolIteratorPolyfill', () => {
   describe('when root.Symbol is a function', () => {
     describe('and Symbol.iterator exists', () => {
       it('should return Symbol.iterator', () => {
         const FakeSymbol = function () { /* lol */ };
         (<any>FakeSymbol).iterator = {};
-        const result = symbolIteratorPonyfill({ Symbol: FakeSymbol });
+        const result = symbolIteratorPolyfill({ Symbol: FakeSymbol });
         expect(result).to.equal((<any>FakeSymbol).iterator);
       });
     });
@@ -29,7 +29,7 @@ describe('symbolIteratorPonyfill', () => {
           }
         };
 
-        const result = symbolIteratorPonyfill(root);
+        const result = symbolIteratorPolyfill(root);
         expect(result).to.equal(SYMBOL_RETURN);
         expect((<any>root.Symbol).iterator).to.equal(SYMBOL_RETURN);
       });
@@ -39,7 +39,7 @@ describe('symbolIteratorPonyfill', () => {
   describe('when root.Symbol is NOT a function', () => {
     describe('and root.Set exists with an @@iterator property that is a function (Mozilla bug)', () => {
       it ('should return "$$iterator"', () => {
-        const result = symbolIteratorPonyfill({
+        const result = symbolIteratorPolyfill({
           Set: function FakeSet() {
             this['@@iterator'] = function () { /* lol */ };
           }
@@ -60,7 +60,7 @@ describe('symbolIteratorPonyfill', () => {
             Map: FakeMap
           };
 
-          const result = symbolIteratorPonyfill(root);
+          const result = symbolIteratorPolyfill(root);
           expect(result).to.equal('-omg-lol-i-can-use-whatever-I-want-YOLO-');
         });
       });
@@ -75,14 +75,14 @@ describe('symbolIteratorPonyfill', () => {
             Map: FakeMap
           };
 
-          const result = symbolIteratorPonyfill(root);
+          const result = symbolIteratorPolyfill(root);
           expect(result).to.equal('@@iterator');
         });
       });
 
       describe('if Set exists but has no iterator, and Map does not exist (bad polyfill maybe?)', () => {
         it('should return "@@iterator"', () => {
-          const result = symbolIteratorPonyfill({
+          const result = symbolIteratorPolyfill({
             Set: function () { /* lol */ }
           });
           expect(result).to.equal('@@iterator');
@@ -91,7 +91,7 @@ describe('symbolIteratorPonyfill', () => {
 
       describe('and root.Set and root.Map do NOT exist', () => {
         it('should return "@@iterator"', () => {
-          const result = symbolIteratorPonyfill({});
+          const result = symbolIteratorPolyfill({});
           expect(result).to.equal('@@iterator');
         });
       });
