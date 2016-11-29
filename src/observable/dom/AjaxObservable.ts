@@ -248,10 +248,10 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       this.setupEvents(xhr, request);
 
       // finally send the request
-      if (body) {
-        xhr.send(body);
-      } else {
-        xhr.send();
+      result = body ? tryCatch(xhr.send).call(xhr, body) : tryCatch(xhr.send).call(xhr);
+      if (result === errorObject) {
+        this.error(errorObject.e);
+        return null;
       }
     }
 

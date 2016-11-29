@@ -177,6 +177,33 @@ describe('Observable.ajax', () => {
     expect(error).to.be.an('error', 'wokka wokka');
   });
 
+  it('should error if send request throws', (done: MochaDone) => {
+    const expected = new Error('xhr send failure');
+
+    const obj = {
+      url: '/flibbertyJibbet',
+      responseType: 'text',
+      method: '',
+      createXHR: () => {
+        const ret = new MockXMLHttpRequest();
+        ret.send = () => {
+          throw expected;
+        };
+        return ret as any;
+      }
+    };
+
+    Rx.Observable.ajax(obj)
+      .subscribe(() => {
+        done(new Error('should not be called'));
+      }, (e: Error) => {
+        expect(e).to.be.equal(expected);
+        done();
+      }, () => {
+        done(new Error('should not be called'));
+      });
+  });
+
   it('should succeed on 200', () => {
     const expected = { foo: 'bar' };
     let result;
@@ -409,6 +436,34 @@ describe('Observable.ajax', () => {
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"🌟":"🚀"}');
+    });
+
+    it('should error if send request throws', (done: MochaDone) => {
+      const expected = new Error('xhr send failure');
+
+      const obj = {
+        url: '/flibbertyJibbet',
+        responseType: 'text',
+        method: '',
+        body: 'foobar',
+        createXHR: () => {
+          const ret = new MockXMLHttpRequest();
+          ret.send = () => {
+            throw expected;
+          };
+          return ret as any;
+        }
+      };
+
+      Rx.Observable.ajax(obj)
+        .subscribe(() => {
+          done(new Error('should not be called'));
+        }, (e: Error) => {
+          expect(e).to.be.equal(expected);
+          done();
+        }, () => {
+          done(new Error('should not be called'));
+        });
     });
   });
 
