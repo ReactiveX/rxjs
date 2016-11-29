@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, expectObservable, expectSubscriptions};
 
@@ -170,5 +171,40 @@ describe('Observable.prototype.race', () => {
     Observable.race(e1, e2).subscribe(x => {
       expect(x).to.be.true;
     }, done, done);
+  });
+
+  it('should ignore latter observables if a former one emits immediately', () => {
+    const onNext = sinon.spy();
+    const onSubscribe = sinon.spy();
+    const e1 = Observable.of('a'); // Wins the race
+    const e2 = Observable.defer(onSubscribe); // Should be ignored
+
+    e1.race(e2).subscribe(onNext);
+    expect(onNext.calledWithExactly('a')).to.be.true;
+    expect(onSubscribe.called).to.be.false;
+  });
+
+  it('should unsubscribe former observables if a latter one emits immediately', () => {
+    const onNext = sinon.spy();
+    const onUnsubscribe = sinon.spy();
+    const e1 = Observable.never<string>().finally(onUnsubscribe); // Should be unsubscribed
+    const e2 = Observable.of('b'); // Wins the race
+
+    e1.race(e2).subscribe(onNext);
+    expect(onNext.calledWithExactly('b')).to.be.true;
+    expect(onUnsubscribe.calledOnce).to.be.true;
+  });
+
+  it('should unsubscribe from immediately emitting observable on unsubscription', () => {
+    const onNext = sinon.spy();
+    const onUnsubscribe = sinon.spy();
+    const e1 = Observable.never<string>().startWith('a').finally(onUnsubscribe); // Wins the race
+    const e2 = Observable.never<string>(); // Loses the race
+
+    const subscription = e1.race(e2).subscribe(onNext);
+    expect(onNext.calledWithExactly('a')).to.be.true;
+    expect(onUnsubscribe.called).to.be.false;
+    subscription.unsubscribe();
+    expect(onUnsubscribe.calledOnce).to.be.true;
   });
 });
