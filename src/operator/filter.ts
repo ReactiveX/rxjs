@@ -30,7 +30,6 @@ export function filter<T, S extends T>(this: Observable<T>,
  * clicksOnDivs.subscribe(x => console.log(x));
  *
  * @see {@link distinct}
- * @see {@link distinctKey}
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
  * @see {@link ignoreElements}
