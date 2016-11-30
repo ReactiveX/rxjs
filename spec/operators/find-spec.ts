@@ -155,4 +155,22 @@ describe('Observable.prototype.find', () => {
     expectObservable((<any>source).find(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
+
+  it('should not be compile error', () => {
+    {
+      // x is `Observable<string | number>`
+      const x: Rx.Observable<string | number> = Observable.from([1, 'aaa', 3, 'bb']);
+      // This type guard will narrow a `string | number` to a string in the examples below
+      const isString = (x: string | number): x is string => typeof x === 'string';
+
+      // After the type guard `find` predicate, the type is narrowed to string
+      const guardedFind = x.find(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>  
+      // In contrast, a boolean predicate maintains the original type
+      const boolFind = x.find(x => typeof x === 'string'); // Observable<string | number>
+
+      // To avoid the lint error about unused variables 
+      expect(guardedFind).to.not.equal(true);
+      expect(boolFind).to.not.equal(true);
+    }
+  });
 });
