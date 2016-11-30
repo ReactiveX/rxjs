@@ -3,18 +3,28 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 
-/* tslint:disable:max-line-length */
+// XXX: At typescript@2.0, we need prepare the version which takes `predicate`
+// returning `boolean` before to define the one which takes the type guard `predicate`
+// so that the type inference works correctly for the case of that `predicate` returning `boolean` simply.
+export function last<T>(this: Observable<T>,
+                        predicate?: (value: T, index: number,
+                        source: Observable<T>) => boolean): Observable<T>;
 export function last<T, S extends T>(this: Observable<T>,
-                                     predicate?: ((value: T, index: number, source: Observable<T>) => boolean) |
-                                                 ((value: T, index: number, source: Observable<T>) => value is S)): Observable<S>;
-export function last<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean, resultSelector: void, defaultValue?: T): Observable<T>;
-export function last<T, S extends T, R>(this: Observable<T>,
-                                        predicate: ((value: T, index: number, source: Observable<T>) => boolean) |
-                                                   ((value: T, index: number, source: Observable<T>) => value is S),
-                                        resultSelector?: ((value: S, index: number) => R) | void,
-                                        defaultValue?: S): Observable<S>;
-export function last<T, R>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean, resultSelector?: (value: T, index: number) => R, defaultValue?: R): Observable<R>;
-/* tslint:disable:max-line-length */
+                                     predicate?: (value: T, index: number,
+                                     source: Observable<T>) => value is S): Observable<S>;
+export function last<T>(this: Observable<T>,
+                        predicate: (value: T, index: number,
+                        source: Observable<T>) => boolean,
+                        resultSelector: (value: T, index: number) => T,
+                        defaultValue?: T): Observable<T>;
+export function last<T, S extends T>(this: Observable<T>,
+                                     predicate: (value: T, index: number, source: Observable<T>) => value is S,
+                                     resultSelector: (value: S, index: number) => S,
+                                     defaultValue?: S): Observable<S>;
+export function last<T, R>(this: Observable<T>,
+                           predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                           resultSelector?: (value: T, index: number) => R,
+                           defaultValue?: R): Observable<R>;
 
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.

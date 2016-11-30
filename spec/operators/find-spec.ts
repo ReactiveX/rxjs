@@ -164,7 +164,7 @@ describe('Observable.prototype.find', () => {
       const isString = (x: string | number): x is string => typeof x === 'string';
 
       // After the type guard `find` predicate, the type is narrowed to string
-      const guardedFind = x.find(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>  
+      const guardedFind = x.find<string | number, string>(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>  
       // In contrast, a boolean predicate maintains the original type
       const boolFind = x.find(x => typeof x === 'string'); // Observable<string | number>
 

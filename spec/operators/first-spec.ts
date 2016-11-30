@@ -223,8 +223,8 @@ describe('Observable.prototype.first', () => {
       const isString = (x: string | number): x is string => typeof x === 'string';
 
       // After the type guard `first` predicates, the type is narrowed to string
-      const guardedFirst1 = x.first(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>
-      const guardedFirst2 = x.first(isString, s => s.substr(0)).filter(s => s.length > 1); // Observable<string>
+      const guardedFirst1 = x.first<string | number, string>(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>
+      const guardedFirst2 = x.first<string | number, string>(isString, s => s.substr(0)).filter(s => s.length > 1); // Observable<string>
       // Without a resultSelector, `first` maintains the original type (TS can't do this yet)
       const boolFirst1 = x.first(x => typeof x === 'string', null, ''); // Observable<string | number>
       // `first` still uses the `resultSelector` return type, if it exists.

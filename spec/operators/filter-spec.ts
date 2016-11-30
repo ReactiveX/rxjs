@@ -281,13 +281,27 @@ describe('Observable.prototype.filter', () => {
       const isString = (x: string | number): x is string => typeof x === 'string';
 
       // Here, `s` is a string in the second filter predicate after the type guard (yay - intellisense!)
-      const guardedFilter = x.filter(isString).filter(s => s.length === 2); // Observable<string>
+      const guardedFilter = x.filter<string | number, string>(isString).filter(s => s.length === 2); // Observable<string>
       // In contrast, this type of regular boolean predicate still maintains the original type
       const boolFilter = x.filter(s => typeof s === 'number'); // Observable<string | number>
 
       // To avoid the lint error about unused variables 
       expect(guardedFilter).to.not.equal(true);
       expect(boolFilter).to.not.equal(true);
+    }
+
+    {
+      interface Bar {
+        bar?: string;
+      }
+      class Foo implements Bar {
+        constructor(public bar: string = 'name') {}
+      }
+
+      let foo: Bar = new Foo(); // <--- type is interface, not the class
+      Observable.of(foo)
+          .filter(foo => foo.bar === 'name')
+          .subscribe(foo => console.log(foo.bar)); // <-- "Property 'bar' does not exist on type '{}'"
     }
   });
 });

@@ -2,12 +2,15 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 
-/* tslint:disable:max-line-length */
+// XXX: At typescript@2.0, we need prepare the version which takes `predicate`
+// returning `boolean` before to define the one which takes the type guard `predicate`
+// so that the type inference works correctly for the case of that `predicate` returning `boolean` simply.
+export function find<T>(this: Observable<T>,
+                        predicate: (value: T, index: number, source: Observable<T>) => boolean,
+                        thisArg?: any): Observable<T>;
 export function find<T, S extends T>(this: Observable<T>,
-                                     predicate: ((value: T, index: number, source: Observable<T>) => boolean) |
-                                                ((value: T, index: number, source: Observable<T>) => value is S),
+                                     predicate: (value: T, index: number, source: Observable<T>) => value is S,
                                      thisArg?: any): Observable<S>;
-/* tslint:disable:max-line-length */
 
 /**
  * Emits only the first value emitted by the source Observable that meets some

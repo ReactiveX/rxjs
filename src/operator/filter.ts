@@ -3,12 +3,15 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
-/* tslint:disable:max-line-length */
+// XXX: At typescript@2.0, we need prepare the version which takes `predicate`
+// returning `boolean` before to define the one which takes the type guard `predicate`
+// so that the type inference works correctly for the case of that `predicate` returning `boolean` simply.
+export function filter<T>(this: Observable<T>,
+                          predicate: (value: T, index: number) => boolean,
+                          thisArg?: any): Observable<T>;
 export function filter<T, S extends T>(this: Observable<T>,
-                                       predicate: ((value: T, index: number) => boolean) |
-                                                  ((value: T, index: number) => value is S),
+                                       predicate: (value: T, index: number) => value is S,
                                        thisArg?: any): Observable<S>;
-/* tslint:disable:max-line-length */
 
 /**
  * Filter items emitted by the source Observable by only emitting those that

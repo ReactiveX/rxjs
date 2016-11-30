@@ -151,8 +151,8 @@ describe('Observable.prototype.last', () => {
       const isString = (x: string | number): x is string => typeof x === 'string';
 
       // After the type guard `last` predicates, the type is narrowed to string
-      const guardedLast1 = x.last(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>
-      const guardedLast2 = x.last(isString, s => s.substr(0)).filter(s => s.length > 1); // Observable<string>
+      const guardedLast1 = x.last<string | number, string>(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>
+      const guardedLast2 = x.last<string | number, string>(isString, s => s.substr(0)).filter(s => s.length > 1); // Observable<string>
       // Without a resultSelector, `last` maintains the original type (TS can't do this yet)
       const boolLast1 = x.last(x => typeof x === 'string', null, ''); // Observable<string | number>
       // `last` still uses the `resultSelector` return type, if it exists.
