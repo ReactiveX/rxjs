@@ -2,6 +2,8 @@ import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
 
+const Observable = Rx.Observable;
+
 /** @test {last} */
 describe('Observable.prototype.last', () => {
   asDiagram('last')('should take the last value of an observable', () => {
@@ -141,5 +143,76 @@ describe('Observable.prototype.last', () => {
 
     expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should support type guards without breaking previous behavior', () => {
+    // tslint:disable no-unused-variable
+
+    // type guards with interfaces and classes
+    {
+      interface Bar { bar?: string; }
+      interface Baz { baz?: number; }
+      class Foo implements Bar, Baz { constructor(public bar: string = 'name', public baz: number = 42) {} }
+
+      const isBar = (x: any): x is Bar => x && (<Bar>x).bar !== undefined;
+      const isBaz = (x: any): x is Baz => x && (<Baz>x).baz !== undefined;
+
+      const foo: Foo = new Foo();
+      Observable.of(foo).last()
+        .subscribe(x => x.baz); // x is Foo
+      Observable.of(foo).last(foo => foo.bar === 'name')
+        .subscribe(x => x.baz); // x is still Foo
+      Observable.of(foo).last(isBar)
+        .subscribe(x => x.bar); // x is Bar!
+
+      const foobar: Bar = new Foo(); // type is the interface, not the class
+      Observable.of(foobar).last()
+        .subscribe(x => x.bar); // x is Bar
+      Observable.of(foobar).last(foobar => foobar.bar === 'name')
+        .subscribe(x => x.bar); // x is still Bar
+      Observable.of(foobar).last(isBaz)
+        .subscribe(x => x.baz); // x is Baz!
+
+      const barish = { bar: 'quack', baz: 42 } // type can quack like a Bar
+      Observable.of(barish).last()
+        .subscribe(x => x.baz); // x is still { bar: string; baz: number; }
+      Observable.of(barish).last(x => x.bar === 'quack')
+        .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
+      Observable.of(barish).last(isBar)
+        .subscribe(x => x.bar); // x is Bar!
+    }
+
+    // type guards with primitive types
+    {
+      const xs: Rx.Observable<string | number> = Observable.from([ 1, 'aaa', 3, 'bb' ]);
+
+      // This type guard will narrow a `string | number` to a string in the examples below
+      const isString = (x: string | number): x is string => typeof x === 'string';
+
+      // missing predicate preserves the type
+      xs.last().subscribe(x => x); // x is still string | number
+
+      // After the type guard `last` predicates, the type is narrowed to string
+      xs.last(isString)
+        .subscribe(s => s.length); // s is string
+      xs.last(isString, s => s.substr(0)) // s is string in predicate
+        .subscribe(s => s.length); // s is string
+
+      // boolean predicates preserve the type
+      xs.last(x => typeof x === 'string')
+        .subscribe(x => x); // x is still string | number
+      xs.last(x => !!x, x => x)
+        .subscribe(x => x); // x is still string | number
+      xs.last(x => typeof x === 'string', x => x, '') // default is string; x remains string | number
+        .subscribe(x => x); // x is still string | number
+
+      // `last` still uses the `resultSelector` return type, if it exists.
+      xs.last(x => typeof x === 'string', x => ({ str: `${x}` })) // x remains string | number
+        .subscribe(o => o.str); // o is { str: string }
+      xs.last(x => typeof x === 'string', x => ({ str: `${x}` }), { str: '' })
+        .subscribe(o => o.str); // o is { str: string }
+    }
+
+    // tslint:disable enable
   });
 });
