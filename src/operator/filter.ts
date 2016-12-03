@@ -5,9 +5,11 @@ import { TeardownLogic } from '../Subscription';
 
 /* tslint:disable:max-line-length */
 export function filter<T, S extends T>(this: Observable<T>,
-                                       predicate: ((value: T, index: number) => boolean) |
-                                                  ((value: T, index: number) => value is S),
+                                       predicate: (value: T, index: number) => value is S,
                                        thisArg?: any): Observable<S>;
+export function filter<T>(this: Observable<T>,
+                          predicate: (value: T, index: number) => boolean,
+                          thisArg?: any): Observable<T>;
 /* tslint:disable:max-line-length */
 
 /**

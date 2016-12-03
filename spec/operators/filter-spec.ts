@@ -272,4 +272,55 @@ describe('Observable.prototype.filter', () => {
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
+
+  it('should support type guards without breaking previous behavior', () => {
+    // tslint:disable no-unused-variable
+
+    // type guards with interfaces and classes
+    {
+      interface Bar { bar?: string; }
+      interface Baz { baz?: number; }
+      class Foo implements Bar, Baz { constructor(public bar: string = 'name', public baz: number = 42) {} }
+
+      const isBar = (x: any): x is Bar => x && (<Bar>x).bar !== undefined;
+      const isBaz = (x: any): x is Baz => x && (<Baz>x).baz !== undefined;
+
+      const foo: Foo = new Foo();
+      Observable.of(foo).filter(foo => foo.baz === 42)
+        .subscribe(x => x.baz); // x is still Foo
+      Observable.of(foo).filter(isBar)
+        .subscribe(x => x.bar); // x is Bar!
+
+      const foobar: Bar = new Foo(); // type is interface, not the class
+      Observable.of(foobar).filter(foobar => foobar.bar === 'name')
+        .subscribe(x => x.bar); // <-- x is still Bar
+      Observable.of(foobar).filter(isBar)
+        .subscribe(x => x.bar); // <--- x is Bar!
+
+      const barish = { bar: 'quack', baz: 42 } // type can quack like a Bar
+      Observable.of(barish).filter(x => x.bar === 'quack')
+        .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
+      Observable.of(barish).filter(isBar)
+        .subscribe(bar => bar.bar); // x is Bar!
+    }
+
+    // type guards with primitive types
+    {
+      const xs: Rx.Observable<string | number> = Observable.from([ 1, 'aaa', 3, 'bb' ]);
+
+      // This type guard will narrow a `string | number` to a string in the examples below
+      const isString = (x: string | number): x is string => typeof x === 'string';
+
+      xs.filter(isString)
+        .subscribe(s => s.length); // s is string
+
+      // In contrast, this type of regular boolean predicate still maintains the original type
+      xs.filter(x => typeof x === 'number')
+        .subscribe(x => x); // x is still string | number
+      xs.filter((x, i) => typeof x === 'number' && x > i)
+        .subscribe(x => x); // x is still string | number
+    }
+
+    // tslint:disable enable
+  });
 });
