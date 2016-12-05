@@ -8,32 +8,30 @@ import { TeardownLogic } from '../Subscription';
 import { TimeoutError } from '../util/TimeoutError';
 
 /**
- * @param due
- * @param errorToSend
- * @param scheduler
+ * @param {number} due
+ * @param {Scheduler} [scheduler]
  * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
  * @method timeout
  * @owner Observable
  */
-export function timeout<T>(this: Observable<T>, due: number | Date,
-                           errorToSend: any = null,
+export function timeout<T>(this: Observable<T>,
+                           due: number | Date,
                            scheduler: Scheduler = async): Observable<T> {
   const absoluteTimeout = isDate(due);
   const waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
-  const error = errorToSend || new TimeoutError();
-  return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, error, scheduler));
+  return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, scheduler, new TimeoutError()));
 }
 
 class TimeoutOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
-              private errorToSend: any,
-              private scheduler: Scheduler) {
+              private scheduler: Scheduler,
+              private errorInstance: TimeoutError) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new TimeoutSubscriber<T>(
-      subscriber, this.absoluteTimeout, this.waitFor, this.errorToSend, this.scheduler
+      subscriber, this.absoluteTimeout, this.waitFor, this.scheduler, this.errorInstance
     ));
   }
 }
@@ -57,8 +55,8 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
-              private errorToSend: any,
-              private scheduler: Scheduler) {
+              private scheduler: Scheduler,
+              private errorInstance: TimeoutError) {
     super(destination);
     this.scheduleTimeout();
   }
@@ -97,6 +95,6 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
   }
 
   notifyTimeout(): void {
-    this.error(this.errorToSend);
+    this.error(this.errorInstance);
   }
 }
