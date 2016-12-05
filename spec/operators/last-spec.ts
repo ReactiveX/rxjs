@@ -173,7 +173,7 @@ describe('Observable.prototype.last', () => {
       Observable.of(foobar).last(isBaz)
         .subscribe(x => x.baz); // x is Baz!
 
-      const barish = { bar: 'quack', baz: 42 } // type can quack like a Bar
+      const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
       Observable.of(barish).last()
         .subscribe(x => x.baz); // x is still { bar: string; baz: number; }
       Observable.of(barish).last(x => x.bar === 'quack')

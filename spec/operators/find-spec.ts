@@ -180,7 +180,7 @@ describe('Observable.prototype.find', () => {
       Observable.of(foobar).find(isBar)
         .subscribe(x => x.bar); // <--- x is Bar!
 
-      const barish = { bar: 'quack', baz: 42 } // type can quack like a Bar
+      const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
       Observable.of(barish).find(x => x.bar === 'quack')
         .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
       Observable.of(barish).find(isBar)

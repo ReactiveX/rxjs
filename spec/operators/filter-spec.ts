@@ -297,7 +297,7 @@ describe('Observable.prototype.filter', () => {
       Observable.of(foobar).filter(isBar)
         .subscribe(x => x.bar); // <--- x is Bar!
 
-      const barish = { bar: 'quack', baz: 42 } // type can quack like a Bar
+      const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
       Observable.of(barish).filter(x => x.bar === 'quack')
         .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
       Observable.of(barish).filter(isBar)

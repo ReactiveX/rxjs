@@ -243,7 +243,7 @@ describe('Observable.prototype.first', () => {
       Observable.of(foobar).first(isBaz)
         .subscribe(x => x.baz); // x is Baz!
 
-      const barish = { bar: 'quack', baz: 42 } // type can quack like a Bar
+      const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
       Observable.of(barish).first()
         .subscribe(x => x.baz); // x is still { bar: string; baz: number; }
       Observable.of(barish).first(x => x.bar === 'quack')
