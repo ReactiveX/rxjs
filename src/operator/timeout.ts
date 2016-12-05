@@ -20,7 +20,8 @@ export function timeout<T>(this: Observable<T>, due: number | Date,
                            scheduler: Scheduler = async): Observable<T> {
   const absoluteTimeout = isDate(due);
   const waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
-  const error = errorToSend || new TimeoutError();
+  const error = errorToSend instanceof Error ? errorToSend : new TimeoutError(errorToSend);
+
   return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, error, scheduler));
 }
 
