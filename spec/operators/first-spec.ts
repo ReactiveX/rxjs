@@ -214,4 +214,27 @@ describe('Observable.prototype.first', () => {
     expectObservable(e1.first(predicate, resultSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
+
+  it('should not be compile error', () => {
+    {
+      // x is `Observable<string | number>`
+      const x: Rx.Observable<string | number> = Observable.from([1, 'aaa', 3, 'bb']);
+      // This type guard will narrow a `string | number` to a string in the examples below
+      const isString = (x: string | number): x is string => typeof x === 'string';
+
+      // After the type guard `first` predicates, the type is narrowed to string
+      const guardedFirst1 = x.first<string | number, string>(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>
+      const guardedFirst2 = x.first<string | number, string>(isString, s => s.substr(0)).filter(s => s.length > 1); // Observable<string>
+      // Without a resultSelector, `first` maintains the original type (TS can't do this yet)
+      const boolFirst1 = x.first(x => typeof x === 'string', null, ''); // Observable<string | number>
+      // `first` still uses the `resultSelector` return type, if it exists.
+      const boolFirst2 = x.first(x => typeof x === 'string', s => ({str: `${s}`}), {str: ''}); // Observable<{str: string}>
+
+      // To avoid the lint error about unused variables 
+      expect(guardedFirst1).to.not.equal(true);
+      expect(guardedFirst2).to.not.equal(true);
+      expect(boolFirst1).to.not.equal(true);
+      expect(boolFirst2).to.not.equal(true);
+    }
+  });
 });

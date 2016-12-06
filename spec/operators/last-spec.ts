@@ -142,4 +142,27 @@ describe('Observable.prototype.last', () => {
     expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
+
+  it('should not be compile error', () => {
+    {
+      // x is `Observable<string | number>`
+      const x: Rx.Observable<string | number> = Rx.Observable.from([1, 'aaa', 3, 'bb']);
+      // This type guard will narrow a `string | number` to a string in the examples below
+      const isString = (x: string | number): x is string => typeof x === 'string';
+
+      // After the type guard `last` predicates, the type is narrowed to string
+      const guardedLast1 = x.last<string | number, string>(isString).filter(s => s.length > 1).map(s => s.substr(1)); // Observable<string>
+      const guardedLast2 = x.last<string | number, string>(isString, s => s.substr(0)).filter(s => s.length > 1); // Observable<string>
+      // Without a resultSelector, `last` maintains the original type (TS can't do this yet)
+      const boolLast1 = x.last(x => typeof x === 'string', null, ''); // Observable<string | number>
+      // `last` still uses the `resultSelector` return type, if it exists.
+      const boolLast2 = x.last(x => typeof x === 'string', s => ({str: `${s}`}), {str: ''}); // Observable<{str: string}>
+
+      // To avoid the lint error about unused variables 
+      expect(guardedLast1).to.not.equal(true);
+      expect(guardedLast2).to.not.equal(true);
+      expect(boolLast1).to.not.equal(true);
+      expect(boolLast2).to.not.equal(true);
+    }
+  });
 });
