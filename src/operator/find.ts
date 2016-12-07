@@ -4,9 +4,11 @@ import { Subscriber } from '../Subscriber';
 
 /* tslint:disable:max-line-length */
 export function find<T, S extends T>(this: Observable<T>,
-                                     predicate: ((value: T, index: number, source: Observable<T>) => boolean) |
-                                                ((value: T, index: number, source: Observable<T>) => value is S),
+                                     predicate: (value: T, index: number) => value is S,
                                      thisArg?: any): Observable<S>;
+export function find<T>(this: Observable<T>,
+                        predicate: (value: T, index: number) => boolean,
+                        thisArg?: any): Observable<T>;
 /* tslint:disable:max-line-length */
 
 /**
