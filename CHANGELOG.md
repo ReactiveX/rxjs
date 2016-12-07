@@ -1,3 +1,29 @@
+<a name="5.0.0-rc.5"></a>
+# [5.0.0-rc.5](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.4...v5.0.0-rc.5) (2016-12-07)
+
+
+### Bug Fixes
+
+* **AjaxObservable:** catch XHR send failures to observer ([#2159](https://github.com/ReactiveX/RxJS/issues/2159)) ([128fb9c](https://github.com/ReactiveX/RxJS/commit/128fb9c))
+* **distinctKey:** Removed accidental leftover reference of `distinctKey` ([9fd8096](https://github.com/ReactiveX/RxJS/commit/9fd8096)), closes [#2161](https://github.com/ReactiveX/RxJS/issues/2161)
+* **errors:** Better error message when you return non-observable things, ([#2152](https://github.com/ReactiveX/RxJS/issues/2152)) ([86a909c](https://github.com/ReactiveX/RxJS/commit/86a909c)), closes [#215](https://github.com/ReactiveX/RxJS/issues/215)
+* **event:** uses `Object.prototype.toString.call` on objects ([#2143](https://github.com/ReactiveX/RxJS/issues/2143)) ([e036e79](https://github.com/ReactiveX/RxJS/commit/e036e79))
+* **typings:** type guard support for `last`, `first`, `find` and `filter`. ([5f2e849](https://github.com/ReactiveX/RxJS/commit/5f2e849))
+
+
+### Features
+
+* **timeout:** remove `errorToSend` argument, always throw TimeoutError ([#2172](https://github.com/ReactiveX/RxJS/issues/2172)) ([98ea3d2](https://github.com/ReactiveX/RxJS/commit/98ea3d2))
+
+
+### BREAKING CHANGES
+
+* timeout: `timeout` no longer accepts the `errorToSend` argument
+
+related #2141
+
+
+
 <a name="5.0.0-rc.4"></a>
 # [5.0.0-rc.4](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.3...v5.0.0-rc.4) (2016-11-19)
 
