@@ -219,4 +219,16 @@ describe('Observable.prototype.buffer', () => {
     expectObservable(a.buffer(b).take(1)).toBe(expected, expectedValues);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
+
+  it('should emit last buffer if source completes', () => {
+    const a =    hot('-a-b-c-d-e-f-g-h-i-|');
+    const b =    hot('-----B-----B--------');
+    const expected = '-----x-----y-------(z|)';
+    const expectedValues = {
+      x: ['a', 'b', 'c'],
+      y: ['d', 'e', 'f'],
+      z: ['g', 'h', 'i']
+    };
+    expectObservable(a.buffer(b)).toBe(expected, expectedValues);
+  });
 });
