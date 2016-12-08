@@ -1,3 +1,4 @@
+import { Action } from '../scheduler/Action';
 import { Scheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
@@ -20,9 +21,9 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
-  static dispatch<T>(arg: DispatchArg<T>): Subscription {
+  static dispatch<T>(this: Action<T>, arg: DispatchArg<T>): Subscription {
     const { source, subscriber } = arg;
-    return source.subscribe(subscriber);
+    return this.add(source.subscribe(subscriber));
   }
 
   constructor(public source: Observable<T>,
