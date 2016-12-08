@@ -32,7 +32,9 @@ install:
   - npm install && npm run lint
 
 script:
-  - npm run build_spec && npm run test_mocha && node ./node_modules/markdown-doctest/bin/cmd.js
+  - npm install typescript@2.0.7 && npm run build_spec && npm run test_mocha
+  - npm install typescript@latest && npm run build_spec && npm run test_mocha
+  - node ./node_modules/markdown-doctest/bin/cmd.js
   - npm run check_circular_dependencies
 
 after_success:
