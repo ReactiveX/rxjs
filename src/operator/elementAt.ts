@@ -22,6 +22,11 @@ import { TeardownLogic } from '../Subscription';
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.elementAt(2);
  * result.subscribe(x => console.log(x));
+ * 
+ * // Results in:
+ * // click 1 = nothing
+ * // click 2 = nothing
+ * // click 3 = MouseEvent object logged to console
  *
  * @see {@link first}
  * @see {@link last}

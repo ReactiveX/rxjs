@@ -78,6 +78,10 @@ export class FromEventObservable<T> extends Observable<T> {
    * @example <caption>Emits clicks happening on the DOM document</caption>
    * var clicks = Rx.Observable.fromEvent(document, 'click');
    * clicks.subscribe(x => console.log(x));
+   * 
+   * // Results in:
+   * // MouseEvent object logged to console everytime a click
+   * // occurs on the document.
    *
    * @see {@link from}
    * @see {@link fromEventPattern}

@@ -34,6 +34,12 @@ export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
  * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));
  * var firstOrder = higherOrder.concatAll();
  * firstOrder.subscribe(x => console.log(x));
+ * 
+ * // Results in the following:
+ * // (results are not concurrent)
+ * // For every click on the "document" it will emit values 0 to 3 spaced
+ * // on a 1000ms interval
+ * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3
  *
  * @see {@link combineAll}
  * @see {@link concat}

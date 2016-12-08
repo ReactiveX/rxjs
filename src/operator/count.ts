@@ -32,6 +32,9 @@ import { Subscriber } from '../Subscriber';
  * var numbers = Rx.Observable.range(1, 7);
  * var result = numbers.count(i => i % 2 === 1);
  * result.subscribe(x => console.log(x));
+ * 
+ * // Results in:
+ * // 4
  *
  * @see {@link max}
  * @see {@link min}

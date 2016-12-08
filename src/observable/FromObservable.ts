@@ -47,6 +47,9 @@ export class FromObservable<T> extends Observable<T> {
    * var array = [10, 20, 30];
    * var result = Rx.Observable.from(array);
    * result.subscribe(x => console.log(x));
+   * 
+   * // Results in the following:
+   * // 10 20 30
    *
    * @example <caption>Convert an infinite iterable (from a generator) to an Observable</caption>
    * function* generateDoubles(seed) {
@@ -60,6 +63,10 @@ export class FromObservable<T> extends Observable<T> {
    * var iterator = generateDoubles(3);
    * var result = Rx.Observable.from(iterator).take(10);
    * result.subscribe(x => console.log(x));
+   * 
+   * // Results in the following:
+   * // 3 6 12 24 48 96 192 384 768 1536
+   * 
    *
    * @see {@link create}
    * @see {@link fromEvent}

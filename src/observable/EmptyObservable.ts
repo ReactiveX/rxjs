@@ -37,6 +37,12 @@ export class EmptyObservable<T> extends Observable<T> {
    *   x % 2 === 1 ? Rx.Observable.of('a', 'b', 'c') : Rx.Observable.empty()
    * );
    * result.subscribe(x => console.log(x));
+   * 
+   * // Results in the following to the console:
+   * // x is equal to the count on the interval eg(0,1,2,3,...)
+   * // x will occur every 1000ms
+   * // if x % 2 is equal to 1 print abc
+   * // if x % 2 is not equal to 1 nothing will be output
    *
    * @see {@link create}
    * @see {@link never}
