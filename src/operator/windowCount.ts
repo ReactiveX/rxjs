@@ -63,7 +63,7 @@ class WindowCountOperator<T> implements Operator<T, Observable<T>> {
   }
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    return source._subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
+    return source.subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
   }
 }
 

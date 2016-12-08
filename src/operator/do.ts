@@ -64,7 +64,7 @@ class DoOperator<T> implements Operator<T, T> {
               private complete?: () => void) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
+    return source.subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
   }
 }
 

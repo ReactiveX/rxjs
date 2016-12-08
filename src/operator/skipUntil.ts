@@ -27,7 +27,7 @@ class SkipUntilOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
+    return source.subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
   }
 }
 

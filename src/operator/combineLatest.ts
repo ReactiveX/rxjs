@@ -87,7 +87,7 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
+    return source.subscribe(new CombineLatestSubscriber(subscriber, this.project));
   }
 }
 

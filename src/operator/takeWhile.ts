@@ -48,7 +48,7 @@ class TakeWhileOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
+    return source.subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
   }
 }
 

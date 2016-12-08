@@ -34,7 +34,7 @@ class DistinctOperator<T, K> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DistinctSubscriber(subscriber, this.keySelector, this.flushes));
+    return source.subscribe(new DistinctSubscriber(subscriber, this.keySelector, this.flushes));
   }
 }
 

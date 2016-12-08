@@ -24,7 +24,7 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
+    return source.subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
   }
 }
 

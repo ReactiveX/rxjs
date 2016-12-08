@@ -68,7 +68,7 @@ export class SequenceEqualOperator<T> implements Operator<T, boolean> {
   }
 
   call(subscriber: Subscriber<boolean>, source: any): any {
-    return source._subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
+    return source.subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
   }
 }
 

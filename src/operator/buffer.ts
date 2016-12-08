@@ -48,7 +48,7 @@ class BufferOperator<T> implements Operator<T, T[]> {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
-    return source._subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
+    return source.subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
   }
 }
 

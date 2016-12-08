@@ -55,7 +55,7 @@ class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
+    return source.subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
   }
 }
 

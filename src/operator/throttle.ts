@@ -54,7 +54,7 @@ class ThrottleOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
+    return source.subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
   }
 }
 

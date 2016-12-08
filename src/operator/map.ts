@@ -47,7 +47,7 @@ export class MapOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
+    return source.subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
   }
 }
 

@@ -41,7 +41,7 @@ class MapToOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new MapToSubscriber(subscriber, this.value));
+    return source.subscribe(new MapToSubscriber(subscriber, this.value));
   }
 }
 

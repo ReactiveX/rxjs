@@ -63,7 +63,7 @@ class ScanOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, value: T, index: number) => R, private seed?: T | R, private hasSeed: boolean = false) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+    return source.subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
   }
 }
 

@@ -46,7 +46,7 @@ export function materialize<T>(this: Observable<T>): Observable<Notification<T>>
 
 class MaterializeOperator<T> implements Operator<T, Notification<T>> {
   call(subscriber: Subscriber<Notification<T>>, source: any): any {
-    return source._subscribe(new MaterializeSubscriber(subscriber));
+    return source.subscribe(new MaterializeSubscriber(subscriber));
   }
 }
 

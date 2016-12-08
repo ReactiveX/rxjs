@@ -24,7 +24,7 @@ class TimestampOperator<T> implements Operator<T, Timestamp<T>> {
   }
 
   call(observer: Subscriber<Timestamp<T>>, source: any): any {
-    return source._subscribe(new TimestampSubscriber(observer, this.scheduler));
+    return source.subscribe(new TimestampSubscriber(observer, this.scheduler));
   }
 }
 

@@ -58,7 +58,7 @@ export class MergeAllOperator<T> implements Operator<Observable<T>, T> {
   }
 
   call(observer: Observer<T>, source: any): any {
-    return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
+    return source.subscribe(new MergeAllSubscriber(observer, this.concurrent));
   }
 }
 

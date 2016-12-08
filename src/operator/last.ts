@@ -56,7 +56,7 @@ class LastOperator<T, R> implements Operator<T, R> {
   }
 
   call(observer: Subscriber<R>, source: any): any {
-    return source._subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+    return source.subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
   }
 }
 

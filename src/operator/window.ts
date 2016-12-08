@@ -54,7 +54,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
     const windowSubscriber = new WindowSubscriber(subscriber);
-    const sourceSubscription = source._subscribe(windowSubscriber);
+    const sourceSubscription = source.subscribe(windowSubscriber);
     if (!sourceSubscription.closed) {
       windowSubscriber.add(subscribeToResult(windowSubscriber, this.windowBoundaries));
     }

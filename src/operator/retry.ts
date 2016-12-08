@@ -30,7 +30,7 @@ class RetryOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new RetrySubscriber(subscriber, this.count, this.source));
+    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source));
   }
 }
 
