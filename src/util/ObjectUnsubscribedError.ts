@@ -10,6 +10,8 @@
 export class ObjectUnsubscribedError extends Error {
   constructor() {
     const err: any = super('object unsubscribed');
+    (this as any).__proto__ = ObjectUnsubscribedError.prototype;
+
     (<any> this).name = err.name = 'ObjectUnsubscribedError';
     (<any> this).stack = err.stack;
     (<any> this).message = err.message;

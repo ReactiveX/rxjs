@@ -435,6 +435,8 @@ export class AjaxError extends Error {
 
   constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
     super(message);
+    (this as any).__proto__ = AjaxError.prototype;
+
     this.message = message;
     this.xhr = xhr;
     this.request = request;
