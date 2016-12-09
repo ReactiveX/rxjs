@@ -34,10 +34,9 @@ export function concat<T, R>(this: Observable<T>, ...observables: Array<Observab
  * var sequence = Rx.Observable.range(1, 10);
  * var result = timer.concat(sequence);
  * result.subscribe(x => console.log(x));
- * 
+ *
  * // results in:
- * // 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
- * 
+ * // 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
  *
  * @example <caption>Concatenate 3 Observables</caption>
  * var timer1 = Rx.Observable.interval(1000).take(10);
@@ -46,7 +45,7 @@ export function concat<T, R>(this: Observable<T>, ...observables: Array<Observab
  * var result = timer1.concat(timer2, timer3);
  * result.subscribe(x => console.log(x));
  * 
- * * // results in the following:
+ * // results in the following:
  * // (Prints to console sequentially)
  * // -1000ms-> 0 -1000ms-> 1 -1000ms-> ... 9
  * // -2000ms-> 0 -2000ms-> 1 -2000ms-> ... 5
@@ -97,7 +96,7 @@ export function concatStatic<T, R>(...observables: (ObservableInput<any> | Sched
  * var sequence = Rx.Observable.range(1, 10);
  * var result = Rx.Observable.concat(timer, sequence);
  * result.subscribe(x => console.log(x));
- * 
+ *
  * // results in:
  * // 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
  *
@@ -107,7 +106,7 @@ export function concatStatic<T, R>(...observables: (ObservableInput<any> | Sched
  * var timer3 = Rx.Observable.interval(500).take(10);
  * var result = Rx.Observable.concat(timer1, timer2, timer3);
  * result.subscribe(x => console.log(x));
- * 
+ *
  * // results in the following:
  * // (Prints to console sequentially)
  * // -1000ms-> 0 -1000ms-> 1 -1000ms-> ... 9

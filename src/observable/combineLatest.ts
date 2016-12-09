@@ -51,7 +51,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * var height = Rx.Observable.of(1.76, 1.77, 1.78);
  * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));
  * bmi.subscribe(x => console.log('BMI is ' + x));
- * 
+ *
  * // With output to console:
  * // BMI is 24.212293388429753
  * // BMI is 23.93948099205209

@@ -30,7 +30,7 @@ import { Notification } from '../Notification';
  * var upperCase = letters.map(x => x.toUpperCase());
  * var materialized = upperCase.materialize();
  * materialized.subscribe(x => console.log(x));
- * 
+ *
  * // Results in the following:
  * // - Notification {kind: "N", value: "A", error: undefined, hasValue: true}
  * // - Notification {kind: "N", value: "B", error: undefined, hasValue: true}

@@ -31,7 +31,7 @@ export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index
  *   Rx.Observable.interval(1000).map(i => x+i)
  * );
  * result.subscribe(x => console.log(x));
- * 
+ *
  * // Results in the following:
  * // a0
  * // b0

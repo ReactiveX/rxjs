@@ -33,7 +33,7 @@ export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.concatMap(ev => Rx.Observable.interval(1000).take(4));
  * result.subscribe(x => console.log(x));
- * 
+ *
  * // Results in the following:
  * // (results are not concurrent)
  * // For every click on the "document" it will emit values 0 to 3 spaced

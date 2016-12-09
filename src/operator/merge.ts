@@ -107,7 +107,7 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | Schedu
  * var timer = Rx.Observable.interval(1000);
  * var clicksOrTimer = Rx.Observable.merge(clicks, timer);
  * clicksOrTimer.subscribe(x => console.log(x));
- * 
+ *
  * // Results in the following:
  * // timer will emit ascending values, one every second(1000ms) to console
  * // clicks logs MouseEvents to console everytime the "document" is clicked
@@ -121,7 +121,7 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | Schedu
  * var concurrent = 2; // the argument
  * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);
  * merged.subscribe(x => console.log(x));
- * 
+ *
  * // Results in the following:
  * // - First timer1 and timer2 will run concurrently
  * // - timer1 will emit a value every 1000ms for 10 iterations
