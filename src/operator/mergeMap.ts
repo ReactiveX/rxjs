@@ -32,6 +32,15 @@ export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index
  * );
  * result.subscribe(x => console.log(x));
  *
+ * // Results in the following:
+ * // a0
+ * // b0
+ * // c0
+ * // a1
+ * // b1
+ * // c1
+ * // continues to list a,b,c with respective ascending integers
+ * 
  * @see {@link concatMap}
  * @see {@link exhaustMap}
  * @see {@link merge}
