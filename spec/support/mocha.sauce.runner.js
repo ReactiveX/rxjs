@@ -63,18 +63,6 @@ var customLaunchers = {
     platform: 'OS X 10.11',
     version: '9.1'
   },
-  sl_ie9: {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    platform: 'Windows 2008',
-    version: '9'
-  },
-  sl_ie10: {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    platform: 'Windows 2012',
-    version: '10'
-  },
   sl_ie11: {
     base: 'SauceLabs',
     browserName: 'internet explorer',
