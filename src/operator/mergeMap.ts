@@ -77,7 +77,7 @@ export class MergeMapOperator<T, I, R> implements Operator<T, I> {
   }
 
   call(observer: Subscriber<I>, source: any): any {
-    return source._subscribe(new MergeMapSubscriber(
+    return source.subscribe(new MergeMapSubscriber(
       observer, this.project, this.resultSelector, this.concurrent
     ));
   }

@@ -49,7 +49,7 @@ class TakeUntilOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
+    return source.subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
   }
 }
 

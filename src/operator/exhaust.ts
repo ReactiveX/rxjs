@@ -47,7 +47,7 @@ export function exhaust<T>(this: Observable<T>): Observable<T> {
 
 class SwitchFirstOperator<T> implements Operator<T, T> {
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new SwitchFirstSubscriber(subscriber));
+    return source.subscribe(new SwitchFirstSubscriber(subscriber));
   }
 }
 

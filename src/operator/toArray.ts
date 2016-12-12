@@ -13,7 +13,7 @@ export function toArray<T>(this: Observable<T>): Observable<T[]> {
 
 class ToArrayOperator<T> implements Operator<T, T[]> {
   call(subscriber: Subscriber<T[]>, source: any): any {
-    return source._subscribe(new ToArraySubscriber(subscriber));
+    return source.subscribe(new ToArraySubscriber(subscriber));
   }
 }
 

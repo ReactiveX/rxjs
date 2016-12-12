@@ -60,7 +60,7 @@ export class FindValueOperator<T> implements Operator<T, T> {
   }
 
   call(observer: Subscriber<T>, source: any): any {
-    return source._subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
+    return source.subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
   }
 }
 

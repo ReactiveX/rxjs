@@ -29,7 +29,7 @@ class DistinctUntilChangedOperator<T, K> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
+    return source.subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
   }
 }
 

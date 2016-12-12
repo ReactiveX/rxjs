@@ -97,7 +97,7 @@ class RefCountOperator<T> implements Operator<T, T> {
     (<any> connectable)._refCount++;
 
     const refCounter = new RefCountSubscriber(subscriber, connectable);
-    const subscription = source._subscribe(refCounter);
+    const subscription = source.subscribe(refCounter);
 
     if (!refCounter.closed) {
       (<any> refCounter).connection = connectable.connect();

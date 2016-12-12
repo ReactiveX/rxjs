@@ -52,7 +52,7 @@ class SampleTimeOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
+    return source.subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
   }
 }
 

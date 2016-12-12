@@ -43,7 +43,7 @@ export function pairwise<T>(this: Observable<T>): Observable<[T, T]> {
 
 class PairwiseOperator<T> implements Operator<T, [T, T]> {
   call(subscriber: Subscriber<[T, T]>, source: any): any {
-    return source._subscribe(new PairwiseSubscriber(subscriber));
+    return source.subscribe(new PairwiseSubscriber(subscriber));
   }
 }
 

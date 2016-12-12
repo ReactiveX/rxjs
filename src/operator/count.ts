@@ -58,7 +58,7 @@ class CountOperator<T> implements Operator<T, number> {
   }
 
   call(subscriber: Subscriber<number>, source: any): any {
-    return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
+    return source.subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
   }
 }
 

@@ -30,7 +30,7 @@ class TimeoutOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new TimeoutSubscriber<T>(
+    return source.subscribe(new TimeoutSubscriber<T>(
       subscriber, this.absoluteTimeout, this.waitFor, this.scheduler, this.errorInstance
     ));
   }

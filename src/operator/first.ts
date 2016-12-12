@@ -87,7 +87,7 @@ class FirstOperator<T, R> implements Operator<T, R> {
   }
 
   call(observer: Subscriber<R>, source: any): any {
-    return source._subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+    return source.subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
   }
 }
 

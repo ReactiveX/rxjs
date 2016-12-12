@@ -26,7 +26,7 @@ class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
   }
 
   call(observer: Subscriber<TimeInterval<T>>, source: any): any {
-    return source._subscribe(new TimeIntervalSubscriber(observer, this.scheduler));
+    return source.subscribe(new TimeIntervalSubscriber(observer, this.scheduler));
   }
 }
 

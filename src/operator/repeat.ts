@@ -33,7 +33,7 @@ class RepeatOperator<T> implements Operator<T, T> {
               private source: Observable<T>) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
+    return source.subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
   }
 }
 

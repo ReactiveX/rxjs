@@ -23,7 +23,7 @@ class EveryOperator<T> implements Operator<T, boolean> {
   }
 
   call(observer: Subscriber<boolean>, source: any): any {
-    return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
+    return source.subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
   }
 }
 

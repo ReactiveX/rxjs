@@ -54,7 +54,7 @@ class ElementAtOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
+    return source.subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
   }
 }
 

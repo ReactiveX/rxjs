@@ -59,7 +59,7 @@ class DelayOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
+    return source.subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
   }
 }
 

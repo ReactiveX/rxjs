@@ -44,7 +44,7 @@ export function dematerialize<T>(this: Observable<T>): Observable<any> {
 
 class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {
   call(subscriber: Subscriber<any>, source: any): any {
-    return source._subscribe(new DeMaterializeSubscriber(subscriber));
+    return source.subscribe(new DeMaterializeSubscriber(subscriber));
   }
 }
 

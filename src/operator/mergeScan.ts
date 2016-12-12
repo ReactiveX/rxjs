@@ -29,7 +29,7 @@ export class MergeScanOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new MergeScanSubscriber(
+    return source.subscribe(new MergeScanSubscriber(
       subscriber, this.project, this.seed, this.concurrent
     ));
   }

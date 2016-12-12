@@ -57,7 +57,7 @@ class AuditTimeOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
+    return source.subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
   }
 }
 

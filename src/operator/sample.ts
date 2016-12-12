@@ -50,7 +50,7 @@ class SampleOperator<T> implements Operator<T, T> {
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     const sampleSubscriber = new SampleSubscriber(subscriber);
-    const subscription = source._subscribe(sampleSubscriber);
+    const subscription = source.subscribe(sampleSubscriber);
     subscription.add(subscribeToResult(sampleSubscriber, this.notifier));
     return subscription;
   }

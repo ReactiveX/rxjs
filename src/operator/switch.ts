@@ -54,7 +54,7 @@ export function _switch<T>(this: Observable<T>): T {
 
 class SwitchOperator<T, R> implements Operator<T, R> {
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new SwitchSubscriber(subscriber));
+    return source.subscribe(new SwitchSubscriber(subscriber));
   }
 }
 

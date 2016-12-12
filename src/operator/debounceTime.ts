@@ -60,7 +60,7 @@ class DebounceTimeOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
+    return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
   }
 }
 

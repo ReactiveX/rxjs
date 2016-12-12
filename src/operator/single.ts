@@ -31,7 +31,7 @@ class SingleOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
+    return source.subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
   }
 }
 

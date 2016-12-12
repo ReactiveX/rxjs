@@ -1,5 +1,8 @@
+import { Operator } from '../Operator';
 import { Scheduler } from '../Scheduler';
+import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
 import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
 
 /**
@@ -14,5 +17,16 @@ import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
  * @owner Observable
  */
 export function subscribeOn<T>(this: Observable<T>, scheduler: Scheduler, delay: number = 0): Observable<T> {
-  return new SubscribeOnObservable<T>(this, delay, scheduler);
+  return this.lift(new SubscribeOnOperator<T>(scheduler, delay));
+}
+
+class SubscribeOnOperator<T> implements Operator<T, T> {
+  constructor(private scheduler: Scheduler,
+              private delay: number) {
+  }
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+    return new SubscribeOnObservable(
+      source, this.delay, this.scheduler
+    ).subscribe(subscriber);
+  }
 }

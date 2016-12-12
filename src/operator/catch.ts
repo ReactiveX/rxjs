@@ -29,7 +29,7 @@ class CatchOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
+    return source.subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
   }
 }
 

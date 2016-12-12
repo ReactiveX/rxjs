@@ -58,7 +58,7 @@ class DebounceOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
+    return source.subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
   }
 }
 

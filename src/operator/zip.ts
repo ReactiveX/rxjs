@@ -84,7 +84,7 @@ export class ZipOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new ZipSubscriber(subscriber, this.project));
+    return source.subscribe(new ZipSubscriber(subscriber, this.project));
   }
 }
 
