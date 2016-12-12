@@ -112,7 +112,6 @@ enabling "composite" subscription behavior.
 |`tapOnCompleted`|`do`|
 |`timestamp`|Not yet implemented|
 |`toMap`|Not yet implemented|
-|`toSet`|Not yet implemented|
 |`transduce`|Not yet implemented|
 |`windowWithTimeOrCount`|Not yet implemented|
 

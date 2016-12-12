@@ -237,6 +237,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`timeoutWith`](../class/es6/Observable.js~Observable.html#instance-method-timeoutWith)
 - [`toArray`](../class/es6/Observable.js~Observable.html#instance-method-toArray)
 - [`toPromise`](../class/es6/Observable.js~Observable.html#instance-method-toPromise)
+- [`toSet`](../class/es6/Observable.js~Observable.html#instance-method-toSet)
 
 ### Conditional and Boolean Operators
 

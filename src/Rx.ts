@@ -131,6 +131,7 @@ import './add/operator/timeoutWith';
 import './add/operator/timestamp';
 import './add/operator/toArray';
 import './add/operator/toPromise';
+import './add/operator/toSet';
 import './add/operator/window';
 import './add/operator/windowCount';
 import './add/operator/windowTime';
