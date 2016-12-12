@@ -54,7 +54,7 @@ enabling "composite" subscription behavior.
 |---|---|
 |`amb`|`race`|
 |`and`|Not yet implemented|
-|`asObservable`|Not yet implemented|
+|`asObservable`|Exists on `Subject` only|
 |`average`|Not yet implemented|
 |`bufferWithCount`|`bufferCount`|
 |`bufferWithTime`|`bufferTime`|
